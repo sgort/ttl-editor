@@ -1,0 +1,51 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://regels.overheid.nl/services/Individuele-inkomenstoeslag> a cpsv:PublicService ;
+    dct:title "Individuele inkomenstoeslag - regelgroepen in ALEF"@nl ;
+    dct:description "Verzameling regels voor \"Individuele inkomenstoeslag\" - Gemeente Utrecht Betreft het object: \"Aanvraag\"."@nl ;
+    cv:thematicArea <https://loket.digitaal.utrecht.nl/nl/form/individuele-inkomenstoeslag-aanvragen/startpagina> ;
+    cv:sector <Werk-en-Inkomen> ;
+    dcat:keyword "indInkToesl"@nl ;
+    dct:language "nl" ;
+    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/00000001002220647000> ;
+    cpsv:follows <https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0015703>  .
+
+<https://regels.overheid.nl/organizations/00000001002220647000> a org:Organization ;
+    skos:prefLabel "Gemeente Utrecht"@nl ;
+    foaf:homepage <https://www.utrecht.nl/>  .
+
+<https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0015703> a eli:LegalResource ;
+    dct:title "Artikel 36. Individuele inkomenstoeslag"@nl ;
+    dct:description "Iedereen die kan werken maar het op de arbeidsmarkt zonder ondersteuning niet redt, valt onder de Participatiewet. De wet moet ervoor zorgen dat meer mensen werk vinden, ook mensen met een arbeidsbeperking."@nl ;
+    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0015703/2025-07-01>  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-01> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"Recht op IIT €51\" indien er aan alle volgende voorwaarden wordt voldaan:\n○ de Persoon is een Aanvrager die woonachtig is in Utrecht\n○ de AOW leeftijd behaald van de Persoon is gelijk aan onwaar\n○ de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon is gelijk aan waar\n○ de Persoon is een Alleenstaande\n○ de Thuiswonende kinderen van de Persoon is gelijk aan waar\n○ het Inkomen per maand van de Persoon is kleiner of gelijk aan de BOVENGRENS_INKOMEN_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-02> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"Recht op IIT €231\" indien er aan alle volgende voorwaarden wordt voldaan:\n○ de Persoon is een Aanvrager die woonachtig is in Utrecht\n○ de AOW leeftijd behaald van de Persoon is gelijk aan onwaar\n○ de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon is gelijk aan waar\n○ de Persoon is een Alleenstaande\n○ de Thuiswonende kinderen van de Persoon is gelijk aan onwaar\n○ het Inkomen per maand van de Persoon is kleiner of gelijk aan de BOVENGRENS_INKOMEN_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_LAAG"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-03> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"Recht op IIT €591\" indien er aan alle volgende voorwaarden wordt voldaan:\n○ de Persoon is een Aanvrager die woonachtig is in Utrecht\n○ de AOW leeftijd behaald van de Persoon is gelijk aan onwaar\n○ de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon is gelijk aan waar\n○ de Persoon is geen Alleenstaande\n○ de Thuiswonende kinderen van de Persoon is gelijk aan waar\n○ het Inkomen per maand van de Persoon is kleiner of gelijk aan de BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
+
