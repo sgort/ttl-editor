@@ -21,3 +21,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Examples - exclude drafts but include published
+examples/**/*.draft.ttl
+examples/**/*.tmp.ttl
+examples/**/temp/
+
+# Metadata
+examples/**/.DS_Store
