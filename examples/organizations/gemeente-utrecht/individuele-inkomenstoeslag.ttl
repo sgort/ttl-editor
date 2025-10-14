@@ -49,3 +49,38 @@
     ronl:confidenceLevel "high" ;
     dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"Recht op IIT €591\" indien er aan alle volgende voorwaarden wordt voldaan:\n○ de Persoon is een Aanvrager die woonachtig is in Utrecht\n○ de AOW leeftijd behaald van de Persoon is gelijk aan onwaar\n○ de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon is gelijk aan waar\n○ de Persoon is geen Alleenstaande\n○ de Thuiswonende kinderen van de Persoon is gelijk aan waar\n○ het Inkomen per maand van de Persoon is kleiner of gelijk aan de BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
 
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-04> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"Recht op IIT €591\" indien er aan alle volgende voorwaarden wordt voldaan:\n○ de Persoon is een Aanvrager die woonachtig is in Utrecht\n○ de AOW leeftijd behaald van de Persoon is gelijk aan onwaar\n○ de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon is gelijk aan waar\n○ de Persoon is geen Alleenstaande\n○ de Thuiswonende kinderen van de Persoon is gelijk aan onwaar\n○ het Inkomen per maand van de Persoon is kleiner of gelijk aan de BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-05> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"U heeft geen recht op IIT\" indien de Persoon is geen Aanvrager die woonachtig is in Utrecht"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-06> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"U heeft geen recht op IIT\" indien de AOW leeftijd behaald van de Persoon gelijk is aan waar"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-07> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"U heeft geen recht op IIT\" indien de 21 jaar of ouder maar nog niet de AOW leeftijd van de Persoon gelijk is aan onwaar"@nl  .
+
+<https://regels.overheid.nl/register/indInkToesl/recht-beschrijving-2021-08> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/indInkToesl> ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"U heeft geen recht op IIT\" indien er aan tenminste één van de volgende voorwaarden wordt voldaan:\n○ het Inkomen per maand van de Persoon is groter dan de BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
+
