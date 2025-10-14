@@ -61,6 +61,27 @@ function App() {
     type: ''
   });
 
+  // Helper function to unescape TTL strings
+  const unescapeTTLString = (str) => {
+    if (!str) return '';
+    return str
+      .replace(/\\"/g, '"')      // Unescape double quotes
+      .replace(/\\n/g, '\n')     // Unescape newlines
+      .replace(/\\r/g, '\r')     // Unescape carriage returns
+      .replace(/\\t/g, '\t')     // Unescape tabs
+      .replace(/\\\\/g, '\\');   // Unescape backslashes (do this last)
+  };
+
+  // Helper function to decode URI components
+  const decodeURIComponent = (str) => {
+    if (!str) return '';
+    try {
+      return decodeURI(str);
+    } catch (e) {
+      return str;
+    }
+  };
+
   // Parse TTL file and extract values
   const parseTTL = (ttlContent) => {
     try {
@@ -84,7 +105,7 @@ function App() {
         if (line.startsWith('#') || line === '') continue;
 
         // Detect sections
-        if (line.includes('a cpsv:PublicService')) {
+        if (line.includes('a cpsv:PublicService') || line.includes('a cpsv-ap:PublicService')) {
           currentSection = 'service';
         } else if (line.includes('a org:Organization')) {
           currentSection = 'organization';
@@ -112,7 +133,7 @@ function App() {
           const uriMatch = line.match(/<([^>]+)>/);
           if (uriMatch) {
             const fullUri = uriMatch[1];
-            const identifier = fullUri.split('/').pop().split('#').pop();
+            const identifier = decodeURIComponent(fullUri.split('/').pop().split('#').pop());
             
             if (currentSection === 'service') {
               parsed.service.identifier = identifier;
@@ -130,11 +151,15 @@ function App() {
           }
         }
 
-        // Parse properties
+        // Parse properties - improved to handle escaped quotes
         const extractValue = (propName) => {
           if (line.includes(propName)) {
-            const match = line.match(/"([^"]+)"/);
-            if (match) return match[1];
+            // Match quoted strings (including escaped quotes inside)
+            const quotedMatch = line.match(/"((?:[^"\\]|\\.)*)"/);
+            if (quotedMatch) {
+              return unescapeTTLString(quotedMatch[1]);
+            }
+            // Match URIs
             const uriMatch = line.match(/<([^>]+)>/);
             if (uriMatch) return uriMatch[1];
           }
@@ -308,6 +333,23 @@ function App() {
     );
   };
 
+  // Helper function to escape special characters in TTL strings
+  const escapeTTLString = (str) => {
+    if (!str) return '';
+    return str
+      .replace(/\\/g, '\\\\')  // Escape backslashes first
+      .replace(/"/g, '\\"')     // Escape double quotes
+      .replace(/\n/g, '\\n')    // Escape newlines
+      .replace(/\r/g, '\\r')    // Escape carriage returns
+      .replace(/\t/g, '\\t');   // Escape tabs
+  };
+
+  // Helper function to encode URI components (for identifiers with spaces)
+  const encodeURIComponent = (str) => {
+    if (!str) return '';
+    return str.replace(/ /g, '%20');
+  };
+
   // Generate TTL output
   const generateTTL = () => {
     const namespaces = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
@@ -327,17 +369,19 @@ function App() {
 
     // Service
     if (service.identifier) {
-      ttl += `<https://regels.overheid.nl/services/${service.identifier}> a cpsv:PublicService ;\n`;
-      if (service.name) ttl += `    dct:title "${service.name}"@${service.language} ;\n`;
-      if (service.description) ttl += `    dct:description "${service.description}"@${service.language} ;\n`;
+      const encodedId = encodeURIComponent(service.identifier);
+      ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
+      if (service.name) ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
+      if (service.description) ttl += `    dct:description "${escapeTTLString(service.description)}"@${service.language} ;\n`;
       if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
       if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
-      if (service.keyword) ttl += `    dcat:keyword "${service.keyword}"@${service.language} ;\n`;
+      if (service.keyword) ttl += `    dcat:keyword "${escapeTTLString(service.keyword)}"@${service.language} ;\n`;
       if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
       
       // Link to organization
       if (organization.identifier) {
-        ttl += `    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/${organization.identifier}> ;\n`;
+        const encodedOrgId = encodeURIComponent(organization.identifier);
+        ttl += `    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/${encodedOrgId}> ;\n`;
       }
       
       // Link to legal resource
@@ -347,12 +391,14 @@ function App() {
       
       // Link to cost
       if (cost.identifier) {
-        ttl += `    cv:hasCost <https://regels.overheid.nl/costs/${cost.identifier}> ;\n`;
+        const encodedCostId = encodeURIComponent(cost.identifier);
+        ttl += `    cv:hasCost <https://regels.overheid.nl/costs/${encodedCostId}> ;\n`;
       }
       
       // Link to output
       if (output.identifier) {
-        ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${output.identifier}> ;\n`;
+        const encodedOutputId = encodeURIComponent(output.identifier);
+        ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
       }
       
       ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -360,8 +406,9 @@ function App() {
 
     // Organization
     if (organization.identifier) {
-      ttl += `<https://regels.overheid.nl/organizations/${organization.identifier}> a org:Organization ;\n`;
-      if (organization.prefLabel) ttl += `    skos:prefLabel "${organization.prefLabel}"@nl ;\n`;
+      const encodedOrgId = encodeURIComponent(organization.identifier);
+      ttl += `<https://regels.overheid.nl/organizations/${encodedOrgId}> a org:Organization ;\n`;
+      if (organization.prefLabel) ttl += `    skos:prefLabel "${escapeTTLString(organization.prefLabel)}"@nl ;\n`;
       if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
       ttl = ttl.slice(0, -2) + ' .\n\n';
     }
@@ -369,8 +416,8 @@ function App() {
     // Legal Resource
     if (legalResource.bwbId) {
       ttl += `<https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> a eli:LegalResource ;\n`;
-      if (legalResource.title) ttl += `    dct:title "${legalResource.title}"@nl ;\n`;
-      if (legalResource.description) ttl += `    dct:description "${legalResource.description}"@nl ;\n`;
+      if (legalResource.title) ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
+      if (legalResource.description) ttl += `    dct:description "${escapeTTLString(legalResource.description)}"@nl ;\n`;
       if (legalResource.version) {
         ttl += `    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}/${legalResource.version}> ;\n`;
       }
@@ -385,26 +432,28 @@ function App() {
         if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
         if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
-        if (rule.confidenceLevel) ttl += `    ronl:confidenceLevel "${rule.confidenceLevel}" ;\n`;
-        if (rule.description) ttl += `    dct:description "${rule.description}"@nl ;\n`;
+        if (rule.confidenceLevel) ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
+        if (rule.description) ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
         ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
 
     // Cost
     if (cost.identifier) {
-      ttl += `<https://regels.overheid.nl/costs/${cost.identifier}> a cv:Cost ;\n`;
-      if (cost.value) ttl += `    cv:value "${cost.value}" ;\n`;
-      if (cost.currency) ttl += `    cv:currency "${cost.currency}" ;\n`;
-      if (cost.description) ttl += `    dct:description "${cost.description}"@nl ;\n`;
+      const encodedCostId = encodeURIComponent(cost.identifier);
+      ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
+      if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
+      if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
+      if (cost.description) ttl += `    dct:description "${escapeTTLString(cost.description)}"@nl ;\n`;
       ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Output
     if (output.identifier) {
-      ttl += `<https://regels.overheid.nl/outputs/${output.identifier}> a cv:Output ;\n`;
-      if (output.name) ttl += `    dct:title "${output.name}"@nl ;\n`;
-      if (output.description) ttl += `    dct:description "${output.description}"@nl ;\n`;
+      const encodedOutputId = encodeURIComponent(output.identifier);
+      ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
+      if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
+      if (output.description) ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
       if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
       ttl = ttl.slice(0, -2) + ' .\n';
     }
