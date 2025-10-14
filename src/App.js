@@ -133,7 +133,12 @@ function App() {
           const uriMatch = line.match(/<([^>]+)>/);
           if (uriMatch) {
             const fullUri = uriMatch[1];
-            const identifier = decodeURIComponent(fullUri.split('/').pop().split('#').pop());
+            let identifier = decodeURIComponent(fullUri.split('/').pop().split('#').pop());
+            
+            // Special handling for legal resources - strip 'c_' prefix if present
+            if (currentSection === 'legalResource' && identifier.startsWith('c_')) {
+              identifier = identifier.substring(2); // Remove 'c_' prefix
+            }
             
             if (currentSection === 'service') {
               parsed.service.identifier = identifier;
@@ -468,7 +473,12 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${service.identifier || 'service'}.ttl`;
+    // Sanitize filename - replace spaces and special chars
+    const sanitizedFilename = (service.identifier || 'service')
+      .replace(/%20/g, '-')
+      .replace(/\s+/g, '-')
+      .replace(/[^a-zA-Z0-9-_]/g, '');
+    a.download = `${sanitizedFilename}.ttl`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
