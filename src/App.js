@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, FileText, Building2, Scale, Clock, Plus, Trash2, Upload, FileUp, AlertCircle, CheckCircle } from 'lucide-react';
+import { Download, FileText, Building2, Scale, Clock, Plus, Trash2, Upload, FileUp, AlertCircle, CheckCircle, History } from 'lucide-react';
 
 function App() {
   const [activeTab, setActiveTab] = useState('service');
@@ -75,15 +75,32 @@ function App() {
     type: ''
   });
 
+  // Helper function to escape special characters in TTL strings
+  const escapeTTLString = (str) => {
+    if (!str) return '';
+    return str
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t');
+  };
+
+  // Helper function to encode URI components
+  const encodeURIComponent = (str) => {
+    if (!str) return '';
+    return str.replace(/ /g, '%20');
+  };
+
   // Helper function to unescape TTL strings
   const unescapeTTLString = (str) => {
     if (!str) return '';
     return str
-      .replace(/\\"/g, '"')      // Unescape double quotes
-      .replace(/\\n/g, '\n')     // Unescape newlines
-      .replace(/\\r/g, '\r')     // Unescape carriage returns
-      .replace(/\\t/g, '\t')     // Unescape tabs
-      .replace(/\\\\/g, '\\');   // Unescape backslashes (do this last)
+      .replace(/\\"/g, '"')
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '\r')
+      .replace(/\\t/g, '\t')
+      .replace(/\\\\/g, '\\');
   };
 
   // Helper function to decode URI components
@@ -117,7 +134,6 @@ function App() {
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         
-        // Skip comments and empty lines
         if (line.startsWith('#') || line === '') continue;
 
         // Detect sections
@@ -163,9 +179,8 @@ function App() {
             const fullUri = uriMatch[1];
             let identifier = decodeURIComponent(fullUri.split('/').pop().split('#').pop());
             
-            // Special handling for legal resources - strip 'c_' prefix if present
             if (currentSection === 'legalResource' && identifier.startsWith('c_')) {
-              identifier = identifier.substring(2); // Remove 'c_' prefix
+              identifier = identifier.substring(2);
             }
             
             if (currentSection === 'service') {
@@ -184,15 +199,12 @@ function App() {
           }
         }
 
-        // Parse properties - improved to handle escaped quotes
         const extractValue = (propName) => {
           if (line.includes(propName)) {
-            // Match quoted strings (including escaped quotes inside)
             const quotedMatch = line.match(/"((?:[^"\\]|\\.)*)"/);
             if (quotedMatch) {
               return unescapeTTLString(quotedMatch[1]);
             }
-            // Match URIs
             const uriMatch = line.match(/<([^>]+)>/);
             if (uriMatch) return uriMatch[1];
           }
@@ -236,7 +248,6 @@ function App() {
           if (line.includes('ronl:confidenceLevel')) currentRule.confidenceLevel = extractValue('ronl:confidenceLevel') || currentRule.confidenceLevel;
           if (line.includes('dct:description')) currentRule.description = extractValue('dct:description') || currentRule.description;
           
-          // End of rule block
           if (line.includes('.') && !line.includes(';')) {
             parsed.temporalRules.push(currentRule);
             currentRule = null;
@@ -257,7 +268,6 @@ function App() {
           if (line.includes('ronl:validFrom')) currentParameter.validFrom = extractValue('ronl:validFrom') || currentParameter.validFrom;
           if (line.includes('ronl:validUntil')) currentParameter.validUntil = extractValue('ronl:validUntil') || currentParameter.validUntil;
           
-          // End of parameter block
           if (line.includes('.') && !line.includes(';')) {
             parsed.parameters.push(currentParameter);
             currentParameter = null;
@@ -292,7 +302,6 @@ function App() {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Check file extension
     if (!file.name.endsWith('.ttl')) {
       setImportStatus({
         show: true,
@@ -309,7 +318,6 @@ function App() {
         const content = e.target.result;
         const parsed = parseTTL(content);
 
-        // Update all state
         setService(parsed.service);
         setOrganization(parsed.organization);
         setLegalResource(parsed.legalResource);
@@ -330,10 +338,7 @@ function App() {
           message: 'TTL file imported successfully! All fields have been populated.'
         });
 
-        // Auto-hide success message after 5 seconds
         setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
-
-        // Switch to service tab to show imported data
         setActiveTab('service');
 
       } catch (error) {
@@ -356,8 +361,6 @@ function App() {
     };
 
     reader.readAsText(file);
-    
-    // Reset input to allow importing the same file again
     event.target.value = '';
   };
 
@@ -422,23 +425,6 @@ function App() {
     );
   };
 
-  // Helper function to escape special characters in TTL strings
-  const escapeTTLString = (str) => {
-    if (!str) return '';
-    return str
-      .replace(/\\/g, '\\\\')  // Escape backslashes first
-      .replace(/"/g, '\\"')     // Escape double quotes
-      .replace(/\n/g, '\\n')    // Escape newlines
-      .replace(/\r/g, '\\r')    // Escape carriage returns
-      .replace(/\t/g, '\\t');   // Escape tabs
-  };
-
-  // Helper function to encode URI components (for identifiers with spaces)
-  const encodeURIComponent = (str) => {
-    if (!str) return '';
-    return str.replace(/ /g, '%20');
-  };
-
   // Generate TTL output
   const generateTTL = () => {
     const namespaces = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
@@ -468,24 +454,20 @@ function App() {
       if (service.keyword) ttl += `    dcat:keyword "${escapeTTLString(service.keyword)}"@${service.language} ;\n`;
       if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
       
-      // Link to organization
       if (organization.identifier) {
         const encodedOrgId = encodeURIComponent(organization.identifier);
         ttl += `    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/${encodedOrgId}> ;\n`;
       }
       
-      // Link to legal resource
       if (legalResource.bwbId) {
         ttl += `    cpsv:follows <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> ;\n`;
       }
       
-      // Link to cost
       if (cost.identifier) {
         const encodedCostId = encodeURIComponent(cost.identifier);
         ttl += `    cv:hasCost <https://regels.overheid.nl/costs/${encodedCostId}> ;\n`;
       }
       
-      // Link to output
       if (output.identifier) {
         const encodedOutputId = encodeURIComponent(output.identifier);
         ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
@@ -574,7 +556,6 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    // Sanitize filename - replace spaces and special chars
     const sanitizedFilename = (service.identifier || 'service')
       .replace(/%20/g, '-')
       .replace(/\s+/g, '-')
@@ -602,7 +583,7 @@ function App() {
     }
   };
 
-  // Render functions for each tab
+  // Render functions
   const renderServiceInfo = () => (
     <div className="space-y-4">
       <div>
@@ -990,10 +971,265 @@ function App() {
     </div>
   );
 
+  const renderChangelog = () => (
+    <div className="space-y-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+        <div className="flex items-center gap-3 mb-2">
+          <History className="text-blue-600" size={28} />
+          <h2 className="text-2xl font-bold text-gray-800">Enhancement Changelog</h2>
+        </div>
+        <p className="text-sm text-gray-600">
+          Complete history of features and improvements to the Public Service TTL Editor
+        </p>
+      </div>
+
+      <div className="border-l-4 border-green-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.1.0</h3>
+          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
+            Current
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
+        
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-green-600">✨</span> Parameters Tab
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Added dedicated Parameters tab for ronl:ParameterWaarde support</li>
+              <li>Define constants: income limits, asset thresholds, percentages</li>
+              <li>Fields: Notation, Label, Value, Unit (EUR/PCT/NUM/etc.), Description</li>
+              <li>Temporal validity: validFrom and validUntil dates</li>
+              <li>Add/remove unlimited parameters dynamically</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-blue-600">🔧</span> Technical Improvements
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Added schema.org namespace for parameter values and units</li>
+              <li>schema:value for numeric parameter values (xsd:decimal)</li>
+              <li>schema:unitCode for measurement units</li>
+              <li>Full import/export support for parameters</li>
+              <li>Updated NAMESPACE-PROPERTIES.md with schema: prefix</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-l-4 border-blue-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.0.2</h3>
+          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">
+            Bug Fixes
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
+        
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-red-600">🐛</span> Bug Fixes
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Fixed: BWB ID import now correctly strips c_ prefix from legal resources</li>
+              <li>Fixed: Special character escaping in TTL strings (quotes, newlines)</li>
+              <li>Fixed: URI encoding for identifiers with spaces (%20 encoding)</li>
+              <li>Fixed: Filename sanitization for downloads</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-l-4 border-purple-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.0.1</h3>
+          <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm font-semibold rounded-full">
+            Enhancement
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
+        
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-purple-600">📥</span> Import Functionality
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Import existing TTL files for editing</li>
+              <li>Automatic parsing of CPSV-AP/CPRMV structures</li>
+              <li>Populates all form fields from imported data</li>
+              <li>Supports multiple temporal rules</li>
+              <li>Handles service, organization, legal, and rule data</li>
+              <li>Success/error status messages with visual feedback</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-gray-600">📝</span> Character Handling
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Proper TTL string escaping (quotes, backslashes, newlines)</li>
+              <li>URI encoding for spaces and special characters</li>
+              <li>Round-trip editing: export → import → edit → export</li>
+              <li>W3C Turtle specification compliance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-l-4 border-indigo-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.0.0</h3>
+          <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-semibold rounded-full">
+            Initial Release
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
+        
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-indigo-600">🎨</span> Core Features
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>React-based web application with Create React App</li>
+              <li>Tailwind CSS v3 for modern, responsive design</li>
+              <li>Lucide React icons for visual clarity</li>
+              <li>5-tab interface: Service, Organization, Legal, Rules, Preview</li>
+              <li>Real-time TTL preview with syntax highlighting</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-green-600">📋</span> Form Capabilities
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Service metadata: identifier, name, description, thematic area</li>
+              <li>Organization details: name, identifier, homepage</li>
+              <li>Legal resources: BWB IDs with pattern validation</li>
+              <li>Temporal rules: extends, validFrom, validUntil, confidence levels</li>
+              <li>Dynamic rule management: add/remove rules</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-blue-600">💾</span> Export & Standards
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Generate valid RDF/Turtle files</li>
+              <li>CPSV-AP 3.0 compliance (EU standard)</li>
+              <li>CPRMV 0.3.0 support (Dutch extensions)</li>
+              <li>RONL vocabulary integration</li>
+              <li>Download TTL files with proper namespaces</li>
+              <li>Basic validation with error messages</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-yellow-600">🚀</span> Deployment
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Deployed to Azure Static Web Apps</li>
+              <li>Custom domain: ttl.open-regels.nl</li>
+              <li>Automatic CI/CD via GitHub Actions</li>
+              <li>Free tier hosting with SSL</li>
+              <li>Professional branding and favicon</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-l-4 border-gray-400 bg-gray-50 rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Future Enhancements</h3>
+          <span className="px-3 py-1 bg-gray-200 text-gray-700 text-sm font-semibold rounded-full">
+            Roadmap
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Planned features</p>
+        
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Template System</h4>
+              <p className="text-sm text-gray-600">Pre-fill forms from AOW example or custom templates</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Browser Storage</h4>
+              <p className="text-sm text-gray-600">Auto-save progress to localStorage</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Additional Sections</h4>
+              <p className="text-sm text-gray-600">Channel, Contact, DMN Distribution forms</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Advanced Validation</h4>
+              <p className="text-sm text-gray-600">Field-level error messages and real-time validation</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Export Options</h4>
+              <p className="text-sm text-gray-600">JSON and YAML export formats</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">DMN File Upload</h4>
+              <p className="text-sm text-gray-600">Upload and link DMN files to services</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-gray-400 mt-1">⏳</span>
+            <div>
+              <h4 className="font-semibold text-gray-700">Multi-Service Management</h4>
+              <p className="text-sm text-gray-600">Manage multiple services in one session</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center text-gray-500 text-sm pt-6 border-t">
+        <p>Part of the RONL (Regels Overheid Nederland) initiative</p>
+        <p className="mt-1">
+          For detailed documentation, see{' '}
+          <a 
+            href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline"
+          >
+            NAMESPACE-PROPERTIES.md
+          </a>
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
@@ -1004,7 +1240,6 @@ function App() {
               </div>
             </div>
             
-            {/* Import Button */}
             <div>
               <input
                 type="file"
@@ -1023,7 +1258,6 @@ function App() {
             </div>
           </div>
 
-          {/* Import Status Message */}
           {importStatus.show && (
             <div className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
               importStatus.success 
@@ -1042,14 +1276,13 @@ function App() {
           )}
         </div>
 
-        {/* Tabs */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="flex border-b">
-            {['service', 'organization', 'legal', 'rules', 'parameters', 'preview'].map((tab) => (
+          <div className="flex border-b overflow-x-auto">
+            {['service', 'organization', 'legal', 'rules', 'parameters', 'preview', 'changelog'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex-1 px-4 py-3 font-medium transition-colors ${
+                className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
                   activeTab === tab
                     ? 'bg-white text-blue-600 border-b-2 border-blue-600'
                     : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
@@ -1061,17 +1294,18 @@ function App() {
                 {tab === 'rules' && <span className="flex items-center justify-center gap-2"><Clock size={18} />Rules</span>}
                 {tab === 'parameters' && <span className="flex items-center justify-center gap-2"><Plus size={18} />Parameters</span>}
                 {tab === 'preview' && <span className="flex items-center justify-center gap-2"><FileUp size={18} />Preview</span>}
+                {tab === 'changelog' && <span className="flex items-center justify-center gap-2"><History size={18} />Changelog</span>}
               </button>
             ))}
           </div>
 
-          {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'service' && renderServiceInfo()}
             {activeTab === 'organization' && renderOrganization()}
             {activeTab === 'legal' && renderLegalResource()}
             {activeTab === 'rules' && renderTemporalRules()}
             {activeTab === 'parameters' && renderParameters()}
+            {activeTab === 'changelog' && renderChangelog()}
             {activeTab === 'preview' && (
               <div>
                 <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">TTL Preview</h3>
@@ -1083,7 +1317,6 @@ function App() {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="mt-6 flex gap-4 justify-end">
           <button
             onClick={validateForm}
@@ -1099,7 +1332,6 @@ function App() {
           </button>
         </div>
 
-        {/* Footer */}
         <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
           <p>
             Public Service TTL Editor - Part of RONL Initiative
