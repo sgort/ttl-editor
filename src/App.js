@@ -17,6 +17,20 @@ function App() {
     language: 'nl'
   });
 
+  // Parameters state
+  const [parameters, setParameters] = useState([
+    {
+      id: 1,
+      notation: '',
+      label: '',
+      value: '',
+      unit: 'EUR',
+      description: '',
+      validFrom: '',
+      validUntil: ''
+    }
+  ]);
+
   // Organization state
   const [organization, setOrganization] = useState({
     identifier: '',
@@ -91,12 +105,14 @@ function App() {
         organization: { ...organization },
         legalResource: { ...legalResource },
         temporalRules: [],
+        parameters: [],
         cost: { ...cost },
         output: { ...output }
       };
 
       let currentSection = null;
       let currentRule = null;
+      let currentParameter = null;
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
@@ -121,6 +137,18 @@ function App() {
             validUntil: '',
             confidenceLevel: 'high',
             description: ''
+          };
+        } else if (line.includes('a ronl:ParameterWaarde')) {
+          currentSection = 'parameter';
+          currentParameter = {
+            id: Date.now() + Math.random(),
+            notation: '',
+            label: '',
+            value: '',
+            unit: 'EUR',
+            description: '',
+            validFrom: '',
+            validUntil: ''
           };
         } else if (line.includes('a cv:Cost')) {
           currentSection = 'cost';
@@ -216,6 +244,27 @@ function App() {
           }
         }
 
+        // Parameter properties
+        if (currentSection === 'parameter' && currentParameter) {
+          if (line.includes('skos:prefLabel')) currentParameter.label = extractValue('skos:prefLabel') || currentParameter.label;
+          if (line.includes('skos:notation')) currentParameter.notation = extractValue('skos:notation') || currentParameter.notation;
+          if (line.includes('schema:value')) {
+            const valueStr = extractValue('schema:value');
+            if (valueStr) currentParameter.value = valueStr.replace(/\^\^xsd:decimal$/, '');
+          }
+          if (line.includes('schema:unitCode')) currentParameter.unit = extractValue('schema:unitCode') || currentParameter.unit;
+          if (line.includes('dct:description')) currentParameter.description = extractValue('dct:description') || currentParameter.description;
+          if (line.includes('ronl:validFrom')) currentParameter.validFrom = extractValue('ronl:validFrom') || currentParameter.validFrom;
+          if (line.includes('ronl:validUntil')) currentParameter.validUntil = extractValue('ronl:validUntil') || currentParameter.validUntil;
+          
+          // End of parameter block
+          if (line.includes('.') && !line.includes(';')) {
+            parsed.parameters.push(currentParameter);
+            currentParameter = null;
+            currentSection = null;
+          }
+        }
+
         // Cost properties
         if (currentSection === 'cost') {
           if (line.includes('cv:value')) parsed.cost.value = extractValue('cv:value') || parsed.cost.value;
@@ -271,6 +320,10 @@ function App() {
           setTemporalRules(parsed.temporalRules);
         }
 
+        if (parsed.parameters.length > 0) {
+          setParameters(parsed.parameters);
+        }
+
         setImportStatus({
           show: true,
           success: true,
@@ -306,6 +359,37 @@ function App() {
     
     // Reset input to allow importing the same file again
     event.target.value = '';
+  };
+
+  // Add parameter
+  const addParameter = () => {
+    setParameters([
+      ...parameters,
+      {
+        id: Date.now(),
+        notation: '',
+        label: '',
+        value: '',
+        unit: 'EUR',
+        description: '',
+        validFrom: '',
+        validUntil: ''
+      }
+    ]);
+  };
+
+  // Remove parameter
+  const removeParameter = (id) => {
+    setParameters(parameters.filter(param => param.id !== id));
+  };
+
+  // Update parameter
+  const updateParameter = (id, field, value) => {
+    setParameters(
+      parameters.map(param =>
+        param.id === id ? { ...param, [field]: value } : param
+      )
+    );
   };
 
   // Add temporal rule
@@ -366,6 +450,7 @@ function App() {
 @prefix org: <http://www.w3.org/ns/org#> .
 @prefix ronl: <https://regels.overheid.nl/termen/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 `;
@@ -439,6 +524,22 @@ function App() {
         if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         if (rule.confidenceLevel) ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
         if (rule.description) ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
+        ttl = ttl.slice(0, -2) + ' .\n\n';
+      }
+    });
+
+    // Parameters
+    parameters.forEach((param, index) => {
+      if (param.notation && param.value) {
+        const paramUri = `https://regels.overheid.nl/parameters/${encodeURIComponent(service.identifier || 'service')}/param-${index + 1}`;
+        ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
+        if (param.label) ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
+        if (param.notation) ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
+        if (param.value) ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
+        if (param.unit) ttl += `    schema:unitCode "${param.unit}" ;\n`;
+        if (param.description) ttl += `    dct:description "${escapeTTLString(param.description)}"@nl ;\n`;
+        if (param.validFrom) ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
+        if (param.validUntil) ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
         ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
@@ -750,6 +851,145 @@ function App() {
     </div>
   );
 
+  const renderParameters = () => (
+    <div className="space-y-6">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+        <p className="text-sm text-blue-800">
+          <strong>Parameters</strong> zijn constante waarden die gebruikt worden in berekeningen en voorwaarden.
+          <br />
+          Bijvoorbeeld: inkomensgrenzen, vermogensgrenzen, percentages van bijstandsnormen.
+        </p>
+      </div>
+
+      {parameters.map((param, index) => (
+        <div key={param.id} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-semibold text-gray-700">Parameter {index + 1}</h4>
+            {parameters.length > 1 && (
+              <button
+                onClick={() => removeParameter(param.id)}
+                className="text-red-600 hover:text-red-800"
+              >
+                <Trash2 size={18} />
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Notation (Machine-readable) *
+                </label>
+                <input
+                  type="text"
+                  value={param.notation}
+                  onChange={(e) => updateParameter(param.id, 'notation', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="BOVENGRENS_INKOMEN_ALLEENSTAANDE"
+                />
+                <p className="text-xs text-gray-500 mt-1">Gebruik UPPERCASE_MET_UNDERSCORES</p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Label (Human-readable) *
+                </label>
+                <input
+                  type="text"
+                  value={param.label}
+                  onChange={(e) => updateParameter(param.id, 'label', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Bovengrens inkomen alleenstaande"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Value *
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={param.value}
+                  onChange={(e) => updateParameter(param.id, 'value', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="1207.30"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Unit
+                </label>
+                <select
+                  value={param.unit}
+                  onChange={(e) => updateParameter(param.id, 'unit', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="EUR">EUR (Euro)</option>
+                  <option value="PCT">% (Percentage)</option>
+                  <option value="NUM">Number</option>
+                  <option value="MONTHS">Months</option>
+                  <option value="YEARS">Years</option>
+                  <option value="DAYS">Days</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
+              <textarea
+                value={param.description}
+                onChange={(e) => updateParameter(param.id, 'description', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                rows="2"
+                placeholder="Maximum inkomensgrens voor alleenstaanden om in aanmerking te komen voor de regeling"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Valid From
+                </label>
+                <input
+                  type="date"
+                  value={param.validFrom}
+                  onChange={(e) => updateParameter(param.id, 'validFrom', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Valid Until
+                </label>
+                <input
+                  type="date"
+                  value={param.validUntil}
+                  onChange={(e) => updateParameter(param.id, 'validUntil', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+
+      <button
+        onClick={addParameter}
+        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      >
+        <Plus size={18} /> Add Parameter
+      </button>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-5xl mx-auto">
@@ -805,7 +1045,7 @@ function App() {
         {/* Tabs */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="flex border-b">
-            {['service', 'organization', 'legal', 'rules', 'preview'].map((tab) => (
+            {['service', 'organization', 'legal', 'rules', 'parameters', 'preview'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -819,6 +1059,7 @@ function App() {
                 {tab === 'organization' && <span className="flex items-center justify-center gap-2"><Building2 size={18} />Organization</span>}
                 {tab === 'legal' && <span className="flex items-center justify-center gap-2"><Scale size={18} />Legal</span>}
                 {tab === 'rules' && <span className="flex items-center justify-center gap-2"><Clock size={18} />Rules</span>}
+                {tab === 'parameters' && <span className="flex items-center justify-center gap-2"><Plus size={18} />Parameters</span>}
                 {tab === 'preview' && <span className="flex items-center justify-center gap-2"><FileUp size={18} />Preview</span>}
               </button>
             ))}
@@ -830,6 +1071,7 @@ function App() {
             {activeTab === 'organization' && renderOrganization()}
             {activeTab === 'legal' && renderLegalResource()}
             {activeTab === 'rules' && renderTemporalRules()}
+            {activeTab === 'parameters' && renderParameters()}
             {activeTab === 'preview' && (
               <div>
                 <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">TTL Preview</h3>
