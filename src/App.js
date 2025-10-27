@@ -579,7 +579,7 @@ function App() {
     if (errors.length > 0) {
       alert('Validation errors:\n' + errors.join('\n'));
     } else {
-      alert('✅ Validation successful! All required fields are filled correctly.');
+      alert('âœ… Validation successful! All required fields are filled correctly.');
     }
   };
 
@@ -816,7 +816,7 @@ function App() {
                 value={rule.description}
                 onChange={(e) => updateTemporalRule(rule.id, 'description', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                rows="2"
+                rows="10"
                 placeholder="Describe this temporal rule..."
               />
             </div>
@@ -983,11 +983,34 @@ function App() {
         </p>
       </div>
 
+      <div className="border-l-4 border-emerald-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.1.1</h3>
+          <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full">
+            Current
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: October 27, 2025</p>
+        
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-emerald-600">✨</span> UI Improvements
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>Increased Rules section description field from 2 to 10 rows for better visibility</li>
+              <li>Expanded Preview section to display ~80 lines of TTL code (from ~20 lines)</li>
+              <li>Enhanced user experience for viewing and editing longer content</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div className="border-l-4 border-green-500 bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-xl font-bold text-gray-800">Version 1.1.0</h3>
           <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-            Current
+            Major Release
           </span>
         </div>
         <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
@@ -995,7 +1018,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">✨</span> Parameters Tab
+              <span className="text-green-600">âœ¨</span> Parameters Tab
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Added dedicated Parameters tab for ronl:ParameterWaarde support</li>
@@ -1008,7 +1031,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">🔧</span> Technical Improvements
+              <span className="text-blue-600">ðŸ”§</span> Technical Improvements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Added schema.org namespace for parameter values and units</li>
@@ -1033,7 +1056,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-red-600">🐛</span> Bug Fixes
+              <span className="text-red-600">ðŸ›</span> Bug Fixes
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Fixed: BWB ID import now correctly strips c_ prefix from legal resources</li>
@@ -1057,7 +1080,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-purple-600">📥</span> Import Functionality
+              <span className="text-purple-600">ðŸ“¥</span> Import Functionality
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Import existing TTL files for editing</li>
@@ -1071,12 +1094,12 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-gray-600">📝</span> Character Handling
+              <span className="text-gray-600">ðŸ“</span> Character Handling
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Proper TTL string escaping (quotes, backslashes, newlines)</li>
               <li>URI encoding for spaces and special characters</li>
-              <li>Round-trip editing: export → import → edit → export</li>
+              <li>Round-trip editing: export â†’ import â†’ edit â†’ export</li>
               <li>W3C Turtle specification compliance</li>
             </ul>
           </div>
@@ -1095,7 +1118,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-indigo-600">🎨</span> Core Features
+              <span className="text-indigo-600">ðŸŽ¨</span> Core Features
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>React-based web application with Create React App</li>
@@ -1108,7 +1131,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">📋</span> Form Capabilities
+              <span className="text-green-600">ðŸ“‹</span> Form Capabilities
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Service metadata: identifier, name, description, thematic area</li>
@@ -1121,7 +1144,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">💾</span> Export & Standards
+              <span className="text-blue-600">ðŸ’¾</span> Export & Standards
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Generate valid RDF/Turtle files</li>
@@ -1135,7 +1158,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-yellow-600">🚀</span> Deployment
+              <span className="text-yellow-600">ðŸš€</span> Deployment
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Deployed to Azure Static Web Apps</li>
@@ -1159,49 +1182,49 @@ function App() {
         
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Template System</h4>
               <p className="text-sm text-gray-600">Pre-fill forms from AOW example or custom templates</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Browser Storage</h4>
               <p className="text-sm text-gray-600">Auto-save progress to localStorage</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Additional Sections</h4>
               <p className="text-sm text-gray-600">Channel, Contact, DMN Distribution forms</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Advanced Validation</h4>
               <p className="text-sm text-gray-600">Field-level error messages and real-time validation</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Export Options</h4>
               <p className="text-sm text-gray-600">JSON and YAML export formats</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">DMN File Upload</h4>
               <p className="text-sm text-gray-600">Upload and link DMN files to services</p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏳</span>
+            <span className="text-gray-400 mt-1">â³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Multi-Service Management</h4>
               <p className="text-sm text-gray-600">Manage multiple services in one session</p>
@@ -1309,7 +1332,7 @@ function App() {
             {activeTab === 'preview' && (
               <div>
                 <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">TTL Preview</h3>
-                <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm font-mono max-h-96 overflow-y-auto">
+                <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm font-mono max-h-[1600px] overflow-y-auto">
                   {generateTTL()}
                 </pre>
               </div>
