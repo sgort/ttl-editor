@@ -7,6 +7,7 @@
 @prefix org: <http://www.w3.org/ns/org#> .
 @prefix ronl: <https://regels.overheid.nl/termen/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://regels.overheid.nl/services/Individuele-inkomenstoeslag> a cpsv:PublicService ;
@@ -83,4 +84,52 @@
     ronl:validUntil "2021-12-31"^^xsd:date ;
     ronl:confidenceLevel "high" ;
     dct:description "De Recht beschrijving van een Persoon moet gesteld worden op \"U heeft geen recht op IIT\" indien er aan tenminste één van de volgende voorwaarden wordt voldaan:\n○ het Inkomen per maand van de Persoon is groter dan de BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE\n○ het Vermogen van de Persoon is kleiner of gelijk aan de BOVENGRENS_VERMOGEN_HOOG"@nl  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-1> a ronl:ParameterWaarde ;
+    skos:prefLabel "Bovengrens inkomen alleenstaande"@nl ;
+    skos:notation "BOVENGRENS_INKOMEN_ALLEENSTAANDE" ;
+    schema:value "1207.30"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-03-12"^^xsd:date  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-2> a ronl:ParameterWaarde ;
+    skos:prefLabel "Bovengrens inkomen niet alleenstaande"@nl ;
+    skos:notation "BOVENGRENS_INKOMEN_NIET_ALLEENSTAANDE" ;
+    schema:value "1724.72"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-3> a ronl:ParameterWaarde ;
+    skos:prefLabel "Bovengrens vermogen laag"@nl ;
+    skos:notation "BOVENGRENS_VERMOGEN_LAAG" ;
+    schema:value "6225"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-4> a ronl:ParameterWaarde ;
+    skos:prefLabel "Bovengrens vermogen hoog"@nl ;
+    skos:notation "BOVENGRENS_VERMOGEN_HOOG" ;
+    schema:value "12450"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-5> a ronl:ParameterWaarde ;
+    skos:prefLabel "Vermogensgrens niet alleenstaande"@nl ;
+    skos:notation "VERMOGENSGRENS GEZIN, SAMENWONENDE, ALLEENSTAANDE OUDER" ;
+    schema:value "12590"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date  .
+
+<https://regels.overheid.nl/parameters/Individuele-inkomenstoeslag/param-6> a ronl:ParameterWaarde ;
+    skos:prefLabel "Vermogensgrens alleenstaande"@nl ;
+    skos:notation "VERMOGENSGRENS ALLEENSTAANDE" ;
+    schema:value "6295"^^xsd:decimal ;
+    schema:unitCode "EUR" ;
+    ronl:validFrom "2021-07-01"^^xsd:date ;
+    ronl:validUntil "2021-12-31"^^xsd:date  .
 
