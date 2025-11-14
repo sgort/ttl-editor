@@ -112,27 +112,6 @@ function App() {
     return str.replace(/ /g, "%20");
   };
 
-  // Helper function to unescape TTL strings
-  const unescapeTTLString = (str) => {
-    if (!str) return "";
-    return str
-      .replace(/\\"/g, '"')
-      .replace(/\\n/g, "\n")
-      .replace(/\\r/g, "\r")
-      .replace(/\\t/g, "\t")
-      .replace(/\\\\/g, "\\");
-  };
-
-  // Helper function to decode URI components
-  const decodeURIComponent = (str) => {
-    if (!str) return "";
-    try {
-      return decodeURI(str);
-    } catch (e) {
-      return str;
-    }
-  };
-
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
     const parsed = parseTTLEnhanced(ttlContent);
@@ -1145,9 +1124,61 @@ function App() {
 
       <div className="border-l-4 border-emerald-500 bg-white rounded-lg shadow-sm p-6">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.1.1</h3>
+          <h3 className="text-xl font-bold text-gray-800">Version 1.2.2</h3>
           <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full">
             Current
+          </span>
+        </div>
+        <p className="text-sm text-gray-500 mb-4">Released: November 14, 2025</p>
+
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-red-600">🗑️</span> Clear All Button
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>
+                Added "Clear All" button with confirmation dialog
+              </li>
+              <li>
+                Safe data clearing - requires explicit confirmation
+              </li>
+              <li>
+                Resets all form fields to initial state
+              </li>
+              <li>
+                Success notification after clearing
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
+              <span className="text-blue-600">🐛</span> Bug Fixes
+            </h4>
+            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
+              <li>
+                Fixed: Parameters with ronl:ParameterWaarde now import correctly
+              </li>
+              <li>
+                Fixed: Organization name displays from skos:prefLabel
+              </li>
+              <li>
+                Fixed: Sequential imports now clear previous data properly
+              </li>
+              <li>
+                Fixed: Eliminated uncontrolled input console warnings
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div className="border-l-4 border-green-500 bg-white rounded-lg shadow-sm p-6">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xl font-bold text-gray-800">Version 1.1.1</h3>
+          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
+            Release
           </span>
         </div>
         <p className="text-sm text-gray-500 mb-4">Released: October 27, 2025</p>
@@ -1155,7 +1186,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-emerald-600">âœ¨</span> UI Improvements
+              <span className="text-emerald-600">✨</span> UI Improvements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1186,7 +1217,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">Ã¢Å“Â¨</span> Parameters Tab
+              <span className="text-green-600">📊</span> Parameters Tab
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1206,7 +1237,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">Ã°Å¸â€Â§</span> Technical Improvements
+              <span className="text-blue-600">🔧</span> Technical Improvements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Added schema.org namespace for parameter values and units</li>
@@ -1231,7 +1262,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-red-600">Ã°Å¸Ââ€º</span> Bug Fixes
+              <span className="text-red-600">🐛</span> Bug Fixes
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1263,7 +1294,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-purple-600">Ã°Å¸â€œÂ¥</span> Import Functionality
+              <span className="text-purple-600">📥</span> Import Functionality
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Import existing TTL files for editing</li>
@@ -1277,14 +1308,14 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-gray-600">Ã°Å¸â€œÂ</span> Character Handling
+              <span className="text-gray-600">📝</span> Character Handling
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
                 Proper TTL string escaping (quotes, backslashes, newlines)
               </li>
               <li>URI encoding for spaces and special characters</li>
-              <li>Round-trip editing: export Ã¢â€ â€™ import Ã¢â€ â€™ edit Ã¢â€ â€™ export</li>
+              <li>Round-trip editing: export -- import -- edit -- export</li>
               <li>W3C Turtle specification compliance</li>
             </ul>
           </div>
@@ -1303,7 +1334,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-indigo-600">Ã°Å¸Å½Â¨</span> Core Features
+              <span className="text-indigo-600">✨</span> Core Features
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>React-based web application with Create React App</li>
@@ -1318,7 +1349,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">Ã°Å¸â€œâ€¹</span> Form Capabilities
+              <span className="text-green-600">✨</span> Form Capabilities
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1336,7 +1367,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">Ã°Å¸â€™Â¾</span> Export & Standards
+              <span className="text-blue-600">✨</span> Export & Standards
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Generate valid RDF/Turtle files</li>
@@ -1350,7 +1381,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-yellow-600">Ã°Å¸Å¡â‚¬</span> Deployment
+              <span className="text-yellow-600">✨</span> Deployment
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Deployed to Azure Static Web Apps</li>
@@ -1376,7 +1407,7 @@ function App() {
 
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">⏭️</span>
             <div>
               <h4 className="font-semibold text-gray-700">Template System</h4>
               <p className="text-sm text-gray-600">
@@ -1385,7 +1416,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">🔧</span>
             <div>
               <h4 className="font-semibold text-gray-700">Browser Storage</h4>
               <p className="text-sm text-gray-600">
@@ -1394,7 +1425,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">🎯</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Additional Sections
@@ -1405,7 +1436,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">🚀</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Advanced Validation
@@ -1416,7 +1447,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">📥</span>
             <div>
               <h4 className="font-semibold text-gray-700">Export Options</h4>
               <p className="text-sm text-gray-600">
@@ -1425,7 +1456,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">🎯</span>
             <div>
               <h4 className="font-semibold text-gray-700">DMN File Upload</h4>
               <p className="text-sm text-gray-600">
@@ -1434,7 +1465,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
+            <span className="text-gray-400 mt-1">🎯</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Multi-Service Management
