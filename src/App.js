@@ -23,6 +23,7 @@ function App() {
     success: false,
     message: "",
   });
+  const [showClearDialog, setShowClearDialog] = useState(false);
 
   // Service state
   const [service, setService] = useState({
@@ -203,12 +204,40 @@ function App() {
         setCost(parsed.cost);
         setOutput(parsed.output);
 
+        // Always reset arrays - if new file has data, use it; if not, use defaults
         if (parsed.temporalRules.length > 0) {
           setTemporalRules(parsed.temporalRules);
+        } else {
+          // Reset to single empty rule if new file has none
+          setTemporalRules([
+            {
+              id: 1,
+              uri: "",
+              extends: "",
+              validFrom: "",
+              validUntil: "",
+              confidenceLevel: "high",
+              description: "",
+            },
+          ]);
         }
 
         if (parsed.parameters.length > 0) {
           setParameters(parsed.parameters);
+        } else {
+          // Reset to single empty parameter if new file has none
+          setParameters([
+            {
+              id: 1,
+              notation: "",
+              label: "",
+              value: "",
+              unit: "EUR",
+              description: "",
+              validFrom: "",
+              validUntil: "",
+            },
+          ]);
         }
 
         setImportStatus({
@@ -313,6 +342,94 @@ function App() {
         rule.id === id ? { ...rule, [field]: value } : rule
       )
     );
+  };
+
+  // Clear all data
+  const handleClearAll = () => {
+    // Reset service
+    setService({
+      identifier: "",
+      name: "",
+      description: "",
+      type: "PublicService",
+      sector: "",
+      thematicArea: "",
+      keywords: "",
+      language: "nl",
+    });
+
+    // Reset organization
+    setOrganization({
+      identifier: "",
+      name: "",
+      homepage: "",
+    });
+
+    // Reset legal resource
+    setLegalResource({
+      bwbId: "",
+      version: "",
+      title: "",
+      description: "",
+    });
+
+    // Reset temporal rules to single empty rule
+    setTemporalRules([
+      {
+        id: 1,
+        uri: "",
+        extends: "",
+        validFrom: "",
+        validUntil: "",
+        confidenceLevel: "high",
+        description: "",
+      },
+    ]);
+
+    // Reset parameters to single empty parameter
+    setParameters([
+      {
+        id: 1,
+        notation: "",
+        label: "",
+        value: "",
+        unit: "EUR",
+        description: "",
+        validFrom: "",
+        validUntil: "",
+      },
+    ]);
+
+    // Reset cost
+    setCost({
+      identifier: "",
+      value: "",
+      currency: "EUR",
+      description: "",
+    });
+
+    // Reset output
+    setOutput({
+      identifier: "",
+      name: "",
+      description: "",
+      type: "",
+    });
+
+    // Close dialog and show success message
+    setShowClearDialog(false);
+    setImportStatus({
+      show: true,
+      success: true,
+      message: "All fields have been cleared successfully!",
+    });
+    setTimeout(
+      () => setImportStatus({ show: false, success: false, message: "" }),
+      3000
+    );
+    
+    // Switch to service tab
+    setActiveTab("service");
   };
 
   // Generate TTL output
@@ -516,7 +633,7 @@ function App() {
       alert("Validation errors:\n" + errors.join("\n"));
     } else {
       alert(
-        "âœ… Validation successful! All required fields are filled correctly."
+        "Ã¢Å“â€¦ Validation successful! All required fields are filled correctly."
       );
     }
   };
@@ -640,7 +757,7 @@ function App() {
         </label>
         <input
           type="text"
-          value={organization.prefLabel}
+          value={organization.name}
           onChange={(e) =>
             setOrganization({ ...organization, name: e.target.value })
           }
@@ -1038,7 +1155,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-emerald-600">✨</span> UI Improvements
+              <span className="text-emerald-600">âœ¨</span> UI Improvements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1069,7 +1186,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">âœ¨</span> Parameters Tab
+              <span className="text-green-600">Ã¢Å“Â¨</span> Parameters Tab
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1089,7 +1206,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">ðŸ”§</span> Technical Improvements
+              <span className="text-blue-600">Ã°Å¸â€Â§</span> Technical Improvements
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Added schema.org namespace for parameter values and units</li>
@@ -1114,7 +1231,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-red-600">ðŸ›</span> Bug Fixes
+              <span className="text-red-600">Ã°Å¸Ââ€º</span> Bug Fixes
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1146,7 +1263,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-purple-600">ðŸ“¥</span> Import Functionality
+              <span className="text-purple-600">Ã°Å¸â€œÂ¥</span> Import Functionality
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Import existing TTL files for editing</li>
@@ -1160,14 +1277,14 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-gray-600">ðŸ“</span> Character Handling
+              <span className="text-gray-600">Ã°Å¸â€œÂ</span> Character Handling
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
                 Proper TTL string escaping (quotes, backslashes, newlines)
               </li>
               <li>URI encoding for spaces and special characters</li>
-              <li>Round-trip editing: export â†’ import â†’ edit â†’ export</li>
+              <li>Round-trip editing: export Ã¢â€ â€™ import Ã¢â€ â€™ edit Ã¢â€ â€™ export</li>
               <li>W3C Turtle specification compliance</li>
             </ul>
           </div>
@@ -1186,7 +1303,7 @@ function App() {
         <div className="space-y-4">
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-indigo-600">ðŸŽ¨</span> Core Features
+              <span className="text-indigo-600">Ã°Å¸Å½Â¨</span> Core Features
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>React-based web application with Create React App</li>
@@ -1201,7 +1318,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">ðŸ“‹</span> Form Capabilities
+              <span className="text-green-600">Ã°Å¸â€œâ€¹</span> Form Capabilities
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>
@@ -1219,7 +1336,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">ðŸ’¾</span> Export & Standards
+              <span className="text-blue-600">Ã°Å¸â€™Â¾</span> Export & Standards
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Generate valid RDF/Turtle files</li>
@@ -1233,7 +1350,7 @@ function App() {
 
           <div>
             <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-yellow-600">ðŸš€</span> Deployment
+              <span className="text-yellow-600">Ã°Å¸Å¡â‚¬</span> Deployment
             </h4>
             <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
               <li>Deployed to Azure Static Web Apps</li>
@@ -1259,7 +1376,7 @@ function App() {
 
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Template System</h4>
               <p className="text-sm text-gray-600">
@@ -1268,7 +1385,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Browser Storage</h4>
               <p className="text-sm text-gray-600">
@@ -1277,7 +1394,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Additional Sections
@@ -1288,7 +1405,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Advanced Validation
@@ -1299,7 +1416,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">Export Options</h4>
               <p className="text-sm text-gray-600">
@@ -1308,7 +1425,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">DMN File Upload</h4>
               <p className="text-sm text-gray-600">
@@ -1317,7 +1434,7 @@ function App() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">â³</span>
+            <span className="text-gray-400 mt-1">Ã¢ÂÂ³</span>
             <div>
               <h4 className="font-semibold text-gray-700">
                 Multi-Service Management
@@ -1364,7 +1481,7 @@ function App() {
               </div>
             </div>
 
-            <div>
+            <div className="flex items-center gap-3">
               <input
                 type="file"
                 id="ttl-import"
@@ -1379,6 +1496,14 @@ function App() {
                 <Upload size={20} />
                 Import TTL File
               </label>
+              <button
+                onClick={() => setShowClearDialog(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                title="Clear all fields"
+              >
+                <Trash2 size={20} />
+                Clear All
+              </button>
             </div>
           </div>
 
@@ -1523,6 +1648,43 @@ function App() {
           </p>
         </footer>
       </div>
+
+      {/* Clear Confirmation Dialog */}
+      {showClearDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-red-100 rounded-full p-3">
+                <AlertCircle className="text-red-600" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800">
+                Clear All Fields?
+              </h3>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              This will permanently delete all data in all tabs (Service, Organization, 
+              Legal, Rules, Parameters, Cost, and Output). This action cannot be undone.
+            </p>
+            
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setShowClearDialog(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleClearAll}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
+              >
+                <Trash2 size={18} />
+                Clear All Data
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

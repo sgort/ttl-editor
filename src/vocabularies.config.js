@@ -52,7 +52,8 @@ export const VOCABULARY_CONFIG = {
     },
     parameter: {
       acceptedTypes: [
-        'skos:Concept'
+        'skos:Concept',
+        'ronl:ParameterWaarde'
       ],
       canonicalType: 'skos:Concept'
     }
