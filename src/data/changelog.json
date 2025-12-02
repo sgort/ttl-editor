@@ -1,0 +1,196 @@
+[
+  {
+    "version": "1.2.2",
+    "status": "current",
+    "statusColor": "emerald",
+    "borderColor": "emerald",
+    "date": "November 14, 2025",
+    "sections": [
+      {
+        "title": "Clear All Button",
+        "icon": "🗑️",
+        "iconColor": "red",
+        "items": [
+          "Added \"Clear All\" button with confirmation dialog",
+          "Safe data clearing - requires explicit confirmation",
+          "Resets all form fields to initial state",
+          "Success notification after clearing"
+        ]
+      },
+      {
+        "title": "Bug Fixes",
+        "icon": "🐛",
+        "iconColor": "blue",
+        "items": [
+          "Fixed: Parameters with ronl:ParameterWaarde now import correctly",
+          "Fixed: Organization name displays from skos:prefLabel",
+          "Fixed: Sequential imports now clear previous data properly",
+          "Fixed: Eliminated uncontrolled input console warnings"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.1.1",
+    "status": "Release",
+    "statusColor": "green",
+    "borderColor": "green",
+    "date": "October 27, 2025",
+    "sections": [
+      {
+        "title": "UI Improvements",
+        "icon": "✨",
+        "iconColor": "emerald",
+        "items": [
+          "Increased Rules section description field from 2 to 10 rows for better visibility",
+          "Expanded Preview section to display ~80 lines of TTL code (from ~20 lines)",
+          "Enhanced user experience for viewing and editing longer content"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.1.0",
+    "status": "Major Release",
+    "statusColor": "green",
+    "borderColor": "green",
+    "date": "October 2025",
+    "sections": [
+      {
+        "title": "Parameters Tab",
+        "icon": "📊",
+        "iconColor": "green",
+        "items": [
+          "Added dedicated Parameters tab for ronl:ParameterWaarde support",
+          "Define constants: income limits, asset thresholds, percentages",
+          "Fields: Notation, Label, Value, Unit (EUR/PCT/NUM/etc.), Description",
+          "Temporal validity: validFrom and validUntil dates",
+          "Add/remove unlimited parameters dynamically"
+        ]
+      },
+      {
+        "title": "Technical Improvements",
+        "icon": "🔧",
+        "iconColor": "blue",
+        "items": [
+          "Added schema.org namespace for parameter values and units",
+          "schema:value for numeric parameter values (xsd:decimal)",
+          "schema:unitCode for measurement units",
+          "Full import/export support for parameters",
+          "Updated NAMESPACE-PROPERTIES.md with schema: prefix"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.0.2",
+    "status": "Bug Fixes",
+    "statusColor": "blue",
+    "borderColor": "blue",
+    "date": "October 2025",
+    "sections": [
+      {
+        "title": "Bug Fixes",
+        "icon": "🐛",
+        "iconColor": "red",
+        "items": [
+          "Fixed: BWB ID import now correctly strips c_ prefix from legal resources",
+          "Fixed: Special character escaping in TTL strings (quotes, newlines)",
+          "Fixed: URI encoding for identifiers with spaces (%20 encoding)",
+          "Fixed: Filename sanitization for downloads"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.0.1",
+    "status": "Enhancement",
+    "statusColor": "purple",
+    "borderColor": "purple",
+    "date": "October 2025",
+    "sections": [
+      {
+        "title": "Import Functionality",
+        "icon": "📥",
+        "iconColor": "purple",
+        "items": [
+          "Import existing TTL files for editing",
+          "Automatic parsing of CPSV-AP/CPRMV structures",
+          "Populates all form fields from imported data",
+          "Supports multiple temporal rules",
+          "Handles service, organization, legal, and rule data",
+          "Success/error status messages with visual feedback"
+        ]
+      },
+      {
+        "title": "Character Handling",
+        "icon": "🔤",
+        "iconColor": "gray",
+        "items": [
+          "Proper TTL string escaping (quotes, backslashes, newlines)",
+          "URI encoding for spaces and special characters",
+          "Round-trip editing: export → import → edit → export",
+          "W3C Turtle specification compliance"
+        ]
+      }
+    ]
+  },
+  {
+    "version": "1.0.0",
+    "status": "Initial Release",
+    "statusColor": "indigo",
+    "borderColor": "indigo",
+    "date": "October 2025",
+    "sections": [
+      {
+        "title": "Core Features",
+        "icon": "✨",
+        "iconColor": "indigo",
+        "items": [
+          "React-based web application with Create React App",
+          "Tailwind CSS v3 for modern, responsive design",
+          "Lucide React icons for visual clarity",
+          "5-tab interface: Service, Organization, Legal, Rules, Preview",
+          "Real-time TTL preview with syntax highlighting"
+        ]
+      },
+      {
+        "title": "Form Capabilities",
+        "icon": "✨",
+        "iconColor": "green",
+        "items": [
+          "Service metadata: identifier, name, description, thematic area",
+          "Organization details: name, identifier, homepage",
+          "Legal resources: BWB IDs with pattern validation",
+          "Temporal rules: extends, validFrom, validUntil, confidence levels",
+          "Dynamic rule management: add/remove rules"
+        ]
+      },
+      {
+        "title": "Export & Standards",
+        "icon": "✨",
+        "iconColor": "blue",
+        "items": [
+          "Generate valid RDF/Turtle files",
+          "CPSV-AP 3.0 compliance (EU standard)",
+          "CPRMV 0.3.0 support (Dutch extensions)",
+          "RONL vocabulary integration",
+          "Download TTL files with proper namespaces",
+          "Basic validation with error messages"
+        ]
+      },
+      {
+        "title": "Deployment",
+        "icon": "✨",
+        "iconColor": "yellow",
+        "items": [
+          "Deployed to Azure Static Web Apps",
+          "Custom domain: ttl.open-regels.nl",
+          "Automatic CI/CD via GitHub Actions",
+          "Free tier hosting with SSL",
+          "Professional branding and favicon"
+        ]
+      }
+    ]
+  }
+]
