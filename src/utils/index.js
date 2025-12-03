@@ -27,6 +27,7 @@ export {
   formatTTLLiteral,
   formatTTLUri,
   isValidUri,
+  buildResourceUri,
 } from "./ttlHelpers";
 
 // Validation functions

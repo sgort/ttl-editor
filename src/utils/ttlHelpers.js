@@ -85,3 +85,23 @@ export function isValidUri(str) {
   if (!str) return false;
   return str.startsWith("http://") || str.startsWith("https://");
 }
+
+/**
+ * Build a URI for an organization
+ * If the identifier is already a full URI, return it as-is
+ * Otherwise, construct a URI using the base path
+ * @param {string} identifier - Organization identifier or full URI
+ * @param {string} basePath - Base path for constructing URIs
+ * @returns {string} - Complete URI
+ */
+export function buildResourceUri(identifier, basePath = "https://regels.overheid.nl/organizations/") {
+  if (!identifier) return null;
+  
+  // If it's already a full URI, use it directly
+  if (isValidUri(identifier)) {
+    return identifier;
+  }
+  
+  // Otherwise, construct the URI with encoding
+  return `${basePath}${encodeURIComponentTTL(identifier)}`;
+}

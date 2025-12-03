@@ -315,8 +315,11 @@ function App() {
       if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
 
       if (organization.identifier) {
-        const encodedOrgId = encodeURIComponent(organization.identifier);
-        ttl += `    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/${encodedOrgId}> ;\n`;
+        const orgUri = buildResourceUri(
+          organization.identifier,
+          "https://regels.overheid.nl/organizations/"
+        );
+        ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
       }
 
       if (legalResource.bwbId) {
@@ -338,8 +341,11 @@ function App() {
 
     // Organization
     if (organization.identifier) {
-      const encodedOrgId = encodeURIComponent(organization.identifier);
-      ttl += `<https://regels.overheid.nl/organizations/${encodedOrgId}> a org:Organization ;\n`;
+      const orgUri = buildResourceUri(
+        organization.identifier,
+        "https://regels.overheid.nl/organizations/"
+      );
+      ttl += `<${orgUri}> a org:Organization ;\n`;
       if (organization.name)
         ttl += `    skos:prefLabel "${escapeTTLString(
           organization.name
