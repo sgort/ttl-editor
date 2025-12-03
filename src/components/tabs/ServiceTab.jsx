@@ -1,5 +1,5 @@
-import React from "react";
-import { LANGUAGE_OPTIONS } from "../../utils";
+import React from 'react';
+import { LANGUAGE_OPTIONS } from '../../utils';
 
 /**
  * ServiceTab - Form for editing public service metadata
@@ -23,7 +23,7 @@ export default function ServiceTab({ service, setService }) {
         <input
           type="text"
           value={service.identifier}
-          onChange={(e) => updateField("identifier", e.target.value)}
+          onChange={(e) => updateField('identifier', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., aow-leeftijd"
         />
@@ -39,7 +39,7 @@ export default function ServiceTab({ service, setService }) {
         <input
           type="text"
           value={service.name}
-          onChange={(e) => updateField("name", e.target.value)}
+          onChange={(e) => updateField('name', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., AOW Leeftijdsbepaling"
         />
@@ -53,7 +53,7 @@ export default function ServiceTab({ service, setService }) {
         </label>
         <textarea
           value={service.description}
-          onChange={(e) => updateField("description", e.target.value)}
+          onChange={(e) => updateField('description', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           rows="3"
           placeholder="Describe the service..."
@@ -69,7 +69,7 @@ export default function ServiceTab({ service, setService }) {
         <input
           type="text"
           value={service.thematicArea}
-          onChange={(e) => updateField("thematicArea", e.target.value)}
+          onChange={(e) => updateField('thematicArea', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., https://standaarden.overheid.nl/owms/terms/aow-leeftijd"
         />
@@ -84,7 +84,7 @@ export default function ServiceTab({ service, setService }) {
         <input
           type="text"
           value={service.sector}
-          onChange={(e) => updateField("sector", e.target.value)}
+          onChange={(e) => updateField('sector', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., Sociale-zekerheid"
         />
@@ -99,7 +99,7 @@ export default function ServiceTab({ service, setService }) {
         <input
           type="text"
           value={service.keywords}
-          onChange={(e) => updateField("keywords", e.target.value)}
+          onChange={(e) => updateField('keywords', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., pension, retirement"
         />
@@ -113,7 +113,7 @@ export default function ServiceTab({ service, setService }) {
         </label>
         <select
           value={service.language}
-          onChange={(e) => updateField("language", e.target.value)}
+          onChange={(e) => updateField('language', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
         >
           {LANGUAGE_OPTIONS.map((opt) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Download,
   FileText,
@@ -12,13 +12,13 @@ import {
   AlertCircle,
   CheckCircle,
   History,
-} from "lucide-react";
-import "./App.css";
-import parseTTLEnhanced from "./parseTTL.enhanced";
-import ChangelogTab from "./components/tabs/ChangelogTab";
-import ServiceTab from "./components/tabs/ServiceTab";
-import OrganizationTab from "./components/tabs/OrganizationTab";
-import LegalTab from "./components/tabs/LegalTab";
+} from 'lucide-react';
+import './App.css';
+import parseTTLEnhanced from './parseTTL.enhanced';
+import ChangelogTab from './components/tabs/ChangelogTab';
+import ServiceTab from './components/tabs/ServiceTab';
+import OrganizationTab from './components/tabs/OrganizationTab';
+import LegalTab from './components/tabs/LegalTab';
 import {
   DEFAULT_SERVICE,
   DEFAULT_ORGANIZATION,
@@ -33,14 +33,14 @@ import {
   encodeURIComponentTTL,
   sanitizeFilename,
   validateForm,
-} from "./utils";
+} from './utils';
 
 function App() {
-  const [activeTab, setActiveTab] = useState("service");
+  const [activeTab, setActiveTab] = useState('service');
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
-    message: "",
+    message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
 
@@ -60,36 +60,36 @@ function App() {
     // Ensure all values are strings (never undefined/null)
     return {
       service: {
-        identifier: parsed.service?.identifier || "",
-        name: parsed.service?.name || "",
-        description: parsed.service?.description || "",
-        thematicArea: parsed.service?.thematicArea || "",
-        sector: parsed.service?.sector || "",
-        keywords: parsed.service?.keywords || "",
-        language: parsed.service?.language || "nl",
+        identifier: parsed.service?.identifier || '',
+        name: parsed.service?.name || '',
+        description: parsed.service?.description || '',
+        thematicArea: parsed.service?.thematicArea || '',
+        sector: parsed.service?.sector || '',
+        keywords: parsed.service?.keywords || '',
+        language: parsed.service?.language || 'nl',
       },
       organization: {
-        identifier: parsed.organization?.identifier || "",
-        name: parsed.organization?.name || "",
-        homepage: parsed.organization?.homepage || "",
+        identifier: parsed.organization?.identifier || '',
+        name: parsed.organization?.name || '',
+        homepage: parsed.organization?.homepage || '',
       },
       legalResource: {
-        bwbId: parsed.legalResource?.bwbId || "",
-        version: parsed.legalResource?.version || "",
-        title: parsed.legalResource?.title || "",
-        description: parsed.legalResource?.description || "",
+        bwbId: parsed.legalResource?.bwbId || '',
+        version: parsed.legalResource?.version || '',
+        title: parsed.legalResource?.title || '',
+        description: parsed.legalResource?.description || '',
       },
       temporalRules: parsed.temporalRules || [],
       parameters: parsed.parameters || [],
       cost: {
-        value: parsed.cost?.value || "",
-        currency: parsed.cost?.currency || "EUR",
-        description: parsed.cost?.description || "",
+        value: parsed.cost?.value || '',
+        currency: parsed.cost?.currency || 'EUR',
+        description: parsed.cost?.description || '',
       },
       output: {
-        name: parsed.output?.name || "",
-        description: parsed.output?.description || "",
-        type: parsed.output?.type || "",
+        name: parsed.output?.name || '',
+        description: parsed.output?.description || '',
+        type: parsed.output?.type || '',
       },
     };
   };
@@ -99,16 +99,13 @@ function App() {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (!file.name.endsWith(".ttl")) {
+    if (!file.name.endsWith('.ttl')) {
       setImportStatus({
         show: true,
         success: false,
-        message: "Please select a .ttl file",
+        message: 'Please select a .ttl file',
       });
-      setTimeout(
-        () => setImportStatus({ show: false, success: false, message: "" }),
-        3000
-      );
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
       return;
     }
 
@@ -132,12 +129,12 @@ function App() {
           setTemporalRules([
             {
               id: 1,
-              uri: "",
-              extends: "",
-              validFrom: "",
-              validUntil: "",
-              confidenceLevel: "high",
-              description: "",
+              uri: '',
+              extends: '',
+              validFrom: '',
+              validUntil: '',
+              confidenceLevel: 'high',
+              description: '',
             },
           ]);
         }
@@ -149,13 +146,13 @@ function App() {
           setParameters([
             {
               id: 1,
-              notation: "",
-              label: "",
-              value: "",
-              unit: "EUR",
-              description: "",
-              validFrom: "",
-              validUntil: "",
+              notation: '',
+              label: '',
+              value: '',
+              unit: 'EUR',
+              description: '',
+              validFrom: '',
+              validUntil: '',
             },
           ]);
         }
@@ -163,27 +160,18 @@ function App() {
         setImportStatus({
           show: true,
           success: true,
-          message:
-            "TTL file imported successfully! All fields have been populated.",
+          message: 'TTL file imported successfully! All fields have been populated.',
         });
 
-        setTimeout(
-          () => setImportStatus({ show: false, success: false, message: "" }),
-          5000
-        );
-        setActiveTab("service");
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+        setActiveTab('service');
       } catch (error) {
         setImportStatus({
           show: true,
           success: false,
-          message:
-            error.message ||
-            "Failed to import file. Please check the TTL format.",
+          message: error.message || 'Failed to import file. Please check the TTL format.',
         });
-        setTimeout(
-          () => setImportStatus({ show: false, success: false, message: "" }),
-          5000
-        );
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
       }
     };
 
@@ -191,16 +179,13 @@ function App() {
       setImportStatus({
         show: true,
         success: false,
-        message: "Error reading file. Please try again.",
+        message: 'Error reading file. Please try again.',
       });
-      setTimeout(
-        () => setImportStatus({ show: false, success: false, message: "" }),
-        3000
-      );
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
     };
 
     reader.readAsText(file);
-    event.target.value = "";
+    event.target.value = '';
   };
 
   // Add parameter
@@ -209,13 +194,13 @@ function App() {
       ...parameters,
       {
         id: Date.now(),
-        notation: "",
-        label: "",
-        value: "",
-        unit: "EUR",
-        description: "",
-        validFrom: "",
-        validUntil: "",
+        notation: '',
+        label: '',
+        value: '',
+        unit: 'EUR',
+        description: '',
+        validFrom: '',
+        validUntil: '',
       },
     ]);
   };
@@ -228,9 +213,7 @@ function App() {
   // Update parameter
   const updateParameter = (id, field, value) => {
     setParameters(
-      parameters.map((param) =>
-        param.id === id ? { ...param, [field]: value } : param
-      )
+      parameters.map((param) => (param.id === id ? { ...param, [field]: value } : param))
     );
   };
 
@@ -240,12 +223,12 @@ function App() {
       ...temporalRules,
       {
         id: Date.now(),
-        uri: "",
-        extends: "",
-        validFrom: "",
-        validUntil: "",
-        confidenceLevel: "high",
-        description: "",
+        uri: '',
+        extends: '',
+        validFrom: '',
+        validUntil: '',
+        confidenceLevel: 'high',
+        description: '',
       },
     ]);
   };
@@ -258,9 +241,7 @@ function App() {
   // Update temporal rule
   const updateTemporalRule = (id, field, value) => {
     setTemporalRules(
-      temporalRules.map((rule) =>
-        rule.id === id ? { ...rule, [field]: value } : rule
-      )
+      temporalRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule))
     );
   };
 
@@ -279,15 +260,12 @@ function App() {
     setImportStatus({
       show: true,
       success: true,
-      message: "All fields have been cleared successfully!",
+      message: 'All fields have been cleared successfully!',
     });
-    setTimeout(
-      () => setImportStatus({ show: false, success: false, message: "" }),
-      3000
-    );
+    setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
 
     // Switch to service tab
-    setActiveTab("service");
+    setActiveTab('service');
   };
 
   // Generate TTL output
@@ -299,26 +277,21 @@ function App() {
       const encodedId = encodeURIComponentTTL(service.identifier);
       ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
       if (service.name)
-        ttl += `    dct:title "${escapeTTLString(service.name)}"@${
-          service.language
-        } ;\n`;
+        ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
         ttl += `    dct:description "${escapeTTLString(service.description)}"@${
           service.language
         } ;\n`;
-      if (service.thematicArea)
-        ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
+      if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
       if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
       if (service.keywords)
-        ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${
-          service.language
-        } ;\n`;
+        ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
       if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
 
       if (organization.identifier) {
         const orgUri = buildResourceUri(
           organization.identifier,
-          "https://regels.overheid.nl/organizations/"
+          'https://regels.overheid.nl/organizations/'
         );
         ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
       }
@@ -337,23 +310,20 @@ function App() {
         ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
       }
 
-      ttl = ttl.slice(0, -2) + " .\n\n";
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Organization
     if (organization.identifier) {
       const orgUri = buildResourceUri(
         organization.identifier,
-        "https://regels.overheid.nl/organizations/"
+        'https://regels.overheid.nl/organizations/'
       );
       ttl += `<${orgUri}> a org:Organization ;\n`;
       if (organization.name)
-        ttl += `    skos:prefLabel "${escapeTTLString(
-          organization.name
-        )}"@nl ;\n`;
-      if (organization.homepage)
-        ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n\n";
+        ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
+      if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Legal Resource
@@ -362,35 +332,26 @@ function App() {
       if (legalResource.title)
         ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
       if (legalResource.description)
-        ttl += `    dct:description "${escapeTTLString(
-          legalResource.description
-        )}"@nl ;\n`;
+        ttl += `    dct:description "${escapeTTLString(legalResource.description)}"@nl ;\n`;
       if (legalResource.version) {
         ttl += `    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}/${legalResource.version}> ;\n`;
       }
-      ttl = ttl.slice(0, -2) + " .\n\n";
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Temporal Rules
     temporalRules.forEach((rule, index) => {
       if (rule.uri || rule.extends) {
-        const ruleUri =
-          rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
+        const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
         ttl += `<${ruleUri}> a ronl:TemporalRule ;\n`;
         if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
-        if (rule.validFrom)
-          ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
-        if (rule.validUntil)
-          ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
+        if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
+        if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         if (rule.confidenceLevel)
-          ttl += `    ronl:confidenceLevel "${escapeTTLString(
-            rule.confidenceLevel
-          )}" ;\n`;
+          ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
         if (rule.description)
-          ttl += `    dct:description "${escapeTTLString(
-            rule.description
-          )}"@nl ;\n`;
-        ttl = ttl.slice(0, -2) + " .\n\n";
+          ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
+        ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
 
@@ -398,25 +359,18 @@ function App() {
     parameters.forEach((param, index) => {
       if (param.notation && param.value) {
         const paramUri = `https://regels.overheid.nl/parameters/${encodeURIComponent(
-          service.identifier || "service"
+          service.identifier || 'service'
         )}/param-${index + 1}`;
         ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
-        if (param.label)
-          ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
-        if (param.notation)
-          ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
-        if (param.value)
-          ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
+        if (param.label) ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
+        if (param.notation) ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
+        if (param.value) ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
         if (param.unit) ttl += `    schema:unitCode "${param.unit}" ;\n`;
         if (param.description)
-          ttl += `    dct:description "${escapeTTLString(
-            param.description
-          )}"@nl ;\n`;
-        if (param.validFrom)
-          ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
-        if (param.validUntil)
-          ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
-        ttl = ttl.slice(0, -2) + " .\n\n";
+          ttl += `    dct:description "${escapeTTLString(param.description)}"@nl ;\n`;
+        if (param.validFrom) ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
+        if (param.validUntil) ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
+        ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
 
@@ -424,29 +378,22 @@ function App() {
     if (cost.identifier) {
       const encodedCostId = encodeURIComponent(cost.identifier);
       ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
-      if (cost.value)
-        ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
-      if (cost.currency)
-        ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
+      if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
+      if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
       if (cost.description)
-        ttl += `    dct:description "${escapeTTLString(
-          cost.description
-        )}"@nl ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n\n";
+        ttl += `    dct:description "${escapeTTLString(cost.description)}"@nl ;\n`;
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Output
     if (output.identifier) {
       const encodedOutputId = encodeURIComponent(output.identifier);
       ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
-      if (output.name)
-        ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
+      if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
       if (output.description)
-        ttl += `    dct:description "${escapeTTLString(
-          output.description
-        )}"@nl ;\n`;
+        ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
       if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n";
+      ttl = ttl.slice(0, -2) + ' .\n';
     }
 
     return ttl;
@@ -455,9 +402,9 @@ function App() {
   // Download TTL
   const downloadTTL = () => {
     const ttl = generateTTL();
-    const blob = new Blob([ttl], { type: "text/turtle" });
+    const blob = new Blob([ttl], { type: 'text/turtle' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     const filename = sanitizeFilename(service.identifier);
     a.download = `${filename}.ttl`;
@@ -479,11 +426,9 @@ function App() {
     });
 
     if (!isValid) {
-      alert("Validation errors:\n" + errors.join("\n"));
+      alert('Validation errors:\n' + errors.join('\n'));
     } else {
-      alert(
-        "✅ Validation successful! All required fields are filled correctly."
-      );
+      alert('✅ Validation successful! All required fields are filled correctly.');
     }
   };
 
@@ -492,14 +437,9 @@ function App() {
   const renderTemporalRules = () => (
     <div className="space-y-6">
       {temporalRules.map((rule, index) => (
-        <div
-          key={rule.id}
-          className="border border-gray-300 rounded-lg p-4 bg-gray-50"
-        >
+        <div key={rule.id} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
           <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold text-gray-700">
-              Temporal Rule {index + 1}
-            </h4>
+            <h4 className="font-semibold text-gray-700">Temporal Rule {index + 1}</h4>
             {temporalRules.length > 1 && (
               <button
                 onClick={() => removeTemporalRule(rule.id)}
@@ -511,15 +451,11 @@ function App() {
           </div>
           <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Rule URI
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Rule URI</label>
               <input
                 type="text"
                 value={rule.uri}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "uri", e.target.value)
-                }
+                onChange={(e) => updateTemporalRule(rule.id, 'uri', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="https://regels.overheid.nl/rules/..."
               />
@@ -531,37 +467,27 @@ function App() {
               <input
                 type="text"
                 value={rule.extends}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "extends", e.target.value)
-                }
+                onChange={(e) => updateTemporalRule(rule.id, 'extends', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 placeholder="URI of the rule being extended"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid From
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Valid From</label>
                 <input
                   type="date"
                   value={rule.validFrom}
-                  onChange={(e) =>
-                    updateTemporalRule(rule.id, "validFrom", e.target.value)
-                  }
+                  onChange={(e) => updateTemporalRule(rule.id, 'validFrom', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid Until
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until</label>
                 <input
                   type="date"
                   value={rule.validUntil}
-                  onChange={(e) =>
-                    updateTemporalRule(rule.id, "validUntil", e.target.value)
-                  }
+                  onChange={(e) => updateTemporalRule(rule.id, 'validUntil', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -572,9 +498,7 @@ function App() {
               </label>
               <select
                 value={rule.confidenceLevel}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "confidenceLevel", e.target.value)
-                }
+                onChange={(e) => updateTemporalRule(rule.id, 'confidenceLevel', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
               >
                 <option value="high">High</option>
@@ -583,14 +507,10 @@ function App() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={rule.description}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "description", e.target.value)
-                }
+                onChange={(e) => updateTemporalRule(rule.id, 'description', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 rows="10"
                 placeholder="Describe this temporal rule..."
@@ -612,23 +532,17 @@ function App() {
     <div className="space-y-6">
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
         <p className="text-sm text-blue-800">
-          <strong>Parameters</strong> zijn constante waarden die gebruikt worden
-          in berekeningen en voorwaarden.
+          <strong>Parameters</strong> zijn constante waarden die gebruikt worden in berekeningen en
+          voorwaarden.
           <br />
-          Bijvoorbeeld: inkomensgrenzen, vermogensgrenzen, percentages van
-          bijstandsnormen.
+          Bijvoorbeeld: inkomensgrenzen, vermogensgrenzen, percentages van bijstandsnormen.
         </p>
       </div>
 
       {parameters.map((param, index) => (
-        <div
-          key={param.id}
-          className="border border-gray-300 rounded-lg p-4 bg-gray-50"
-        >
+        <div key={param.id} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
           <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold text-gray-700">
-              Parameter {index + 1}
-            </h4>
+            <h4 className="font-semibold text-gray-700">Parameter {index + 1}</h4>
             {parameters.length > 1 && (
               <button
                 onClick={() => removeParameter(param.id)}
@@ -648,15 +562,11 @@ function App() {
                 <input
                   type="text"
                   value={param.notation}
-                  onChange={(e) =>
-                    updateParameter(param.id, "notation", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'notation', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="BOVENGRENS_INKOMEN_ALLEENSTAANDE"
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Gebruik UPPERCASE_MET_UNDERSCORES
-                </p>
+                <p className="text-xs text-gray-500 mt-1">Gebruik UPPERCASE_MET_UNDERSCORES</p>
               </div>
 
               <div>
@@ -666,9 +576,7 @@ function App() {
                 <input
                   type="text"
                   value={param.label}
-                  onChange={(e) =>
-                    updateParameter(param.id, "label", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'label', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="Bovengrens inkomen alleenstaande"
                 />
@@ -677,30 +585,22 @@ function App() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Value *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Value *</label>
                 <input
                   type="number"
                   step="0.01"
                   value={param.value}
-                  onChange={(e) =>
-                    updateParameter(param.id, "value", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'value', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="1207.30"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Unit
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
                 <select
                   value={param.unit}
-                  onChange={(e) =>
-                    updateParameter(param.id, "unit", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'unit', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="EUR">EUR (Euro)</option>
@@ -714,14 +614,10 @@ function App() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
                 value={param.description}
-                onChange={(e) =>
-                  updateParameter(param.id, "description", e.target.value)
-                }
+                onChange={(e) => updateParameter(param.id, 'description', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 rows="2"
                 placeholder="Maximum inkomensgrens voor alleenstaanden om in aanmerking te komen voor de regeling"
@@ -730,29 +626,21 @@ function App() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid From
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Valid From</label>
                 <input
                   type="date"
                   value={param.validFrom}
-                  onChange={(e) =>
-                    updateParameter(param.id, "validFrom", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'validFrom', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid Until
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until</label>
                 <input
                   type="date"
                   value={param.validUntil}
-                  onChange={(e) =>
-                    updateParameter(param.id, "validUntil", e.target.value)
-                  }
+                  onChange={(e) => updateParameter(param.id, 'validUntil', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
@@ -778,9 +666,7 @@ function App() {
             <div className="flex items-center gap-3">
               <FileText className="text-blue-600" size={32} />
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">
-                  Public Service TTL Editor
-                </h1>
+                <h1 className="text-3xl font-bold text-gray-800">Public Service TTL Editor</h1>
                 <p className="text-gray-600 text-sm">
                   Generate RDF/Turtle files for government services
                 </p>
@@ -817,8 +703,8 @@ function App() {
             <div
               className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
                 importStatus.success
-                  ? "bg-green-50 border border-green-200"
-                  : "bg-red-50 border border-red-200"
+                  ? 'bg-green-50 border border-green-200'
+                  : 'bg-red-50 border border-red-200'
               }`}
             >
               {importStatus.success ? (
@@ -826,11 +712,7 @@ function App() {
               ) : (
                 <AlertCircle className="text-red-600" size={24} />
               )}
-              <p
-                className={
-                  importStatus.success ? "text-green-800" : "text-red-800"
-                }
-              >
+              <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
                 {importStatus.message}
               </p>
             </div>
@@ -840,60 +722,60 @@ function App() {
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="flex border-b overflow-x-auto">
             {[
-              "service",
-              "organization",
-              "legal",
-              "rules",
-              "parameters",
-              "preview",
-              "changelog",
+              'service',
+              'organization',
+              'legal',
+              'rules',
+              'parameters',
+              'preview',
+              'changelog',
             ].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
                   activeTab === tab
-                    ? "bg-white text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                    ? 'bg-white text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                 }`}
               >
-                {tab === "service" && (
+                {tab === 'service' && (
                   <span className="flex items-center justify-center gap-2">
                     <FileText size={18} />
                     Service
                   </span>
                 )}
-                {tab === "organization" && (
+                {tab === 'organization' && (
                   <span className="flex items-center justify-center gap-2">
                     <Building2 size={18} />
                     Organization
                   </span>
                 )}
-                {tab === "legal" && (
+                {tab === 'legal' && (
                   <span className="flex items-center justify-center gap-2">
                     <Scale size={18} />
                     Legal
                   </span>
                 )}
-                {tab === "rules" && (
+                {tab === 'rules' && (
                   <span className="flex items-center justify-center gap-2">
                     <Clock size={18} />
                     Rules
                   </span>
                 )}
-                {tab === "parameters" && (
+                {tab === 'parameters' && (
                   <span className="flex items-center justify-center gap-2">
                     <Plus size={18} />
                     Parameters
                   </span>
                 )}
-                {tab === "preview" && (
+                {tab === 'preview' && (
                   <span className="flex items-center justify-center gap-2">
                     <FileUp size={18} />
                     Preview
                   </span>
                 )}
-                {tab === "changelog" && (
+                {tab === 'changelog' && (
                   <span className="flex items-center justify-center gap-2">
                     <History size={18} />
                     Changelog
@@ -904,25 +786,17 @@ function App() {
           </div>
 
           <div className="p-6">
-            {activeTab === "service" && (
-              <ServiceTab service={service} setService={setService} />
-            )}{" "}
-            {activeTab === "organization" && (
-              <OrganizationTab
-                organization={organization}
-                setOrganization={setOrganization}
-              />
+            {activeTab === 'service' && <ServiceTab service={service} setService={setService} />}{' '}
+            {activeTab === 'organization' && (
+              <OrganizationTab organization={organization} setOrganization={setOrganization} />
             )}
-            {activeTab === "legal" && (
-              <LegalTab
-                legalResource={legalResource}
-                setLegalResource={setLegalResource}
-              />
+            {activeTab === 'legal' && (
+              <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
             )}
-            {activeTab === "rules" && renderTemporalRules()}
-            {activeTab === "parameters" && renderParameters()}
-            {activeTab === "changelog" && <ChangelogTab />}
-            {activeTab === "preview" && (
+            {activeTab === 'rules' && renderTemporalRules()}
+            {activeTab === 'parameters' && renderParameters()}
+            {activeTab === 'changelog' && <ChangelogTab />}
+            {activeTab === 'preview' && (
               <div>
                 <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">
                   TTL Preview
@@ -954,7 +828,7 @@ function App() {
           <p>
             Public Service TTL Editor - Part of RONL Initiative
             <br />
-            Based on{" "}
+            Based on{' '}
             <a
               href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
               target="_blank"
@@ -975,15 +849,12 @@ function App() {
               <div className="bg-red-100 rounded-full p-3">
                 <AlertCircle className="text-red-600" size={24} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Clear All Fields?
-              </h3>
+              <h3 className="text-xl font-bold text-gray-800">Clear All Fields?</h3>
             </div>
 
             <p className="text-gray-600 mb-6">
-              This will permanently delete all data in all tabs (Service,
-              Organization, Legal, Rules, Parameters, Cost, and Output). This
-              action cannot be undone.
+              This will permanently delete all data in all tabs (Service, Organization, Legal,
+              Rules, Parameters, Cost, and Output). This action cannot be undone.
             </p>
 
             <div className="flex gap-3 justify-end">

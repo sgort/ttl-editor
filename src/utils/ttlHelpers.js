@@ -7,13 +7,13 @@
  * @returns {string} - Escaped string safe for TTL
  */
 export function escapeTTLString(str) {
-  if (!str) return "";
+  if (!str) return '';
   return str
-    .replace(/\\/g, "\\\\")
+    .replace(/\\/g, '\\\\')
     .replace(/"/g, '\\"')
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t");
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
 }
 
 /**
@@ -23,8 +23,8 @@ export function escapeTTLString(str) {
  * @returns {string} - URI-encoded string
  */
 export function encodeURIComponentTTL(str) {
-  if (!str) return "";
-  return str.replace(/ /g, "%20");
+  if (!str) return '';
+  return str.replace(/ /g, '%20');
 }
 
 /**
@@ -34,11 +34,11 @@ export function encodeURIComponentTTL(str) {
  * @returns {string} - Sanitized filename
  */
 export function sanitizeFilename(str) {
-  if (!str) return "service";
+  if (!str) return 'service';
   return str
-    .replace(/%20/g, "-")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-zA-Z0-9-_]/g, "");
+    .replace(/%20/g, '-')
+    .replace(/\s+/g, '-')
+    .replace(/[^a-zA-Z0-9-_]/g, '');
 }
 
 /**
@@ -83,7 +83,7 @@ export function formatTTLUri(uri) {
  */
 export function isValidUri(str) {
   if (!str) return false;
-  return str.startsWith("http://") || str.startsWith("https://");
+  return str.startsWith('http://') || str.startsWith('https://');
 }
 
 /**
@@ -94,14 +94,17 @@ export function isValidUri(str) {
  * @param {string} basePath - Base path for constructing URIs
  * @returns {string} - Complete URI
  */
-export function buildResourceUri(identifier, basePath = "https://regels.overheid.nl/organizations/") {
+export function buildResourceUri(
+  identifier,
+  basePath = 'https://regels.overheid.nl/organizations/'
+) {
   if (!identifier) return null;
-  
+
   // If it's already a full URI, use it directly
   if (isValidUri(identifier)) {
     return identifier;
   }
-  
+
   // Otherwise, construct the URI with encoding
   return `${basePath}${encodeURIComponentTTL(identifier)}`;
 }

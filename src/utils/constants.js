@@ -2,62 +2,62 @@
 // These match the CPSV-AP 3.2.0 structure
 
 export const DEFAULT_SERVICE = {
-  identifier: "",
-  name: "",
-  description: "",
-  type: "PublicService",
-  sector: "",
-  thematicArea: "",
-  keywords: "",
-  language: "nl",
+  identifier: '',
+  name: '',
+  description: '',
+  type: 'PublicService',
+  sector: '',
+  thematicArea: '',
+  keywords: '',
+  language: 'nl',
 };
 
 export const DEFAULT_ORGANIZATION = {
-  identifier: "",
-  name: "",
-  homepage: "",
+  identifier: '',
+  name: '',
+  homepage: '',
 };
 
 export const DEFAULT_LEGAL_RESOURCE = {
-  bwbId: "",
-  version: "",
-  title: "",
-  description: "",
+  bwbId: '',
+  version: '',
+  title: '',
+  description: '',
 };
 
 export const DEFAULT_TEMPORAL_RULE = {
   id: 1,
-  uri: "",
-  extends: "",
-  validFrom: "",
-  validUntil: "",
-  confidenceLevel: "high",
-  description: "",
+  uri: '',
+  extends: '',
+  validFrom: '',
+  validUntil: '',
+  confidenceLevel: 'high',
+  description: '',
 };
 
 export const DEFAULT_PARAMETER = {
   id: 1,
-  notation: "",
-  label: "",
-  value: "",
-  unit: "EUR",
-  description: "",
-  validFrom: "",
-  validUntil: "",
+  notation: '',
+  label: '',
+  value: '',
+  unit: 'EUR',
+  description: '',
+  validFrom: '',
+  validUntil: '',
 };
 
 export const DEFAULT_COST = {
-  identifier: "",
-  value: "",
-  currency: "EUR",
-  description: "",
+  identifier: '',
+  value: '',
+  currency: 'EUR',
+  description: '',
 };
 
 export const DEFAULT_OUTPUT = {
-  identifier: "",
-  name: "",
-  description: "",
-  type: "",
+  identifier: '',
+  name: '',
+  description: '',
+  type: '',
 };
 
 // TTL Namespace declarations
@@ -77,38 +77,38 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 
 // Base URIs for generated resources
 export const BASE_URIS = {
-  services: "https://regels.overheid.nl/services/",
-  organizations: "https://regels.overheid.nl/organizations/",
-  rules: "https://regels.overheid.nl/rules/",
-  parameters: "https://regels.overheid.nl/parameters/",
-  costs: "https://regels.overheid.nl/costs/",
-  outputs: "https://regels.overheid.nl/outputs/",
-  legal: "https://identifier.overheid.nl/tooi/def/thes/kern/c_",
+  services: 'https://regels.overheid.nl/services/',
+  organizations: 'https://regels.overheid.nl/organizations/',
+  rules: 'https://regels.overheid.nl/rules/',
+  parameters: 'https://regels.overheid.nl/parameters/',
+  costs: 'https://regels.overheid.nl/costs/',
+  outputs: 'https://regels.overheid.nl/outputs/',
+  legal: 'https://identifier.overheid.nl/tooi/def/thes/kern/c_',
 };
 
 // Dropdown options
 export const LANGUAGE_OPTIONS = [
-  { value: "nl", label: "Nederlands" },
-  { value: "en", label: "English" },
+  { value: 'nl', label: 'Nederlands' },
+  { value: 'en', label: 'English' },
 ];
 
 export const CONFIDENCE_LEVELS = [
-  { value: "high", label: "High" },
-  { value: "medium", label: "Medium" },
-  { value: "low", label: "Low" },
+  { value: 'high', label: 'High' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'low', label: 'Low' },
 ];
 
 export const UNIT_OPTIONS = [
-  { value: "EUR", label: "EUR (Euro)" },
-  { value: "PCT", label: "% (Percentage)" },
-  { value: "NUM", label: "Number" },
-  { value: "MONTHS", label: "Months" },
-  { value: "YEARS", label: "Years" },
-  { value: "DAYS", label: "Days" },
+  { value: 'EUR', label: 'EUR (Euro)' },
+  { value: 'PCT', label: '% (Percentage)' },
+  { value: 'NUM', label: 'Number' },
+  { value: 'MONTHS', label: 'Months' },
+  { value: 'YEARS', label: 'Years' },
+  { value: 'DAYS', label: 'Days' },
 ];
 
 export const CURRENCY_OPTIONS = [
-  { value: "EUR", label: "EUR" },
-  { value: "USD", label: "USD" },
-  { value: "GBP", label: "GBP" },
+  { value: 'EUR', label: 'EUR' },
+  { value: 'USD', label: 'USD' },
+  { value: 'GBP', label: 'GBP' },
 ];

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * LegalTab - Form for editing legal resource metadata
@@ -19,11 +19,11 @@ export default function LegalTab({ legalResource, setLegalResource }) {
       {/* Info box about legal resources */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
         <p className="text-blue-800">
-          <strong>Tip:</strong> BWB (Basis Wetten Bestand) IDs are Dutch legal document identifiers. 
-          You can find them on{" "}
-          <a 
-            href="https://wetten.overheid.nl" 
-            target="_blank" 
+          <strong>Tip:</strong> BWB (Basis Wetten Bestand) IDs are Dutch legal document identifiers.
+          You can find them on{' '}
+          <a
+            href="https://wetten.overheid.nl"
+            target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-blue-600"
           >
@@ -41,11 +41,9 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         <input
           type="text"
           value={legalResource.bwbId}
-          onChange={(e) => updateField("bwbId", e.target.value.toUpperCase())}
+          onChange={(e) => updateField('bwbId', e.target.value.toUpperCase())}
           className={`w-full px-3 py-2 border rounded-md ${
-            hasInvalidBwbId 
-              ? "border-red-300 focus:ring-red-500" 
-              : "border-gray-300"
+            hasInvalidBwbId ? 'border-red-300 focus:ring-red-500' : 'border-gray-300'
           }`}
           placeholder="e.g., BWBR0002820"
         />
@@ -56,7 +54,8 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         )}
         {isValidBwbId && (
           <p className="text-xs text-green-600 mt-1">
-            ✓ Will generate: https://identifier.overheid.nl/tooi/def/thes/kern/c_{legalResource.bwbId}
+            ✓ Will generate: https://identifier.overheid.nl/tooi/def/thes/kern/c_
+            {legalResource.bwbId}
           </p>
         )}
       </div>
@@ -70,7 +69,7 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         <input
           type="date"
           value={legalResource.version}
-          onChange={(e) => updateField("version", e.target.value)}
+          onChange={(e) => updateField('version', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
         />
       </div>
@@ -84,7 +83,7 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         <input
           type="text"
           value={legalResource.title}
-          onChange={(e) => updateField("title", e.target.value)}
+          onChange={(e) => updateField('title', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., Algemene Ouderdomswet"
         />
@@ -98,7 +97,7 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         </label>
         <textarea
           value={legalResource.description}
-          onChange={(e) => updateField("description", e.target.value)}
+          onChange={(e) => updateField('description', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           rows="3"
           placeholder="Describe the legal resource..."
