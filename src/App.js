@@ -16,10 +16,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import ChangelogTab from './components/tabs/ChangelogTab';
-import LegalTab from './components/tabs/LegalTab';
-import OrganizationTab from './components/tabs/OrganizationTab';
-import ServiceTab from './components/tabs/ServiceTab';
+import { ChangelogTab, LegalTab, OrganizationTab, RulesTab, ServiceTab } from './components/tabs';
 import parseTTLEnhanced from './parseTTL.enhanced';
 import {
   buildResourceUri,
@@ -448,100 +445,6 @@ function App() {
 
   // Render functions
 
-  const renderTemporalRules = () => (
-    <div className="space-y-6">
-      {temporalRules.map((rule, index) => (
-        <div key={rule.id} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold text-gray-700">Temporal Rule {index + 1}</h4>
-            {temporalRules.length > 1 && (
-              <button
-                onClick={() => removeTemporalRule(rule.id)}
-                className="text-red-600 hover:text-red-800"
-              >
-                <Trash2 size={18} />
-              </button>
-            )}
-          </div>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Rule URI</label>
-              <input
-                type="text"
-                value={rule.uri}
-                onChange={(e) => updateTemporalRule(rule.id, 'uri', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                placeholder="https://regels.overheid.nl/rules/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Extends (Rule URI)
-              </label>
-              <input
-                type="text"
-                value={rule.extends}
-                onChange={(e) => updateTemporalRule(rule.id, 'extends', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                placeholder="URI of the rule being extended"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Valid From</label>
-                <input
-                  type="date"
-                  value={rule.validFrom}
-                  onChange={(e) => updateTemporalRule(rule.id, 'validFrom', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until</label>
-                <input
-                  type="date"
-                  value={rule.validUntil}
-                  onChange={(e) => updateTemporalRule(rule.id, 'validUntil', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confidence Level
-              </label>
-              <select
-                value={rule.confidenceLevel}
-                onChange={(e) => updateTemporalRule(rule.id, 'confidenceLevel', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              >
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-              <textarea
-                value={rule.description}
-                onChange={(e) => updateTemporalRule(rule.id, 'description', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                rows="10"
-                placeholder="Describe this temporal rule..."
-              />
-            </div>
-          </div>
-        </div>
-      ))}
-      <button
-        onClick={addTemporalRule}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        <Plus size={18} /> Add Temporal Rule
-      </button>
-    </div>
-  );
-
   const renderParameters = () => (
     <div className="space-y-6">
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
@@ -807,7 +710,20 @@ function App() {
             {activeTab === 'legal' && (
               <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
             )}
-            {activeTab === 'rules' && renderTemporalRules()}
+            {activeTab === 'rules' && (
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <Clock size={24} className="text-blue-600" />
+                  Temporal Rules
+                </h3>
+                <RulesTab
+                  temporalRules={temporalRules}
+                  addTemporalRule={addTemporalRule}
+                  removeTemporalRule={removeTemporalRule}
+                  updateTemporalRule={updateTemporalRule}
+                />
+              </div>
+            )}
             {activeTab === 'parameters' && renderParameters()}
             {activeTab === 'changelog' && <ChangelogTab />}
             {activeTab === 'preview' && (
