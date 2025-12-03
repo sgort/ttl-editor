@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
+import PreviewPanel from './components/PreviewPanel';
 import {
   ChangelogTab,
   LegalTab,
@@ -49,6 +50,7 @@ function App() {
     message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
   // Service state
   const [service, setService] = useState(DEFAULT_SERVICE);
@@ -454,201 +456,207 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <FileText className="text-blue-600" size={32} />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">Public Service TTL Editor</h1>
-                <p className="text-gray-600 text-sm">
-                  Generate RDF/Turtle files for government services
-                </p>
+      <div className={`grid ${showPreviewPanel ? 'grid-cols-[1fr,500px]' : 'grid-cols-1'} gap-4`}>
+        {/* LEFT SIDE: Main Editor (all existing content) */}
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
+          {/* Header */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <FileText className="text-blue-600" size={32} />
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800">Public Service TTL Editor</h1>
+                  <p className="text-gray-600 text-sm">
+                    Generate RDF/Turtle files for government services
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="file"
+                  id="ttl-import"
+                  accept=".ttl"
+                  onChange={handleImportFile}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="ttl-import"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
+                >
+                  <Upload size={20} />
+                  Import TTL File
+                </label>
+
+                {/* Toggle Preview Button */}
+                <button
+                  onClick={() => setShowPreviewPanel(!showPreviewPanel)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors ${
+                    showPreviewPanel
+                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      : 'bg-gray-600 text-white hover:bg-gray-700'
+                  }`}
+                  title={showPreviewPanel ? 'Hide preview panel' : 'Show preview panel'}
+                >
+                  <FileUp size={20} />
+                  {showPreviewPanel ? 'Hide Preview' : 'Show Preview'}
+                </button>
+
+                <button
+                  onClick={() => setShowClearDialog(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                  title="Clear all fields"
+                >
+                  <Trash2 size={20} />
+                  Clear All
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <input
-                type="file"
-                id="ttl-import"
-                accept=".ttl"
-                onChange={handleImportFile}
-                className="hidden"
-              />
-              <label
-                htmlFor="ttl-import"
-                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
-              >
-                <Upload size={20} />
-                Import TTL File
-              </label>
-              <button
-                onClick={() => setShowClearDialog(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
-                title="Clear all fields"
-              >
-                <Trash2 size={20} />
-                Clear All
-              </button>
-            </div>
-          </div>
-
-          {importStatus.show && (
-            <div
-              className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
-                importStatus.success
-                  ? 'bg-green-50 border border-green-200'
-                  : 'bg-red-50 border border-red-200'
-              }`}
-            >
-              {importStatus.success ? (
-                <CheckCircle className="text-green-600" size={24} />
-              ) : (
-                <AlertCircle className="text-red-600" size={24} />
-              )}
-              <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
-                {importStatus.message}
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="flex border-b overflow-x-auto">
-            {[
-              'service',
-              'organization',
-              'legal',
-              'rules',
-              'parameters',
-              'preview',
-              'changelog',
-            ].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
-                  activeTab === tab
-                    ? 'bg-white text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+            {importStatus.show && (
+              <div
+                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
+                  importStatus.success
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-red-50 border border-red-200'
                 }`}
               >
-                {tab === 'service' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <FileText size={18} />
-                    Service
-                  </span>
+                {importStatus.success ? (
+                  <CheckCircle className="text-green-600" size={24} />
+                ) : (
+                  <AlertCircle className="text-red-600" size={24} />
                 )}
-                {tab === 'organization' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Building2 size={18} />
-                    Organization
-                  </span>
-                )}
-                {tab === 'legal' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Scale size={18} />
-                    Legal
-                  </span>
-                )}
-                {tab === 'rules' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Clock size={18} />
-                    Rules
-                  </span>
-                )}
-                {tab === 'parameters' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Plus size={18} />
-                    Parameters
-                  </span>
-                )}
-                {tab === 'preview' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <FileUp size={18} />
-                    Preview
-                  </span>
-                )}
-                {tab === 'changelog' && (
-                  <span className="flex items-center justify-center gap-2">
-                    <History size={18} />
-                    Changelog
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="p-6">
-            {activeTab === 'service' && <ServiceTab service={service} setService={setService} />}{' '}
-            {activeTab === 'organization' && (
-              <OrganizationTab organization={organization} setOrganization={setOrganization} />
-            )}
-            {activeTab === 'legal' && (
-              <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
-            )}
-            {activeTab === 'rules' && (
-              <RulesTab
-                temporalRules={temporalRules}
-                addTemporalRule={addTemporalRule}
-                removeTemporalRule={removeTemporalRule}
-                updateTemporalRule={updateTemporalRule}
-              />
-            )}
-            {activeTab === 'parameters' && (
-              <ParametersTab
-                parameters={parameters}
-                addParameter={addParameter}
-                removeParameter={removeParameter}
-                updateParameter={updateParameter}
-              />
-            )}
-            {activeTab === 'changelog' && <ChangelogTab />}
-            {activeTab === 'preview' && (
-              <div>
-                <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">
-                  TTL Preview
-                </h3>
-                <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm font-mono max-h-[1600px] overflow-y-auto">
-                  {generateTTL()}
-                </pre>
+                <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
+                  {importStatus.message}
+                </p>
               </div>
             )}
           </div>
-        </div>
 
-        <div className="mt-6 flex gap-4 justify-end">
-          <button
-            onClick={handleValidate}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
-          >
-            <CheckCircle size={20} /> Validate
-          </button>
-          <button
-            onClick={downloadTTL}
-            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
-          >
-            <Download size={20} /> Download TTL
-          </button>
-        </div>
+          {/* Tabs and Content */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="flex border-b overflow-x-auto">
+              {['service', 'organization', 'legal', 'rules', 'parameters', 'changelog'].map(
+                (tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                      activeTab === tab
+                        ? 'bg-white text-blue-600 border-b-2 border-blue-600'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    {tab === 'service' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <FileText size={18} />
+                        Service
+                      </span>
+                    )}
+                    {tab === 'organization' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Building2 size={18} />
+                        Organization
+                      </span>
+                    )}
+                    {tab === 'legal' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Scale size={18} />
+                        Legal
+                      </span>
+                    )}
+                    {tab === 'rules' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Clock size={18} />
+                        Rules
+                      </span>
+                    )}
+                    {tab === 'parameters' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Plus size={18} />
+                        Parameters
+                      </span>
+                    )}
+                    {tab === 'changelog' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <History size={18} />
+                        Changelog
+                      </span>
+                    )}
+                  </button>
+                )
+              )}
+            </div>
 
-        <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
-          <p>
-            Public Service TTL Editor - Part of RONL Initiative
-            <br />
-            Based on{' '}
-            <a
-              href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+            <div className="p-6 min-h-[600px]">
+              {activeTab === 'service' && <ServiceTab service={service} setService={setService} />}
+              {activeTab === 'organization' && (
+                <OrganizationTab organization={organization} setOrganization={setOrganization} />
+              )}
+              {activeTab === 'legal' && (
+                <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
+              )}
+              {activeTab === 'rules' && (
+                <RulesTab
+                  temporalRules={temporalRules}
+                  addTemporalRule={addTemporalRule}
+                  removeTemporalRule={removeTemporalRule}
+                  updateTemporalRule={updateTemporalRule}
+                />
+              )}
+              {activeTab === 'parameters' && (
+                <ParametersTab
+                  parameters={parameters}
+                  addParameter={addParameter}
+                  removeParameter={removeParameter}
+                  updateParameter={updateParameter}
+                />
+              )}
+              {activeTab === 'changelog' && <ChangelogTab />}
+            </div>
+          </div>
+
+          {/* Validate and Download Buttons */}
+          <div className="mt-6 flex gap-4 justify-end">
+            <button
+              onClick={handleValidate}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
             >
-              NAMESPACE-PROPERTIES.md
-            </a>
-          </p>
-        </footer>
-      </div>
+              <CheckCircle size={20} /> Validate
+            </button>
+            <button
+              onClick={downloadTTL}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
+            >
+              <Download size={20} /> Download TTL
+            </button>
+          </div>
 
+          {/* Footer */}
+          <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
+            <p>
+              Public Service TTL Editor - Part of RONL Initiative
+              <br />
+              Based on{' '}
+              <a
+                href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                NAMESPACE-PROPERTIES.md
+              </a>
+            </p>
+          </footer>
+        </div>
+
+        {/* RIGHT SIDE: Live Preview Panel (conditionally rendered) */}
+        {showPreviewPanel && (
+          <div className="fixed right-0 top-0 h-screen w-[500px] z-50">
+            <PreviewPanel ttlContent={generateTTL()} />
+          </div>
+        )}
+      </div>
       {/* Clear Confirmation Dialog */}
       {showClearDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
