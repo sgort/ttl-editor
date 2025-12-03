@@ -16,7 +16,7 @@ import { CONFIDENCE_LEVELS } from '../../utils';
  */
 const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTemporalRule }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Information Banner */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm text-blue-800">
@@ -74,8 +74,8 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="URI of the rule being extended"
               />
-              <p className="text-xs text-gray-500 mt-1">
-                Link to a previous version of this rule to create a versioning chain
+              <p className="text-xs text-green-600 mt-1">
+                ✓ Link to a previous version of this rule to create a versioning chain
               </p>
             </div>
 
