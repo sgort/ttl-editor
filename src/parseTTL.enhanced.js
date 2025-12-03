@@ -223,6 +223,19 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.legalResource.description =
             extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
         }
+
+        // Extract version date from eli:is_realized_by
+        // Format: eli:is_realized_by <https://wetten.overheid.nl/BWBR0002222/2025-12-03>
+        if (line.includes('eli:is_realized_by')) {
+          const uriMatch = line.match(/<([^>]+)>/);
+          if (uriMatch) {
+            // Extract date from end of URI (format: .../YYYY-MM-DD)
+            const dateMatch = uriMatch[1].match(/(\d{4}-\d{2}-\d{2})$/);
+            if (dateMatch) {
+              parsed.legalResource.version = dateMatch[1];
+            }
+          }
+        }
       }
 
       // Temporal rule properties

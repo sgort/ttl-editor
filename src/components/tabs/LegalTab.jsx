@@ -10,9 +10,9 @@ export default function LegalTab({ legalResource, setLegalResource }) {
     setLegalResource({ ...legalResource, [field]: value });
   };
 
-  // Check if bwbId is a full URI or just the ID
-  const isFullUri =
-    legalResource.bwbId?.startsWith('http://') || legalResource.bwbId?.startsWith('https://');
+  // Check if bwbId is a full URI or just the ID (case-insensitive)
+  const lowerBwbId = legalResource.bwbId?.toLowerCase() || '';
+  const isFullUri = lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://');
 
   // Extract BWB ID pattern for validation (works for both full URI and plain ID)
   const bwbIdPattern = legalResource.bwbId?.match(/BWB[A-Z]?\d+/i);
@@ -46,7 +46,7 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         <input
           type="text"
           value={legalResource.bwbId}
-          onChange={(e) => updateField('bwbId', e.target.value.toUpperCase())}
+          onChange={(e) => updateField('bwbId', e.target.value)}
           className={`w-full px-3 py-2 border rounded-md ${
             hasInvalidBwbId ? 'border-red-300 focus:ring-red-500' : 'border-gray-300'
           }`}

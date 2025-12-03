@@ -48,9 +48,18 @@ export function validateOrganization(organization) {
 export function validateLegalResource(legalResource) {
   const errors = [];
 
-  // BWB ID pattern validation (e.g., BWBR0002820)
-  if (legalResource.bwbId && !/^[A-Z]{2,10}\d+$/.test(legalResource.bwbId)) {
-    errors.push('BWB ID must match pattern (e.g., BWBR0002820)');
+  // BWB ID validation - accepts either:
+  // 1. Plain BWB ID (e.g., BWBR0002820)
+  // 2. Full URI containing a BWB ID (e.g., https://wetten.overheid.nl/BWBR0002820)
+  if (legalResource.bwbId) {
+    const isPlainBwbId = /^[A-Za-z]{2,10}\d+$/i.test(legalResource.bwbId);
+    const containsBwbId = /BWB[A-Za-z]?\d+/i.test(legalResource.bwbId);
+
+    if (!isPlainBwbId && !containsBwbId) {
+      errors.push(
+        'BWB ID must match pattern (e.g., BWBR0002820) or be a valid URI containing a BWB ID'
+      );
+    }
   }
 
   return errors;
