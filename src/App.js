@@ -16,6 +16,7 @@ import {
 import "./App.css";
 import parseTTLEnhanced from "./parseTTL.enhanced";
 import ChangelogTab from "./components/tabs/ChangelogTab";
+import ServiceTab from "./components/tabs/ServiceTab";
 import {
   DEFAULT_SERVICE,
   DEFAULT_ORGANIZATION,
@@ -262,13 +263,13 @@ function App() {
 
   // Clear all data
   const handleClearAll = () => {
-  setService(DEFAULT_SERVICE);
-  setOrganization(DEFAULT_ORGANIZATION);
-  setLegalResource(DEFAULT_LEGAL_RESOURCE);
-  setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
-  setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
-  setCost(DEFAULT_COST);
-  setOutput(DEFAULT_OUTPUT);
+    setService(DEFAULT_SERVICE);
+    setOrganization(DEFAULT_ORGANIZATION);
+    setLegalResource(DEFAULT_LEGAL_RESOURCE);
+    setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
+    setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
+    setCost(DEFAULT_COST);
+    setOutput(DEFAULT_OUTPUT);
 
     // Close dialog and show success message
     setShowClearDialog(false);
@@ -288,7 +289,7 @@ function App() {
 
   // Generate TTL output
   const generateTTL = () => {
-  let ttl = TTL_NAMESPACES;
+    let ttl = TTL_NAMESPACES;
 
     // Service
     if (service.identifier) {
@@ -449,8 +450,8 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-const filename = sanitizeFilename(service.identifier);
-a.download = `${filename}.ttl`;
+    const filename = sanitizeFilename(service.identifier);
+    a.download = `${filename}.ttl`;
 
     document.body.appendChild(a);
     a.click();
@@ -459,119 +460,25 @@ a.download = `${filename}.ttl`;
   };
 
   // Validate form
-const handleValidate = () => {
-  const { isValid, errors } = validateForm({
-    service,
-    organization,
-    legalResource,
-    temporalRules,
-    parameters,
-  });
+  const handleValidate = () => {
+    const { isValid, errors } = validateForm({
+      service,
+      organization,
+      legalResource,
+      temporalRules,
+      parameters,
+    });
 
-  if (!isValid) {
-    alert("Validation errors:\n" + errors.join("\n"));
-  } else {
-    alert("✅ Validation successful! All required fields are filled correctly.");
-  }
-};
+    if (!isValid) {
+      alert("Validation errors:\n" + errors.join("\n"));
+    } else {
+      alert(
+        "✅ Validation successful! All required fields are filled correctly."
+      );
+    }
+  };
 
   // Render functions
-  const renderServiceInfo = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Service Identifier *
-        </label>
-        <input
-          type="text"
-          value={service.identifier}
-          onChange={(e) =>
-            setService({ ...service, identifier: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., aow-leeftijd"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Service Name *
-        </label>
-        <input
-          type="text"
-          value={service.name}
-          onChange={(e) => setService({ ...service, name: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., AOW Leeftijdsbepaling"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description
-        </label>
-        <textarea
-          value={service.description}
-          onChange={(e) =>
-            setService({ ...service, description: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          rows="3"
-          placeholder="Describe the service..."
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Thematic Area
-        </label>
-        <input
-          type="text"
-          value={service.thematicArea}
-          onChange={(e) =>
-            setService({ ...service, thematicArea: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., https://example.org/themes/social-security"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Sector
-        </label>
-        <input
-          type="text"
-          value={service.sector}
-          onChange={(e) => setService({ ...service, sector: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Social Protection"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Keyword
-        </label>
-        <input
-          type="text"
-          value={service.keyword}
-          onChange={(e) => setService({ ...service, keywords: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., pension, retirement"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Language
-        </label>
-        <select
-          value={service.language}
-          onChange={(e) => setService({ ...service, language: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        >
-          <option value="nl">Nederlands</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-    </div>
-  );
-
   const renderOrganization = () => (
     <div className="space-y-4">
       <div>
@@ -1099,7 +1006,9 @@ const handleValidate = () => {
           </div>
 
           <div className="p-6">
-            {activeTab === "service" && renderServiceInfo()}
+            {activeTab === "service" && (
+              <ServiceTab service={service} setService={setService} />
+            )}{" "}
             {activeTab === "organization" && renderOrganization()}
             {activeTab === "legal" && renderLegalResource()}
             {activeTab === "rules" && renderTemporalRules()}
