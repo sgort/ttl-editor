@@ -18,6 +18,7 @@ import parseTTLEnhanced from "./parseTTL.enhanced";
 import ChangelogTab from "./components/tabs/ChangelogTab";
 import ServiceTab from "./components/tabs/ServiceTab";
 import OrganizationTab from "./components/tabs/OrganizationTab";
+import LegalTab from "./components/tabs/LegalTab";
 import {
   DEFAULT_SERVICE,
   DEFAULT_ORGANIZATION,
@@ -488,71 +489,6 @@ function App() {
 
   // Render functions
 
-  const renderLegalResource = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          BWB ID
-        </label>
-        <input
-          type="text"
-          value={legalResource.bwbId}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, bwbId: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., BWBR0002820"
-          pattern="[A-Z]{2,10}\d+"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Format: Letters followed by numbers (e.g., BWBR0002820)
-        </p>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Version Date
-        </label>
-        <input
-          type="text"
-          value={legalResource.version}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, version: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., 2024-01-01"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Legal Title
-        </label>
-        <input
-          type="text"
-          value={legalResource.title}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, title: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Algemene Ouderdomswet"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description
-        </label>
-        <textarea
-          value={legalResource.description}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, description: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          rows="3"
-          placeholder="Describe the legal resource..."
-        />
-      </div>
-    </div>
-  );
-
   const renderTemporalRules = () => (
     <div className="space-y-6">
       {temporalRules.map((rule, index) => (
@@ -977,7 +913,12 @@ function App() {
                 setOrganization={setOrganization}
               />
             )}
-            {activeTab === "legal" && renderLegalResource()}
+            {activeTab === "legal" && (
+              <LegalTab
+                legalResource={legalResource}
+                setLegalResource={setLegalResource}
+              />
+            )}
             {activeTab === "rules" && renderTemporalRules()}
             {activeTab === "parameters" && renderParameters()}
             {activeTab === "changelog" && <ChangelogTab />}
