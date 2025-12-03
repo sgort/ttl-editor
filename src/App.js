@@ -16,6 +16,20 @@ import {
 import "./App.css";
 import parseTTLEnhanced from "./parseTTL.enhanced";
 import ChangelogTab from "./components/tabs/ChangelogTab";
+import {
+  DEFAULT_SERVICE,
+  DEFAULT_ORGANIZATION,
+  DEFAULT_LEGAL_RESOURCE,
+  DEFAULT_TEMPORAL_RULE,
+  DEFAULT_PARAMETER,
+  DEFAULT_COST,
+  DEFAULT_OUTPUT,
+  TTL_NAMESPACES,
+  escapeTTLString,
+  encodeURIComponentTTL,
+  sanitizeFilename,
+  validateForm,
+} from "./utils";
 
 function App() {
   const [activeTab, setActiveTab] = useState("service");
@@ -27,91 +41,13 @@ function App() {
   const [showClearDialog, setShowClearDialog] = useState(false);
 
   // Service state
-  const [service, setService] = useState({
-    identifier: "",
-    name: "",
-    description: "",
-    type: "PublicService",
-    sector: "",
-    thematicArea: "",
-    keywords: "",
-    language: "nl",
-  });
-
-  // Parameters state
-  const [parameters, setParameters] = useState([
-    {
-      id: 1,
-      notation: "",
-      label: "",
-      value: "",
-      unit: "EUR",
-      description: "",
-      validFrom: "",
-      validUntil: "",
-    },
-  ]);
-
-  // Organization state
-  const [organization, setOrganization] = useState({
-    identifier: "",
-    name: "",
-    homepage: "",
-  });
-
-  // Legal state
-  const [legalResource, setLegalResource] = useState({
-    bwbId: "",
-    version: "",
-    title: "",
-    description: "",
-  });
-
-  // Temporal rules state
-  const [temporalRules, setTemporalRules] = useState([
-    {
-      id: 1,
-      uri: "",
-      extends: "",
-      validFrom: "",
-      validUntil: "",
-      confidenceLevel: "high",
-      description: "",
-    },
-  ]);
-
-  // Cost state
-  const [cost, setCost] = useState({
-    identifier: "",
-    value: "",
-    currency: "EUR",
-    description: "",
-  });
-
-  // Output state
-  const [output, setOutput] = useState({
-    identifier: "",
-    name: "",
-    description: "",
-    type: "",
-  });
-
-  // Helper function to escape special characters in TTL strings
-  const escapeTTLString = (str) => {
-    if (!str) return "";
-    return str
-      .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')
-      .replace(/\n/g, "\\n")
-      .replace(/\r/g, "\\r")
-      .replace(/\t/g, "\\t");
-  };
-
-  // Helper function to encode URI components
-  const encodeURIComponent = (str) => {
-    if (!str) return "";
-    return str.replace(/ /g, "%20");
-  };
+  const [service, setService] = useState(DEFAULT_SERVICE);
+  const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
+  const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
+  const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
+  const [parameters, setParameters] = useState([DEFAULT_PARAMETER]);
+  const [cost, setCost] = useState(DEFAULT_COST);
+  const [output, setOutput] = useState(DEFAULT_OUTPUT);
 
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
@@ -326,75 +262,13 @@ function App() {
 
   // Clear all data
   const handleClearAll = () => {
-    // Reset service
-    setService({
-      identifier: "",
-      name: "",
-      description: "",
-      type: "PublicService",
-      sector: "",
-      thematicArea: "",
-      keywords: "",
-      language: "nl",
-    });
-
-    // Reset organization
-    setOrganization({
-      identifier: "",
-      name: "",
-      homepage: "",
-    });
-
-    // Reset legal resource
-    setLegalResource({
-      bwbId: "",
-      version: "",
-      title: "",
-      description: "",
-    });
-
-    // Reset temporal rules to single empty rule
-    setTemporalRules([
-      {
-        id: 1,
-        uri: "",
-        extends: "",
-        validFrom: "",
-        validUntil: "",
-        confidenceLevel: "high",
-        description: "",
-      },
-    ]);
-
-    // Reset parameters to single empty parameter
-    setParameters([
-      {
-        id: 1,
-        notation: "",
-        label: "",
-        value: "",
-        unit: "EUR",
-        description: "",
-        validFrom: "",
-        validUntil: "",
-      },
-    ]);
-
-    // Reset cost
-    setCost({
-      identifier: "",
-      value: "",
-      currency: "EUR",
-      description: "",
-    });
-
-    // Reset output
-    setOutput({
-      identifier: "",
-      name: "",
-      description: "",
-      type: "",
-    });
+  setService(DEFAULT_SERVICE);
+  setOrganization(DEFAULT_ORGANIZATION);
+  setLegalResource(DEFAULT_LEGAL_RESOURCE);
+  setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
+  setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
+  setCost(DEFAULT_COST);
+  setOutput(DEFAULT_OUTPUT);
 
     // Close dialog and show success message
     setShowClearDialog(false);
@@ -407,32 +281,18 @@ function App() {
       () => setImportStatus({ show: false, success: false, message: "" }),
       3000
     );
-    
+
     // Switch to service tab
     setActiveTab("service");
   };
 
   // Generate TTL output
   const generateTTL = () => {
-    const namespaces = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
-@prefix cv: <http://data.europa.eu/m8g/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix eli: <http://data.europa.eu/eli/ontology#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix schema: <http://schema.org/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-`;
-
-    let ttl = namespaces;
+  let ttl = TTL_NAMESPACES;
 
     // Service
     if (service.identifier) {
-      const encodedId = encodeURIComponent(service.identifier);
+      const encodedId = encodeURIComponentTTL(service.identifier);
       ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
       if (service.name)
         ttl += `    dct:title "${escapeTTLString(service.name)}"@${
@@ -589,11 +449,9 @@ function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    const sanitizedFilename = (service.identifier || "service")
-      .replace(/%20/g, "-")
-      .replace(/\s+/g, "-")
-      .replace(/[^a-zA-Z0-9-_]/g, "");
-    a.download = `${sanitizedFilename}.ttl`;
+const filename = sanitizeFilename(service.identifier);
+a.download = `${filename}.ttl`;
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -601,22 +459,21 @@ function App() {
   };
 
   // Validate form
-  const validateForm = () => {
-    const errors = [];
-    if (!service.identifier) errors.push("Service identifier is required");
-    if (!service.name) errors.push("Service name is required");
-    if (legalResource.bwbId && !/^[A-Z]{2,10}\d+$/.test(legalResource.bwbId)) {
-      errors.push("BWB ID must match pattern (e.g., BWBR0002820)");
-    }
+const handleValidate = () => {
+  const { isValid, errors } = validateForm({
+    service,
+    organization,
+    legalResource,
+    temporalRules,
+    parameters,
+  });
 
-    if (errors.length > 0) {
-      alert("Validation errors:\n" + errors.join("\n"));
-    } else {
-      alert(
-        "Ã¢Å“â€¦ Validation successful! All required fields are filled correctly."
-      );
-    }
-  };
+  if (!isValid) {
+    alert("Validation errors:\n" + errors.join("\n"));
+  } else {
+    alert("✅ Validation successful! All required fields are filled correctly.");
+  }
+};
 
   // Render functions
   const renderServiceInfo = () => (
@@ -1263,7 +1120,7 @@ function App() {
 
         <div className="mt-6 flex gap-4 justify-end">
           <button
-            onClick={validateForm}
+            onClick={handleValidate}
             className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
           >
             <CheckCircle size={20} /> Validate
@@ -1305,12 +1162,13 @@ function App() {
                 Clear All Fields?
               </h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6">
-              This will permanently delete all data in all tabs (Service, Organization, 
-              Legal, Rules, Parameters, Cost, and Output). This action cannot be undone.
+              This will permanently delete all data in all tabs (Service,
+              Organization, Legal, Rules, Parameters, Cost, and Output). This
+              action cannot be undone.
             </p>
-            
+
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowClearDialog(false)}
