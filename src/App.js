@@ -17,6 +17,7 @@ import "./App.css";
 import parseTTLEnhanced from "./parseTTL.enhanced";
 import ChangelogTab from "./components/tabs/ChangelogTab";
 import ServiceTab from "./components/tabs/ServiceTab";
+import OrganizationTab from "./components/tabs/OrganizationTab";
 import {
   DEFAULT_SERVICE,
   DEFAULT_ORGANIZATION,
@@ -26,6 +27,7 @@ import {
   DEFAULT_COST,
   DEFAULT_OUTPUT,
   TTL_NAMESPACES,
+  buildResourceUri,
   escapeTTLString,
   encodeURIComponentTTL,
   sanitizeFilename,
@@ -479,52 +481,6 @@ function App() {
   };
 
   // Render functions
-  const renderOrganization = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Organization Identifier
-        </label>
-        <input
-          type="text"
-          value={organization.identifier}
-          onChange={(e) =>
-            setOrganization({ ...organization, identifier: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., svb"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Organization Name
-        </label>
-        <input
-          type="text"
-          value={organization.name}
-          onChange={(e) =>
-            setOrganization({ ...organization, name: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Sociale Verzekeringsbank"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Homepage URL
-        </label>
-        <input
-          type="url"
-          value={organization.homepage}
-          onChange={(e) =>
-            setOrganization({ ...organization, homepage: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="https://www.svb.nl"
-        />
-      </div>
-    </div>
-  );
 
   const renderLegalResource = () => (
     <div className="space-y-4">
@@ -1009,7 +965,12 @@ function App() {
             {activeTab === "service" && (
               <ServiceTab service={service} setService={setService} />
             )}{" "}
-            {activeTab === "organization" && renderOrganization()}
+            {activeTab === "organization" && (
+              <OrganizationTab
+                organization={organization}
+                setOrganization={setOrganization}
+              />
+            )}
             {activeTab === "legal" && renderLegalResource()}
             {activeTab === "rules" && renderTemporalRules()}
             {activeTab === "parameters" && renderParameters()}
