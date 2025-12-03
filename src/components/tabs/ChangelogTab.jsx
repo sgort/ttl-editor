@@ -1,5 +1,6 @@
-import React from 'react';
 import { History } from 'lucide-react';
+import React from 'react';
+
 import changelogData from '../../data/changelog.json';
 import roadmapData from '../../data/roadmap.json';
 

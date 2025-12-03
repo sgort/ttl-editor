@@ -1,37 +1,39 @@
-import React, { useState } from 'react';
+import './App.css';
+
 import {
+  AlertCircle,
+  Building2,
+  CheckCircle,
+  Clock,
   Download,
   FileText,
-  Building2,
-  Scale,
-  Clock,
+  FileUp,
+  History,
   Plus,
+  Scale,
   Trash2,
   Upload,
-  FileUp,
-  AlertCircle,
-  CheckCircle,
-  History,
 } from 'lucide-react';
-import './App.css';
-import parseTTLEnhanced from './parseTTL.enhanced';
+import React, { useState } from 'react';
+
 import ChangelogTab from './components/tabs/ChangelogTab';
-import ServiceTab from './components/tabs/ServiceTab';
-import OrganizationTab from './components/tabs/OrganizationTab';
 import LegalTab from './components/tabs/LegalTab';
+import OrganizationTab from './components/tabs/OrganizationTab';
+import ServiceTab from './components/tabs/ServiceTab';
+import parseTTLEnhanced from './parseTTL.enhanced';
 import {
-  DEFAULT_SERVICE,
-  DEFAULT_ORGANIZATION,
-  DEFAULT_LEGAL_RESOURCE,
-  DEFAULT_TEMPORAL_RULE,
-  DEFAULT_PARAMETER,
-  DEFAULT_COST,
-  DEFAULT_OUTPUT,
-  TTL_NAMESPACES,
   buildResourceUri,
-  escapeTTLString,
+  DEFAULT_COST,
+  DEFAULT_LEGAL_RESOURCE,
+  DEFAULT_ORGANIZATION,
+  DEFAULT_OUTPUT,
+  DEFAULT_PARAMETER,
+  DEFAULT_SERVICE,
+  DEFAULT_TEMPORAL_RULE,
   encodeURIComponentTTL,
+  escapeTTLString,
   sanitizeFilename,
+  TTL_NAMESPACES,
   validateForm,
 } from './utils';
 
@@ -297,7 +299,12 @@ function App() {
       }
 
       if (legalResource.bwbId) {
-        ttl += `    cpsv:follows <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> ;\n`;
+        const lowerBwbId = legalResource.bwbId.toLowerCase();
+        const legalUri =
+          lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
+            ? legalResource.bwbId
+            : `https://wetten.overheid.nl/${legalResource.bwbId}`;
+        ttl += `    cpsv:follows <${legalUri}> ;\n`;
       }
 
       if (cost.identifier) {
@@ -328,13 +335,20 @@ function App() {
 
     // Legal Resource
     if (legalResource.bwbId) {
-      ttl += `<https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> a eli:LegalResource ;\n`;
+      // Support both full URIs and plain BWB IDs (case-insensitive check)
+      const lowerBwbId = legalResource.bwbId.toLowerCase();
+      const legalUri =
+        lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
+          ? legalResource.bwbId
+          : `https://wetten.overheid.nl/${legalResource.bwbId}`;
+
+      ttl += `<${legalUri}> a eli:LegalResource ;\n`;
       if (legalResource.title)
         ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
       if (legalResource.description)
         ttl += `    dct:description "${escapeTTLString(legalResource.description)}"@nl ;\n`;
       if (legalResource.version) {
-        ttl += `    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}/${legalResource.version}> ;\n`;
+        ttl += `    eli:is_realized_by <${legalUri}/${legalResource.version}> ;\n`;
       }
       ttl = ttl.slice(0, -2) + ' .\n\n';
     }

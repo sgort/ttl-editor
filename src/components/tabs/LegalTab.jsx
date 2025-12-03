@@ -10,8 +10,13 @@ export default function LegalTab({ legalResource, setLegalResource }) {
     setLegalResource({ ...legalResource, [field]: value });
   };
 
-  // Check if BWB ID matches expected pattern
-  const isValidBwbId = legalResource.bwbId && /^[A-Z]{2,10}\d+$/.test(legalResource.bwbId);
+  // Check if bwbId is a full URI or just the ID
+  const isFullUri =
+    legalResource.bwbId?.startsWith('http://') || legalResource.bwbId?.startsWith('https://');
+
+  // Extract BWB ID pattern for validation (works for both full URI and plain ID)
+  const bwbIdPattern = legalResource.bwbId?.match(/BWB[A-Z]?\d+/i);
+  const isValidBwbId = bwbIdPattern !== null;
   const hasInvalidBwbId = legalResource.bwbId && !isValidBwbId;
 
   return (
@@ -19,8 +24,8 @@ export default function LegalTab({ legalResource, setLegalResource }) {
       {/* Info box about legal resources */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm">
         <p className="text-blue-800">
-          <strong>Tip:</strong> BWB (Basis Wetten Bestand) IDs are Dutch legal document identifiers.
-          You can find them on{' '}
+          <strong>Tip:</strong> You can enter either a BWB ID (e.g., "BWBR0011453") or a full URI
+          (e.g., "https://wetten.overheid.nl/BWBR0011453"). Find BWB IDs on{' '}
           <a
             href="https://wetten.overheid.nl"
             target="_blank"
@@ -32,10 +37,10 @@ export default function LegalTab({ legalResource, setLegalResource }) {
         </p>
       </div>
 
-      {/* BWB ID */}
+      {/* BWB ID or URI */}
       <div>
         <label className="block text-sm text-gray-700 mb-1">
-          <span className="font-medium">Dutch legal document identifier</span>
+          <span className="font-medium">Dutch legal document identifier or URI</span>
           <span className="text-gray-500"> (eli:LegalResource)</span>
         </label>
         <input
@@ -45,17 +50,19 @@ export default function LegalTab({ legalResource, setLegalResource }) {
           className={`w-full px-3 py-2 border rounded-md ${
             hasInvalidBwbId ? 'border-red-300 focus:ring-red-500' : 'border-gray-300'
           }`}
-          placeholder="e.g., BWBR0002820"
+          placeholder="e.g., BWBR0011453 or https://wetten.overheid.nl/BWBR0011453"
         />
         {hasInvalidBwbId && (
           <p className="text-xs text-red-600 mt-1">
-            ⚠ Format should be letters followed by numbers (e.g., BWBR0002820)
+            ⚠ Should contain a BWB ID pattern (e.g., BWBR0011453)
           </p>
         )}
-        {isValidBwbId && (
+        {isFullUri && isValidBwbId && (
+          <p className="text-xs text-green-600 mt-1">✓ Full URI detected - will be used directly</p>
+        )}
+        {!isFullUri && isValidBwbId && (
           <p className="text-xs text-green-600 mt-1">
-            ✓ Will generate: https://identifier.overheid.nl/tooi/def/thes/kern/c_
-            {legalResource.bwbId}
+            ✓ Will generate: https://wetten.overheid.nl/{legalResource.bwbId}
           </p>
         )}
       </div>

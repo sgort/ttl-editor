@@ -210,6 +210,11 @@ export const parseTTLEnhanced = (ttlContent) => {
       }
 
       if (currentSection === 'legalResource') {
+        // Save the full URI as identifier (like Organization does)
+        if (!parsed.legalResource.bwbId && currentSubject) {
+          parsed.legalResource.bwbId = currentSubject;
+        }
+
         if (line.includes('dct:title')) {
           parsed.legalResource.title =
             extractValue(line.split('dct:title')[1]) || parsed.legalResource.title;
@@ -217,12 +222,6 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (line.includes('dct:description')) {
           parsed.legalResource.description =
             extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
-        }
-
-        // Extract BWB ID from subject URI
-        if (currentSubject && currentSubject.includes('BWBR')) {
-          const bwbMatch = currentSubject.match(/BWBR\d+/);
-          if (bwbMatch) parsed.legalResource.bwbId = bwbMatch[0];
         }
       }
 
