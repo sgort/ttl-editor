@@ -72,6 +72,7 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
 
 `;
 
@@ -112,3 +113,13 @@ export const CURRENCY_OPTIONS = [
   { value: 'USD', label: 'USD' },
   { value: 'GBP', label: 'GBP' },
 ];
+
+export const DEFAULT_CPRMV_RULE = {
+  id: 1,
+  ruleId: '', // cprmv:id
+  rulesetId: '', // cprmv:rulesetId
+  definition: '', // cprmv:definition
+  situatie: '', // cprmv:situatie
+  norm: '', // cprmv:norm
+  ruleIdPath: '', // cprmv:ruleIdPath
+};
