@@ -34,6 +34,7 @@ The Public Service TTL Editor is a web-based application designed to simplify th
 ### Purpose
 
 Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables government organizations to:
+
 - Document public services with structured metadata
 - Define temporal rules for service regulations
 - Link services to legal resources (BWB laws)
@@ -50,13 +51,15 @@ Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables g
 ### Core Functionality
 
 #### 1. **Multi-Tab Form Interface**
+
 - **Service Tab**: Core service information (identifier, name, description, thematic area, sector, keywords)
 - **Organization Tab**: Competent authority details (name, identifier, homepage)
 - **Legal Tab**: Legal resource linkage (BWB law IDs, versions, titles)
 - **Rules Tab**: Temporal rules with CPRMV extensions (validity periods, confidence levels)
 - **Preview Tab**: Real-time TTL output preview with syntax highlighting
 
-#### 2. **Import Functionality** ✅ *NEW*
+#### 2. **Import Functionality** ✅ _NEW_
+
 - Load existing `.ttl` files for editing
 - Automatic form population from TTL content
 - Intelligent parsing of CPSV-AP/CPRMV structures
@@ -64,6 +67,7 @@ Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables g
 - Handles escaped characters and special formatting
 
 #### 3. **Export Functionality**
+
 - Download generated TTL files
 - Proper RDF/Turtle syntax with all required namespaces
 - Automatic escaping of special characters
@@ -71,12 +75,14 @@ Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables g
 - Sanitized filenames for downloads
 
 #### 4. **Validation**
+
 - Form field validation
 - Pattern matching for BWB IDs (e.g., BWBR0002820)
 - Required field checking
 - Real-time feedback on validation errors
 
 #### 5. **Dynamic Temporal Rules**
+
 - Add/remove temporal rules dynamically
 - CPRMV properties support:
   - `ronl:extends` - Rule inheritance
@@ -100,23 +106,28 @@ Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables g
 ## 🛠 Technology Stack
 
 ### Frontend Framework
+
 - **React 18.3.1** - UI library for component-based architecture
 - **Create React App** - Zero-config build setup
 
 ### Styling
+
 - **Tailwind CSS 3.x** - Utility-first CSS framework
 - Custom configuration for consistent design system
 
 ### Icons & UI Components
+
 - **Lucide React 0.263.1** - Modern icon library
 - Custom form components with validation
 
 ### Build & Deployment
+
 - **Azure Static Web Apps** - Hosting platform
 - **GitHub Actions** - CI/CD pipeline for automatic deployments
 - **Custom Domain** - ttl.open-regels.nl with SSL
 
 ### Standards Compliance
+
 - **W3C Turtle** - RDF serialization format
 - **CPSV-AP 3.0** - EU Core Public Service Vocabulary
 - **CPRMV 0.3.0** - Dutch rule management extensions
@@ -160,17 +171,20 @@ ttl-editor/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd ttl-editor
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm start
    ```
@@ -241,6 +255,7 @@ This creates an optimized production build in the `build/` directory.
 ```
 
 When imported, the Service tab will show:
+
 - Identifier: `aow-leeftijd`
 - Name: `AOW Leeftijdsbepaling`
 - Description: `Berekening van de AOW-leeftijd`
@@ -252,6 +267,7 @@ When imported, the Service tab will show:
 ### CPSV-AP (Core Public Service Vocabulary Application Profile)
 
 European standard for describing public services:
+
 - Service metadata (title, description, type)
 - Organization relationships (`hasCompetentAuthority`)
 - Legal basis (`follows`)
@@ -262,6 +278,7 @@ European standard for describing public services:
 ### CPRMV (Core Public Rule Management Vocabulary)
 
 Dutch extensions for rule management:
+
 - Temporal rules with validity periods
 - Rule inheritance and versioning
 - Confidence levels for regulations
@@ -317,6 +334,7 @@ npm run lint -- --fix
 ```
 
 **ESLint Configuration:**
+
 - Based on `react-app` preset
 - Custom rules for unused variables (underscore prefix)
 - Configuration in `.eslintrc.json`
@@ -355,6 +373,7 @@ The application is deployed to Azure Static Web Apps with automatic CI/CD.
 #### Deployment Process
 
 1. **Push to GitHub**
+
    ```bash
    git add .
    git commit -m "Your changes"
@@ -394,10 +413,10 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          app_location: "/"
-          api_location: ""
-          output_location: "build"
+          action: 'upload'
+          app_location: '/'
+          api_location: ''
+          output_location: 'build'
 ```
 
 #### Manual Deployment via Azure Portal
@@ -408,11 +427,12 @@ See deployment guide for step-by-step instructions using Azure Portal.
 
 ## 📈 Enhancements Timeline
 
-### Phase 1: Initial Build ✅ *COMPLETED*
+### Phase 1: Initial Build ✅ _COMPLETED_
 
 **Date**: Initial Development
 
 **Features Implemented:**
+
 - React application with Create React App
 - Tailwind CSS v3 configuration
 - Basic 5-tab form interface (Service, Organization, Legal, Rules, Preview)
@@ -423,17 +443,19 @@ See deployment guide for step-by-step instructions using Azure Portal.
 - Real-time preview
 
 **Deliverables:**
+
 - Working application on localhost:3000
 - Clean, professional UI with Tailwind styling
 - Lucide React icons integration
 
 ---
 
-### Phase 2: Production Deployment ✅ *COMPLETED*
+### Phase 2: Production Deployment ✅ _COMPLETED_
 
 **Date**: Deployment Phase
 
 **Enhancements:**
+
 1. **Azure Static Web Apps Deployment**
    - Automated CI/CD via GitHub Actions
    - Free tier hosting
@@ -451,17 +473,19 @@ See deployment guide for step-by-step instructions using Azure Portal.
    - Footer link to GitLab documentation
 
 **Deliverables:**
+
 - Live application at ttl.open-regels.nl
 - Automated deployments on git push
 - Professional branding and appearance
 
 ---
 
-### Phase 3: Import Functionality ✅ *COMPLETED*
+### Phase 3: Import Functionality ✅ _COMPLETED_
 
 **Date**: Enhancement Phase 1
 
 **Features Implemented:**
+
 1. **TTL File Import**
    - "Import TTL File" button in header
    - File picker for `.ttl` files
@@ -488,6 +512,7 @@ See deployment guide for step-by-step instructions using Azure Portal.
    - Automatic tab switching after import
 
 **Technical Improvements:**
+
 - `escapeTTLString()` function for output
 - `unescapeTTLString()` function for input
 - `encodeURIComponent()` for URI handling
@@ -496,32 +521,37 @@ See deployment guide for step-by-step instructions using Azure Portal.
 - Filename sanitization for downloads
 
 **Deliverables:**
+
 - Full round-trip editing (export → import → edit → export)
 - W3C Turtle specification compliance
 - Handles edge cases (quotes, newlines, special chars)
 
 ---
 
-### Phase 4: Planned Enhancements 🔜 *UPCOMING*
+### Phase 4: Planned Enhancements 🔜 _UPCOMING_
 
 #### 4.1 Template System
+
 - Pre-fill forms from AOW example
 - Save custom templates
 - Template library for common services
 - Quick-start options
 
 #### 4.2 Browser Storage
+
 - Auto-save to localStorage
 - Restore progress on reload
 - Prevent data loss
 - Session management
 
 #### 4.3 Additional Form Sections
+
 - **Channel**: Service delivery channels
 - **Contact**: Contact information (email, phone, URL)
 - **DMN Distribution**: Decision Model files
 
 #### 4.4 Advanced Validation
+
 - Field-level error messages
 - Real-time validation feedback
 - Pattern enforcement
@@ -529,18 +559,21 @@ See deployment guide for step-by-step instructions using Azure Portal.
 - Validation summary
 
 #### 4.5 Export Options
+
 - JSON export format
 - YAML export format
 - Multiple format support
 - Format conversion
 
 #### 4.6 DMN File Upload
+
 - Upload DMN XML files
 - Link to services
 - DMN file validation
 - Distribution metadata
 
 #### 4.7 Multi-Service Management
+
 - Manage multiple services in one session
 - Service list view
 - Switch between services
@@ -548,10 +581,10 @@ See deployment guide for step-by-step instructions using Azure Portal.
 
 ---
 
-
 ### Reporting Issues
 
 Create an issue on the repository with:
+
 - Clear description of the problem
 - Steps to reproduce
 - Expected vs actual behavior
@@ -581,4 +614,4 @@ For questions, feedback, or contributions regarding the Public Service TTL Edito
 
 ---
 
-*Built with ❤️ for transparent and accessible government services*
+_Built with ❤️ for transparent and accessible government services_

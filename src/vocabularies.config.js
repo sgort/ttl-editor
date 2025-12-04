@@ -18,45 +18,32 @@ export const VOCABULARY_CONFIG = {
     'http://purl.org/dc/terms/': ['dct'],
     'http://www.w3.org/ns/dcat#': ['dcat'],
     'http://www.w3.org/2004/02/skos/core#': ['skos'],
-    'http://www.w3.org/2001/XMLSchema#': ['xsd']
+    'http://www.w3.org/2001/XMLSchema#': ['xsd'],
   },
 
   // RDF types that map to editor sections
   // Each type can have multiple accepted prefix variations
   entityTypes: {
     service: {
-      acceptedTypes: [
-        'cpsv:PublicService',
-        'cpsv-ap:PublicService'
-      ],
-      canonicalType: 'cpsv:PublicService'
+      acceptedTypes: ['cpsv:PublicService', 'cpsv-ap:PublicService'],
+      canonicalType: 'cpsv:PublicService',
     },
     organization: {
-      acceptedTypes: [
-        'org:Organization',
-        'foaf:Organization'
-      ],
-      canonicalType: 'org:Organization'
+      acceptedTypes: ['org:Organization', 'foaf:Organization'],
+      canonicalType: 'org:Organization',
     },
     legalResource: {
-      acceptedTypes: [
-        'eli:LegalResource'
-      ],
-      canonicalType: 'eli:LegalResource'
+      acceptedTypes: ['eli:LegalResource'],
+      canonicalType: 'eli:LegalResource',
     },
     temporalRule: {
-      acceptedTypes: [
-        'ronl:TemporalRule'
-      ],
-      canonicalType: 'ronl:TemporalRule'
+      acceptedTypes: ['ronl:TemporalRule'],
+      canonicalType: 'ronl:TemporalRule',
     },
     parameter: {
-      acceptedTypes: [
-        'skos:Concept',
-        'ronl:ParameterWaarde'
-      ],
-      canonicalType: 'skos:Concept'
-    }
+      acceptedTypes: ['skos:Concept', 'ronl:ParameterWaarde'],
+      canonicalType: 'skos:Concept',
+    },
   },
 
   // Property aliases - map variations to canonical form
@@ -65,7 +52,7 @@ export const VOCABULARY_CONFIG = {
     // Organization properties
     'foaf:name': 'skos:prefLabel',
     'org:name': 'skos:prefLabel',
-    
+
     // Service properties - CPSV-AP to CV mapping
     'cpsv-ap:hasCompetentAuthority': 'cv:hasCompetentAuthority',
     'cpsv-ap:thematicArea': 'cv:thematicArea',
@@ -75,14 +62,14 @@ export const VOCABULARY_CONFIG = {
     'cpsv-ap:hasCost': 'cv:hasCost',
     'cpsv-ap:hasOutput': 'cv:hasOutput',
     'cpsv-ap:hasLegalResource': 'cv:hasLegalResource',
-    
+
     // Temporal rule properties - CPRMV to RONL mapping
     'cprmv:validFrom': 'ronl:validFrom',
     'cprmv:validUntil': 'ronl:validUntil',
     'cprmv:confidence': 'ronl:confidenceLevel',
     'cprmv:confidenceLevel': 'ronl:confidenceLevel',
-    'cprmv:extends': 'ronl:extends'
-  }
+    'cprmv:extends': 'ronl:extends',
+  },
 };
 
 // Helper function: Check if a line contains any of the accepted types for an entity
@@ -111,8 +98,8 @@ export const getCanonicalType = (entityName) => {
 export const extractPrefixMap = (ttlContent) => {
   const prefixMap = {};
   const lines = ttlContent.split('\n');
-  
-  lines.forEach(line => {
+
+  lines.forEach((line) => {
     if (line.trim().startsWith('@prefix')) {
       const match = line.match(/@prefix\s+([^:]+):\s+<([^>]+)>/);
       if (match) {
@@ -120,7 +107,7 @@ export const extractPrefixMap = (ttlContent) => {
       }
     }
   });
-  
+
   return prefixMap;
 };
 
@@ -128,26 +115,26 @@ export const extractPrefixMap = (ttlContent) => {
 export const validatePrefixes = (ttlContent) => {
   const prefixMap = extractPrefixMap(ttlContent);
   const warnings = [];
-  
+
   // Check for essential prefixes
   const essentialPrefixes = [
     { prefix: 'cpsv', alternatives: ['cpsv-ap'], namespace: 'http://purl.org/vocab/cpsv#' },
     { prefix: 'cv', alternatives: ['cpsv-ap'], namespace: 'http://data.europa.eu/m8g/' },
-    { prefix: 'dct', alternatives: [], namespace: 'http://purl.org/dc/terms/' }
+    { prefix: 'dct', alternatives: [], namespace: 'http://purl.org/dc/terms/' },
   ];
-  
+
   essentialPrefixes.forEach(({ prefix, alternatives, namespace }) => {
     const hasPrefix = prefixMap[prefix] === namespace;
-    const hasAlternative = alternatives.some(alt => prefixMap[alt] === namespace);
-    
+    const hasAlternative = alternatives.some((alt) => prefixMap[alt] === namespace);
+
     if (!hasPrefix && !hasAlternative) {
       warnings.push(`Missing recommended prefix: @prefix ${prefix}: <${namespace}>`);
     }
   });
-  
+
   return {
     valid: warnings.length === 0,
-    warnings
+    warnings,
   };
 };
 

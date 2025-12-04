@@ -1,0 +1,192 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://regels.overheid.nl/services/studiefinanciering> a cpsv:PublicService ;
+    dct:title "Sudiefinanciering"@nl ;
+    dct:description "Studiefinanciering is geld van de Nederlandse overheid voor studenten in het middelbaar beroepsonderwijs (mbo), hoger beroepsonderwijs (hbo) en wetenschappelijk onderwijs (wo/universiteit). Als u hier recht op heeft, ontvangt u dit geld van de Dienst Uitvoering Onderwijs (DUO). Sommige onderdelen van studiefinanciering zijn een lening. Een lening moet u terugbetalen."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/studiefinanciering> ;
+    cv:sector <Onderwijs> ;
+    dcat:keyword "student, studiefinanciering, lening, beurs, studiebeurs, prestatiebeurs, duo, ocw"@nl ;
+    dct:language "nl" ;
+    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/00000001800866472000> ;
+    cpsv:follows <https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0011453>  .
+
+<https://regels.overheid.nl/organizations/00000001800866472000> a org:Organization ;
+    skos:prefLabel "Dienst Uitvoering Onderwijs"@nl ;
+    foaf:homepage <https://duo.nl/particulier/>  .
+
+<https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0011453> a eli:LegalResource ;
+    dct:title "Wet studiefinanciering 2000"@nl ;
+    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_BWBR0011453/2025-01-01>  .
+
+<https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nStudiefinanciering wordt toegekend indien aan alle volgende voorwaarden is voldaan:\n- Het totale bedrag van studiefinanciering van de Persoon is groter dan 0.\n- De Persoon heeft aanspraak.\n- De Persoon heeft nog recht op tenminste één maand studiefinanciering.\n\nVerder uitgewerkt in:\nB02.01 persoon heeft aanspraak\nB03.01 Totaal bedrag\nB04.01 Persoon heeft nog tenminste één maand studiefinanciering"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.01-aanspraak> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft aanspraak indien aan alle volgende voorwaarden is voldaan:\n- De Persoon voldoet aan de leeftijdsvoorwaarden.\n- De Persoon voldoet aan de nationaliteitseis.\n- De Persoon is ingeschreven voor een opleiding waarvoor studiefinanciering wordt gegeven.\n- De Persoon krijgt geen buitenlandse financiering.\n\nVerder uitgewerkt in:\nB02.03 nationaliteitsvoorwaarden\nB02.04 Correcte opleiding\nB02.02 leeftijd"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.02-leeftijd> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde leeftijd van de Persoon\tde leeftijd van de Persoon\tde Inschrijving is voor een HO opleiding\tde Inschrijving is ononderbroken\tde Persoon voldoet aan de leeftijdsvoorwaarden\n>= 18\t< 30\t= Waar\t= Waar\t= Waar\n< 18\tOnwaar\t= Waar\t= Waar\t= Waar\n< 18\t-\t= Onwaar\t= Waar\t= Onwaar\n>= 30\t-\t= Waar\t= Waar\t= Waar\n>= 30\t-\t= Waar\t= Onwaar\t= Onwaar\n\nVerder uitgewerkt in:\nB02.02.02 ononderbroken inschrijving (moet nog)"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.02.02-ononderbroken-inschrijving> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B02.02-leeftijd> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Inschrijving is ononderbroken indien aan tenminste één van de volgende voorwaarden is voldaan:\n- De Inschrijving heeft van beginmaand tot en met nu geen missende maand.\n- De Inschrijving de inschrijving is onderbroken met een medische verklaring."@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.03-nationaliteitsvoorwaarden> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon voldoet aan de nationaliteitseis indien aan tenminste één van de volgende voorwaarden is voldaan:\n- De Persoon heeft de nederlandse nationalitiet.\n- De Persoon voldoet aan de EU voorwaarden (moet nog worden uitgewerkt).\n\nVerder uitgewerkt in:\nB02.03.02 arbeidsvwd EU burger (5jr in nl, werk + 24 uur permaand/50% bijstandsnorm, partner/ouder met werkvwd)"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.03.02-EU-voorwaarden> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B02.03-nationaliteitsvoorwaarden> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon voldoet aan de EU voorwaarden (moet nog worden uitgewerkt) indien aan alle volgende voorwaarden is voldaan:\n- Voorwaarde.\n- Voorwaarde."@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.04-correcte-opleiding> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon is ingeschreven voor een opleiding waarvoor studiefinanciering wordt gegeven indien aan tenminste één van de volgende voorwaarden is voldaan:\n- Opleiding is een bekostigde voltijd opleiding.\n- Opleiding is goedgekeurd door instantie."@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet totale bedrag van studiefinanciering van een Persoon moet worden berekend als A + B + C waarin geldt dat:\n- A = de bedrag basisbeurs van de Persoon.\n- B = de Hoogte van de toe te kennen aanvullende beurs van de Studiefinanciering.\n- C = het bedrag aan lening van de Persoon.\n\nVerder uitgewerkt in:\nB03.02 Basisbeurs\nB03.03 aanvullende beurs\nB03.04 bedrag aan lening"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.02-basisbeurs> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde Persoon is uitwonend\thet onderwijsniveau van de aanvraag van de Studiefinanciering\tde bedrag basisbeurs van de Persoon\n= Onwaar\t= MBO\t= 107,26\n= Waar\t= MBO\t= 350,03\n= Onwaar\t= HO\t= 130,21\n= Waar\t= HO\t= 324,52\n\nVerder uitgewerkt in:\nB03.04.01 Persoon is uitwonend"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03-aanvullende-beurs> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nDe Hoogte van de toe te kennen aanvullende beurs van een Studiefinanciering moet worden berekend als Maximum(A - B, 0) waarin geldt dat:\n- A = de maximale aanvullende beurs van het Studiefinanciering.\n- B = de maandelijkse ouderlijke bijdrage van de Ouders.\n\nVerder uitgewerkt in:\nB03.03.01 maximale aanvullende beurs\nB03.03.02 maandelijkse inhouding op aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.04-bedrag-aan-lening> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet bedrag aan lening van een Persoon moet worden berekend als Minimum(A,B) waarin geldt dat:\n- A = de gewenste lening van de Persoon.\n- B = het maximale leningsbedrag van de Persoon.\n\nVerder uitgewerkt in:\nB03.05 het maximale leenbedrag\nBedrijfslogica6659"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.01-maximaal-aanvullend> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde Persoon is uitwonend\tde maximale aanvullende beurs van het Studiefinanciering\n= MBO\t= Onwaar\t= 438.08\n= MBO\t= Waar\t= 466.40\n= HO\t-\t= 491.08\n\nVerder uitgewerkt in:\nB03.04.01 Persoon is uitwonend"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.02-maandelijkse-inhouding-aanvullend> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nDe maandelijkse ouderlijke bijdrage van een Ouders moet worden berekend als A / B waarin geldt dat:\n- A = de inhouding per jaar van de Ouders.\n- B = 12.\n\nVerder uitgewerkt in:\nB03.03.03 Totaalbedrag per kind met aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.03-totaal-bedrag-per-kind-aanvullend> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.02-maandelijkse-inhouding-aanvullend> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nDe inhouding per jaar van de Ouders moet worden berekend als A / B waarin geldt dat:\n- A = het gezamelijke ouderbijdrage van de Ouders.\n- B = de aantal kinderen met een aanvullende beurs van de Ouders.\n\nVerder uitgewerkt in:\nB03.03.04 rekeninkomen ouders"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.04-rekeninkomen-ouders> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.03-totaal-bedrag-per-kind-aanvullend> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet gezamelijke ouderbijdrage van de Ouders moet worden berekend als som van het ouderbijdrage per jaar van de Ouder.\n\nVerder uitgewerkt in:\nB03.03.05 Jaarbedrag per ouder"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.04-rekeninkomen-ouders> ;
+    ronl:validFrom "2023-02-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet ouderbijdrage per jaar van een Ouder moet worden berekend als A - B - C waarin geldt dat:\n- A = het rekeninkomen van de Ouder.\n- B = de aftrekpost andere kinderen van de Ouder.\n- C = het termijnbedrag op jaarbasis van de studieschuld van de Ouder.\n\nVerder uitgewerkt in:\nB03.03.06 Aftrekpost andere kinderen\nB03.03.07 Rekeninkomen van een ouder"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.06-aftrekpost-andere-kinderen> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nDe aftrekpost andere kinderen van een Ouder moet worden berekend als A * B waarin geldt dat:\n- A = de ieder kind zonder studiefinanciering van de Ouder.\n- B = 363."@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet rekeninkomen van een Ouder moet worden berekend als C * (A - B) waarin geldt dat:\n- A = het belastbaar inkomen van de Ouder.\n- B = het Vrijgesteld bedrag van de Ouder.\n- C = het Percentage van inkomen dat meetelt van het Studiefinanciering.\n\nVerder uitgewerkt in:\nB03.03.08 Vrijgesteld bedrag van de ouder\nB03.03.09 Percentage meetellend inkomen"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.08-vrijgesteld-bedrag-van-ouder> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde leefsituatie van de Ouder\thet Vrijgesteld bedrag van de Ouder\n= MBO\t= Alleenstaand\t= 29333.26\n= HBO\t= Alleenstaand\t= 29289.28\n= MBO\t= Andere ouder is overleden\t= 46305.40\n= HBO\t= Andere ouder is overleden\t= 41500.60\n= MBO\t= Inkomen andere ouder telt niet mee\t= 46305.40\n= HBO\t= Inkomen andere ouder telt niet mee\t= 41500.60\n= MBO\t= -\t= 23152.70\n= MBO\t= -\t= 20750.30"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.09-percentage-meetellend-inkomen> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\thet Percentage van inkomen dat meetelt van het Studiefinanciering\n= MBO\t= 26\n= HO\t= 13.6"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.05-maximale-leenbedrag> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet maximale leningsbedrag van een Persoon moet worden berekend als A + B waarin geldt dat:\n- A = de maandelijkse ouderlijke bijdrage van de Ouders.\n- B = de maximale lening van het Studiefinanciering.\n\nVerder uitgewerkt in:\nB03.06 Maximale lening\nB03.03.02 maandelijkse inhouding op aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.06-maximale-lening> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B03.05-maximale-leenbedrag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde maximale lening van Studiefinanciering\n= MBO\t= 233,65\n= HO\t= 315,17"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.07-maximale-leningsbedrag> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet maximale leningsbedrag van een Persoon moet worden berekend als A + B - C waarin geldt dat:\n- A = de maximale lening van het Studiefinanciering.\n- B = de maximale aanvullende beurs van het Studiefinanciering.\n- C = de Hoogte van de toe te kennen aanvullende beurs van de Studiefinanciering.\n\nVerder uitgewerkt in:\nB03.03.01 maximale aanvullende beurs\nB03.03 aanvullende beurs\nB03.06 Maximale lening"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.04.01-persoon-uitwonend> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon is uitwonend indien aan alle volgende voorwaarden is voldaan:\n- De Persoon woont op een ander adres dan beide ouders.\n- De Persoon is ingeschreven op een adres bij een gemeente."@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> a ronl:TemporalRule ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft nog recht op tenminste één maand studiefinanciering indien aan alle volgende voorwaarden is voldaan:\n- De Persoon heeft nog tenminste één maand opnametermijn.\n- Het aantal maanden genoten studiefinanciering van zijn huidige inschrijving van de Persoon is groter dan 0.\n\nVerder uitgewerkt in:\nB04.02 verbruikte jaren van de persoon\nB04.05 opnametermijn"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.02-verbuikte-jaren> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nHet aantal maanden genoten studiefinanciering van zijn huidige inschrijving van een Persoon moet worden berekend als A - B waarin geldt dat:\n- A = de maximale hoeveelheid studiefinancieringsjaren van Opleiding.\n- B = het aantal maanden genoten studiefinanciering van zijn huidige inschrijving van de Persoon.\n\nVerder uitgewerkt in:\nB04.04 aantal jaar voor een inschrijving\nB04.02 verbruikte jaren van de persoon\nB04.02 verbruikte jaren van de persoon"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.04-aantal-jaar-voor-een-inschrijving> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B04.02-verbuikte-jaren> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde Inschrijving van de Persoon\tde maximale hoeveelheid studiefinancieringsjaren van Opleiding\n= MBO 1 of 2\tOnbeperkt\n= MBO 3 of 4\t= 4\n= HO\t= 4 jaar of meer als de studie langer duurt"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.05-opnametermijn> a ronl:TemporalRule ;
+    ronl:extends <https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> ;
+    ronl:validFrom "2023-01-01"^^xsd:date ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft nog tenminste één maand opnametermijn indien huidige maand is kleiner dan de de eerste maand van het recht op het Studiefinanciering + 10 jaar."@nl  .
+

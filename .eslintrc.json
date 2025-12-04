@@ -1,6 +1,25 @@
 {
-  "extends": "react-app",
+  "extends": [
+    "react-app",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "plugins": ["simple-import-sort", "import"],
+
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+
   "rules": {
+    "import/no-unresolved": ["error", { "caseSensitive": true }],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/no-named-as-default": "off",
     "no-unused-vars": [
       "warn",
       {
