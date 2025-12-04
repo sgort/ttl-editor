@@ -1,6 +1,6 @@
 {
-  "short_name": "TTL Editor",
-  "name": "Public Service TTL Editor",
+  "short_name": "CPSV-AP Editor",
+  "name": "Core Public Service Editor",
   "icons": [
     {
       "src": "favicon.ico",

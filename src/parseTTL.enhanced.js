@@ -37,6 +37,7 @@ export const parseTTLEnhanced = (ttlContent) => {
       },
       temporalRules: [],
       parameters: [],
+      cprmvRules: [],
       cost: {
         value: '',
         currency: 'EUR',
@@ -59,6 +60,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentSection = null;
     let currentRule = null;
     let currentParameter = null;
+    let currentCprmvRule = null;
     let currentSubject = null;
 
     // Helper function to extract values from TTL lines
@@ -144,6 +146,16 @@ export const parseTTLEnhanced = (ttlContent) => {
             description: '',
             validFrom: '',
             validUntil: '',
+          };
+        } else if (detectedType === 'cprmvRule') {
+          currentCprmvRule = {
+            id: Date.now() + Math.random(),
+            ruleId: '',
+            rulesetId: '',
+            definition: '',
+            situatie: '',
+            norm: '',
+            ruleIdPath: '',
           };
         }
         continue;
@@ -304,7 +316,41 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentSection = null;
         }
       }
+      if (currentSection === 'cprmvRule' && currentCprmvRule) {
+        if (line.includes('cprmv:id')) {
+          currentCprmvRule.ruleId =
+            extractValue(line.split('cprmv:id')[1]) || currentCprmvRule.ruleId;
+        }
+        if (line.includes('cprmv:rulesetId')) {
+          currentCprmvRule.rulesetId =
+            extractValue(line.split('cprmv:rulesetId')[1]) || currentCprmvRule.rulesetId;
+        }
+        if (line.includes('cprmv:definition')) {
+          currentCprmvRule.definition =
+            extractValue(line.split('cprmv:definition')[1]) || currentCprmvRule.definition;
+        }
+        if (line.includes('cprmv:situatie')) {
+          currentCprmvRule.situatie =
+            extractValue(line.split('cprmv:situatie')[1]) || currentCprmvRule.situatie;
+        }
+        if (line.includes('cprmv:norm')) {
+          currentCprmvRule.norm =
+            extractValue(line.split('cprmv:norm')[1]) || currentCprmvRule.norm;
+        }
+        if (line.includes('cprmv:ruleIdPath')) {
+          currentCprmvRule.ruleIdPath =
+            extractValue(line.split('cprmv:ruleIdPath')[1]) || currentCprmvRule.ruleIdPath;
+        }
+
+        // Check for end of rule (period without semicolon)
+        if (line.includes('.') && !line.includes(';')) {
+          parsed.cprmvRules.push(currentCprmvRule);
+          currentCprmvRule = null;
+          currentSection = null;
+        }
+      }
     }
+    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules); // ← ADD THIS ONE LINE
 
     return parsed;
   } catch (error) {

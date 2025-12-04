@@ -1,5 +1,35 @@
 [
   {
+    "version": "1.3.0",
+    "status": "Enhancement",
+    "statusColor": "purple",
+    "borderColor": "purple",
+    "date": "December 4, 2025",
+    "sections": [
+      {
+        "title": "Modularization",
+        "icon": "✨",
+        "iconColor": "emerald",
+        "items": [
+          "Extracted utils and Changelog tab",
+          "Extracted Service, Organization, Legal, Rules and Parameter tabs",
+          "Created Preview side panel and removed Preview tab"
+        ]
+      },
+      {
+        "title": "CPRMV Tab",
+        "icon": "📊",
+        "iconColor": "green",
+        "items": [
+          "Added dedicated CPRM tab for cprmv:{...} support",
+          "Import JSON function with for all mandatory CPRMV fields",
+          "Download TTL includes CPRMV rules in correct format",
+          "Import TTL populates CPRMV tab if rules exist"
+        ]
+      }
+    ]
+  },
+  {
     "version": "1.2.2",
     "status": "current",
     "statusColor": "emerald",

@@ -44,6 +44,10 @@ export const VOCABULARY_CONFIG = {
       acceptedTypes: ['skos:Concept', 'ronl:ParameterWaarde'],
       canonicalType: 'skos:Concept',
     },
+    cprmvRule: {
+      acceptedTypes: ['cprmv:Rule'],
+      canonicalType: 'cprmv:Rule',
+    },
   },
 
   // Property aliases - map variations to canonical form

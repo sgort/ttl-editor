@@ -5,6 +5,7 @@ import {
   Building2,
   CheckCircle,
   Clock,
+  Database,
   Download,
   FileText,
   FileUp,
@@ -19,6 +20,7 @@ import React, { useState } from 'react';
 import PreviewPanel from './components/PreviewPanel';
 import {
   ChangelogTab,
+  CPRMVTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
@@ -29,6 +31,7 @@ import parseTTLEnhanced from './parseTTL.enhanced';
 import {
   buildResourceUri,
   DEFAULT_COST,
+  DEFAULT_CPRMV_RULE,
   DEFAULT_LEGAL_RESOURCE,
   DEFAULT_ORGANIZATION,
   DEFAULT_OUTPUT,
@@ -58,6 +61,7 @@ function App() {
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
   const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
   const [parameters, setParameters] = useState([DEFAULT_PARAMETER]);
+  const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
   const [cost, setCost] = useState(DEFAULT_COST);
   const [output, setOutput] = useState(DEFAULT_OUTPUT);
 
@@ -89,12 +93,14 @@ function App() {
       },
       temporalRules: parsed.temporalRules || [],
       parameters: parsed.parameters || [],
+      cprmvRules: parsed.cprmvRules || [],
       cost: {
         value: parsed.cost?.value || '',
         currency: parsed.cost?.currency || 'EUR',
         description: parsed.cost?.description || '',
       },
       output: {
+        cprmvRules: parsed.cprmvRules || [],
         name: parsed.output?.name || '',
         description: parsed.output?.description || '',
         type: parsed.output?.type || '',
@@ -163,6 +169,16 @@ function App() {
               validUntil: '',
             },
           ]);
+        }
+
+        if (parsed.cprmvRules && parsed.cprmvRules.length > 0) {
+          console.log('🎯 About to set CPRMV rules:', parsed.cprmvRules);
+          console.log('🎯 Number of rules:', parsed.cprmvRules.length);
+          setCprmvRules(parsed.cprmvRules);
+          console.log('✅ setCprmvRules called');
+        } else {
+          console.log('⚠️ No CPRMV rules found, using default');
+          setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
         }
 
         setImportStatus({
@@ -253,12 +269,107 @@ function App() {
     );
   };
 
+  // Add CPRMV rule
+  const addCPRMVRule = () => {
+    setCprmvRules([
+      ...cprmvRules,
+      {
+        id: Date.now(),
+        ruleId: '',
+        rulesetId: '',
+        definition: '',
+        situatie: '',
+        norm: '',
+        ruleIdPath: '',
+      },
+    ]);
+  };
+
+  // Remove CPRMV rule
+  const removeCPRMVRule = (id) => {
+    setCprmvRules(cprmvRules.filter((rule) => rule.id !== id));
+  };
+
+  // Update CPRMV rule
+  const updateCPRMVRule = (id, field, value) => {
+    setCprmvRules(cprmvRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule)));
+  };
+
+  // Handle JSON import for CPRMV tab only
+  const handleImportJSON = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.json')) {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: 'Please select a .json file',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target.result;
+        const jsonData = JSON.parse(content);
+
+        if (!Array.isArray(jsonData)) {
+          throw new Error('JSON must be an array of rules');
+        }
+
+        // Map JSON structure from normenbrief format to CPRMV rule structure
+        const mappedRules = jsonData.map((rule, index) => ({
+          id: Date.now() + index,
+          ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
+          rulesetId: rule.rulesetid || '',
+          definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
+          situatie: rule.situatie || '',
+          norm: rule.norm || '',
+          ruleIdPath: rule.rule_id_path || '',
+        }));
+
+        setCprmvRules(mappedRules);
+
+        setImportStatus({
+          show: true,
+          success: true,
+          message: `Successfully imported ${mappedRules.length} CPRMV rules from JSON!`,
+        });
+
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+      } catch (error) {
+        setImportStatus({
+          show: true,
+          success: false,
+          message: error.message || 'Failed to import JSON file.',
+        });
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+      }
+    };
+
+    reader.onerror = () => {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: 'Error reading file. Please try again.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+    };
+
+    reader.readAsText(file);
+    event.target.value = '';
+  };
+
   // Clear all data
   const handleClearAll = () => {
     setService(DEFAULT_SERVICE);
     setOrganization(DEFAULT_ORGANIZATION);
     setLegalResource(DEFAULT_LEGAL_RESOURCE);
     setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
+    setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
     setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
@@ -416,6 +527,30 @@ function App() {
       ttl = ttl.slice(0, -2) + ' .\n';
     }
 
+    // CPRMV Rules
+    cprmvRules.forEach((rule) => {
+      // All fields are mandatory
+      if (
+        rule.ruleId &&
+        rule.rulesetId &&
+        rule.definition &&
+        rule.situatie &&
+        rule.norm &&
+        rule.ruleIdPath
+      ) {
+        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rule.rulesetId)}_${encodeURIComponentTTL(rule.ruleId)}`;
+        ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
+        ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
+        ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
+        ttl += `    cprmv:definition "${escapeTTLString(rule.definition)}"@nl ;\n`;
+        ttl += `    cprmv:situatie "${escapeTTLString(rule.situatie)}"@nl ;\n`;
+        ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
+        ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
+
+        ttl = ttl.slice(0, -2) + ' .\n\n';
+      }
+    });
+
     return ttl;
   };
 
@@ -465,9 +600,10 @@ function App() {
               <div className="flex items-center gap-3">
                 <FileText className="text-blue-600" size={32} />
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-800">Public Service TTL Editor</h1>
+                  <h1 className="text-3xl font-bold text-gray-800">Core Public Service Editor</h1>
                   <p className="text-gray-600 text-sm">
-                    Generate RDF/Turtle files for government services
+                    Generate CPSV-AP compliant Terse RDF Triple Language files for government
+                    services
                   </p>
                 </div>
               </div>
@@ -536,56 +672,68 @@ function App() {
           {/* Tabs and Content */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="flex border-b overflow-x-auto">
-              {['service', 'organization', 'legal', 'rules', 'parameters', 'changelog'].map(
-                (tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
-                      activeTab === tab
-                        ? 'bg-white text-blue-600 border-b-2 border-blue-600'
-                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                    }`}
-                  >
-                    {tab === 'service' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <FileText size={18} />
-                        Service
-                      </span>
-                    )}
-                    {tab === 'organization' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <Building2 size={18} />
-                        Organization
-                      </span>
-                    )}
-                    {tab === 'legal' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <Scale size={18} />
-                        Legal
-                      </span>
-                    )}
-                    {tab === 'rules' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <Clock size={18} />
-                        Rules
-                      </span>
-                    )}
-                    {tab === 'parameters' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <Plus size={18} />
-                        Parameters
-                      </span>
-                    )}
-                    {tab === 'changelog' && (
-                      <span className="flex items-center justify-center gap-2">
-                        <History size={18} />
-                        Changelog
-                      </span>
-                    )}
-                  </button>
-                )
-              )}
+              {[
+                'service',
+                'organization',
+                'legal',
+                'rules',
+                'parameters',
+                'cprmv',
+                'changelog',
+              ].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                    activeTab === tab
+                      ? 'bg-white text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }`}
+                >
+                  {tab === 'service' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <FileText size={18} />
+                      Service
+                    </span>
+                  )}
+                  {tab === 'organization' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Building2 size={18} />
+                      Organization
+                    </span>
+                  )}
+                  {tab === 'legal' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Scale size={18} />
+                      Legal
+                    </span>
+                  )}
+                  {tab === 'rules' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Clock size={18} />
+                      Rules
+                    </span>
+                  )}
+                  {tab === 'parameters' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Plus size={18} />
+                      Parameters
+                    </span>
+                  )}
+                  {tab === 'cprmv' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Database size={18} />
+                      CPRMV
+                    </span>
+                  )}
+                  {tab === 'changelog' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <History size={18} />
+                      Changelog
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
 
             <div className="p-6 min-h-[600px]">
@@ -612,6 +760,15 @@ function App() {
                   updateParameter={updateParameter}
                 />
               )}
+              {activeTab === 'cprmv' && (
+                <CPRMVTab
+                  cprmvRules={cprmvRules}
+                  addCPRMVRule={addCPRMVRule}
+                  removeCPRMVRule={removeCPRMVRule}
+                  updateCPRMVRule={updateCPRMVRule}
+                  handleImportJSON={handleImportJSON}
+                />
+              )}
               {activeTab === 'changelog' && <ChangelogTab />}
             </div>
           </div>
@@ -635,7 +792,7 @@ function App() {
           {/* Footer */}
           <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
             <p>
-              Public Service TTL Editor - Part of RONL Initiative
+              Core Public Service Editor - Part of RONL Initiative
               <br />
               Based on{' '}
               <a
@@ -670,7 +827,7 @@ function App() {
 
             <p className="text-gray-600 mb-6">
               This will permanently delete all data in all tabs (Service, Organization, Legal,
-              Rules, Parameters, Cost, and Output). This action cannot be undone.
+              Rules, Parameters, CPRMV, Cost, and Output). This action cannot be undone.
             </p>
 
             <div className="flex gap-3 justify-end">
