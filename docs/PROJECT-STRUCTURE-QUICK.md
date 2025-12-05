@@ -55,11 +55,11 @@ ttl-editor/
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                        App.js (Main)                        │
-│  • State management (service, org, legal, rules, params)   │
+│  • State management (service, org, legal, rules, params)    │
 │  • Tab navigation                                           │
 │  • Import/Export TTL                                        │
 │  • Validation coordination                                  │
-│  • Layout (header, tabs, preview toggle)                   │
+│  • Layout (header, tabs, preview toggle)                    │
 └─────────────────────┬───────────────────────────────────────┘
                       │
         ┌─────────────┴─────────────┐
@@ -80,39 +80,44 @@ Service  Org    Legal  Rules  Params  Changelog
 ## File Responsibilities
 
 ### 🎯 Core Application
-| File | Lines | Purpose |
-|------|-------|---------|
-| `App.js` | 790 | Orchestrates entire app, manages state |
-| `index.js` | 25 | React entry point, renders App |
+
+| File       | Lines | Purpose                                |
+| ---------- | ----- | -------------------------------------- |
+| `App.js`   | 790   | Orchestrates entire app, manages state |
+| `index.js` | 25    | React entry point, renders App         |
 
 ### 🧩 Components (Tabs)
-| Component | Lines | Maps To | Function |
-|-----------|-------|---------|----------|
-| `ServiceTab` | 155 | cpsv:PublicService | Service metadata form |
-| `OrganizationTab` | 120 | cv:PublicOrganisation | Authority form |
-| `LegalTab` | 145 | eli:LegalResource | Legal resource form |
-| `RulesTab` | 170 | RONL vocabulary | Temporal rules form |
-| `ParametersTab` | 195 | CPRMV vocabulary | Parameters form |
-| `ChangelogTab` | 120 | - | Version history display |
+
+| Component         | Lines | Maps To               | Function                |
+| ----------------- | ----- | --------------------- | ----------------------- |
+| `ServiceTab`      | 155   | cpsv:PublicService    | Service metadata form   |
+| `OrganizationTab` | 120   | cv:PublicOrganisation | Authority form          |
+| `LegalTab`        | 145   | eli:LegalResource     | Legal resource form     |
+| `RulesTab`        | 170   | RONL vocabulary       | Temporal rules form     |
+| `ParametersTab`   | 195   | CPRMV vocabulary      | Parameters form         |
+| `ChangelogTab`    | 120   | -                     | Version history display |
 
 ### 🔧 Preview
-| Component | Lines | Function |
-|-----------|-------|----------|
-| `PreviewPanel` | 65 | Live TTL preview, copy button, line count |
+
+| Component      | Lines | Function                                  |
+| -------------- | ----- | ----------------------------------------- |
+| `PreviewPanel` | 65    | Live TTL preview, copy button, line count |
 
 ### ⚙️ Utilities
-| File | Lines | Function |
-|------|-------|----------|
-| `constants.js` | 85 | Namespaces, options, URI prefixes |
-| `ttlHelpers.js` | 120 | Generate TTL for each section |
-| `validators.js` | 140 | Validate all form data |
-| `parseTTL_enhanced.js` | 350 | Parse imported TTL files |
+
+| File                   | Lines | Function                          |
+| ---------------------- | ----- | --------------------------------- |
+| `constants.js`         | 85    | Namespaces, options, URI prefixes |
+| `ttlHelpers.js`        | 120   | Generate TTL for each section     |
+| `validators.js`        | 140   | Validate all form data            |
+| `parseTTL_enhanced.js` | 350   | Parse imported TTL files          |
 
 ### 📊 Data
-| File | Lines | Function |
-|------|-------|----------|
-| `changelog.json` | 180 | Version history content |
-| `roadmap.json` | 35 | Future features list |
+
+| File             | Lines | Function                |
+| ---------------- | ----- | ----------------------- |
+| `changelog.json` | 180   | Version history content |
+| `roadmap.json`   | 35    | Future features list    |
 
 ---
 
@@ -155,28 +160,28 @@ Export: State → Generate TTL → Combine Sections → Download .ttl
 
 ## Key Metrics
 
-| Metric | Before | After | Change |
-|--------|--------|-------|--------|
-| App.js lines | 1,723 | 790 | -54% |
-| Total lines | 1,723 | ~2,200 | Distributed |
-| Components | 0 | 8 | New |
-| Utils | Inline | 4 files | Extracted |
-| Maintainability | Low | High | ✅ |
+| Metric          | Before | After   | Change      |
+| --------------- | ------ | ------- | ----------- |
+| App.js lines    | 1,723  | 790     | -54%        |
+| Total lines     | 1,723  | ~2,200  | Distributed |
+| Components      | 0      | 8       | New         |
+| Utils           | Inline | 4 files | Extracted   |
+| Maintainability | Low    | High    | ✅         |
 
 ---
 
 ## Standards Compliance
 
-| Standard | Usage |
-|----------|-------|
+| Standard          | Usage                               |
+| ----------------- | ----------------------------------- |
 | **CPSV-AP 3.2.0** | Core vocabulary for public services |
-| **RONL** | Temporal rules (Dutch government) |
-| **CPRMV** | Parameters vocabulary |
-| **ELI** | Legal resource identifiers |
-| **Dublin Core** | Metadata (title, description) |
-| **SKOS** | Concepts (prefLabel, notation) |
-| **Schema.org** | Values and units |
-| **FOAF** | Homepage links |
+| **RONL**          | Temporal rules (Dutch government)   |
+| **CPRMV**         | Parameters vocabulary               |
+| **ELI**           | Legal resource identifiers          |
+| **Dublin Core**   | Metadata (title, description)       |
+| **SKOS**          | Concepts (prefLabel, notation)      |
+| **Schema.org**    | Values and units                    |
+| **FOAF**          | Homepage links                      |
 
 ---
 
@@ -186,8 +191,8 @@ Export: State → Generate TTL → Combine Sections → Download .ttl
 {
   "react": "^18.3.1",
   "react-dom": "^18.3.1",
-  "lucide-react": "^0.263.1",  // Icons
-  "tailwindcss": "^3.x"         // Styling
+  "lucide-react": "^0.263.1", // Icons
+  "tailwindcss": "^3.x" // Styling
 }
 ```
 

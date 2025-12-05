@@ -12,6 +12,7 @@
 The TTL Editor has been modularized from a monolithic 1,723-line application into a well-structured, maintainable codebase with clear separation of concerns across Components, Utils, and Data layers.
 
 **Architecture:** Component-based with Utils for business logic, organized in layers:
+
 - **App Layer:** Main orchestration (App.js)
 - **Components:** UI elements (tabs, preview panel)
 - **Utils:** Business logic (TTL generation, validation, constants)
@@ -74,8 +75,10 @@ ttl-editor/
 ### App Layer
 
 #### `src/App.js` (~790 lines after modularization)
+
 **Function:** Main application orchestrator  
 **Responsibilities:**
+
 - Application state management (service, organization, legal, rules, parameters)
 - Tab navigation logic
 - Import/export TTL functionality
@@ -85,6 +88,7 @@ ttl-editor/
 - Component composition
 
 **Key Features:**
+
 - Split-screen layout with toggle-able preview panel
 - TTL import with vocabulary detection
 - Export/download functionality
@@ -96,17 +100,21 @@ ttl-editor/
 ### Components
 
 #### `src/components/PreviewPanel.jsx` (~65 lines)
+
 **Function:** Live TTL preview side panel  
 **Responsibilities:**
+
 - Display TTL output in real-time
 - Copy to clipboard functionality
 - Line count display
 - Dark theme with syntax highlighting
 
 **Props:**
+
 - `ttlContent`: String - Generated TTL to display
 
 **Features:**
+
 - Auto-updates as user edits
 - Fixed position on right edge
 - Scrollable content area
@@ -115,8 +123,10 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/ServiceTab.jsx` (~155 lines)
+
 **Function:** Public service metadata form  
 **Responsibilities:**
+
 - Service identifier input (dct:identifier)
 - Service name/title (dct:title)
 - Service description (dct:description)
@@ -126,6 +136,7 @@ ttl-editor/
 - Language selection (dct:language)
 
 **Props:**
+
 - `service`: Object - Service data
 - `setService`: Function - Update service state
 
@@ -134,20 +145,24 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/OrganizationTab.jsx` (~120 lines)
+
 **Function:** Organization/competent authority form  
 **Responsibilities:**
+
 - Organization identifier or URI (org:Organization)
-- Organization preferred name (skos:prefLabel) *required
+- Organization preferred name (skos:prefLabel) \*required
 - Homepage URL (foaf:homepage)
 - URI detection and validation
 
 **Props:**
+
 - `organization`: Object - Organization data
 - `setOrganization`: Function - Update organization state
 
 **Compliance:** Maps to cv:PublicOrganisation (CPSV-AP 3.2.0)
 
 **Features:**
+
 - Auto-detects full URIs vs short identifiers
 - Green hint for full URI detection
 - Generates namespaced URIs for short identifiers
@@ -155,8 +170,10 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/LegalTab.jsx` (~145 lines)
+
 **Function:** Legal resource metadata form  
 **Responsibilities:**
+
 - BWB ID or URI input (eli:LegalResource)
 - Version/consolidation date (eli:realized_by)
 - Document title (dct:title)
@@ -164,12 +181,14 @@ ttl-editor/
 - BWB ID validation
 
 **Props:**
+
 - `legalResource`: Object - Legal resource data
 - `setLegalResource`: Function - Update legal state
 
 **Compliance:** Maps to eli:LegalResource
 
 **Features:**
+
 - BWB ID pattern validation (BWBR/BWBV format)
 - Auto-detects full URIs
 - Links to wetten.overheid.nl
@@ -178,8 +197,10 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/RulesTab.jsx` (~170 lines)
+
 **Function:** Temporal rules management form  
 **Responsibilities:**
+
 - Rule URI (rdf:about)
 - Rule versioning chain (ronl:extends)
 - Valid from/until dates (ronl:validFrom/validUntil)
@@ -188,6 +209,7 @@ ttl-editor/
 - Add/remove multiple rules
 
 **Props:**
+
 - `temporalRules`: Array - List of temporal rules
 - `addTemporalRule`: Function - Create new rule
 - `removeTemporalRule`: Function - Delete rule
@@ -196,6 +218,7 @@ ttl-editor/
 **Compliance:** Maps to RONL vocabulary
 
 **Features:**
+
 - Multiple rules support
 - Versioning chain via extends field
 - Confidence levels (high/medium/low)
@@ -204,17 +227,20 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/ParametersTab.jsx` (~195 lines)
+
 **Function:** Parameters management form  
 **Responsibilities:**
-- Parameter notation (skos:notation) *required
-- Parameter label (skos:prefLabel) *required
-- Parameter value (schema:value) *required
+
+- Parameter notation (skos:notation) \*required
+- Parameter label (skos:prefLabel) \*required
+- Parameter value (schema:value) \*required
 - Unit selection (schema:unitCode)
 - Description (dct:description)
 - Valid from/until dates (ronl:validFrom/validUntil)
 - Add/remove multiple parameters
 
 **Props:**
+
 - `parameters`: Array - List of parameters
 - `addParameter`: Function - Create new parameter
 - `removeParameter`: Function - Delete parameter
@@ -223,6 +249,7 @@ ttl-editor/
 **Compliance:** Maps to CPRMV vocabulary
 
 **Features:**
+
 - Multiple parameters support
 - Unit options (EUR, PCT, NUM, MONTHS, YEARS, DAYS)
 - Decimal value input
@@ -231,8 +258,10 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/ChangelogTab.jsx` (~120 lines)
+
 **Function:** Version history and roadmap display  
 **Responsibilities:**
+
 - Display changelog from JSON data
 - Show version numbers, dates, status
 - Categorize changes (Added, Changed, Fixed, Security)
@@ -241,6 +270,7 @@ ttl-editor/
 **Props:** None (reads from data files)
 
 **Features:**
+
 - Color-coded version statuses
 - Expandable sections
 - Icon-based categorization
@@ -249,12 +279,15 @@ ttl-editor/
 ---
 
 #### `src/components/tabs/index.js` (~15 lines)
+
 **Function:** Barrel export for tab components  
 **Responsibilities:**
+
 - Centralized export point for all tab components
 - Simplifies imports in App.js
 
 **Exports:**
+
 - ChangelogTab
 - LegalTab
 - OrganizationTab
@@ -267,8 +300,10 @@ ttl-editor/
 ### Utils
 
 #### `src/utils/constants.js` (~85 lines)
+
 **Function:** Shared constants and configuration  
 **Responsibilities:**
+
 - RDF namespace definitions
 - Confidence level options
 - Unit type options
@@ -277,6 +312,7 @@ ttl-editor/
 - URI prefix definitions
 
 **Exports:**
+
 - `NAMESPACES`: Object - RDF namespace URIs
 - `CONFIDENCE_LEVELS`: Array - Rule confidence options
 - `UNIT_OPTIONS`: Array - Parameter unit types
@@ -287,8 +323,10 @@ ttl-editor/
 ---
 
 #### `src/utils/ttlHelpers.js` (~120 lines)
+
 **Function:** TTL generation helpers  
 **Responsibilities:**
+
 - Generate service TTL block
 - Generate organization TTL block
 - Generate legal resource TTL block
@@ -298,6 +336,7 @@ ttl-editor/
 - Format dates for TTL
 
 **Exports:**
+
 - `generateServiceTTL()`: String - Service metadata
 - `generateOrganizationTTL()`: String - Organization metadata
 - `generateLegalResourceTTL()`: String - Legal metadata
@@ -309,8 +348,10 @@ ttl-editor/
 ---
 
 #### `src/utils/validators.js` (~140 lines)
+
 **Function:** Validation logic  
 **Responsibilities:**
+
 - Validate service data
 - Validate organization data
 - Validate legal resource data
@@ -321,6 +362,7 @@ ttl-editor/
 - Validate BWB IDs
 
 **Exports:**
+
 - `validateService()`: Object - {valid, errors}
 - `validateOrganization()`: Object - {valid, errors}
 - `validateLegalResource()`: Object - {valid, errors}
@@ -331,8 +373,10 @@ ttl-editor/
 ---
 
 #### `src/utils/parseTTL_enhanced.js` (~350 lines)
+
 **Function:** TTL import and parsing  
 **Responsibilities:**
+
 - Parse TTL files into JavaScript objects
 - Extract service metadata
 - Extract organization metadata
@@ -343,9 +387,11 @@ ttl-editor/
 - Handle multiple formats (CPSV-AP, RONL, CPRMV)
 
 **Exports:**
+
 - `parseTTL()`: Object - Parsed data structure
 
 **Features:**
+
 - Vocabulary detection
 - Namespace resolution
 - Multi-line value handling
@@ -355,12 +401,15 @@ ttl-editor/
 ---
 
 #### `src/utils/index.js` (~12 lines)
+
 **Function:** Barrel export for utils  
 **Responsibilities:**
+
 - Centralized export point for all utilities
 - Simplifies imports throughout application
 
 **Exports:**
+
 - All constants (from constants.js)
 - All TTL helpers (from ttlHelpers.js)
 - All validators (from validators.js)
@@ -371,8 +420,10 @@ ttl-editor/
 ### Data Files
 
 #### `src/data/changelog.json` (~180 lines)
+
 **Function:** Version history data  
 **Structure:**
+
 ```json
 {
   "versions": [
@@ -400,8 +451,10 @@ ttl-editor/
 ---
 
 #### `src/data/roadmap.json` (~35 lines)
+
 **Function:** Future features roadmap  
 **Structure:**
+
 ```json
 {
   "items": [
@@ -421,13 +474,16 @@ ttl-editor/
 ### Configuration Files
 
 #### `src/config/vocabularies_config.js` (~140 lines)
+
 **Function:** RDF vocabulary mappings  
 **Responsibilities:**
+
 - Define supported vocabularies
 - Map vocabulary prefixes to namespaces
 - Configure TTL parser vocabulary detection
 
 **Exports:**
+
 - `vocabularies`: Object - Vocabulary configurations
 
 ---
@@ -435,8 +491,10 @@ ttl-editor/
 ### Entry Points & Styles
 
 #### `src/index.js` (~25 lines)
+
 **Function:** React application entry point  
 **Responsibilities:**
+
 - Import React and ReactDOM
 - Import root App component
 - Import global styles
@@ -446,8 +504,10 @@ ttl-editor/
 ---
 
 #### `src/index.css` (~15 lines)
+
 **Function:** Global styles and Tailwind imports  
 **Responsibilities:**
+
 - Import Tailwind base, components, utilities
 - Define global CSS variables
 - Set body font and background
@@ -455,8 +515,10 @@ ttl-editor/
 ---
 
 #### `src/App.css` (~30 lines)
+
 **Function:** Application-level styles  
 **Responsibilities:**
+
 - Component-specific styles
 - Custom animations
 - Override default styles
@@ -466,14 +528,17 @@ ttl-editor/
 ### Configuration Files (Root)
 
 #### `package.json`
+
 **Function:** Project metadata and dependencies  
 **Key Dependencies:**
+
 - react: ^18.3.1
 - react-dom: ^18.3.1
 - lucide-react: ^0.263.1 (icons)
 - tailwindcss: ^3.x (styling)
 
 **Scripts:**
+
 - `start`: Development server
 - `build`: Production build
 - `test`: Run tests
@@ -482,8 +547,10 @@ ttl-editor/
 ---
 
 #### `tailwind.config.js`
+
 **Function:** Tailwind CSS configuration  
 **Responsibilities:**
+
 - Define content paths for purging
 - Extend theme colors
 - Configure plugins
@@ -491,8 +558,10 @@ ttl-editor/
 ---
 
 #### `.eslintrc.json`
+
 **Function:** ESLint configuration  
 **Responsibilities:**
+
 - Code quality rules
 - React-specific rules
 - Enforce coding standards
@@ -502,8 +571,10 @@ ttl-editor/
 ## Documentation Files
 
 #### `README.md` (~400 lines)
+
 **Function:** Project documentation  
 **Contents:**
+
 - Getting started guide
 - Feature overview
 - Development setup
@@ -513,8 +584,10 @@ ttl-editor/
 ---
 
 #### `FIELD-MAPPING-CPSV-AP-3_2_0.md` (~500 lines)
+
 **Function:** CPSV-AP compliance reference  
 **Contents:**
+
 - Field-to-property mappings
 - Required vs optional fields
 - CPSV-AP 3.2.0 specification
@@ -523,8 +596,10 @@ ttl-editor/
 ---
 
 #### `VOCABULARY-INSTRUCTIONS.md` (~450 lines)
+
 **Function:** RDF vocabulary usage guide  
 **Contents:**
+
 - Namespace explanations
 - Property usage guidelines
 - RONL vocabulary specifics
@@ -547,16 +622,16 @@ ttl-editor/
 
 ## Component Props Summary
 
-| Component | Props | State Management |
-|-----------|-------|------------------|
-| App | - | Local state (hooks) |
-| PreviewPanel | ttlContent | Internal (copy state) |
-| ServiceTab | service, setService | Lifted to App |
-| OrganizationTab | organization, setOrganization | Lifted to App |
-| LegalTab | legalResource, setLegalResource | Lifted to App |
-| RulesTab | temporalRules, add/remove/update | Lifted to App |
-| ParametersTab | parameters, add/remove/update | Lifted to App |
-| ChangelogTab | - | Reads from JSON |
+| Component       | Props                            | State Management      |
+| --------------- | -------------------------------- | --------------------- |
+| App             | -                                | Local state (hooks)   |
+| PreviewPanel    | ttlContent                       | Internal (copy state) |
+| ServiceTab      | service, setService              | Lifted to App         |
+| OrganizationTab | organization, setOrganization    | Lifted to App         |
+| LegalTab        | legalResource, setLegalResource  | Lifted to App         |
+| RulesTab        | temporalRules, add/remove/update | Lifted to App         |
+| ParametersTab   | parameters, add/remove/update    | Lifted to App         |
+| ChangelogTab    | -                                | Reads from JSON       |
 
 ---
 
@@ -621,6 +696,7 @@ Download .ttl file
 ## Future Enhancements
 
 Potential improvements documented in roadmap.json:
+
 - Advanced validation with SHACL
 - Template system for common services
 - Multi-language support
