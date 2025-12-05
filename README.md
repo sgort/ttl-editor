@@ -1,8 +1,12 @@
-# Public Service TTL Editor
+# Core Public Service Editor
 
-**Generate RDF/Turtle files for government services following CPSV-AP and CPRMV standards**
+**Generate CPSV-AP 3.2.0 compliant RDF/Turtle files for Dutch government services**
 
-🌐 **Live Application:** [ttl.open-regels.nl](https://ttl.open-regels.nl)
+🌐 **Live Application:** [cpsv.open-regels.nl](https://cpsv.open-regels.nl)
+
+[![CPSV-AP](https://img.shields.io/badge/CPSV--AP-3.2.0-blue)](https://semiceu.github.io/CPSV-AP/)
+[![Version](https://img.shields.io/badge/version-1.4.0-green)]()
+[![License](https://img.shields.io/badge/license-MIT-blue)]()
 
 ---
 
@@ -10,153 +14,257 @@
 
 - [Overview](#overview)
 - [Features](#features)
-- [Technology Stack](#technology-stack)
+- [Standards Compliance](#standards-compliance)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Usage Guide](#usage-guide)
-- [Standards & Specifications](#standards--specifications)
 - [Development](#development)
 - [Deployment](#deployment)
-- [Enhancements Timeline](#enhancements-timeline)
-- [Contributing](#contributing)
-- [License](#license)
+- [Roadmap](#roadmap)
+- [Links](#links)
 
 ---
 
 ## 🎯 Overview
 
-The Public Service TTL Editor is a web-based application designed to simplify the creation and management of RDF/Turtle files for government services. It provides an intuitive interface for creating service definitions that comply with:
+The **Core Public Service Editor** (formerly Public Service TTL Editor) is a React-based web application that simplifies the creation and management of RDF/Turtle files for government services. It provides an intuitive interface for creating service definitions that comply with EU and Dutch standards.
 
-- **CPSV-AP 3.0** - Core Public Service Vocabulary Application Profile (EU standard)
-- **CPRMV 0.3.0** - Core Public Rule Management Vocabulary (Dutch extensions)
-- **RONL Vocabulary** - Regels Overheid Nederland custom namespace
+### Part of RONL Initiative
 
-### Purpose
+This tool is part of **RONL (Regels Overheid Nederland)**, enabling government organizations to:
 
-Part of the **RONL (Regels Overheid Nederland)** initiative, this tool enables government organizations to:
+- ✅ Document public services with structured, semantic metadata
+- ✅ Define temporal rules for service regulations
+- ✅ Link services to legal resources (Dutch BWB laws)
+- ✅ Manage normative values from legislation (CPRMV)
+- ✅ Generate valid, standards-compliant RDF/Turtle files
 
-- Document public services with structured metadata
-- Define temporal rules for service regulations
-- Link services to legal resources (BWB laws)
-- Generate valid RDF/Turtle files for publication on regels.overheid.nl
+### Example Use Cases
 
-### Example Use Case
-
-**AOW (Algemene Ouderdomswet)** - Dutch Old Age Pension age calculation service definition with temporal rules for changing retirement ages.
+- **AOW (Old Age Pension)**: Define retirement age calculation rules with temporal validity
+- **WIA (Work and Income Act)**: Document disability benefit services with parameter values
+- **Participatiewet**: Model municipal participation services with costs and outputs
 
 ---
 
 ## ✨ Features
 
-### Core Functionality
+### Current Version: 1.4.0 (December 2025)
 
-#### 1. **Multi-Tab Form Interface**
+#### 🎨 **Modular Architecture**
 
-- **Service Tab**: Core service information (identifier, name, description, thematic area, sector, keywords)
-- **Organization Tab**: Competent authority details (name, identifier, homepage)
-- **Legal Tab**: Legal resource linkage (BWB law IDs, versions, titles)
-- **Rules Tab**: Temporal rules with CPRMV extensions (validity periods, confidence levels)
-- **Preview Tab**: Real-time TTL output preview with syntax highlighting
+- **Extracted Components**: 7 tab components + preview panel
+- **Organized Utils**: Business logic separated from UI
+- **Clean Codebase**: Reduced from 1,723 to 790 lines in App.js (-54%)
 
-#### 2. **Import Functionality** ✅ _NEW_
+#### 📑 **Multi-Tab Interface**
 
-- Load existing `.ttl` files for editing
+| Tab              | Purpose                | CPSV-AP Class                  |
+| ---------------- | ---------------------- | ------------------------------ |
+| **Service**      | Core service metadata  | `cpsv:PublicService`           |
+| **Organization** | Competent authority    | `cv:PublicOrganisation`        |
+| **Legal**        | Legal resource linkage | `eli:LegalResource`            |
+| **Rules**        | Temporal regulations   | `cpsv:Rule, ronl:TemporalRule` |
+| **Parameters**   | Normative constants    | `ronl:ParameterWaarde`         |
+| **CPRMV**        | Bulk rule management   | `cprmv:Rule`                   |
+| **Changelog**    | Version history        | -                              |
+
+#### ✅ **CPSV-AP 3.2.0 Compliance** (Phase 1 Complete)
+
+- ✅ Correct class types (`cv:PublicOrganisation` instead of `org:Organization`)
+- ✅ Correct relationships (`cv:hasLegalResource` instead of `cpsv:follows`)
+- ✅ Explicit identifiers for all entities (`dct:identifier`)
+- ✅ Mandatory organization spatial field (`cv:spatial`)
+- ✅ Mandatory rule identifiers and titles
+- ✅ Cost and Output sections with proper CPSV-AP properties
+- ✅ Language as LinguisticSystem URI
+- ✅ Sector as URI from controlled vocabulary
+
+#### 📥 **Import/Export**
+
+- Import existing `.ttl` files for editing
 - Automatic form population from TTL content
-- Intelligent parsing of CPSV-AP/CPRMV structures
-- Support for multiple temporal rules
-- Handles escaped characters and special formatting
+- Intelligent parsing with vocabulary configuration support
+- Round-trip editing (export → import → edit → export)
+- Proper character escaping and URI encoding
 
-#### 3. **Export Functionality**
+#### 🎯 **Validation**
 
-- Download generated TTL files
-- Proper RDF/Turtle syntax with all required namespaces
-- Automatic escaping of special characters
-- URI encoding for identifiers with spaces
-- Sanitized filenames for downloads
+- Required field checking with visual indicators
+- Pattern matching (BWB IDs, URIs)
+- Real-time feedback
+- Comprehensive validation for all mandatory CPSV-AP fields
 
-#### 4. **Validation**
+#### 👁️ **Live Preview**
 
-- Form field validation
-- Pattern matching for BWB IDs (e.g., BWBR0002820)
-- Required field checking
-- Real-time feedback on validation errors
+- Split-screen mode with toggle
+- Real-time TTL generation as you type
+- Copy-to-clipboard functionality
+- Line count display
 
-#### 5. **Dynamic Temporal Rules**
+#### 🔧 **CPRMV Support**
 
-- Add/remove temporal rules dynamically
-- CPRMV properties support:
-  - `ronl:extends` - Rule inheritance
-  - `ronl:validFrom` - Start date
-  - `ronl:validUntil` - End date
-  - `ronl:confidenceLevel` - High/Medium/Low confidence
-- Date pickers for easy input
-- Description fields for documentation
-
-### Technical Features
-
-- **Character Escaping**: Proper handling of quotes, newlines, and special characters in TTL strings
-- **URI Encoding**: Automatic encoding of spaces and special characters in URIs
-- **Real-time Preview**: Live TTL generation as you type
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Modern UI**: Clean interface with Tailwind CSS styling
-- **Icon Integration**: Lucide React icons for visual clarity
+- Dedicated tab for normative rules (normenbrief format)
+- JSON import for bulk rule loading
+- All 6 mandatory CPRMV fields supported
+- Automatic URI generation
 
 ---
 
-## 🛠 Technology Stack
+## 📐 Standards Compliance
 
-### Frontend Framework
+### CPSV-AP 3.2.0 (Core Public Service Vocabulary)
 
-- **React 18.3.1** - UI library for component-based architecture
-- **Create React App** - Zero-config build setup
+**Status:** ✅ Phase 1 Minimal Compliance Achieved
 
-### Styling
+European standard for describing public services with semantic metadata:
 
-- **Tailwind CSS 3.x** - Utility-first CSS framework
-- Custom configuration for consistent design system
+- Service descriptions and classifications
+- Organization relationships
+- Legal basis references
+- Costs, outputs, and service delivery information
 
-### Icons & UI Components
+**Documentation:** [CPSV-AP 3.2.0 Specification](https://semiceu.github.io/CPSV-AP/)
 
-- **Lucide React 0.263.1** - Modern icon library
-- Custom form components with validation
+### RONL Vocabulary (Regels Overheid Nederland)
 
-### Build & Deployment
+Dutch extensions for temporal rule management:
 
-- **Azure Static Web Apps** - Hosting platform
-- **GitHub Actions** - CI/CD pipeline for automatic deployments
-- **Custom Domain** - ttl.open-regels.nl with SSL
+- `ronl:TemporalRule` - Time-bound regulations
+- `ronl:extends` - Rule inheritance and versioning
+- `ronl:validFrom`, `ronl:validUntil` - Validity periods
+- `ronl:confidenceLevel` - Regulation confidence levels
+- `ronl:ParameterWaarde` - Parameter values with units
 
-### Standards Compliance
+### CPRMV 0.3.0 (Core Public Rule Management Vocabulary)
 
+Dutch standard for normative values extracted from legislation:
+
+- `cprmv:Rule` - Normative rule from legal text
+- `cprmv:id`, `cprmv:rulesetId` - Rule identification
+- `cprmv:definition`, `cprmv:situatie` - Rule content
+- `cprmv:norm` - Numeric normative value
+- `cprmv:ruleIdPath` - Hierarchical rule path
+
+**Documentation:** [CPRMV Specification](https://cprmv.open-regels.nl/0.3.0/)
+
+### Supporting Standards
+
+- **ELI (European Legislation Identifier)** - Legal resource references
+- **Dublin Core Terms** - Metadata properties (title, description, identifier)
+- **SKOS (Simple Knowledge Organization System)** - Concepts and labels
+- **Schema.org** - Parameter values and units
+- **FOAF** - Organization homepage links
 - **W3C Turtle** - RDF serialization format
-- **CPSV-AP 3.0** - EU Core Public Service Vocabulary
-- **CPRMV 0.3.0** - Dutch rule management extensions
-- **ELI Ontology** - European Legislation Identifier
 
 ---
 
 ## 📁 Project Structure
 
+### Directory Tree
+
 ```
 ttl-editor/
-├── public/
-│   ├── index.html           # HTML template with updated title
-│   ├── favicon.svg          # Custom TTL Editor favicon
-│   └── manifest.json        # PWA manifest
+│
+├── public/                          # Static assets
+│   ├── index.html                   # HTML template
+│   ├── favicon.svg                  # Custom favicon
+│   └── manifest.json                # PWA manifest
+│
 ├── src/
-│   ├── App.js              # Main application component
-│   ├── index.js            # React entry point
-│   ├── index.css           # Tailwind directives
-│   └── App.css             # Additional styles
-├── .eslintrc.json          # ESLint configuration
-├── .gitignore              # Git ignore rules
-├── package.json            # Dependencies and scripts
-├── tailwind.config.js      # Tailwind configuration
-├── README.md               # This file
-└── .github/
-    └── workflows/
-        └── azure-static-web-apps-*.yml  # CI/CD pipeline
+│   ├── App.js                       # Main orchestrator
+│   ├── App.css                      # Application styles
+│   ├── index.js                     # React entry point
+│   ├── index.css                    # Global styles + Tailwind
+│   │
+│   ├── components/
+│   │   ├── PreviewPanel.jsx         # Live preview side panel
+│   │   └── tabs/
+│   │       ├── index.js             # Barrel export
+│   │       ├── ServiceTab.jsx       # Service form
+│   │       ├── OrganizationTab.jsx  # Organization form
+│   │       ├── LegalTab.jsx         # Legal resource form
+│   │       ├── RulesTab.jsx         # Temporal rules form
+│   │       ├── ParametersTab.jsx    # Parameters form
+│   │       ├── CPRMVTab.jsx         # CPRMV rules form
+│   │       └── ChangelogTab.jsx     # Version history
+│   │
+│   ├── utils/
+│   │   ├── index.js                 # Barrel export
+│   │   ├── constants.js             # Shared constants
+│   │   ├── ttlHelpers.js            # TTL generation
+│   │   ├── validators.js            # Validation logic
+│   │   └── parseTTL_enhanced.js     # TTL parser
+│   │
+│   ├── data/
+│   │   ├── changelog.json           # Version history
+│   │   └── roadmap.json             # Future features
+│   │
+│   └── config/
+│       └── vocabularies_config.js   # RDF vocabulary mappings
+│
+├── docs/                               # Documentation
+│   ├── FIELD-MAPPING-CPSV-AP-3.2.0.md  # CPSV-AP compliance mapping
+│   ├── NAMESPACE-PROPERTIES.md         # RDF property reference
+│   ├── VOCABULARY-INSTRUCTIONS.md      # Vocabulary configuration guide
+│   ├── PROJECT-STRUCTURE.md            # Detailed architecture
+│   └── PROJECT-STRUCTURE-QUICK.md      # Quick reference
+│
+├── .github/
+│   └── workflows/
+│       └── azure-static-web-apps-*.yml # CI/CD pipeline
+│
+├── package.json                     # Dependencies & scripts
+├── tailwind.config.js               # Tailwind configuration
+├── .eslintrc.json                   # ESLint rules
+└── README.md                        # This file
 ```
+
+### Component Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      App.js (Main)                          │
+│  • State management (useState hooks)                        │
+│  • Tab navigation                                           │
+│  • Import/Export TTL                                        │
+│  • Validation coordination                                  │
+└─────────────────────┬───────────────────────────────────────┘
+                      │
+        ┌─────────────┴─────────────┐
+        │                           │
+   ┌────▼─────┐              ┌─────▼──────┐
+   │  Tabs    │              │  Preview   │
+   │(7 tabs)  │              │   Panel    │
+   └────┬─────┘              └────────────┘
+        │
+   ┌────┴────┬────────┬────────┬──────────┬────────┬────────┐
+   │         │        │        │          │        │        │
+Service   Org    Legal   Rules   Params   CPRMV  Changelog
+  Tab     Tab     Tab     Tab      Tab     Tab      Tab
+```
+
+### Data Flow
+
+```
+User Input → Tab Component → State Update (App.js)
+    ↓
+TTL Generation (utils/ttlHelpers.js)
+    ↓
+PreviewPanel (live display) + Download (.ttl file)
+
+Import: TTL File → parseTTL_enhanced.js → Extract Data → Update State → Populate Tabs
+```
+
+### Key Metrics
+
+| Metric             | v1.3.0  | v1.4.0     | Improvement             |
+| ------------------ | ------- | ---------- | ----------------------- |
+| App.js lines       | 856     | 790        | -8%                     |
+| Total codebase     | ~1,900  | ~2,300     | Better organized        |
+| Components         | 7       | 9          | +2 (Cost, Output)       |
+| CPSV-AP compliance | Partial | Phase 1 ✅ | Full minimal compliance |
+| Test coverage      | Manual  | Manual     | Structured checklists   |
 
 ---
 
@@ -164,9 +272,10 @@ ttl-editor/
 
 ### Prerequisites
 
-- **Node.js** (v14 or higher)
+- **Node.js** v14 or higher
 - **npm** or **yarn**
 - **Git**
+- Modern web browser (Chrome, Firefox, Safari, Edge)
 
 ### Installation
 
@@ -200,7 +309,7 @@ ttl-editor/
 npm run build
 ```
 
-This creates an optimized production build in the `build/` directory.
+Creates an optimized production build in the `build/` directory.
 
 ---
 
@@ -208,152 +317,157 @@ This creates an optimized production build in the `build/` directory.
 
 ### Creating a New Service
 
-1. **Service Information**
-   - Enter a unique service identifier (e.g., `aow-leeftijd`)
+1. **Service Tab**
+   - Enter unique service identifier (e.g., `aow-leeftijd`)
    - Provide service name and description
-   - Add thematic area, sector, and keywords
-   - Select language (Nederlands/English)
+   - Add thematic area URI (e.g., `https://standaarden.overheid.nl/owms/terms/...`)
+   - Select government sector from dropdown
+   - Add keywords and select language
 
-2. **Organization Details**
-   - Specify organization identifier
-   - Enter organization name
+2. **Organization Tab**
+   - Enter organization identifier or full URI
+   - Provide organization name
    - Add homepage URL
+   - **Select geographic jurisdiction (mandatory)** - e.g., Netherlands
 
-3. **Legal Resource**
-   - Input BWB law ID (format: `BWBR0002820`)
-   - Specify version date
+3. **Legal Tab**
+   - Enter BWB law ID (format: `BWBR0002820`) or full URI
+   - Specify version date (optional)
    - Add legal title and description
 
-4. **Temporal Rules**
-   - Add one or more temporal rules
-   - Define rule URIs and inheritance (`extends`)
-   - Set validity periods (`validFrom`, `validUntil`)
+4. **Rules Tab**
+   - **Enter rule identifier (mandatory)** - e.g., `rule-001`
+   - **Enter rule title (mandatory)** - e.g., "AOW Age Rule 2024"
+   - Add rule URI
+   - Define rule extensions (optional)
+   - Set validity periods
    - Choose confidence level
-   - Document rule descriptions
+   - Add description
 
-5. **Preview & Download**
-   - Switch to Preview tab to see generated TTL
+5. **Parameters Tab** (optional)
+   - Add parameter notations (e.g., `MAXIMUM_INCOME`)
+   - Set labels, values, and units
+   - Define validity periods
+
+6. **CPRMV Tab** (optional)
+   - Import JSON from normenbrief format
+   - Or manually enter normative rules
+   - All 6 fields are mandatory per rule
+
+7. **Cost & Output** (in Service Tab)
+   - Scroll down in Service Tab to find Cost and Output sections
+   - Add cost information if applicable
+   - Define service outputs if applicable
+
+8. **Preview & Download**
+   - Toggle preview panel to see generated TTL
    - Click "Validate" to check for errors
    - Click "Download TTL" to save the file
 
 ### Importing Existing Services
 
-1. **Click "Import TTL File"** button in header
-2. **Select a `.ttl` file** from your computer
-3. **All form fields populate automatically**
-4. **Edit as needed** and download updated version
+1. Click **"Import TTL File"** button in header
+2. Select a `.ttl` file from your computer
+3. All form fields populate automatically
+4. Edit as needed
+5. Download updated version
 
-### Example: Importing an AOW Service
-
-```turtle
-@prefix cpsv: <http://purl.org/vocab/cpsv#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-
-<https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
-    dct:title "AOW Leeftijdsbepaling"@nl ;
-    dct:description "Berekening van de AOW-leeftijd"@nl .
-```
-
-When imported, the Service tab will show:
-
-- Identifier: `aow-leeftijd`
-- Name: `AOW Leeftijdsbepaling`
-- Description: `Berekening van de AOW-leeftijd`
-
----
-
-## 📚 Standards & Specifications
-
-### CPSV-AP (Core Public Service Vocabulary Application Profile)
-
-European standard for describing public services:
-
-- Service metadata (title, description, type)
-- Organization relationships (`hasCompetentAuthority`)
-- Legal basis (`follows`)
-- Costs and outputs
-
-**Documentation:** [CPSV-AP Specification](https://semiceu.github.io/CPSV-AP/)
-
-### CPRMV (Core Public Rule Management Vocabulary)
-
-Dutch extensions for rule management:
-
-- Temporal rules with validity periods
-- Rule inheritance and versioning
-- Confidence levels for regulations
-
-### Namespaces Used
+### Example TTL Output (v1.4.0)
 
 ```turtle
 @prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix cv: <http://data.europa.eu/m8g/> .
 @prefix dct: <http://purl.org/dc/terms/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix eli: <http://data.europa.eu/eli/ontology#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
+    dct:identifier "aow-leeftijd" ;
+    dct:title "AOW Leeftijdsbepaling"@nl ;
+    dct:description "Berekening van de AOW-leeftijd"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NLD> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/svb> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> .
+
+<https://regels.overheid.nl/organizations/svb> a cv:PublicOrganisation ;
+    dct:identifier "svb" ;
+    skos:prefLabel "Sociale Verzekeringsbank"@nl ;
+    foaf:homepage <https://www.svb.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> .
+
+<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
+    dct:identifier "BWBR0002221" ;
+    dct:title "Algemene Ouderdomswet"@nl .
 ```
-
-### Reference Documentation
-
-- **NAMESPACE-PROPERTIES.md**: [View on GitLab](https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md)
-- Complete property reference and patterns
-- Examples and use cases
 
 ---
 
-## 💻 Development
+## 🛠 Development
 
-### Running Locally
+### Technology Stack
+
+**Frontend:**
+
+- React 18.3.1 with hooks (functional components)
+- Tailwind CSS 3.x for styling
+- Lucide React 0.263.1 for icons
+
+**Build Tools:**
+
+- Create React App (zero-config)
+- ESLint with react-app preset
+- PostCSS for Tailwind
+
+**Deployment:**
+
+- Azure Static Web Apps
+- GitHub Actions CI/CD
+- Custom domain with SSL
+
+### Development Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server (with hot reload)
+# Start dev server
 npm start
 
-# Run in development mode
-# Changes will automatically reload
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Lint code
+npm run lint
+
+# Fix linting issues
+npm run lint -- --fix
 ```
 
 ### Code Quality
 
-The project uses ESLint for code quality:
+ESLint configuration with React-specific rules:
 
-```bash
-# Lint code
-npm run lint
-
-# Fix auto-fixable issues
-npm run lint -- --fix
-```
-
-**ESLint Configuration:**
-
-- Based on `react-app` preset
-- Custom rules for unused variables (underscore prefix)
-- Configuration in `.eslintrc.json`
+- Unused variables: Underscore prefix allowed
+- React hooks: Rules enforced
+- No console warnings in production
 
 ### Adding New Features
 
 1. **Update State**: Add new state variables in `App.js`
-2. **Create Form Section**: Add render function for new tab
-3. **Update TTL Generator**: Add new properties to `generateTTL()`
-4. **Update Parser**: Add parsing logic to `parseTTL()`
-5. **Test**: Test creation, download, and re-import
+2. **Create/Update Component**: Modify relevant tab component
+3. **Update Constants**: Add options to `constants.js`
+4. **Update TTL Generator**: Add properties in TTL generation section
+5. **Update Parser**: Add parsing logic in `parseTTL_enhanced.js`
+6. **Test**: Create → Export → Import → Verify
 
 ### Testing Workflow
 
-1. **Create** a service with all fields filled
-2. **Download** the TTL file
-3. **Clear** the form (refresh page)
-4. **Import** the downloaded file
-5. **Verify** all fields are correctly restored
+1. Fill all form fields
+2. Download TTL file
+3. Clear form (refresh page)
+4. Import downloaded file
+5. Verify all fields restored correctly
+6. Check validation works
+7. Test edge cases (special characters, URIs, etc.)
 
 ---
 
@@ -361,47 +475,31 @@ npm run lint -- --fix
 
 ### Azure Static Web Apps
 
-The application is deployed to Azure Static Web Apps with automatic CI/CD.
+The application is deployed with automatic CI/CD through GitHub Actions.
 
-#### Deployment Configuration
+**Configuration:**
 
 - **Platform**: Azure Static Web Apps
 - **Plan**: Free tier (100 GB bandwidth/month)
-- **Domain**: ttl.open-regels.nl
-- **SSL**: Automatic HTTPS enabled
+- **Domain**: [ttl.open-regels.nl](https://ttl.open-regels.nl)
+- **SSL**: Automatic HTTPS
 
-#### Deployment Process
+**Deployment Process:**
 
-1. **Push to GitHub**
+1. Push to GitHub main branch
+2. GitHub Actions triggers automatically
+3. Builds with `npm run build`
+4. Deploys to Azure
+5. Live in 2-3 minutes
 
-   ```bash
-   git add .
-   git commit -m "Your changes"
-   git push origin main
-   ```
-
-2. **Automatic Build** via GitHub Actions
-   - Triggers on push to `main` branch
-   - Runs `npm run build`
-   - Deploys to Azure
-
-3. **Live in 2-3 minutes**
-
-#### GitHub Actions Workflow
-
-Located in `.github/workflows/azure-static-web-apps-*.yml`:
+**GitHub Actions Workflow:**
 
 ```yaml
 name: Azure Static Web Apps CI/CD
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build_and_deploy_job:
@@ -411,185 +509,75 @@ jobs:
       - name: Build And Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
           app_location: '/'
-          api_location: ''
           output_location: 'build'
 ```
 
-#### Manual Deployment via Azure Portal
+---
 
-See deployment guide for step-by-step instructions using Azure Portal.
+## 🗺️ Roadmap
+
+### ✅ Phase 1: Minimal CPSV-AP 3.2.0 Compliance (v1.4.0) - COMPLETE
+
+**Released:** December 2025
+
+- ✅ Class type fixes (`cv:PublicOrganisation`, dual-typed rules)
+- ✅ Relationship fixes (`cv:hasLegalResource`)
+- ✅ Explicit identifiers for all entities
+- ✅ Mandatory organization spatial field
+- ✅ Mandatory rule identifier and title
+- ✅ Cost and Output sections
+- ✅ Language and Sector URIs
+
+### 📋 Phase 2: Extended Compliance (v1.5.0) - PLANNED
+
+**Target:** Q1 2026
+
+- Channel class support (`cv:Channel`)
+- ContactPoint class support (`cv:ContactPoint`)
+- Additional service fields (type, processing time, status)
+- Enhanced validation with field-level feedback
+
+### 🔮 Phase 3: Full Compliance (v1.6.0) - FUTURE
+
+**Target:** Q2 2026
+
+- Requirement class support (`cv:Requirement`)
+- Evidence class support (`cv:Evidence`)
+- Event class support (`cv:Event`, `cv:BusinessEvent`, `cv:LifeEvent`)
+- Address support for organizations (`locn:Address`)
+
+### 💡 Future Enhancements
+
+- **Template System**: Pre-fill from common service templates
+- **Browser Storage**: Auto-save to localStorage
+- **Advanced Validation**: SHACL-based validation
+- **Multi-Service Management**: Work with multiple services simultaneously
+- **TriplyDB Integration**: Direct upload to knowledge graphs
+- **Collaborative Editing**: Multi-user support
+- **Version Control**: Track service definition changes over time
+
+See `roadmap.json` for detailed feature planning.
 
 ---
 
-## 📈 Enhancements Timeline
+## 📚 Documentation
 
-### Phase 1: Initial Build ✅ _COMPLETED_
+### Available Documentation
 
-**Date**: Initial Development
+- **README.md** (this file) - Getting started and overview
+- **FIELD-MAPPING-CPSV-AP-3.2.0.md** - Complete CPSV-AP compliance mapping
+- **NAMESPACE-PROPERTIES.md** - RDF property reference guide
+- **VOCABULARY-INSTRUCTIONS.md** - Vocabulary configuration guide
+- **PROJECT-STRUCTURE.md** - Detailed architecture documentation
+- **PROJECT-STRUCTURE-QUICK.md** - Quick reference guide
 
-**Features Implemented:**
+### Standards Documentation
 
-- React application with Create React App
-- Tailwind CSS v3 configuration
-- Basic 5-tab form interface (Service, Organization, Legal, Rules, Preview)
-- TTL generation with proper namespaces
-- Download functionality
-- Basic validation (BWB ID pattern matching)
-- Temporal rules management (add/remove)
-- Real-time preview
-
-**Deliverables:**
-
-- Working application on localhost:3000
-- Clean, professional UI with Tailwind styling
-- Lucide React icons integration
-
----
-
-### Phase 2: Production Deployment ✅ _COMPLETED_
-
-**Date**: Deployment Phase
-
-**Enhancements:**
-
-1. **Azure Static Web Apps Deployment**
-   - Automated CI/CD via GitHub Actions
-   - Free tier hosting
-   - Custom domain setup (ttl.open-regels.nl)
-   - SSL certificate configuration
-
-2. **Code Quality Improvements**
-   - ESLint configuration (`.eslintrc.json`)
-   - Unused variable handling with underscore prefix
-   - Clean build with no warnings
-
-3. **Branding Updates**
-   - Browser tab title: "Public Service TTL Editor"
-   - Custom favicon for TTL Editor
-   - Footer link to GitLab documentation
-
-**Deliverables:**
-
-- Live application at ttl.open-regels.nl
-- Automated deployments on git push
-- Professional branding and appearance
-
----
-
-### Phase 3: Import Functionality ✅ _COMPLETED_
-
-**Date**: Enhancement Phase 1
-
-**Features Implemented:**
-
-1. **TTL File Import**
-   - "Import TTL File" button in header
-   - File picker for `.ttl` files
-   - Automatic parsing of CPSV-AP/CPRMV structures
-   - Form population from imported data
-
-2. **Advanced TTL Parser**
-   - Extracts service information
-   - Parses organization details
-   - Reads legal resources
-   - Handles multiple temporal rules
-   - Supports cost and output data
-
-3. **Character Handling**
-   - String escaping for special characters
-   - Quote escaping: `"` → `\"`
-   - URI encoding for spaces: ` ` → `%20`
-   - Proper unescape when importing
-
-4. **User Experience**
-   - Success/error status messages
-   - Visual feedback with icons
-   - Auto-dismiss notifications
-   - Automatic tab switching after import
-
-**Technical Improvements:**
-
-- `escapeTTLString()` function for output
-- `unescapeTTLString()` function for input
-- `encodeURIComponent()` for URI handling
-- `decodeURIComponent()` for parsing
-- Improved regex for quoted strings
-- Filename sanitization for downloads
-
-**Deliverables:**
-
-- Full round-trip editing (export → import → edit → export)
-- W3C Turtle specification compliance
-- Handles edge cases (quotes, newlines, special chars)
-
----
-
-### Phase 4: Planned Enhancements 🔜 _UPCOMING_
-
-#### 4.1 Template System
-
-- Pre-fill forms from AOW example
-- Save custom templates
-- Template library for common services
-- Quick-start options
-
-#### 4.2 Browser Storage
-
-- Auto-save to localStorage
-- Restore progress on reload
-- Prevent data loss
-- Session management
-
-#### 4.3 Additional Form Sections
-
-- **Channel**: Service delivery channels
-- **Contact**: Contact information (email, phone, URL)
-- **DMN Distribution**: Decision Model files
-
-#### 4.4 Advanced Validation
-
-- Field-level error messages
-- Real-time validation feedback
-- Pattern enforcement
-- Required field indicators
-- Validation summary
-
-#### 4.5 Export Options
-
-- JSON export format
-- YAML export format
-- Multiple format support
-- Format conversion
-
-#### 4.6 DMN File Upload
-
-- Upload DMN XML files
-- Link to services
-- DMN file validation
-- Distribution metadata
-
-#### 4.7 Multi-Service Management
-
-- Manage multiple services in one session
-- Service list view
-- Switch between services
-- Bulk operations
-
----
-
-### Reporting Issues
-
-Create an issue on the repository with:
-
-- Clear description of the problem
-- Steps to reproduce
-- Expected vs actual behavior
-- Screenshots if applicable
-- Browser/environment details
+- [CPSV-AP 3.2.0 Specification](https://semiceu.github.io/CPSV-AP/)
+- [CPRMV 0.3.0 Specification](https://cprmv.open-regels.nl/0.3.0/)
+- [W3C Turtle Specification](https://www.w3.org/TR/turtle/)
+- [ELI Ontology](http://data.europa.eu/eli/ontology)
 
 ---
 
@@ -597,21 +585,45 @@ Create an issue on the repository with:
 
 - **Live Application**: [ttl.open-regels.nl](https://ttl.open-regels.nl)
 - **GitLab Repository**: [showcases/aow](https://git.open-regels.nl/showcases/aow)
-- **Documentation**: [NAMESPACE-PROPERTIES.md](https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md)
-- **CPSV-AP Specification**: [https://semiceu.github.io/CPSV-AP/](https://semiceu.github.io/CPSV-AP/)
+- **RONL Initiative**: [regels.overheid.nl](https://regels.overheid.nl)
+- **CPSV-AP**: [https://semiceu.github.io/CPSV-AP/](https://semiceu.github.io/CPSV-AP/)
+- **CPRMV**: [https://cprmv.open-regels.nl](https://cprmv.open-regels.nl)
+
+---
+
+## 🙏 Acknowledgments
+
+This project is part of the **RONL (Regels Overheid Nederland)** initiative, working towards transparent, machine-readable government regulations.
+
+**Built with:**
+
+- React team for the amazing framework
+- Tailwind CSS team for the utility-first approach
+- Lucide team for beautiful icons
+- W3C and ISA² programme for semantic web standards
+- Dutch government organizations for feedback and requirements
+
+---
+
+## 📝 License
+
+See project repository for license information.
 
 ---
 
 ## 📧 Contact
 
-For questions, feedback, or contributions regarding the Public Service TTL Editor, please reach out through the GitLab repository.
+For questions, feedback, or contributions:
+
+- Open an issue on the GitLab repository
+- Contact via RONL Initiative channels
 
 ---
 
-**Last Updated**: October 2025
-
-**Version**: 1.0.0 (with Import Functionality)
+**Last Updated**: December 2025  
+**Current Version**: 1.4.0 (CPSV-AP 3.2.0 Phase 1 Compliant)  
+**Project**: RONL Initiative - Core Public Service Editor
 
 ---
 
-_Built with ❤️ for transparent and accessible government services_
+_Building transparent, accessible, and machine-readable government services_ ✨
