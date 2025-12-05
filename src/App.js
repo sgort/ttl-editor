@@ -414,7 +414,10 @@ function App() {
       if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
       if (service.keywords)
         ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
-      if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
+      if (service.language) {
+        const languageUri = `https://publications.europa.eu/resource/authority/language/${service.language.toUpperCase()}`;
+        ttl += `    dct:language <${languageUri}> ;\n`;
+      }
 
       if (organization.identifier) {
         const orgUri = buildResourceUri(

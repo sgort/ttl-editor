@@ -197,8 +197,12 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('dcat:keyword')[1]) || parsed.service.keywords;
         }
         if (line.includes('dct:language')) {
-          parsed.service.language =
-            extractValue(line.split('dct:language')[1]) || parsed.service.language;
+          const uriMatch = line.match(/<([^>]+)>/);
+          if (uriMatch) {
+            // Extract language code from URI
+            const langCode = uriMatch[1].split('/').pop().toLowerCase();
+            parsed.service.language = langCode;
+          }
         }
       }
 
