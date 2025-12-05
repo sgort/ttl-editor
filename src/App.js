@@ -396,6 +396,7 @@ function App() {
     if (service.identifier) {
       const encodedId = encodeURIComponentTTL(service.identifier);
       ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(service.identifier)}" ;\n`;
       if (service.name)
         ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
@@ -463,6 +464,9 @@ function App() {
           : `https://wetten.overheid.nl/${legalResource.bwbId}`;
 
       ttl += `<${legalUri}> a eli:LegalResource ;\n`;
+      // Extract just the BWB ID portion if it's a full URI
+      const bwbIdOnly = legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
+      ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
       if (legalResource.title)
         ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
       if (legalResource.description)
