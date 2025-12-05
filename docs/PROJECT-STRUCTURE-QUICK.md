@@ -166,7 +166,7 @@ Export: State → Generate TTL → Combine Sections → Download .ttl
 | Total lines     | 1,723  | ~2,200  | Distributed |
 | Components      | 0      | 8       | New         |
 | Utils           | Inline | 4 files | Extracted   |
-| Maintainability | Low    | High    | ✅         |
+| Maintainability | Low    | High    | ✅          |
 
 ---
 
