@@ -158,6 +158,13 @@ export const parseTTLEnhanced = (ttlContent) => {
             ruleIdPath: '',
           };
         }
+
+        if (detectedType === 'cost') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        } else if (detectedType === 'output') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        }
+
         continue;
       }
 
@@ -327,6 +334,49 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentSection = null;
         }
       }
+
+      // Cost properties
+      if (currentSection === 'cost') {
+        if (line.includes('dct:identifier')) {
+          parsed.cost.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Cost identifier found:', parsed.cost.identifier);
+        }
+        if (line.includes('cv:value')) {
+          parsed.cost.value = extractValue(line.split('cv:value')[1]);
+        }
+        if (line.includes('cv:currency')) {
+          parsed.cost.currency = extractValue(line.split('cv:currency')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.cost.description = extractValue(line.split('dct:description')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
+      // Output properties
+      if (currentSection === 'output') {
+        if (line.includes('dct:identifier')) {
+          parsed.output.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Output identifier found:', parsed.output.identifier);
+        }
+        if (line.includes('dct:title')) {
+          parsed.output.name = extractValue(line.split('dct:title')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.output.description = extractValue(line.split('dct:description')[1]);
+        }
+        if (line.includes('dct:type')) {
+          parsed.output.type = extractValue(line.split('dct:type')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
       if (currentSection === 'cprmvRule' && currentCprmvRule) {
         if (line.includes('cprmv:id')) {
           currentCprmvRule.ruleId =
@@ -361,7 +411,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
       }
     }
-    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules); // ← ADD THIS ONE LINE
+    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules);
 
     return parsed;
   } catch (error) {

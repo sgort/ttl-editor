@@ -100,12 +100,13 @@ function App() {
       parameters: parsed.parameters || [],
       cprmvRules: parsed.cprmvRules || [],
       cost: {
+        identifier: parsed.cost?.identifier || '',
         value: parsed.cost?.value || '',
         currency: parsed.cost?.currency || 'EUR',
         description: parsed.cost?.description || '',
       },
       output: {
-        cprmvRules: parsed.cprmvRules || [],
+        identifier: parsed.output?.identifier || '',
         name: parsed.output?.name || '',
         description: parsed.output?.description || '',
         type: parsed.output?.type || '',
@@ -524,6 +525,7 @@ function App() {
     if (cost.identifier) {
       const encodedCostId = encodeURIComponent(cost.identifier);
       ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(cost.identifier)}" ;\n`;
       if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
       if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
       if (cost.description)
@@ -535,11 +537,12 @@ function App() {
     if (output.identifier) {
       const encodedOutputId = encodeURIComponent(output.identifier);
       ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(output.identifier)}" ;\n`;
       if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
       if (output.description)
         ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
       if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
-      ttl = ttl.slice(0, -2) + ' .\n';
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // CPRMV Rules
@@ -752,7 +755,16 @@ function App() {
             </div>
 
             <div className="p-6 min-h-[600px]">
-              {activeTab === 'service' && <ServiceTab service={service} setService={setService} />}
+              {activeTab === 'service' && (
+                <ServiceTab
+                  service={service}
+                  setService={setService}
+                  cost={cost}
+                  setCost={setCost}
+                  output={output}
+                  setOutput={setOutput}
+                />
+              )}{' '}
               {activeTab === 'organization' && (
                 <OrganizationTab organization={organization} setOrganization={setOrganization} />
               )}

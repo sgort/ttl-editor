@@ -32,17 +32,25 @@ export const VOCABULARY_CONFIG = {
       acceptedTypes: ['cv:PublicOrganisation'],
       canonicalType: 'cv:PublicOrganisation',
     },
+    cost: {
+      acceptedTypes: ['cv:Cost'],
+      canonicalType: 'cv:Cost',
+    },
+    output: {
+      acceptedTypes: ['cv:Output'],
+      canonicalType: 'cv:Output',
+    },
     legalResource: {
       acceptedTypes: ['eli:LegalResource'],
       canonicalType: 'eli:LegalResource',
     },
     temporalRule: {
-      acceptedTypes: ['cpsv:Rule, ronl:TemporalRule'],
+      acceptedTypes: ['cpsv:Rule', 'ronl:TemporalRule'],
       canonicalType: 'cpsv:Rule',
     },
     parameter: {
       acceptedTypes: ['skos:Concept', 'ronl:ParameterWaarde'],
-      canonicalType: 'skos:Concept',
+      canonicalType: 'ronl:ParameterWaarde',
     },
     cprmvRule: {
       acceptedTypes: ['cprmv:Rule'],

@@ -15,7 +15,9 @@
           "Added cv:spatial to Organization",
           "Added explicit dct:identifier outputs to fix: Identifiers used in URIs but not explicitly output as properties",
           "Changed cpsv:follows to cv:hasLegalResource",
-          "Added Rule Identifiers and Titles"
+          "Added Rule Identifiers and Titles",
+          "Added Cost section to the UI",
+          "Added Output section to the UI"
         ]
       }
     ]

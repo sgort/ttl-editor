@@ -1,12 +1,14 @@
 import React from 'react';
 
 import { LANGUAGE_OPTIONS } from '../../utils';
+import CostSection from './CostSection';
+import OutputSection from './OutputSection';
 
 /**
  * ServiceTab - Form for editing public service metadata
  * Maps to cpsv:PublicService in CPSV-AP 3.2.0
  */
-export default function ServiceTab({ service, setService }) {
+export default function ServiceTab({ service, setService, cost, setCost, output, setOutput }) {
   // Helper to update a single field
   const updateField = (field, value) => {
     setService({ ...service, [field]: value });
@@ -124,6 +126,8 @@ export default function ServiceTab({ service, setService }) {
           ))}
         </select>
       </div>
+      <CostSection cost={cost} setCost={setCost} />
+      <OutputSection output={output} setOutput={setOutput} />
     </div>
   );
 }
