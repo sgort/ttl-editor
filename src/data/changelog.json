@@ -17,7 +17,8 @@
           "Changed cpsv:follows to cv:hasLegalResource",
           "Added mandatory Rule identifiers and titles",
           "Created Cost and Output sections in Service tab with full import/export support",
-          "Fixed Language URI"
+          "Fixed Language URI",
+          "Fixed Sector URIs"
         ]
       }
     ]

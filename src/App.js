@@ -56,7 +56,10 @@ function App() {
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
   // Service state
-  const [service, setService] = useState(DEFAULT_SERVICE);
+  const [service, setService] = useState({
+    ...DEFAULT_SERVICE,
+    customSector: '',
+  });
   const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
   const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
@@ -411,7 +414,11 @@ function App() {
           service.language
         } ;\n`;
       if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
-      if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
+      if (service.sector && service.sector !== 'custom') {
+        ttl += `    cv:sector <${service.sector}> ;\n`;
+      } else if (service.sector === 'custom' && service.customSector) {
+        ttl += `    cv:sector <${service.customSector}> ;\n`;
+      }
       if (service.keywords)
         ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
       if (service.language) {

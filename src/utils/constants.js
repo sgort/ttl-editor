@@ -7,6 +7,7 @@ export const DEFAULT_SERVICE = {
   description: '',
   type: 'PublicService',
   sector: '',
+  customSector: '',
   thematicArea: '',
   keywords: '',
   language: 'nl',
@@ -115,6 +116,25 @@ export const CURRENCY_OPTIONS = [
   { value: 'EUR', label: 'EUR' },
   { value: 'USD', label: 'USD' },
   { value: 'GBP', label: 'GBP' },
+];
+
+export const SECTOR_OPTIONS = [
+  { value: '', label: 'Select sector...' },
+  {
+    value:
+      'https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL',
+    label: 'National Government',
+  },
+  {
+    value:
+      'https://publications.europa.eu/resource/authority/corporate-body-classification/REGIONAL',
+    label: 'Regional/Provincial',
+  },
+  {
+    value: 'https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL',
+    label: 'Municipal/Local',
+  },
+  { value: 'custom', label: 'Other (enter custom URI)...' },
 ];
 
 export const DEFAULT_CPRMV_RULE = {
