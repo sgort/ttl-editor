@@ -443,7 +443,7 @@ function App() {
         organization.identifier,
         'https://regels.overheid.nl/organizations/'
       );
-      ttl += `<${orgUri}> a org:Organization ;\n`;
+      ttl += `<${orgUri}> a cv:PublicOrganization ;\n`;
       if (organization.name)
         ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
       if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;

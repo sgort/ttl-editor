@@ -30,7 +30,7 @@ export default function OrganizationTab({ organization, setOrganization }) {
       <div>
         <label className="block text-sm text-gray-700 mb-1">
           <span className="font-medium">Organization URI or identifier</span>
-          <span className="text-gray-500"> (org:Organization)</span>
+          <span className="text-gray-500"> (cv:PublicOrganization)</span>
         </label>
         <input
           type="text"
