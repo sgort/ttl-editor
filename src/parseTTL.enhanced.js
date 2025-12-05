@@ -158,6 +158,13 @@ export const parseTTLEnhanced = (ttlContent) => {
             ruleIdPath: '',
           };
         }
+
+        if (detectedType === 'cost') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        } else if (detectedType === 'output') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        }
+
         continue;
       }
 
@@ -190,8 +197,12 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('dcat:keyword')[1]) || parsed.service.keywords;
         }
         if (line.includes('dct:language')) {
-          parsed.service.language =
-            extractValue(line.split('dct:language')[1]) || parsed.service.language;
+          const uriMatch = line.match(/<([^>]+)>/);
+          if (uriMatch) {
+            // Extract language code from URI
+            const langCode = uriMatch[1].split('/').pop().toLowerCase();
+            parsed.service.language = langCode;
+          }
         }
       }
 
@@ -214,10 +225,15 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.organization.name =
             extractValue(line.split('org:name')[1]) || parsed.organization.name;
         }
-
         if (line.includes('foaf:homepage')) {
           parsed.organization.homepage =
             extractValue(line.split('foaf:homepage')[1]) || parsed.organization.homepage;
+        }
+        if (line.includes('cv:spatial')) {
+          const spatialMatch = line.match(/<([^>]+)>/);
+          if (spatialMatch) {
+            parsed.organization.spatial = spatialMatch[1];
+          }
         }
       }
 
@@ -270,7 +286,13 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentRule.description =
             extractValue(line.split('dct:description')[1]) || currentRule.description;
         }
-
+        if (line.includes('dct:identifier')) {
+          currentRule.identifier =
+            extractValue(line.split('dct:identifier')[1]) || currentRule.identifier;
+        }
+        if (line.includes('dct:title')) {
+          currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
+        }
         // End of rule (period without semicolon)
         if (line.includes('.') && !line.includes(';')) {
           parsed.temporalRules.push(currentRule);
@@ -316,6 +338,49 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentSection = null;
         }
       }
+
+      // Cost properties
+      if (currentSection === 'cost') {
+        if (line.includes('dct:identifier')) {
+          parsed.cost.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Cost identifier found:', parsed.cost.identifier);
+        }
+        if (line.includes('cv:value')) {
+          parsed.cost.value = extractValue(line.split('cv:value')[1]);
+        }
+        if (line.includes('cv:currency')) {
+          parsed.cost.currency = extractValue(line.split('cv:currency')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.cost.description = extractValue(line.split('dct:description')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
+      // Output properties
+      if (currentSection === 'output') {
+        if (line.includes('dct:identifier')) {
+          parsed.output.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Output identifier found:', parsed.output.identifier);
+        }
+        if (line.includes('dct:title')) {
+          parsed.output.name = extractValue(line.split('dct:title')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.output.description = extractValue(line.split('dct:description')[1]);
+        }
+        if (line.includes('dct:type')) {
+          parsed.output.type = extractValue(line.split('dct:type')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
       if (currentSection === 'cprmvRule' && currentCprmvRule) {
         if (line.includes('cprmv:id')) {
           currentCprmvRule.ruleId =
@@ -350,7 +415,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
       }
     }
-    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules); // ← ADD THIS ONE LINE
+    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules);
 
     return parsed;
   } catch (error) {

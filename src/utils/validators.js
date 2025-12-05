@@ -37,6 +37,9 @@ export function validateOrganization(organization) {
     errors.push('Organization homepage must be a valid URL');
   }
 
+  if (!organization.spatial) {
+    errors.push('Organization geographic jurisdiction (cv:spatial) is required');
+  }
   return errors;
 }
 
@@ -80,6 +83,13 @@ export function validateTemporalRule(rule, index) {
     if (new Date(rule.validFrom) > new Date(rule.validUntil)) {
       errors.push(`Rule ${ruleNum}: Valid From date must be before Valid Until date`);
     }
+  }
+
+  if (!rule.identifier) {
+    errors.push(`Rule ${index + 1}: Rule identifier (dct:identifier) is required`);
+  }
+  if (!rule.title) {
+    errors.push(`Rule ${index + 1}: Rule title (dct:title) is required`);
   }
 
   // Validate URI format if provided

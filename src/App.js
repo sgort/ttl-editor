@@ -56,7 +56,10 @@ function App() {
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
   // Service state
-  const [service, setService] = useState(DEFAULT_SERVICE);
+  const [service, setService] = useState({
+    ...DEFAULT_SERVICE,
+    customSector: '',
+  });
   const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
   const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
@@ -84,6 +87,7 @@ function App() {
         identifier: parsed.organization?.identifier || '',
         name: parsed.organization?.name || '',
         homepage: parsed.organization?.homepage || '',
+        spatial: parsed.organization?.spatial || '',
       },
       legalResource: {
         bwbId: parsed.legalResource?.bwbId || '',
@@ -91,16 +95,21 @@ function App() {
         title: parsed.legalResource?.title || '',
         description: parsed.legalResource?.description || '',
       },
-      temporalRules: parsed.temporalRules || [],
+      temporalRules: (parsed.temporalRules || []).map((rule) => ({
+        ...rule,
+        identifier: rule.identifier || '',
+        title: rule.title || '',
+      })),
       parameters: parsed.parameters || [],
       cprmvRules: parsed.cprmvRules || [],
       cost: {
+        identifier: parsed.cost?.identifier || '',
         value: parsed.cost?.value || '',
         currency: parsed.cost?.currency || 'EUR',
         description: parsed.cost?.description || '',
       },
       output: {
-        cprmvRules: parsed.cprmvRules || [],
+        identifier: parsed.output?.identifier || '',
         name: parsed.output?.name || '',
         description: parsed.output?.description || '',
         type: parsed.output?.type || '',
@@ -247,6 +256,8 @@ function App() {
       ...temporalRules,
       {
         id: Date.now(),
+        identifier: '',
+        title: '',
         uri: '',
         extends: '',
         validFrom: '',
@@ -395,6 +406,7 @@ function App() {
     if (service.identifier) {
       const encodedId = encodeURIComponentTTL(service.identifier);
       ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(service.identifier)}" ;\n`;
       if (service.name)
         ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
@@ -402,10 +414,17 @@ function App() {
           service.language
         } ;\n`;
       if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
-      if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
+      if (service.sector && service.sector !== 'custom') {
+        ttl += `    cv:sector <${service.sector}> ;\n`;
+      } else if (service.sector === 'custom' && service.customSector) {
+        ttl += `    cv:sector <${service.customSector}> ;\n`;
+      }
       if (service.keywords)
         ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
-      if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
+      if (service.language) {
+        const languageUri = `https://publications.europa.eu/resource/authority/language/${service.language.toUpperCase()}`;
+        ttl += `    dct:language <${languageUri}> ;\n`;
+      }
 
       if (organization.identifier) {
         const orgUri = buildResourceUri(
@@ -421,7 +440,7 @@ function App() {
           lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
             ? legalResource.bwbId
             : `https://wetten.overheid.nl/${legalResource.bwbId}`;
-        ttl += `    cpsv:follows <${legalUri}> ;\n`;
+        ttl += `    cv:hasLegalResource <${legalUri}> ;\n`;
       }
 
       if (cost.identifier) {
@@ -443,10 +462,12 @@ function App() {
         organization.identifier,
         'https://regels.overheid.nl/organizations/'
       );
-      ttl += `<${orgUri}> a org:Organization ;\n`;
+      ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;
       if (organization.name)
         ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
       if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
+      if (organization.spatial) ttl += `    cv:spatial <${organization.spatial}> ;\n`; // âž• ADD
       ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
@@ -460,6 +481,9 @@ function App() {
           : `https://wetten.overheid.nl/${legalResource.bwbId}`;
 
       ttl += `<${legalUri}> a eli:LegalResource ;\n`;
+      // Extract just the BWB ID portion if it's a full URI
+      const bwbIdOnly = legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
+      ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
       if (legalResource.title)
         ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
       if (legalResource.description)
@@ -474,7 +498,9 @@ function App() {
     temporalRules.forEach((rule, index) => {
       if (rule.uri || rule.extends) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
-        ttl += `<${ruleUri}> a ronl:TemporalRule ;\n`;
+        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
+        if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
         if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
         if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
@@ -509,6 +535,7 @@ function App() {
     if (cost.identifier) {
       const encodedCostId = encodeURIComponent(cost.identifier);
       ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(cost.identifier)}" ;\n`;
       if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
       if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
       if (cost.description)
@@ -520,11 +547,12 @@ function App() {
     if (output.identifier) {
       const encodedOutputId = encodeURIComponent(output.identifier);
       ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(output.identifier)}" ;\n`;
       if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
       if (output.description)
         ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
       if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
-      ttl = ttl.slice(0, -2) + ' .\n';
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // CPRMV Rules
@@ -737,7 +765,16 @@ function App() {
             </div>
 
             <div className="p-6 min-h-[600px]">
-              {activeTab === 'service' && <ServiceTab service={service} setService={setService} />}
+              {activeTab === 'service' && (
+                <ServiceTab
+                  service={service}
+                  setService={setService}
+                  cost={cost}
+                  setCost={setCost}
+                  output={output}
+                  setOutput={setOutput}
+                />
+              )}{' '}
               {activeTab === 'organization' && (
                 <OrganizationTab organization={organization} setOrganization={setOrganization} />
               )}
@@ -792,17 +829,27 @@ function App() {
           {/* Footer */}
           <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
             <p>
-              Core Public Service Editor - Part of RONL Initiative
               <br />
-              Based on{' '}
+              Core Public Service Editor
+              <br />A RONL Initiative based on{' '}
               <a
-                href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
+                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/NAMESPACE-PROPERTIES.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
               >
                 NAMESPACE-PROPERTIES.md
               </a>
+              <br />
+              <a
+                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/FIELD-MAPPING-CPSV-AP-3.2.0.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                FIELD-MAPPING-CPSV-AP-3.2.0.md
+              </a>{' '}
+              reflects the current implementation state for CPSV-AP 3.2.0 compliance
             </p>
           </footer>
         </div>

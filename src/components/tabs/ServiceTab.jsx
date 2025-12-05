@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { LANGUAGE_OPTIONS } from '../../utils';
+import { LANGUAGE_OPTIONS, SECTOR_OPTIONS } from '../../utils';
+import CostSection from './CostSection';
+import OutputSection from './OutputSection';
 
 /**
  * ServiceTab - Form for editing public service metadata
  * Maps to cpsv:PublicService in CPSV-AP 3.2.0
  */
-export default function ServiceTab({ service, setService }) {
+export default function ServiceTab({ service, setService, cost, setCost, output, setOutput }) {
   // Helper to update a single field
   const updateField = (field, value) => {
     setService({ ...service, [field]: value });
@@ -79,16 +81,43 @@ export default function ServiceTab({ service, setService }) {
       {/* Sector */}
       <div>
         <label className="block text-sm text-gray-700 mb-1">
-          <span className="font-medium">Economic sector the service relates to</span>
+          <span className="font-medium">Government level providing this service</span>
           <span className="text-gray-500"> (cv:sector)</span>
         </label>
-        <input
-          type="text"
-          value={service.sector}
-          onChange={(e) => updateField('sector', e.target.value)}
+        <select
+          value={service.sector || ''}
+          onChange={(e) => {
+            const selectedValue = e.target.value;
+            // Update both fields in a single state update
+            setService({
+              ...service,
+              sector: selectedValue,
+              customSector: selectedValue === 'custom' ? service.customSector : '',
+            });
+          }}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Sociale-zekerheid"
-        />
+        >
+          {SECTOR_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Custom URI input */}
+        {service.sector === 'custom' && (
+          <input
+            type="text"
+            value={service.customSector || ''}
+            onChange={(e) => updateField('customSector', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md mt-2"
+            placeholder="Enter custom sector URI"
+          />
+        )}
+
+        <p className="text-xs text-green-600 mt-1">
+          URI reference to government sector classification
+        </p>
       </div>
 
       {/* Keywords */}
@@ -124,6 +153,8 @@ export default function ServiceTab({ service, setService }) {
           ))}
         </select>
       </div>
+      <CostSection cost={cost} setCost={setCost} />
+      <OutputSection output={output} setOutput={setOutput} />
     </div>
   );
 }
