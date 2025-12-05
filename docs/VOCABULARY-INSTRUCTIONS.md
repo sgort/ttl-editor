@@ -5,6 +5,7 @@
 The `vocabularies.config.js` file is the central configuration system for managing RDF vocabularies and namespaces in the TTL Editor. It allows the parser to recognize and handle multiple vocabulary prefixes without code changes.
 
 **Key Benefits:**
+
 - ✅ Add new vocabularies by editing configuration only
 - ✅ No code changes needed to support new prefixes
 - ✅ Centralized namespace management
@@ -19,20 +20,29 @@ The `vocabularies.config.js` file is the central configuration system for managi
 export const VOCABULARY_CONFIG = {
   version: '1.0.0',
   lastUpdated: '2025-10-27',
-  
-  namespaces: { /* URI to prefix mappings */ },
-  entityTypes: { /* RDF type definitions */ },
-  propertyAliases: { /* Property normalization */ }
+
+  namespaces: {
+    /* URI to prefix mappings */
+  },
+  entityTypes: {
+    /* RDF type definitions */
+  },
+  propertyAliases: {
+    /* Property normalization */
+  },
 };
 ```
 
 ### 1. Namespaces
+
 Maps namespace URIs to their accepted prefixes
 
 ### 2. Entity Types
+
 Defines which RDF types map to editor sections
 
 ### 3. Property Aliases
+
 Normalizes different property names to a canonical form
 
 ---
@@ -40,9 +50,11 @@ Normalizes different property names to a canonical form
 ## Section 1: Namespaces
 
 ### Purpose
+
 Maps namespace URIs to their accepted prefix variations.
 
 ### Structure
+
 ```javascript
 namespaces: {
   'http://example.org/ontology#': ['prefix1', 'prefix2'],
@@ -51,6 +63,7 @@ namespaces: {
 ```
 
 ### Current Configuration
+
 ```javascript
 namespaces: {
   'http://purl.org/vocab/cpsv#': ['cpsv'],
@@ -80,6 +93,7 @@ namespaces: {
 ```
 
 **TTL Files Can Now Use:**
+
 ```turtle
 @prefix prov: <http://www.w3.org/ns/prov#> .
 
@@ -92,9 +106,11 @@ namespaces: {
 ## Section 2: Entity Types
 
 ### Purpose
+
 Defines which RDF types are recognized and mapped to editor sections.
 
 ### Structure
+
 ```javascript
 entityTypes: {
   editorSection: {
@@ -105,13 +121,15 @@ entityTypes: {
 ```
 
 ### Available Editor Sections
+
 - `service` - Service tab
-- `organization` - Organization tab  
+- `organization` - Organization tab
 - `legalResource` - Legal tab
 - `temporalRule` - Rules tab
 - `parameter` - Parameters tab
 
 ### Current Configuration
+
 ```javascript
 entityTypes: {
   service: {
@@ -166,6 +184,7 @@ service: {
 ```
 
 **TTL Files Can Now Use:**
+
 ```turtle
 <https://example.nl/service/1> a dcmi:Service ;
     dct:title "Example Service"@nl .
@@ -189,6 +208,7 @@ parameter: {
 ```
 
 **TTL Files Can Now Use:**
+
 ```turtle
 <https://example.nl/param/1> a custom:Parameter ;
     skos:notation "MAX_INCOME" ;
@@ -202,9 +222,11 @@ parameter: {
 ## Section 3: Property Aliases
 
 ### Purpose
+
 Maps different property names to a canonical form, allowing the parser to treat them equivalently.
 
 ### Structure
+
 ```javascript
 propertyAliases: {
   'alternative:property': 'canonical:property',
@@ -213,12 +235,13 @@ propertyAliases: {
 ```
 
 ### Current Configuration
+
 ```javascript
 propertyAliases: {
   // Organization properties
   'foaf:name': 'skos:prefLabel',
   'org:name': 'skos:prefLabel',
-  
+
   // Service properties - CPSV-AP to CV mapping
   'cpsv-ap:hasCompetentAuthority': 'cv:hasCompetentAuthority',
   'cpsv-ap:thematicArea': 'cv:thematicArea',
@@ -228,7 +251,7 @@ propertyAliases: {
   'cpsv-ap:hasCost': 'cv:hasCost',
   'cpsv-ap:hasOutput': 'cv:hasOutput',
   'cpsv-ap:hasLegalResource': 'cv:hasLegalResource',
-  
+
   // Temporal rule properties - CPRMV to RONL mapping
   'cprmv:validFrom': 'ronl:validFrom',
   'cprmv:validUntil': 'ronl:validUntil',
@@ -243,11 +266,13 @@ propertyAliases: {
 **Concept:** Different vocabularies may use different property names for the same concept. Aliasing normalizes them.
 
 **Example:** Organization names can be expressed as:
+
 - `foaf:name`
 - `org:name`
 - `skos:prefLabel`
 
 **Configuration:**
+
 ```javascript
 propertyAliases: {
   'foaf:name': 'skos:prefLabel',
@@ -258,6 +283,7 @@ propertyAliases: {
 **Result:** All three are treated as `skos:prefLabel` internally
 
 **TTL Input (any of these work):**
+
 ```turtle
 # Option 1
 <https://example.nl/org/1> a org:Organization ;
@@ -288,6 +314,7 @@ propertyAliases: {
 ```
 
 **Now Accepts:**
+
 ```turtle
 <https://example.nl/org/1> a org:Organization ;
     rdfs:label "Gemeente Utrecht"@nl .
@@ -300,7 +327,7 @@ propertyAliases: {
 ```javascript
 propertyAliases: {
   // ... existing aliases ...
-  
+
   // Custom validity properties
   'custom:startDate': 'ronl:validFrom',
   'custom:endDate': 'ronl:validUntil',
@@ -308,6 +335,7 @@ propertyAliases: {
 ```
 
 **Now Accepts:**
+
 ```turtle
 <https://example.nl/rule/1> a ronl:TemporalRule ;
     custom:startDate "2024-01-01"^^xsd:date ;
@@ -325,6 +353,7 @@ propertyAliases: {
 **Requirement:** Support DCAT-AP service descriptions
 
 **Step 1:** Add namespace
+
 ```javascript
 namespaces: {
   // ... existing ...
@@ -333,6 +362,7 @@ namespaces: {
 ```
 
 **Step 2:** Add entity type (if needed)
+
 ```javascript
 service: {
   acceptedTypes: [
@@ -345,6 +375,7 @@ service: {
 ```
 
 **Step 3:** Add property aliases (if needed)
+
 ```javascript
 propertyAliases: {
   // ... existing ...
@@ -362,6 +393,7 @@ propertyAliases: {
 **Requirement:** Support specific Dutch government ontologies
 
 **Step 1:** Add namespace
+
 ```javascript
 namespaces: {
   // ... existing ...
@@ -370,6 +402,7 @@ namespaces: {
 ```
 
 **Step 2:** Add entity types
+
 ```javascript
 organization: {
   acceptedTypes: [
@@ -382,6 +415,7 @@ organization: {
 ```
 
 **Step 3:** Add property aliases
+
 ```javascript
 propertyAliases: {
   // ... existing ...
@@ -398,6 +432,7 @@ propertyAliases: {
 **Requirement:** Support schema.org and Dublin Core variations
 
 **Already Supported (no changes needed):**
+
 ```javascript
 namespaces: {
   'http://schema.org/': ['schema'],
@@ -406,6 +441,7 @@ namespaces: {
 ```
 
 **If you need aliases:**
+
 ```javascript
 propertyAliases: {
   // ... existing ...
@@ -425,6 +461,7 @@ The configuration exports several helper functions for use in the parser.
 **Purpose:** Detects which entity type a TTL line represents
 
 **Usage:**
+
 ```javascript
 import { detectEntityType } from './vocabularies.config.js';
 
@@ -434,6 +471,7 @@ const type = detectEntityType(line);
 ```
 
 **How it works:**
+
 1. Checks line for `a TYPE` pattern
 2. Compares TYPE against all `acceptedTypes`
 3. Returns the matching entity section name
@@ -445,6 +483,7 @@ const type = detectEntityType(line);
 **Purpose:** Converts property to its canonical form
 
 **Usage:**
+
 ```javascript
 import { normalizeProperty } from './vocabularies.config.js';
 
@@ -456,6 +495,7 @@ const unchanged = normalizeProperty('dct:title');
 ```
 
 **How it works:**
+
 1. Looks up property in `propertyAliases`
 2. Returns canonical form if alias exists
 3. Returns original property if no alias
@@ -467,6 +507,7 @@ const unchanged = normalizeProperty('dct:title');
 **Purpose:** Gets the canonical RDF type for an entity section
 
 **Usage:**
+
 ```javascript
 import { getCanonicalType } from './vocabularies.config.js';
 
@@ -484,6 +525,7 @@ const paramType = getCanonicalType('parameter');
 **Purpose:** Extracts all `@prefix` declarations from TTL content
 
 **Usage:**
+
 ```javascript
 import { extractPrefixMap } from './vocabularies.config.js';
 
@@ -506,6 +548,7 @@ const prefixes = extractPrefixMap(ttl);
 **Purpose:** Validates that essential prefixes are present
 
 **Usage:**
+
 ```javascript
 import { validatePrefixes } from './vocabularies.config.js';
 
@@ -522,6 +565,7 @@ const validation = validatePrefixes(ttl, { silent: true });
 ```
 
 **Options:**
+
 - `silent: true` - Don't log warnings to console
 
 ---
@@ -531,6 +575,7 @@ const validation = validatePrefixes(ttl, { silent: true });
 ### 1. Maintain Backward Compatibility
 
 ✅ **Good:** Add new types alongside existing ones
+
 ```javascript
 parameter: {
   acceptedTypes: [
@@ -543,6 +588,7 @@ parameter: {
 ```
 
 ❌ **Bad:** Remove existing types
+
 ```javascript
 parameter: {
   acceptedTypes: [
@@ -557,6 +603,7 @@ parameter: {
 ### 2. Use Canonical Types Consistently
 
 ✅ **Good:** Set canonical to most common/standard type
+
 ```javascript
 service: {
   acceptedTypes: [
@@ -569,6 +616,7 @@ service: {
 ```
 
 ❌ **Bad:** Use custom type as canonical
+
 ```javascript
 service: {
   acceptedTypes: [
@@ -585,6 +633,7 @@ service: {
 ### 3. Document Your Changes
 
 ✅ **Good:** Add comments explaining custom vocabularies
+
 ```javascript
 entityTypes: {
   parameter: {
@@ -603,13 +652,14 @@ entityTypes: {
 ### 4. Group Related Aliases
 
 ✅ **Good:** Organize aliases by category
+
 ```javascript
 propertyAliases: {
   // Organization names
   'foaf:name': 'skos:prefLabel',
   'org:name': 'skos:prefLabel',
   'rdfs:label': 'skos:prefLabel',
-  
+
   // Temporal properties
   'cprmv:validFrom': 'ronl:validFrom',
   'cprmv:validUntil': 'ronl:validUntil',
@@ -623,13 +673,14 @@ propertyAliases: {
 ### 5. Update Version Information
 
 ✅ **Good:** Update metadata when making changes
+
 ```javascript
 export const VOCABULARY_CONFIG = {
-  version: '1.1.0',              // Increment version
-  lastUpdated: '2025-11-14',     // Update date
-  
+  version: '1.1.0', // Increment version
+  lastUpdated: '2025-11-14', // Update date
+
   // ... configuration ...
-}
+};
 ```
 
 ---
@@ -659,6 +710,7 @@ Create a TTL file using your new vocabulary:
 ### Step 3: Verify Parsing
 
 Check browser console for any parsing errors:
+
 - ✅ No errors = Success
 - ❌ Errors = Check your configuration
 
@@ -677,11 +729,13 @@ Check browser console for any parsing errors:
 **Symptom:** TTL imports but entity doesn't appear in any tab
 
 **Solution:**
+
 1. Check if RDF type is in `acceptedTypes`
 2. Verify namespace prefix matches TTL file
 3. Check console for parsing errors
 
 **Example Fix:**
+
 ```javascript
 // Add missing type
 parameter: {
@@ -701,11 +755,13 @@ parameter: {
 **Symptom:** Entity recognized but some properties are empty
 
 **Solution:**
+
 1. Check if property needs an alias
 2. Verify parser handles the property (check `parseTTL.enhanced.js`)
 3. Add alias if needed
 
 **Example Fix:**
+
 ```javascript
 propertyAliases: {
   // ... existing ...
@@ -720,10 +776,12 @@ propertyAliases: {
 **Symptom:** Console warnings about missing prefixes
 
 **Solution:**
+
 1. Add namespace to `namespaces` object
 2. Ensure TTL file has matching `@prefix` declaration
 
 **Example Fix:**
+
 ```javascript
 namespaces: {
   // ... existing ...
@@ -738,6 +796,7 @@ namespaces: {
 ### From Hardcoded to Configuration-Based
 
 **Old Approach** (hardcoded in parser):
+
 ```javascript
 // In parseTTL.js
 if (line.includes('a cpsv:PublicService')) {
@@ -746,6 +805,7 @@ if (line.includes('a cpsv:PublicService')) {
 ```
 
 **New Approach** (configuration-based):
+
 ```javascript
 // In vocabularies.config.js
 entityTypes: {
@@ -760,6 +820,7 @@ const type = detectEntityType(line);  // Uses config
 ```
 
 **Benefits:**
+
 - ✅ No parser code changes needed
 - ✅ Easy to add new types
 - ✅ Centralized management
@@ -769,11 +830,13 @@ const type = detectEntityType(line);  // Uses config
 ## Version History
 
 ### Version 1.0.0 (October 2025)
+
 - Initial configuration system
 - Support for CPSV-AP, CPRMV, RONL vocabularies
 - Basic property aliasing
 
 ### Version 1.1.0 (November 2025)
+
 - Added `ronl:ParameterWaarde` support
 - Enhanced parameter type recognition
 - Bug fixes for organization name parsing
@@ -829,6 +892,7 @@ propertyAliases: {
 ## Support
 
 For questions or issues:
+
 - Check existing TTL files for examples
 - Review parser logs in browser console
 - Consult NAMESPACE-PROPERTIES.md for property details
@@ -836,6 +900,6 @@ For questions or issues:
 
 ---
 
-*Vocabulary Configuration Guide Version 1.0*  
-*Last Updated: November 14, 2025*  
-*For TTL Editor Version 1.2.2+*
+_Vocabulary Configuration Guide Version 1.0_  
+_Last Updated: November 14, 2025_  
+_For TTL Editor Version 1.2.2+_

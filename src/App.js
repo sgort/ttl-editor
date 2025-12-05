@@ -1,116 +1,72 @@
-import React, { useState } from "react";
+import './App.css';
+
 import {
+  AlertCircle,
+  Building2,
+  CheckCircle,
+  Clock,
+  Database,
   Download,
   FileText,
-  Building2,
-  Scale,
-  Clock,
+  FileUp,
+  History,
   Plus,
+  Scale,
   Trash2,
   Upload,
-  FileUp,
-  AlertCircle,
-  CheckCircle,
-  History,
-} from "lucide-react";
-import "./App.css";
-import parseTTLEnhanced from "./parseTTL.enhanced";
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+import PreviewPanel from './components/PreviewPanel';
+import {
+  ChangelogTab,
+  CPRMVTab,
+  LegalTab,
+  OrganizationTab,
+  ParametersTab,
+  RulesTab,
+  ServiceTab,
+} from './components/tabs';
+import parseTTLEnhanced from './parseTTL.enhanced';
+import {
+  buildResourceUri,
+  DEFAULT_COST,
+  DEFAULT_CPRMV_RULE,
+  DEFAULT_LEGAL_RESOURCE,
+  DEFAULT_ORGANIZATION,
+  DEFAULT_OUTPUT,
+  DEFAULT_PARAMETER,
+  DEFAULT_SERVICE,
+  DEFAULT_TEMPORAL_RULE,
+  encodeURIComponentTTL,
+  escapeTTLString,
+  sanitizeFilename,
+  TTL_NAMESPACES,
+  validateForm,
+} from './utils';
 
 function App() {
-  const [activeTab, setActiveTab] = useState("service");
+  const [activeTab, setActiveTab] = useState('service');
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
-    message: "",
+    message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
+  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
   // Service state
   const [service, setService] = useState({
-    identifier: "",
-    name: "",
-    description: "",
-    type: "PublicService",
-    sector: "",
-    thematicArea: "",
-    keywords: "",
-    language: "nl",
+    ...DEFAULT_SERVICE,
+    customSector: '',
   });
-
-  // Parameters state
-  const [parameters, setParameters] = useState([
-    {
-      id: 1,
-      notation: "",
-      label: "",
-      value: "",
-      unit: "EUR",
-      description: "",
-      validFrom: "",
-      validUntil: "",
-    },
-  ]);
-
-  // Organization state
-  const [organization, setOrganization] = useState({
-    identifier: "",
-    name: "",
-    homepage: "",
-  });
-
-  // Legal state
-  const [legalResource, setLegalResource] = useState({
-    bwbId: "",
-    version: "",
-    title: "",
-    description: "",
-  });
-
-  // Temporal rules state
-  const [temporalRules, setTemporalRules] = useState([
-    {
-      id: 1,
-      uri: "",
-      extends: "",
-      validFrom: "",
-      validUntil: "",
-      confidenceLevel: "high",
-      description: "",
-    },
-  ]);
-
-  // Cost state
-  const [cost, setCost] = useState({
-    identifier: "",
-    value: "",
-    currency: "EUR",
-    description: "",
-  });
-
-  // Output state
-  const [output, setOutput] = useState({
-    identifier: "",
-    name: "",
-    description: "",
-    type: "",
-  });
-
-  // Helper function to escape special characters in TTL strings
-  const escapeTTLString = (str) => {
-    if (!str) return "";
-    return str
-      .replace(/\\/g, "\\\\")
-      .replace(/"/g, '\\"')
-      .replace(/\n/g, "\\n")
-      .replace(/\r/g, "\\r")
-      .replace(/\t/g, "\\t");
-  };
-
-  // Helper function to encode URI components
-  const encodeURIComponent = (str) => {
-    if (!str) return "";
-    return str.replace(/ /g, "%20");
-  };
+  const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
+  const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
+  const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
+  const [parameters, setParameters] = useState([DEFAULT_PARAMETER]);
+  const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
+  const [cost, setCost] = useState(DEFAULT_COST);
+  const [output, setOutput] = useState(DEFAULT_OUTPUT);
 
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
@@ -119,36 +75,44 @@ function App() {
     // Ensure all values are strings (never undefined/null)
     return {
       service: {
-        identifier: parsed.service?.identifier || "",
-        name: parsed.service?.name || "",
-        description: parsed.service?.description || "",
-        thematicArea: parsed.service?.thematicArea || "",
-        sector: parsed.service?.sector || "",
-        keywords: parsed.service?.keywords || "",
-        language: parsed.service?.language || "nl",
+        identifier: parsed.service?.identifier || '',
+        name: parsed.service?.name || '',
+        description: parsed.service?.description || '',
+        thematicArea: parsed.service?.thematicArea || '',
+        sector: parsed.service?.sector || '',
+        keywords: parsed.service?.keywords || '',
+        language: parsed.service?.language || 'nl',
       },
       organization: {
-        identifier: parsed.organization?.identifier || "",
-        name: parsed.organization?.name || "",
-        homepage: parsed.organization?.homepage || "",
+        identifier: parsed.organization?.identifier || '',
+        name: parsed.organization?.name || '',
+        homepage: parsed.organization?.homepage || '',
+        spatial: parsed.organization?.spatial || '',
       },
       legalResource: {
-        bwbId: parsed.legalResource?.bwbId || "",
-        version: parsed.legalResource?.version || "",
-        title: parsed.legalResource?.title || "",
-        description: parsed.legalResource?.description || "",
+        bwbId: parsed.legalResource?.bwbId || '',
+        version: parsed.legalResource?.version || '',
+        title: parsed.legalResource?.title || '',
+        description: parsed.legalResource?.description || '',
       },
-      temporalRules: parsed.temporalRules || [],
+      temporalRules: (parsed.temporalRules || []).map((rule) => ({
+        ...rule,
+        identifier: rule.identifier || '',
+        title: rule.title || '',
+      })),
       parameters: parsed.parameters || [],
+      cprmvRules: parsed.cprmvRules || [],
       cost: {
-        value: parsed.cost?.value || "",
-        currency: parsed.cost?.currency || "EUR",
-        description: parsed.cost?.description || "",
+        identifier: parsed.cost?.identifier || '',
+        value: parsed.cost?.value || '',
+        currency: parsed.cost?.currency || 'EUR',
+        description: parsed.cost?.description || '',
       },
       output: {
-        name: parsed.output?.name || "",
-        description: parsed.output?.description || "",
-        type: parsed.output?.type || "",
+        identifier: parsed.output?.identifier || '',
+        name: parsed.output?.name || '',
+        description: parsed.output?.description || '',
+        type: parsed.output?.type || '',
       },
     };
   };
@@ -158,16 +122,13 @@ function App() {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (!file.name.endsWith(".ttl")) {
+    if (!file.name.endsWith('.ttl')) {
       setImportStatus({
         show: true,
         success: false,
-        message: "Please select a .ttl file",
+        message: 'Please select a .ttl file',
       });
-      setTimeout(
-        () => setImportStatus({ show: false, success: false, message: "" }),
-        3000
-      );
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
       return;
     }
 
@@ -191,12 +152,12 @@ function App() {
           setTemporalRules([
             {
               id: 1,
-              uri: "",
-              extends: "",
-              validFrom: "",
-              validUntil: "",
-              confidenceLevel: "high",
-              description: "",
+              uri: '',
+              extends: '',
+              validFrom: '',
+              validUntil: '',
+              confidenceLevel: 'high',
+              description: '',
             },
           ]);
         }
@@ -208,41 +169,42 @@ function App() {
           setParameters([
             {
               id: 1,
-              notation: "",
-              label: "",
-              value: "",
-              unit: "EUR",
-              description: "",
-              validFrom: "",
-              validUntil: "",
+              notation: '',
+              label: '',
+              value: '',
+              unit: 'EUR',
+              description: '',
+              validFrom: '',
+              validUntil: '',
             },
           ]);
+        }
+
+        if (parsed.cprmvRules && parsed.cprmvRules.length > 0) {
+          console.log('🎯 About to set CPRMV rules:', parsed.cprmvRules);
+          console.log('🎯 Number of rules:', parsed.cprmvRules.length);
+          setCprmvRules(parsed.cprmvRules);
+          console.log('✅ setCprmvRules called');
+        } else {
+          console.log('⚠️ No CPRMV rules found, using default');
+          setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
         }
 
         setImportStatus({
           show: true,
           success: true,
-          message:
-            "TTL file imported successfully! All fields have been populated.",
+          message: 'TTL file imported successfully! All fields have been populated.',
         });
 
-        setTimeout(
-          () => setImportStatus({ show: false, success: false, message: "" }),
-          5000
-        );
-        setActiveTab("service");
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+        setActiveTab('service');
       } catch (error) {
         setImportStatus({
           show: true,
           success: false,
-          message:
-            error.message ||
-            "Failed to import file. Please check the TTL format.",
+          message: error.message || 'Failed to import file. Please check the TTL format.',
         });
-        setTimeout(
-          () => setImportStatus({ show: false, success: false, message: "" }),
-          5000
-        );
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
       }
     };
 
@@ -250,16 +212,13 @@ function App() {
       setImportStatus({
         show: true,
         success: false,
-        message: "Error reading file. Please try again.",
+        message: 'Error reading file. Please try again.',
       });
-      setTimeout(
-        () => setImportStatus({ show: false, success: false, message: "" }),
-        3000
-      );
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
     };
 
     reader.readAsText(file);
-    event.target.value = "";
+    event.target.value = '';
   };
 
   // Add parameter
@@ -268,13 +227,13 @@ function App() {
       ...parameters,
       {
         id: Date.now(),
-        notation: "",
-        label: "",
-        value: "",
-        unit: "EUR",
-        description: "",
-        validFrom: "",
-        validUntil: "",
+        notation: '',
+        label: '',
+        value: '',
+        unit: 'EUR',
+        description: '',
+        validFrom: '',
+        validUntil: '',
       },
     ]);
   };
@@ -287,9 +246,7 @@ function App() {
   // Update parameter
   const updateParameter = (id, field, value) => {
     setParameters(
-      parameters.map((param) =>
-        param.id === id ? { ...param, [field]: value } : param
-      )
+      parameters.map((param) => (param.id === id ? { ...param, [field]: value } : param))
     );
   };
 
@@ -299,12 +256,14 @@ function App() {
       ...temporalRules,
       {
         id: Date.now(),
-        uri: "",
-        extends: "",
-        validFrom: "",
-        validUntil: "",
-        confidenceLevel: "high",
-        description: "",
+        identifier: '',
+        title: '',
+        uri: '',
+        extends: '',
+        validFrom: '',
+        validUntil: '',
+        confidenceLevel: 'high',
+        description: '',
       },
     ]);
   };
@@ -317,146 +276,171 @@ function App() {
   // Update temporal rule
   const updateTemporalRule = (id, field, value) => {
     setTemporalRules(
-      temporalRules.map((rule) =>
-        rule.id === id ? { ...rule, [field]: value } : rule
-      )
+      temporalRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule))
     );
+  };
+
+  // Add CPRMV rule
+  const addCPRMVRule = () => {
+    setCprmvRules([
+      ...cprmvRules,
+      {
+        id: Date.now(),
+        ruleId: '',
+        rulesetId: '',
+        definition: '',
+        situatie: '',
+        norm: '',
+        ruleIdPath: '',
+      },
+    ]);
+  };
+
+  // Remove CPRMV rule
+  const removeCPRMVRule = (id) => {
+    setCprmvRules(cprmvRules.filter((rule) => rule.id !== id));
+  };
+
+  // Update CPRMV rule
+  const updateCPRMVRule = (id, field, value) => {
+    setCprmvRules(cprmvRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule)));
+  };
+
+  // Handle JSON import for CPRMV tab only
+  const handleImportJSON = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.json')) {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: 'Please select a .json file',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target.result;
+        const jsonData = JSON.parse(content);
+
+        if (!Array.isArray(jsonData)) {
+          throw new Error('JSON must be an array of rules');
+        }
+
+        // Map JSON structure from normenbrief format to CPRMV rule structure
+        const mappedRules = jsonData.map((rule, index) => ({
+          id: Date.now() + index,
+          ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
+          rulesetId: rule.rulesetid || '',
+          definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
+          situatie: rule.situatie || '',
+          norm: rule.norm || '',
+          ruleIdPath: rule.rule_id_path || '',
+        }));
+
+        setCprmvRules(mappedRules);
+
+        setImportStatus({
+          show: true,
+          success: true,
+          message: `Successfully imported ${mappedRules.length} CPRMV rules from JSON!`,
+        });
+
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+      } catch (error) {
+        setImportStatus({
+          show: true,
+          success: false,
+          message: error.message || 'Failed to import JSON file.',
+        });
+        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+      }
+    };
+
+    reader.onerror = () => {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: 'Error reading file. Please try again.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+    };
+
+    reader.readAsText(file);
+    event.target.value = '';
   };
 
   // Clear all data
   const handleClearAll = () => {
-    // Reset service
-    setService({
-      identifier: "",
-      name: "",
-      description: "",
-      type: "PublicService",
-      sector: "",
-      thematicArea: "",
-      keywords: "",
-      language: "nl",
-    });
-
-    // Reset organization
-    setOrganization({
-      identifier: "",
-      name: "",
-      homepage: "",
-    });
-
-    // Reset legal resource
-    setLegalResource({
-      bwbId: "",
-      version: "",
-      title: "",
-      description: "",
-    });
-
-    // Reset temporal rules to single empty rule
-    setTemporalRules([
-      {
-        id: 1,
-        uri: "",
-        extends: "",
-        validFrom: "",
-        validUntil: "",
-        confidenceLevel: "high",
-        description: "",
-      },
-    ]);
-
-    // Reset parameters to single empty parameter
-    setParameters([
-      {
-        id: 1,
-        notation: "",
-        label: "",
-        value: "",
-        unit: "EUR",
-        description: "",
-        validFrom: "",
-        validUntil: "",
-      },
-    ]);
-
-    // Reset cost
-    setCost({
-      identifier: "",
-      value: "",
-      currency: "EUR",
-      description: "",
-    });
-
-    // Reset output
-    setOutput({
-      identifier: "",
-      name: "",
-      description: "",
-      type: "",
-    });
+    setService(DEFAULT_SERVICE);
+    setOrganization(DEFAULT_ORGANIZATION);
+    setLegalResource(DEFAULT_LEGAL_RESOURCE);
+    setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
+    setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
+    setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
+    setCost(DEFAULT_COST);
+    setOutput(DEFAULT_OUTPUT);
 
     // Close dialog and show success message
     setShowClearDialog(false);
     setImportStatus({
       show: true,
       success: true,
-      message: "All fields have been cleared successfully!",
+      message: 'All fields have been cleared successfully!',
     });
-    setTimeout(
-      () => setImportStatus({ show: false, success: false, message: "" }),
-      3000
-    );
-    
+    setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+
     // Switch to service tab
-    setActiveTab("service");
+    setActiveTab('service');
   };
 
   // Generate TTL output
   const generateTTL = () => {
-    const namespaces = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
-@prefix cv: <http://data.europa.eu/m8g/> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix dcat: <http://www.w3.org/ns/dcat#> .
-@prefix eli: <http://data.europa.eu/eli/ontology#> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix schema: <http://schema.org/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-`;
-
-    let ttl = namespaces;
+    let ttl = TTL_NAMESPACES;
 
     // Service
     if (service.identifier) {
-      const encodedId = encodeURIComponent(service.identifier);
+      const encodedId = encodeURIComponentTTL(service.identifier);
       ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(service.identifier)}" ;\n`;
       if (service.name)
-        ttl += `    dct:title "${escapeTTLString(service.name)}"@${
-          service.language
-        } ;\n`;
+        ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
         ttl += `    dct:description "${escapeTTLString(service.description)}"@${
           service.language
         } ;\n`;
-      if (service.thematicArea)
-        ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
-      if (service.sector) ttl += `    cv:sector <${service.sector}> ;\n`;
+      if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
+      if (service.sector && service.sector !== 'custom') {
+        ttl += `    cv:sector <${service.sector}> ;\n`;
+      } else if (service.sector === 'custom' && service.customSector) {
+        ttl += `    cv:sector <${service.customSector}> ;\n`;
+      }
       if (service.keywords)
-        ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${
-          service.language
-        } ;\n`;
-      if (service.language) ttl += `    dct:language "${service.language}" ;\n`;
+        ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
+      if (service.language) {
+        const languageUri = `https://publications.europa.eu/resource/authority/language/${service.language.toUpperCase()}`;
+        ttl += `    dct:language <${languageUri}> ;\n`;
+      }
 
       if (organization.identifier) {
-        const encodedOrgId = encodeURIComponent(organization.identifier);
-        ttl += `    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/${encodedOrgId}> ;\n`;
+        const orgUri = buildResourceUri(
+          organization.identifier,
+          'https://regels.overheid.nl/organizations/'
+        );
+        ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
       }
 
       if (legalResource.bwbId) {
-        ttl += `    cpsv:follows <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> ;\n`;
+        const lowerBwbId = legalResource.bwbId.toLowerCase();
+        const legalUri =
+          lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
+            ? legalResource.bwbId
+            : `https://wetten.overheid.nl/${legalResource.bwbId}`;
+        ttl += `    cv:hasLegalResource <${legalUri}> ;\n`;
       }
 
       if (cost.identifier) {
@@ -469,57 +453,62 @@ function App() {
         ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
       }
 
-      ttl = ttl.slice(0, -2) + " .\n\n";
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Organization
     if (organization.identifier) {
-      const encodedOrgId = encodeURIComponent(organization.identifier);
-      ttl += `<https://regels.overheid.nl/organizations/${encodedOrgId}> a org:Organization ;\n`;
+      const orgUri = buildResourceUri(
+        organization.identifier,
+        'https://regels.overheid.nl/organizations/'
+      );
+      ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;
       if (organization.name)
-        ttl += `    skos:prefLabel "${escapeTTLString(
-          organization.name
-        )}"@nl ;\n`;
-      if (organization.homepage)
-        ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n\n";
+        ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
+      if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
+      if (organization.spatial) ttl += `    cv:spatial <${organization.spatial}> ;\n`; // âž• ADD
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Legal Resource
     if (legalResource.bwbId) {
-      ttl += `<https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}> a eli:LegalResource ;\n`;
+      // Support both full URIs and plain BWB IDs (case-insensitive check)
+      const lowerBwbId = legalResource.bwbId.toLowerCase();
+      const legalUri =
+        lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
+          ? legalResource.bwbId
+          : `https://wetten.overheid.nl/${legalResource.bwbId}`;
+
+      ttl += `<${legalUri}> a eli:LegalResource ;\n`;
+      // Extract just the BWB ID portion if it's a full URI
+      const bwbIdOnly = legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
+      ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
       if (legalResource.title)
         ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
       if (legalResource.description)
-        ttl += `    dct:description "${escapeTTLString(
-          legalResource.description
-        )}"@nl ;\n`;
+        ttl += `    dct:description "${escapeTTLString(legalResource.description)}"@nl ;\n`;
       if (legalResource.version) {
-        ttl += `    eli:is_realized_by <https://identifier.overheid.nl/tooi/def/thes/kern/c_${legalResource.bwbId}/${legalResource.version}> ;\n`;
+        ttl += `    eli:is_realized_by <${legalUri}/${legalResource.version}> ;\n`;
       }
-      ttl = ttl.slice(0, -2) + " .\n\n";
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Temporal Rules
     temporalRules.forEach((rule, index) => {
       if (rule.uri || rule.extends) {
-        const ruleUri =
-          rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
-        ttl += `<${ruleUri}> a ronl:TemporalRule ;\n`;
+        const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
+        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
+        if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
         if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
-        if (rule.validFrom)
-          ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
-        if (rule.validUntil)
-          ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
+        if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
+        if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         if (rule.confidenceLevel)
-          ttl += `    ronl:confidenceLevel "${escapeTTLString(
-            rule.confidenceLevel
-          )}" ;\n`;
+          ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
         if (rule.description)
-          ttl += `    dct:description "${escapeTTLString(
-            rule.description
-          )}"@nl ;\n`;
-        ttl = ttl.slice(0, -2) + " .\n\n";
+          ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
+        ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
 
@@ -527,25 +516,18 @@ function App() {
     parameters.forEach((param, index) => {
       if (param.notation && param.value) {
         const paramUri = `https://regels.overheid.nl/parameters/${encodeURIComponent(
-          service.identifier || "service"
+          service.identifier || 'service'
         )}/param-${index + 1}`;
         ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
-        if (param.label)
-          ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
-        if (param.notation)
-          ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
-        if (param.value)
-          ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
+        if (param.label) ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
+        if (param.notation) ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
+        if (param.value) ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
         if (param.unit) ttl += `    schema:unitCode "${param.unit}" ;\n`;
         if (param.description)
-          ttl += `    dct:description "${escapeTTLString(
-            param.description
-          )}"@nl ;\n`;
-        if (param.validFrom)
-          ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
-        if (param.validUntil)
-          ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
-        ttl = ttl.slice(0, -2) + " .\n\n";
+          ttl += `    dct:description "${escapeTTLString(param.description)}"@nl ;\n`;
+        if (param.validFrom) ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
+        if (param.validUntil) ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
+        ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
 
@@ -553,30 +535,49 @@ function App() {
     if (cost.identifier) {
       const encodedCostId = encodeURIComponent(cost.identifier);
       ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
-      if (cost.value)
-        ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
-      if (cost.currency)
-        ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(cost.identifier)}" ;\n`;
+      if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
+      if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
       if (cost.description)
-        ttl += `    dct:description "${escapeTTLString(
-          cost.description
-        )}"@nl ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n\n";
+        ttl += `    dct:description "${escapeTTLString(cost.description)}"@nl ;\n`;
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     // Output
     if (output.identifier) {
       const encodedOutputId = encodeURIComponent(output.identifier);
       ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
-      if (output.name)
-        ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(output.identifier)}" ;\n`;
+      if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
       if (output.description)
-        ttl += `    dct:description "${escapeTTLString(
-          output.description
-        )}"@nl ;\n`;
+        ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
       if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
-      ttl = ttl.slice(0, -2) + " .\n";
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
+
+    // CPRMV Rules
+    cprmvRules.forEach((rule) => {
+      // All fields are mandatory
+      if (
+        rule.ruleId &&
+        rule.rulesetId &&
+        rule.definition &&
+        rule.situatie &&
+        rule.norm &&
+        rule.ruleIdPath
+      ) {
+        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rule.rulesetId)}_${encodeURIComponentTTL(rule.ruleId)}`;
+        ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
+        ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
+        ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
+        ttl += `    cprmv:definition "${escapeTTLString(rule.definition)}"@nl ;\n`;
+        ttl += `    cprmv:situatie "${escapeTTLString(rule.situatie)}"@nl ;\n`;
+        ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
+        ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
+
+        ttl = ttl.slice(0, -2) + ' .\n\n';
+      }
+    });
 
     return ttl;
   };
@@ -584,15 +585,13 @@ function App() {
   // Download TTL
   const downloadTTL = () => {
     const ttl = generateTTL();
-    const blob = new Blob([ttl], { type: "text/turtle" });
+    const blob = new Blob([ttl], { type: 'text/turtle' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    const sanitizedFilename = (service.identifier || "service")
-      .replace(/%20/g, "-")
-      .replace(/\s+/g, "-")
-      .replace(/[^a-zA-Z0-9-_]/g, "");
-    a.download = `${sanitizedFilename}.ttl`;
+    const filename = sanitizeFilename(service.identifier);
+    a.download = `${filename}.ttl`;
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -600,1086 +599,258 @@ function App() {
   };
 
   // Validate form
-  const validateForm = () => {
-    const errors = [];
-    if (!service.identifier) errors.push("Service identifier is required");
-    if (!service.name) errors.push("Service name is required");
-    if (legalResource.bwbId && !/^[A-Z]{2,10}\d+$/.test(legalResource.bwbId)) {
-      errors.push("BWB ID must match pattern (e.g., BWBR0002820)");
-    }
+  const handleValidate = () => {
+    const { isValid, errors } = validateForm({
+      service,
+      organization,
+      legalResource,
+      temporalRules,
+      parameters,
+    });
 
-    if (errors.length > 0) {
-      alert("Validation errors:\n" + errors.join("\n"));
+    if (!isValid) {
+      alert('Validation errors:\n' + errors.join('\n'));
     } else {
-      alert(
-        "Ã¢Å“â€¦ Validation successful! All required fields are filled correctly."
-      );
+      alert('✅ Validation successful! All required fields are filled correctly.');
     }
   };
 
   // Render functions
-  const renderServiceInfo = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Service Identifier *
-        </label>
-        <input
-          type="text"
-          value={service.identifier}
-          onChange={(e) =>
-            setService({ ...service, identifier: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., aow-leeftijd"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Service Name *
-        </label>
-        <input
-          type="text"
-          value={service.name}
-          onChange={(e) => setService({ ...service, name: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., AOW Leeftijdsbepaling"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description
-        </label>
-        <textarea
-          value={service.description}
-          onChange={(e) =>
-            setService({ ...service, description: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          rows="3"
-          placeholder="Describe the service..."
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Thematic Area
-        </label>
-        <input
-          type="text"
-          value={service.thematicArea}
-          onChange={(e) =>
-            setService({ ...service, thematicArea: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., https://example.org/themes/social-security"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Sector
-        </label>
-        <input
-          type="text"
-          value={service.sector}
-          onChange={(e) => setService({ ...service, sector: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Social Protection"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Keyword
-        </label>
-        <input
-          type="text"
-          value={service.keyword}
-          onChange={(e) => setService({ ...service, keywords: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., pension, retirement"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Language
-        </label>
-        <select
-          value={service.language}
-          onChange={(e) => setService({ ...service, language: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-        >
-          <option value="nl">Nederlands</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-    </div>
-  );
-
-  const renderOrganization = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Organization Identifier
-        </label>
-        <input
-          type="text"
-          value={organization.identifier}
-          onChange={(e) =>
-            setOrganization({ ...organization, identifier: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., svb"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Organization Name
-        </label>
-        <input
-          type="text"
-          value={organization.name}
-          onChange={(e) =>
-            setOrganization({ ...organization, name: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Sociale Verzekeringsbank"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Homepage URL
-        </label>
-        <input
-          type="url"
-          value={organization.homepage}
-          onChange={(e) =>
-            setOrganization({ ...organization, homepage: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="https://www.svb.nl"
-        />
-      </div>
-    </div>
-  );
-
-  const renderLegalResource = () => (
-    <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          BWB ID
-        </label>
-        <input
-          type="text"
-          value={legalResource.bwbId}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, bwbId: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., BWBR0002820"
-          pattern="[A-Z]{2,10}\d+"
-        />
-        <p className="text-xs text-gray-500 mt-1">
-          Format: Letters followed by numbers (e.g., BWBR0002820)
-        </p>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Version Date
-        </label>
-        <input
-          type="text"
-          value={legalResource.version}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, version: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., 2024-01-01"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Legal Title
-        </label>
-        <input
-          type="text"
-          value={legalResource.title}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, title: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          placeholder="e.g., Algemene Ouderdomswet"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Description
-        </label>
-        <textarea
-          value={legalResource.description}
-          onChange={(e) =>
-            setLegalResource({ ...legalResource, description: e.target.value })
-          }
-          className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          rows="3"
-          placeholder="Describe the legal resource..."
-        />
-      </div>
-    </div>
-  );
-
-  const renderTemporalRules = () => (
-    <div className="space-y-6">
-      {temporalRules.map((rule, index) => (
-        <div
-          key={rule.id}
-          className="border border-gray-300 rounded-lg p-4 bg-gray-50"
-        >
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold text-gray-700">
-              Temporal Rule {index + 1}
-            </h4>
-            {temporalRules.length > 1 && (
-              <button
-                onClick={() => removeTemporalRule(rule.id)}
-                className="text-red-600 hover:text-red-800"
-              >
-                <Trash2 size={18} />
-              </button>
-            )}
-          </div>
-          <div className="space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Rule URI
-              </label>
-              <input
-                type="text"
-                value={rule.uri}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "uri", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                placeholder="https://regels.overheid.nl/rules/..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Extends (Rule URI)
-              </label>
-              <input
-                type="text"
-                value={rule.extends}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "extends", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                placeholder="URI of the rule being extended"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid From
-                </label>
-                <input
-                  type="date"
-                  value={rule.validFrom}
-                  onChange={(e) =>
-                    updateTemporalRule(rule.id, "validFrom", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid Until
-                </label>
-                <input
-                  type="date"
-                  value={rule.validUntil}
-                  onChange={(e) =>
-                    updateTemporalRule(rule.id, "validUntil", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confidence Level
-              </label>
-              <select
-                value={rule.confidenceLevel}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "confidenceLevel", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              >
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <textarea
-                value={rule.description}
-                onChange={(e) =>
-                  updateTemporalRule(rule.id, "description", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                rows="10"
-                placeholder="Describe this temporal rule..."
-              />
-            </div>
-          </div>
-        </div>
-      ))}
-      <button
-        onClick={addTemporalRule}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        <Plus size={18} /> Add Temporal Rule
-      </button>
-    </div>
-  );
-
-  const renderParameters = () => (
-    <div className="space-y-6">
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-        <p className="text-sm text-blue-800">
-          <strong>Parameters</strong> zijn constante waarden die gebruikt worden
-          in berekeningen en voorwaarden.
-          <br />
-          Bijvoorbeeld: inkomensgrenzen, vermogensgrenzen, percentages van
-          bijstandsnormen.
-        </p>
-      </div>
-
-      {parameters.map((param, index) => (
-        <div
-          key={param.id}
-          className="border border-gray-300 rounded-lg p-4 bg-gray-50"
-        >
-          <div className="flex justify-between items-center mb-3">
-            <h4 className="font-semibold text-gray-700">
-              Parameter {index + 1}
-            </h4>
-            {parameters.length > 1 && (
-              <button
-                onClick={() => removeParameter(param.id)}
-                className="text-red-600 hover:text-red-800"
-              >
-                <Trash2 size={18} />
-              </button>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Notation (Machine-readable) *
-                </label>
-                <input
-                  type="text"
-                  value={param.notation}
-                  onChange={(e) =>
-                    updateParameter(param.id, "notation", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="BOVENGRENS_INKOMEN_ALLEENSTAANDE"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Gebruik UPPERCASE_MET_UNDERSCORES
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Label (Human-readable) *
-                </label>
-                <input
-                  type="text"
-                  value={param.label}
-                  onChange={(e) =>
-                    updateParameter(param.id, "label", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="Bovengrens inkomen alleenstaande"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Value *
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={param.value}
-                  onChange={(e) =>
-                    updateParameter(param.id, "value", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="1207.30"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Unit
-                </label>
-                <select
-                  value={param.unit}
-                  onChange={(e) =>
-                    updateParameter(param.id, "unit", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                >
-                  <option value="EUR">EUR (Euro)</option>
-                  <option value="PCT">% (Percentage)</option>
-                  <option value="NUM">Number</option>
-                  <option value="MONTHS">Months</option>
-                  <option value="YEARS">Years</option>
-                  <option value="DAYS">Days</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <textarea
-                value={param.description}
-                onChange={(e) =>
-                  updateParameter(param.id, "description", e.target.value)
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                rows="2"
-                placeholder="Maximum inkomensgrens voor alleenstaanden om in aanmerking te komen voor de regeling"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid From
-                </label>
-                <input
-                  type="date"
-                  value={param.validFrom}
-                  onChange={(e) =>
-                    updateParameter(param.id, "validFrom", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Valid Until
-                </label>
-                <input
-                  type="date"
-                  value={param.validUntil}
-                  onChange={(e) =>
-                    updateParameter(param.id, "validUntil", e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      <button
-        onClick={addParameter}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        <Plus size={18} /> Add Parameter
-      </button>
-    </div>
-  );
-
-  const renderChangelog = () => (
-    <div className="space-y-6">
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
-        <div className="flex items-center gap-3 mb-2">
-          <History className="text-blue-600" size={28} />
-          <h2 className="text-2xl font-bold text-gray-800">
-            Enhancement Changelog
-          </h2>
-        </div>
-        <p className="text-sm text-gray-600">
-          Complete history of features and improvements to the Public Service
-          TTL Editor
-        </p>
-      </div>
-
-      <div className="border-l-4 border-emerald-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.2.2</h3>
-          <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full">
-            Current
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: November 14, 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-red-600">🗑️</span> Clear All Button
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Added "Clear All" button with confirmation dialog
-              </li>
-              <li>
-                Safe data clearing - requires explicit confirmation
-              </li>
-              <li>
-                Resets all form fields to initial state
-              </li>
-              <li>
-                Success notification after clearing
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">🐛</span> Bug Fixes
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Fixed: Parameters with ronl:ParameterWaarde now import correctly
-              </li>
-              <li>
-                Fixed: Organization name displays from skos:prefLabel
-              </li>
-              <li>
-                Fixed: Sequential imports now clear previous data properly
-              </li>
-              <li>
-                Fixed: Eliminated uncontrolled input console warnings
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-green-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.1.1</h3>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-            Release
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: October 27, 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-emerald-600">✨</span> UI Improvements
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Increased Rules section description field from 2 to 10 rows for
-                better visibility
-              </li>
-              <li>
-                Expanded Preview section to display ~80 lines of TTL code (from
-                ~20 lines)
-              </li>
-              <li>
-                Enhanced user experience for viewing and editing longer content
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-green-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.1.0</h3>
-          <span className="px-3 py-1 bg-green-100 text-green-800 text-sm font-semibold rounded-full">
-            Major Release
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">📊</span> Parameters Tab
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Added dedicated Parameters tab for ronl:ParameterWaarde support
-              </li>
-              <li>
-                Define constants: income limits, asset thresholds, percentages
-              </li>
-              <li>
-                Fields: Notation, Label, Value, Unit (EUR/PCT/NUM/etc.),
-                Description
-              </li>
-              <li>Temporal validity: validFrom and validUntil dates</li>
-              <li>Add/remove unlimited parameters dynamically</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">🔧</span> Technical Improvements
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>Added schema.org namespace for parameter values and units</li>
-              <li>schema:value for numeric parameter values (xsd:decimal)</li>
-              <li>schema:unitCode for measurement units</li>
-              <li>Full import/export support for parameters</li>
-              <li>Updated NAMESPACE-PROPERTIES.md with schema: prefix</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-blue-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.0.2</h3>
-          <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-semibold rounded-full">
-            Bug Fixes
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-red-600">🐛</span> Bug Fixes
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Fixed: BWB ID import now correctly strips c_ prefix from legal
-                resources
-              </li>
-              <li>
-                Fixed: Special character escaping in TTL strings (quotes,
-                newlines)
-              </li>
-              <li>
-                Fixed: URI encoding for identifiers with spaces (%20 encoding)
-              </li>
-              <li>Fixed: Filename sanitization for downloads</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-purple-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.0.1</h3>
-          <span className="px-3 py-1 bg-purple-100 text-purple-800 text-sm font-semibold rounded-full">
-            Enhancement
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-purple-600">📥</span> Import Functionality
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>Import existing TTL files for editing</li>
-              <li>Automatic parsing of CPSV-AP/CPRMV structures</li>
-              <li>Populates all form fields from imported data</li>
-              <li>Supports multiple temporal rules</li>
-              <li>Handles service, organization, legal, and rule data</li>
-              <li>Success/error status messages with visual feedback</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-gray-600">📝</span> Character Handling
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Proper TTL string escaping (quotes, backslashes, newlines)
-              </li>
-              <li>URI encoding for spaces and special characters</li>
-              <li>Round-trip editing: export -- import -- edit -- export</li>
-              <li>W3C Turtle specification compliance</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-indigo-500 bg-white rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">Version 1.0.0</h3>
-          <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-semibold rounded-full">
-            Initial Release
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Released: October 2025</p>
-
-        <div className="space-y-4">
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-indigo-600">✨</span> Core Features
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>React-based web application with Create React App</li>
-              <li>Tailwind CSS v3 for modern, responsive design</li>
-              <li>Lucide React icons for visual clarity</li>
-              <li>
-                5-tab interface: Service, Organization, Legal, Rules, Preview
-              </li>
-              <li>Real-time TTL preview with syntax highlighting</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-green-600">✨</span> Form Capabilities
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>
-                Service metadata: identifier, name, description, thematic area
-              </li>
-              <li>Organization details: name, identifier, homepage</li>
-              <li>Legal resources: BWB IDs with pattern validation</li>
-              <li>
-                Temporal rules: extends, validFrom, validUntil, confidence
-                levels
-              </li>
-              <li>Dynamic rule management: add/remove rules</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-blue-600">✨</span> Export & Standards
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>Generate valid RDF/Turtle files</li>
-              <li>CPSV-AP 3.0 compliance (EU standard)</li>
-              <li>CPRMV 0.3.0 support (Dutch extensions)</li>
-              <li>RONL vocabulary integration</li>
-              <li>Download TTL files with proper namespaces</li>
-              <li>Basic validation with error messages</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-              <span className="text-yellow-600">✨</span> Deployment
-            </h4>
-            <ul className="list-disc list-inside space-y-1 text-gray-600 ml-6">
-              <li>Deployed to Azure Static Web Apps</li>
-              <li>Custom domain: ttl.open-regels.nl</li>
-              <li>Automatic CI/CD via GitHub Actions</li>
-              <li>Free tier hosting with SSL</li>
-              <li>Professional branding and favicon</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="border-l-4 border-gray-400 bg-gray-50 rounded-lg shadow-sm p-6">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xl font-bold text-gray-800">
-            Future Enhancements
-          </h3>
-          <span className="px-3 py-1 bg-gray-200 text-gray-700 text-sm font-semibold rounded-full">
-            Roadmap
-          </span>
-        </div>
-        <p className="text-sm text-gray-500 mb-4">Planned features</p>
-
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">⏭️</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">Template System</h4>
-              <p className="text-sm text-gray-600">
-                Pre-fill forms from AOW example or custom templates
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">🔧</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">Browser Storage</h4>
-              <p className="text-sm text-gray-600">
-                Auto-save progress to localStorage
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">🎯</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">
-                Additional Sections
-              </h4>
-              <p className="text-sm text-gray-600">
-                Channel, Contact, DMN Distribution forms
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">🚀</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">
-                Advanced Validation
-              </h4>
-              <p className="text-sm text-gray-600">
-                Field-level error messages and real-time validation
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">📥</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">Export Options</h4>
-              <p className="text-sm text-gray-600">
-                JSON and YAML export formats
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">🎯</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">DMN File Upload</h4>
-              <p className="text-sm text-gray-600">
-                Upload and link DMN files to services
-              </p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <span className="text-gray-400 mt-1">🎯</span>
-            <div>
-              <h4 className="font-semibold text-gray-700">
-                Multi-Service Management
-              </h4>
-              <p className="text-sm text-gray-600">
-                Manage multiple services in one session
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="text-center text-gray-500 text-sm pt-6 border-t">
-        <p>Part of the RONL (Regels Overheid Nederland) initiative</p>
-        <p className="mt-1">
-          For detailed documentation, see{" "}
-          <a
-            href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            NAMESPACE-PROPERTIES.md
-          </a>
-        </p>
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <FileText className="text-blue-600" size={32} />
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">
-                  Public Service TTL Editor
-                </h1>
-                <p className="text-gray-600 text-sm">
-                  Generate RDF/Turtle files for government services
-                </p>
+      <div className={`grid ${showPreviewPanel ? 'grid-cols-[1fr,500px]' : 'grid-cols-1'} gap-4`}>
+        {/* LEFT SIDE: Main Editor (all existing content) */}
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
+          {/* Header */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <FileText className="text-blue-600" size={32} />
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-800">Core Public Service Editor</h1>
+                  <p className="text-gray-600 text-sm">
+                    Generate CPSV-AP compliant Terse RDF Triple Language files for government
+                    services
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <input
+                  type="file"
+                  id="ttl-import"
+                  accept=".ttl"
+                  onChange={handleImportFile}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="ttl-import"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
+                >
+                  <Upload size={20} />
+                  Import TTL File
+                </label>
+
+                {/* Toggle Preview Button */}
+                <button
+                  onClick={() => setShowPreviewPanel(!showPreviewPanel)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors ${
+                    showPreviewPanel
+                      ? 'bg-green-600 text-white hover:bg-green-700'
+                      : 'bg-gray-600 text-white hover:bg-gray-700'
+                  }`}
+                  title={showPreviewPanel ? 'Hide preview panel' : 'Show preview panel'}
+                >
+                  <FileUp size={20} />
+                  {showPreviewPanel ? 'Hide Preview' : 'Show Preview'}
+                </button>
+
+                <button
+                  onClick={() => setShowClearDialog(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                  title="Clear all fields"
+                >
+                  <Trash2 size={20} />
+                  Clear All
+                </button>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <input
-                type="file"
-                id="ttl-import"
-                accept=".ttl"
-                onChange={handleImportFile}
-                className="hidden"
-              />
-              <label
-                htmlFor="ttl-import"
-                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
-              >
-                <Upload size={20} />
-                Import TTL File
-              </label>
-              <button
-                onClick={() => setShowClearDialog(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
-                title="Clear all fields"
-              >
-                <Trash2 size={20} />
-                Clear All
-              </button>
-            </div>
-          </div>
-
-          {importStatus.show && (
-            <div
-              className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
-                importStatus.success
-                  ? "bg-green-50 border border-green-200"
-                  : "bg-red-50 border border-red-200"
-              }`}
-            >
-              {importStatus.success ? (
-                <CheckCircle className="text-green-600" size={24} />
-              ) : (
-                <AlertCircle className="text-red-600" size={24} />
-              )}
-              <p
-                className={
-                  importStatus.success ? "text-green-800" : "text-red-800"
-                }
-              >
-                {importStatus.message}
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="flex border-b overflow-x-auto">
-            {[
-              "service",
-              "organization",
-              "legal",
-              "rules",
-              "parameters",
-              "preview",
-              "changelog",
-            ].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
-                  activeTab === tab
-                    ? "bg-white text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+            {importStatus.show && (
+              <div
+                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
+                  importStatus.success
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-red-50 border border-red-200'
                 }`}
               >
-                {tab === "service" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <FileText size={18} />
-                    Service
-                  </span>
+                {importStatus.success ? (
+                  <CheckCircle className="text-green-600" size={24} />
+                ) : (
+                  <AlertCircle className="text-red-600" size={24} />
                 )}
-                {tab === "organization" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Building2 size={18} />
-                    Organization
-                  </span>
-                )}
-                {tab === "legal" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Scale size={18} />
-                    Legal
-                  </span>
-                )}
-                {tab === "rules" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Clock size={18} />
-                    Rules
-                  </span>
-                )}
-                {tab === "parameters" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <Plus size={18} />
-                    Parameters
-                  </span>
-                )}
-                {tab === "preview" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <FileUp size={18} />
-                    Preview
-                  </span>
-                )}
-                {tab === "changelog" && (
-                  <span className="flex items-center justify-center gap-2">
-                    <History size={18} />
-                    Changelog
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          <div className="p-6">
-            {activeTab === "service" && renderServiceInfo()}
-            {activeTab === "organization" && renderOrganization()}
-            {activeTab === "legal" && renderLegalResource()}
-            {activeTab === "rules" && renderTemporalRules()}
-            {activeTab === "parameters" && renderParameters()}
-            {activeTab === "changelog" && renderChangelog()}
-            {activeTab === "preview" && (
-              <div>
-                <h3 className="text-lg font-semibold text-blue-700 border-b pb-2 mb-4">
-                  TTL Preview
-                </h3>
-                <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm font-mono max-h-[1600px] overflow-y-auto">
-                  {generateTTL()}
-                </pre>
+                <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
+                  {importStatus.message}
+                </p>
               </div>
             )}
           </div>
-        </div>
 
-        <div className="mt-6 flex gap-4 justify-end">
-          <button
-            onClick={validateForm}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
-          >
-            <CheckCircle size={20} /> Validate
-          </button>
-          <button
-            onClick={downloadTTL}
-            className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
-          >
-            <Download size={20} /> Download TTL
-          </button>
-        </div>
+          {/* Tabs and Content */}
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="flex border-b overflow-x-auto">
+              {[
+                'service',
+                'organization',
+                'legal',
+                'rules',
+                'parameters',
+                'cprmv',
+                'changelog',
+              ].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                    activeTab === tab
+                      ? 'bg-white text-blue-600 border-b-2 border-blue-600'
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }`}
+                >
+                  {tab === 'service' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <FileText size={18} />
+                      Service
+                    </span>
+                  )}
+                  {tab === 'organization' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Building2 size={18} />
+                      Organization
+                    </span>
+                  )}
+                  {tab === 'legal' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Scale size={18} />
+                      Legal
+                    </span>
+                  )}
+                  {tab === 'rules' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Clock size={18} />
+                      Rules
+                    </span>
+                  )}
+                  {tab === 'parameters' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Plus size={18} />
+                      Parameters
+                    </span>
+                  )}
+                  {tab === 'cprmv' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Database size={18} />
+                      CPRMV
+                    </span>
+                  )}
+                  {tab === 'changelog' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <History size={18} />
+                      Changelog
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
 
-        <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
-          <p>
-            Public Service TTL Editor - Part of RONL Initiative
-            <br />
-            Based on{" "}
-            <a
-              href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
+            <div className="p-6 min-h-[600px]">
+              {activeTab === 'service' && (
+                <ServiceTab
+                  service={service}
+                  setService={setService}
+                  cost={cost}
+                  setCost={setCost}
+                  output={output}
+                  setOutput={setOutput}
+                />
+              )}{' '}
+              {activeTab === 'organization' && (
+                <OrganizationTab organization={organization} setOrganization={setOrganization} />
+              )}
+              {activeTab === 'legal' && (
+                <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
+              )}
+              {activeTab === 'rules' && (
+                <RulesTab
+                  temporalRules={temporalRules}
+                  addTemporalRule={addTemporalRule}
+                  removeTemporalRule={removeTemporalRule}
+                  updateTemporalRule={updateTemporalRule}
+                />
+              )}
+              {activeTab === 'parameters' && (
+                <ParametersTab
+                  parameters={parameters}
+                  addParameter={addParameter}
+                  removeParameter={removeParameter}
+                  updateParameter={updateParameter}
+                />
+              )}
+              {activeTab === 'cprmv' && (
+                <CPRMVTab
+                  cprmvRules={cprmvRules}
+                  addCPRMVRule={addCPRMVRule}
+                  removeCPRMVRule={removeCPRMVRule}
+                  updateCPRMVRule={updateCPRMVRule}
+                  handleImportJSON={handleImportJSON}
+                />
+              )}
+              {activeTab === 'changelog' && <ChangelogTab />}
+            </div>
+          </div>
+
+          {/* Validate and Download Buttons */}
+          <div className="mt-6 flex gap-4 justify-end">
+            <button
+              onClick={handleValidate}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
             >
-              NAMESPACE-PROPERTIES.md
-            </a>
-          </p>
-        </footer>
-      </div>
+              <CheckCircle size={20} /> Validate
+            </button>
+            <button
+              onClick={downloadTTL}
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
+            >
+              <Download size={20} /> Download TTL
+            </button>
+          </div>
 
+          {/* Footer */}
+          <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
+            <p>
+              Core Public Service Editor - Part of RONL Initiative
+              <br />
+              Based on{' '}
+              <a
+                href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                NAMESPACE-PROPERTIES.md
+              </a>
+            </p>
+          </footer>
+        </div>
+
+        {/* RIGHT SIDE: Live Preview Panel (conditionally rendered) */}
+        {showPreviewPanel && (
+          <div className="fixed right-0 top-0 h-screen w-[500px] z-50">
+            <PreviewPanel ttlContent={generateTTL()} />
+          </div>
+        )}
+      </div>
       {/* Clear Confirmation Dialog */}
       {showClearDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
@@ -1688,16 +859,14 @@ function App() {
               <div className="bg-red-100 rounded-full p-3">
                 <AlertCircle className="text-red-600" size={24} />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Clear All Fields?
-              </h3>
+              <h3 className="text-xl font-bold text-gray-800">Clear All Fields?</h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6">
-              This will permanently delete all data in all tabs (Service, Organization, 
-              Legal, Rules, Parameters, Cost, and Output). This action cannot be undone.
+              This will permanently delete all data in all tabs (Service, Organization, Legal,
+              Rules, Parameters, CPRMV, Cost, and Output). This action cannot be undone.
             </p>
-            
+
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setShowClearDialog(false)}

@@ -12,7 +12,7 @@ import { detectEntityType, validatePrefixes } from './vocabularies.config.js';
 export const parseTTLEnhanced = (ttlContent) => {
   try {
     const lines = ttlContent.split('\n');
-    
+
     // Initialize result structure with proper property names
     const parsed = {
       service: {
@@ -21,32 +21,33 @@ export const parseTTLEnhanced = (ttlContent) => {
         description: '',
         thematicArea: '',
         sector: '',
-        keywords: '',  // Note: 'keywords' not 'keyword'
-        language: 'nl'
+        keywords: '', // Note: 'keywords' not 'keyword'
+        language: 'nl',
       },
       organization: {
         identifier: '',
-        name: '',      // Note: 'name' not 'prefLabel'
-        homepage: ''
+        name: '', // Note: 'name' not 'prefLabel'
+        homepage: '',
       },
       legalResource: {
         bwbId: '',
         version: '',
         title: '',
-        description: ''
+        description: '',
       },
       temporalRules: [],
       parameters: [],
+      cprmvRules: [],
       cost: {
         value: '',
         currency: 'EUR',
-        description: ''
+        description: '',
       },
       output: {
         name: '',
         description: '',
-        type: ''
-      }
+        type: '',
+      },
     };
 
     // Validate prefixes (silent by default to reduce console noise)
@@ -59,6 +60,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentSection = null;
     let currentRule = null;
     let currentParameter = null;
+    let currentCprmvRule = null;
     let currentSubject = null;
 
     // Helper function to extract values from TTL lines
@@ -68,19 +70,19 @@ export const parseTTLEnhanced = (ttlContent) => {
       if (quotedMatch) {
         return unescapeTTLString(quotedMatch[1]);
       }
-      
+
       // Try URI
       const urlMatch = property.match(/<([^>]+)>/);
       if (urlMatch) {
         return decodeURIValue(urlMatch[1]);
       }
-      
+
       // Try plain value (fixed regex - no unnecessary escape)
       const plainMatch = property.match(/^\s*([^\s;,.]+)/);
       if (plainMatch) {
         return plainMatch[1].replace(/\^\^xsd:\w+$/, '');
       }
-      
+
       return '';
     };
 
@@ -108,7 +110,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     // Parse each line
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
-      
+
       // Skip comments and empty lines
       if (line.startsWith('#') || line === '') continue;
 
@@ -116,13 +118,13 @@ export const parseTTLEnhanced = (ttlContent) => {
       const detectedType = detectEntityType(line);
       if (detectedType) {
         currentSection = detectedType;
-        
+
         // Extract subject URI
         const subjectMatch = line.match(/<([^>]+)>/);
         if (subjectMatch) {
           currentSubject = subjectMatch[1];
         }
-        
+
         // Initialize entity-specific structures
         if (detectedType === 'temporalRule') {
           currentRule = {
@@ -132,7 +134,7 @@ export const parseTTLEnhanced = (ttlContent) => {
             validFrom: '',
             validUntil: '',
             confidenceLevel: 'high',
-            description: ''
+            description: '',
           };
         } else if (detectedType === 'parameter') {
           currentParameter = {
@@ -143,9 +145,26 @@ export const parseTTLEnhanced = (ttlContent) => {
             unit: 'EUR',
             description: '',
             validFrom: '',
-            validUntil: ''
+            validUntil: '',
+          };
+        } else if (detectedType === 'cprmvRule') {
+          currentCprmvRule = {
+            id: Date.now() + Math.random(),
+            ruleId: '',
+            rulesetId: '',
+            definition: '',
+            situatie: '',
+            norm: '',
+            ruleIdPath: '',
           };
         }
+
+        if (detectedType === 'cost') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        } else if (detectedType === 'output') {
+          // Don't pre-populate - let dct:identifier parsing handle it
+        }
+
         continue;
       }
 
@@ -156,26 +175,34 @@ export const parseTTLEnhanced = (ttlContent) => {
           const parts = currentSubject.split('/');
           parsed.service.identifier = parts[parts.length - 1];
         }
-        
+
         if (line.includes('dct:title')) {
           parsed.service.name = extractValue(line.split('dct:title')[1]) || parsed.service.name;
         }
         if (line.includes('dct:description')) {
-          parsed.service.description = extractValue(line.split('dct:description')[1]) || parsed.service.description;
+          parsed.service.description =
+            extractValue(line.split('dct:description')[1]) || parsed.service.description;
         }
         if (line.includes('thematicArea')) {
           // Handle both cv: and cpsv-ap: prefixes
-          parsed.service.thematicArea = extractValue(line.split('thematicArea')[1]) || parsed.service.thematicArea;
+          parsed.service.thematicArea =
+            extractValue(line.split('thematicArea')[1]) || parsed.service.thematicArea;
         }
         if (line.includes('sector')) {
           // Handle both cv: and cpsv-ap: prefixes
           parsed.service.sector = extractValue(line.split('sector')[1]) || parsed.service.sector;
         }
         if (line.includes('dcat:keyword')) {
-          parsed.service.keywords = extractValue(line.split('dcat:keyword')[1]) || parsed.service.keywords;
+          parsed.service.keywords =
+            extractValue(line.split('dcat:keyword')[1]) || parsed.service.keywords;
         }
         if (line.includes('dct:language')) {
-          parsed.service.language = extractValue(line.split('dct:language')[1]) || parsed.service.language;
+          const uriMatch = line.match(/<([^>]+)>/);
+          if (uriMatch) {
+            // Extract language code from URI
+            const langCode = uriMatch[1].split('/').pop().toLowerCase();
+            parsed.service.language = langCode;
+          }
         }
       }
 
@@ -184,35 +211,58 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (!parsed.organization.identifier && currentSubject) {
           parsed.organization.identifier = currentSubject;
         }
-        
+
         // Handle both skos:prefLabel and foaf:name
         if (line.includes('skos:prefLabel')) {
-          parsed.organization.name = extractValue(line.split('skos:prefLabel')[1]) || parsed.organization.name;
+          parsed.organization.name =
+            extractValue(line.split('skos:prefLabel')[1]) || parsed.organization.name;
         }
         if (line.includes('foaf:name')) {
-          parsed.organization.name = extractValue(line.split('foaf:name')[1]) || parsed.organization.name;
+          parsed.organization.name =
+            extractValue(line.split('foaf:name')[1]) || parsed.organization.name;
         }
         if (line.includes('org:name')) {
-          parsed.organization.name = extractValue(line.split('org:name')[1]) || parsed.organization.name;
+          parsed.organization.name =
+            extractValue(line.split('org:name')[1]) || parsed.organization.name;
         }
-        
         if (line.includes('foaf:homepage')) {
-          parsed.organization.homepage = extractValue(line.split('foaf:homepage')[1]) || parsed.organization.homepage;
+          parsed.organization.homepage =
+            extractValue(line.split('foaf:homepage')[1]) || parsed.organization.homepage;
+        }
+        if (line.includes('cv:spatial')) {
+          const spatialMatch = line.match(/<([^>]+)>/);
+          if (spatialMatch) {
+            parsed.organization.spatial = spatialMatch[1];
+          }
         }
       }
 
       if (currentSection === 'legalResource') {
+        // Save the full URI as identifier (like Organization does)
+        if (!parsed.legalResource.bwbId && currentSubject) {
+          parsed.legalResource.bwbId = currentSubject;
+        }
+
         if (line.includes('dct:title')) {
-          parsed.legalResource.title = extractValue(line.split('dct:title')[1]) || parsed.legalResource.title;
+          parsed.legalResource.title =
+            extractValue(line.split('dct:title')[1]) || parsed.legalResource.title;
         }
         if (line.includes('dct:description')) {
-          parsed.legalResource.description = extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
+          parsed.legalResource.description =
+            extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
         }
-        
-        // Extract BWB ID from subject URI
-        if (currentSubject && currentSubject.includes('BWBR')) {
-          const bwbMatch = currentSubject.match(/BWBR\d+/);
-          if (bwbMatch) parsed.legalResource.bwbId = bwbMatch[0];
+
+        // Extract version date from eli:is_realized_by
+        // Format: eli:is_realized_by <https://wetten.overheid.nl/BWBR0002222/2025-12-03>
+        if (line.includes('eli:is_realized_by')) {
+          const uriMatch = line.match(/<([^>]+)>/);
+          if (uriMatch) {
+            // Extract date from end of URI (format: .../YYYY-MM-DD)
+            const dateMatch = uriMatch[1].match(/(\d{4}-\d{2}-\d{2})$/);
+            if (dateMatch) {
+              parsed.legalResource.version = dateMatch[1];
+            }
+          }
         }
       }
 
@@ -225,15 +275,24 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentRule.validFrom = extractValue(line.split('validFrom')[1]) || currentRule.validFrom;
         }
         if (line.includes('validUntil')) {
-          currentRule.validUntil = extractValue(line.split('validUntil')[1]) || currentRule.validUntil;
+          currentRule.validUntil =
+            extractValue(line.split('validUntil')[1]) || currentRule.validUntil;
         }
         if (line.includes('confidenceLevel') || line.includes('confidence')) {
-          currentRule.confidenceLevel = extractValue(line.split(/confidence/)[1]) || currentRule.confidenceLevel;
+          currentRule.confidenceLevel =
+            extractValue(line.split(/confidence/)[1]) || currentRule.confidenceLevel;
         }
         if (line.includes('dct:description')) {
-          currentRule.description = extractValue(line.split('dct:description')[1]) || currentRule.description;
+          currentRule.description =
+            extractValue(line.split('dct:description')[1]) || currentRule.description;
         }
-        
+        if (line.includes('dct:identifier')) {
+          currentRule.identifier =
+            extractValue(line.split('dct:identifier')[1]) || currentRule.identifier;
+        }
+        if (line.includes('dct:title')) {
+          currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
+        }
         // End of rule (period without semicolon)
         if (line.includes('.') && !line.includes(';')) {
           parsed.temporalRules.push(currentRule);
@@ -245,35 +304,118 @@ export const parseTTLEnhanced = (ttlContent) => {
       // Parameter properties
       if (currentSection === 'parameter' && currentParameter) {
         if (line.includes('skos:prefLabel')) {
-          currentParameter.label = extractValue(line.split('skos:prefLabel')[1]) || currentParameter.label;
+          currentParameter.label =
+            extractValue(line.split('skos:prefLabel')[1]) || currentParameter.label;
         }
         if (line.includes('skos:notation')) {
-          currentParameter.notation = extractValue(line.split('skos:notation')[1]) || currentParameter.notation;
+          currentParameter.notation =
+            extractValue(line.split('skos:notation')[1]) || currentParameter.notation;
         }
         if (line.includes('schema:value')) {
           const valueStr = extractValue(line.split('schema:value')[1]);
           if (valueStr) currentParameter.value = valueStr.replace(/\^\^xsd:decimal$/, '');
         }
         if (line.includes('schema:unitCode')) {
-          currentParameter.unit = extractValue(line.split('schema:unitCode')[1]) || currentParameter.unit;
+          currentParameter.unit =
+            extractValue(line.split('schema:unitCode')[1]) || currentParameter.unit;
         }
         if (line.includes('dct:description')) {
-          currentParameter.description = extractValue(line.split('dct:description')[1]) || currentParameter.description;
+          currentParameter.description =
+            extractValue(line.split('dct:description')[1]) || currentParameter.description;
         }
         if (line.includes('validFrom')) {
-          currentParameter.validFrom = extractValue(line.split('validFrom')[1]) || currentParameter.validFrom;
+          currentParameter.validFrom =
+            extractValue(line.split('validFrom')[1]) || currentParameter.validFrom;
         }
         if (line.includes('validUntil')) {
-          currentParameter.validUntil = extractValue(line.split('validUntil')[1]) || currentParameter.validUntil;
+          currentParameter.validUntil =
+            extractValue(line.split('validUntil')[1]) || currentParameter.validUntil;
         }
-        
+
         if (line.includes('.') && !line.includes(';')) {
           parsed.parameters.push(currentParameter);
           currentParameter = null;
           currentSection = null;
         }
       }
+
+      // Cost properties
+      if (currentSection === 'cost') {
+        if (line.includes('dct:identifier')) {
+          parsed.cost.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Cost identifier found:', parsed.cost.identifier);
+        }
+        if (line.includes('cv:value')) {
+          parsed.cost.value = extractValue(line.split('cv:value')[1]);
+        }
+        if (line.includes('cv:currency')) {
+          parsed.cost.currency = extractValue(line.split('cv:currency')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.cost.description = extractValue(line.split('dct:description')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
+      // Output properties
+      if (currentSection === 'output') {
+        if (line.includes('dct:identifier')) {
+          parsed.output.identifier = extractValue(line.split('dct:identifier')[1]);
+          console.log('🔍 Output identifier found:', parsed.output.identifier);
+        }
+        if (line.includes('dct:title')) {
+          parsed.output.name = extractValue(line.split('dct:title')[1]);
+        }
+        if (line.includes('dct:description')) {
+          parsed.output.description = extractValue(line.split('dct:description')[1]);
+        }
+        if (line.includes('dct:type')) {
+          parsed.output.type = extractValue(line.split('dct:type')[1]);
+        }
+
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+        }
+      }
+
+      if (currentSection === 'cprmvRule' && currentCprmvRule) {
+        if (line.includes('cprmv:id')) {
+          currentCprmvRule.ruleId =
+            extractValue(line.split('cprmv:id')[1]) || currentCprmvRule.ruleId;
+        }
+        if (line.includes('cprmv:rulesetId')) {
+          currentCprmvRule.rulesetId =
+            extractValue(line.split('cprmv:rulesetId')[1]) || currentCprmvRule.rulesetId;
+        }
+        if (line.includes('cprmv:definition')) {
+          currentCprmvRule.definition =
+            extractValue(line.split('cprmv:definition')[1]) || currentCprmvRule.definition;
+        }
+        if (line.includes('cprmv:situatie')) {
+          currentCprmvRule.situatie =
+            extractValue(line.split('cprmv:situatie')[1]) || currentCprmvRule.situatie;
+        }
+        if (line.includes('cprmv:norm')) {
+          currentCprmvRule.norm =
+            extractValue(line.split('cprmv:norm')[1]) || currentCprmvRule.norm;
+        }
+        if (line.includes('cprmv:ruleIdPath')) {
+          currentCprmvRule.ruleIdPath =
+            extractValue(line.split('cprmv:ruleIdPath')[1]) || currentCprmvRule.ruleIdPath;
+        }
+
+        // Check for end of rule (period without semicolon)
+        if (line.includes('.') && !line.includes(';')) {
+          parsed.cprmvRules.push(currentCprmvRule);
+          currentCprmvRule = null;
+          currentSection = null;
+        }
+      }
     }
+    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules);
 
     return parsed;
   } catch (error) {
