@@ -6,7 +6,7 @@ This document provides a comprehensive reference for all namespaces and properti
 
 **Last Updated:** December 2025  
 **Editor Version:** 1.4.0 (CPSV-AP 3.2.0 Phase 1 Compliant)  
-**Deployment:** https://ttl.open-regels.nl/
+**Deployment:** https://cpsv.open-regels.nl/
 
 ---
 
