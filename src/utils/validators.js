@@ -85,6 +85,13 @@ export function validateTemporalRule(rule, index) {
     }
   }
 
+  if (!rule.identifier) {
+    errors.push(`Rule ${index + 1}: Rule identifier (dct:identifier) is required`);
+  }
+  if (!rule.title) {
+    errors.push(`Rule ${index + 1}: Rule title (dct:title) is required`);
+  }
+
   // Validate URI format if provided
   if (rule.uri && !isValidUrl(rule.uri)) {
     errors.push(`Rule ${ruleNum}: URI must be a valid URL`);

@@ -28,6 +28,8 @@ export const DEFAULT_LEGAL_RESOURCE = {
 
 export const DEFAULT_TEMPORAL_RULE = {
   id: 1,
+  identifier: '',
+  title: '',
   uri: '',
   extends: '',
   validFrom: '',

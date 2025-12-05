@@ -92,7 +92,11 @@ function App() {
         title: parsed.legalResource?.title || '',
         description: parsed.legalResource?.description || '',
       },
-      temporalRules: parsed.temporalRules || [],
+      temporalRules: (parsed.temporalRules || []).map((rule) => ({
+        ...rule,
+        identifier: rule.identifier || '',
+        title: rule.title || '',
+      })),
       parameters: parsed.parameters || [],
       cprmvRules: parsed.cprmvRules || [],
       cost: {
@@ -248,6 +252,8 @@ function App() {
       ...temporalRules,
       {
         id: Date.now(),
+        identifier: '',
+        title: '',
         uri: '',
         extends: '',
         validFrom: '',
@@ -481,7 +487,9 @@ function App() {
     temporalRules.forEach((rule, index) => {
       if (rule.uri || rule.extends) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
-        ttl += `<${ruleUri}> a ronl:TemporalRule ;\n`;
+        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
+        if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
         if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
         if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;

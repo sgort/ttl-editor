@@ -37,8 +37,8 @@ export const VOCABULARY_CONFIG = {
       canonicalType: 'eli:LegalResource',
     },
     temporalRule: {
-      acceptedTypes: ['ronl:TemporalRule'],
-      canonicalType: 'ronl:TemporalRule',
+      acceptedTypes: ['cpsv:Rule, ronl:TemporalRule'],
+      canonicalType: 'cpsv:Rule',
     },
     parameter: {
       acceptedTypes: ['skos:Concept', 'ronl:ParameterWaarde'],

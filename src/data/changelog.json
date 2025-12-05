@@ -14,7 +14,8 @@
           "Fixed Organization Class Type",
           "Added cv:spatial to Organization",
           "Added explicit dct:identifier outputs to fix: Identifiers used in URIs but not explicitly output as properties",
-          "Changed cpsv:follows to cv:hasLegalResource"
+          "Changed cpsv:follows to cv:hasLegalResource",
+          "Added Rule Identifiers and Titles"
         ]
       }
     ]

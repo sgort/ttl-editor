@@ -275,7 +275,13 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentRule.description =
             extractValue(line.split('dct:description')[1]) || currentRule.description;
         }
-
+        if (line.includes('dct:identifier')) {
+          currentRule.identifier =
+            extractValue(line.split('dct:identifier')[1]) || currentRule.identifier;
+        }
+        if (line.includes('dct:title')) {
+          currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
+        }
         // End of rule (period without semicolon)
         if (line.includes('.') && !line.includes(';')) {
           parsed.temporalRules.push(currentRule);

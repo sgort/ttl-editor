@@ -61,6 +61,40 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
               />
             </div>
 
+            {/* Rule Identifier - MANDATORY for CPSV-AP */}
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">
+                <span className="font-medium">Rule Identifier</span>
+                <span className="text-gray-500"> (dct:identifier)</span>
+                <span className="text-red-500"> *</span>
+              </label>
+              <input
+                type="text"
+                value={rule.identifier}
+                onChange={(e) => updateTemporalRule(rule.id, 'identifier', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g., rule-001"
+              />
+              <p className="text-xs text-green-600 mt-1">Unique identifier for this rule</p>
+            </div>
+
+            {/* Rule Title - MANDATORY for CPSV-AP */}
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">
+                <span className="font-medium">Rule Title</span>
+                <span className="text-gray-500"> (dct:title)</span>
+                <span className="text-red-500"> *</span>
+              </label>
+              <input
+                type="text"
+                value={rule.title}
+                onChange={(e) => updateTemporalRule(rule.id, 'title', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="e.g., AOW Age Calculation Rule"
+              />
+              <p className="text-xs text-green-600 mt-1">Human-readable rule name</p>
+            </div>
+
             {/* Extends */}
             <div>
               <label className="block text-sm text-gray-700 mb-1">
