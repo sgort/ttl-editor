@@ -13,7 +13,8 @@
         "items": [
           "Fixed Organization Class Type",
           "Added cv:spatial to Organization",
-          "Adde explicit dct:identifier outputs to fix: Identifiers used in URIs but not explicitly output as properties"
+          "Added explicit dct:identifier outputs to fix: Identifiers used in URIs but not explicitly output as properties",
+          "Changed cpsv:follows to cv:hasLegalResource"
         ]
       }
     ]

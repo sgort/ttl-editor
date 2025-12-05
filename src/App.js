@@ -423,7 +423,7 @@ function App() {
           lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
             ? legalResource.bwbId
             : `https://wetten.overheid.nl/${legalResource.bwbId}`;
-        ttl += `    cpsv:follows <${legalUri}> ;\n`;
+        ttl += `    cv:hasLegalSource <${legalUri}> ;\n`;
       }
 
       if (cost.identifier) {
