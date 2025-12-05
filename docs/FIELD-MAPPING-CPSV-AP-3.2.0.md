@@ -1,6 +1,9 @@
-# Field-to-Property Mapping: TTL Editor ↔ CPSV-AP 3.2.0
+# Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
 
-**Purpose:** Map current UI fields to CPSV-AP 3.2.0 properties and identify gaps
+**Version:** 2.0 (Phase 1 Complete)  
+**Editor Version:** 1.4.0  
+**Date:** December 2025  
+**Status:** ✅ Minimal CPSV-AP 3.2.0 Compliance Achieved
 
 ---
 
@@ -11,19 +14,22 @@
 3. [Legal Tab](#3-legal-tab)
 4. [Rules Tab](#4-rules-tab)
 5. [Parameters Tab](#5-parameters-tab)
-6. [Missing CPSV-AP Classes (New Tabs Needed)](#6-missing-cpsv-ap-classes-new-tabs-needed)
-7. [Summary: Changes Required](#7-summary-changes-required)
+6. [Cost & Output Sections](#6-cost--output-sections)
+7. [CPRMV Tab](#7-cprmv-tab)
+8. [Future CPSV-AP Classes](#8-future-cpsv-ap-classes)
+9. [Implementation Summary](#9-implementation-summary)
 
 ---
 
 ## Legend
 
-| Symbol | Meaning                          |
-| ------ | -------------------------------- |
-| ✅     | Implemented correctly            |
-| ⚠️     | Implemented but needs adjustment |
-| ❌     | Missing - needs to be added      |
-| 🔄     | Label change recommended         |
+| Symbol | Meaning |
+|--------|---------|
+| ✅ | Implemented and compliant |
+| 🎯 | Phase 1 completed (v1.4.0) |
+| 📋 | Phase 2 planned |
+| 🔮 | Phase 3 planned |
+| ℹ️ | Extension (RONL/CPRMV) |
 
 ---
 
@@ -31,55 +37,66 @@
 
 **CPSV-AP Class:** `cpsv:PublicService`
 
-### Current Fields
+### Current Fields (v1.4.0)
 
-| UI Field Label        | State Property         | Current TTL Output | CPSV-AP 3.2.0 Property | Status | Notes                                                 |
-| --------------------- | ---------------------- | ------------------ | ---------------------- | ------ | ----------------------------------------------------- |
-| Service Identifier \* | `service.identifier`   | URI construction   | `dct:identifier`       | ⚠️     | Should also output explicit `dct:identifier` property |
-| Service Name \*       | `service.name`         | `dct:title`        | `dct:title`            | ✅     | Correct                                               |
-| Description           | `service.description`  | `dct:description`  | `dct:description`      | ✅     | Correct                                               |
-| Thematic Area         | `service.thematicArea` | `cv:thematicArea`  | `cv:thematicArea`      | ✅     | Correct                                               |
-| Sector                | `service.sector`       | `cv:sector`        | `cv:sector`            | ⚠️     | Should be URI, currently accepts text                 |
-| Keyword               | `service.keywords`     | `dcat:keyword`     | `dcat:keyword`         | ✅     | Correct                                               |
-| Language              | `service.language`     | `dct:language`     | `dct:language`         | ⚠️     | Should use LinguisticSystem URI                       |
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
+|----------------|----------------|------------|------------------------|--------|-------|
+| Unique identifier for this service * | `service.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
+| Official name of the service * | `service.name` | `dct:title` | `dct:title` | ✅ | Correct |
+| Detailed description of the service | `service.description` | `dct:description` | `dct:description` | ✅ | Correct |
+| URI for thematic classification | `service.thematicArea` | `cv:thematicArea` | `cv:thematicArea` | ✅ | Correct |
+| Government level providing this service | `service.sector` | `cv:sector` | `cv:sector` | 🎯 | Now uses URI dropdown + custom |
+| Comma-separated keywords | `service.keywords` | `dcat:keyword` | `dcat:keyword` | ✅ | Correct |
+| Language of the service | `service.language` | `dct:language` | `dct:language` | 🎯 | Now outputs LinguisticSystem URI |
 
-### Missing CPSV-AP 3.2.0 Fields for PublicService
+### Service Relationships
 
-| CPSV-AP Property    | Cardinality | Priority | Suggested UI Label  | Notes                           |
-| ------------------- | ----------- | -------- | ------------------- | ------------------------------- |
-| `dct:type`          | 0..\*       | Medium   | Service Type        | Code from controlled vocabulary |
-| `cv:processingTime` | 0..1        | Medium   | Processing Time     | ISO 8601 Duration               |
-| `cv:spatial`        | 0..\*       | Low      | Geographic Coverage | Location URI                    |
-| `adms:status`       | 0..1        | Medium   | Status              | Active/Inactive/etc.            |
-| `cv:isGroupedBy`    | 0..\*       | Low      | Grouped By Event    | Link to Event                   |
-| `cv:isClassifiedBy` | 0..\*       | Low      | Classification      | Link to skos:Concept            |
+| Relationship | Property | Status | Notes |
+|--------------|----------|--------|-------|
+| Service → Organization | `cv:hasCompetentAuthority` | ✅ | Links to cv:PublicOrganisation |
+| Service → Legal Resource | `cv:hasLegalResource` | 🎯 | Changed from `cpsv:follows` |
+| Service → Cost | `cv:hasCost` | 🎯 | Links to cv:Cost (Phase 1) |
+| Service → Output | `cpsv:produces` | 🎯 | Links to cv:Output (Phase 1) |
+
+### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
+
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
+|------------------|-------------|----------|-------------------|-------|
+| `dct:type` | 0..* | Medium | Service Type | Phase 2 |
+| `cv:processingTime` | 0..1 | Medium | Processing Time | Phase 2 |
+| `cv:spatial` | 0..* | Low | Geographic Coverage | Phase 2 |
+| `adms:status` | 0..1 | Medium | Status | Phase 2 |
+| `cv:hasChannel` | 0..* | Medium | Service Channels | Phase 2 |
+| `cv:hasContactPoint` | 0..* | Medium | Contact Points | Phase 2 |
+| `cv:isGroupedBy` | 0..* | Low | Grouped By Event | Phase 3 |
+| `cv:isClassifiedBy` | 0..* | Low | Classification | Phase 3 |
 
 ---
 
 ## 2. Organization Tab
 
-**CPSV-AP Class:** `cv:PublicOrganisation` (currently outputs `org:Organization`)
+**CPSV-AP Class:** `cv:PublicOrganisation` 🎯
 
-### Current Fields
+### Current Fields (v1.4.0)
 
-| UI Field Label          | State Property            | Current TTL Output | CPSV-AP 3.2.0 Property | Status | Notes                                   |
-| ----------------------- | ------------------------- | ------------------ | ---------------------- | ------ | --------------------------------------- |
-| Organization Identifier | `organization.identifier` | URI construction   | `dct:identifier`       | ⚠️     | Should output explicit `dct:identifier` |
-| Organization Name       | `organization.name`       | `skos:prefLabel`   | `skos:prefLabel`       | ✅     | Correct                                 |
-| Homepage URL            | `organization.homepage`   | `foaf:homepage`    | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)                |
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
+|----------------|----------------|------------|------------------------|--------|-------|
+| Organization URI or identifier | `organization.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
+| Preferred name of the organization * | `organization.name` | `skos:prefLabel` | `skos:prefLabel` | ✅ | Correct |
+| Homepage URL of the organization | `organization.homepage` | `foaf:homepage` | `foaf:homepage` | ✅ | Correct (via foaf:Agent) |
+| Geographic Jurisdiction * | `organization.spatial` | `cv:spatial` | `cv:spatial` | 🎯 | **MANDATORY** - Phase 1 added |
 
-### Class Type Issue
+### Class Type Change (Phase 1 ✅)
 
-| Current            | Should Be               | Status                                    |
-| ------------------ | ----------------------- | ----------------------------------------- |
-| `org:Organization` | `cv:PublicOrganisation` | ⚠️ Change required for CPSV-AP compliance |
+| Before (v1.3.0) | After (v1.4.0) | Status |
+|-----------------|----------------|--------|
+| `org:Organization` | `cv:PublicOrganisation` | 🎯 CPSV-AP 3.2.0 compliant |
 
-### Missing CPSV-AP 3.2.0 Fields for PublicOrganisation
+### Missing CPSV-AP 3.2.0 Fields (Phase 3)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label         | Notes                        |
-| ---------------- | ----------- | -------- | -------------------------- | ---------------------------- |
-| `cv:spatial`     | 1..\*       | **HIGH** | Geographic Jurisdiction \* | **MANDATORY** - Location URI |
-| `locn:address`   | 0..\*       | Medium   | Address                    | Link to locn:Address         |
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
+|------------------|-------------|----------|-------------------|-------|
+| `locn:address` | 0..* | Medium | Address | Phase 3 |
 
 ---
 
@@ -87,273 +104,321 @@
 
 **CPSV-AP Class:** `eli:LegalResource`
 
-### Current Fields
+### Current Fields (v1.4.0)
 
-| UI Field Label | State Property              | Current TTL Output                          | CPSV-AP 3.2.0 Property | Status | Notes                                   |
-| -------------- | --------------------------- | ------------------------------------------- | ---------------------- | ------ | --------------------------------------- |
-| BWB ID         | `legalResource.bwbId`       | URI construction + `dct:identifier` implied | `dct:identifier`       | ⚠️     | Should output explicit `dct:identifier` |
-| Version Date   | `legalResource.version`     | `eli:is_realized_by`                        | `eli:is_realized_by`   | ✅     | Correct                                 |
-| Legal Title    | `legalResource.title`       | `dct:title`                                 | `dct:title`            | ✅     | Correct                                 |
-| Description    | `legalResource.description` | `dct:description`                           | `dct:description`      | ✅     | Correct                                 |
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
+|----------------|----------------|------------|------------------------|--------|-------|
+| Dutch legal document identifier or URI | `legalResource.bwbId` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
+| Version or consolidation date | `legalResource.version` | `eli:is_realized_by` | `eli:is_realized_by` | ✅ | Correct |
+| Official title of the legal document | `legalResource.title` | `dct:title` | `dct:title` | ✅ | Correct |
+| Description of the legal resource | `legalResource.description` | `dct:description` | `dct:description` | ✅ | Correct |
 
-### Missing CPSV-AP 3.2.0 Fields for LegalResource
+### Relationship Change (Phase 1 ✅)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label      | Notes                           |
-| ---------------- | ----------- | -------- | ----------------------- | ------------------------------- |
-| `eli:related`    | 0..\*       | Low      | Related Legal Resources | Link to other eli:LegalResource |
+| Before (v1.3.0) | After (v1.4.0) | Status |
+|-----------------|----------------|--------|
+| `cpsv:follows` | `cv:hasLegalResource` | 🎯 CPSV-AP 3.2.0 compliant |
 
-### Relationship Issue
+### Missing CPSV-AP 3.2.0 Fields (Phase 3)
 
-| Current Relationship           | Should Be             | Status                      |
-| ------------------------------ | --------------------- | --------------------------- |
-| `cpsv:follows` (Service→Legal) | `cv:hasLegalResource` | ⚠️ Change for CPSV-AP 3.2.0 |
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
+|------------------|-------------|----------|-------------------|-------|
+| `eli:related` | 0..* | Low | Related Legal Resources | Phase 3 |
 
 ---
 
 ## 4. Rules Tab
 
-**CPSV-AP Class:** `cpsv:Rule` (currently outputs `ronl:TemporalRule`)
+**CPSV-AP Classes:** `cpsv:Rule, ronl:TemporalRule` 🎯
 
-### Current Fields
+### Current Fields (v1.4.0)
 
-| UI Field Label     | State Property         | Current TTL Output     | CPSV-AP 3.2.0 Property | Status | Notes                          |
-| ------------------ | ---------------------- | ---------------------- | ---------------------- | ------ | ------------------------------ |
-| Rule URI           | `rule.uri`             | URI construction       | -                      | ✅     | URI identifier                 |
-| Extends (Rule URI) | `rule.extends`         | `ronl:extends`         | -                      | ⚠️     | RONL extension, not in CPSV-AP |
-| Valid From         | `rule.validFrom`       | `ronl:validFrom`       | -                      | ⚠️     | RONL extension                 |
-| Valid Until        | `rule.validUntil`      | `ronl:validUntil`      | -                      | ⚠️     | RONL extension                 |
-| Confidence Level   | `rule.confidenceLevel` | `ronl:confidenceLevel` | -                      | ⚠️     | RONL extension                 |
-| Description        | `rule.description`     | `dct:description`      | `dct:description`      | ✅     | Correct                        |
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
+|----------------|----------------|------------|------------------------|--------|-------|
+| Rule Identifier * | `rule.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | **MANDATORY** - Phase 1 added |
+| Rule Title * | `rule.title` | `dct:title` | `dct:title` | 🎯 | **MANDATORY** - Phase 1 added |
+| Rule URI | `rule.uri` | URI construction | - | ✅ | URI identifier |
+| Extends (Rule URI) | `rule.extends` | `ronl:extends` | - | ℹ️ | RONL extension |
+| Valid From | `rule.validFrom` | `ronl:validFrom` | - | ℹ️ | RONL extension |
+| Valid Until | `rule.validUntil` | `ronl:validUntil` | - | ℹ️ | RONL extension |
+| Confidence Level | `rule.confidenceLevel` | `ronl:confidenceLevel` | - | ℹ️ | RONL extension |
+| Description | `rule.description` | `dct:description` | `dct:description` | ✅ | Correct |
 
-### Class Type Consideration
+### Dual Class Typing (Phase 1 ✅)
 
-The current `ronl:TemporalRule` is a Dutch extension. For CPSV-AP compliance:
+Rules now output **both** CPSV-AP and RONL class types:
 
-| Option          | Approach                                        |
-| --------------- | ----------------------------------------------- |
-| A (Recommended) | Output both `cpsv:Rule` AND `ronl:TemporalRule` |
-| B               | Add toggle to choose base type                  |
+```turtle
+<rule-uri> a cpsv:Rule, ronl:TemporalRule ;
+```
 
-### Missing CPSV-AP 3.2.0 Fields for cpsv:Rule
+This ensures CPSV-AP compliance while maintaining Dutch RONL extensions.
 
-| CPSV-AP Property       | Cardinality | Priority | Suggested UI Label        | Notes                     |
-| ---------------------- | ----------- | -------- | ------------------------- | ------------------------- |
-| `dct:identifier`       | 1..\*       | **HIGH** | Rule Identifier \*        | **MANDATORY**             |
-| `dct:title`            | 1..\*       | **HIGH** | Rule Title \*             | **MANDATORY**             |
-| `dct:language`         | 0..\*       | Medium   | Language                  | LinguisticSystem          |
-| `dct:type`             | 0..1        | Medium   | Rule Type                 | Code value                |
-| `eli:implements`       | 0..\*       | Medium   | Implements Legal Resource | Link to eli:LegalResource |
-| `eli:establishedUnder` | 0..\*       | Low      | Established Under         | Link to eli:LegalResource |
+### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
+
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
+|------------------|-------------|----------|-------------------|-------|
+| `dct:language` | 0..* | Medium | Language | Phase 2 |
+| `dct:type` | 0..1 | Medium | Rule Type | Phase 2 |
+| `eli:implements` | 0..* | Medium | Implements Legal Resource | Phase 2 |
+| `eli:establishedUnder` | 0..* | Low | Established Under | Phase 3 |
 
 ---
 
 ## 5. Parameters Tab
 
-**Current Class:** `ronl:ParameterWaarde` (Dutch extension, not in CPSV-AP)
+**Current Class:** `ronl:ParameterWaarde` ℹ️
 
-### Current Fields
+### Current Fields (v1.4.0)
 
-| UI Field Label                 | State Property      | Current TTL Output | Notes |
-| ------------------------------ | ------------------- | ------------------ | ----- |
-| Notation (Machine-readable) \* | `param.notation`    | `skos:notation`    | Good  |
-| Label (Human-readable) \*      | `param.label`       | `skos:prefLabel`   | Good  |
-| Value \*                       | `param.value`       | `schema:value`     | Good  |
-| Unit                           | `param.unit`        | `schema:unitCode`  | Good  |
-| Description                    | `param.description` | `dct:description`  | Good  |
-| Valid From                     | `param.validFrom`   | `ronl:validFrom`   | Good  |
-| Valid Until                    | `param.validUntil`  | `ronl:validUntil`  | Good  |
+| UI Field Label | State Property | TTL Output | Status | Notes |
+|----------------|----------------|------------|--------|-------|
+| Notation (Machine-readable) * | `param.notation` | `skos:notation` | ✅ | RONL extension |
+| Label (Human-readable) * | `param.label` | `skos:prefLabel` | ✅ | RONL extension |
+| Value * | `param.value` | `schema:value` | ✅ | RONL extension |
+| Unit | `param.unit` | `schema:unitCode` | ✅ | RONL extension |
+| Description | `param.description` | `dct:description` | ✅ | RONL extension |
+| Valid From | `param.validFrom` | `ronl:validFrom` | ✅ | RONL extension |
+| Valid Until | `param.validUntil` | `ronl:validUntil` | ✅ | RONL extension |
 
-### Note
+### Note on Parameters
 
-Parameters (`ronl:ParameterWaarde`) are a RONL-specific extension not part of CPSV-AP. This is fine - CPSV-AP is extensible. No changes needed here.
+Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part of CPSV-AP core. This is acceptable - CPSV-AP is designed to be extensible. These fields support the Dutch regulatory context for normative values and constants.
 
----
-
-## 6. Missing CPSV-AP Classes (New Tabs/Sections Needed)
-
-### 6.1 Cost (cv:Cost) - Currently in State but No UI Tab
-
-**Priority:** HIGH - Already have state, just need UI
-
-| CPSV-AP Property  | Cardinality | Suggested UI Label | Current State      | Notes         |
-| ----------------- | ----------- | ------------------ | ------------------ | ------------- |
-| `dct:identifier`  | 1..\*       | Cost Identifier \* | `cost.identifier`  | **MANDATORY** |
-| `cv:value`        | 0..1        | Amount             | `cost.value`       | Decimal value |
-| `cv:currency`     | 0..1        | Currency           | `cost.currency`    | EUR, etc.     |
-| `dct:description` | 0..\*       | Description        | `cost.description` | Text          |
-
-**Action:** Add Cost section to UI (fields exist in state but not rendered)
+**No changes needed** - this is compliant as an extension.
 
 ---
 
-### 6.2 Output (cv:Output) - Currently in State but No UI Tab
+## 6. Cost & Output Sections
 
-**Priority:** HIGH - Already have state, just need UI
+### 6.1 Cost (cv:Cost) - 🎯 Phase 1 Complete
 
-| CPSV-AP Property  | Cardinality | Suggested UI Label   | Current State        | Notes            |
-| ----------------- | ----------- | -------------------- | -------------------- | ---------------- |
-| `dct:identifier`  | 1..\*       | Output Identifier \* | `output.identifier`  | **MANDATORY**    |
-| `dct:title`       | 1..\*       | Output Name \*       | `output.name`        | **MANDATORY**    |
-| `dct:description` | 0..\*       | Description          | `output.description` | Text             |
-| `dct:type`        | 0..1        | Output Type          | `output.type`        | Code/URI         |
-| `dct:language`    | 0..\*       | Language             | -                    | Missing in state |
+**Location:** Within Service Tab  
+**CPSV-AP Class:** `cv:Cost`
 
-**Action:** Add Output section to UI (most fields exist in state)
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status |
+|----------------|----------------|------------|------------------------|--------|
+| Cost Identifier * | `cost.identifier` | `dct:identifier` | `dct:identifier` | 🎯 |
+| Amount | `cost.value` | `cv:value` | `cv:value` | 🎯 |
+| Currency | `cost.currency` | `cv:currency` | `cv:currency` | 🎯 |
+| Cost Description | `cost.description` | `dct:description` | `dct:description` | 🎯 |
+
+**Implementation:** Collapsible section within Service Tab. Optional - leave identifier empty if service has no costs.
 
 ---
 
-### 6.3 Channel (cv:Channel) - NEW
+### 6.2 Output (cv:Output) - 🎯 Phase 1 Complete
+
+**Location:** Within Service Tab  
+**CPSV-AP Class:** `cv:Output`
+
+| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status |
+|----------------|----------------|------------|------------------------|--------|
+| Output Identifier * | `output.identifier` | `dct:identifier` | `dct:identifier` | 🎯 |
+| Output Name * | `output.name` | `dct:title` | `dct:title` | 🎯 |
+| Output Description | `output.description` | `dct:description` | `dct:description` | 🎯 |
+| Output Type | `output.type` | `dct:type` | `dct:type` | 🎯 |
+
+**Implementation:** Collapsible section within Service Tab. Optional - leave identifier empty if service produces no specific outputs.
+
+---
+
+## 7. CPRMV Tab
+
+**CPSV-AP Class:** `cprmv:Rule` ℹ️
+
+### Current Fields (v1.3.0+)
+
+| UI Field Label | State Property | TTL Output | Status | Notes |
+|----------------|----------------|------------|--------|-------|
+| Rule ID * | `rule.ruleId` | `cprmv:id` | ✅ | CPRMV mandatory |
+| Ruleset ID (BWB) * | `rule.rulesetId` | `cprmv:rulesetId` | ✅ | CPRMV mandatory |
+| Definition * | `rule.definition` | `cprmv:definition` | ✅ | CPRMV mandatory |
+| Situation * | `rule.situatie` | `cprmv:situatie` | ✅ | CPRMV mandatory |
+| Norm * | `rule.norm` | `cprmv:norm` | ✅ | CPRMV mandatory |
+| Rule ID Path * | `rule.ruleIdPath` | `cprmv:ruleIdPath` | ✅ | CPRMV mandatory |
+
+### Note on CPRMV
+
+CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for managing normative values extracted from legislation (normenbrief format). This tab supports JSON import for bulk rule loading.
+
+**No changes needed** - this is compliant as an extension.
+
+---
+
+## 8. Future CPSV-AP Classes
+
+### 8.1 Channel (cv:Channel) - 📋 Phase 2
 
 **Priority:** MEDIUM
 
-| CPSV-AP Property    | Cardinality | Suggested UI Label    | Notes                 |
-| ------------------- | ----------- | --------------------- | --------------------- |
-| `dct:identifier`    | 1..\*       | Channel Identifier \* | **MANDATORY**         |
-| `dct:description`   | 0..\*       | Description           | Text                  |
-| `cv:processingTime` | 0..1        | Processing Time       | Duration              |
-| `dct:type`          | 0..1        | Channel Type          | Online/Phone/InPerson |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `dct:identifier` | 1..* | Channel Identifier * | **MANDATORY** |
+| `dct:description` | 0..* | Description | Text |
+| `cv:processingTime` | 0..1 | Processing Time | Duration |
+| `dct:type` | 0..1 | Channel Type | Online/Phone/InPerson |
 
 ---
 
-### 6.4 ContactPoint (cv:ContactPoint) - NEW
+### 8.2 ContactPoint (cv:ContactPoint) - 📋 Phase 2
 
 **Priority:** MEDIUM
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes        |
-| ---------------- | ----------- | ------------------ | ------------ |
-| `cv:contactPage` | 0..\*       | Contact Page URL   | Document URL |
-| `cv:hasEmail`    | 0..\*       | Email Address      | Email        |
-| `cv:telephone`   | 0..\*       | Phone Number       | Phone        |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `cv:contactPage` | 0..* | Contact Page URL | Document URL |
+| `cv:hasEmail` | 0..* | Email Address | Email |
+| `cv:telephone` | 0..* | Phone Number | Phone |
 
 ---
 
-### 6.5 Requirement (cv:Requirement) - NEW
+### 8.3 Requirement (cv:Requirement) - 🔮 Phase 3
 
 **Priority:** MEDIUM-LOW
 
-| CPSV-AP Property  | Cardinality | Suggested UI Label  | Notes         |
-| ----------------- | ----------- | ------------------- | ------------- |
-| `dct:identifier`  | 1..\*       | Requirement ID \*   | **MANDATORY** |
-| `dct:title`       | 1..\*       | Requirement Name \* | **MANDATORY** |
-| `dct:description` | 1..\*       | Description \*      | **MANDATORY** |
-| `dct:type`        | 0..\*       | Requirement Type    | Code          |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `dct:identifier` | 1..* | Requirement ID * | **MANDATORY** |
+| `dct:title` | 1..* | Requirement Name * | **MANDATORY** |
+| `dct:description` | 1..* | Description * | **MANDATORY** |
+| `dct:type` | 0..* | Requirement Type | Code |
 
 ---
 
-### 6.6 Evidence (cv:Evidence) - NEW
+### 8.4 Evidence (cv:Evidence) - 🔮 Phase 3
 
 **Priority:** LOW
 
-| CPSV-AP Property  | Cardinality | Suggested UI Label | Notes         |
-| ----------------- | ----------- | ------------------ | ------------- |
-| `dct:identifier`  | 1..\*       | Evidence ID \*     | **MANDATORY** |
-| `dct:title`       | 1..\*       | Evidence Name \*   | **MANDATORY** |
-| `dct:description` | 0..\*       | Description        | Text          |
-| `dct:type`        | 0..1        | Evidence Type      | Code          |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `dct:identifier` | 1..* | Evidence ID * | **MANDATORY** |
+| `dct:title` | 1..* | Evidence Name * | **MANDATORY** |
+| `dct:description` | 0..* | Description | Text |
+| `dct:type` | 0..1 | Evidence Type | Code |
 
 ---
 
-### 6.7 Event (cv:Event, cv:BusinessEvent, cv:LifeEvent) - NEW
+### 8.5 Event (cv:Event, cv:BusinessEvent, cv:LifeEvent) - 🔮 Phase 3
 
 **Priority:** LOW
 
-| CPSV-AP Property  | Cardinality | Suggested UI Label | Notes                   |
-| ----------------- | ----------- | ------------------ | ----------------------- |
-| `dct:identifier`  | 1..\*       | Event ID \*        | **MANDATORY**           |
-| `dct:title`       | 1..\*       | Event Name \*      | **MANDATORY**           |
-| `dct:description` | 0..\*       | Description        | Text                    |
-| `dct:type`        | 0..\*       | Event Type         | BusinessEvent/LifeEvent |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `dct:identifier` | 1..* | Event ID * | **MANDATORY** |
+| `dct:title` | 1..* | Event Name * | **MANDATORY** |
+| `dct:description` | 0..* | Description | Text |
+| `dct:type` | 0..* | Event Type | BusinessEvent/LifeEvent |
 
 ---
 
-### 6.8 Address (locn:Address) - NEW
+### 8.6 Address (locn:Address) - 🔮 Phase 3
 
 **Priority:** LOW (sub-entity of Organization)
 
-| CPSV-AP Property         | Cardinality | Suggested UI Label | Notes       |
-| ------------------------ | ----------- | ------------------ | ----------- |
-| `locn:thoroughfare`      | 0..\*       | Street             | Street name |
-| `locn:locatorDesignator` | 0..\*       | House Number       | Number      |
-| `locn:postCode`          | 0..\*       | Postal Code        | Postcode    |
-| `locn:postName`          | 0..\*       | City               | City name   |
-| `locn:adminUnitL1`       | 0..\*       | Country            | Country     |
-| `locn:adminUnitL2`       | 0..\*       | Province/Region    | Region      |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
+|------------------|-------------|-------------------|-------|
+| `locn:thoroughfare` | 0..* | Street | Street name |
+| `locn:locatorDesignator` | 0..* | House Number | Number |
+| `locn:postCode` | 0..* | Postal Code | Postcode |
+| `locn:postName` | 0..* | City | City name |
+| `locn:adminUnitL1` | 0..* | Country | Country |
+| `locn:adminUnitL2` | 0..* | Province/Region | Region |
 
 ---
 
-## 7. Summary: Changes Required
+## 9. Implementation Summary
 
-### 7.1 Immediate Priority (for Minimal CPSV-AP 3.2.0 Compliance)
+### Phase 1: Minimal CPSV-AP 3.2.0 Compliance ✅ (v1.4.0)
 
-| #   | Change                                              | Type       | Effort |
-| --- | --------------------------------------------------- | ---------- | ------ |
-| 1   | Change `org:Organization` → `cv:PublicOrganisation` | TTL output | Low    |
-| 2   | Add `cv:spatial` field to Organization tab          | UI + State | Low    |
-| 3   | Add `dct:identifier` property outputs (explicit)    | TTL output | Low    |
-| 4   | Change `cpsv:follows` → `cv:hasLegalResource`       | TTL output | Low    |
-| 5   | Add `dct:identifier` and `dct:title` to Rules       | UI + State | Medium |
-| 6   | Add Cost section to UI                              | UI only    | Low    |
-| 7   | Add Output section to UI                            | UI only    | Low    |
-| 8   | Fix Language to use LinguisticSystem URIs           | TTL output | Low    |
-| 9   | Fix Sector to accept/output URIs                    | TTL output | Low    |
+**Status:** COMPLETE - December 2025
 
-### 7.2 Extended Compliance (Future)
+| # | Change | Type | Status |
+|---|--------|------|--------|
+| 1 | Change `org:Organization` → `cv:PublicOrganisation` | Class type | ✅ |
+| 2 | Add `cv:spatial` to Organization (mandatory) | UI + State + TTL | ✅ |
+| 3 | Add explicit `dct:identifier` outputs | TTL output | ✅ |
+| 4 | Change `cpsv:follows` → `cv:hasLegalResource` | Relationship | ✅ |
+| 5 | Add Rule `dct:identifier` and `dct:title` (mandatory) | UI + State + TTL | ✅ |
+| 6 | Add dual typing: `cpsv:Rule, ronl:TemporalRule` | Class type | ✅ |
+| 7 | Add Cost section to Service Tab | UI component | ✅ |
+| 8 | Add Output section to Service Tab | UI component | ✅ |
+| 9 | Fix Language to use LinguisticSystem URIs | TTL output | ✅ |
+| 10 | Fix Sector to use URIs (dropdown + custom) | UI + TTL output | ✅ |
 
-| #   | Change                               | Type             | Effort |
-| --- | ------------------------------------ | ---------------- | ------ |
-| 10  | Add Channel class support            | UI + State + TTL | Medium |
-| 11  | Add ContactPoint class support       | UI + State + TTL | Medium |
-| 12  | Add Service Type dropdown            | UI + State + TTL | Low    |
-| 13  | Add Processing Time field            | UI + State + TTL | Low    |
-| 14  | Add Status field                     | UI + State + TTL | Low    |
-| 15  | Add Requirement class support        | UI + State + TTL | Medium |
-| 16  | Add Evidence class support           | UI + State + TTL | Medium |
-| 17  | Add Event class support              | UI + State + TTL | Medium |
-| 18  | Add Address sub-form to Organization | UI + State + TTL | Medium |
-
-### 7.3 Label Standardization Recommendations
-
-| Current Label      | Recommended Label | Reason                   |
-| ------------------ | ----------------- | ------------------------ |
-| Service Identifier | Identifier        | Consistent with CPSV-AP  |
-| Service Name       | Title             | Matches `dct:title`      |
-| BWB ID             | Legal Resource ID | More generic             |
-| Legal Title        | Title             | Consistent               |
-| Rule URI           | Identifier        | Consistent               |
-| Extends (Rule URI) | Extends Rule      | Clearer                  |
-| Organization Name  | Preferred Label   | Matches `skos:prefLabel` |
+**Result:** Editor now generates **CPSV-AP 3.2.0 compliant** TTL files with all mandatory fields for minimal compliance.
 
 ---
 
-## 8. Recommended Implementation Order
+### Phase 2: Extended Compliance 📋 (v1.5.0 - Planned)
 
-### Phase 1: Minimal CPSV-AP Compliance (v1.3.0)
+**Target:** Q1 2026
 
-1. ✏️ Fix class types (`cv:PublicOrganisation`)
-2. ✏️ Fix relationship (`cv:hasLegalResource`)
-3. ✏️ Add explicit `dct:identifier` outputs
-4. ➕ Add `cv:spatial` to Organization
-5. ➕ Add Rule `dct:identifier` and `dct:title`
-6. 🎨 Add Cost section UI
-7. 🎨 Add Output section UI
-8. ✏️ Fix Language to use URIs
-9. ✏️ Fix Sector to use URIs
-
-### Phase 2: Extended Compliance (v1.4.0)
-
-1. ➕ Add Channel support
-2. ➕ Add ContactPoint support
-3. ➕ Add Service Type, Processing Time, Status
-
-### Phase 3: Full Compliance (v1.5.0)
-
-1. ➕ Add Requirement support
-2. ➕ Add Evidence support
-3. ➕ Add Event support
-4. ➕ Add Address support
+| # | Change | Type | Effort |
+|---|--------|------|--------|
+| 11 | Add Channel class support | UI + State + TTL | Medium |
+| 12 | Add ContactPoint class support | UI + State + TTL | Medium |
+| 13 | Add Service Type dropdown | UI + State + TTL | Low |
+| 14 | Add Processing Time field | UI + State + TTL | Low |
+| 15 | Add Status field (Active/Inactive) | UI + State + TTL | Low |
 
 ---
 
-_Field Mapping Document v1.0_
-_Created: December 2025_
-_For TTL Editor CPSV-AP 3.2.0 Compliance_
+### Phase 3: Full Compliance 🔮 (v1.6.0 - Future)
+
+**Target:** Q2 2026
+
+| # | Change | Type | Effort |
+|---|--------|------|--------|
+| 16 | Add Requirement class support | UI + State + TTL | Medium |
+| 17 | Add Evidence class support | UI + State + TTL | Medium |
+| 18 | Add Event class support | UI + State + TTL | Medium |
+| 19 | Add Address sub-form to Organization | UI + State + TTL | Medium |
+
+---
+
+## 10. Compliance Statement
+
+### Current Compliance Level (v1.4.0)
+
+✅ **CPSV-AP 3.2.0 Minimal Compliance Achieved**
+
+The Core Public Service Editor v1.4.0 meets all **mandatory requirements** for CPSV-AP 3.2.0:
+
+- ✅ Correct class types (`cv:PublicOrganisation`, `cpsv:Rule`)
+- ✅ Correct relationships (`cv:hasLegalResource`)
+- ✅ Explicit identifiers for all entities (`dct:identifier`)
+- ✅ Mandatory organization spatial field (`cv:spatial`)
+- ✅ Mandatory rule identifier and title (`dct:identifier`, `dct:title`)
+- ✅ Support for Cost and Output entities
+- ✅ Proper URI formatting for language and sector
+
+### Extensions
+
+The editor includes **compliant extensions** for the Dutch regulatory context:
+
+- ℹ️ **RONL vocabulary** - Temporal rules with validity periods
+- ℹ️ **CPRMV vocabulary** - Normative rule management
+- ℹ️ **Parameter values** - Constants and thresholds from legislation
+
+All extensions follow CPSV-AP's extensibility guidelines and do not conflict with core compliance.
+
+---
+
+## References
+
+- **CPSV-AP 3.2.0 Specification:** https://semiceu.github.io/CPSV-AP/
+- **RONL Vocabulary:** https://regels.overheid.nl/termen/
+- **CPRMV Specification:** https://cprmv.open-regels.nl/0.3.0/
+- **Editor Documentation:** README.md
+- **Namespace Reference:** NAMESPACE-PROPERTIES.md
+
+---
+
+**Document Version:** 2.0  
+**Last Updated:** December 2025  
+**Project:** RONL Initiative - Core Public Service Editor
+
+---
+
+*This document reflects the current implementation state and planned future enhancements for CPSV-AP 3.2.0 compliance.*
