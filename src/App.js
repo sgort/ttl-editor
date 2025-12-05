@@ -829,17 +829,27 @@ function App() {
           {/* Footer */}
           <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
             <p>
-              Core Public Service Editor - Part of RONL Initiative
               <br />
-              Based on{' '}
+              Core Public Service Editor
+              <br />A RONL Initiative based on{' '}
               <a
-                href="https://git.open-regels.nl/showcases/aow/-/blob/main/NAMESPACE-PROPERTIES.md"
+                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/NAMESPACE-PROPERTIES.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 hover:underline"
               >
                 NAMESPACE-PROPERTIES.md
               </a>
+              <br />
+              <a
+                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/FIELD-MAPPING-CPSV-AP-3.2.0.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                FIELD-MAPPING-CPSV-AP-3.2.0.md
+              </a>{' '}
+              reflects the current implementation state for CPSV-AP 3.2.0 compliance
             </p>
           </footer>
         </div>

@@ -115,7 +115,7 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
           />
         )}
 
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-green-600 mt-1">
           URI reference to government sector classification
         </p>
       </div>
