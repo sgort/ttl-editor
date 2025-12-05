@@ -23,13 +23,13 @@
 
 ## Legend
 
-| Symbol | Meaning |
-|--------|---------|
-| ✅ | Implemented and compliant |
-| 🎯 | Phase 1 completed (v1.4.0) |
-| 📋 | Phase 2 planned |
-| 🔮 | Phase 3 planned |
-| ℹ️ | Extension (RONL/CPRMV) |
+| Symbol | Meaning                    |
+| ------ | -------------------------- |
+| ✅     | Implemented and compliant  |
+| 🎯     | Phase 1 completed (v1.4.0) |
+| 📋     | Phase 2 planned            |
+| 🔮     | Phase 3 planned            |
+| ℹ️     | Extension (RONL/CPRMV)     |
 
 ---
 
@@ -39,37 +39,37 @@
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
-|----------------|----------------|------------|------------------------|--------|-------|
-| Unique identifier for this service * | `service.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
-| Official name of the service * | `service.name` | `dct:title` | `dct:title` | ✅ | Correct |
-| Detailed description of the service | `service.description` | `dct:description` | `dct:description` | ✅ | Correct |
-| URI for thematic classification | `service.thematicArea` | `cv:thematicArea` | `cv:thematicArea` | ✅ | Correct |
-| Government level providing this service | `service.sector` | `cv:sector` | `cv:sector` | 🎯 | Now uses URI dropdown + custom |
-| Comma-separated keywords | `service.keywords` | `dcat:keyword` | `dcat:keyword` | ✅ | Correct |
-| Language of the service | `service.language` | `dct:language` | `dct:language` | 🎯 | Now outputs LinguisticSystem URI |
+| UI Field Label                          | State Property         | TTL Output        | CPSV-AP 3.2.0 Property | Status | Notes                            |
+| --------------------------------------- | ---------------------- | ----------------- | ---------------------- | ------ | -------------------------------- |
+| Unique identifier for this service \*   | `service.identifier`   | `dct:identifier`  | `dct:identifier`       | 🎯     | Explicit property added          |
+| Official name of the service \*         | `service.name`         | `dct:title`       | `dct:title`            | ✅     | Correct                          |
+| Detailed description of the service     | `service.description`  | `dct:description` | `dct:description`      | ✅     | Correct                          |
+| URI for thematic classification         | `service.thematicArea` | `cv:thematicArea` | `cv:thematicArea`      | ✅     | Correct                          |
+| Government level providing this service | `service.sector`       | `cv:sector`       | `cv:sector`            | 🎯     | Now uses URI dropdown + custom   |
+| Comma-separated keywords                | `service.keywords`     | `dcat:keyword`    | `dcat:keyword`         | ✅     | Correct                          |
+| Language of the service                 | `service.language`     | `dct:language`    | `dct:language`         | 🎯     | Now outputs LinguisticSystem URI |
 
 ### Service Relationships
 
-| Relationship | Property | Status | Notes |
-|--------------|----------|--------|-------|
-| Service → Organization | `cv:hasCompetentAuthority` | ✅ | Links to cv:PublicOrganisation |
-| Service → Legal Resource | `cv:hasLegalResource` | 🎯 | Changed from `cpsv:follows` |
-| Service → Cost | `cv:hasCost` | 🎯 | Links to cv:Cost (Phase 1) |
-| Service → Output | `cpsv:produces` | 🎯 | Links to cv:Output (Phase 1) |
+| Relationship             | Property                   | Status | Notes                          |
+| ------------------------ | -------------------------- | ------ | ------------------------------ |
+| Service → Organization   | `cv:hasCompetentAuthority` | ✅     | Links to cv:PublicOrganisation |
+| Service → Legal Resource | `cv:hasLegalResource`      | 🎯     | Changed from `cpsv:follows`    |
+| Service → Cost           | `cv:hasCost`               | 🎯     | Links to cv:Cost (Phase 1)     |
+| Service → Output         | `cpsv:produces`            | 🎯     | Links to cv:Output (Phase 1)   |
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
-|------------------|-------------|----------|-------------------|-------|
-| `dct:type` | 0..* | Medium | Service Type | Phase 2 |
-| `cv:processingTime` | 0..1 | Medium | Processing Time | Phase 2 |
-| `cv:spatial` | 0..* | Low | Geographic Coverage | Phase 2 |
-| `adms:status` | 0..1 | Medium | Status | Phase 2 |
-| `cv:hasChannel` | 0..* | Medium | Service Channels | Phase 2 |
-| `cv:hasContactPoint` | 0..* | Medium | Contact Points | Phase 2 |
-| `cv:isGroupedBy` | 0..* | Low | Grouped By Event | Phase 3 |
-| `cv:isClassifiedBy` | 0..* | Low | Classification | Phase 3 |
+| CPSV-AP Property     | Cardinality | Priority | Suggested UI Label  | Phase   |
+| -------------------- | ----------- | -------- | ------------------- | ------- |
+| `dct:type`           | 0..\*       | Medium   | Service Type        | Phase 2 |
+| `cv:processingTime`  | 0..1        | Medium   | Processing Time     | Phase 2 |
+| `cv:spatial`         | 0..\*       | Low      | Geographic Coverage | Phase 2 |
+| `adms:status`        | 0..1        | Medium   | Status              | Phase 2 |
+| `cv:hasChannel`      | 0..\*       | Medium   | Service Channels    | Phase 2 |
+| `cv:hasContactPoint` | 0..\*       | Medium   | Contact Points      | Phase 2 |
+| `cv:isGroupedBy`     | 0..\*       | Low      | Grouped By Event    | Phase 3 |
+| `cv:isClassifiedBy`  | 0..\*       | Low      | Classification      | Phase 3 |
 
 ---
 
@@ -79,24 +79,24 @@
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
-|----------------|----------------|------------|------------------------|--------|-------|
-| Organization URI or identifier | `organization.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
-| Preferred name of the organization * | `organization.name` | `skos:prefLabel` | `skos:prefLabel` | ✅ | Correct |
-| Homepage URL of the organization | `organization.homepage` | `foaf:homepage` | `foaf:homepage` | ✅ | Correct (via foaf:Agent) |
-| Geographic Jurisdiction * | `organization.spatial` | `cv:spatial` | `cv:spatial` | 🎯 | **MANDATORY** - Phase 1 added |
+| UI Field Label                        | State Property            | TTL Output       | CPSV-AP 3.2.0 Property | Status | Notes                         |
+| ------------------------------------- | ------------------------- | ---------------- | ---------------------- | ------ | ----------------------------- |
+| Organization URI or identifier        | `organization.identifier` | `dct:identifier` | `dct:identifier`       | 🎯     | Explicit property added       |
+| Preferred name of the organization \* | `organization.name`       | `skos:prefLabel` | `skos:prefLabel`       | ✅     | Correct                       |
+| Homepage URL of the organization      | `organization.homepage`   | `foaf:homepage`  | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)      |
+| Geographic Jurisdiction \*            | `organization.spatial`    | `cv:spatial`     | `cv:spatial`           | 🎯     | **MANDATORY** - Phase 1 added |
 
 ### Class Type Change (Phase 1 ✅)
 
-| Before (v1.3.0) | After (v1.4.0) | Status |
-|-----------------|----------------|--------|
+| Before (v1.3.0)    | After (v1.4.0)          | Status                     |
+| ------------------ | ----------------------- | -------------------------- |
 | `org:Organization` | `cv:PublicOrganisation` | 🎯 CPSV-AP 3.2.0 compliant |
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 3)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
-|------------------|-------------|----------|-------------------|-------|
-| `locn:address` | 0..* | Medium | Address | Phase 3 |
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase   |
+| ---------------- | ----------- | -------- | ------------------ | ------- |
+| `locn:address`   | 0..\*       | Medium   | Address            | Phase 3 |
 
 ---
 
@@ -106,24 +106,24 @@
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
-|----------------|----------------|------------|------------------------|--------|-------|
-| Dutch legal document identifier or URI | `legalResource.bwbId` | `dct:identifier` | `dct:identifier` | 🎯 | Explicit property added |
-| Version or consolidation date | `legalResource.version` | `eli:is_realized_by` | `eli:is_realized_by` | ✅ | Correct |
-| Official title of the legal document | `legalResource.title` | `dct:title` | `dct:title` | ✅ | Correct |
-| Description of the legal resource | `legalResource.description` | `dct:description` | `dct:description` | ✅ | Correct |
+| UI Field Label                         | State Property              | TTL Output           | CPSV-AP 3.2.0 Property | Status | Notes                   |
+| -------------------------------------- | --------------------------- | -------------------- | ---------------------- | ------ | ----------------------- |
+| Dutch legal document identifier or URI | `legalResource.bwbId`       | `dct:identifier`     | `dct:identifier`       | 🎯     | Explicit property added |
+| Version or consolidation date          | `legalResource.version`     | `eli:is_realized_by` | `eli:is_realized_by`   | ✅     | Correct                 |
+| Official title of the legal document   | `legalResource.title`       | `dct:title`          | `dct:title`            | ✅     | Correct                 |
+| Description of the legal resource      | `legalResource.description` | `dct:description`    | `dct:description`      | ✅     | Correct                 |
 
 ### Relationship Change (Phase 1 ✅)
 
-| Before (v1.3.0) | After (v1.4.0) | Status |
-|-----------------|----------------|--------|
-| `cpsv:follows` | `cv:hasLegalResource` | 🎯 CPSV-AP 3.2.0 compliant |
+| Before (v1.3.0) | After (v1.4.0)        | Status                     |
+| --------------- | --------------------- | -------------------------- |
+| `cpsv:follows`  | `cv:hasLegalResource` | 🎯 CPSV-AP 3.2.0 compliant |
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 3)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
-|------------------|-------------|----------|-------------------|-------|
-| `eli:related` | 0..* | Low | Related Legal Resources | Phase 3 |
+| CPSV-AP Property | Cardinality | Priority | Suggested UI Label      | Phase   |
+| ---------------- | ----------- | -------- | ----------------------- | ------- |
+| `eli:related`    | 0..\*       | Low      | Related Legal Resources | Phase 3 |
 
 ---
 
@@ -133,16 +133,16 @@
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status | Notes |
-|----------------|----------------|------------|------------------------|--------|-------|
-| Rule Identifier * | `rule.identifier` | `dct:identifier` | `dct:identifier` | 🎯 | **MANDATORY** - Phase 1 added |
-| Rule Title * | `rule.title` | `dct:title` | `dct:title` | 🎯 | **MANDATORY** - Phase 1 added |
-| Rule URI | `rule.uri` | URI construction | - | ✅ | URI identifier |
-| Extends (Rule URI) | `rule.extends` | `ronl:extends` | - | ℹ️ | RONL extension |
-| Valid From | `rule.validFrom` | `ronl:validFrom` | - | ℹ️ | RONL extension |
-| Valid Until | `rule.validUntil` | `ronl:validUntil` | - | ℹ️ | RONL extension |
-| Confidence Level | `rule.confidenceLevel` | `ronl:confidenceLevel` | - | ℹ️ | RONL extension |
-| Description | `rule.description` | `dct:description` | `dct:description` | ✅ | Correct |
+| UI Field Label     | State Property         | TTL Output             | CPSV-AP 3.2.0 Property | Status | Notes                         |
+| ------------------ | ---------------------- | ---------------------- | ---------------------- | ------ | ----------------------------- |
+| Rule Identifier \* | `rule.identifier`      | `dct:identifier`       | `dct:identifier`       | 🎯     | **MANDATORY** - Phase 1 added |
+| Rule Title \*      | `rule.title`           | `dct:title`            | `dct:title`            | 🎯     | **MANDATORY** - Phase 1 added |
+| Rule URI           | `rule.uri`             | URI construction       | -                      | ✅     | URI identifier                |
+| Extends (Rule URI) | `rule.extends`         | `ronl:extends`         | -                      | ℹ️     | RONL extension                |
+| Valid From         | `rule.validFrom`       | `ronl:validFrom`       | -                      | ℹ️     | RONL extension                |
+| Valid Until        | `rule.validUntil`      | `ronl:validUntil`      | -                      | ℹ️     | RONL extension                |
+| Confidence Level   | `rule.confidenceLevel` | `ronl:confidenceLevel` | -                      | ℹ️     | RONL extension                |
+| Description        | `rule.description`     | `dct:description`      | `dct:description`      | ✅     | Correct                       |
 
 ### Dual Class Typing (Phase 1 ✅)
 
@@ -156,12 +156,12 @@ This ensures CPSV-AP compliance while maintaining Dutch RONL extensions.
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
 
-| CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase |
-|------------------|-------------|----------|-------------------|-------|
-| `dct:language` | 0..* | Medium | Language | Phase 2 |
-| `dct:type` | 0..1 | Medium | Rule Type | Phase 2 |
-| `eli:implements` | 0..* | Medium | Implements Legal Resource | Phase 2 |
-| `eli:establishedUnder` | 0..* | Low | Established Under | Phase 3 |
+| CPSV-AP Property       | Cardinality | Priority | Suggested UI Label        | Phase   |
+| ---------------------- | ----------- | -------- | ------------------------- | ------- |
+| `dct:language`         | 0..\*       | Medium   | Language                  | Phase 2 |
+| `dct:type`             | 0..1        | Medium   | Rule Type                 | Phase 2 |
+| `eli:implements`       | 0..\*       | Medium   | Implements Legal Resource | Phase 2 |
+| `eli:establishedUnder` | 0..\*       | Low      | Established Under         | Phase 3 |
 
 ---
 
@@ -171,15 +171,15 @@ This ensures CPSV-AP compliance while maintaining Dutch RONL extensions.
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label | State Property | TTL Output | Status | Notes |
-|----------------|----------------|------------|--------|-------|
-| Notation (Machine-readable) * | `param.notation` | `skos:notation` | ✅ | RONL extension |
-| Label (Human-readable) * | `param.label` | `skos:prefLabel` | ✅ | RONL extension |
-| Value * | `param.value` | `schema:value` | ✅ | RONL extension |
-| Unit | `param.unit` | `schema:unitCode` | ✅ | RONL extension |
-| Description | `param.description` | `dct:description` | ✅ | RONL extension |
-| Valid From | `param.validFrom` | `ronl:validFrom` | ✅ | RONL extension |
-| Valid Until | `param.validUntil` | `ronl:validUntil` | ✅ | RONL extension |
+| UI Field Label                 | State Property      | TTL Output        | Status | Notes          |
+| ------------------------------ | ------------------- | ----------------- | ------ | -------------- |
+| Notation (Machine-readable) \* | `param.notation`    | `skos:notation`   | ✅     | RONL extension |
+| Label (Human-readable) \*      | `param.label`       | `skos:prefLabel`  | ✅     | RONL extension |
+| Value \*                       | `param.value`       | `schema:value`    | ✅     | RONL extension |
+| Unit                           | `param.unit`        | `schema:unitCode` | ✅     | RONL extension |
+| Description                    | `param.description` | `dct:description` | ✅     | RONL extension |
+| Valid From                     | `param.validFrom`   | `ronl:validFrom`  | ✅     | RONL extension |
+| Valid Until                    | `param.validUntil`  | `ronl:validUntil` | ✅     | RONL extension |
 
 ### Note on Parameters
 
@@ -196,12 +196,12 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 **Location:** Within Service Tab  
 **CPSV-AP Class:** `cv:Cost`
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status |
-|----------------|----------------|------------|------------------------|--------|
-| Cost Identifier * | `cost.identifier` | `dct:identifier` | `dct:identifier` | 🎯 |
-| Amount | `cost.value` | `cv:value` | `cv:value` | 🎯 |
-| Currency | `cost.currency` | `cv:currency` | `cv:currency` | 🎯 |
-| Cost Description | `cost.description` | `dct:description` | `dct:description` | 🎯 |
+| UI Field Label     | State Property     | TTL Output        | CPSV-AP 3.2.0 Property | Status |
+| ------------------ | ------------------ | ----------------- | ---------------------- | ------ |
+| Cost Identifier \* | `cost.identifier`  | `dct:identifier`  | `dct:identifier`       | 🎯     |
+| Amount             | `cost.value`       | `cv:value`        | `cv:value`             | 🎯     |
+| Currency           | `cost.currency`    | `cv:currency`     | `cv:currency`          | 🎯     |
+| Cost Description   | `cost.description` | `dct:description` | `dct:description`      | 🎯     |
 
 **Implementation:** Collapsible section within Service Tab. Optional - leave identifier empty if service has no costs.
 
@@ -212,12 +212,12 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 **Location:** Within Service Tab  
 **CPSV-AP Class:** `cv:Output`
 
-| UI Field Label | State Property | TTL Output | CPSV-AP 3.2.0 Property | Status |
-|----------------|----------------|------------|------------------------|--------|
-| Output Identifier * | `output.identifier` | `dct:identifier` | `dct:identifier` | 🎯 |
-| Output Name * | `output.name` | `dct:title` | `dct:title` | 🎯 |
-| Output Description | `output.description` | `dct:description` | `dct:description` | 🎯 |
-| Output Type | `output.type` | `dct:type` | `dct:type` | 🎯 |
+| UI Field Label       | State Property       | TTL Output        | CPSV-AP 3.2.0 Property | Status |
+| -------------------- | -------------------- | ----------------- | ---------------------- | ------ |
+| Output Identifier \* | `output.identifier`  | `dct:identifier`  | `dct:identifier`       | 🎯     |
+| Output Name \*       | `output.name`        | `dct:title`       | `dct:title`            | 🎯     |
+| Output Description   | `output.description` | `dct:description` | `dct:description`      | 🎯     |
+| Output Type          | `output.type`        | `dct:type`        | `dct:type`             | 🎯     |
 
 **Implementation:** Collapsible section within Service Tab. Optional - leave identifier empty if service produces no specific outputs.
 
@@ -229,14 +229,14 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 
 ### Current Fields (v1.3.0+)
 
-| UI Field Label | State Property | TTL Output | Status | Notes |
-|----------------|----------------|------------|--------|-------|
-| Rule ID * | `rule.ruleId` | `cprmv:id` | ✅ | CPRMV mandatory |
-| Ruleset ID (BWB) * | `rule.rulesetId` | `cprmv:rulesetId` | ✅ | CPRMV mandatory |
-| Definition * | `rule.definition` | `cprmv:definition` | ✅ | CPRMV mandatory |
-| Situation * | `rule.situatie` | `cprmv:situatie` | ✅ | CPRMV mandatory |
-| Norm * | `rule.norm` | `cprmv:norm` | ✅ | CPRMV mandatory |
-| Rule ID Path * | `rule.ruleIdPath` | `cprmv:ruleIdPath` | ✅ | CPRMV mandatory |
+| UI Field Label      | State Property    | TTL Output         | Status | Notes           |
+| ------------------- | ----------------- | ------------------ | ------ | --------------- |
+| Rule ID \*          | `rule.ruleId`     | `cprmv:id`         | ✅     | CPRMV mandatory |
+| Ruleset ID (BWB) \* | `rule.rulesetId`  | `cprmv:rulesetId`  | ✅     | CPRMV mandatory |
+| Definition \*       | `rule.definition` | `cprmv:definition` | ✅     | CPRMV mandatory |
+| Situation \*        | `rule.situatie`   | `cprmv:situatie`   | ✅     | CPRMV mandatory |
+| Norm \*             | `rule.norm`       | `cprmv:norm`       | ✅     | CPRMV mandatory |
+| Rule ID Path \*     | `rule.ruleIdPath` | `cprmv:ruleIdPath` | ✅     | CPRMV mandatory |
 
 ### Note on CPRMV
 
@@ -252,12 +252,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** MEDIUM
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `dct:identifier` | 1..* | Channel Identifier * | **MANDATORY** |
-| `dct:description` | 0..* | Description | Text |
-| `cv:processingTime` | 0..1 | Processing Time | Duration |
-| `dct:type` | 0..1 | Channel Type | Online/Phone/InPerson |
+| CPSV-AP Property    | Cardinality | Suggested UI Label    | Notes                 |
+| ------------------- | ----------- | --------------------- | --------------------- |
+| `dct:identifier`    | 1..\*       | Channel Identifier \* | **MANDATORY**         |
+| `dct:description`   | 0..\*       | Description           | Text                  |
+| `cv:processingTime` | 0..1        | Processing Time       | Duration              |
+| `dct:type`          | 0..1        | Channel Type          | Online/Phone/InPerson |
 
 ---
 
@@ -265,11 +265,11 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** MEDIUM
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `cv:contactPage` | 0..* | Contact Page URL | Document URL |
-| `cv:hasEmail` | 0..* | Email Address | Email |
-| `cv:telephone` | 0..* | Phone Number | Phone |
+| CPSV-AP Property | Cardinality | Suggested UI Label | Notes        |
+| ---------------- | ----------- | ------------------ | ------------ |
+| `cv:contactPage` | 0..\*       | Contact Page URL   | Document URL |
+| `cv:hasEmail`    | 0..\*       | Email Address      | Email        |
+| `cv:telephone`   | 0..\*       | Phone Number       | Phone        |
 
 ---
 
@@ -277,12 +277,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** MEDIUM-LOW
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `dct:identifier` | 1..* | Requirement ID * | **MANDATORY** |
-| `dct:title` | 1..* | Requirement Name * | **MANDATORY** |
-| `dct:description` | 1..* | Description * | **MANDATORY** |
-| `dct:type` | 0..* | Requirement Type | Code |
+| CPSV-AP Property  | Cardinality | Suggested UI Label  | Notes         |
+| ----------------- | ----------- | ------------------- | ------------- |
+| `dct:identifier`  | 1..\*       | Requirement ID \*   | **MANDATORY** |
+| `dct:title`       | 1..\*       | Requirement Name \* | **MANDATORY** |
+| `dct:description` | 1..\*       | Description \*      | **MANDATORY** |
+| `dct:type`        | 0..\*       | Requirement Type    | Code          |
 
 ---
 
@@ -290,12 +290,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** LOW
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `dct:identifier` | 1..* | Evidence ID * | **MANDATORY** |
-| `dct:title` | 1..* | Evidence Name * | **MANDATORY** |
-| `dct:description` | 0..* | Description | Text |
-| `dct:type` | 0..1 | Evidence Type | Code |
+| CPSV-AP Property  | Cardinality | Suggested UI Label | Notes         |
+| ----------------- | ----------- | ------------------ | ------------- |
+| `dct:identifier`  | 1..\*       | Evidence ID \*     | **MANDATORY** |
+| `dct:title`       | 1..\*       | Evidence Name \*   | **MANDATORY** |
+| `dct:description` | 0..\*       | Description        | Text          |
+| `dct:type`        | 0..1        | Evidence Type      | Code          |
 
 ---
 
@@ -303,12 +303,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** LOW
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `dct:identifier` | 1..* | Event ID * | **MANDATORY** |
-| `dct:title` | 1..* | Event Name * | **MANDATORY** |
-| `dct:description` | 0..* | Description | Text |
-| `dct:type` | 0..* | Event Type | BusinessEvent/LifeEvent |
+| CPSV-AP Property  | Cardinality | Suggested UI Label | Notes                   |
+| ----------------- | ----------- | ------------------ | ----------------------- |
+| `dct:identifier`  | 1..\*       | Event ID \*        | **MANDATORY**           |
+| `dct:title`       | 1..\*       | Event Name \*      | **MANDATORY**           |
+| `dct:description` | 0..\*       | Description        | Text                    |
+| `dct:type`        | 0..\*       | Event Type         | BusinessEvent/LifeEvent |
 
 ---
 
@@ -316,14 +316,14 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Priority:** LOW (sub-entity of Organization)
 
-| CPSV-AP Property | Cardinality | Suggested UI Label | Notes |
-|------------------|-------------|-------------------|-------|
-| `locn:thoroughfare` | 0..* | Street | Street name |
-| `locn:locatorDesignator` | 0..* | House Number | Number |
-| `locn:postCode` | 0..* | Postal Code | Postcode |
-| `locn:postName` | 0..* | City | City name |
-| `locn:adminUnitL1` | 0..* | Country | Country |
-| `locn:adminUnitL2` | 0..* | Province/Region | Region |
+| CPSV-AP Property         | Cardinality | Suggested UI Label | Notes       |
+| ------------------------ | ----------- | ------------------ | ----------- |
+| `locn:thoroughfare`      | 0..\*       | Street             | Street name |
+| `locn:locatorDesignator` | 0..\*       | House Number       | Number      |
+| `locn:postCode`          | 0..\*       | Postal Code        | Postcode    |
+| `locn:postName`          | 0..\*       | City               | City name   |
+| `locn:adminUnitL1`       | 0..\*       | Country            | Country     |
+| `locn:adminUnitL2`       | 0..\*       | Province/Region    | Region      |
 
 ---
 
@@ -333,18 +333,18 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Status:** COMPLETE - December 2025
 
-| # | Change | Type | Status |
-|---|--------|------|--------|
-| 1 | Change `org:Organization` → `cv:PublicOrganisation` | Class type | ✅ |
-| 2 | Add `cv:spatial` to Organization (mandatory) | UI + State + TTL | ✅ |
-| 3 | Add explicit `dct:identifier` outputs | TTL output | ✅ |
-| 4 | Change `cpsv:follows` → `cv:hasLegalResource` | Relationship | ✅ |
-| 5 | Add Rule `dct:identifier` and `dct:title` (mandatory) | UI + State + TTL | ✅ |
-| 6 | Add dual typing: `cpsv:Rule, ronl:TemporalRule` | Class type | ✅ |
-| 7 | Add Cost section to Service Tab | UI component | ✅ |
-| 8 | Add Output section to Service Tab | UI component | ✅ |
-| 9 | Fix Language to use LinguisticSystem URIs | TTL output | ✅ |
-| 10 | Fix Sector to use URIs (dropdown + custom) | UI + TTL output | ✅ |
+| #   | Change                                                | Type             | Status |
+| --- | ----------------------------------------------------- | ---------------- | ------ |
+| 1   | Change `org:Organization` → `cv:PublicOrganisation`   | Class type       | ✅     |
+| 2   | Add `cv:spatial` to Organization (mandatory)          | UI + State + TTL | ✅     |
+| 3   | Add explicit `dct:identifier` outputs                 | TTL output       | ✅     |
+| 4   | Change `cpsv:follows` → `cv:hasLegalResource`         | Relationship     | ✅     |
+| 5   | Add Rule `dct:identifier` and `dct:title` (mandatory) | UI + State + TTL | ✅     |
+| 6   | Add dual typing: `cpsv:Rule, ronl:TemporalRule`       | Class type       | ✅     |
+| 7   | Add Cost section to Service Tab                       | UI component     | ✅     |
+| 8   | Add Output section to Service Tab                     | UI component     | ✅     |
+| 9   | Fix Language to use LinguisticSystem URIs             | TTL output       | ✅     |
+| 10  | Fix Sector to use URIs (dropdown + custom)            | UI + TTL output  | ✅     |
 
 **Result:** Editor now generates **CPSV-AP 3.2.0 compliant** TTL files with all mandatory fields for minimal compliance.
 
@@ -354,13 +354,13 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Target:** Q1 2026
 
-| # | Change | Type | Effort |
-|---|--------|------|--------|
-| 11 | Add Channel class support | UI + State + TTL | Medium |
-| 12 | Add ContactPoint class support | UI + State + TTL | Medium |
-| 13 | Add Service Type dropdown | UI + State + TTL | Low |
-| 14 | Add Processing Time field | UI + State + TTL | Low |
-| 15 | Add Status field (Active/Inactive) | UI + State + TTL | Low |
+| #   | Change                             | Type             | Effort |
+| --- | ---------------------------------- | ---------------- | ------ |
+| 11  | Add Channel class support          | UI + State + TTL | Medium |
+| 12  | Add ContactPoint class support     | UI + State + TTL | Medium |
+| 13  | Add Service Type dropdown          | UI + State + TTL | Low    |
+| 14  | Add Processing Time field          | UI + State + TTL | Low    |
+| 15  | Add Status field (Active/Inactive) | UI + State + TTL | Low    |
 
 ---
 
@@ -368,12 +368,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Target:** Q2 2026
 
-| # | Change | Type | Effort |
-|---|--------|------|--------|
-| 16 | Add Requirement class support | UI + State + TTL | Medium |
-| 17 | Add Evidence class support | UI + State + TTL | Medium |
-| 18 | Add Event class support | UI + State + TTL | Medium |
-| 19 | Add Address sub-form to Organization | UI + State + TTL | Medium |
+| #   | Change                               | Type             | Effort |
+| --- | ------------------------------------ | ---------------- | ------ |
+| 16  | Add Requirement class support        | UI + State + TTL | Medium |
+| 17  | Add Evidence class support           | UI + State + TTL | Medium |
+| 18  | Add Event class support              | UI + State + TTL | Medium |
+| 19  | Add Address sub-form to Organization | UI + State + TTL | Medium |
 
 ---
 
@@ -421,4 +421,4 @@ All extensions follow CPSV-AP's extensibility guidelines and do not conflict wit
 
 ---
 
-*This document reflects the current implementation state and planned future enhancements for CPSV-AP 3.2.0 compliance.*
+_This document reflects the current implementation state and planned future enhancements for CPSV-AP 3.2.0 compliance._
