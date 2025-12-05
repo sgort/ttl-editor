@@ -84,6 +84,7 @@ function App() {
         identifier: parsed.organization?.identifier || '',
         name: parsed.organization?.name || '',
         homepage: parsed.organization?.homepage || '',
+        spatial: parsed.organization?.spatial || '',
       },
       legalResource: {
         bwbId: parsed.legalResource?.bwbId || '',
@@ -443,10 +444,12 @@ function App() {
         organization.identifier,
         'https://regels.overheid.nl/organizations/'
       );
-      ttl += `<${orgUri}> a cv:PublicOrganization ;\n`;
+      ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;
       if (organization.name)
         ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
       if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
+      if (organization.spatial) ttl += `    cv:spatial <${organization.spatial}> ;\n`; // âž• ADD
       ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 

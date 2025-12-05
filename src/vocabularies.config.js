@@ -29,8 +29,8 @@ export const VOCABULARY_CONFIG = {
       canonicalType: 'cpsv:PublicService',
     },
     organization: {
-      acceptedTypes: ['cv:PublicOrganization', 'foaf:Organization'],
-      canonicalType: 'cv:PublicOrganization',
+      acceptedTypes: ['cv:PublicOrganisation'],
+      canonicalType: 'cv:PublicOrganisation',
     },
     legalResource: {
       acceptedTypes: ['eli:LegalResource'],

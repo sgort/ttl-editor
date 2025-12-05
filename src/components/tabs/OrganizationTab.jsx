@@ -79,6 +79,40 @@ export default function OrganizationTab({ organization, setOrganization }) {
           placeholder="e.g., https://www.svb.nl"
         />
       </div>
+
+      {/* Geographic Jurisdiction - MANDATORY */}
+      <div>
+        <label className="block text-sm text-gray-700 mb-1">
+          <span className="font-medium">Geographic Jurisdiction</span>
+          <span className="text-gray-500"> (cv:spatial)</span>
+          <span className="text-red-500"> *</span>
+        </label>
+        <select
+          value={organization.spatial}
+          onChange={(e) => updateField('spatial', e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Select country...</option>
+          <option value="https://publications.europa.eu/resource/authority/country/NLD">
+            Netherlands (NL)
+          </option>
+          <option value="https://publications.europa.eu/resource/authority/country/BEL">
+            Belgium (BE)
+          </option>
+          <option value="https://publications.europa.eu/resource/authority/country/DEU">
+            Germany (DE)
+          </option>
+          <option value="https://publications.europa.eu/resource/authority/country/FRA">
+            France (FR)
+          </option>
+          <option value="https://publications.europa.eu/resource/authority/country/LUX">
+            Luxembourg (LU)
+          </option>
+        </select>
+        <p className="text-xs text-green-600 mt-1">
+          Geographic area where this organization has jurisdiction
+        </p>
+      </div>
     </div>
   );
 }

@@ -16,6 +16,7 @@ export const DEFAULT_ORGANIZATION = {
   identifier: '',
   name: '',
   homepage: '',
+  spatial: 'https://publications.europa.eu/resource/authority/country/NLD', // default
 };
 
 export const DEFAULT_LEGAL_RESOURCE = {

@@ -37,6 +37,9 @@ export function validateOrganization(organization) {
     errors.push('Organization homepage must be a valid URL');
   }
 
+  if (!organization.spatial) {
+    errors.push('Organization geographic jurisdiction (cv:spatial) is required');
+  }
   return errors;
 }
 

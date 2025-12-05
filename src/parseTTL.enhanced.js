@@ -214,10 +214,15 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.organization.name =
             extractValue(line.split('org:name')[1]) || parsed.organization.name;
         }
-
         if (line.includes('foaf:homepage')) {
           parsed.organization.homepage =
             extractValue(line.split('foaf:homepage')[1]) || parsed.organization.homepage;
+        }
+        if (line.includes('cv:spatial')) {
+          const spatialMatch = line.match(/<([^>]+)>/);
+          if (spatialMatch) {
+            parsed.organization.spatial = spatialMatch[1];
+          }
         }
       }
 
