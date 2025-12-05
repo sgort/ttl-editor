@@ -75,7 +75,7 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
                 placeholder="URI of the rule being extended"
               />
               <p className="text-xs text-green-600 mt-1">
-                ✓ Link to a previous version of this rule to create a versioning chain
+                Link to a previous version of this rule to create a versioning chain
               </p>
             </div>
 

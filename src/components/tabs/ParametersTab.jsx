@@ -61,7 +61,7 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="BOVENGRENS_INKOMEN_ALLEENSTAANDE"
                 />
-                <p className="text-xs text-green-600 mt-1">✓ Use UPPERCASE_WITH_UNDERSCORES</p>
+                <p className="text-xs text-green-600 mt-1">Use UPPERCASE_WITH_UNDERSCORES</p>
               </div>
 
               <div>
