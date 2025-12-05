@@ -36,7 +36,7 @@ export default function CostSection({ cost, setCost }) {
       </div>
 
       {/* Show fields if identifier exists OR if any other field has data (for imports) */}
-      {(cost.identifier || cost.value || cost.currency || cost.description) && (
+      {(cost.identifier || cost.value || cost.description) && (
         <>
           {/* Amount */}
           <div>

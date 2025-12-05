@@ -11,13 +11,13 @@
         "icon": "🎯",
         "iconColor": "emerald",
         "items": [
-          "Fixed Organization Class Type",
-          "Added cv:spatial to Organization",
-          "Added explicit dct:identifier outputs to fix: Identifiers used in URIs but not explicitly output as properties",
+          "Fixed Organization class type to cv:PublicOrganisation",
+          "Added mandatory  cv:spatial field to Organization",
+          "Added explicit dct:identifier outputs for Service, Organization, Legal Resource, Cost, and Output",
           "Changed cpsv:follows to cv:hasLegalResource",
-          "Added Rule Identifiers and Titles",
-          "Added Cost section to the UI",
-          "Added Output section to the UI"
+          "Added mandatory Rule identifiers and titles",
+          "Created Cost and Output sections in Service tab with full import/export support",
+          "..."
         ]
       }
     ]
