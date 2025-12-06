@@ -1,5 +1,7 @@
-import { FileUp, Plus, Trash2 } from 'lucide-react';
+import { Database, FileUp, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
+
+import exampleCPRMVData from '../../data/cprmv-example.json';
 
 const CPRMVTab = ({
   cprmvRules,
@@ -7,11 +9,36 @@ const CPRMVTab = ({
   removeCPRMVRule,
   updateCPRMVRule,
   handleImportJSON,
+  setCprmvRules, // âž• ADD THIS
 }) => {
+  // Function to load example data
+  const loadExampleData = () => {
+    // Map all example rules and set them directly
+    const mappedRules = exampleCPRMVData.map((rule, index) => ({
+      id: Date.now() + index, // Unique ID for each rule
+      ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
+      rulesetId: rule.rulesetid || '',
+      definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
+      situatie: rule.situatie || '',
+      norm: rule.norm || '',
+      ruleIdPath: rule.rule_id_path || '',
+    }));
+
+    // Set all rules at once
+    setCprmvRules(mappedRules);
+  };
   return (
     <div className="space-y-4">
       {/* Import JSON Button - Top, matches Import TTL purple color */}
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-3">
+        {/* Load Example Button */}
+        <button
+          onClick={loadExampleData}
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer shadow-md transition-colors"
+        >
+          <Database size={20} />
+          Load Example
+        </button>{' '}
         <input
           type="file"
           id="json-import"
@@ -31,11 +58,27 @@ const CPRMVTab = ({
       {/* Information Banner */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <p className="text-sm text-blue-800">
-          <strong>CPRMV Rules</strong> are normative values extracted from Dutch legislation used in
-          calculations and decision rules.
+          <strong>CPRMV Rules</strong> are normative values extracted with the experimental{' '}
+          <a
+            href="https://cprmv.open-regels.nl/docs#/default/rules_rules__rule_id_path__get"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline font-medium"
+          >
+            CPRMV Rules Serve API
+          </a>{' '}
+          from Dutch legislation used in calculations and decision rules. For example: benefit
+          amounts, income thresholds, percentages defined in social assistance laws.
           <br />
-          For example: benefit amounts, income thresholds, percentages defined in social assistance
-          laws (normenbrief format).
+          <br /> The <strong>Import JSON</strong> function allows you to load the collected output
+          into this tab, or try the{' '}
+          <button
+            onClick={loadExampleData}
+            className="text-blue-600 hover:text-blue-800 underline font-medium"
+          >
+            example data
+          </button>
+          .
         </p>
       </div>
 

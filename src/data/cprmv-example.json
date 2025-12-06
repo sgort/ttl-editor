@@ -1,0 +1,59 @@
+[
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel y.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;",
+    "situatie": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "176,35",
+    "per": "maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel y."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel r.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 173,87 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:",
+    "https://cprmv.open-regels.nl/0.3.0/contains": {
+      "onderdeel 1°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 1°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "hij de volledige zorg heeft voor een tot zijn last komend kind tot 12 jaar,"
+      },
+      "onderdeel 2°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 2°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "de periode van zes maanden, bedoeld in onderdeel n, is verstreken, en"
+      },
+      "onderdeel 3°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 3°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling;"
+      }
+    },
+    "situatie": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van",
+    "norm": "173,87",
+    "per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel r."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel z.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;",
+    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "876,35",
+    "per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel z."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel aa.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
+    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "76",
+    "per": "maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel aa."
+  }
+]

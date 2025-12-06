@@ -281,19 +281,17 @@ function App() {
   };
 
   // Add CPRMV rule
-  const addCPRMVRule = () => {
-    setCprmvRules([
-      ...cprmvRules,
-      {
-        id: Date.now(),
-        ruleId: '',
-        rulesetId: '',
-        definition: '',
-        situatie: '',
-        norm: '',
-        ruleIdPath: '',
-      },
-    ]);
+  const addCPRMVRule = (initialData = null) => {
+    const newRule = {
+      id: Date.now(),
+      ruleId: initialData?.ruleId || '',
+      rulesetId: initialData?.rulesetId || '',
+      definition: initialData?.definition || '',
+      situatie: initialData?.situatie || '',
+      norm: initialData?.norm || '',
+      ruleIdPath: initialData?.ruleIdPath || '',
+    };
+    setCprmvRules([...cprmvRules, newRule]);
   };
 
   // Remove CPRMV rule
@@ -626,7 +624,8 @@ function App() {
           <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <FileText className="text-blue-600" size={32} />
+                {/* Replace FileText icon with turtle SVG */}
+                <img src="/favicon.svg" alt="Turtle icon" className="w-10 h-10" />
                 <div>
                   <h1 className="text-3xl font-bold text-gray-800">Core Public Service Editor</h1>
                   <p className="text-gray-600 text-sm">
@@ -804,6 +803,7 @@ function App() {
                   removeCPRMVRule={removeCPRMVRule}
                   updateCPRMVRule={updateCPRMVRule}
                   handleImportJSON={handleImportJSON}
+                  setCprmvRules={setCprmvRules}
                 />
               )}
               {activeTab === 'changelog' && <ChangelogTab />}
