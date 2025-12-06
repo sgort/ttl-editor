@@ -19,7 +19,18 @@
             "Added mandatory Rule identifiers and titles",
             "Created Cost and Output sections in Service tab with full import/export support",
             "Fixed Language URI",
-            "Fixed Sector URIs"
+            "Fixed Sector URIs",
+            "Load Example button next to Import JSON the loads example CPRMV Rules"
+          ]
+        },
+        {
+          "title": "UI Improvements",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Moved footer info to Changelog tab and added documentation reference links",
+            "Added CPRMV Rules Serve API info to CPRMV tab",
+            "Changed favicon"
           ]
         }
       ]
