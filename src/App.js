@@ -825,33 +825,6 @@ function App() {
               <Download size={20} /> Download TTL
             </button>
           </div>
-
-          {/* Footer */}
-          <footer className="mt-8 pt-6 border-t text-center text-gray-600 text-sm">
-            <p>
-              <br />
-              Core Public Service Editor
-              <br />A RONL Initiative based on{' '}
-              <a
-                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/NAMESPACE-PROPERTIES.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                NAMESPACE-PROPERTIES.md
-              </a>
-              <br />
-              <a
-                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/FIELD-MAPPING-CPSV-AP-3.2.0.md"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline"
-              >
-                FIELD-MAPPING-CPSV-AP-3.2.0.md
-              </a>{' '}
-              reflects the current implementation state for CPSV-AP 3.2.0 compliance
-            </p>
-          </footer>
         </div>
 
         {/* RIGHT SIDE: Live Preview Panel (conditionally rendered) */}

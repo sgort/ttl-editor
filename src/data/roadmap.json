@@ -1,37 +1,39 @@
-[
-  {
-    "icon": "⭐",
-    "title": "Template System",
-    "description": "Pre-fill forms from AOW example or custom templates"
-  },
-  {
-    "icon": "🔧",
-    "title": "Browser Storage",
-    "description": "Auto-save progress to localStorage"
-  },
-  {
-    "icon": "🎯",
-    "title": "Additional Sections",
-    "description": "Channel, Contact, DMN Distribution forms"
-  },
-  {
-    "icon": "🚀",
-    "title": "Advanced Validation",
-    "description": "Field-level error messages and real-time validation"
-  },
-  {
-    "icon": "📥",
-    "title": "Export Options",
-    "description": "JSON and YAML export formats"
-  },
-  {
-    "icon": "🎯",
-    "title": "DMN File Upload",
-    "description": "Upload and link DMN files to services"
-  },
-  {
-    "icon": "🎯",
-    "title": "Multi-Service Management",
-    "description": "Manage multiple services in one session"
-  }
-]
+{
+  "items": [
+    {
+      "icon": "⭐",
+      "title": "Template System",
+      "description": "Pre-fill forms from AOW example or custom templates"
+    },
+    {
+      "icon": "🔧",
+      "title": "Browser Storage",
+      "description": "Auto-save progress to localStorage"
+    },
+    {
+      "icon": "🎯",
+      "title": "Additional Sections",
+      "description": "Channel, Contact, DMN Distribution forms"
+    },
+    {
+      "icon": "🚀",
+      "title": "Advanced Validation",
+      "description": "Field-level error messages and real-time validation"
+    },
+    {
+      "icon": "📥",
+      "title": "Export Options",
+      "description": "JSON and YAML export formats"
+    },
+    {
+      "icon": "🎯",
+      "title": "DMN File Upload",
+      "description": "Upload and link DMN files to services"
+    },
+    {
+      "icon": "🎯",
+      "title": "Multi-Service Management",
+      "description": "Manage multiple services in one session"
+    }
+  ]
+}
