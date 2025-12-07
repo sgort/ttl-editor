@@ -142,7 +142,25 @@ export default function ChangelogTab() {
       {/* Future Roadmap - unchanged */}
       {roadmapData?.items && roadmapData.items.length > 0 && (
         <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
-          {/* ... existing roadmap code ... */}
+          {/* Future Roadmap */}
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              🔮 Future Roadmap
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {roadmapData.items.map((item, index) => (
+                <div key={index} className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">{item.icon}</span>
+                    <div>
+                      <h4 className="font-semibold text-gray-800">{item.title}</h4>
+                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
