@@ -104,10 +104,10 @@ Standard Relevance
 
 ---
 
-OMG SBVR Formal policy and rule semantics
-OMG DMN Rule and decision modeling
-BPMN Process context for rules
-TOGAF Business architecture governance
+OMG SBVR Formal policy and rule semantics  
+OMG DMN Rule and decision modeling  
+BPMN Process context for rules  
+TOGAF Business architecture governance  
 ArchiMate Motivation-to-execution traceability
 
 ---
@@ -137,10 +137,10 @@ Concept ArchiMate Element
 
 ---
 
-Law / Regulation `Driver`
-Standards / Norms `Principle` or `Requirement`
-Business Rule `Business Rule`
-Parameters `Business Object` or `Value Specification`
+Law / Regulation `Driver`  
+Standards / Norms `Principle` or `Requirement`  
+Business Rule `Business Rule`  
+Parameters `Business Object` or `Value Specification`  
 Execution `Business Process` / `Application Function`
 
 ---
@@ -184,10 +184,10 @@ Layer Owner
 
 ---
 
-Policy Legislator / Regulator
-Rules Domain architects / legal interpreters
-Parameters Operating agencies / policy executors
-Implementation IT teams
+Policy Legislator / Regulator  
+Rules Domain architects / legal interpreters  
+Parameters Operating agencies / policy executors  
+Implementation IT teams  
 
 ---
 
@@ -197,10 +197,10 @@ Change Request Type Affected Layer
 
 ---
 
-Legal amendment Policy → Rules
-Program change Rules
-Regional tuning Parameters
-IT improvement Implementation only
+Legal amendment Policy → Rules  
+Program change Rules  
+Regional tuning Parameters  
+IT improvement Implementation only  
 
 ---
 
@@ -236,11 +236,11 @@ Benefit Description
 
 ---
 
-Agility Rapid tuning without code changes
-Compliance Direct legal traceability
-Stability Core rules remain constant
-Scalability Supports multi-agency or multi-jurisdiction deployment
-Transparency Decisions can be explained and audited
+Agility Rapid tuning without code changes  
+Compliance Direct legal traceability  
+Stability Core rules remain constant  
+Scalability Supports multi-agency or multi-jurisdiction deployment  
+Transparency Decisions can be explained and audited  
 
 ---
 
@@ -250,9 +250,9 @@ Risk Mitigation
 
 ---
 
-Over-parameterization Govern parameter scope tightly
-Rule sprawl Periodic policy-rule consolidation
-Governance overhead Automate traceability
+Over-parameterization Govern parameter scope tightly  
+Rule sprawl Periodic policy-rule consolidation  
+Governance overhead Automate traceability  
 
 ---
 
