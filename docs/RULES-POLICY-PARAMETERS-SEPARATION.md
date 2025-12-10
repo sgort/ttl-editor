@@ -187,7 +187,7 @@ Layer Owner
 Policy Legislator / Regulator  
 Rules Domain architects / legal interpreters  
 Parameters Operating agencies / policy executors  
-Implementation IT teams  
+Implementation IT teams
 
 ---
 
@@ -200,7 +200,7 @@ Change Request Type Affected Layer
 Legal amendment Policy → Rules  
 Program change Rules  
 Regional tuning Parameters  
-IT improvement Implementation only  
+IT improvement Implementation only
 
 ---
 
@@ -240,7 +240,7 @@ Agility Rapid tuning without code changes
 Compliance Direct legal traceability  
 Stability Core rules remain constant  
 Scalability Supports multi-agency or multi-jurisdiction deployment  
-Transparency Decisions can be explained and audited  
+Transparency Decisions can be explained and audited
 
 ---
 
@@ -252,7 +252,7 @@ Risk Mitigation
 
 Over-parameterization Govern parameter scope tightly  
 Rule sprawl Periodic policy-rule consolidation  
-Governance overhead Automate traceability  
+Governance overhead Automate traceability
 
 ---
 
