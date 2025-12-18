@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+	<reports>
+		<report ID="731" changed="2025-04-15 13:49:12">
+			<Naam><![CDATA[HDAB]]></Naam>
+			<reportareas>
+				<reportarea ID="1936" changed="2025-04-15 13:50:05">
+					<AandachtgebiedID>5584</AandachtgebiedID>
+					<Positie><![CDATA[1]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>1</CodeAlsKopNummerTonen>
+			<reportfields>
+				<reportfield ID="2992" changed="2025-04-15 11:50:05">
+					<AandachtveldID>21285</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+				<reportfield ID="2991" changed="2025-04-15 11:50:05">
+					<AandachtveldID>21283</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+				<reportarea ID="1937" changed="2025-04-15 13:50:18">
+					<AandachtgebiedID>5583</AandachtgebiedID>
+					<Richting><![CDATA[van]]></Richting>
+					<Positie><![CDATA[1]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>1</CodeAlsKopNummerTonen>
+			<reportfields>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+				<reportarea ID="1938" changed="2025-04-15 13:50:35">
+					<AandachtgebiedID>5585</AandachtgebiedID>
+					<Richting><![CDATA[van]]></Richting>
+					<Positie><![CDATA[2]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>1</CodeAlsKopNummerTonen>
+			<reportfields>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+				<reportarea ID="1940" changed="2025-04-15 15:36:06">
+					<AandachtgebiedID>5591</AandachtgebiedID>
+					<Richting><![CDATA[van]]></Richting>
+					<Positie><![CDATA[3]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>1</CodeAlsKopNummerTonen>
+			<reportfields>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+			</reportareas>
+				</reportarea>
+			</reportareas>
+			<dependson>
+				<dependsontable table="area" ID="5584" />
+				<dependsontable table="area" ID="5583" />
+				<dependsontable table="area" ID="5585" />
+				<dependsontable table="area" ID="5591" />
+			</dependson>
+		</report>
+		<report ID="732" changed="2025-04-15 15:37:05">
+			<Naam><![CDATA[HDAB - taken]]></Naam>
+			<reportareas>
+				<reportarea ID="1941" changed="2025-04-15 15:37:15">
+					<AandachtgebiedID>5584</AandachtgebiedID>
+					<Positie><![CDATA[3]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>0</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>0</CodeAlsKopNummerTonen>
+			<reportfields>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+				<reportarea ID="1942" changed="2025-04-15 15:37:32">
+					<AandachtgebiedID>5591</AandachtgebiedID>
+					<Richting><![CDATA[van]]></Richting>
+					<Positie><![CDATA[1]]></Positie>
+					<MandatoryLink>1</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>0</CodeAlsKopNummerTonen>
+			<reportfields>
+				<reportfield ID="2994" changed="2025-04-23 09:41:41">
+					<AandachtveldID>21298</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+				<reportarea ID="1946" changed="2025-04-23 11:41:18">
+					<AandachtgebiedID>5583</AandachtgebiedID>
+					<Richting><![CDATA[van]]></Richting>
+					<Positie><![CDATA[2]]></Positie>
+					<MandatoryLink>1</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>0</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>0</CodeAlsKopNummerTonen>
+			<reportfields>
+				<reportfield ID="2996" changed="2025-04-23 09:46:20">
+					<AandachtveldID>21282</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+				<reportfield ID="2993" changed="2025-04-23 09:41:18">
+					<AandachtveldID>21280</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+			</reportareas>
+				</reportarea>
+				<reportarea ID="1947" changed="2025-04-23 11:42:44">
+					<AandachtgebiedID>5582</AandachtgebiedID>
+					<Positie><![CDATA[4]]></Positie>
+					<MandatoryLink>0</MandatoryLink>
+					<ForbiddenLink>0</ForbiddenLink>
+					<GebiedAlsTussenkopTonen>1</GebiedAlsTussenkopTonen>
+					<CodeAlsKopNummerTonen>0</CodeAlsKopNummerTonen>
+			<reportfields>
+				<reportfield ID="2995" changed="2025-04-23 09:42:44">
+					<AandachtveldID>21277</AandachtveldID>
+					<VastVeld><![CDATA[0]]></VastVeld>
+				</reportfield>
+			</reportfields>
+					<reportconditions>
+					</reportconditions>
+			<reportareas>
+			</reportareas>
+				</reportarea>
+			</reportareas>
+			<dependson>
+				<dependsontable table="area" ID="5584" />
+				<dependsontable table="area" ID="5583" />
+				<dependsontable table="area" ID="5585" />
+				<dependsontable table="area" ID="5591" />
+				<dependsontable table="area" ID="5582" />
+			</dependson>
+		</report>
+	</reports>

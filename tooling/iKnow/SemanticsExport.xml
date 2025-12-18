@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledgedomain Id="44a43d7d-b27e-4229-8ed2-d8e6880daa78" Name="Algemene Ouderdomswet" Language="nl">
+   <ConceptModel>
+      <Languages>
+         <Language Language="nl" CreateDate="2025-11-24 13:45:11.528">
+            <Concept CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:19:33.182" Version="0" EditedBy="brent.jochems" UpdatedOn="2025-12-18 12:19:33.182">
+               <Id>650b68cb-fc45-4ab9-a4fa-129248e915ec</Id>
+               <State>NEW</State>
+               <Terms>
+                  <Term Preferred="true" CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:26:17.854" TermType="NONE" UpdatedOn="2025-12-18 12:26:17.854">
+                     <Value>65</Value>
+                  </Term>
+               </Terms>
+               <Definitions>
+                  <Definition CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:26:54.277" UpdatedOn="2025-12-18 12:26:54.277">
+                     <Value>3e3e3e</Value>
+                  </Definition>
+               </Definitions>
+               <Examples/>
+               <Properties/>
+            </Concept>
+            <Concept CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:27:20.433" Version="0" EditedBy="brent.jochems" UpdatedOn="2025-12-18 12:27:20.433">
+               <Id>effeecc5-b006-4342-b46b-11a29c041b28</Id>
+               <State>NEW</State>
+               <Terms>
+                  <Term Preferred="true" CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:27:22.870" TermType="PLURAL" UpdatedOn="2025-12-18 12:27:22.870">
+                     <Value>leeftijd</Value>
+                  </Term>
+               </Terms>
+               <Definitions>
+                  <Definition CreatedBy="brent.jochems" CreatedOn="2025-12-18 12:27:40.839" UpdatedOn="2025-12-18 12:27:40.839">
+                     <Value>en nu?</Value>
+                  </Definition>
+               </Definitions>
+               <Examples/>
+               <Properties/>
+            </Concept>
+         </Language>
+      </Languages>
+   </ConceptModel>
+</knowledgedomain>
