@@ -497,9 +497,16 @@ function App() {
       if (rule.uri || rule.extends) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
         ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        // Add explicit relationship to service
+        ttl += `    cpsv:implements <https://regels.overheid.nl/services/${encodeURIComponentTTL(service.identifier)}> ;\n`;
         if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
         if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
-        if (rule.extends) ttl += `    ronl:extends <${rule.extends}> ;\n`;
+        if (rule.extends) {
+          const extendsUri = rule.extends.startsWith('http')
+            ? rule.extends
+            : `https://regels.overheid.nl/rules/${encodeURIComponentTTL(rule.extends)}`;
+          ttl += `    ronl:extends <${extendsUri}> ;\n`;
+        }
         if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         if (rule.confidenceLevel)

@@ -1,6 +1,23 @@
 {
   "versions": [
     {
+      "version": "1.4.1",
+      "status": "Bug Fixes",
+      "statusColor": "blue",
+      "borderColor": "blue",
+      "date": "December 18, 2025",
+      "sections": [
+        {
+          "title": "Bug Fixes",
+          "icon": "🐛",
+          "iconColor": "blue",
+          "items": [
+            "Fixed missing cpsv:implements (creates a direct link from each rule to the service it implements, making the relationship explicit)"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.4.0",
       "status": "Release",
       "statusColor": "green",
