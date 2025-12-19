@@ -1,0 +1,44 @@
+{
+  "name": "AOW Test 2",
+  "description": "TestingTestingTesting",
+  "version": "1.0.0",
+  "createdDate": "2025-12-19T13:58:02.884Z",
+  "xmlFormat": "CognitatieAnnotation",
+  "mappings": {
+    "service.identifier": {
+      "source": "concepts",
+      "path": "id",
+      "transform": null
+    },
+    "service.name": {
+      "source": "textAnnotations",
+      "path": "text",
+      "transform": null
+    },
+    "service.type": {
+      "source": "concepts",
+      "path": "type",
+      "transform": null
+    },
+    "legal.title": {
+      "source": "documents",
+      "path": "name",
+      "transform": null
+    },
+    "legal.url": {
+      "source": "textAnnotations",
+      "path": "juriconnect",
+      "transform": null
+    },
+    "legal.type": {
+      "source": "documents",
+      "path": "type",
+      "transform": null
+    },
+    "legal.identifier": {
+      "source": "textAnnotations",
+      "path": "juriconnect",
+      "transform": null
+    }
+  }
+}
