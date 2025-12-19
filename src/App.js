@@ -28,6 +28,7 @@ import {
   RulesTab,
   ServiceTab,
 } from './components/tabs';
+import { iknowMappings } from './config/iknow-mappings';
 import parseTTLEnhanced from './parseTTL.enhanced';
 import {
   buildResourceUri,
@@ -73,15 +74,13 @@ function App() {
 
   // Load available iKnow mapping configurations on mount
   useEffect(() => {
-    loadAvailableIKnowMappings();
+    setAvailableIKnowMappings(iknowMappings);
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const loadAvailableIKnowMappings = async () => {
     try {
-      const mappings = [
-        await import('./config/iknow-mappings/iknow-mapping-aow-basic.json'),
-        await import('./config/iknow-mappings/iknow-mapping-semantics.json'),
-      ];
+      const mappings = [];
       setAvailableIKnowMappings(mappings.map((m) => m.default));
     } catch (error) {
       console.error('Failed to load iKnow mappings:', error);

@@ -201,37 +201,25 @@ export const getAvailableFields = (parsedData) => {
   if (parsedData.type === 'CognitatieAnnotation') {
     return {
       concepts: [
-        { path: 'concept.name', label: 'Concept Name', example: 'pensioengerechtigde leeftijd' },
-        { path: 'concept.type', label: 'Concept Type', example: 'Variabele' },
-        {
-          path: 'concept.definition',
-          label: 'Concept Definition',
-          example: 'Leeftijd van een jaar',
-        },
-        {
-          path: 'concept.id',
-          label: 'Concept ID',
-          example: 'f524c950-2210-4c95-85c5-96736e59d567',
-        },
+        { path: 'name', label: 'Concept Name', example: 'pensioengerechtigde leeftijd' },
+        { path: 'type', label: 'Concept Type', example: 'Variabele' },
+        { path: 'definition', label: 'Concept Definition', example: 'Leeftijd van een jaar' },
+        { path: 'id', label: 'Concept ID', example: 'f524c950-2210-4c95-85c5-96736e59d567' },
       ],
       textAnnotations: [
+        { path: 'text', label: 'Annotation Text', example: 'pensioengerechtigde leeftijd' },
+        { path: 'type', label: 'Annotation Type', example: 'Variabele' },
         {
-          path: 'textAnnotation.text',
-          label: 'Annotation Text',
-          example: 'pensioengerechtigde leeftijd',
-        },
-        { path: 'textAnnotation.type', label: 'Annotation Type', example: 'Variabele' },
-        {
-          path: 'textAnnotation.juriconnect',
+          path: 'juriconnect',
           label: 'JuriConnect Reference',
           example: 'jci1.31:c:BWBR0002221...',
         },
       ],
       documents: [
-        { path: 'document.name', label: 'Document Name', example: 'Algemene Ouderdomswet' },
-        { path: 'document.type', label: 'Document Type', example: 'Wet' },
-        { path: 'document.url', label: 'Document URL', example: 'https://ictu.pna-web.com/...' },
-        { path: 'document.validFrom', label: 'Valid From Date', example: '2025-01-01 00:00:00' },
+        { path: 'name', label: 'Document Name', example: 'Algemene Ouderdomswet' },
+        { path: 'type', label: 'Document Type', example: 'Wet' },
+        { path: 'url', label: 'Document URL', example: 'https://ictu.pna-web.com/...' },
+        { path: 'validFrom', label: 'Valid From Date', example: '2025-01-01 00:00:00' },
       ],
     };
   } else if (parsedData.type === 'SemanticsExport') {
