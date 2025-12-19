@@ -42,3 +42,13 @@ export {
   validateService,
   validateTemporalRule,
 } from './validators';
+
+// iKnow parser utilities
+export {
+  applyMapping,
+  extractValue,
+  getAvailableFields,
+  parseCognitatieAnnotation,
+  parseIKnowXML,
+  parseSemanticsExport,
+} from './iknowParser';

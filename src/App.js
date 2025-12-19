@@ -15,12 +15,13 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import {
   ChangelogTab,
   CPRMVTab,
+  IKnowMappingTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
@@ -67,6 +68,26 @@ function App() {
   const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
   const [cost, setCost] = useState(DEFAULT_COST);
   const [output, setOutput] = useState(DEFAULT_OUTPUT);
+  const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
+  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
+
+  // Load available iKnow mapping configurations on mount
+  useEffect(() => {
+    loadAvailableIKnowMappings();
+  }, []);
+
+  const loadAvailableIKnowMappings = async () => {
+    try {
+      const mappings = [
+        await import('./config/iknow-mappings/iknow-mapping-aow-basic.json'),
+        await import('./config/iknow-mappings/iknow-mapping-semantics.json'),
+      ];
+      setAvailableIKnowMappings(mappings.map((m) => m.default));
+    } catch (error) {
+      console.error('Failed to load iKnow mappings:', error);
+      // Fail silently - mappings are optional
+    }
+  };
 
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
@@ -219,6 +240,46 @@ function App() {
 
     reader.readAsText(file);
     event.target.value = '';
+  };
+
+  // Handle iKnow XML import with mapping
+  const handleIKnowImport = (mappedData) => {
+    try {
+      // Populate tabs from mapped data
+      if (mappedData.service) {
+        setService((prev) => ({ ...prev, ...mappedData.service }));
+      }
+      if (mappedData.organization) {
+        setOrganization((prev) => ({ ...prev, ...mappedData.organization }));
+      }
+      if (mappedData.legal) {
+        setLegalResource((prev) => ({ ...prev, ...mappedData.legal }));
+      }
+      if (mappedData.rules && mappedData.rules.length > 0) {
+        setTemporalRules(mappedData.rules);
+      }
+      if (mappedData.parameters && mappedData.parameters.length > 0) {
+        setParameters(mappedData.parameters);
+      }
+
+      // Show success message
+      setImportStatus({
+        show: true,
+        success: true,
+        message: 'iKnow data imported successfully! Fields have been populated.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+
+      // Switch to service tab to show results
+      setActiveTab('service');
+    } catch (error) {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: error.message || 'Failed to import iKnow data.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+    }
   };
 
   // Add parameter
@@ -713,6 +774,7 @@ function App() {
                 'rules',
                 'parameters',
                 'cprmv',
+                'iknow-mapping',
                 'changelog',
               ].map((tab) => (
                 <button
@@ -758,6 +820,12 @@ function App() {
                     <span className="flex items-center justify-center gap-2">
                       <Database size={18} />
                       CPRMV
+                    </span>
+                  )}
+                  {tab === 'iknow-mapping' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Upload size={18} />
+                      iKnow
                     </span>
                   )}
                   {tab === 'changelog' && (
@@ -811,6 +879,14 @@ function App() {
                   updateCPRMVRule={updateCPRMVRule}
                   handleImportJSON={handleImportJSON}
                   setCprmvRules={setCprmvRules}
+                />
+              )}
+              {activeTab === 'iknow-mapping' && (
+                <IKnowMappingTab
+                  mappingConfig={iknowMappingConfig}
+                  setMappingConfig={setIknowMappingConfig}
+                  availableMappings={availableIKnowMappings}
+                  onImportComplete={handleIKnowImport}
                 />
               )}
               {activeTab === 'changelog' && <ChangelogTab />}

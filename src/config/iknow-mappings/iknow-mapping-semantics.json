@@ -1,0 +1,61 @@
+{
+  "name": "AOW-Semantics-Concepts",
+  "description": "Mapping for iKnow SemanticsExport to extract concept terms and definitions",
+  "version": "1.0.0",
+  "createdDate": "2025-12-18T00:00:00.000Z",
+  "xmlFormat": "SemanticsExport",
+  "author": "CPSV Editor Team",
+  "notes": "Focuses on extracting preferred terms and definitions from the SemanticsExport concept model",
+  "mappings": {
+    "service.identifier": {
+      "source": "metadata",
+      "path": "id",
+      "transform": {
+        "type": "prefix",
+        "value": "https://ttl.open-regels.nl/service/"
+      }
+    },
+    "service.name": {
+      "source": "metadata",
+      "path": "name",
+      "transform": null
+    },
+    "service.description": {
+      "source": "concepts",
+      "path": "definitions[0].value",
+      "transform": null,
+      "filter": {
+        "field": "terms[0].termType",
+        "value": "NONE"
+      }
+    },
+    "parameters.name": {
+      "source": "concepts",
+      "path": "terms[0].value",
+      "transform": null,
+      "condition": {
+        "field": "terms[0].preferred",
+        "value": true
+      }
+    },
+    "parameters.description": {
+      "source": "concepts",
+      "path": "definitions[0].value",
+      "transform": null
+    },
+    "parameters.datatype": {
+      "source": "concepts",
+      "path": "terms[0].value",
+      "transform": {
+        "type": "custom",
+        "function": "detectDataType"
+      }
+    }
+  },
+  "transformFunctions": {
+    "detectDataType": {
+      "description": "Automatically detect data type from term value",
+      "logic": "if value is numeric: xsd:integer or xsd:decimal, if value is date: xsd:date, else: xsd:string"
+    }
+  }
+}
