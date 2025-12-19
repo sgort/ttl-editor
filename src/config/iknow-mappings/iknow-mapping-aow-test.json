@@ -1,6 +1,6 @@
 {
-  "name": "AOW Test 2",
-  "description": "TestingTestingTesting",
+  "name": "AOW Test",
+  "description": "Import config for CognitatieAnnotationExport.xml - AOW",
   "version": "1.0.0",
   "createdDate": "2025-12-19T13:58:02.884Z",
   "xmlFormat": "CognitatieAnnotation",
