@@ -1,0 +1,58 @@
+{
+  "name": "AOW Example",
+  "description": "Example mapping for Algemene Ouderdomswet (General Old Age Pensions Act)",
+  "version": "1.0.0",
+  "createdDate": "2025-12-20T16:00:00.000Z",
+  "xmlFormat": "CognitatieAnnotation",
+  "mappings": {
+    "service.name": {
+      "source": "concepts",
+      "path": "name",
+      "filter": {
+        "type": "Rechtsbetrekking"
+      }
+    },
+    "service.description": {
+      "source": "concepts",
+      "path": "definition",
+      "filter": {
+        "type": "Rechtsbetrekking"
+      }
+    },
+    "legal.title": {
+      "source": "documents",
+      "path": "name"
+    },
+    "legal.type": {
+      "source": "documents",
+      "path": "type"
+    },
+    "legal.url": {
+      "source": "textAnnotations",
+      "path": "juriconnect",
+      "transform": null,
+      "filter": null
+    },
+    "parameters.name": {
+      "source": "concepts",
+      "path": "name",
+      "filter": {
+        "type": "Variabele"
+      }
+    },
+    "parameters.value": {
+      "source": "concepts",
+      "path": "name",
+      "filter": {
+        "type": "Rechtsfeit"
+      }
+    },
+    "parameters.description": {
+      "source": "concepts",
+      "path": "definition",
+      "filter": {
+        "type": "Rechtsfeit"
+      }
+    }
+  }
+}

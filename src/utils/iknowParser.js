@@ -279,9 +279,22 @@ export const applyMapping = (parsedData, mappingConfig) => {
     parameters: [],
   };
 
-  // Apply mappings based on configuration
+  // Group parameter mappings
+  const parameterMappings = {};
+  const otherMappings = {};
+
   Object.entries(mappingConfig.mappings).forEach(([targetField, sourceConfig]) => {
-    const { source, path, transform } = sourceConfig;
+    if (targetField.startsWith('parameters.')) {
+      const fieldName = targetField.split('.')[1]; // e.g., 'name', 'value', 'description'
+      parameterMappings[fieldName] = sourceConfig;
+    } else {
+      otherMappings[targetField] = sourceConfig;
+    }
+  });
+
+  // Apply non-parameter mappings
+  Object.entries(otherMappings).forEach(([targetField, sourceConfig]) => {
+    const { source, path, transform, filter } = sourceConfig;
 
     // Determine which collection to iterate over
     let sourceData = [];
@@ -295,8 +308,28 @@ export const applyMapping = (parsedData, mappingConfig) => {
       sourceData = [parsedData.metadata];
     }
 
-    // Extract and transform values
-    sourceData.forEach((item) => {
+    // Apply filter if specified
+    if (filter) {
+      sourceData = sourceData.filter((item) => {
+        // Check all filter conditions
+        return Object.entries(filter).every(([filterKey, filterValue]) => {
+          const itemValue = extractValue(item, filterKey);
+
+          // Handle different filter types
+          if (Array.isArray(filterValue)) {
+            // Array means "match any of these values"
+            return filterValue.includes(itemValue);
+          } else {
+            // Direct equality check
+            return itemValue === filterValue;
+          }
+        });
+      });
+    }
+
+    // Extract and transform values - only use FIRST matching item
+    if (sourceData.length > 0) {
+      const item = sourceData[0]; // Take first match only
       let value = extractValue(item, path);
 
       // Apply transformation if specified
@@ -304,10 +337,70 @@ export const applyMapping = (parsedData, mappingConfig) => {
         value = applyTransform(value, transform);
       }
 
-      // Map to target field in result
-      setNestedValue(result, targetField, value);
-    });
+      // Map to target field in result (only if value exists)
+      if (value) {
+        // Fix field name mapping for legal.url -> legal.bwbId
+        let mappedField = targetField;
+        if (targetField === 'legal.url') {
+          mappedField = 'legal.bwbId';
+        }
+        setNestedValue(result, mappedField, value);
+      }
+    }
   });
+
+  // Handle parameters - create a single parameter object from all parameter fields
+  if (Object.keys(parameterMappings).length > 0) {
+    const param = {};
+
+    // Process each parameter field
+    Object.entries(parameterMappings).forEach(([fieldName, config]) => {
+      const { source, path, transform, filter } = config;
+
+      // Get source data
+      let sourceData = [];
+      if (source === 'concepts') {
+        sourceData = parsedData.concepts;
+      } else if (source === 'textAnnotations') {
+        sourceData = parsedData.textAnnotations;
+      } else if (source === 'documents') {
+        sourceData = parsedData.documents;
+      }
+
+      // Apply filter if specified
+      if (filter) {
+        sourceData = sourceData.filter((item) => {
+          return Object.entries(filter).every(([filterKey, filterValue]) => {
+            const itemValue = extractValue(item, filterKey);
+            if (Array.isArray(filterValue)) {
+              return filterValue.includes(itemValue);
+            } else {
+              return itemValue === filterValue;
+            }
+          });
+        });
+      }
+
+      // Get first matching item and extract value
+      if (sourceData.length > 0) {
+        const item = sourceData[0];
+        let value = extractValue(item, path);
+
+        if (transform && value) {
+          value = applyTransform(value, transform);
+        }
+
+        if (value) {
+          param[fieldName] = value;
+        }
+      }
+    });
+
+    // Only add parameter if it has at least name or value
+    if (param.name || param.value) {
+      result.parameters.push(param);
+    }
+  }
 
   return result;
 };
