@@ -1,7 +1,6 @@
 // IKnowMappingTab.jsx - Tab for configuring iKnow XML import mappings
 
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { applyMapping, getAvailableFields, parseIKnowXML } from '../../utils/iknowParser';
 
@@ -12,8 +11,6 @@ const IKnowMappingTab = ({
   onImportComplete,
 }) => {
   // Configuration mode state
-  // eslint-disable-next-line no-unused-vars
-  const [xmlFile, setXmlFile] = useState(null);
   const [parsedData, setParsedData] = useState(null);
   const [availableFields, setAvailableFields] = useState(null);
   const [parseError, setParseError] = useState('');
@@ -23,8 +20,6 @@ const IKnowMappingTab = ({
 
   // Import mode state
   const [mode, setMode] = useState('configure'); // 'configure' or 'import'
-  // eslint-disable-next-line no-unused-vars
-  const [importXmlFile, setImportXmlFile] = useState(null);
   const [importParsedData, setImportParsedData] = useState(null);
   const [selectedConfig, setSelectedConfig] = useState('');
   const [previewData, setPreviewData] = useState(null);
@@ -181,11 +176,79 @@ const IKnowMappingTab = ({
   };
 
   // Handle XML file upload and parsing
+  // Load example XML file (Configure mode)
+  const loadExampleXML = async () => {
+    setParseError('');
+
+    try {
+      // Load the example XML file from project
+      const response = await fetch('/CognitatieAnnotationExport.xml');
+      if (!response.ok) {
+        throw new Error('Failed to load example XML file');
+      }
+
+      const xmlContent = await response.text();
+      const parsed = parseIKnowXML(xmlContent);
+      setParsedData(parsed);
+      const fields = getAvailableFields(parsed);
+      setAvailableFields(fields);
+
+      // Try to load the "AOW Example" configuration
+      const exampleConfig = availableMappings?.find((m) => m.name === 'AOW Example');
+      if (exampleConfig) {
+        setMappingConfig({
+          name: exampleConfig.name,
+          description: exampleConfig.description || '',
+          mappings: exampleConfig.mappings || {},
+        });
+        setConfigName(exampleConfig.name);
+        setConfigDescription(exampleConfig.description || '');
+      }
+    } catch (error) {
+      setParseError(`Failed to load example: ${error.message}`);
+      setParsedData(null);
+      setAvailableFields(null);
+    }
+  };
+
+  // Load example XML file (Import mode)
+  const loadExampleXMLForImport = async () => {
+    setImportError('');
+    setPreviewData(null);
+
+    try {
+      const response = await fetch('/CognitatieAnnotationExport.xml');
+      if (!response.ok) {
+        throw new Error('Failed to load example XML file');
+      }
+
+      const xmlContent = await response.text();
+      const parsed = parseIKnowXML(xmlContent);
+      setImportParsedData(parsed);
+
+      // Pre-select "AOW Example" if available
+      const exampleConfig = availableMappings?.find((m) => m.name === 'AOW Example');
+      if (exampleConfig) {
+        setSelectedConfig(exampleConfig.name);
+
+        // Automatically preview the mapping
+        try {
+          const mappedData = applyMapping(parsed, exampleConfig);
+          setPreviewData(mappedData);
+        } catch (previewError) {
+          setImportError(`Failed to preview mapping: ${previewError.message}`);
+        }
+      }
+    } catch (error) {
+      setImportError(`Failed to load example: ${error.message}`);
+      setImportParsedData(null);
+    }
+  };
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    setXmlFile(file);
     setParseError('');
 
     const reader = new FileReader();
@@ -214,6 +277,7 @@ const IKnowMappingTab = ({
           source: '',
           path: '',
           transform: null,
+          filter: null,
         },
       },
     }));
@@ -287,7 +351,6 @@ const IKnowMappingTab = ({
     const file = event.target.files[0];
     if (!file) return;
 
-    setImportXmlFile(file);
     setImportError('');
     setPreviewData(null);
 
@@ -412,16 +475,24 @@ const IKnowMappingTab = ({
           {/* File Upload Section */}
           <div className="bg-white p-6 rounded-lg shadow space-y-4">
             <h3 className="text-xl font-bold">1. Upload iKnow XML Export</h3>
-            <div>
-              <label className="block text-sm font-medium mb-2">
+            <div className="space-y-3">
+              <label className="block text-sm font-medium">
                 Upload CognitatieAnnotationExport.xml or SemanticsExport.xml
               </label>
-              <input
-                type="file"
-                accept=".xml"
-                onChange={handleFileUpload}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
+              <div className="flex gap-3">
+                <input
+                  type="file"
+                  accept=".xml"
+                  onChange={handleFileUpload}
+                  className="flex-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+                <button
+                  onClick={loadExampleXML}
+                  className="px-4 py-2 bg-purple-600 text-white rounded font-medium hover:bg-purple-700 whitespace-nowrap"
+                >
+                  Load Example
+                </button>
+              </div>
             </div>
 
             {parseError && (
@@ -439,6 +510,87 @@ const IKnowMappingTab = ({
                     `, ${parsedData.textAnnotations.length} annotations`}
                   {parsedData.documents && `, ${parsedData.documents.length} documents`}
                 </p>
+              </div>
+            )}
+
+            {/* Detailed Breakdown */}
+            {parsedData && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                <h4 className="font-bold text-blue-900">📊 Data Structure Breakdown</h4>
+
+                {/* Concepts */}
+                {parsedData.concepts && parsedData.concepts.length > 0 && (
+                  <div className="bg-white rounded p-3">
+                    <h5 className="font-semibold text-gray-800 mb-2">
+                      Concepts ({parsedData.concepts.length})
+                    </h5>
+                    <div className="space-y-1 text-sm max-h-48 overflow-y-auto">
+                      {parsedData.concepts.map((concept, idx) => (
+                        <div key={idx} className="border-l-2 border-blue-300 pl-2 py-1">
+                          <span className="font-medium text-gray-900">{concept.name}</span>
+                          {concept.type && (
+                            <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">
+                              {concept.type}
+                            </span>
+                          )}
+                          {concept.definition && (
+                            <p className="text-gray-600 text-xs mt-0.5">"{concept.definition}"</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Documents */}
+                {parsedData.documents && parsedData.documents.length > 0 && (
+                  <div className="bg-white rounded p-3">
+                    <h5 className="font-semibold text-gray-800 mb-2">
+                      Documents ({parsedData.documents.length})
+                    </h5>
+                    <div className="space-y-1 text-sm">
+                      {parsedData.documents.map((doc, idx) => (
+                        <div key={idx} className="border-l-2 border-green-300 pl-2 py-1">
+                          <span className="font-medium text-gray-900">{doc.name}</span>
+                          {doc.type && (
+                            <span className="ml-2 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                              {doc.type}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Text Annotations */}
+                {parsedData.textAnnotations && parsedData.textAnnotations.length > 0 && (
+                  <div className="bg-white rounded p-3">
+                    <h5 className="font-semibold text-gray-800 mb-2">
+                      Text Annotations ({parsedData.textAnnotations.length})
+                    </h5>
+                    <p className="text-xs text-gray-600 mb-2">
+                      Annotated text fragments with legal references (JuriConnect)
+                    </p>
+                    <div className="space-y-1 text-sm max-h-32 overflow-y-auto">
+                      {parsedData.textAnnotations.slice(0, 10).map((ann, idx) => (
+                        <div key={idx} className="border-l-2 border-purple-300 pl-2 py-1">
+                          <span className="text-gray-700">{ann.text}</span>
+                          {ann.type && (
+                            <span className="ml-2 text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded">
+                              {ann.type}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                      {parsedData.textAnnotations.length > 10 && (
+                        <p className="text-xs text-gray-500 italic">
+                          ... and {parsedData.textAnnotations.length - 10} more annotations
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -499,42 +651,113 @@ const IKnowMappingTab = ({
                       </div>
 
                       {isMapped && (
-                        <div className="grid grid-cols-2 gap-4 bg-gray-50 p-3 rounded">
-                          <div>
-                            <label className="block text-xs font-medium mb-1">
-                              Source Collection
-                            </label>
-                            <select
-                              value={mapping.source}
-                              onChange={(e) => updateMapping(field.key, { source: e.target.value })}
-                              className="w-full text-sm border border-gray-300 rounded px-2 py-1"
-                            >
-                              <option value="">Select source...</option>
-                              {Object.keys(availableFields).map((source) => (
-                                <option key={source} value={source}>
-                                  {source}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-
-                          <div>
-                            <label className="block text-xs font-medium mb-1">Field Path</label>
-                            <select
-                              value={mapping.path}
-                              onChange={(e) => updateMapping(field.key, { path: e.target.value })}
-                              disabled={!mapping.source}
-                              className="w-full text-sm border border-gray-300 rounded px-2 py-1"
-                            >
-                              <option value="">Select field...</option>
-                              {mapping.source &&
-                                availableFields[mapping.source]?.map((field) => (
-                                  <option key={field.path} value={field.path}>
-                                    {field.label} (e.g., {field.example})
+                        <div className="space-y-3 bg-gray-50 p-3 rounded">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-xs font-medium mb-1">
+                                Source Collection
+                              </label>
+                              <select
+                                value={mapping.source}
+                                onChange={(e) =>
+                                  updateMapping(field.key, { source: e.target.value })
+                                }
+                                className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                              >
+                                <option value="">Select source...</option>
+                                {Object.keys(availableFields).map((source) => (
+                                  <option key={source} value={source}>
+                                    {source}
                                   </option>
                                 ))}
-                            </select>
+                              </select>
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-medium mb-1">Field Path</label>
+                              <select
+                                value={mapping.path}
+                                onChange={(e) => updateMapping(field.key, { path: e.target.value })}
+                                disabled={!mapping.source}
+                                className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                              >
+                                <option value="">Select field...</option>
+                                {mapping.source &&
+                                  availableFields[mapping.source]?.map((field) => (
+                                    <option key={field.path} value={field.path}>
+                                      {field.label} (e.g., {field.example})
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
                           </div>
+
+                          {/* Filter Section */}
+                          {mapping.source === 'concepts' && (
+                            <div className="border-t pt-3">
+                              <div className="flex items-center justify-between mb-2">
+                                <label className="block text-xs font-medium text-blue-700">
+                                  🔍 Filter by Concept Type (Optional)
+                                </label>
+                                <button
+                                  onClick={() => {
+                                    const hasFilter = mapping.filter && mapping.filter.type;
+                                    updateMapping(field.key, {
+                                      filter: hasFilter ? null : { type: '' },
+                                    });
+                                  }}
+                                  className="text-xs text-blue-600 hover:text-blue-800"
+                                >
+                                  {mapping.filter?.type !== undefined
+                                    ? 'Remove Filter'
+                                    : 'Add Filter'}
+                                </button>
+                              </div>
+
+                              {mapping.filter?.type !== undefined && (
+                                <div className="bg-blue-50 p-2 rounded">
+                                  <select
+                                    value={mapping.filter.type || ''}
+                                    onChange={(e) =>
+                                      updateMapping(field.key, {
+                                        filter: { type: e.target.value || null },
+                                      })
+                                    }
+                                    className="w-full text-sm border border-blue-300 rounded px-2 py-1"
+                                  >
+                                    <option value="">-- No filter (use first concept) --</option>
+                                    <option value="Rechtsbetrekking">
+                                      Rechtsbetrekking (Legal relationship → Service)
+                                    </option>
+                                    <option value="Variabele">
+                                      Variabele (Variable → Parameter name)
+                                    </option>
+                                    <option value="Rechtsfeit">
+                                      Rechtsfeit (Legal fact → Parameter value)
+                                    </option>
+                                    <option value="Voorwaarde">
+                                      Voorwaarde (Condition → Rule)
+                                    </option>
+                                    <option value="Juridisch relevant feit">
+                                      Juridisch relevant feit (Legally relevant fact)
+                                    </option>
+                                    <option value="Rechtssubject">
+                                      Rechtssubject (Legal subject)
+                                    </option>
+                                    <option value="Rechtsobject">
+                                      Rechtsobject (Legal object)
+                                    </option>
+                                    <option value="Rechtsgevolg">
+                                      Rechtsgevolg (Legal consequence)
+                                    </option>
+                                  </select>
+                                  <p className="text-xs text-blue-600 mt-1">
+                                    Only map concepts with this type
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -601,25 +824,35 @@ const IKnowMappingTab = ({
           {/* Upload Data XML */}
           <div className="bg-white p-6 rounded-lg shadow space-y-4">
             <h3 className="text-xl font-bold">1. Upload iKnow XML Data File</h3>
-            <input
-              type="file"
-              accept=".xml"
-              onChange={handleImportFileUpload}
-              className="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded file:border-0
-                file:text-sm file:font-semibold
-                file:bg-green-50 file:text-green-700
-                hover:file:bg-green-100"
-            />
+            <div className="flex gap-3">
+              <input
+                type="file"
+                accept=".xml"
+                onChange={handleImportFileUpload}
+                className="flex-1 block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-green-50 file:text-green-700
+                  hover:file:bg-green-100"
+              />
+              <button
+                onClick={loadExampleXMLForImport}
+                className="px-4 py-2 bg-purple-600 text-white rounded font-medium hover:bg-purple-700 whitespace-nowrap"
+              >
+                Load Example
+              </button>
+            </div>
             {importParsedData && (
               <div className="bg-green-50 border border-green-200 p-3 rounded">
                 <p className="text-green-800 font-medium">
-                  ✓ Successfully parsed {importParsedData.format}
+                  ✓ Successfully parsed {importParsedData.type}
                 </p>
                 <p className="text-sm text-green-600 mt-1">
-                  Found {importParsedData.concepts?.length || 0} concepts,{' '}
-                  {importParsedData.documents?.length || 0} documents
+                  Found: {importParsedData.concepts?.length || 0} concepts
+                  {importParsedData.textAnnotations &&
+                    `, ${importParsedData.textAnnotations.length} annotations`}
+                  {importParsedData.documents && `, ${importParsedData.documents.length} documents`}
                 </p>
               </div>
             )}

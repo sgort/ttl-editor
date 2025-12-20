@@ -2,10 +2,10 @@
 // This file makes it easy to load all available configurations
 // Add new configs by importing them here and adding to the array
 
-import aowTest from './iknow-mapping-aow-test.json';
+import aowExample from './iknow-mapping-aow-example.json';
 
 // Array of all available iKnow mapping configurations
-export const iknowMappings = [aowTest];
+export const iknowMappings = [aowExample];
 
 // Default export for convenience
 export default iknowMappings;

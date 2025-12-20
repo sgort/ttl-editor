@@ -1,6 +1,26 @@
 {
   "versions": [
     {
+      "version": "1.5.0",
+      "status": "Release",
+      "statusColor": "green",
+      "borderColor": "green",
+      "date": "December 20, 2025",
+      "sections": [
+        {
+          "title": "Baseline feature iKnow Integration",
+          "icon": "🎯",
+          "iconColor": "emerald",
+          "items": [
+            "Parses iKnow XML exports (CognitatieAnnotation or Semantics format)",
+            "Maps XML data to CPSV-AP fields using configurable mappings",
+            "Imports mapped data into the editor tabs (Service, Legal, Parameters, etc.)",
+            "Provides Load Example button to both Configure and Import modes to help users understand the iKnow integration with a working example"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.4.1",
       "status": "Bug Fixes",
       "statusColor": "blue",
