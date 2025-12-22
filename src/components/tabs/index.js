@@ -3,7 +3,7 @@
 
 export { default as ChangelogTab } from './ChangelogTab';
 export { default as CPRMVTab } from './CPRMVTab';
-export { default as IKnowImportTab } from './IKnowImportTab';
+export { default as DMNTab } from './DMNTab';
 export { default as IKnowMappingTab } from './IKnowMappingTab';
 export { default as LegalTab } from './LegalTab';
 export { default as OrganizationTab } from './OrganizationTab';
