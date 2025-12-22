@@ -316,11 +316,13 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         timestamp: new Date().toISOString(),
       });
 
-      // Update parent state with test results
+      // Update parent state with test results AND test body
       setDmnData({
         ...dmnData,
         lastTestResult: result,
         lastTestTimestamp: new Date().toISOString(),
+        testBody: testBody,
+        apiEndpoint: evaluateUrl,
       });
     } catch (err) {
       setError(err.message);

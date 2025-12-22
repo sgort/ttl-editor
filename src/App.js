@@ -82,6 +82,7 @@ function App() {
     apiEndpoint: '',
     lastTestResult: null,
     lastTestTimestamp: null,
+    testBody: null,
   });
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
   const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
@@ -468,6 +469,7 @@ function App() {
       apiEndpoint: '',
       lastTestResult: null,
       lastTestTimestamp: null,
+      testBody: null,
     });
 
     // Close dialog and show success message
