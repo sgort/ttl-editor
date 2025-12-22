@@ -24,6 +24,9 @@ export function generateDMNTTL(dmnData, serviceUri) {
   sections.push(`    dct:title "${dmnData.fileName}"@nl ;`);
   sections.push(`    dct:format "application/dmn+xml" ;`);
 
+  // Source: placeholder for where the DMN file is stored
+  sections.push(`    dct:source <${serviceUri}/dmn/${dmnData.fileName}> ;`);
+
   if (dmnData.deployedAt) {
     sections.push(`    dct:created "${dmnData.deployedAt}"^^xsd:dateTime ;`);
   }
@@ -34,6 +37,11 @@ export function generateDMNTTL(dmnData, serviceUri) {
 
   sections.push(`    cpsv:implements <${serviceUri}> ;`);
 
+  // implementedBy: the software system (Operaton evaluation endpoint)
+  if (dmnData.apiEndpoint) {
+    sections.push(`    ronl:implementedBy <${dmnData.apiEndpoint}> ;`);
+  }
+
   // Add test results as metadata if available
   if (dmnData.lastTestResult && dmnData.lastTestTimestamp) {
     sections.push(`    cprmv:lastTested "${dmnData.lastTestTimestamp}"^^xsd:dateTime ;`);
@@ -43,18 +51,58 @@ export function generateDMNTTL(dmnData, serviceUri) {
   sections.push(`    dct:description "DMN decision model for service evaluation"@nl .`);
   sections.push('');
 
-  // Add API endpoint information
-  if (dmnData.apiEndpoint) {
-    const endpointUri = `${dmnUri}/endpoint`;
-    sections.push(`# API Endpoint`);
-    sections.push(`<${endpointUri}> a cprmv:APIEndpoint ;`);
-    sections.push(`    cprmv:url "${dmnData.apiEndpoint}" ;`);
-    sections.push(`    cprmv:method "POST" ;`);
-    sections.push(`    cprmv:decisionModel <${dmnUri}> .`);
-    sections.push('');
+  // Add required inputs if test data is available
+  if (dmnData.lastTestResult) {
+    sections.push(`# Required Inputs`);
+    const inputs = extractInputsFromTestResult(dmnData);
+    inputs.forEach((input, index) => {
+      const inputUri = `${dmnUri}/input/${index + 1}`;
+      sections.push(`<${inputUri}> a cpsv:Input ;`);
+      sections.push(`    dct:identifier "${input.name}" ;`);
+      sections.push(`    dct:title "${input.name}"@nl ;`);
+      sections.push(`    dct:type "${input.type}" ;`);
+      if (input.exampleValue !== null && input.exampleValue !== undefined) {
+        const valueStr =
+          typeof input.exampleValue === 'string' ? `"${input.exampleValue}"` : input.exampleValue;
+        sections.push(`    schema:value ${valueStr} ;`);
+      }
+      sections.push(`    cpsv:isRequiredBy <${dmnUri}> .`);
+      sections.push('');
+    });
   }
 
   return sections.join('\n');
+}
+
+/**
+ * Extract input variables from test result data
+ * @param {Object} dmnData - DMN metadata object with test results
+ * @returns {Array} - Array of input objects {name, type, exampleValue}
+ */
+function extractInputsFromTestResult(dmnData) {
+  const inputs = [];
+
+  // Try to parse the test body if it exists
+  if (dmnData.testBody) {
+    try {
+      const testData =
+        typeof dmnData.testBody === 'string' ? JSON.parse(dmnData.testBody) : dmnData.testBody;
+
+      if (testData.variables) {
+        Object.entries(testData.variables).forEach(([name, varData]) => {
+          inputs.push({
+            name: name,
+            type: varData.type || 'String',
+            exampleValue: varData.value,
+          });
+        });
+      }
+    } catch (err) {
+      console.error('Error extracting inputs from test data:', err);
+    }
+  }
+
+  return inputs;
 }
 
 /**

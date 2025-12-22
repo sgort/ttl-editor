@@ -5,8 +5,20 @@
       "status": "Release",
       "statusColor": "green",
       "borderColor": "green",
-      "date": "December 20, 2025",
+      "date": "December 22, 2025",
       "sections": [
+        {
+          "title": "DMN Integration",
+          "icon": "🚀",
+          "iconColor": "emerald",
+          "items": [
+            "Upload DMN files, deploy to Operaton, and test decision evaluations",
+            "Uses dct:source placeholder URI for where the actual DMN file is stored",
+            "Property ronl:implementedBy documents which software system executes the decision logic",
+            "Documents the required inputs with: Variable name, Data type (String, Integer, Boolean), Example value (from test)",
+            "Links back to the DMN model with cpsv:isRequiredBy"
+          ]
+        },
         {
           "title": "Baseline feature iKnow Integration",
           "icon": "🎯",
