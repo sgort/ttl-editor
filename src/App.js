@@ -21,6 +21,7 @@ import PreviewPanel from './components/PreviewPanel';
 import {
   ChangelogTab,
   CPRMVTab,
+  DMNTab,
   IKnowMappingTab,
   LegalTab,
   OrganizationTab,
@@ -46,6 +47,7 @@ import {
   TTL_NAMESPACES,
   validateForm,
 } from './utils';
+import { generateCompleteDMNSection, getDMNNamespaces, validateDMNData } from './utils/dmnHelpers';
 
 function App() {
   const [activeTab, setActiveTab] = useState('service');
@@ -69,6 +71,18 @@ function App() {
   const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
   const [cost, setCost] = useState(DEFAULT_COST);
   const [output, setOutput] = useState(DEFAULT_OUTPUT);
+  // DMN state
+  const [dmnData, setDmnData] = useState({
+    fileName: '',
+    content: '',
+    decisionKey: '',
+    deployed: false,
+    deploymentId: null,
+    deployedAt: null,
+    apiEndpoint: '',
+    lastTestResult: null,
+    lastTestTimestamp: null,
+  });
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
   const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
 
@@ -443,6 +457,19 @@ function App() {
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
 
+    // Reset DMN state
+    setDmnData({
+      fileName: '',
+      content: '',
+      decisionKey: '',
+      deployed: false,
+      deploymentId: null,
+      deployedAt: null,
+      apiEndpoint: '',
+      lastTestResult: null,
+      lastTestTimestamp: null,
+    });
+
     // Close dialog and show success message
     setShowClearDialog(false);
     setImportStatus({
@@ -458,7 +485,15 @@ function App() {
 
   // Generate TTL output
   const generateTTL = () => {
+    const serviceIdentifier = service.identifier || 'unknown-service';
+    const serviceUri = buildResourceUri('services', serviceIdentifier);
+
     let ttl = TTL_NAMESPACES;
+
+    // Add DMN namespace if DMN data exists
+    if (dmnData && dmnData.fileName) {
+      ttl += '\n' + getDMNNamespaces();
+    }
 
     // Service
     if (service.identifier) {
@@ -509,6 +544,11 @@ function App() {
       if (output.identifier) {
         const encodedOutputId = encodeURIComponent(output.identifier);
         ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
+      }
+
+      // Add DMN reference if exists
+      if (dmnData && dmnData.fileName) {
+        ttl += `    cprmv:hasDecisionModel <${serviceUri}/dmn> ;\n`;
       }
 
       ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -644,6 +684,11 @@ function App() {
       }
     });
 
+    // DMN section
+    if (dmnData && dmnData.fileName) {
+      ttl += generateCompleteDMNSection(dmnData, serviceUri);
+    }
+
     return ttl;
   };
 
@@ -672,6 +717,12 @@ function App() {
       temporalRules,
       parameters,
     });
+
+    // DMN validation
+    const dmnValidation = validateDMNData(dmnData);
+    if (!dmnValidation.valid) {
+      errors.push(...dmnValidation.errors.map((err) => `DMN: ${err}`));
+    }
 
     if (!isValid) {
       alert('Validation errors:\n' + errors.join('\n'));
@@ -773,6 +824,7 @@ function App() {
                 'rules',
                 'parameters',
                 'cprmv',
+                'dmn',
                 'iknow-mapping',
                 'changelog',
               ].map((tab) => (
@@ -819,6 +871,12 @@ function App() {
                     <span className="flex items-center justify-center gap-2">
                       <Database size={18} />
                       CPRMV
+                    </span>
+                  )}
+                  {tab === 'dmn' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <FileUp size={18} />
+                      DMN
                     </span>
                   )}
                   {tab === 'iknow-mapping' && (
@@ -880,6 +938,7 @@ function App() {
                   setCprmvRules={setCprmvRules}
                 />
               )}
+              {activeTab === 'dmn' && <DMNTab dmnData={dmnData} setDmnData={setDmnData} />}
               {activeTab === 'iknow-mapping' && (
                 <IKnowMappingTab
                   mappingConfig={iknowMappingConfig}
@@ -929,7 +988,7 @@ function App() {
 
             <p className="text-gray-600 mb-6">
               This will permanently delete all data in all tabs (Service, Organization, Legal,
-              Rules, Parameters, CPRMV, Cost, and Output). This action cannot be undone.
+              Rules, Parameters, CPRMV, DMN, Cost, and Output). This action cannot be undone.
             </p>
 
             <div className="flex gap-3 justify-end">

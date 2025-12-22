@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" 
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" 
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" 
+             xmlns:modeler="http://camunda.org/schema/modeler/1.0" 
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn" 
+             xmlns:cprmv="https://cprmv.open-regels.nl/0.3.0/" 
+             id="ronl_svb_berekenleeftijden" 
+             name="RONL Bereken Leeftijden (CPRMV Enhanced)" 
+             namespace="http://camunda.org/schema/1.0/dmn" 
+             exporter="Camunda Modeler" 
+             exporterVersion="5.38.1" 
+             modeler:executionPlatform="Camunda Platform" 
+             modeler:executionPlatformVersion="7.23.0">
+  
+  <!-- Main decision: RONL_BerekenLeeftijden -->
+  <decision id="RONL_BerekenLeeftijden" 
+            name="RONL Bereken Leeftijden" 
+            camunda:historyTimeToLive="0"
+            cprmv:implements="BWBR0002221"
+            cprmv:title="Leeftijdsberekening op basis van geboortedatum"
+            cprmv:description="Berekent de leeftijd van aanvrager en eventuele partner, inclusief AOW ingangsdatum">
+    
+    <informationRequirement id="InformationRequirement_aow">
+      <requiredDecision href="#RONL_AOWleeftijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_geboorteAanvrager">
+      <requiredInput href="#InputData_geboortedatumAanvrager" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_geboortePartner">
+      <requiredInput href="#InputData_geboortedatumPartner" />
+    </informationRequirement>
+    
+    <decisionTable id="DecisionTable_berekenLeeftijden"
+                   cprmv:rulesetType="conditional-calculation"
+                   cprmv:ruleMethod="decision-table">
+      
+      <input id="InputClause_geboortedatumAanvrager_bereken" label="geboortedatum aanvrager">
+        <inputExpression id="LiteralExpression_geboortedatumAanvrager_bereken" typeRef="string">
+          <text>geboortedatumAanvrager</text>
+        </inputExpression>
+      </input>
+      
+      <input id="InputClause_geboortedatumPartner_bereken" label="geboortedatum partner">
+        <inputExpression id="LiteralExpression_geboortedatumPartner_bereken" typeRef="string">
+          <text>geboortedatumPartner</text>
+        </inputExpression>
+      </input>
+      
+      <input id="InputClause_dagVanAanvraag_bereken" label="dag van aanvraag">
+        <inputExpression id="LiteralExpression_dagVanAanvraag_bereken" typeRef="string">
+          <text>dagVanAanvraag</text>
+        </inputExpression>
+      </input>
+      
+      <input id="InputClause_leeftijdAOWMaanden_bereken" label="leeftijd AOW in maanden">
+        <inputExpression id="LiteralExpression_leeftijdAOWMaanden_bereken" typeRef="integer">
+          <text>leeftijdAOWMaanden</text>
+        </inputExpression>
+      </input>
+      
+      <output id="OutputClause_leeftijdAanvrager_bereken" 
+              label="leeftijd aanvrager" 
+              name="leeftijdAanvrager" 
+              typeRef="integer" />
+      
+      <output id="OutputClause_AOWDatumAanvrager_bereken" 
+              label="AOW ingangsdatum aanvrager" 
+              name="AOWDatumAanvrager" 
+              typeRef="string" />
+      
+      <output id="OutputClause_leeftijdPartner_bereken" 
+              label="leeftijd partner" 
+              name="leeftijdPartner" 
+              typeRef="integer" />
+      
+      <output id="OutputClause_AOWDatumPartner_bereken" 
+              label="AOW ingangsdatum partner" 
+              name="AOWDatumPartner" 
+              typeRef="string" />
+      
+      <!-- Rule for when partner is present -->
+      <rule id="DecisionRule_withPartner_bereken"
+            cprmv:extends="BWBR0002221/Artikel_7a"
+            cprmv:ruleType="conditional-calculation"
+            cprmv:confidence="high"
+            cprmv:note="Berekent leeftijden voor zowel aanvrager als partner wanneer beide geboortedatums aanwezig zijn">
+        <inputEntry id="UnaryTests_any7">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_notNull3">
+          <text>not(null)</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_any8">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_any9">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_leeftijdAanvrager_bereken">
+          <text>years and months duration(date(geboortedatumAanvrager), date(dagVanAanvraag)).years</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_AOWDatumAanvrager_bereken">
+          <text>date(geboortedatumAanvrager) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_leeftijdPartner_bereken">
+          <text>years and months duration(date(geboortedatumPartner), date(dagVanAanvraag)).years</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_AOWDatumPartner_bereken">
+          <text>date(geboortedatumPartner) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule for when partner is absent (single applicant) -->
+      <rule id="DecisionRule_withoutPartner_bereken"
+            cprmv:extends="BWBR0002221/Artikel_7a"
+            cprmv:ruleType="conditional-calculation"
+            cprmv:confidence="high"
+            cprmv:note="Berekent alleen de leeftijd van de aanvrager wanneer er geen partner is">
+        <inputEntry id="UnaryTests_any10">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_null3">
+          <text>null</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_any11">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_any12">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_leeftijdAanvrager_single_bereken">
+          <text>years and months duration(date(geboortedatumAanvrager), date(dagVanAanvraag)).years</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_AOWDatumAanvrager_single_bereken">
+          <text>date(geboortedatumAanvrager) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_leeftijdPartner_single_bereken">
+          <text>null</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_AOWDatumPartner_single_bereken">
+          <text>null</text>
+        </outputEntry>
+      </rule>
+      
+    </decisionTable>
+  </decision>
+  
+  <!-- Supporting decision: RONL_AOWleeftijd -->
+  <decision id="RONL_AOWleeftijd" 
+            name="RONL AOW leeftijd" 
+            camunda:historyTimeToLive="0"
+            cprmv:implements="BWBR0002221"
+            cprmv:implementsVersion="2025-01-01_0"
+            cprmv:title="Algemene Ouderdomswet (AOW) - Leeftijdsberekening"
+            cprmv:description="Bepaling van de AOW-leeftijd per jaar op basis van de Algemene Ouderdomswet, Artikel 7a">
+    
+    <informationRequirement id="InformationRequirement_dag2">
+      <requiredInput href="#InputData_dagVanAanvraag" />
+    </informationRequirement>
+    
+    <decisionTable id="DecisionTable_aow" 
+                   cprmv:rulesetType="temporal-mapping"
+                   cprmv:ruleMethod="decision-table">
+      
+      <input id="InputClause_jaar_aow" label="jaar van berekening">
+        <inputExpression id="LiteralExpression_jaar_aow" typeRef="integer">
+          <text>date(dagVanAanvraag).year</text>
+        </inputExpression>
+      </input>
+      
+      <output id="OutputClause_leeftijdAOWMaanden_aow" 
+              label="leeftijd AOW in maanden" 
+              name="leeftijdAOWMaanden" 
+              typeRef="integer" />
+      
+      <rule id="DecisionRule_2020" 
+            cprmv:extends="BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2020-01-01"
+            cprmv:validUntil="2020-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2020">
+          <text>2020</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2020">
+          <text>66 * 12 + 4</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2021" 
+            cprmv:extends="BWBR0002221_2021-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2021-01-01"
+            cprmv:validUntil="2021-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2021">
+          <text>2021</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2021">
+          <text>66 * 12 + 7</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2022" 
+            cprmv:extends="BWBR0002221_2022-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2022-01-01"
+            cprmv:validUntil="2022-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2022">
+          <text>2022</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2022">
+          <text>66 * 12 + 7</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2023" 
+            cprmv:extends="BWBR0002221_2023-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2023-01-01"
+            cprmv:validUntil="2023-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2023">
+          <text>2023</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2023">
+          <text>66 * 12 + 10</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2024" 
+            cprmv:extends="BWBR0002221_2024-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2024-01-01"
+            cprmv:validUntil="2024-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2024">
+          <text>2024</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2024">
+          <text>67 * 12</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2025" 
+            cprmv:extends="BWBR0002221_2025-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2025-01-01"
+            cprmv:validUntil="2025-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="high">
+        <inputEntry id="UnaryTests_2025">
+          <text>2025</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2025">
+          <text>67 * 12</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2026" 
+            cprmv:extends="BWBR0002221_2026-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2026-01-01"
+            cprmv:validUntil="2026-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="medium"
+            cprmv:note="Geprojecteerde waarde op basis van huidige wetgeving">
+        <inputEntry id="UnaryTests_2026">
+          <text>2026</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2026">
+          <text>67 * 12</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2027" 
+            cprmv:extends="BWBR0002221_2027-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2027-01-01"
+            cprmv:validUntil="2027-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="medium"
+            cprmv:note="Geprojecteerde waarde op basis van huidige wetgeving">
+        <inputEntry id="UnaryTests_2027">
+          <text>2027</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2027">
+          <text>67 * 12 + 3</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2028" 
+            cprmv:extends="BWBR0002221_2028-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2028-01-01"
+            cprmv:validUntil="2028-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="medium"
+            cprmv:note="Geprojecteerde waarde op basis van huidige wetgeving">
+        <inputEntry id="UnaryTests_2028">
+          <text>2028</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2028">
+          <text>67 * 12 + 3</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2029" 
+            cprmv:extends="BWBR0002221_2029-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2029-01-01"
+            cprmv:validUntil="2029-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="medium"
+            cprmv:note="Geprojecteerde waarde op basis van huidige wetgeving">
+        <inputEntry id="UnaryTests_2029">
+          <text>2029</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2029">
+          <text>67 * 12 + 3</text>
+        </outputEntry>
+      </rule>
+      
+      <rule id="DecisionRule_2030" 
+            cprmv:extends="BWBR0002221_2030-01-01_0/Artikel_7a/Lid_1"
+            cprmv:validFrom="2030-01-01"
+            cprmv:validUntil="2030-12-31"
+            cprmv:ruleType="temporal-period"
+            cprmv:confidence="medium"
+            cprmv:note="Geprojecteerde waarde op basis van huidige wetgeving">
+        <inputEntry id="UnaryTests_2030">
+          <text>2030</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_2030">
+          <text>67 * 12 + 3</text>
+        </outputEntry>
+      </rule>
+      
+    </decisionTable>
+  </decision>
+  
+  <!-- Input Data -->
+  <inputData id="InputData_dagVanAanvraag" 
+             name="dagVanAanvraag"
+             cprmv:description="De datum waarop de aanvraag wordt gedaan of de berekening plaatsvindt" />
+  
+  <inputData id="InputData_geboortedatumAanvrager" 
+             name="geboortedatumAanvrager"
+             cprmv:description="Geboortedatum van de aanvrager" />
+  
+  <inputData id="InputData_geboortedatumPartner" 
+             name="geboortedatumPartner"
+             cprmv:description="Geboortedatum van de partner (optioneel, null als alleenstaand)" />
+  
+  <!-- Diagram -->
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_berekenleeftijden">
+      <dmndi:DMNShape id="DMNShape_BerekenLeeftijden" dmnElementRef="RONL_BerekenLeeftijden">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_AOW" dmnElementRef="RONL_AOWleeftijd">
+        <dc:Bounds height="80" width="180" x="160" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_DagInput" dmnElementRef="InputData_dagVanAanvraag">
+        <dc:Bounds height="45" width="125" x="50" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_GebAanvrager" dmnElementRef="InputData_geboortedatumAanvrager">
+        <dc:Bounds height="45" width="125" x="200" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_GebPartner" dmnElementRef="InputData_geboortedatumPartner">
+        <dc:Bounds height="45" width="125" x="350" y="350" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+  
+</definitions>
