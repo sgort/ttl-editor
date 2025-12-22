@@ -2,8 +2,6 @@ import {
   AlertCircle,
   CheckCircle,
   Code,
-  // eslint-disable-next-line no-unused-vars
-  Download,
   FileText,
   Play,
   Settings,
@@ -14,18 +12,7 @@ import React, { useState } from 'react';
 
 const DMNTab = ({ dmnData, setDmnData }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [testBody, setTestBody] = useState(
-    JSON.stringify(
-      {
-        variables: {
-          geboortedatumAanvrager: { value: '1980-01-23', type: 'String' },
-          dagVanAanvraag: { value: '2025-09-29', type: 'String' },
-        },
-      },
-      null,
-      2
-    )
-  );
+  const [testBody, setTestBody] = useState('');
   const [testResponse, setTestResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -34,10 +21,140 @@ const DMNTab = ({ dmnData, setDmnData }) => {
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
     baseUrl: 'https://operaton.open-regels.nl',
-    decisionKey: 'RONL_BerekenLeeftijden',
+    decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',
   });
+
+  // Generate request body from DMN input variables
+  const generateRequestBodyFromDMN = (dmnContent) => {
+    try {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
+
+      // Find all inputData elements
+      const inputDataElements = xmlDoc.querySelectorAll('inputData');
+
+      if (inputDataElements.length === 0) {
+        return '';
+      }
+
+      const variables = {};
+
+      inputDataElements.forEach((inputData) => {
+        const name = inputData.getAttribute('name');
+
+        if (name) {
+          // Determine appropriate default value and type based on name patterns
+          let value = '';
+          let type = 'String';
+
+          // Date patterns
+          if (name.toLowerCase().includes('datum') || name.toLowerCase().includes('date')) {
+            value = '2025-01-01';
+            type = 'String';
+          }
+          // Boolean patterns
+          else if (name.toLowerCase().includes('is') || name.toLowerCase().includes('heeft')) {
+            value = false;
+            type = 'Boolean';
+          }
+          // Number patterns
+          else if (name.toLowerCase().includes('aantal') || name.toLowerCase().includes('bedrag')) {
+            value = 0;
+            type = 'Integer';
+          }
+          // Default to string
+          else {
+            value = '';
+            type = 'String';
+          }
+
+          variables[name] = {
+            value: value,
+            type: type,
+          };
+        }
+      });
+
+      const requestBody = {
+        variables: variables,
+      };
+
+      return JSON.stringify(requestBody, null, 2);
+    } catch (err) {
+      console.error('Error generating request body from DMN:', err);
+      return '';
+    }
+  };
+
+  const loadExampleDMN = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      // Fetch the example DMN file from the public folder or examples directory
+      const response = await fetch('/examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn');
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to load example DMN file (${response.status} ${response.statusText}). Make sure the file exists in public/examples/organizations/svb/`
+        );
+      }
+
+      const content = await response.text();
+      const fileName = 'RONL_BerekenLeeftijden_CPRMV.dmn';
+
+      // Extract decision key from DMN first
+      let extractedDecisionKey = '';
+      try {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(content, 'text/xml');
+        const decisionElement = xmlDoc.querySelector('decision');
+        if (decisionElement) {
+          const decisionId = decisionElement.getAttribute('id');
+          if (decisionId) {
+            extractedDecisionKey = decisionId;
+          }
+        }
+      } catch (err) {
+        console.error('Error parsing DMN:', err);
+      }
+
+      setUploadedFile({
+        name: fileName,
+        content: content,
+        size: content.length,
+        uploadDate: new Date().toISOString(),
+      });
+
+      // Update apiConfig with extracted decision key
+      if (extractedDecisionKey) {
+        setApiConfig((prev) => ({
+          ...prev,
+          decisionKey: extractedDecisionKey,
+        }));
+      }
+
+      // Update parent state with extracted decision key
+      setDmnData({
+        ...dmnData,
+        fileName: fileName,
+        content: content,
+        decisionKey: extractedDecisionKey || apiConfig.decisionKey,
+      });
+
+      // Auto-generate request body from the DMN (same as manual upload)
+      const generatedBody = generateRequestBodyFromDMN(content);
+      if (generatedBody) {
+        setTestBody(generatedBody);
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to load example DMN file');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -53,14 +170,9 @@ const DMNTab = ({ dmnData, setDmnData }) => {
 
     reader.onload = (e) => {
       const content = e.target.result;
-      setUploadedFile({
-        name: file.name,
-        content: content,
-        size: file.size,
-        uploadDate: new Date().toISOString(),
-      });
 
-      // Extract decision key from DMN if possible
+      // Extract decision key from DMN first
+      let extractedDecisionKey = '';
       try {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(content, 'text/xml');
@@ -68,14 +180,26 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         if (decisionElement) {
           const decisionId = decisionElement.getAttribute('id');
           if (decisionId) {
-            setApiConfig((prev) => ({
-              ...prev,
-              decisionKey: decisionId,
-            }));
+            extractedDecisionKey = decisionId;
           }
         }
       } catch (err) {
         console.error('Error parsing DMN:', err);
+      }
+
+      setUploadedFile({
+        name: file.name,
+        content: content,
+        size: file.size,
+        uploadDate: new Date().toISOString(),
+      });
+
+      // Update apiConfig with extracted decision key
+      if (extractedDecisionKey) {
+        setApiConfig((prev) => ({
+          ...prev,
+          decisionKey: extractedDecisionKey,
+        }));
       }
 
       // Update parent state
@@ -83,8 +207,14 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         ...dmnData,
         fileName: file.name,
         content: content,
-        decisionKey: apiConfig.decisionKey,
+        decisionKey: extractedDecisionKey || apiConfig.decisionKey,
       });
+
+      // Generate request body from DMN input variables
+      const generatedBody = generateRequestBodyFromDMN(content);
+      if (generatedBody) {
+        setTestBody(generatedBody);
+      }
     };
 
     reader.onerror = () => {
@@ -208,7 +338,22 @@ const DMNTab = ({ dmnData, setDmnData }) => {
     setTestResponse(null);
     setDeploymentStatus(null);
     setError(null);
-    setDmnData({});
+    setTestBody('');
+    setApiConfig((prev) => ({
+      ...prev,
+      decisionKey: '',
+    }));
+    setDmnData({
+      fileName: '',
+      content: '',
+      decisionKey: '',
+      deployed: false,
+      deploymentId: null,
+      deployedAt: null,
+      apiEndpoint: '',
+      lastTestResult: null,
+      lastTestTimestamp: null,
+    });
   };
 
   const formatJSON = (obj) => {
@@ -256,8 +401,9 @@ const DMNTab = ({ dmnData, setDmnData }) => {
               type="text"
               value={apiConfig.decisionKey}
               onChange={(e) => setApiConfig({ ...apiConfig, decisionKey: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="RONL_BerekenLeeftijden"
+              disabled={!uploadedFile}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              placeholder="Decision Key"
             />
           </div>
         </div>
@@ -278,15 +424,25 @@ const DMNTab = ({ dmnData, setDmnData }) => {
             <Upload size={20} className="text-gray-600 mr-2" />
             <h4 className="text-md font-semibold text-gray-800">DMN File</h4>
           </div>
-          {uploadedFile && (
+          <div className="flex items-center gap-2">
             <button
-              onClick={handleClearFile}
-              className="text-red-600 hover:text-red-700 flex items-center gap-1 text-sm"
+              onClick={loadExampleDMN}
+              disabled={isLoading}
+              className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1 disabled:opacity-50"
             >
-              <Trash2 size={16} />
-              Clear
+              <FileText size={16} />
+              Load Example
             </button>
-          )}
+            {uploadedFile && (
+              <button
+                onClick={handleClearFile}
+                className="text-red-600 hover:text-red-700 flex items-center gap-1 text-sm"
+              >
+                <Trash2 size={16} />
+                Clear
+              </button>
+            )}
+          </div>
         </div>
 
         {!uploadedFile ? (
@@ -391,12 +547,17 @@ const DMNTab = ({ dmnData, setDmnData }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Request Body (JSON)
             </label>
+            {uploadedFile && testBody && (
+              <p className="text-xs text-gray-500 mb-2">
+                💡 Request body auto-generated from DMN input variables. Adjust values as needed.
+              </p>
+            )}
             <textarea
               value={testBody}
               onChange={(e) => setTestBody(e.target.value)}
               rows={12}
               className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter JSON request body"
+              placeholder="Enter JSON request body or upload a DMN file to auto-generate"
             />
           </div>
 
