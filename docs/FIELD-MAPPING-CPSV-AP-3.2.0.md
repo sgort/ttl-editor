@@ -586,16 +586,6 @@ The DMN tab intelligently detects input types based on naming patterns:
 - URI sanitization for service identifiers (spaces → hyphens)
 - Organization URI handling (supports both short IDs and full URIs)
 
-**Files Added/Modified:**
-
-- `src/components/tabs/DMNTab.jsx` (new, 650 lines)
-- `src/utils/dmnHelpers.js` (new, 370 lines)
-- `src/utils/ttlHelpers.js` (updated - buildResourceUri)
-- `src/components/tabs/index.js` (updated)
-- `src/utils/index.js` (updated)
-- `src/App.js` (updated with DMN state)
-- `public/examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn` (example)
-
 **Vocabulary Extensions:**
 
 - CPRMV: `DecisionModel`, `DecisionRule`, `hasDecisionModel`, `deploymentId`, `lastTested`, `testStatus`, `extends`, `ruleType`, `confidence`, `note`, `decisionTable`, `rulesetType`
