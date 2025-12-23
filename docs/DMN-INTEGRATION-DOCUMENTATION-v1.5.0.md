@@ -28,6 +28,7 @@
 ### Purpose
 
 The DMN (Decision Model and Notation) integration enables the CPSV Editor to:
+
 - Upload and deploy DMN decision models to the Operaton rule engine
 - Test decision evaluations with live data
 - Document decision logic as part of public service metadata
@@ -36,24 +37,28 @@ The DMN (Decision Model and Notation) integration enables the CPSV Editor to:
 ### Key Capabilities
 
 ✅ **DMN File Management**
+
 - Upload `.dmn` files (DMN 1.3 XML format)
 - Load example DMN files
 - Automatic decision key extraction
 - File validation and error handling
 
 ✅ **Operaton Integration**
+
 - Deploy DMN models to Operaton engine
 - Track deployment status and IDs
 - Configurable API endpoints
 - Live decision evaluation testing
 
 ✅ **Smart Request Generation**
+
 - Auto-generate test request bodies from DMN input variables
 - Intelligent type detection (String, Integer, Boolean, Date)
 - Example values for manual uploads
 - Pre-configured data for example files
 
 ✅ **Metadata Documentation**
+
 - Complete TTL export with DMN metadata
 - Input variable documentation
 - API endpoint references
@@ -61,6 +66,7 @@ The DMN (Decision Model and Notation) integration enables the CPSV Editor to:
 - Extracted decision rules with legal references
 
 ✅ **URI Sanitization** ⭐
+
 - Automatic service identifier sanitization (spaces to hyphens)
 - Support for both short IDs and full URIs in organization field
 - Clean, absolute URIs throughout
@@ -349,51 +355,51 @@ The DMN (Decision Model and Notation) integration enables the CPSV Editor to:
 
 ### CPRMV Vocabulary (Core)
 
-| Property | Domain | Range | Description |
-|----------|--------|-------|-------------|
-| `cprmv:DecisionModel` | Class | - | A decision model resource (DMN) |
-| `cprmv:DecisionRule` | Class | - | A specific rule within a decision model |
-| `cprmv:hasDecisionModel` | cpsv:PublicService | cprmv:DecisionModel | Links service to its decision model |
-| `cprmv:deploymentId` | cprmv:DecisionModel | xsd:string | Operaton deployment identifier |
-| `cprmv:lastTested` | cprmv:DecisionModel | xsd:dateTime | Timestamp of last successful test |
-| `cprmv:testStatus` | cprmv:DecisionModel | xsd:string | Status of last test (passed/failed) |
-| `cprmv:extends` | cprmv:DecisionRule | rdfs:Resource | Legal article extended by this rule |
-| `cprmv:ruleType` | cprmv:DecisionRule | xsd:string | Type of rule (temporal-period, conditional-calculation) |
-| `cprmv:confidence` | cprmv:DecisionRule | xsd:string | Confidence level (high, medium, low) |
-| `cprmv:note` | cprmv:DecisionRule | rdf:langString | Human-readable note about the rule |
-| `cprmv:decisionTable` | cprmv:DecisionRule | xsd:string | Decision table identifier |
-| `cprmv:rulesetType` | cprmv:DecisionRule | xsd:string | Type of ruleset |
+| Property                 | Domain              | Range               | Description                                             |
+| ------------------------ | ------------------- | ------------------- | ------------------------------------------------------- |
+| `cprmv:DecisionModel`    | Class               | -                   | A decision model resource (DMN)                         |
+| `cprmv:DecisionRule`     | Class               | -                   | A specific rule within a decision model                 |
+| `cprmv:hasDecisionModel` | cpsv:PublicService  | cprmv:DecisionModel | Links service to its decision model                     |
+| `cprmv:deploymentId`     | cprmv:DecisionModel | xsd:string          | Operaton deployment identifier                          |
+| `cprmv:lastTested`       | cprmv:DecisionModel | xsd:dateTime        | Timestamp of last successful test                       |
+| `cprmv:testStatus`       | cprmv:DecisionModel | xsd:string          | Status of last test (passed/failed)                     |
+| `cprmv:extends`          | cprmv:DecisionRule  | rdfs:Resource       | Legal article extended by this rule                     |
+| `cprmv:ruleType`         | cprmv:DecisionRule  | xsd:string          | Type of rule (temporal-period, conditional-calculation) |
+| `cprmv:confidence`       | cprmv:DecisionRule  | xsd:string          | Confidence level (high, medium, low)                    |
+| `cprmv:note`             | cprmv:DecisionRule  | rdf:langString      | Human-readable note about the rule                      |
+| `cprmv:decisionTable`    | cprmv:DecisionRule  | xsd:string          | Decision table identifier                               |
+| `cprmv:rulesetType`      | cprmv:DecisionRule  | xsd:string          | Type of ruleset                                         |
 
 ### Dublin Core Terms
 
-| Property | Domain | Range | Description |
-|----------|--------|-------|-------------|
-| `dct:identifier` | cprmv:DecisionModel | xsd:string | Decision key |
-| `dct:title` | cprmv:DecisionModel | rdf:langString | DMN file name |
-| `dct:format` | cprmv:DecisionModel | xsd:string | Media type (application/dmn+xml) |
-| `dct:source` | cprmv:DecisionModel | rdfs:Resource | URI where DMN file is stored |
-| `dct:created` | cprmv:DecisionModel | xsd:dateTime | Deployment timestamp |
-| `dct:description` | cprmv:DecisionModel | rdf:langString | Human-readable description |
+| Property          | Domain              | Range          | Description                      |
+| ----------------- | ------------------- | -------------- | -------------------------------- |
+| `dct:identifier`  | cprmv:DecisionModel | xsd:string     | Decision key                     |
+| `dct:title`       | cprmv:DecisionModel | rdf:langString | DMN file name                    |
+| `dct:format`      | cprmv:DecisionModel | xsd:string     | Media type (application/dmn+xml) |
+| `dct:source`      | cprmv:DecisionModel | rdfs:Resource  | URI where DMN file is stored     |
+| `dct:created`     | cprmv:DecisionModel | xsd:dateTime   | Deployment timestamp             |
+| `dct:description` | cprmv:DecisionModel | rdf:langString | Human-readable description       |
 
 ### RONL Vocabulary
 
-| Property | Domain | Range | Description |
-|----------|--------|-------|-------------|
+| Property             | Domain              | Range         | Description                         |
+| -------------------- | ------------------- | ------------- | ----------------------------------- |
 | `ronl:implementedBy` | cprmv:DecisionModel | rdfs:Resource | Software system (Operaton endpoint) |
 
 ### CPSV-AP
 
-| Property | Domain | Range | Description |
-|----------|--------|-------|-------------|
-| `cpsv:implements` | cprmv:DecisionModel | cpsv:PublicService | Service implemented by DMN |
-| `cpsv:Input` | Class | - | Input variable required by decision |
-| `cpsv:isRequiredBy` | cpsv:Input | cprmv:DecisionModel | Links input to decision model |
-| `cpsv:Rule` | Class | - | Base class for rules |
+| Property            | Domain              | Range               | Description                         |
+| ------------------- | ------------------- | ------------------- | ----------------------------------- |
+| `cpsv:implements`   | cprmv:DecisionModel | cpsv:PublicService  | Service implemented by DMN          |
+| `cpsv:Input`        | Class               | -                   | Input variable required by decision |
+| `cpsv:isRequiredBy` | cpsv:Input          | cprmv:DecisionModel | Links input to decision model       |
+| `cpsv:Rule`         | Class               | -                   | Base class for rules                |
 
 ### Schema.org
 
-| Property | Domain | Range | Description |
-|----------|--------|-------|-------------|
+| Property       | Domain     | Range   | Description             |
+| -------------- | ---------- | ------- | ----------------------- |
 | `schema:value` | cpsv:Input | various | Example value for input |
 
 ---
@@ -426,22 +432,22 @@ public/
 
 ```javascript
 // Generate request body from DMN input variables
-generateRequestBodyFromDMN(dmnContent)
+generateRequestBodyFromDMN(dmnContent);
 
 // Load example DMN file
-loadExampleDMN()
+loadExampleDMN();
 
 // Upload and parse DMN file
-handleFileUpload(event)
+handleFileUpload(event);
 
 // Deploy DMN to Operaton
-handleDeployDMN()
+handleDeployDMN();
 
 // Evaluate decision with test data
-handleEvaluateDMN()
+handleEvaluateDMN();
 
 // Clear all DMN data
-handleClearFile()
+handleClearFile();
 ```
 
 #### dmnHelpers.js
@@ -482,6 +488,7 @@ extractInputsFromTestResult(dmnData): Array
 ```
 
 No additional dependencies required - uses native browser APIs:
+
 - `DOMParser` for XML parsing
 - `fetch` for HTTP requests
 - `FileReader` for file upload
@@ -558,21 +565,27 @@ Supported types: `String`, `Integer`, `Double`, `Boolean`, `Date`
 #### Troubleshooting
 
 **Problem**: Service shows as "unknown-service" in URIs
+
 - **Solution**: Fill in Service Identifier field in Service tab FIRST
 
 **Problem**: Organization URI is incomplete (`<.../organizations/>`)
+
 - **Solution**: Ensure you're using the CORRECTED App.js (v1.5.0) with proper `buildResourceUri` parameter order
 
 **Problem**: Decision Key not filling
+
 - **Solution**: Check DMN has `<decision id="...">` attribute
 
 **Problem**: Deployment fails
+
 - **Solution**: Verify Operaton URL is accessible and DMN is valid XML
 
 **Problem**: Evaluation fails with 404
+
 - **Solution**: Ensure DMN is deployed successfully first
 
 **Problem**: Request body empty
+
 - **Solution**: DMN must have `<inputData>` elements for auto-generation
 
 ---
@@ -589,7 +602,7 @@ Content-Type: multipart/form-data
 
 Form Data:
 - deployment-name: string
-- deployment-source: string  
+- deployment-source: string
 - data: file (DMN XML)
 
 Response: {
@@ -650,11 +663,13 @@ try {
 ### DMN File Design
 
 1. **Use Descriptive IDs**
+
    ```xml
    <decision id="RONL_BerekenLeeftijden" name="Calculate Ages">
    ```
 
 2. **Add CPRMV Attributes to Rules**
+
    ```xml
    <rule id="DecisionRule_2020"
          cprmv:extends="BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1"
@@ -665,8 +680,9 @@ try {
    ```
 
 3. **Document Input Data**
+
    ```xml
-   <inputData id="InputData_dagVanAanvraag" 
+   <inputData id="InputData_dagVanAanvraag"
               name="dagVanAanvraag"
               cprmv:description="De datum waarop de aanvraag wordt gedaan" />
    ```
@@ -692,7 +708,7 @@ The editor automatically sanitizes service identifiers to create valid URIs:
 // Input: "aow leeftijd" (with space)
 // Output: "aow-leeftijd" (hyphenated)
 
-sanitizeServiceIdentifier("aow leeftijd")
+sanitizeServiceIdentifier('aow leeftijd');
 // Returns: "aow-leeftijd"
 
 // Sanitization rules:
@@ -704,6 +720,7 @@ sanitizeServiceIdentifier("aow leeftijd")
 ```
 
 **Result:**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
     dct:identifier "aow-leeftijd" ;
@@ -715,12 +732,14 @@ sanitizeServiceIdentifier("aow leeftijd")
 The editor supports BOTH short IDs and full URIs:
 
 **Option 1: Short ID**
+
 ```
 Input: "28212263"
 Output: <https://regels.overheid.nl/organizations/28212263>
 ```
 
 **Option 2: Full URI** ✓ Full URI detected - will be used directly
+
 ```
 Input: "https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank"
 Output: <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank>
@@ -733,6 +752,7 @@ The `buildResourceUri()` function intelligently detects full URIs and uses them 
 ## Success Criteria
 
 ✅ **All URIs are absolute**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd>
 <https://regels.overheid.nl/services/aow-leeftijd/dmn>
@@ -740,6 +760,7 @@ The `buildResourceUri()` function intelligently detects full URIs and uses them 
 ```
 
 ✅ **No URL encoding issues**
+
 ```turtle
 # ✅ Correct
 <https://regels.overheid.nl/services/aow-leeftijd>
@@ -749,11 +770,13 @@ The `buildResourceUri()` function intelligently detects full URIs and uses them 
 ```
 
 ✅ **Legal resource references are complete**
+
 ```turtle
 cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1> ;
 ```
 
 ✅ **No duplicate namespace declarations**
+
 ```turtle
 # ✅ Only once
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
@@ -762,6 +785,7 @@ cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2020-01-01_0/Artikel_7a/Li
 ✅ **All 13 rules extracted** (for example DMN: 2020-2030 + 2 conditional rules)
 
 ✅ **CPRMV-compliant metadata**
+
 - Decision model with deployment tracking
 - Input variables with types and examples
 - Rules with legal references and validity periods

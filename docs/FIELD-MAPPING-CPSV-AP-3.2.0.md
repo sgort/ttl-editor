@@ -10,6 +10,7 @@
 ## Version History
 
 **Version 2.1 - December 2025** (Editor v1.5.0)
+
 - ✅ Added DMN Tab with decision engine integration
 - ✅ Added cprmv:DecisionModel support
 - ✅ Added automatic input variable extraction
@@ -19,6 +20,7 @@
 - ✅ Fixed organization URI handling (supports both short IDs and full URIs)
 
 **Version 2.0 - December 2025** (Editor v1.4.0)
+
 - ✅ Achieved minimal CPSV-AP 3.2.0 compliance (Phase 1)
 - ✅ Added Cost and Output sections
 - ✅ Fixed Organization and Legal Resource compliance
@@ -59,18 +61,19 @@
 
 ### Current Fields (v1.5.0)
 
-| UI Field Label                            | State Property         | TTL Output        | CPSV-AP 3.2.0 Property | Status | Notes                           |
-| ----------------------------------------- | ---------------------- | ----------------- | ---------------------- | ------ | ------------------------------- |
-| Unique identifier for this service \*     | `service.identifier`   | `dct:identifier`  | `dct:identifier`       | ⭐     | **MANDATORY** - Auto-sanitized  |
-| Official name of the service \*           | `service.name`         | `dct:title`       | `dct:title`            | ✅     | Correct                         |
-| Detailed description of the service       | `service.description`  | `dct:description` | `dct:description`      | ✅     | Correct                         |
-| URI for thematic classification           | `service.thematicArea` | `cv:thematicArea` | `cv:thematicArea`      | ✅     | Correct                         |
-| Government level providing this service \* | `service.sector`       | `cv:sector`       | `cv:sector`            | 🎯     | **MANDATORY** (Phase 1)         |
-| Comma-separated keywords                  | `service.keywords`     | `dcat:keyword`    | `dcat:keyword`         | ✅     | Correct                         |
-| Language of the service \*                | `service.language`     | `dct:language`    | `dct:language`         | 🎯     | **MANDATORY** (Phase 1)         |
+| UI Field Label                             | State Property         | TTL Output        | CPSV-AP 3.2.0 Property | Status | Notes                          |
+| ------------------------------------------ | ---------------------- | ----------------- | ---------------------- | ------ | ------------------------------ |
+| Unique identifier for this service \*      | `service.identifier`   | `dct:identifier`  | `dct:identifier`       | ⭐     | **MANDATORY** - Auto-sanitized |
+| Official name of the service \*            | `service.name`         | `dct:title`       | `dct:title`            | ✅     | Correct                        |
+| Detailed description of the service        | `service.description`  | `dct:description` | `dct:description`      | ✅     | Correct                        |
+| URI for thematic classification            | `service.thematicArea` | `cv:thematicArea` | `cv:thematicArea`      | ✅     | Correct                        |
+| Government level providing this service \* | `service.sector`       | `cv:sector`       | `cv:sector`            | 🎯     | **MANDATORY** (Phase 1)        |
+| Comma-separated keywords                   | `service.keywords`     | `dcat:keyword`    | `dcat:keyword`         | ✅     | Correct                        |
+| Language of the service \*                 | `service.language`     | `dct:language`    | `dct:language`         | 🎯     | **MANDATORY** (Phase 1)        |
 
 **Note on Identifier Sanitization (v1.5.0):** ⭐  
 Service identifiers are automatically sanitized to create valid URIs:
+
 - Spaces → hyphens (`"aow leeftijd"` → `"aow-leeftijd"`)
 - Lowercase conversion
 - Special character removal
@@ -78,13 +81,13 @@ Service identifiers are automatically sanitized to create valid URIs:
 
 ### Service Relationships (v1.5.0)
 
-| UI Field            | State Property            | TTL Output                  | CPSV-AP 3.2.0 Property     | Status | Notes                        |
-| ------------------- | ------------------------- | --------------------------- | -------------------------- | ------ | ---------------------------- |
-| Has Competent Authority | `organization.identifier` | `cv:hasCompetentAuthority` | `cv:hasCompetentAuthority` | 🎯     | Links to Organization        |
-| Has Legal Resource  | `legalResource.bwbId`     | `cv:hasLegalResource`      | `cv:hasLegalResource`      | 🎯     | Links to Legal Resource      |
-| Has Cost            | `cost.identifier`         | `cv:hasCost`               | `cv:hasCost`               | 🎯     | Links to Cost                |
-| Produces Output     | `output.identifier`       | `cpsv:produces`            | `cpsv:produces`            | 🎯     | Links to Output              |
-| Has Decision Model  | `dmnData.fileName`        | `cprmv:hasDecisionModel`   | `cprmv:hasDecisionModel` ℹ️ | ⭐     | Links to DMN (v1.5.0)        |
+| UI Field                | State Property            | TTL Output                 | CPSV-AP 3.2.0 Property      | Status | Notes                   |
+| ----------------------- | ------------------------- | -------------------------- | --------------------------- | ------ | ----------------------- |
+| Has Competent Authority | `organization.identifier` | `cv:hasCompetentAuthority` | `cv:hasCompetentAuthority`  | 🎯     | Links to Organization   |
+| Has Legal Resource      | `legalResource.bwbId`     | `cv:hasLegalResource`      | `cv:hasLegalResource`       | 🎯     | Links to Legal Resource |
+| Has Cost                | `cost.identifier`         | `cv:hasCost`               | `cv:hasCost`                | 🎯     | Links to Cost           |
+| Produces Output         | `output.identifier`       | `cpsv:produces`            | `cpsv:produces`             | 🎯     | Links to Output         |
+| Has Decision Model      | `dmnData.fileName`        | `cprmv:hasDecisionModel`   | `cprmv:hasDecisionModel` ℹ️ | ⭐     | Links to DMN (v1.5.0)   |
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
 
@@ -107,18 +110,19 @@ Service identifiers are automatically sanitized to create valid URIs:
 
 ### Current Fields (v1.5.0)
 
-| UI Field Label                        | State Property            | TTL Output       | CPSV-AP 3.2.0 Property | Status | Notes                               |
-| ------------------------------------- | ------------------------- | ---------------- | ---------------------- | ------ | ----------------------------------- |
-| Organization URI or identifier ⭐     | `organization.identifier` | `dct:identifier` | `dct:identifier`       | ⭐     | Supports full URIs or short IDs     |
-| Preferred name of the organization \* | `organization.name`       | `skos:prefLabel` | `skos:prefLabel`       | ✅     | Correct                             |
-| Homepage URL of the organization      | `organization.homepage`   | `foaf:homepage`  | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)            |
-| Geographic Jurisdiction \*            | `organization.spatial`    | `cv:spatial`     | `cv:spatial`           | 🎯     | **MANDATORY** - Phase 1 added       |
+| UI Field Label                        | State Property            | TTL Output       | CPSV-AP 3.2.0 Property | Status | Notes                           |
+| ------------------------------------- | ------------------------- | ---------------- | ---------------------- | ------ | ------------------------------- |
+| Organization URI or identifier ⭐     | `organization.identifier` | `dct:identifier` | `dct:identifier`       | ⭐     | Supports full URIs or short IDs |
+| Preferred name of the organization \* | `organization.name`       | `skos:prefLabel` | `skos:prefLabel`       | ✅     | Correct                         |
+| Homepage URL of the organization      | `organization.homepage`   | `foaf:homepage`  | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)        |
+| Geographic Jurisdiction \*            | `organization.spatial`    | `cv:spatial`     | `cv:spatial`           | 🎯     | **MANDATORY** - Phase 1 added   |
 
 **Note on Organization URI (v1.5.0):** ⭐  
 The organization identifier field intelligently handles both formats:
+
 - **Short ID:** `"28212263"` → `<https://regels.overheid.nl/organizations/28212263>`
 - **Full URI:** `"https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank"` → Used as-is  
-✓ Full URI detected - will be used directly
+  ✓ Full URI detected - will be used directly
 
 ### Class Type Change (Phase 1 ✅)
 
@@ -140,18 +144,18 @@ The organization identifier field intelligently handles both formats:
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label                    | State Property            | TTL Output         | CPSV-AP 3.2.0 Property | Status | Notes                              |
-| --------------------------------- | ------------------------- | ------------------ | ---------------------- | ------ | ---------------------------------- |
-| BWB ID (e.g., BWBR0002221) \*     | `legalResource.bwbId`     | `dct:identifier`   | `dct:identifier`       | 🎯     | Supports full URI or ID            |
-| Legal Resource Version            | `legalResource.version`   | `eli:is_realized_by` | `eli:is_realized_by`   | ✅     | Version expression                 |
-| Title of the legal resource       | `legalResource.title`     | `dct:title`        | `dct:title`            | ✅     | Correct                            |
-| Description of the legal resource | `legalResource.description` | `dct:description`  | `dct:description`      | ✅     | Correct                            |
+| UI Field Label                    | State Property              | TTL Output           | CPSV-AP 3.2.0 Property | Status | Notes                   |
+| --------------------------------- | --------------------------- | -------------------- | ---------------------- | ------ | ----------------------- |
+| BWB ID (e.g., BWBR0002221) \*     | `legalResource.bwbId`       | `dct:identifier`     | `dct:identifier`       | 🎯     | Supports full URI or ID |
+| Legal Resource Version            | `legalResource.version`     | `eli:is_realized_by` | `eli:is_realized_by`   | ✅     | Version expression      |
+| Title of the legal resource       | `legalResource.title`       | `dct:title`          | `dct:title`            | ✅     | Correct                 |
+| Description of the legal resource | `legalResource.description` | `dct:description`    | `dct:description`      | ✅     | Correct                 |
 
 ### Property Change (Phase 1 ✅)
 
-| Before (v1.3.0)  | After (v1.4.0)          | Status                     |
-| ---------------- | ----------------------- | -------------------------- |
-| `cpsv:follows`   | `cv:hasLegalResource`   | 🎯 CPSV-AP 3.2.0 compliant |
+| Before (v1.3.0) | After (v1.4.0)        | Status                     |
+| --------------- | --------------------- | -------------------------- |
+| `cpsv:follows`  | `cv:hasLegalResource` | 🎯 CPSV-AP 3.2.0 compliant |
 
 ### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
 
@@ -170,16 +174,16 @@ The organization identifier field intelligently handles both formats:
 
 ### Current Fields (v1.4.0)
 
-| UI Field Label           | State Property      | TTL Output           | CPSV-AP 3.2.0 Property | Status | Notes                     |
-| ------------------------ | ------------------- | -------------------- | ---------------------- | ------ | ------------------------- |
-| Rule Identifier \*       | `rule.identifier`   | `dct:identifier`     | `dct:identifier`       | 🎯     | **MANDATORY** (Phase 1)   |
-| Rule Title \*            | `rule.title`        | `dct:title`          | `dct:title`            | 🎯     | **MANDATORY** (Phase 1)   |
-| Rule URI                 | `rule.uri`          | (Subject URI)        | -                      | ✅     | Optional custom URI       |
-| Extends (Legal Article)  | `rule.extends`      | `ronl:extends`       | `ronl:extends` ℹ️      | ✅     | RONL extension            |
-| Valid From               | `rule.validFrom`    | `ronl:validFrom`     | `ronl:validFrom` ℹ️    | ✅     | Temporal validity         |
-| Valid Until              | `rule.validUntil`   | `ronl:validUntil`    | `ronl:validUntil` ℹ️   | ✅     | Temporal validity         |
-| Confidence Level         | `rule.confidenceLevel` | `ronl:confidenceLevel` | `ronl:confidenceLevel` ℹ️ | ✅     | high/medium/low           |
-| Rule Description         | `rule.description`  | `dct:description`    | `dct:description`      | ✅     | Correct                   |
+| UI Field Label          | State Property         | TTL Output             | CPSV-AP 3.2.0 Property    | Status | Notes                   |
+| ----------------------- | ---------------------- | ---------------------- | ------------------------- | ------ | ----------------------- |
+| Rule Identifier \*      | `rule.identifier`      | `dct:identifier`       | `dct:identifier`          | 🎯     | **MANDATORY** (Phase 1) |
+| Rule Title \*           | `rule.title`           | `dct:title`            | `dct:title`               | 🎯     | **MANDATORY** (Phase 1) |
+| Rule URI                | `rule.uri`             | (Subject URI)          | -                         | ✅     | Optional custom URI     |
+| Extends (Legal Article) | `rule.extends`         | `ronl:extends`         | `ronl:extends` ℹ️         | ✅     | RONL extension          |
+| Valid From              | `rule.validFrom`       | `ronl:validFrom`       | `ronl:validFrom` ℹ️       | ✅     | Temporal validity       |
+| Valid Until             | `rule.validUntil`      | `ronl:validUntil`      | `ronl:validUntil` ℹ️      | ✅     | Temporal validity       |
+| Confidence Level        | `rule.confidenceLevel` | `ronl:confidenceLevel` | `ronl:confidenceLevel` ℹ️ | ✅     | high/medium/low         |
+| Rule Description        | `rule.description`     | `dct:description`      | `dct:description`         | ✅     | Correct                 |
 
 ### Dual Typing (Phase 1 ✅)
 
@@ -190,6 +194,7 @@ Rules are typed as both CPSV-AP core and RONL extension:
 ```
 
 This allows:
+
 - **CPSV-AP compliance** - recognized as standard Rule
 - **RONL extensions** - temporal validity, confidence, extends properties
 
@@ -293,22 +298,23 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 ### 8.1 Decision Model Resource (cprmv:DecisionModel)
 
-| UI Field/Feature              | State Property         | TTL Output              | Vocabulary        | Status | Notes                        |
-| ----------------------------- | ---------------------- | ----------------------- | ----------------- | ------ | ---------------------------- |
-| DMN File Upload               | `dmnData.fileName`     | `dct:title`             | Dublin Core       | ⭐     | File name as title           |
-| -                             | `dmnData.content`      | -                       | -                 | ⭐     | Raw XML (not exported)       |
-| Decision Key (auto-extracted) | `dmnData.decisionKey`  | `dct:identifier`        | Dublin Core       | ⭐     | From DMN `<decision id>`     |
-| -                             | -                      | `dct:format`            | Dublin Core       | ⭐     | Fixed: "application/dmn+xml" |
-| -                             | -                      | `dct:source`            | Dublin Core       | ⭐     | Placeholder DMN file URI     |
-| Deployment Timestamp          | `dmnData.deployedAt`   | `dct:created`           | Dublin Core       | ⭐     | ISO 8601 datetime            |
-| Deployment ID                 | `dmnData.deploymentId` | `cprmv:deploymentId`    | CPRMV ℹ️          | ⭐     | Operaton deployment ID       |
-| -                             | -                      | `cpsv:implements`       | CPSV-AP           | ⭐     | Link back to service         |
-| API Endpoint                  | `dmnData.apiEndpoint`  | `ronl:implementedBy`    | RONL ℹ️           | ⭐     | Operaton evaluation URL      |
-| Last Test Timestamp           | `dmnData.lastTestTimestamp` | `cprmv:lastTested` | CPRMV ℹ️          | ⭐     | ISO 8601 datetime            |
-| Test Status                   | -                      | `cprmv:testStatus`      | CPRMV ℹ️          | ⭐     | "passed" or "failed"         |
-| -                             | -                      | `dct:description`       | Dublin Core       | ⭐     | Fixed description text       |
+| UI Field/Feature              | State Property              | TTL Output           | Vocabulary  | Status | Notes                        |
+| ----------------------------- | --------------------------- | -------------------- | ----------- | ------ | ---------------------------- |
+| DMN File Upload               | `dmnData.fileName`          | `dct:title`          | Dublin Core | ⭐     | File name as title           |
+| -                             | `dmnData.content`           | -                    | -           | ⭐     | Raw XML (not exported)       |
+| Decision Key (auto-extracted) | `dmnData.decisionKey`       | `dct:identifier`     | Dublin Core | ⭐     | From DMN `<decision id>`     |
+| -                             | -                           | `dct:format`         | Dublin Core | ⭐     | Fixed: "application/dmn+xml" |
+| -                             | -                           | `dct:source`         | Dublin Core | ⭐     | Placeholder DMN file URI     |
+| Deployment Timestamp          | `dmnData.deployedAt`        | `dct:created`        | Dublin Core | ⭐     | ISO 8601 datetime            |
+| Deployment ID                 | `dmnData.deploymentId`      | `cprmv:deploymentId` | CPRMV ℹ️    | ⭐     | Operaton deployment ID       |
+| -                             | -                           | `cpsv:implements`    | CPSV-AP     | ⭐     | Link back to service         |
+| API Endpoint                  | `dmnData.apiEndpoint`       | `ronl:implementedBy` | RONL ℹ️     | ⭐     | Operaton evaluation URL      |
+| Last Test Timestamp           | `dmnData.lastTestTimestamp` | `cprmv:lastTested`   | CPRMV ℹ️    | ⭐     | ISO 8601 datetime            |
+| Test Status                   | -                           | `cprmv:testStatus`   | CPRMV ℹ️    | ⭐     | "passed" or "failed"         |
+| -                             | -                           | `dct:description`    | Dublin Core | ⭐     | Fixed description text       |
 
 **Example TTL Output:**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd/dmn> a cprmv:DecisionModel ;
     dct:identifier "RONL_BerekenLeeftijden" ;
@@ -330,15 +336,16 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Auto-extracted from DMN `<inputData>` elements and test results**
 
-| UI Field/Feature          | State Property | TTL Output             | Vocabulary  | Status | Notes                       |
-| ------------------------- | -------------- | ---------------------- | ----------- | ------ | --------------------------- |
-| Variable Name (from DMN)  | -              | `dct:identifier`       | Dublin Core | ⭐     | Input variable name         |
-| Variable Name (from DMN)  | -              | `dct:title`            | Dublin Core | ⭐     | Same as identifier          |
-| Type (auto-detected)      | -              | `dct:type`             | Dublin Core | ⭐     | String, Integer, Boolean    |
-| Example Value (from test) | -              | `schema:value`         | Schema.org  | ⭐     | Value used in test          |
-| -                         | -              | `cpsv:isRequiredBy`    | CPSV-AP     | ⭐     | Links to Decision Model     |
+| UI Field/Feature          | State Property | TTL Output          | Vocabulary  | Status | Notes                    |
+| ------------------------- | -------------- | ------------------- | ----------- | ------ | ------------------------ |
+| Variable Name (from DMN)  | -              | `dct:identifier`    | Dublin Core | ⭐     | Input variable name      |
+| Variable Name (from DMN)  | -              | `dct:title`         | Dublin Core | ⭐     | Same as identifier       |
+| Type (auto-detected)      | -              | `dct:type`          | Dublin Core | ⭐     | String, Integer, Boolean |
+| Example Value (from test) | -              | `schema:value`      | Schema.org  | ⭐     | Value used in test       |
+| -                         | -              | `cpsv:isRequiredBy` | CPSV-AP     | ⭐     | Links to Decision Model  |
 
 **Example TTL Output:**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/1> a cpsv:Input ;
     dct:identifier "dagVanAanvraag" ;
@@ -354,20 +361,21 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 **Auto-extracted from DMN XML using CPRMV attributes**
 
-| CPRMV Attribute          | TTL Output             | Vocabulary  | Status | Notes                          |
-| ------------------------ | ---------------------- | ----------- | ------ | ------------------------------ |
-| `id` (from DMN)          | `dct:identifier`       | Dublin Core | ⭐     | Rule identifier                |
-| -                        | `cpsv:implements`      | CPSV-AP     | ⭐     | Links to service               |
-| `cprmv:extends`          | `cprmv:extends`        | CPRMV ℹ️    | ⭐     | Legal article URI (absolute)   |
-| `cprmv:validFrom`        | `cprmv:validFrom`      | CPRMV ℹ️    | ⭐     | Start date                     |
-| `cprmv:validUntil`       | `cprmv:validUntil`     | CPRMV ℹ️    | ⭐     | End date                       |
-| `cprmv:ruleType`         | `cprmv:ruleType`       | CPRMV ℹ️    | ⭐     | Rule category                  |
-| `cprmv:confidence`       | `cprmv:confidence`     | CPRMV ℹ️    | ⭐     | Confidence level               |
-| `cprmv:note`             | `cprmv:note`           | CPRMV ℹ️    | ⭐     | Human-readable description     |
-| `decisionTable` (from DMN) | `cprmv:decisionTable` | CPRMV ℹ️    | ⭐     | Decision table ID              |
-| `cprmv:rulesetType`      | `cprmv:rulesetType`    | CPRMV ℹ️    | ⭐     | Ruleset category               |
+| CPRMV Attribute            | TTL Output            | Vocabulary  | Status | Notes                        |
+| -------------------------- | --------------------- | ----------- | ------ | ---------------------------- |
+| `id` (from DMN)            | `dct:identifier`      | Dublin Core | ⭐     | Rule identifier              |
+| -                          | `cpsv:implements`     | CPSV-AP     | ⭐     | Links to service             |
+| `cprmv:extends`            | `cprmv:extends`       | CPRMV ℹ️    | ⭐     | Legal article URI (absolute) |
+| `cprmv:validFrom`          | `cprmv:validFrom`     | CPRMV ℹ️    | ⭐     | Start date                   |
+| `cprmv:validUntil`         | `cprmv:validUntil`    | CPRMV ℹ️    | ⭐     | End date                     |
+| `cprmv:ruleType`           | `cprmv:ruleType`      | CPRMV ℹ️    | ⭐     | Rule category                |
+| `cprmv:confidence`         | `cprmv:confidence`    | CPRMV ℹ️    | ⭐     | Confidence level             |
+| `cprmv:note`               | `cprmv:note`          | CPRMV ℹ️    | ⭐     | Human-readable description   |
+| `decisionTable` (from DMN) | `cprmv:decisionTable` | CPRMV ℹ️    | ⭐     | Decision table ID            |
+| `cprmv:rulesetType`        | `cprmv:rulesetType`   | CPRMV ℹ️    | ⭐     | Ruleset category             |
 
 **Example TTL Output:**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2020> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "DecisionRule_2020" ;
@@ -387,11 +395,12 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 The Public Service links to its Decision Model:
 
-| Property                 | Domain               | Range                | Cardinality | Status |
-| ------------------------ | -------------------- | -------------------- | ----------- | ------ |
+| Property                 | Domain               | Range                 | Cardinality | Status |
+| ------------------------ | -------------------- | --------------------- | ----------- | ------ |
 | `cprmv:hasDecisionModel` | `cpsv:PublicService` | `cprmv:DecisionModel` | 0..1        | ⭐     |
 
 **Example:**
+
 ```turtle
 <https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
     # ... other service properties ...
@@ -402,18 +411,18 @@ The Public Service links to its Decision Model:
 
 ### 8.5 DMN Tab Features
 
-| Feature                   | Status | Description                                  |
-| ------------------------- | ------ | -------------------------------------------- |
-| File Upload               | ⭐     | Upload `.dmn` XML files                      |
-| Load Example              | ⭐     | Load pre-configured example DMN              |
-| Decision Key Extraction   | ⭐     | Auto-extract from `<decision id>`            |
-| Request Body Generation   | ⭐     | Auto-generate from `<inputData>` elements    |
-| Operaton Deployment       | ⭐     | Deploy DMN to rule engine                    |
-| Decision Evaluation       | ⭐     | Test with live data (Postman-style)          |
-| Status Tracking           | ⭐     | Track deployment and test status             |
-| Rule Extraction           | ⭐     | Extract rules from DMN with CPRMV attributes |
+| Feature                    | Status | Description                                  |
+| -------------------------- | ------ | -------------------------------------------- |
+| File Upload                | ⭐     | Upload `.dmn` XML files                      |
+| Load Example               | ⭐     | Load pre-configured example DMN              |
+| Decision Key Extraction    | ⭐     | Auto-extract from `<decision id>`            |
+| Request Body Generation    | ⭐     | Auto-generate from `<inputData>` elements    |
+| Operaton Deployment        | ⭐     | Deploy DMN to rule engine                    |
+| Decision Evaluation        | ⭐     | Test with live data (Postman-style)          |
+| Status Tracking            | ⭐     | Track deployment and test status             |
+| Rule Extraction            | ⭐     | Extract rules from DMN with CPRMV attributes |
 | Legal Reference Conversion | ⭐     | Convert relative to absolute URIs            |
-| TTL Export                | ⭐     | Include all metadata in export               |
+| TTL Export                 | ⭐     | Include all metadata in export               |
 
 ---
 
@@ -421,23 +430,24 @@ The Public Service links to its Decision Model:
 
 The DMN tab intelligently detects input types based on naming patterns:
 
-| Pattern                    | Detected Type | Example Value | Notes                   |
-| -------------------------- | ------------- | ------------- | ----------------------- |
-| Contains "datum" or "date" | String        | "2025-01-01"  | ISO 8601 date format    |
-| Contains "is" or "heeft"   | Boolean       | false         | Dutch boolean patterns  |
-| Contains "aantal" or "bedrag" | Integer    | 0             | Numeric patterns        |
-| Default                    | String        | ""            | Fallback type           |
+| Pattern                       | Detected Type | Example Value | Notes                  |
+| ----------------------------- | ------------- | ------------- | ---------------------- |
+| Contains "datum" or "date"    | String        | "2025-01-01"  | ISO 8601 date format   |
+| Contains "is" or "heeft"      | Boolean       | false         | Dutch boolean patterns |
+| Contains "aantal" or "bedrag" | Integer       | 0             | Numeric patterns       |
+| Default                       | String        | ""            | Fallback type          |
 
 ---
 
 ### 8.7 Operaton API Integration
 
-| API Endpoint                                   | Method | Purpose         | Status |
-| ---------------------------------------------- | ------ | --------------- | ------ |
-| `/deployment/create`                           | POST   | Deploy DMN file | ⭐     |
-| `/decision-definition/key/{key}/evaluate`      | POST   | Evaluate decision | ⭐     |
+| API Endpoint                              | Method | Purpose           | Status |
+| ----------------------------------------- | ------ | ----------------- | ------ |
+| `/deployment/create`                      | POST   | Deploy DMN file   | ⭐     |
+| `/decision-definition/key/{key}/evaluate` | POST   | Evaluate decision | ⭐     |
 
 **Configuration:**
+
 - Base URL: Configurable (default: `https://operaton-doc.open-regels.nl`)
 - Decision Key: Auto-extracted from DMN
 - Evaluation URL: Auto-generated from configuration
@@ -448,35 +458,35 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 **New CPRMV Properties (v1.5.0):**
 
-| Property             | Domain                | Range            | Description                    |
-| -------------------- | --------------------- | ---------------- | ------------------------------ |
-| `cprmv:DecisionModel` | Class                | -                | A decision model resource (DMN) |
-| `cprmv:DecisionRule` | Class                | -                | A specific rule within DMN     |
-| `cprmv:hasDecisionModel` | `cpsv:PublicService` | `cprmv:DecisionModel` | Links service to decision model |
-| `cprmv:deploymentId` | `cprmv:DecisionModel` | `xsd:string`     | Deployment identifier          |
-| `cprmv:lastTested`   | `cprmv:DecisionModel` | `xsd:dateTime`   | Last test timestamp            |
-| `cprmv:testStatus`   | `cprmv:DecisionModel` | `xsd:string`     | Test result status             |
-| `cprmv:extends`      | `cprmv:DecisionRule` | `rdfs:Resource`  | Legal article extended         |
-| `cprmv:ruleType`     | `cprmv:DecisionRule` | `xsd:string`     | Type of rule                   |
-| `cprmv:confidence`   | `cprmv:DecisionRule` | `xsd:string`     | Confidence level               |
-| `cprmv:note`         | `cprmv:DecisionRule` | `rdf:langString` | Human-readable note            |
-| `cprmv:decisionTable` | `cprmv:DecisionRule` | `xsd:string`     | Decision table identifier      |
-| `cprmv:rulesetType`  | `cprmv:DecisionRule` | `xsd:string`     | Type of ruleset                |
+| Property                 | Domain                | Range                 | Description                     |
+| ------------------------ | --------------------- | --------------------- | ------------------------------- |
+| `cprmv:DecisionModel`    | Class                 | -                     | A decision model resource (DMN) |
+| `cprmv:DecisionRule`     | Class                 | -                     | A specific rule within DMN      |
+| `cprmv:hasDecisionModel` | `cpsv:PublicService`  | `cprmv:DecisionModel` | Links service to decision model |
+| `cprmv:deploymentId`     | `cprmv:DecisionModel` | `xsd:string`          | Deployment identifier           |
+| `cprmv:lastTested`       | `cprmv:DecisionModel` | `xsd:dateTime`        | Last test timestamp             |
+| `cprmv:testStatus`       | `cprmv:DecisionModel` | `xsd:string`          | Test result status              |
+| `cprmv:extends`          | `cprmv:DecisionRule`  | `rdfs:Resource`       | Legal article extended          |
+| `cprmv:ruleType`         | `cprmv:DecisionRule`  | `xsd:string`          | Type of rule                    |
+| `cprmv:confidence`       | `cprmv:DecisionRule`  | `xsd:string`          | Confidence level                |
+| `cprmv:note`             | `cprmv:DecisionRule`  | `rdf:langString`      | Human-readable note             |
+| `cprmv:decisionTable`    | `cprmv:DecisionRule`  | `xsd:string`          | Decision table identifier       |
+| `cprmv:rulesetType`      | `cprmv:DecisionRule`  | `xsd:string`          | Type of ruleset                 |
 
 **New RONL Properties (v1.5.0):**
 
-| Property            | Domain                | Range           | Description                           |
-| ------------------- | --------------------- | --------------- | ------------------------------------- |
-| `ronl:implementedBy` | `cprmv:DecisionModel` | `rdfs:Resource` | Software system executing the model   |
+| Property             | Domain                | Range           | Description                         |
+| -------------------- | --------------------- | --------------- | ----------------------------------- |
+| `ronl:implementedBy` | `cprmv:DecisionModel` | `rdfs:Resource` | Software system executing the model |
 
 **CPSV-AP Properties (Used):**
 
-| Property           | Domain                | Range                | Description                      |
-| ------------------ | --------------------- | -------------------- | -------------------------------- |
-| `cpsv:implements`  | `cprmv:DecisionModel` | `cpsv:PublicService` | Service implemented by model     |
-| `cpsv:Input`       | Class                 | -                    | Input variable                   |
-| `cpsv:isRequiredBy` | `cpsv:Input`         | `cprmv:DecisionModel` | Input required by model          |
-| `cpsv:Rule`        | Class                 | -                    | Base class for rules             |
+| Property            | Domain                | Range                 | Description                  |
+| ------------------- | --------------------- | --------------------- | ---------------------------- |
+| `cpsv:implements`   | `cprmv:DecisionModel` | `cpsv:PublicService`  | Service implemented by model |
+| `cpsv:Input`        | Class                 | -                     | Input variable               |
+| `cpsv:isRequiredBy` | `cpsv:Input`          | `cprmv:DecisionModel` | Input required by model      |
+| `cpsv:Rule`         | Class                 | -                     | Base class for rules         |
 
 ---
 
@@ -566,6 +576,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 ### Version 1.5.0 - DMN Integration ⭐
 
 **What's New:**
+
 - DMN Tab with complete decision engine integration
 - Operaton REST API integration (deployment & evaluation)
 - Automatic input variable extraction and documentation
@@ -576,6 +587,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 - Organization URI handling (supports both short IDs and full URIs)
 
 **Files Added/Modified:**
+
 - `src/components/tabs/DMNTab.jsx` (new, 650 lines)
 - `src/utils/dmnHelpers.js` (new, 370 lines)
 - `src/utils/ttlHelpers.js` (updated - buildResourceUri)
@@ -585,11 +597,13 @@ The DMN tab intelligently detects input types based on naming patterns:
 - `public/examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn` (example)
 
 **Vocabulary Extensions:**
+
 - CPRMV: `DecisionModel`, `DecisionRule`, `hasDecisionModel`, `deploymentId`, `lastTested`, `testStatus`, `extends`, `ruleType`, `confidence`, `note`, `decisionTable`, `rulesetType`
 - RONL: `implementedBy`
 - Uses CPSV-AP: `implements`, `Input`, `isRequiredBy`, `Rule`
 
 **Benefits:**
+
 - ✅ Document executable decision logic
 - ✅ Test rules with live data
 - ✅ Track deployment and versions
@@ -603,6 +617,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 ### Phase 1 Complete (v1.4.0) 🎯
 
 **Achievements:**
+
 - ✅ All mandatory CPSV-AP 3.2.0 properties implemented
 - ✅ Service, Organization, Legal Resource compliant
 - ✅ Cost and Output sections added
@@ -613,28 +628,30 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ### Current Compliance Status
 
-| Component      | CPSV-AP 3.2.0 Status | Notes                         |
-| -------------- | -------------------- | ----------------------------- |
-| **Service**    | ✅ Compliant         | All mandatory fields          |
-| **Organization** | ✅ Compliant       | Including cv:spatial          |
-| **Legal Resource** | ✅ Compliant     | Using cv:hasLegalResource     |
-| **Cost**       | ✅ Compliant         | Optional, properly modeled    |
-| **Output**     | ✅ Compliant         | Optional, properly modeled    |
-| **Rules**      | ℹ️ Extension         | RONL temporal rules           |
-| **Parameters** | ℹ️ Extension         | CPRMV parameters              |
-| **CPRMV Rules** | ℹ️ Extension        | Dutch normenbrief format      |
-| **DMN**        | ⭐ New Extension     | Decision models (v1.5.0)      |
+| Component          | CPSV-AP 3.2.0 Status | Notes                      |
+| ------------------ | -------------------- | -------------------------- |
+| **Service**        | ✅ Compliant         | All mandatory fields       |
+| **Organization**   | ✅ Compliant         | Including cv:spatial       |
+| **Legal Resource** | ✅ Compliant         | Using cv:hasLegalResource  |
+| **Cost**           | ✅ Compliant         | Optional, properly modeled |
+| **Output**         | ✅ Compliant         | Optional, properly modeled |
+| **Rules**          | ℹ️ Extension         | RONL temporal rules        |
+| **Parameters**     | ℹ️ Extension         | CPRMV parameters           |
+| **CPRMV Rules**    | ℹ️ Extension         | Dutch normenbrief format   |
+| **DMN**            | ⭐ New Extension     | Decision models (v1.5.0)   |
 
 ---
 
 ### Future Phases
 
 **Phase 2 (Planned):**
+
 - 📋 Channel (cv:Channel)
 - 📋 ContactPoint (cv:ContactPoint)
 - 📋 Criterion (cv:Criterion)
 
 **Phase 3 (Planned):**
+
 - 🔮 Requirement (cv:Requirement)
 - 🔮 Evidence (cv:Evidence)
 - 🔮 Event (cv:Event)
@@ -659,7 +676,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 - **Application:** https://cpsv.open-regels.nl/
 - **Version:** 1.5.0 (DMN Integration Complete)
 - **Repository:** Part of RONL Initiative
-- **Documentation:** 
+- **Documentation:**
   - [README.md](./../README.md)
   - FIELD-MAPPING-CPSV-AP-3.2.0.md (this document)
   - [DMN-INTEGRATION-DOCUMENTATION-v1.5.0.md](./DMN-INTEGRATION-DOCUMENTATION-v1.5.0.md)
