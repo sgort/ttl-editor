@@ -575,6 +575,17 @@ const DMNTab = ({ dmnData, setDmnData }) => {
               Upload DMN files, deploy to Operaton, and test decision evaluations. Successful tests
               will be saved as metadata in your TTL file.
             </p>
+            <p className="text-sm text-gray-600 mt-1">
+              <a
+                href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/DMN-INTEGRATION-DOCUMENTATION-v1.5.1.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline font-medium"
+              >
+                DMN Integration Documentation - Version 1.5.1
+              </a>{' '}
+              reflects the current implementation
+            </p>
           </div>
         </div>
       </div>
