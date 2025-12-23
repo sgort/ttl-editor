@@ -79,7 +79,7 @@ export default function ChangelogTab() {
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline font-medium"
             >
-              NAMESPACE-PROPERTIES.md
+              Namespace Properties Reference
             </a>
           </p>
           <p>
@@ -89,7 +89,7 @@ export default function ChangelogTab() {
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline font-medium"
             >
-              FIELD-MAPPING-CPSV-AP-3.2.0.md
+              Field-to-Property Mapping: CPSV-AP 3.2.0
             </a>{' '}
             reflects the current implementation state for CPSV-AP 3.2.0 compliance
           </p>
