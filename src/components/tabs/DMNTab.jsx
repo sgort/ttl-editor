@@ -20,7 +20,7 @@ const DMNTab = ({ dmnData, setDmnData }) => {
 
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: 'https://operaton.open-regels.nl',
+    baseUrl: 'https://operaton-doc.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',

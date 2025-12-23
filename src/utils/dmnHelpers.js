@@ -4,6 +4,33 @@
  */
 
 /**
+ * Sanitizes a service identifier to create valid URIs
+ * @param {string} identifier - Service identifier
+ * @returns {string} - Sanitized identifier suitable for URIs
+ */
+export function sanitizeServiceIdentifier(identifier) {
+  if (!identifier) return 'unknown-service';
+
+  return identifier
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/[^a-z0-9-]/g, '') // Remove any non-alphanumeric chars except hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+}
+
+/**
+ * Builds a proper service URI from an identifier
+ * @param {string} identifier - Service identifier
+ * @returns {string} - Complete service URI
+ */
+export function buildServiceUri(identifier) {
+  const sanitized = sanitizeServiceIdentifier(identifier);
+  return `https://regels.overheid.nl/services/${sanitized}`;
+}
+
+/**
  * Generates TTL for DMN metadata
  * @param {Object} dmnData - DMN metadata object
  * @param {string} serviceUri - URI of the service this DMN implements
@@ -14,7 +41,9 @@ export function generateDMNTTL(dmnData, serviceUri) {
     return '';
   }
 
-  const dmnUri = `${serviceUri}/dmn`;
+  // Ensure serviceUri is properly formatted
+  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
+  const dmnUri = `${cleanServiceUri}/dmn`;
   const sections = [];
 
   // DMN Resource
@@ -25,7 +54,7 @@ export function generateDMNTTL(dmnData, serviceUri) {
   sections.push(`    dct:format "application/dmn+xml" ;`);
 
   // Source: placeholder for where the DMN file is stored
-  sections.push(`    dct:source <${serviceUri}/dmn/${dmnData.fileName}> ;`);
+  sections.push(`    dct:source <${cleanServiceUri}/dmn/${dmnData.fileName}> ;`);
 
   if (dmnData.deployedAt) {
     sections.push(`    dct:created "${dmnData.deployedAt}"^^xsd:dateTime ;`);
@@ -35,7 +64,7 @@ export function generateDMNTTL(dmnData, serviceUri) {
     sections.push(`    cprmv:deploymentId "${dmnData.deploymentId}" ;`);
   }
 
-  sections.push(`    cpsv:implements <${serviceUri}> ;`);
+  sections.push(`    cpsv:implements <${cleanServiceUri}> ;`);
 
   // implementedBy: the software system (Operaton evaluation endpoint)
   if (dmnData.apiEndpoint) {
@@ -114,6 +143,8 @@ function extractInputsFromTestResult(dmnData) {
 export function extractRulesFromDMN(dmnContent, serviceUri) {
   if (!dmnContent) return [];
 
+  // Ensure serviceUri is properly formatted
+  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
   const rules = [];
 
   try {
@@ -134,7 +165,7 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
 
       ruleElements.forEach((rule, ruleIndex) => {
         const ruleId = rule.getAttribute('id') || `rule-${ruleIndex}`;
-        const ruleUri = `${serviceUri}/rules/${ruleId}`;
+        const ruleUri = `${cleanServiceUri}/rules/${ruleId}`;
 
         // Extract CPRMV attributes
         const cprmvExtends = rule.getAttribute('cprmv:extends');
@@ -188,6 +219,9 @@ export function generateRulesTTL(rules, serviceUri) {
     return '';
   }
 
+  // Ensure serviceUri is properly formatted
+  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
+
   const sections = [];
   sections.push('# Rules extracted from DMN');
   sections.push('');
@@ -195,10 +229,14 @@ export function generateRulesTTL(rules, serviceUri) {
   rules.forEach((rule) => {
     sections.push(`<${rule.uri}> a cpsv:Rule, cprmv:DecisionRule ;`);
     sections.push(`    dct:identifier "${rule.id}" ;`);
-    sections.push(`    cpsv:implements <${serviceUri}> ;`);
+    sections.push(`    cpsv:implements <${cleanServiceUri}> ;`);
 
     if (rule.extends) {
-      sections.push(`    cprmv:extends <${rule.extends}> ;`);
+      // Check if extends is already a full URI
+      const extendsUri = rule.extends.startsWith('http')
+        ? rule.extends
+        : `https://wetten.overheid.nl/${rule.extends}`;
+      sections.push(`    cprmv:extends <${extendsUri}> ;`);
     }
 
     if (rule.validFrom) {
@@ -236,6 +274,9 @@ export function generateCompleteDMNSection(dmnData, serviceUri) {
     return '';
   }
 
+  // Ensure serviceUri is properly formatted
+  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
+
   const sections = [];
 
   sections.push('');
@@ -245,13 +286,13 @@ export function generateCompleteDMNSection(dmnData, serviceUri) {
   sections.push('');
 
   // Add DMN metadata
-  sections.push(generateDMNTTL(dmnData, serviceUri));
+  sections.push(generateDMNTTL(dmnData, cleanServiceUri));
 
   // Add extracted rules if DMN content is available
   if (dmnData.content) {
-    const rules = extractRulesFromDMN(dmnData.content, serviceUri);
+    const rules = extractRulesFromDMN(dmnData.content, cleanServiceUri);
     if (rules.length > 0) {
-      sections.push(generateRulesTTL(rules, serviceUri));
+      sections.push(generateRulesTTL(rules, cleanServiceUri));
     }
   }
 
@@ -305,12 +346,16 @@ export function getDMNNamespaces() {
   return `@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .`;
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
+// Default export object for convenience
+const dmnHelpers = {
   generateDMNTTL,
   extractRulesFromDMN,
   generateRulesTTL,
   generateCompleteDMNSection,
   validateDMNData,
   getDMNNamespaces,
+  sanitizeServiceIdentifier,
+  buildServiceUri,
 };
+
+export default dmnHelpers;

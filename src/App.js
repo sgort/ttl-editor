@@ -47,7 +47,11 @@ import {
   TTL_NAMESPACES,
   validateForm,
 } from './utils';
-import { generateCompleteDMNSection, getDMNNamespaces, validateDMNData } from './utils/dmnHelpers';
+import {
+  generateCompleteDMNSection,
+  sanitizeServiceIdentifier,
+  validateDMNData,
+} from './utils/dmnHelpers';
 
 function App() {
   const [activeTab, setActiveTab] = useState('service');
@@ -487,21 +491,15 @@ function App() {
 
   // Generate TTL output
   const generateTTL = () => {
-    const serviceIdentifier = service.identifier || 'unknown-service';
-    const serviceUri = buildResourceUri('services', serviceIdentifier);
+    const sanitizedIdentifier = sanitizeServiceIdentifier(service.identifier) || 'unknown-service';
+    const serviceUri = `https://regels.overheid.nl/services/${sanitizedIdentifier}`;
 
     let ttl = TTL_NAMESPACES;
 
-    // Add DMN namespace if DMN data exists
-    if (dmnData && dmnData.fileName) {
-      ttl += '\n' + getDMNNamespaces();
-    }
-
     // Service
     if (service.identifier) {
-      const encodedId = encodeURIComponentTTL(service.identifier);
-      ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(service.identifier)}" ;\n`;
+      ttl += `<${serviceUri}> a cpsv:PublicService ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(sanitizedIdentifier)}" ;\n`;
       if (service.name)
         ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
@@ -523,8 +521,8 @@ function App() {
 
       if (organization.identifier) {
         const orgUri = buildResourceUri(
-          organization.identifier,
-          'https://regels.overheid.nl/organizations/'
+          'https://regels.overheid.nl/organizations/',
+          organization.identifier
         );
         ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
       }
@@ -559,8 +557,8 @@ function App() {
     // Organization
     if (organization.identifier) {
       const orgUri = buildResourceUri(
-        organization.identifier,
-        'https://regels.overheid.nl/organizations/'
+        'https://regels.overheid.nl/organizations/',
+        organization.identifier
       );
       ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
       ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;
@@ -600,7 +598,7 @@ function App() {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
         ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
         // Add explicit relationship to service
-        ttl += `    cpsv:implements <https://regels.overheid.nl/services/${encodeURIComponentTTL(service.identifier)}> ;\n`;
+        ttl += `    cpsv:implements <${serviceUri}> ;\n`;
         if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
         if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
         if (rule.extends) {
