@@ -1,7 +1,7 @@
 // parseTTL.enhanced.js - CLEANED VERSION (No ESLint Warnings)
 // Enhanced TTL parser with vocabulary configuration support
 
-import { detectEntityType, validatePrefixes } from './vocabularies.config.js';
+import { detectEntityType, validatePrefixes } from './config/vocabularies.config.js';
 
 /**
  * Enhanced TTL Parser with vocabulary configuration support

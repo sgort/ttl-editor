@@ -15,18 +15,21 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import {
   ChangelogTab,
   CPRMVTab,
+  DMNTab,
+  IKnowMappingTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
   RulesTab,
   ServiceTab,
 } from './components/tabs';
+import { iknowMappings } from './config/iknow-mappings';
 import parseTTLEnhanced from './parseTTL.enhanced';
 import {
   buildResourceUri,
@@ -44,6 +47,11 @@ import {
   TTL_NAMESPACES,
   validateForm,
 } from './utils';
+import {
+  generateCompleteDMNSection,
+  sanitizeServiceIdentifier,
+  validateDMNData,
+} from './utils/dmnHelpers';
 
 function App() {
   const [activeTab, setActiveTab] = useState('service');
@@ -67,6 +75,37 @@ function App() {
   const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
   const [cost, setCost] = useState(DEFAULT_COST);
   const [output, setOutput] = useState(DEFAULT_OUTPUT);
+  // DMN state
+  const [dmnData, setDmnData] = useState({
+    fileName: '',
+    content: '',
+    decisionKey: '',
+    deployed: false,
+    deploymentId: null,
+    deployedAt: null,
+    apiEndpoint: '',
+    lastTestResult: null,
+    lastTestTimestamp: null,
+    testBody: null,
+  });
+  const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
+  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
+
+  // Load available iKnow mapping configurations on mount
+  useEffect(() => {
+    setAvailableIKnowMappings(iknowMappings);
+  }, []);
+
+  // eslint-disable-next-line no-unused-vars
+  const loadAvailableIKnowMappings = async () => {
+    try {
+      const mappings = [];
+      setAvailableIKnowMappings(mappings.map((m) => m.default));
+    } catch (error) {
+      console.error('Failed to load iKnow mappings:', error);
+      // Fail silently - mappings are optional
+    }
+  };
 
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
@@ -219,6 +258,46 @@ function App() {
 
     reader.readAsText(file);
     event.target.value = '';
+  };
+
+  // Handle iKnow XML import with mapping
+  const handleIKnowImport = (mappedData) => {
+    try {
+      // Populate tabs from mapped data
+      if (mappedData.service) {
+        setService((prev) => ({ ...prev, ...mappedData.service }));
+      }
+      if (mappedData.organization) {
+        setOrganization((prev) => ({ ...prev, ...mappedData.organization }));
+      }
+      if (mappedData.legal) {
+        setLegalResource((prev) => ({ ...prev, ...mappedData.legal }));
+      }
+      if (mappedData.rules && mappedData.rules.length > 0) {
+        setTemporalRules(mappedData.rules);
+      }
+      if (mappedData.parameters && mappedData.parameters.length > 0) {
+        setParameters(mappedData.parameters);
+      }
+
+      // Show success message
+      setImportStatus({
+        show: true,
+        success: true,
+        message: 'iKnow data imported successfully! Fields have been populated.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+
+      // Switch to service tab to show results
+      setActiveTab('service');
+    } catch (error) {
+      setImportStatus({
+        show: true,
+        success: false,
+        message: error.message || 'Failed to import iKnow data.',
+      });
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
+    }
   };
 
   // Add parameter
@@ -383,6 +462,20 @@ function App() {
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
 
+    // Reset DMN state
+    setDmnData({
+      fileName: '',
+      content: '',
+      decisionKey: '',
+      deployed: false,
+      deploymentId: null,
+      deployedAt: null,
+      apiEndpoint: '',
+      lastTestResult: null,
+      lastTestTimestamp: null,
+      testBody: null,
+    });
+
     // Close dialog and show success message
     setShowClearDialog(false);
     setImportStatus({
@@ -398,13 +491,15 @@ function App() {
 
   // Generate TTL output
   const generateTTL = () => {
+    const sanitizedIdentifier = sanitizeServiceIdentifier(service.identifier) || 'unknown-service';
+    const serviceUri = `https://regels.overheid.nl/services/${sanitizedIdentifier}`;
+
     let ttl = TTL_NAMESPACES;
 
     // Service
     if (service.identifier) {
-      const encodedId = encodeURIComponentTTL(service.identifier);
-      ttl += `<https://regels.overheid.nl/services/${encodedId}> a cpsv:PublicService ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(service.identifier)}" ;\n`;
+      ttl += `<${serviceUri}> a cpsv:PublicService ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(sanitizedIdentifier)}" ;\n`;
       if (service.name)
         ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
       if (service.description)
@@ -449,6 +544,11 @@ function App() {
       if (output.identifier) {
         const encodedOutputId = encodeURIComponent(output.identifier);
         ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
+      }
+
+      // Add DMN reference if exists
+      if (dmnData && dmnData.fileName) {
+        ttl += `    cprmv:hasDecisionModel <${serviceUri}/dmn> ;\n`;
       }
 
       ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -498,7 +598,7 @@ function App() {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
         ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
         // Add explicit relationship to service
-        ttl += `    cpsv:implements <https://regels.overheid.nl/services/${encodeURIComponentTTL(service.identifier)}> ;\n`;
+        ttl += `    cpsv:implements <${serviceUri}> ;\n`;
         if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
         if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
         if (rule.extends) {
@@ -584,6 +684,11 @@ function App() {
       }
     });
 
+    // DMN section
+    if (dmnData && dmnData.fileName) {
+      ttl += generateCompleteDMNSection(dmnData, serviceUri);
+    }
+
     return ttl;
   };
 
@@ -612,6 +717,12 @@ function App() {
       temporalRules,
       parameters,
     });
+
+    // DMN validation
+    const dmnValidation = validateDMNData(dmnData);
+    if (!dmnValidation.valid) {
+      errors.push(...dmnValidation.errors.map((err) => `DMN: ${err}`));
+    }
 
     if (!isValid) {
       alert('Validation errors:\n' + errors.join('\n'));
@@ -713,6 +824,8 @@ function App() {
                 'rules',
                 'parameters',
                 'cprmv',
+                'dmn',
+                'iknow-mapping',
                 'changelog',
               ].map((tab) => (
                 <button
@@ -758,6 +871,18 @@ function App() {
                     <span className="flex items-center justify-center gap-2">
                       <Database size={18} />
                       CPRMV
+                    </span>
+                  )}
+                  {tab === 'dmn' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <FileUp size={18} />
+                      DMN
+                    </span>
+                  )}
+                  {tab === 'iknow-mapping' && (
+                    <span className="flex items-center justify-center gap-2">
+                      <Upload size={18} />
+                      iKnow
                     </span>
                   )}
                   {tab === 'changelog' && (
@@ -813,6 +938,15 @@ function App() {
                   setCprmvRules={setCprmvRules}
                 />
               )}
+              {activeTab === 'dmn' && <DMNTab dmnData={dmnData} setDmnData={setDmnData} />}
+              {activeTab === 'iknow-mapping' && (
+                <IKnowMappingTab
+                  mappingConfig={iknowMappingConfig}
+                  setMappingConfig={setIknowMappingConfig}
+                  availableMappings={availableIKnowMappings}
+                  onImportComplete={handleIKnowImport}
+                />
+              )}
               {activeTab === 'changelog' && <ChangelogTab />}
             </div>
           </div>
@@ -854,7 +988,7 @@ function App() {
 
             <p className="text-gray-600 mb-6">
               This will permanently delete all data in all tabs (Service, Organization, Legal,
-              Rules, Parameters, CPRMV, Cost, and Output). This action cannot be undone.
+              Rules, Parameters, CPRMV, DMN, Cost, and Output). This action cannot be undone.
             </p>
 
             <div className="flex gap-3 justify-end">

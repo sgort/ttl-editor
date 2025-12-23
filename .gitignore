@@ -29,3 +29,6 @@ examples/**/temp/
 
 # Metadata
 examples/**/.DS_Store
+
+# Zipped project file
+cpsv-editor.zip

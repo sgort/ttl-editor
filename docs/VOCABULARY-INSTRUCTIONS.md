@@ -463,7 +463,7 @@ The configuration exports several helper functions for use in the parser.
 **Usage:**
 
 ```javascript
-import { detectEntityType } from './vocabularies.config.js';
+import { detectEntityType } from './config/vocabularies.config.js';
 
 const line = '<https://example.nl/service/1> a cpsv:PublicService ;';
 const type = detectEntityType(line);
@@ -485,7 +485,7 @@ const type = detectEntityType(line);
 **Usage:**
 
 ```javascript
-import { normalizeProperty } from './vocabularies.config.js';
+import { normalizeProperty } from './config/vocabularies.config.js';
 
 const normalized = normalizeProperty('foaf:name');
 // Returns: 'skos:prefLabel'
@@ -509,7 +509,7 @@ const unchanged = normalizeProperty('dct:title');
 **Usage:**
 
 ```javascript
-import { getCanonicalType } from './vocabularies.config.js';
+import { getCanonicalType } from './config/vocabularies.config.js';
 
 const canonical = getCanonicalType('service');
 // Returns: 'cpsv:PublicService'
@@ -527,7 +527,7 @@ const paramType = getCanonicalType('parameter');
 **Usage:**
 
 ```javascript
-import { extractPrefixMap } from './vocabularies.config.js';
+import { extractPrefixMap } from './config/vocabularies.config.js';
 
 const ttl = `
 @prefix cpsv: <http://purl.org/vocab/cpsv#> .
@@ -550,7 +550,7 @@ const prefixes = extractPrefixMap(ttl);
 **Usage:**
 
 ```javascript
-import { validatePrefixes } from './vocabularies.config.js';
+import { validatePrefixes } from './config/vocabularies.config.js';
 
 const ttl = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .`;
 const validation = validatePrefixes(ttl, { silent: true });
