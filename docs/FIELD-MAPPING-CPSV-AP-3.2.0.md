@@ -669,7 +669,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 - **Documentation:**
   - [README.md](./../README.md)
   - FIELD-MAPPING-CPSV-AP-3.2.0.md (this document)
-  - [DMN-INTEGRATION-DOCUMENTATION-v1.5.0.md](./DMN-INTEGRATION-DOCUMENTATION-v1.5.0.md)
+  - [DMN-INTEGRATION-DOCUMENTATION-v1.5.1.md](./DMN-INTEGRATION-DOCUMENTATION-v1.5.1.md)
 
 ---
 

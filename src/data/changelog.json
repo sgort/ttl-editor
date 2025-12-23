@@ -2,9 +2,9 @@
   "versions": [
     {
       "version": "1.5.1",
-      "status": "Bug Fixes",
-      "statusColor": "blue",
-      "borderColor": "blue",
+      "status": "Enhancement",
+      "statusColor": "purple",
+      "borderColor": "purple",
       "date": "December X, 2025",
       "sections": [
         {
@@ -13,6 +13,18 @@
           "iconColor": "blue",
           "items": [
             "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource"
+          ]
+        },
+        {
+          "title": "DMN Import Preservation",
+          "icon": "🚀",
+          "iconColor": "emerald",
+          "items": [
+            "Automatic detection of DMN data in imported TTL files",
+            "Perfect preservation of DMN blocks during import/export cycles",
+            "Property ronl:implementedBy documents which software system executes the decision logic",
+            "Clear visual indication of imported DMN status",
+            "Ability to clear and recreate DMN data"
           ]
         }
       ]

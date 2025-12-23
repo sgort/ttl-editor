@@ -87,6 +87,9 @@ function App() {
     lastTestResult: null,
     lastTestTimestamp: null,
     testBody: null,
+    // DMN preservation
+    importedDmnBlocks: null, // Raw TTL blocks (string)
+    isImported: false, // Flag to disable DMN tab
   });
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
   const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
@@ -153,6 +156,10 @@ function App() {
         description: parsed.output?.description || '',
         type: parsed.output?.type || '',
       },
+
+      // Pass through DMN preservation fields (Option 3)
+      hasDmnData: parsed.hasDmnData || false,
+      importedDmnBlocks: parsed.importedDmnBlocks || null,
     };
   };
 
@@ -180,70 +187,48 @@ function App() {
         setService(parsed.service);
         setOrganization(parsed.organization);
         setLegalResource(parsed.legalResource);
+        setTemporalRules(parsed.temporalRules);
+        setParameters(parsed.parameters);
+        setCprmvRules(parsed.cprmvRules);
         setCost(parsed.cost);
         setOutput(parsed.output);
 
-        // Always reset arrays - if new file has data, use it; if not, use defaults
-        if (parsed.temporalRules.length > 0) {
-          setTemporalRules(parsed.temporalRules);
+        // Handle DMN preservation
+        if (parsed.hasDmnData && parsed.importedDmnBlocks) {
+          setDmnData({
+            fileName: '',
+            content: '',
+            decisionKey: '',
+            deployed: false,
+            deploymentId: null,
+            deployedAt: null,
+            apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+            lastTestResult: null,
+            lastTestTimestamp: null,
+            testBody: null,
+            importedDmnBlocks: parsed.importedDmnBlocks, // Store raw TTL
+            isImported: true, // Flag as imported
+          });
+
+          setImportStatus({
+            show: true,
+            success: true,
+            message: 'TTL imported successfully. DMN data preserved but cannot be edited.',
+          });
         } else {
-          // Reset to single empty rule if new file has none
-          setTemporalRules([
-            {
-              id: 1,
-              uri: '',
-              extends: '',
-              validFrom: '',
-              validUntil: '',
-              confidenceLevel: 'high',
-              description: '',
-            },
-          ]);
+          // No DMN data in import - keep existing dmnData or reset
+          setImportStatus({
+            show: true,
+            success: true,
+            message: 'TTL imported successfully',
+          });
         }
-
-        if (parsed.parameters.length > 0) {
-          setParameters(parsed.parameters);
-        } else {
-          // Reset to single empty parameter if new file has none
-          setParameters([
-            {
-              id: 1,
-              notation: '',
-              label: '',
-              value: '',
-              unit: 'EUR',
-              description: '',
-              validFrom: '',
-              validUntil: '',
-            },
-          ]);
-        }
-
-        if (parsed.cprmvRules && parsed.cprmvRules.length > 0) {
-          console.log('🎯 About to set CPRMV rules:', parsed.cprmvRules);
-          console.log('🎯 Number of rules:', parsed.cprmvRules.length);
-          setCprmvRules(parsed.cprmvRules);
-          console.log('✅ setCprmvRules called');
-        } else {
-          console.log('⚠️ No CPRMV rules found, using default');
-          setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
-        }
-
-        setImportStatus({
-          show: true,
-          success: true,
-          message: 'TTL file imported successfully! All fields have been populated.',
-        });
-
-        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
-        setActiveTab('service');
       } catch (error) {
         setImportStatus({
           show: true,
           success: false,
-          message: error.message || 'Failed to import file. Please check the TTL format.',
+          message: `Import error: ${error.message}`,
         });
-        setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
       }
     };
 
@@ -253,7 +238,6 @@ function App() {
         success: false,
         message: 'Error reading file. Please try again.',
       });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
     };
 
     reader.readAsText(file);
@@ -462,7 +446,7 @@ function App() {
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
 
-    // Reset DMN state
+    // Reset DMN state - Include Option Import DMN fields
     setDmnData({
       fileName: '',
       content: '',
@@ -470,10 +454,12 @@ function App() {
       deployed: false,
       deploymentId: null,
       deployedAt: null,
-      apiEndpoint: '',
+      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
       lastTestResult: null,
       lastTestTimestamp: null,
       testBody: null,
+      importedDmnBlocks: null, // Clear imported DMN
+      isImported: false, // Clear import flag
     });
 
     // Close dialog and show success message
@@ -684,8 +670,12 @@ function App() {
       }
     });
 
-    // DMN section
-    if (dmnData && dmnData.fileName) {
+    // DMN section - Handle both imported and newly created DMN
+    if (dmnData.isImported && dmnData.importedDmnBlocks) {
+      // Import: Append preserved DMN blocks
+      ttl += dmnData.importedDmnBlocks;
+    } else if (dmnData && dmnData.fileName && dmnData.content) {
+      // Regular DMN: newly created in DMN tab
       ttl += generateCompleteDMNSection(dmnData, serviceUri);
     }
 
@@ -877,6 +867,11 @@ function App() {
                     <span className="flex items-center justify-center gap-2">
                       <FileUp size={18} />
                       DMN
+                      {dmnData.isImported && (
+                        <span className="ml-2 px-2 py-0.5 bg-blue-800 text-white text-xs rounded font-medium">
+                          Imported
+                        </span>
+                      )}
                     </span>
                   )}
                   {tab === 'iknow-mapping' && (

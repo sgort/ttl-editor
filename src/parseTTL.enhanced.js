@@ -1,11 +1,11 @@
-// parseTTL.enhanced.js - CLEANED VERSION (No ESLint Warnings)
-// Enhanced TTL parser with vocabulary configuration support
+// parseTTL.enhanced.js - VERSION WITH DMN PRESERVATION (Option 3)
+// Enhanced TTL parser with DMN block capture for round-trip preservation
 
 import { detectEntityType, validatePrefixes } from './config/vocabularies.config.js';
 
 /**
- * Enhanced TTL Parser with vocabulary configuration support
- * Handles multiple vocabulary prefixes (cpsv/cpsv-ap, org/foaf, etc.)
+ * Enhanced TTL Parser with DMN block preservation
+ * Handles multiple vocabulary prefixes and preserves DMN sections during import
  * @param {string} ttlContent - The TTL file content as a string
  * @returns {object} Parsed data structure for the editor
  */
@@ -21,13 +21,14 @@ export const parseTTLEnhanced = (ttlContent) => {
         description: '',
         thematicArea: '',
         sector: '',
-        keywords: '', // Note: 'keywords' not 'keyword'
+        keywords: '',
         language: 'nl',
       },
       organization: {
         identifier: '',
-        name: '', // Note: 'name' not 'prefLabel'
+        name: '',
         homepage: '',
+        spatial: '',
       },
       legalResource: {
         bwbId: '',
@@ -39,15 +40,21 @@ export const parseTTLEnhanced = (ttlContent) => {
       parameters: [],
       cprmvRules: [],
       cost: {
+        identifier: '',
         value: '',
         currency: 'EUR',
         description: '',
       },
       output: {
+        identifier: '',
         name: '',
         description: '',
         type: '',
       },
+
+      // NEW: DMN preservation for Option 3
+      importedDmnBlocks: null, // Raw TTL blocks (string)
+      hasDmnData: false, // Detection flag
     };
 
     // Validate prefixes (silent by default to reduce console noise)
@@ -63,6 +70,11 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentCprmvRule = null;
     let currentSubject = null;
 
+    // NEW: DMN block tracking
+    let inDmnSection = false;
+    let dmnLines = [];
+    let dmnSectionStarted = false;
+
     // Helper function to extract values from TTL lines
     const extractValue = (property) => {
       // Try quoted string
@@ -77,7 +89,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         return decodeURIValue(urlMatch[1]);
       }
 
-      // Try plain value (fixed regex - no unnecessary escape)
+      // Try plain value
       const plainMatch = property.match(/^\s*([^\s;,.]+)/);
       if (plainMatch) {
         return plainMatch[1].replace(/\^\^xsd:\w+$/, '');
@@ -110,8 +122,15 @@ export const parseTTLEnhanced = (ttlContent) => {
     // Parse each line
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
+      const rawLine = lines[i]; // Keep original line with spacing
 
-      // Skip comments and empty lines
+      // Capture comments and empty lines in DMN section
+      if (inDmnSection && (line.startsWith('#') || line === '')) {
+        dmnLines.push(rawLine);
+        continue;
+      }
+
+      // Skip comments and empty lines for normal parsing
       if (line.startsWith('#') || line === '') continue;
 
       // Detect entity type using configuration
@@ -126,17 +145,47 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         // ========================================
-        // Skip DMN entities (export-only, not imported into editor state)
+        // DMN ENTITY DETECTION & CAPTURE (Option 3)
         // ========================================
         if (
           detectedType === 'dmnModel' ||
           detectedType === 'dmnInput' ||
           detectedType === 'dmnRule'
         ) {
-          // currentSection is already set above
-          // currentSubject is already extracted above
-          // Don't initialize any structures - we skip these entities
+          // Mark that we found DMN data
+          if (!inDmnSection) {
+            inDmnSection = true;
+            // eslint-disable-next-line no-unused-vars
+            dmnSectionStarted = true;
+            parsed.hasDmnData = true;
+
+            // Add section header if this is the first DMN entity
+            if (dmnLines.length === 0) {
+              dmnLines.push('');
+              dmnLines.push('# ========================================');
+              dmnLines.push('# DMN Decision Model (Preserved from import)');
+              dmnLines.push('# ========================================');
+              dmnLines.push('');
+            }
+          }
+
+          // Capture the raw line
+          dmnLines.push(rawLine);
           continue; // Skip to next line
+        }
+
+        // If we were in DMN section and now hit a non-DMN entity, close DMN section
+        if (
+          inDmnSection &&
+          detectedType !== 'dmnModel' &&
+          detectedType !== 'dmnInput' &&
+          detectedType !== 'dmnRule'
+        ) {
+          inDmnSection = false;
+          // Add blank line after DMN section
+          if (dmnLines.length > 0 && dmnLines[dmnLines.length - 1].trim() !== '') {
+            dmnLines.push('');
+          }
         }
 
         // Initialize entity-specific structures
@@ -149,6 +198,8 @@ export const parseTTLEnhanced = (ttlContent) => {
             validUntil: '',
             confidenceLevel: 'high',
             description: '',
+            identifier: '',
+            title: '',
           };
         } else if (detectedType === 'parameter') {
           currentParameter = {
@@ -182,6 +233,37 @@ export const parseTTLEnhanced = (ttlContent) => {
         continue;
       }
 
+      // ========================================
+      // DMN PROPERTY CAPTURE (Option 3)
+      // ========================================
+      if (inDmnSection) {
+        // Capture the raw line
+        dmnLines.push(rawLine);
+
+        // Check for end of entity (period without semicolon)
+        if (line.includes('.') && !line.includes(';')) {
+          // Check if next non-empty line is also DMN
+          let nextNonEmpty = i + 1;
+          while (nextNonEmpty < lines.length && lines[nextNonEmpty].trim() === '') {
+            nextNonEmpty++;
+          }
+
+          if (nextNonEmpty < lines.length) {
+            const nextLine = lines[nextNonEmpty].trim();
+            const nextType = detectEntityType(nextLine);
+            if (nextType !== 'dmnModel' && nextType !== 'dmnInput' && nextType !== 'dmnRule') {
+              // End of DMN section
+              inDmnSection = false;
+              dmnLines.push(''); // Add blank line after section
+            }
+          } else {
+            // End of file
+            inDmnSection = false;
+          }
+        }
+        continue; // Skip all property parsing for DMN entities
+      }
+
       // Parse properties based on current section
       if (currentSection === 'service') {
         // Extract service identifier from subject URI
@@ -198,12 +280,10 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('dct:description')[1]) || parsed.service.description;
         }
         if (line.includes('thematicArea')) {
-          // Handle both cv: and cpsv-ap: prefixes
           parsed.service.thematicArea =
             extractValue(line.split('thematicArea')[1]) || parsed.service.thematicArea;
         }
         if (line.includes('sector')) {
-          // Handle both cv: and cpsv-ap: prefixes
           parsed.service.sector = extractValue(line.split('sector')[1]) || parsed.service.sector;
         }
         if (line.includes('dcat:keyword')) {
@@ -213,7 +293,6 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (line.includes('dct:language')) {
           const uriMatch = line.match(/<([^>]+)>/);
           if (uriMatch) {
-            // Extract language code from URI
             const langCode = uriMatch[1].split('/').pop().toLowerCase();
             parsed.service.language = langCode;
           }
@@ -251,22 +330,8 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
       }
 
-      // Skip parsing properties for DMN entities (they're export-only)
-      if (
-        currentSection === 'dmnModel' ||
-        currentSection === 'dmnInput' ||
-        currentSection === 'dmnRule'
-      ) {
-        // Only check for end of entity (period without semicolon)
-        if (line.includes('.') && !line.includes(';')) {
-          currentSection = null;
-          currentSubject = null;
-        }
-        continue; // Skip all property parsing for DMN entities
-      }
-
       if (currentSection === 'legalResource') {
-        // Save the full URI as identifier (like Organization does)
+        // Save the full URI as identifier
         if (!parsed.legalResource.bwbId && currentSubject) {
           parsed.legalResource.bwbId = currentSubject;
         }
@@ -281,11 +346,9 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         // Extract version date from eli:is_realized_by
-        // Format: eli:is_realized_by <https://wetten.overheid.nl/BWBR0002222/2025-12-03>
         if (line.includes('eli:is_realized_by')) {
           const uriMatch = line.match(/<([^>]+)>/);
           if (uriMatch) {
-            // Extract date from end of URI (format: .../YYYY-MM-DD)
             const dateMatch = uriMatch[1].match(/(\d{4}-\d{2}-\d{2})$/);
             if (dateMatch) {
               parsed.legalResource.version = dateMatch[1];
@@ -321,7 +384,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (line.includes('dct:title')) {
           currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
         }
-        // End of rule (period without semicolon)
+
         if (line.includes('.') && !line.includes(';')) {
           parsed.temporalRules.push(currentRule);
           currentRule = null;
@@ -371,7 +434,6 @@ export const parseTTLEnhanced = (ttlContent) => {
       if (currentSection === 'cost') {
         if (line.includes('dct:identifier')) {
           parsed.cost.identifier = extractValue(line.split('dct:identifier')[1]);
-          console.log('🔍 Cost identifier found:', parsed.cost.identifier);
         }
         if (line.includes('cv:value')) {
           parsed.cost.value = extractValue(line.split('cv:value')[1]);
@@ -392,7 +454,6 @@ export const parseTTLEnhanced = (ttlContent) => {
       if (currentSection === 'output') {
         if (line.includes('dct:identifier')) {
           parsed.output.identifier = extractValue(line.split('dct:identifier')[1]);
-          console.log('🔍 Output identifier found:', parsed.output.identifier);
         }
         if (line.includes('dct:title')) {
           parsed.output.name = extractValue(line.split('dct:title')[1]);
@@ -409,6 +470,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
       }
 
+      // CPRMV Rule properties
       if (currentSection === 'cprmvRule' && currentCprmvRule) {
         if (line.includes('cprmv:id')) {
           currentCprmvRule.ruleId =
@@ -435,7 +497,6 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('cprmv:ruleIdPath')[1]) || currentCprmvRule.ruleIdPath;
         }
 
-        // Check for end of rule (period without semicolon)
         if (line.includes('.') && !line.includes(';')) {
           parsed.cprmvRules.push(currentCprmvRule);
           currentCprmvRule = null;
@@ -443,7 +504,12 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
       }
     }
-    console.log('🔍 CPRMV DEBUG - Parsed rules:', parsed.cprmvRules);
+
+    // NEW: Store raw DMN blocks if any were captured
+    if (parsed.hasDmnData && dmnLines.length > 0) {
+      parsed.importedDmnBlocks = dmnLines.join('\n');
+      console.log('✅ DMN data detected and preserved:', dmnLines.length, 'lines');
+    }
 
     return parsed;
   } catch (error) {
