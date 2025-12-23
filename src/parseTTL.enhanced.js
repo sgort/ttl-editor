@@ -125,6 +125,20 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentSubject = subjectMatch[1];
         }
 
+        // ========================================
+        // Skip DMN entities (export-only, not imported into editor state)
+        // ========================================
+        if (
+          detectedType === 'dmnModel' ||
+          detectedType === 'dmnInput' ||
+          detectedType === 'dmnRule'
+        ) {
+          // currentSection is already set above
+          // currentSubject is already extracted above
+          // Don't initialize any structures - we skip these entities
+          continue; // Skip to next line
+        }
+
         // Initialize entity-specific structures
         if (detectedType === 'temporalRule') {
           currentRule = {
@@ -235,6 +249,20 @@ export const parseTTLEnhanced = (ttlContent) => {
             parsed.organization.spatial = spatialMatch[1];
           }
         }
+      }
+
+      // Skip parsing properties for DMN entities (they're export-only)
+      if (
+        currentSection === 'dmnModel' ||
+        currentSection === 'dmnInput' ||
+        currentSection === 'dmnRule'
+      ) {
+        // Only check for end of entity (period without semicolon)
+        if (line.includes('.') && !line.includes(';')) {
+          currentSection = null;
+          currentSubject = null;
+        }
+        continue; // Skip all property parsing for DMN entities
       }
 
       if (currentSection === 'legalResource') {

@@ -91,6 +91,27 @@ export const detectEntityType = (line) => {
       if (line.includes(`a ${acceptedType}`)) {
         return entityName;
       }
+      // ========================================
+      // DMN-Related Entities (v1.5.0)
+      // ========================================
+
+      // DMN Decision Model (skip - export only, not imported)
+      if (line.includes('a cprmv:DecisionModel') || line.includes('a cprmv:decisionModel')) {
+        return 'dmnModel';
+      }
+
+      // DMN Input Variables (skip - export only, not imported)
+      if (line.includes('a cpsv:Input') || line.includes('a cv:Input')) {
+        return 'dmnInput';
+      }
+
+      // DMN Decision Rules (skip - export only, not imported)
+      if (
+        line.includes('a cprmv:DecisionRule') ||
+        line.includes(', cprmv:DecisionRule') // For dual typing like "a cpsv:Rule, cprmv:DecisionRule"
+      ) {
+        return 'dmnRule';
+      }
     }
   }
   return null;
