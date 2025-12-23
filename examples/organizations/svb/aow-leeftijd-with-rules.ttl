@@ -46,11 +46,11 @@
     dct:title "RONL_BerekenLeeftijden_CPRMV.dmn"@nl ;
     dct:format "application/dmn+xml" ;
     dct:source <https://regels.overheid.nl/services/aow-leeftijd/dmn/RONL_BerekenLeeftijden_CPRMV.dmn> ;
-    dct:created "2025-12-23T07:37:49.563Z"^^xsd:dateTime ;
-    cprmv:deploymentId "47df2e05-dfd2-11f0-a2f7-82ff4494b5e4" ;
+    dct:created "2025-12-23T12:33:23.482Z"^^xsd:dateTime ;
+    cprmv:deploymentId "92123f0f-dffb-11f0-a2f7-82ff4494b5e4" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
     ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/RONL_BerekenLeeftijden/evaluate> ;
-    cprmv:lastTested "2025-12-23T07:37:51.263Z"^^xsd:dateTime ;
+    cprmv:lastTested "2025-12-23T12:33:24.893Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 

@@ -1,6 +1,23 @@
 {
   "versions": [
     {
+      "version": "1.5.1",
+      "status": "Bug Fixes",
+      "statusColor": "blue",
+      "borderColor": "blue",
+      "date": "December X, 2025",
+      "sections": [
+        {
+          "title": "Bug Fixes",
+          "icon": "🐛",
+          "iconColor": "blue",
+          "items": [
+            "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.5.0",
       "status": "Release",
       "statusColor": "green",
