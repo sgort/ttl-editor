@@ -521,8 +521,8 @@ function App() {
 
       if (organization.identifier) {
         const orgUri = buildResourceUri(
-          'https://regels.overheid.nl/organizations/',
-          organization.identifier
+          organization.identifier,
+          'https://regels.overheid.nl/organizations/'
         );
         ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
       }
@@ -557,8 +557,8 @@ function App() {
     // Organization
     if (organization.identifier) {
       const orgUri = buildResourceUri(
-        'https://regels.overheid.nl/organizations/',
-        organization.identifier
+        organization.identifier,
+        'https://regels.overheid.nl/organizations/'
       );
       ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
       ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;

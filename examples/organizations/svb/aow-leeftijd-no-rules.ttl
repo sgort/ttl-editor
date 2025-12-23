@@ -11,8 +11,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
 
-<https://regels.overheid.nl/services/aow%20leeftijd> a cpsv:PublicService ;
-    dct:identifier "aow leeftijd" ;
+<https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
+    dct:identifier "aow-leeftijd" ;
     dct:title "Bepaling leeftijd AOW"@nl ;
     dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet)."@nl ;
     cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd> ;
