@@ -174,7 +174,7 @@ function App() {
         success: false,
         message: 'Please select a .ttl file',
       });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
       return;
     }
 
@@ -215,6 +215,7 @@ function App() {
             success: true,
             message: 'TTL imported successfully. DMN data preserved but cannot be edited.',
           });
+          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
         } else {
           // No DMN data in import - keep existing dmnData or reset
           setImportStatus({
@@ -222,6 +223,7 @@ function App() {
             success: true,
             message: 'TTL imported successfully',
           });
+          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
         }
       } catch (error) {
         setImportStatus({
@@ -378,7 +380,7 @@ function App() {
         success: false,
         message: 'Please select a .json file',
       });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
       return;
     }
 
@@ -428,7 +430,7 @@ function App() {
         success: false,
         message: 'Error reading file. Please try again.',
       });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
     };
 
     reader.readAsText(file);
@@ -469,7 +471,7 @@ function App() {
       success: true,
       message: 'All fields have been cleared successfully!',
     });
-    setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 3000);
+    setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
 
     // Switch to service tab
     setActiveTab('service');
