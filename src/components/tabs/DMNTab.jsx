@@ -26,6 +26,207 @@ const DMNTab = ({ dmnData, setDmnData }) => {
     deploymentEndpoint: '/engine-rest/deployment/create',
   });
 
+  // Check if DMN was imported - show notice instead of normal UI
+  if (dmnData.isImported) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 shadow-sm">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0 mt-1">
+              <svg
+                className="w-6 h-6 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-blue-900 mb-2">📋 DMN Data Imported</h3>
+              <p className="text-blue-800 mb-4 leading-relaxed">
+                This TTL file contains DMN decision model data that was imported from an external
+                source. The DMN data is <strong>preserved</strong> in your TTL exports but cannot be
+                edited in this interface.
+              </p>
+
+              <div className="bg-white border border-blue-300 rounded-md p-4 mb-4">
+                <h4 className="font-medium text-blue-900 mb-3 flex items-center">
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  What's Preserved:
+                </h4>
+                <ul className="space-y-2 text-sm text-blue-800">
+                  <li className="flex items-start">
+                    <span className="text-blue-600 mr-2">•</span>
+                    <span>
+                      <strong>Decision Model Metadata</strong> - Deployment ID, timestamps, test
+                      status
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-blue-600 mr-2">•</span>
+                    <span>
+                      <strong>Input Variables</strong> - Variable names, types, and example values
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-blue-600 mr-2">•</span>
+                    <span>
+                      <strong>Extracted Decision Rules</strong> - Rules with legal references and
+                      validity periods
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-blue-600 mr-2">•</span>
+                    <span>
+                      <strong>API Integration</strong> - Operaton endpoint references
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-amber-50 border border-amber-300 rounded-md p-4 mb-4">
+                <div className="flex items-start">
+                  <svg
+                    className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <div className="text-sm text-amber-800">
+                    <p className="font-medium mb-1">How to Edit DMN Data:</p>
+                    <ol className="list-decimal list-inside space-y-1 ml-2">
+                      <li>Export your current TTL (DMN data will be included)</li>
+                      <li>Manually remove the DMN sections from the TTL file if needed</li>
+                      <li>Re-import the TTL and use the DMN tab to create new DMN data</li>
+                    </ol>
+                    <p className="mt-2">
+                      <strong>Or</strong> click "Clear Imported DMN Data" below to create new DMN
+                      models.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-blue-200">
+                <div className="text-sm text-blue-700">
+                  <svg
+                    className="w-5 h-5 inline mr-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                  <strong>Your exports will include the original DMN data unchanged.</strong>
+                </div>
+                <button
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        'Clear imported DMN data?\n\n' +
+                          'This will remove the imported DMN blocks and allow you to create new DMN models.\n\n' +
+                          'Note: You can always re-import the original TTL file to restore the DMN data.'
+                      )
+                    ) {
+                      setDmnData({
+                        fileName: '',
+                        content: '',
+                        decisionKey: '',
+                        deployed: false,
+                        deploymentId: null,
+                        deployedAt: null,
+                        apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+                        lastTestResult: null,
+                        lastTestTimestamp: null,
+                        testBody: null,
+                        importedDmnBlocks: null,
+                        isImported: false,
+                      });
+                    }
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+                             transition-colors duration-200 flex items-center space-x-2 shadow-sm
+                             hover:shadow-md"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                  <span>Clear Imported DMN Data</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Info Card */}
+        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h4 className="font-medium text-gray-900 mb-2 flex items-center">
+            <svg
+              className="w-5 h-5 mr-2 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            Why can't I edit imported DMN?
+          </h4>
+          <p className="text-sm text-gray-700 leading-relaxed">
+            The DMN tab is designed for <strong>creating and deploying</strong> new DMN decision
+            models to Operaton. When you import a TTL file that already contains DMN data, it
+            preserves that data exactly as it was, including deployment IDs, test results, and rule
+            extractions. This ensures data integrity and prevents accidental modifications to
+            production decision models.
+          </p>
+          <p className="text-sm text-gray-700 mt-2 leading-relaxed">
+            You can still edit all other aspects of your service (Service, Organization, Legal,
+            Rules, Parameters) and the DMN data will remain unchanged in your exports.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Generate request body from DMN input variables
   const generateRequestBodyFromDMN = (dmnContent) => {
     try {

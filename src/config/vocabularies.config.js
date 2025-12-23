@@ -1,7 +1,3 @@
-// vocabularies.config.js
-// Configuration file for vocabulary mappings in TTL Editor
-// Allows the parser to recognize multiple vocabulary prefixes
-
 export const VOCABULARY_CONFIG = {
   version: '1.0.0',
   lastUpdated: '2025-10-27',
@@ -21,8 +17,6 @@ export const VOCABULARY_CONFIG = {
     'http://www.w3.org/2001/XMLSchema#': ['xsd'],
   },
 
-  // RDF types that map to editor sections
-  // Each type can have multiple accepted prefix variations
   entityTypes: {
     service: {
       acceptedTypes: ['cpsv:PublicService', 'cpsv-ap:PublicService'],
@@ -58,14 +52,9 @@ export const VOCABULARY_CONFIG = {
     },
   },
 
-  // Property aliases - map variations to canonical form
-  // This allows the parser to recognize different vocabulary properties
   propertyAliases: {
-    // Organization properties
     'foaf:name': 'skos:prefLabel',
     'org:name': 'skos:prefLabel',
-
-    // Service properties - CPSV-AP to CV mapping
     'cpsv-ap:hasCompetentAuthority': 'cv:hasCompetentAuthority',
     'cpsv-ap:thematicArea': 'cv:thematicArea',
     'cpsv-ap:sector': 'cv:sector',
@@ -74,8 +63,6 @@ export const VOCABULARY_CONFIG = {
     'cpsv-ap:hasCost': 'cv:hasCost',
     'cpsv-ap:hasOutput': 'cv:hasOutput',
     'cpsv-ap:hasLegalResource': 'cv:hasLegalResource',
-
-    // Temporal rule properties - CPRMV to RONL mapping
     'cprmv:validFrom': 'ronl:validFrom',
     'cprmv:validUntil': 'ronl:validUntil',
     'cprmv:confidence': 'ronl:confidenceLevel',
@@ -84,54 +71,42 @@ export const VOCABULARY_CONFIG = {
   },
 };
 
-// Helper function: Check if a line contains any of the accepted types for an entity
+// *** CRITICAL: DMN DETECTION MUST BE FIRST ***
 export const detectEntityType = (line) => {
+  // DMN entities checked BEFORE regular entityTypes
+  if (line.includes('a cprmv:DecisionModel') || line.includes('a cprmv:decisionModel')) {
+    return 'dmnModel';
+  }
+  if (line.includes('a cpsv:Input') || line.includes('a cv:Input')) {
+    return 'dmnInput';
+  }
+  if (line.includes('a cprmv:DecisionRule') || line.includes(', cprmv:DecisionRule')) {
+    return 'dmnRule';
+  }
+
+  // Regular entity detection
   for (const [entityName, config] of Object.entries(VOCABULARY_CONFIG.entityTypes)) {
     for (const acceptedType of config.acceptedTypes) {
       if (line.includes(`a ${acceptedType}`)) {
         return entityName;
-      }
-      // ========================================
-      // DMN-Related Entities (v1.5.0)
-      // ========================================
-
-      // DMN Decision Model (skip - export only, not imported)
-      if (line.includes('a cprmv:DecisionModel') || line.includes('a cprmv:decisionModel')) {
-        return 'dmnModel';
-      }
-
-      // DMN Input Variables (skip - export only, not imported)
-      if (line.includes('a cpsv:Input') || line.includes('a cv:Input')) {
-        return 'dmnInput';
-      }
-
-      // DMN Decision Rules (skip - export only, not imported)
-      if (
-        line.includes('a cprmv:DecisionRule') ||
-        line.includes(', cprmv:DecisionRule') // For dual typing like "a cpsv:Rule, cprmv:DecisionRule"
-      ) {
-        return 'dmnRule';
       }
     }
   }
   return null;
 };
 
-// Helper function: Normalize property names using aliases
+// Other helper functions remain unchanged...
 export const normalizeProperty = (property) => {
   return VOCABULARY_CONFIG.propertyAliases[property] || property;
 };
 
-// Helper function: Get canonical type for entity
 export const getCanonicalType = (entityName) => {
   return VOCABULARY_CONFIG.entityTypes[entityName]?.canonicalType || null;
 };
 
-// Helper function: Extract prefix map from TTL content
 export const extractPrefixMap = (ttlContent) => {
   const prefixMap = {};
   const lines = ttlContent.split('\n');
-
   lines.forEach((line) => {
     if (line.trim().startsWith('@prefix')) {
       const match = line.match(/@prefix\s+([^:]+):\s+<([^>]+)>/);
@@ -140,16 +115,12 @@ export const extractPrefixMap = (ttlContent) => {
       }
     }
   });
-
   return prefixMap;
 };
 
-// Helper function: Validate that required prefixes are present
-export const validatePrefixes = (ttlContent) => {
+export const validatePrefixes = (ttlContent, options = {}) => {
   const prefixMap = extractPrefixMap(ttlContent);
   const warnings = [];
-
-  // Check for essential prefixes
   const essentialPrefixes = [
     { prefix: 'cpsv', alternatives: ['cpsv-ap'], namespace: 'http://purl.org/vocab/cpsv#' },
     { prefix: 'cv', alternatives: ['cpsv-ap'], namespace: 'http://data.europa.eu/m8g/' },
@@ -159,7 +130,6 @@ export const validatePrefixes = (ttlContent) => {
   essentialPrefixes.forEach(({ prefix, alternatives, namespace }) => {
     const hasPrefix = prefixMap[prefix] === namespace;
     const hasAlternative = alternatives.some((alt) => prefixMap[alt] === namespace);
-
     if (!hasPrefix && !hasAlternative) {
       warnings.push(`Missing recommended prefix: @prefix ${prefix}: <${namespace}>`);
     }
@@ -168,6 +138,7 @@ export const validatePrefixes = (ttlContent) => {
   return {
     valid: warnings.length === 0,
     warnings,
+    silent: options.silent || false,
   };
 };
 
