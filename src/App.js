@@ -15,7 +15,9 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { rule } from 'postcss';
+import React, { useEffect, useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import {
@@ -45,6 +47,7 @@ import {
   sanitizeServiceIdentifier,
   validateDMNData,
 } from './utils/dmnHelpers';
+import { generateTTL as generateTTLNew } from './utils/ttlGenerator';
 
 function App() {
   // These are UI-specific, not moved to hook
@@ -426,6 +429,33 @@ function App() {
     setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
     setActiveTab('service');
   };
+
+  // Call in useEffect for testing
+  useEffect(() => {
+    const state = {
+      service,
+      organization,
+      legalResource,
+      temporalRules,
+      parameters,
+      cprmvRules,
+      cost,
+      output,
+      dmnData,
+    };
+    const ttl = generateTTLNew(state);
+    console.log('New generator TTL:', ttl);
+  }, [
+    service,
+    organization,
+    legalResource,
+    temporalRules,
+    parameters,
+    cprmvRules,
+    cost,
+    output,
+    dmnData,
+  ]);
 
   // Generate TTL output
   const generateTTL = () => {
