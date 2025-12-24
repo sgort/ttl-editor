@@ -15,7 +15,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import {
@@ -29,18 +29,11 @@ import {
   RulesTab,
   ServiceTab,
 } from './components/tabs';
-import { iknowMappings } from './config/iknow-mappings';
+// eslint-disable-next-line no-unused-vars
+import { useEditorState } from './hooks/useEditorState';
 import parseTTLEnhanced from './parseTTL.enhanced';
 import {
   buildResourceUri,
-  DEFAULT_COST,
-  DEFAULT_CPRMV_RULE,
-  DEFAULT_LEGAL_RESOURCE,
-  DEFAULT_ORGANIZATION,
-  DEFAULT_OUTPUT,
-  DEFAULT_PARAMETER,
-  DEFAULT_SERVICE,
-  DEFAULT_TEMPORAL_RULE,
   encodeURIComponentTTL,
   escapeTTLString,
   sanitizeFilename,
@@ -54,61 +47,42 @@ import {
 } from './utils/dmnHelpers';
 
 function App() {
+  // These are UI-specific, not moved to hook
   const [activeTab, setActiveTab] = useState('service');
+  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
     message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
-  // Service state
-  const [service, setService] = useState({
-    ...DEFAULT_SERVICE,
-    customSector: '',
-  });
-  const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
-  const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
-  const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
-  const [parameters, setParameters] = useState([DEFAULT_PARAMETER]);
-  const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
-  const [cost, setCost] = useState(DEFAULT_COST);
-  const [output, setOutput] = useState(DEFAULT_OUTPUT);
-  // DMN state
-  const [dmnData, setDmnData] = useState({
-    fileName: '',
-    content: '',
-    decisionKey: '',
-    deployed: false,
-    deploymentId: null,
-    deployedAt: null,
-    apiEndpoint: '',
-    lastTestResult: null,
-    lastTestTimestamp: null,
-    testBody: null,
-    // DMN preservation
-    importedDmnBlocks: null, // Raw TTL blocks (string)
-    isImported: false, // Flag to disable DMN tab
-  });
-  const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
-  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
-
-  // Load available iKnow mapping configurations on mount
-  useEffect(() => {
-    setAvailableIKnowMappings(iknowMappings);
-  }, []);
-
-  // eslint-disable-next-line no-unused-vars
-  const loadAvailableIKnowMappings = async () => {
-    try {
-      const mappings = [];
-      setAvailableIKnowMappings(mappings.map((m) => m.default));
-    } catch (error) {
-      console.error('Failed to load iKnow mappings:', error);
-      // Fail silently - mappings are optional
-    }
-  };
+  // Set states
+  const {
+    service,
+    setService,
+    organization,
+    setOrganization,
+    legalResource,
+    setLegalResource,
+    temporalRules,
+    setTemporalRules,
+    parameters,
+    setParameters,
+    cprmvRules,
+    setCprmvRules,
+    cost,
+    setCost,
+    output,
+    setOutput,
+    dmnData,
+    setDmnData,
+    iknowMappingConfig,
+    setIknowMappingConfig, // ← used by IKnowMappingTab
+    availableIKnowMappings, // ← passed to IKnowMappingTab
+    // setAvailableIKnowMappings! ← Not needed in App.js
+    clearAllData,
+  } = useEditorState();
 
   // Parse TTL file and extract values (enhanced with vocabulary config)
   const parseTTL = (ttlContent) => {
@@ -439,32 +413,10 @@ function App() {
 
   // Clear all data
   const handleClearAll = () => {
-    setService(DEFAULT_SERVICE);
-    setOrganization(DEFAULT_ORGANIZATION);
-    setLegalResource(DEFAULT_LEGAL_RESOURCE);
-    setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
-    setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
-    setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
-    setCost(DEFAULT_COST);
-    setOutput(DEFAULT_OUTPUT);
+    // 1. Clear data (delegated to hook)
+    clearAllData();
 
-    // Reset DMN state - Include Option Import DMN fields
-    setDmnData({
-      fileName: '',
-      content: '',
-      decisionKey: '',
-      deployed: false,
-      deploymentId: null,
-      deployedAt: null,
-      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
-      lastTestResult: null,
-      lastTestTimestamp: null,
-      testBody: null,
-      importedDmnBlocks: null, // Clear imported DMN
-      isImported: false, // Clear import flag
-    });
-
-    // Close dialog and show success message
+    // 2. UI updates (stays in App.js)
     setShowClearDialog(false);
     setImportStatus({
       show: true,
@@ -472,8 +424,6 @@ function App() {
       message: 'All fields have been cleared successfully!',
     });
     setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-
-    // Switch to service tab
     setActiveTab('service');
   };
 
