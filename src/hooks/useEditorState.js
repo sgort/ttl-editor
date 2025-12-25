@@ -3,13 +3,10 @@ import { useEffect, useState } from 'react';
 import { iknowMappings } from '../config/iknow-mappings';
 import {
   DEFAULT_COST,
-  DEFAULT_CPRMV_RULE,
   DEFAULT_LEGAL_RESOURCE,
   DEFAULT_ORGANIZATION,
   DEFAULT_OUTPUT,
-  DEFAULT_PARAMETER,
   DEFAULT_SERVICE,
-  DEFAULT_TEMPORAL_RULE,
 } from '../utils';
 
 export const useEditorState = () => {
@@ -26,13 +23,13 @@ export const useEditorState = () => {
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
 
   // Temporal Rules state
-  const [temporalRules, setTemporalRules] = useState([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
+  const [temporalRules, setTemporalRules] = useState([]);
 
   // Parameters state
-  const [parameters, setParameters] = useState([{ ...DEFAULT_PARAMETER, id: 1 }]);
+  const [parameters, setParameters] = useState([]);
 
   // CPRMV Rules state
-  const [cprmvRules, setCprmvRules] = useState([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
+  const [cprmvRules, setCprmvRules] = useState([]);
 
   // Cost state
   const [cost, setCost] = useState(DEFAULT_COST);
@@ -73,9 +70,9 @@ export const useEditorState = () => {
     });
     setOrganization(DEFAULT_ORGANIZATION);
     setLegalResource(DEFAULT_LEGAL_RESOURCE);
-    setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
-    setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
-    setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
+    setTemporalRules([]);
+    setParameters([]);
+    setCprmvRules([]);
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
     setDmnData({

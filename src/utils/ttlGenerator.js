@@ -220,7 +220,18 @@ export class TTLGenerator {
     let ttl = '';
 
     this.temporalRules.forEach((rule, index) => {
-      if (rule.uri || rule.extends) {
+      // Write if ANY meaningful field has data
+      const hasData =
+        rule.uri ||
+        rule.extends ||
+        rule.identifier ||
+        rule.title ||
+        rule.validFrom ||
+        rule.validUntil ||
+        rule.confidenceLevel ||
+        rule.description;
+
+      if (hasData) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
 
         ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
@@ -272,7 +283,10 @@ export class TTLGenerator {
     let ttl = '';
 
     this.parameters.forEach((param, index) => {
-      if (param.notation && param.value) {
+      // Write if notation OR value exists (either is meaningful)
+      const hasData = param.notation || param.value || param.label;
+
+      if (hasData) {
         const paramUri = `https://regels.overheid.nl/parameters/${encodeURIComponent(
           this.service.identifier || 'service'
         )}/param-${index + 1}`;
@@ -386,24 +400,41 @@ export class TTLGenerator {
     let ttl = '';
 
     this.cprmvRules.forEach((rule) => {
-      // All fields are mandatory
-      if (
-        rule.ruleId &&
-        rule.rulesetId &&
-        rule.definition &&
-        rule.situatie &&
-        rule.norm &&
-        rule.ruleIdPath
-      ) {
-        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rule.rulesetId)}_${encodeURIComponentTTL(rule.ruleId)}`;
+      // Write if at least the core identifiers exist
+      // (User might be filling in the form progressively)
+      const hasMinimalData = rule.ruleId || rule.rulesetId || rule.definition;
+
+      if (hasMinimalData) {
+        // Generate URI (use placeholder if ruleId/rulesetId not yet filled)
+        const ruleId = rule.ruleId || 'incomplete';
+        const rulesetId = rule.rulesetId || 'incomplete';
+        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
 
         ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
-        ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
-        ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
-        ttl += `    cprmv:definition "${escapeTTLString(rule.definition)}"@nl ;\n`;
-        ttl += `    cprmv:situatie "${escapeTTLString(rule.situatie)}"@nl ;\n`;
-        ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
-        ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
+
+        if (rule.ruleId) {
+          ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
+        }
+
+        if (rule.rulesetId) {
+          ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
+        }
+
+        if (rule.definition) {
+          ttl += `    cprmv:definition "${escapeTTLString(rule.definition)}"@nl ;\n`;
+        }
+
+        if (rule.situatie) {
+          ttl += `    cprmv:situatie "${escapeTTLString(rule.situatie)}"@nl ;\n`;
+        }
+
+        if (rule.norm) {
+          ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
+        }
+
+        if (rule.ruleIdPath) {
+          ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
+        }
 
         ttl = ttl.slice(0, -2) + ' .\n\n';
       }
