@@ -107,7 +107,8 @@ export class TTLGenerator {
    * @returns {string} Formatted header comment
    */
   generateSectionHeader(title) {
-    return `# ========================================\n# ${title}\n# ========================================\n\n`;
+    const line = '='.repeat(60);
+    return `\n# ${line}\n#  ${title}\n# ${line}\n\n`;
   }
 
   /**
@@ -545,77 +546,21 @@ export class TTLGenerator {
 
   /**
    * Strip DMN section headers from imported blocks
-   * Only removes the section header block, preserves custom comments
+   * Removes only the section header, no comment preservation
    * @param {string} dmnBlocks - Raw DMN TTL blocks
    * @returns {string} DMN blocks without section header
    */
   stripDmnHeaders(dmnBlocks) {
-    const lines = dmnBlocks.split('\n');
-    let inHeader = false;
-    let headerLineCount = 0;
-    const cleanedLines = [];
+    // Simple regex to remove section header block
+    // Matches: # ==== \n # DMN... \n # ==== \n (optional empty line)
+    const headerPattern = /^# ={20,}\s*\n# .*DMN.*\n# ={20,}\s*\n\n?/gm;
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      const trimmed = line.trim();
+    let cleaned = dmnBlocks.replace(headerPattern, '');
 
-      // Detect start of section header (line with many equals signs)
-      if (trimmed.startsWith('#') && trimmed.includes('====')) {
-        inHeader = true;
-        headerLineCount = 0;
-        continue;
-      }
+    // Remove any leading whitespace
+    cleaned = cleaned.replace(/^\s+/, '');
 
-      // If we're in a header, count lines
-      if (inHeader) {
-        headerLineCount++;
-
-        // Section headers have this pattern:
-        // Line 1: # ================
-        // Line 2: # DMN Decision Model (or similar)
-        // Line 3: # ================
-        // Line 4: (empty line)
-
-        if (headerLineCount === 1) {
-          // This is the title line (e.g., "# DMN Decision Model")
-          // Check if it's a DMN-related title
-          if (trimmed.startsWith('# DMN') || trimmed.includes('Preserved')) {
-            continue; // Skip this line
-          } else {
-            // Not a DMN header, keep it as a custom comment
-            inHeader = false;
-            cleanedLines.push(line);
-          }
-        } else if (headerLineCount === 2) {
-          // This should be the closing equals line
-          if (trimmed.startsWith('#') && trimmed.includes('====')) {
-            continue; // Skip this line
-          } else {
-            // Unexpected, keep the line
-            inHeader = false;
-            cleanedLines.push(line);
-          }
-        } else if (headerLineCount === 3 && trimmed === '') {
-          // Empty line after header, skip it
-          inHeader = false;
-          continue;
-        } else {
-          // Something unexpected, stop treating as header
-          inHeader = false;
-          cleanedLines.push(line);
-        }
-      } else {
-        // Not in header, keep the line (including custom comments)
-        cleanedLines.push(line);
-      }
-    }
-
-    // Remove any leading empty lines
-    while (cleanedLines.length > 0 && cleanedLines[0].trim() === '') {
-      cleanedLines.shift();
-    }
-
-    return cleanedLines.join('\n');
+    return cleaned;
   }
 
   /**
