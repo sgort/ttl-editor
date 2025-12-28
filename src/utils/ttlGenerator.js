@@ -33,16 +33,62 @@ export class TTLGenerator {
   generate() {
     let ttl = '';
 
+    // Namespaces (no header needed)
     ttl += this.generateNamespaces();
-    ttl += this.generateServiceSection();
-    ttl += this.generateOrganizationSection();
-    ttl += this.generateLegalResourceSection();
-    ttl += this.generateTemporalRulesSection();
-    ttl += this.generateParametersSection();
-    ttl += this.generateCostSection();
-    ttl += this.generateOutputSection();
-    ttl += this.generateCprmvRulesSection();
-    ttl += this.generateDmnSection();
+
+    // Service section
+    if (this.service.identifier) {
+      ttl += this.generateSectionHeader('Public Service');
+      ttl += this.generateServiceSection();
+    }
+
+    // Organization section
+    if (this.organization.identifier) {
+      ttl += this.generateSectionHeader('Organization');
+      ttl += this.generateOrganizationSection();
+    }
+
+    // Legal Resource section
+    if (this.legalResource.bwbId) {
+      ttl += this.generateSectionHeader('Legal Resource');
+      ttl += this.generateLegalResourceSection();
+    }
+
+    // Temporal Rules section
+    if (this.hasTemporalRules()) {
+      ttl += this.generateSectionHeader('Temporal Rules');
+      ttl += this.generateTemporalRulesSection();
+    }
+
+    // Parameters section
+    if (this.hasParameters()) {
+      ttl += this.generateSectionHeader('Parameters');
+      ttl += this.generateParametersSection();
+    }
+
+    // Cost section
+    if (this.cost.identifier) {
+      ttl += this.generateSectionHeader('Cost');
+      ttl += this.generateCostSection();
+    }
+
+    // Output section
+    if (this.output.identifier) {
+      ttl += this.generateSectionHeader('Output');
+      ttl += this.generateOutputSection();
+    }
+
+    // CPRMV Rules section
+    if (this.hasCprmvRules()) {
+      ttl += this.generateSectionHeader('CPRMV Rules');
+      ttl += this.generateCprmvRulesSection();
+    }
+
+    // DMN section
+    if (this.hasDMN()) {
+      ttl += this.generateSectionHeader('DMN Decision Model');
+      ttl += this.generateDmnSection();
+    }
 
     return ttl;
   }
@@ -53,6 +99,60 @@ export class TTLGenerator {
    */
   generateNamespaces() {
     return TTL_NAMESPACES;
+  }
+
+  /**
+   * Generate section header comment
+   * @param {string} title - Section title
+   * @returns {string} Formatted header comment
+   */
+  generateSectionHeader(title) {
+    return `# ========================================\n# ${title}\n# ========================================\n\n`;
+  }
+
+  /**
+   * Check if temporal rules exist
+   * @returns {boolean}
+   */
+  hasTemporalRules() {
+    return this.temporalRules.some(
+      (rule) =>
+        rule.uri ||
+        rule.extends ||
+        rule.identifier ||
+        rule.title ||
+        rule.validFrom ||
+        rule.validUntil ||
+        rule.confidenceLevel ||
+        rule.description
+    );
+  }
+
+  /**
+   * Check if parameters exist
+   * @returns {boolean}
+   */
+  hasParameters() {
+    return this.parameters.some((param) => param.notation || param.value || param.label);
+  }
+
+  /**
+   * Check if CPRMV rules exist
+   * @returns {boolean}
+   */
+  hasCprmvRules() {
+    return this.cprmvRules.some((rule) => rule.ruleId || rule.rulesetId || rule.definition);
+  }
+
+  /**
+   * Check if DMN data exists
+   * @returns {boolean}
+   */
+  hasDMN() {
+    return (
+      (this.dmnData.isImported && this.dmnData.importedDmnBlocks) ||
+      (this.dmnData.fileName && this.dmnData.content)
+    );
   }
 
   /**
@@ -444,6 +544,81 @@ export class TTLGenerator {
   }
 
   /**
+   * Strip DMN section headers from imported blocks
+   * Only removes the section header block, preserves custom comments
+   * @param {string} dmnBlocks - Raw DMN TTL blocks
+   * @returns {string} DMN blocks without section header
+   */
+  stripDmnHeaders(dmnBlocks) {
+    const lines = dmnBlocks.split('\n');
+    let inHeader = false;
+    let headerLineCount = 0;
+    const cleanedLines = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      // Detect start of section header (line with many equals signs)
+      if (trimmed.startsWith('#') && trimmed.includes('====')) {
+        inHeader = true;
+        headerLineCount = 0;
+        continue;
+      }
+
+      // If we're in a header, count lines
+      if (inHeader) {
+        headerLineCount++;
+
+        // Section headers have this pattern:
+        // Line 1: # ================
+        // Line 2: # DMN Decision Model (or similar)
+        // Line 3: # ================
+        // Line 4: (empty line)
+
+        if (headerLineCount === 1) {
+          // This is the title line (e.g., "# DMN Decision Model")
+          // Check if it's a DMN-related title
+          if (trimmed.startsWith('# DMN') || trimmed.includes('Preserved')) {
+            continue; // Skip this line
+          } else {
+            // Not a DMN header, keep it as a custom comment
+            inHeader = false;
+            cleanedLines.push(line);
+          }
+        } else if (headerLineCount === 2) {
+          // This should be the closing equals line
+          if (trimmed.startsWith('#') && trimmed.includes('====')) {
+            continue; // Skip this line
+          } else {
+            // Unexpected, keep the line
+            inHeader = false;
+            cleanedLines.push(line);
+          }
+        } else if (headerLineCount === 3 && trimmed === '') {
+          // Empty line after header, skip it
+          inHeader = false;
+          continue;
+        } else {
+          // Something unexpected, stop treating as header
+          inHeader = false;
+          cleanedLines.push(line);
+        }
+      } else {
+        // Not in header, keep the line (including custom comments)
+        cleanedLines.push(line);
+      }
+    }
+
+    // Remove any leading empty lines
+    while (cleanedLines.length > 0 && cleanedLines[0].trim() === '') {
+      cleanedLines.shift();
+    }
+
+    return cleanedLines.join('\n');
+  }
+
+  /**
    * Generate DMN section
    * Handles both imported (preserved) and newly created DMN
    * @returns {string} DMN TTL
@@ -451,7 +626,9 @@ export class TTLGenerator {
   generateDmnSection() {
     // Option 3: Imported DMN (preserved blocks)
     if (this.dmnData.isImported && this.dmnData.importedDmnBlocks) {
-      return this.dmnData.importedDmnBlocks;
+      // Strip any existing headers from preserved blocks
+      // The header will be added by generate() method
+      return this.stripDmnHeaders(this.dmnData.importedDmnBlocks);
     }
 
     // Regular DMN: newly created in DMN tab
