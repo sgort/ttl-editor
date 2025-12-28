@@ -90,7 +90,7 @@ export const useEditorState = () => {
       isImported: false,
     });
     setIknowMappingConfig({ mappings: {} });
-    setAvailableIKnowMappings([]);
+    setAvailableIKnowMappings(iknowMappings);
   };
 
   return {

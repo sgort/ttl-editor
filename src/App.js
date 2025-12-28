@@ -184,6 +184,9 @@ function App() {
         setCost(parsed.cost);
         setOutput(parsed.output);
 
+        // Reset iKnow config on import
+        setIknowMappingConfig({ mappings: {} });
+
         // Handle DMN preservation
         if (parsed.hasDmnData && parsed.importedDmnBlocks) {
           setDmnData({

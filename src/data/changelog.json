@@ -14,7 +14,8 @@
           "items": [
             "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource",
             "Clean empty state by default with only the + button for Rules, Parameter and CPRMV tabs",
-            "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled."
+            "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled.",
+            "iKnow Mappings Bug: Fixed availability after Clear All / Import"
           ]
         },
         {
