@@ -11,6 +11,11 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
 
+
+# ============================================================
+#  Public Service
+# ============================================================
+
 <https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
     dct:identifier "aow-leeftijd" ;
     dct:title "Bepaling leeftijd AOW"@nl ;
@@ -21,13 +26,25 @@
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
     cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
     cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
+    cv:hasCost <https://regels.overheid.nl/costs/cost-001> ;
+    cpsv:produces <https://regels.overheid.nl/outputs/output-01> ;
     cprmv:hasDecisionModel <https://regels.overheid.nl/services/aow-leeftijd/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
 
 <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
     dct:identifier "https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank" ;
     skos:prefLabel "Sociale Verzekeringsbank"@nl ;
     foaf:homepage <https://www.svb.nl> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
 
 <https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
     dct:identifier "BWBR0002221" ;
@@ -36,25 +53,45 @@
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
 
 
-# ========================================
-# DMN Decision Model
-# ========================================
+# ============================================================
+#  Cost
+# ============================================================
 
-# DMN Decision Model
+<https://regels.overheid.nl/costs/cost-001> a cv:Cost ;
+    dct:identifier "cost-001" ;
+    cv:value "10" ;
+    cv:currency "EUR" ;
+    dct:description "Test Service Cost Description"@nl  .
+
+
+# ============================================================
+#  Output
+# ============================================================
+
+<https://regels.overheid.nl/outputs/output-01> a cv:Output ;
+    dct:identifier "output-01" ;
+    dct:title "20"@nl ;
+    dct:description "Test Service Output Description"@nl ;
+    dct:type <Physical device>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
 <https://regels.overheid.nl/services/aow-leeftijd/dmn> a cprmv:DecisionModel ;
     dct:identifier "RONL_BerekenLeeftijden" ;
     dct:title "RONL_BerekenLeeftijden_CPRMV.dmn"@nl ;
     dct:format "application/dmn+xml" ;
     dct:source <https://regels.overheid.nl/services/aow-leeftijd/dmn/RONL_BerekenLeeftijden_CPRMV.dmn> ;
-    dct:created "2025-12-23T12:33:23.482Z"^^xsd:dateTime ;
-    cprmv:deploymentId "92123f0f-dffb-11f0-a2f7-82ff4494b5e4" ;
+    dct:created "2025-12-29T11:47:58.528Z"^^xsd:dateTime ;
+    cprmv:deploymentId "389dd20f-e4ac-11f0-a5a4-3a5e81cd33b0" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
     ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/RONL_BerekenLeeftijden/evaluate> ;
-    cprmv:lastTested "2025-12-23T12:33:24.893Z"^^xsd:dateTime ;
+    cprmv:lastTested "2025-12-29T11:48:11.461Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
-# Required Inputs
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/1> a cpsv:Input ;
     dct:identifier "dagVanAanvraag" ;
     dct:title "dagVanAanvraag"@nl ;
@@ -76,7 +113,6 @@
     schema:value "2025-01-01" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
-# Rules extracted from DMN
 
 <https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_withPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "DecisionRule_withPartner_bereken" ;

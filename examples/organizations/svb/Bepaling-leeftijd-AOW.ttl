@@ -11,6 +11,11 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
 
+
+# ============================================================
+#  Public Service
+# ============================================================
+
 <https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
     dct:identifier "aow-leeftijd" ;
     dct:title "Bepaling leeftijd AOW"@nl ;
@@ -20,7 +25,14 @@
     dcat:keyword "AOW"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
     cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
-    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221>  .
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
+    cv:hasCost <https://regels.overheid.nl/costs/cost-001> ;
+    cpsv:produces <https://regels.overheid.nl/outputs/output-01>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
 
 <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
     dct:identifier "https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank" ;
@@ -28,9 +40,36 @@
     foaf:homepage <https://www.svb.nl> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD>  .
 
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
 <https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
     dct:identifier "BWBR0002221" ;
     dct:title "Algemene Ouderdomswet"@nl ;
     dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
+
+
+# ============================================================
+#  Cost
+# ============================================================
+
+<https://regels.overheid.nl/costs/cost-001> a cv:Cost ;
+    dct:identifier "cost-001" ;
+    cv:value "10" ;
+    cv:currency "EUR" ;
+    dct:description "Test Service Cost Description"@nl  .
+
+
+# ============================================================
+#  Output
+# ============================================================
+
+<https://regels.overheid.nl/outputs/output-01> a cv:Output ;
+    dct:identifier "output-01" ;
+    dct:title "20"@nl ;
+    dct:description "Test Service Output Description"@nl ;
+    dct:type <Physical device>  .
 

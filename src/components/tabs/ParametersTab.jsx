@@ -33,7 +33,7 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
           {/* Parameter Header */}
           <div className="flex justify-between items-center mb-3">
             <h4 className="font-semibold text-gray-700">Parameter {index + 1}</h4>
-            {parameters.length > 1 && (
+            {parameters.length >= 1 && (
               <button
                 onClick={() => removeParameter(param.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"

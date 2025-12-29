@@ -47,7 +47,6 @@ export function generateDMNTTL(dmnData, serviceUri) {
   const sections = [];
 
   // DMN Resource
-  sections.push(`# DMN Decision Model`);
   sections.push(`<${dmnUri}> a cprmv:DecisionModel ;`);
   sections.push(`    dct:identifier "${dmnData.decisionKey || 'unknown'}" ;`);
   sections.push(`    dct:title "${dmnData.fileName}"@nl ;`);
@@ -82,7 +81,6 @@ export function generateDMNTTL(dmnData, serviceUri) {
 
   // Add required inputs if test data is available
   if (dmnData.lastTestResult) {
-    sections.push(`# Required Inputs`);
     const inputs = extractInputsFromTestResult(dmnData);
     inputs.forEach((input, index) => {
       const inputUri = `${dmnUri}/input/${index + 1}`;
@@ -223,7 +221,7 @@ export function generateRulesTTL(rules, serviceUri) {
   const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
 
   const sections = [];
-  sections.push('# Rules extracted from DMN');
+  // Sub-header removed
   sections.push('');
 
   rules.forEach((rule) => {
@@ -279,11 +277,7 @@ export function generateCompleteDMNSection(dmnData, serviceUri) {
 
   const sections = [];
 
-  sections.push('');
-  sections.push('# ========================================');
-  sections.push('# DMN Decision Model');
-  sections.push('# ========================================');
-  sections.push('');
+  // Header is now added by ttlGenerator.js
 
   // Add DMN metadata
   sections.push(generateDMNTTL(dmnData, cleanServiceUri));

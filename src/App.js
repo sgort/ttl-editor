@@ -15,7 +15,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import {
@@ -29,221 +29,96 @@ import {
   RulesTab,
   ServiceTab,
 } from './components/tabs';
-import { iknowMappings } from './config/iknow-mappings';
-import parseTTLEnhanced from './parseTTL.enhanced';
-import {
-  buildResourceUri,
-  DEFAULT_COST,
-  DEFAULT_CPRMV_RULE,
-  DEFAULT_LEGAL_RESOURCE,
-  DEFAULT_ORGANIZATION,
-  DEFAULT_OUTPUT,
-  DEFAULT_PARAMETER,
-  DEFAULT_SERVICE,
-  DEFAULT_TEMPORAL_RULE,
-  encodeURIComponentTTL,
-  escapeTTLString,
-  sanitizeFilename,
-  TTL_NAMESPACES,
-  validateForm,
-} from './utils';
-import {
-  generateCompleteDMNSection,
-  sanitizeServiceIdentifier,
-  validateDMNData,
-} from './utils/dmnHelpers';
+import { useEditorState } from './hooks/useEditorState';
+import { sanitizeFilename, validateForm } from './utils';
+import { validateDMNData } from './utils/dmnHelpers';
+import { handleTTLImport } from './utils/importHandler';
+import { generateTTL } from './utils/ttlGenerator';
 
 function App() {
+  // Set states
+  const {
+    service,
+    setService,
+    organization,
+    setOrganization,
+    legalResource,
+    setLegalResource,
+    temporalRules,
+    setTemporalRules,
+    parameters,
+    setParameters,
+    cprmvRules,
+    setCprmvRules,
+    cost,
+    setCost,
+    output,
+    setOutput,
+    dmnData,
+    setDmnData,
+    iknowMappingConfig,
+    setIknowMappingConfig, // ← used by IKnowMappingTab
+    availableIKnowMappings, // ← passed to IKnowMappingTab
+    // setAvailableIKnowMappings! ← Not needed in App.js
+    clearAllData,
+  } = useEditorState();
+
+  // These are UI-specific, not moved to hook
   const [activeTab, setActiveTab] = useState('service');
+  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
     message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const [showPreviewPanel, setShowPreviewPanel] = useState(false);
 
-  // Service state
-  const [service, setService] = useState({
-    ...DEFAULT_SERVICE,
-    customSector: '',
+  // Helper to build state object for TTL generator
+  const buildStateForTTL = () => ({
+    service, // ← Use destructured variable
+    organization, // ← Use destructured variable
+    legalResource,
+    temporalRules,
+    parameters,
+    cprmvRules,
+    cost,
+    output,
+    dmnData,
   });
-  const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
-  const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
-  const [temporalRules, setTemporalRules] = useState([DEFAULT_TEMPORAL_RULE]);
-  const [parameters, setParameters] = useState([DEFAULT_PARAMETER]);
-  const [cprmvRules, setCprmvRules] = useState([DEFAULT_CPRMV_RULE]);
-  const [cost, setCost] = useState(DEFAULT_COST);
-  const [output, setOutput] = useState(DEFAULT_OUTPUT);
-  // DMN state
-  const [dmnData, setDmnData] = useState({
-    fileName: '',
-    content: '',
-    decisionKey: '',
-    deployed: false,
-    deploymentId: null,
-    deployedAt: null,
-    apiEndpoint: '',
-    lastTestResult: null,
-    lastTestTimestamp: null,
-    testBody: null,
-    // DMN preservation
-    importedDmnBlocks: null, // Raw TTL blocks (string)
-    isImported: false, // Flag to disable DMN tab
-  });
-  const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
-  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
 
-  // Load available iKnow mapping configurations on mount
-  useEffect(() => {
-    setAvailableIKnowMappings(iknowMappings);
-  }, []);
+  // Helper to get TTL content
+  const getTTLContent = () => generateTTL(buildStateForTTL());
 
-  // eslint-disable-next-line no-unused-vars
-  const loadAvailableIKnowMappings = async () => {
-    try {
-      const mappings = [];
-      setAvailableIKnowMappings(mappings.map((m) => m.default));
-    } catch (error) {
-      console.error('Failed to load iKnow mappings:', error);
-      // Fail silently - mappings are optional
-    }
+  const downloadTTL = () => {
+    const ttl = getTTLContent();
+    const blob = new Blob([ttl], { type: 'text/turtle' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = sanitizeFilename(service.name || service.identifier || 'service') + '.ttl';
+    //                                 ↑ Direct reference
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
-  // Parse TTL file and extract values (enhanced with vocabulary config)
-  const parseTTL = (ttlContent) => {
-    const parsed = parseTTLEnhanced(ttlContent);
-
-    // Ensure all values are strings (never undefined/null)
-    return {
-      service: {
-        identifier: parsed.service?.identifier || '',
-        name: parsed.service?.name || '',
-        description: parsed.service?.description || '',
-        thematicArea: parsed.service?.thematicArea || '',
-        sector: parsed.service?.sector || '',
-        keywords: parsed.service?.keywords || '',
-        language: parsed.service?.language || 'nl',
-      },
-      organization: {
-        identifier: parsed.organization?.identifier || '',
-        name: parsed.organization?.name || '',
-        homepage: parsed.organization?.homepage || '',
-        spatial: parsed.organization?.spatial || '',
-      },
-      legalResource: {
-        bwbId: parsed.legalResource?.bwbId || '',
-        version: parsed.legalResource?.version || '',
-        title: parsed.legalResource?.title || '',
-        description: parsed.legalResource?.description || '',
-      },
-      temporalRules: (parsed.temporalRules || []).map((rule) => ({
-        ...rule,
-        identifier: rule.identifier || '',
-        title: rule.title || '',
-      })),
-      parameters: parsed.parameters || [],
-      cprmvRules: parsed.cprmvRules || [],
-      cost: {
-        identifier: parsed.cost?.identifier || '',
-        value: parsed.cost?.value || '',
-        currency: parsed.cost?.currency || 'EUR',
-        description: parsed.cost?.description || '',
-      },
-      output: {
-        identifier: parsed.output?.identifier || '',
-        name: parsed.output?.name || '',
-        description: parsed.output?.description || '',
-        type: parsed.output?.type || '',
-      },
-
-      // Pass through DMN preservation fields (Option 3)
-      hasDmnData: parsed.hasDmnData || false,
-      importedDmnBlocks: parsed.importedDmnBlocks || null,
-    };
-  };
-
-  // Handle file import
   const handleImportFile = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (!file.name.endsWith('.ttl')) {
-      setImportStatus({
-        show: true,
-        success: false,
-        message: 'Please select a .ttl file',
-      });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const content = e.target.result;
-        const parsed = parseTTL(content);
-
-        setService(parsed.service);
-        setOrganization(parsed.organization);
-        setLegalResource(parsed.legalResource);
-        setTemporalRules(parsed.temporalRules);
-        setParameters(parsed.parameters);
-        setCprmvRules(parsed.cprmvRules);
-        setCost(parsed.cost);
-        setOutput(parsed.output);
-
-        // Handle DMN preservation
-        if (parsed.hasDmnData && parsed.importedDmnBlocks) {
-          setDmnData({
-            fileName: '',
-            content: '',
-            decisionKey: '',
-            deployed: false,
-            deploymentId: null,
-            deployedAt: null,
-            apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
-            lastTestResult: null,
-            lastTestTimestamp: null,
-            testBody: null,
-            importedDmnBlocks: parsed.importedDmnBlocks, // Store raw TTL
-            isImported: true, // Flag as imported
-          });
-
-          setImportStatus({
-            show: true,
-            success: true,
-            message: 'TTL imported successfully. DMN data preserved but cannot be edited.',
-          });
-          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-        } else {
-          // No DMN data in import - keep existing dmnData or reset
-          setImportStatus({
-            show: true,
-            success: true,
-            message: 'TTL imported successfully',
-          });
-          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-        }
-      } catch (error) {
-        setImportStatus({
-          show: true,
-          success: false,
-          message: `Import error: ${error.message}`,
-        });
-      }
+    const setters = {
+      setService,
+      setOrganization,
+      setLegalResource,
+      setTemporalRules,
+      setParameters,
+      setCprmvRules,
+      setCost,
+      setOutput,
+      setDmnData,
+      setIknowMappingConfig,
     };
 
-    reader.onerror = () => {
-      setImportStatus({
-        show: true,
-        success: false,
-        message: 'Error reading file. Please try again.',
-      });
-    };
+    handleTTLImport(event, setters, setImportStatus);
 
-    reader.readAsText(file);
-    event.target.value = '';
+    // Reset the file input so the same file can be imported again
+    event.target.value = null;
   };
 
   // Handle iKnow XML import with mapping
@@ -439,32 +314,10 @@ function App() {
 
   // Clear all data
   const handleClearAll = () => {
-    setService(DEFAULT_SERVICE);
-    setOrganization(DEFAULT_ORGANIZATION);
-    setLegalResource(DEFAULT_LEGAL_RESOURCE);
-    setTemporalRules([{ ...DEFAULT_TEMPORAL_RULE, id: 1 }]);
-    setCprmvRules([{ ...DEFAULT_CPRMV_RULE, id: 1 }]);
-    setParameters([{ ...DEFAULT_PARAMETER, id: 1 }]);
-    setCost(DEFAULT_COST);
-    setOutput(DEFAULT_OUTPUT);
+    // 1. Clear data (delegated to hook)
+    clearAllData();
 
-    // Reset DMN state - Include Option Import DMN fields
-    setDmnData({
-      fileName: '',
-      content: '',
-      decisionKey: '',
-      deployed: false,
-      deploymentId: null,
-      deployedAt: null,
-      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
-      lastTestResult: null,
-      lastTestTimestamp: null,
-      testBody: null,
-      importedDmnBlocks: null, // Clear imported DMN
-      isImported: false, // Clear import flag
-    });
-
-    // Close dialog and show success message
+    // 2. UI updates (stays in App.js)
     setShowClearDialog(false);
     setImportStatus({
       show: true,
@@ -472,232 +325,7 @@ function App() {
       message: 'All fields have been cleared successfully!',
     });
     setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-
-    // Switch to service tab
     setActiveTab('service');
-  };
-
-  // Generate TTL output
-  const generateTTL = () => {
-    const sanitizedIdentifier = sanitizeServiceIdentifier(service.identifier) || 'unknown-service';
-    const serviceUri = `https://regels.overheid.nl/services/${sanitizedIdentifier}`;
-
-    let ttl = TTL_NAMESPACES;
-
-    // Service
-    if (service.identifier) {
-      ttl += `<${serviceUri}> a cpsv:PublicService ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(sanitizedIdentifier)}" ;\n`;
-      if (service.name)
-        ttl += `    dct:title "${escapeTTLString(service.name)}"@${service.language} ;\n`;
-      if (service.description)
-        ttl += `    dct:description "${escapeTTLString(service.description)}"@${
-          service.language
-        } ;\n`;
-      if (service.thematicArea) ttl += `    cv:thematicArea <${service.thematicArea}> ;\n`;
-      if (service.sector && service.sector !== 'custom') {
-        ttl += `    cv:sector <${service.sector}> ;\n`;
-      } else if (service.sector === 'custom' && service.customSector) {
-        ttl += `    cv:sector <${service.customSector}> ;\n`;
-      }
-      if (service.keywords)
-        ttl += `    dcat:keyword "${escapeTTLString(service.keywords)}"@${service.language} ;\n`;
-      if (service.language) {
-        const languageUri = `https://publications.europa.eu/resource/authority/language/${service.language.toUpperCase()}`;
-        ttl += `    dct:language <${languageUri}> ;\n`;
-      }
-
-      if (organization.identifier) {
-        const orgUri = buildResourceUri(
-          organization.identifier,
-          'https://regels.overheid.nl/organizations/'
-        );
-        ttl += `    cv:hasCompetentAuthority <${orgUri}> ;\n`;
-      }
-
-      if (legalResource.bwbId) {
-        const lowerBwbId = legalResource.bwbId.toLowerCase();
-        const legalUri =
-          lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
-            ? legalResource.bwbId
-            : `https://wetten.overheid.nl/${legalResource.bwbId}`;
-        ttl += `    cv:hasLegalResource <${legalUri}> ;\n`;
-      }
-
-      if (cost.identifier) {
-        const encodedCostId = encodeURIComponent(cost.identifier);
-        ttl += `    cv:hasCost <https://regels.overheid.nl/costs/${encodedCostId}> ;\n`;
-      }
-
-      if (output.identifier) {
-        const encodedOutputId = encodeURIComponent(output.identifier);
-        ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
-      }
-
-      // Add DMN reference if exists
-      if (dmnData && dmnData.fileName) {
-        ttl += `    cprmv:hasDecisionModel <${serviceUri}/dmn> ;\n`;
-      }
-
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    }
-
-    // Organization
-    if (organization.identifier) {
-      const orgUri = buildResourceUri(
-        organization.identifier,
-        'https://regels.overheid.nl/organizations/'
-      );
-      ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(organization.identifier)}" ;\n`;
-      if (organization.name)
-        ttl += `    skos:prefLabel "${escapeTTLString(organization.name)}"@nl ;\n`;
-      if (organization.homepage) ttl += `    foaf:homepage <${organization.homepage}> ;\n`;
-      if (organization.spatial) ttl += `    cv:spatial <${organization.spatial}> ;\n`; // âž• ADD
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    }
-
-    // Legal Resource
-    if (legalResource.bwbId) {
-      // Support both full URIs and plain BWB IDs (case-insensitive check)
-      const lowerBwbId = legalResource.bwbId.toLowerCase();
-      const legalUri =
-        lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
-          ? legalResource.bwbId
-          : `https://wetten.overheid.nl/${legalResource.bwbId}`;
-
-      ttl += `<${legalUri}> a eli:LegalResource ;\n`;
-      // Extract just the BWB ID portion if it's a full URI
-      const bwbIdOnly = legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
-      ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
-      if (legalResource.title)
-        ttl += `    dct:title "${escapeTTLString(legalResource.title)}"@nl ;\n`;
-      if (legalResource.description)
-        ttl += `    dct:description "${escapeTTLString(legalResource.description)}"@nl ;\n`;
-      if (legalResource.version) {
-        ttl += `    eli:is_realized_by <${legalUri}/${legalResource.version}> ;\n`;
-      }
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    }
-
-    // Temporal Rules
-    temporalRules.forEach((rule, index) => {
-      if (rule.uri || rule.extends) {
-        const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
-        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
-        // Add explicit relationship to service
-        ttl += `    cpsv:implements <${serviceUri}> ;\n`;
-        if (rule.identifier) ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
-        if (rule.title) ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
-        if (rule.extends) {
-          const extendsUri = rule.extends.startsWith('http')
-            ? rule.extends
-            : `https://regels.overheid.nl/rules/${encodeURIComponentTTL(rule.extends)}`;
-          ttl += `    ronl:extends <${extendsUri}> ;\n`;
-        }
-        if (rule.validFrom) ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
-        if (rule.validUntil) ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
-        if (rule.confidenceLevel)
-          ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
-        if (rule.description)
-          ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
-        ttl = ttl.slice(0, -2) + ' .\n\n';
-      }
-    });
-
-    // Parameters
-    parameters.forEach((param, index) => {
-      if (param.notation && param.value) {
-        const paramUri = `https://regels.overheid.nl/parameters/${encodeURIComponent(
-          service.identifier || 'service'
-        )}/param-${index + 1}`;
-        ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
-        if (param.label) ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
-        if (param.notation) ttl += `    skos:notation "${escapeTTLString(param.notation)}" ;\n`;
-        if (param.value) ttl += `    schema:value "${param.value}"^^xsd:decimal ;\n`;
-        if (param.unit) ttl += `    schema:unitCode "${param.unit}" ;\n`;
-        if (param.description)
-          ttl += `    dct:description "${escapeTTLString(param.description)}"@nl ;\n`;
-        if (param.validFrom) ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
-        if (param.validUntil) ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
-        ttl = ttl.slice(0, -2) + ' .\n\n';
-      }
-    });
-
-    // Cost
-    if (cost.identifier) {
-      const encodedCostId = encodeURIComponent(cost.identifier);
-      ttl += `<https://regels.overheid.nl/costs/${encodedCostId}> a cv:Cost ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(cost.identifier)}" ;\n`;
-      if (cost.value) ttl += `    cv:value "${escapeTTLString(cost.value)}" ;\n`;
-      if (cost.currency) ttl += `    cv:currency "${escapeTTLString(cost.currency)}" ;\n`;
-      if (cost.description)
-        ttl += `    dct:description "${escapeTTLString(cost.description)}"@nl ;\n`;
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    }
-
-    // Output
-    if (output.identifier) {
-      const encodedOutputId = encodeURIComponent(output.identifier);
-      ttl += `<https://regels.overheid.nl/outputs/${encodedOutputId}> a cv:Output ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(output.identifier)}" ;\n`;
-      if (output.name) ttl += `    dct:title "${escapeTTLString(output.name)}"@nl ;\n`;
-      if (output.description)
-        ttl += `    dct:description "${escapeTTLString(output.description)}"@nl ;\n`;
-      if (output.type) ttl += `    dct:type <${output.type}> ;\n`;
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    }
-
-    // CPRMV Rules
-    cprmvRules.forEach((rule) => {
-      // All fields are mandatory
-      if (
-        rule.ruleId &&
-        rule.rulesetId &&
-        rule.definition &&
-        rule.situatie &&
-        rule.norm &&
-        rule.ruleIdPath
-      ) {
-        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rule.rulesetId)}_${encodeURIComponentTTL(rule.ruleId)}`;
-        ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
-        ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
-        ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
-        ttl += `    cprmv:definition "${escapeTTLString(rule.definition)}"@nl ;\n`;
-        ttl += `    cprmv:situatie "${escapeTTLString(rule.situatie)}"@nl ;\n`;
-        ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
-        ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
-
-        ttl = ttl.slice(0, -2) + ' .\n\n';
-      }
-    });
-
-    // DMN section - Handle both imported and newly created DMN
-    if (dmnData.isImported && dmnData.importedDmnBlocks) {
-      // Import: Append preserved DMN blocks
-      ttl += dmnData.importedDmnBlocks;
-    } else if (dmnData && dmnData.fileName && dmnData.content) {
-      // Regular DMN: newly created in DMN tab
-      ttl += generateCompleteDMNSection(dmnData, serviceUri);
-    }
-
-    return ttl;
-  };
-
-  // Download TTL
-  const downloadTTL = () => {
-    const ttl = generateTTL();
-    const blob = new Blob([ttl], { type: 'text/turtle' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    const filename = sanitizeFilename(service.identifier);
-    a.download = `${filename}.ttl`;
-
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   // Validate form
@@ -968,7 +596,7 @@ function App() {
         {/* RIGHT SIDE: Live Preview Panel (conditionally rendered) */}
         {showPreviewPanel && (
           <div className="fixed right-0 top-0 h-screen w-[500px] z-50">
-            <PreviewPanel ttlContent={generateTTL()} />
+            <PreviewPanel ttlContent={getTTLContent()} />
           </div>
         )}
       </div>

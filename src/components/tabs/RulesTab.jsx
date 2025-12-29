@@ -33,7 +33,7 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
           {/* Rule Header */}
           <div className="flex justify-between items-center mb-3">
             <h4 className="font-semibold text-gray-700">Temporal Rule {index + 1}</h4>
-            {temporalRules.length > 1 && (
+            {temporalRules.length >= 1 && (
               <button
                 onClick={() => removeTemporalRule(rule.id)}
                 className="text-red-600 hover:text-red-800 transition-colors"

@@ -5,14 +5,27 @@
       "status": "Enhancement",
       "statusColor": "purple",
       "borderColor": "purple",
-      "date": "December X, 2025",
+      "date": "December 29, 2025",
       "sections": [
+        {
+          "title": "Further Modularization",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Isolated State Management, Data clearing only, UI logic remains in App",
+            "Extracted TTL Generation from App",
+            "Centralized import logic for TTL files"
+          ]
+        },
         {
           "title": "Bug Fixes",
           "icon": "🐛",
           "iconColor": "blue",
           "items": [
-            "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource"
+            "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource",
+            "Clean empty state by default with only the + button for Rules, Parameter and CPRMV tabs",
+            "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled.",
+            "iKnow Mappings Bug: Fixed availability after Clear All / Import"
           ]
         },
         {
