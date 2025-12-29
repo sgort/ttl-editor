@@ -30,9 +30,9 @@ import {
   ServiceTab,
 } from './components/tabs';
 import { useEditorState } from './hooks/useEditorState';
-import parseTTLEnhanced from './parseTTL.enhanced';
 import { sanitizeFilename, validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
+import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
 
 function App() {
@@ -101,143 +101,24 @@ function App() {
     URL.revokeObjectURL(url);
   };
 
-  // Parse TTL file and extract values (enhanced with vocabulary config)
-  const parseTTL = (ttlContent) => {
-    const parsed = parseTTLEnhanced(ttlContent);
-
-    // Ensure all values are strings (never undefined/null)
-    return {
-      service: {
-        identifier: parsed.service?.identifier || '',
-        name: parsed.service?.name || '',
-        description: parsed.service?.description || '',
-        thematicArea: parsed.service?.thematicArea || '',
-        sector: parsed.service?.sector || '',
-        keywords: parsed.service?.keywords || '',
-        language: parsed.service?.language || 'nl',
-      },
-      organization: {
-        identifier: parsed.organization?.identifier || '',
-        name: parsed.organization?.name || '',
-        homepage: parsed.organization?.homepage || '',
-        spatial: parsed.organization?.spatial || '',
-      },
-      legalResource: {
-        bwbId: parsed.legalResource?.bwbId || '',
-        version: parsed.legalResource?.version || '',
-        title: parsed.legalResource?.title || '',
-        description: parsed.legalResource?.description || '',
-      },
-      temporalRules: (parsed.temporalRules || []).map((rule) => ({
-        ...rule,
-        identifier: rule.identifier || '',
-        title: rule.title || '',
-      })),
-      parameters: parsed.parameters || [],
-      cprmvRules: parsed.cprmvRules || [],
-      cost: {
-        identifier: parsed.cost?.identifier || '',
-        value: parsed.cost?.value || '',
-        currency: parsed.cost?.currency || 'EUR',
-        description: parsed.cost?.description || '',
-      },
-      output: {
-        identifier: parsed.output?.identifier || '',
-        name: parsed.output?.name || '',
-        description: parsed.output?.description || '',
-        type: parsed.output?.type || '',
-      },
-
-      // Pass through DMN preservation fields (Option 3)
-      hasDmnData: parsed.hasDmnData || false,
-      importedDmnBlocks: parsed.importedDmnBlocks || null,
-    };
-  };
-
-  // Handle file import
   const handleImportFile = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (!file.name.endsWith('.ttl')) {
-      setImportStatus({
-        show: true,
-        success: false,
-        message: 'Please select a .ttl file',
-      });
-      setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const content = e.target.result;
-        const parsed = parseTTL(content);
-
-        setService(parsed.service);
-        setOrganization(parsed.organization);
-        setLegalResource(parsed.legalResource);
-        setTemporalRules(parsed.temporalRules);
-        setParameters(parsed.parameters);
-        setCprmvRules(parsed.cprmvRules);
-        setCost(parsed.cost);
-        setOutput(parsed.output);
-
-        // Reset iKnow config on import
-        setIknowMappingConfig({ mappings: {} });
-
-        // Handle DMN preservation
-        if (parsed.hasDmnData && parsed.importedDmnBlocks) {
-          setDmnData({
-            fileName: '',
-            content: '',
-            decisionKey: '',
-            deployed: false,
-            deploymentId: null,
-            deployedAt: null,
-            apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
-            lastTestResult: null,
-            lastTestTimestamp: null,
-            testBody: null,
-            importedDmnBlocks: parsed.importedDmnBlocks, // Store raw TTL
-            isImported: true, // Flag as imported
-          });
-
-          setImportStatus({
-            show: true,
-            success: true,
-            message: 'TTL imported successfully. DMN data preserved but cannot be edited.',
-          });
-          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-        } else {
-          // No DMN data in import - keep existing dmnData or reset
-          setImportStatus({
-            show: true,
-            success: true,
-            message: 'TTL imported successfully',
-          });
-          setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 4000);
-        }
-      } catch (error) {
-        setImportStatus({
-          show: true,
-          success: false,
-          message: `Import error: ${error.message}`,
-        });
-      }
+    const setters = {
+      setService,
+      setOrganization,
+      setLegalResource,
+      setTemporalRules,
+      setParameters,
+      setCprmvRules,
+      setCost,
+      setOutput,
+      setDmnData,
+      setIknowMappingConfig,
     };
 
-    reader.onerror = () => {
-      setImportStatus({
-        show: true,
-        success: false,
-        message: 'Error reading file. Please try again.',
-      });
-    };
+    handleTTLImport(event, setters, setImportStatus);
 
-    reader.readAsText(file);
-    event.target.value = '';
+    // Reset the file input so the same file can be imported again
+    event.target.value = null;
   };
 
   // Handle iKnow XML import with mapping

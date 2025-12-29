@@ -5,8 +5,18 @@
       "status": "Enhancement",
       "statusColor": "purple",
       "borderColor": "purple",
-      "date": "December 25, 2025",
+      "date": "December 29, 2025",
       "sections": [
+        {
+          "title": "Further Modularization",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Isolated State Management, Data clearing only, UI logic remains in App",
+            "Extracted TTL Generation from App",
+            "Centralized import logic for TTL files"
+          ]
+        },
         {
           "title": "Bug Fixes",
           "icon": "🐛",
