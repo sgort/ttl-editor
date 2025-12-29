@@ -29,6 +29,11 @@ import {
   RulesTab,
   ServiceTab,
 } from './components/tabs';
+import {
+  useCprmvRulesHandlers,
+  useParametersHandlers,
+  useTemporalRulesHandlers,
+} from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
@@ -72,6 +77,25 @@ function App() {
     message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
+
+  // ADD: Array handlers using custom hooks
+  const {
+    handleAdd: addTemporalRule,
+    handleUpdateField: updateTemporalRule,
+    handleRemove: removeTemporalRule,
+  } = useTemporalRulesHandlers(temporalRules, setTemporalRules);
+
+  const {
+    handleAdd: addParameter,
+    handleUpdateField: updateParameter,
+    handleRemove: removeParameter,
+  } = useParametersHandlers(parameters, setParameters);
+
+  const {
+    handleAdd: addCPRMVRule,
+    handleUpdateField: updateCPRMVRule,
+    handleRemove: removeCPRMVRule,
+  } = useCprmvRulesHandlers(cprmvRules, setCprmvRules);
 
   // Helper to build state object for TTL generator
   const buildStateForTTL = () => ({
@@ -159,89 +183,6 @@ function App() {
       });
       setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
     }
-  };
-
-  // Add parameter
-  const addParameter = () => {
-    setParameters([
-      ...parameters,
-      {
-        id: Date.now(),
-        notation: '',
-        label: '',
-        value: '',
-        unit: 'EUR',
-        description: '',
-        validFrom: '',
-        validUntil: '',
-      },
-    ]);
-  };
-
-  // Remove parameter
-  const removeParameter = (id) => {
-    setParameters(parameters.filter((param) => param.id !== id));
-  };
-
-  // Update parameter
-  const updateParameter = (id, field, value) => {
-    setParameters(
-      parameters.map((param) => (param.id === id ? { ...param, [field]: value } : param))
-    );
-  };
-
-  // Add temporal rule
-  const addTemporalRule = () => {
-    setTemporalRules([
-      ...temporalRules,
-      {
-        id: Date.now(),
-        identifier: '',
-        title: '',
-        uri: '',
-        extends: '',
-        validFrom: '',
-        validUntil: '',
-        confidenceLevel: 'high',
-        description: '',
-      },
-    ]);
-  };
-
-  // Remove temporal rule
-  const removeTemporalRule = (id) => {
-    setTemporalRules(temporalRules.filter((rule) => rule.id !== id));
-  };
-
-  // Update temporal rule
-  const updateTemporalRule = (id, field, value) => {
-    setTemporalRules(
-      temporalRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule))
-    );
-  };
-
-  // Add CPRMV rule
-  const addCPRMVRule = (initialData = null) => {
-    const newRule = {
-      id: Date.now(),
-      ruleId: initialData?.ruleId || '',
-      rulesetId: initialData?.rulesetId || '',
-      definition: initialData?.definition || '',
-      situatie: initialData?.situatie || '',
-      norm: initialData?.norm || '',
-      ruleIdPath: initialData?.ruleIdPath || '',
-    };
-    setCprmvRules([...cprmvRules, newRule]);
-  };
-
-  // Remove CPRMV rule
-  const removeCPRMVRule = (id) => {
-    setCprmvRules(cprmvRules.filter((rule) => rule.id !== id));
-  };
-
-  // Update CPRMV rule
-  const updateCPRMVRule = (id, field, value) => {
-    setCprmvRules(cprmvRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule)));
   };
 
   // Handle JSON import for CPRMV tab only
