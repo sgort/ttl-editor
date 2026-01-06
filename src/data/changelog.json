@@ -14,7 +14,8 @@
           "items": [
             "Isolated State Management, Data clearing only, UI logic remains in App",
             "Extracted TTL Generation from App",
-            "Centralized import logic for TTL files"
+            "Centralized import logic for TTL files",
+            "DRY code (Don't Repeat Yourself) adding Array Handlers"
           ]
         },
         {
@@ -25,7 +26,8 @@
             "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource",
             "Clean empty state by default with only the + button for Rules, Parameter and CPRMV tabs",
             "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled.",
-            "iKnow Mappings Bug: Fixed availability after Clear All / Import"
+            "iKnow Mappings Bug: Fixed availability after Clear All / Import",
+            "Fixed inconsistency adding Rules, Parameters and/or CPRMV"
           ]
         },
         {
