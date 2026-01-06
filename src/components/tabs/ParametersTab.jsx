@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from 'lucide-react';
+import { Database, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import { UNIT_OPTIONS } from '../../utils';
@@ -18,13 +18,30 @@ import { UNIT_OPTIONS } from '../../utils';
 const ParametersTab = ({ parameters, addParameter, removeParameter, updateParameter }) => {
   return (
     <div className="space-y-4">
-      {/* Information Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
-          <strong>Parameters</strong> are constant values used in calculations and conditions.
-          <br />
-          For example: income limits, asset thresholds, percentages of social assistance norms.
-        </p>
+      {/* RPP Architecture Banner */}
+      <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            <Database className="w-5 h-5 text-green-600 mt-0.5" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h3 className="font-bold text-green-900">Configuration Values (Parameters)</h3>
+              <span className="px-2 py-0.5 bg-green-600 text-white text-xs rounded-full font-medium">
+                RPP Layer: Parameters
+              </span>
+            </div>
+            <p className="text-sm text-green-700 leading-relaxed">
+              Configurable values that tune rule behavior without changing rule logic. Can be
+              adjusted per agency or context without legal or rule re-engineering. Enables regional
+              variation and pilot adjustments.
+            </p>
+            <p className="text-xs text-green-600 mt-2">
+              <strong>RPP Pattern:</strong> Rules reference Parameters → Parameters enable
+              flexibility → Adjustable without code changes
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Parameters List */}
