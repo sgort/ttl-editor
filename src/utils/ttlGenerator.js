@@ -226,7 +226,7 @@ export class TTLGenerator {
     }
 
     // DMN reference
-    if (this.dmnData && this.dmnData.fileName) {
+    if (this.hasDMN()) {
       ttl += `    cprmv:hasDecisionModel <${this.serviceUri}/dmn> ;\n`;
     }
 
@@ -253,7 +253,12 @@ export class TTLGenerator {
     );
 
     ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
-    ttl += `    dct:identifier "${escapeTTLString(this.organization.identifier)}" ;\n`;
+    // Extract just the ID part if it's a full URI
+    const orgId = this.organization.identifier.startsWith('http')
+      ? this.organization.identifier.split('/').pop()
+      : this.organization.identifier;
+
+    ttl += `    dct:identifier "${escapeTTLString(orgId)}" ;\n`;
 
     if (this.organization.name) {
       ttl += `    skos:prefLabel "${escapeTTLString(this.organization.name)}"@nl ;\n`;
