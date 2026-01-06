@@ -388,77 +388,90 @@ function App() {
                 'dmn',
                 'iknow-mapping',
                 'changelog',
-              ].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
-                    activeTab === tab
-                      ? 'bg-white text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                  }`}
-                >
-                  {tab === 'service' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <FileText size={18} />
-                      Service
-                    </span>
-                  )}
-                  {tab === 'organization' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Building2 size={18} />
-                      Organization
-                    </span>
-                  )}
-                  {tab === 'legal' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Scale size={18} />
-                      Legal
-                    </span>
-                  )}
-                  {tab === 'rules' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Clock size={18} />
-                      Rules
-                    </span>
-                  )}
-                  {tab === 'parameters' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Plus size={18} />
-                      Parameters
-                    </span>
-                  )}
-                  {tab === 'cprmv' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Database size={18} />
-                      CPRMV
-                    </span>
-                  )}
-                  {tab === 'dmn' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <FileUp size={18} />
-                      DMN
-                      {dmnData.isImported && (
-                        <span className="ml-2 px-2 py-0.5 bg-blue-800 text-white text-xs rounded font-medium">
-                          Imported
-                        </span>
-                      )}
-                    </span>
-                  )}
-                  {tab === 'iknow-mapping' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Upload size={18} />
-                      iKnow
-                    </span>
-                  )}
-                  {tab === 'changelog' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <History size={18} />
-                      Changelog
-                    </span>
-                  )}
-                </button>
-              ))}
+              ].map((tab) => {
+                // Determine active color based on RPP layer
+                let activeColor = 'bg-white text-gray-900 font-bold border-b-2 border-gray-900'; // default
+
+                if (tab === 'rules') {
+                  activeColor = 'bg-white text-blue-600 border-b-2 border-blue-600'; // Rules - Blue
+                } else if (tab === 'cprmv') {
+                  activeColor = 'bg-white text-purple-600 border-b-2 border-purple-600'; // Policy - Purple
+                } else if (tab === 'parameters') {
+                  activeColor = 'bg-white text-green-600 border-b-2 border-green-600'; // Parameters - Green
+                }
+
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                      activeTab === tab
+                        ? activeColor
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    {tab === 'service' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <FileText size={18} />
+                        Service
+                      </span>
+                    )}
+                    {tab === 'organization' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Building2 size={18} />
+                        Organization
+                      </span>
+                    )}
+                    {tab === 'legal' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Scale size={18} />
+                        Legal
+                      </span>
+                    )}
+                    {tab === 'rules' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Clock size={18} />
+                        Rules
+                      </span>
+                    )}
+                    {tab === 'parameters' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Plus size={18} />
+                        Parameters
+                      </span>
+                    )}
+                    {tab === 'cprmv' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Database size={18} />
+                        CPRMV
+                      </span>
+                    )}
+                    {tab === 'dmn' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <FileUp size={18} />
+                        DMN
+                        {dmnData.isImported && (
+                          <span className="ml-2 px-2 py-0.5 bg-blue-800 text-white text-xs rounded font-medium">
+                            Imported
+                          </span>
+                        )}
+                      </span>
+                    )}
+                    {tab === 'iknow-mapping' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Upload size={18} />
+                        iKnow
+                      </span>
+                    )}
+                    {tab === 'changelog' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <History size={18} />
+                        Changelog
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="p-6 min-h-[600px]">

@@ -5,7 +5,7 @@
       "status": "Enhancement",
       "statusColor": "purple",
       "borderColor": "purple",
-      "date": "December 29, 2025",
+      "date": "January 6, 2026",
       "sections": [
         {
           "title": "Further Modularization",
@@ -16,6 +16,18 @@
             "Extracted TTL Generation from App",
             "Centralized import logic for TTL files",
             "DRY code (Don't Repeat Yourself) adding Array Handlers"
+          ]
+        },
+        {
+          "title": "UI Improvements",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Added Rules--Policy--Parameters (RPP) Separation pattern layer identification to Rules, Parameters, CPRMV tabs",
+            "Color-code tabs: Blue (Rules), Green (Parameters), Purple (Policy)",
+            "Add explanatory banners with architecture context",
+            "Include RPP pattern flow in each tab",
+            "Maintain CPRMV API link and example data functionality"
           ]
         },
         {

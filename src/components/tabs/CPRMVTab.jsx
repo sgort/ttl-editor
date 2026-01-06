@@ -80,7 +80,7 @@ const CPRMVTab = ({
 
             <div className="text-sm text-purple-700">
               <p className="mb-2">
-                <strong>Data Source:</strong> CPRMV rules are extracted using the experimental{' '}
+                CPRMV rules are extracted using the experimental{' '}
                 <a
                   href="https://cprmv.open-regels.nl/docs#/default/rules_rules__rule_id_path__get"
                   target="_blank"
@@ -100,7 +100,7 @@ const CPRMVTab = ({
                 >
                   example data
                 </button>{' '}
-                or import JSON from normenbrief format.
+                or import JSON.
               </p>
             </div>
           </div>
