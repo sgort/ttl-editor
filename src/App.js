@@ -29,6 +29,11 @@ import {
   RulesTab,
   ServiceTab,
 } from './components/tabs';
+import {
+  useCprmvRulesHandlers,
+  useParametersHandlers,
+  useTemporalRulesHandlers,
+} from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
@@ -72,6 +77,25 @@ function App() {
     message: '',
   });
   const [showClearDialog, setShowClearDialog] = useState(false);
+
+  // ADD: Array handlers using custom hooks
+  const {
+    handleAdd: addTemporalRule,
+    handleUpdateField: updateTemporalRule,
+    handleRemove: removeTemporalRule,
+  } = useTemporalRulesHandlers(temporalRules, setTemporalRules);
+
+  const {
+    handleAdd: addParameter,
+    handleUpdateField: updateParameter,
+    handleRemove: removeParameter,
+  } = useParametersHandlers(parameters, setParameters);
+
+  const {
+    handleAdd: addCPRMVRule,
+    handleUpdateField: updateCPRMVRule,
+    handleRemove: removeCPRMVRule,
+  } = useCprmvRulesHandlers(cprmvRules, setCprmvRules);
 
   // Helper to build state object for TTL generator
   const buildStateForTTL = () => ({
@@ -159,89 +183,6 @@ function App() {
       });
       setTimeout(() => setImportStatus({ show: false, success: false, message: '' }), 5000);
     }
-  };
-
-  // Add parameter
-  const addParameter = () => {
-    setParameters([
-      ...parameters,
-      {
-        id: Date.now(),
-        notation: '',
-        label: '',
-        value: '',
-        unit: 'EUR',
-        description: '',
-        validFrom: '',
-        validUntil: '',
-      },
-    ]);
-  };
-
-  // Remove parameter
-  const removeParameter = (id) => {
-    setParameters(parameters.filter((param) => param.id !== id));
-  };
-
-  // Update parameter
-  const updateParameter = (id, field, value) => {
-    setParameters(
-      parameters.map((param) => (param.id === id ? { ...param, [field]: value } : param))
-    );
-  };
-
-  // Add temporal rule
-  const addTemporalRule = () => {
-    setTemporalRules([
-      ...temporalRules,
-      {
-        id: Date.now(),
-        identifier: '',
-        title: '',
-        uri: '',
-        extends: '',
-        validFrom: '',
-        validUntil: '',
-        confidenceLevel: 'high',
-        description: '',
-      },
-    ]);
-  };
-
-  // Remove temporal rule
-  const removeTemporalRule = (id) => {
-    setTemporalRules(temporalRules.filter((rule) => rule.id !== id));
-  };
-
-  // Update temporal rule
-  const updateTemporalRule = (id, field, value) => {
-    setTemporalRules(
-      temporalRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule))
-    );
-  };
-
-  // Add CPRMV rule
-  const addCPRMVRule = (initialData = null) => {
-    const newRule = {
-      id: Date.now(),
-      ruleId: initialData?.ruleId || '',
-      rulesetId: initialData?.rulesetId || '',
-      definition: initialData?.definition || '',
-      situatie: initialData?.situatie || '',
-      norm: initialData?.norm || '',
-      ruleIdPath: initialData?.ruleIdPath || '',
-    };
-    setCprmvRules([...cprmvRules, newRule]);
-  };
-
-  // Remove CPRMV rule
-  const removeCPRMVRule = (id) => {
-    setCprmvRules(cprmvRules.filter((rule) => rule.id !== id));
-  };
-
-  // Update CPRMV rule
-  const updateCPRMVRule = (id, field, value) => {
-    setCprmvRules(cprmvRules.map((rule) => (rule.id === id ? { ...rule, [field]: value } : rule)));
   };
 
   // Handle JSON import for CPRMV tab only
@@ -447,77 +388,90 @@ function App() {
                 'dmn',
                 'iknow-mapping',
                 'changelog',
-              ].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
-                    activeTab === tab
-                      ? 'bg-white text-blue-600 border-b-2 border-blue-600'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                  }`}
-                >
-                  {tab === 'service' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <FileText size={18} />
-                      Service
-                    </span>
-                  )}
-                  {tab === 'organization' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Building2 size={18} />
-                      Organization
-                    </span>
-                  )}
-                  {tab === 'legal' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Scale size={18} />
-                      Legal
-                    </span>
-                  )}
-                  {tab === 'rules' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Clock size={18} />
-                      Rules
-                    </span>
-                  )}
-                  {tab === 'parameters' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Plus size={18} />
-                      Parameters
-                    </span>
-                  )}
-                  {tab === 'cprmv' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Database size={18} />
-                      CPRMV
-                    </span>
-                  )}
-                  {tab === 'dmn' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <FileUp size={18} />
-                      DMN
-                      {dmnData.isImported && (
-                        <span className="ml-2 px-2 py-0.5 bg-blue-800 text-white text-xs rounded font-medium">
-                          Imported
-                        </span>
-                      )}
-                    </span>
-                  )}
-                  {tab === 'iknow-mapping' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <Upload size={18} />
-                      iKnow
-                    </span>
-                  )}
-                  {tab === 'changelog' && (
-                    <span className="flex items-center justify-center gap-2">
-                      <History size={18} />
-                      Changelog
-                    </span>
-                  )}
-                </button>
-              ))}
+              ].map((tab) => {
+                // Determine active color based on RPP layer
+                let activeColor = 'bg-white text-gray-900 font-bold border-b-2 border-gray-900'; // default
+
+                if (tab === 'rules') {
+                  activeColor = 'bg-white text-blue-600 border-b-2 border-blue-600'; // Rules - Blue
+                } else if (tab === 'cprmv') {
+                  activeColor = 'bg-white text-purple-600 border-b-2 border-purple-600'; // Policy - Purple
+                } else if (tab === 'parameters') {
+                  activeColor = 'bg-white text-green-600 border-b-2 border-green-600'; // Parameters - Green
+                }
+
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                      activeTab === tab
+                        ? activeColor
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    {tab === 'service' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <FileText size={18} />
+                        Service
+                      </span>
+                    )}
+                    {tab === 'organization' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Building2 size={18} />
+                        Organization
+                      </span>
+                    )}
+                    {tab === 'legal' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Scale size={18} />
+                        Legal
+                      </span>
+                    )}
+                    {tab === 'rules' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Clock size={18} />
+                        Rules
+                      </span>
+                    )}
+                    {tab === 'parameters' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Plus size={18} />
+                        Parameters
+                      </span>
+                    )}
+                    {tab === 'cprmv' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Database size={18} />
+                        CPRMV
+                      </span>
+                    )}
+                    {tab === 'dmn' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <FileUp size={18} />
+                        DMN
+                        {dmnData.isImported && (
+                          <span className="ml-2 px-2 py-0.5 bg-blue-800 text-white text-xs rounded font-medium">
+                            Imported
+                          </span>
+                        )}
+                      </span>
+                    )}
+                    {tab === 'iknow-mapping' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <Upload size={18} />
+                        iKnow
+                      </span>
+                    )}
+                    {tab === 'changelog' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <History size={18} />
+                        Changelog
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
 
             <div className="p-6 min-h-[600px]">

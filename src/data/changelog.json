@@ -5,7 +5,7 @@
       "status": "Enhancement",
       "statusColor": "purple",
       "borderColor": "purple",
-      "date": "December 29, 2025",
+      "date": "January 6, 2026",
       "sections": [
         {
           "title": "Further Modularization",
@@ -14,7 +14,20 @@
           "items": [
             "Isolated State Management, Data clearing only, UI logic remains in App",
             "Extracted TTL Generation from App",
-            "Centralized import logic for TTL files"
+            "Centralized import logic for TTL files",
+            "DRY code (Don't Repeat Yourself) adding Array Handlers"
+          ]
+        },
+        {
+          "title": "UI Improvements",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Added Rules--Policy--Parameters (RPP) Separation pattern layer identification to Rules, Parameters, CPRMV tabs",
+            "Color-code tabs: Blue (Rules), Green (Parameters), Purple (Policy)",
+            "Add explanatory banners with architecture context",
+            "Include RPP pattern flow in each tab",
+            "Maintain CPRMV API link and example data functionality"
           ]
         },
         {
@@ -25,7 +38,8 @@
             "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource",
             "Clean empty state by default with only the + button for Rules, Parameter and CPRMV tabs",
             "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled.",
-            "iKnow Mappings Bug: Fixed availability after Clear All / Import"
+            "iKnow Mappings Bug: Fixed availability after Clear All / Import",
+            "Fixed inconsistency adding Rules, Parameters and/or CPRMV"
           ]
         },
         {

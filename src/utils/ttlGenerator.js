@@ -116,17 +116,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasTemporalRules() {
-    return this.temporalRules.some(
-      (rule) =>
-        rule.uri ||
-        rule.extends ||
-        rule.identifier ||
-        rule.title ||
-        rule.validFrom ||
-        rule.validUntil ||
-        rule.confidenceLevel ||
-        rule.description
-    );
+    return this.temporalRules.length > 0;
   }
 
   /**
@@ -134,7 +124,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasParameters() {
-    return this.parameters.some((param) => param.notation || param.value || param.label);
+    return this.parameters.length > 0;
   }
 
   /**
@@ -142,7 +132,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasCprmvRules() {
-    return this.cprmvRules.some((rule) => rule.ruleId || rule.rulesetId || rule.definition);
+    return this.cprmvRules.length > 0;
   }
 
   /**
@@ -226,7 +216,7 @@ export class TTLGenerator {
     }
 
     // DMN reference
-    if (this.dmnData && this.dmnData.fileName) {
+    if (this.hasDMN()) {
       ttl += `    cprmv:hasDecisionModel <${this.serviceUri}/dmn> ;\n`;
     }
 
@@ -253,7 +243,12 @@ export class TTLGenerator {
     );
 
     ttl += `<${orgUri}> a cv:PublicOrganisation ;\n`;
-    ttl += `    dct:identifier "${escapeTTLString(this.organization.identifier)}" ;\n`;
+    // Extract just the ID part if it's a full URI
+    const orgId = this.organization.identifier.startsWith('http')
+      ? this.organization.identifier.split('/').pop()
+      : this.organization.identifier;
+
+    ttl += `    dct:identifier "${escapeTTLString(orgId)}" ;\n`;
 
     if (this.organization.name) {
       ttl += `    skos:prefLabel "${escapeTTLString(this.organization.name)}"@nl ;\n`;
