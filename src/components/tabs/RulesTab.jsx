@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Scale, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import { CONFIDENCE_LEVELS } from '../../utils';
@@ -17,14 +17,30 @@ import { CONFIDENCE_LEVELS } from '../../utils';
 const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTemporalRule }) => {
   return (
     <div className="space-y-4">
-      {/* Information Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
-          <strong>Temporal Rules</strong> define time-based regulations with validity periods.
-          <br />
-          Use <code className="bg-blue-100 px-1 rounded">ronl:extends</code> to create rule
-          inheritance chains for versioned regulations.
-        </p>
+      {/* RPP Architecture Banner */}
+      <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            <Scale className="w-5 h-5 text-blue-600 mt-0.5" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h3 className="font-bold text-blue-900">Decision Logic (Rules)</h3>
+              <span className="px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full font-medium">
+                RPP Layer: Rules
+              </span>
+            </div>
+            <p className="text-sm text-blue-700 leading-relaxed">
+              Executable decision logic that operationalizes policies into actionable rules. These
+              temporal rules interpret legal requirements into structured decision logic with
+              validity periods and confidence levels.
+            </p>
+            <p className="text-xs text-blue-600 mt-2">
+              <strong>RPP Pattern:</strong> Rules implement Policy → Rules use Parameters → Rules
+              produce Decisions
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Temporal Rules List */}

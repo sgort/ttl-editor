@@ -1,4 +1,4 @@
-import { Database, FileUp, Plus, Trash2 } from 'lucide-react';
+import { Database, FileText, FileUp, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import exampleCPRMVData from '../../data/cprmv-example.json';
@@ -9,13 +9,13 @@ const CPRMVTab = ({
   removeCPRMVRule,
   updateCPRMVRule,
   handleImportJSON,
-  setCprmvRules, // âž• ADD THIS
+  setCprmvRules,
 }) => {
   // Function to load example data
   const loadExampleData = () => {
     // Map all example rules and set them directly
     const mappedRules = exampleCPRMVData.map((rule, index) => ({
-      id: Date.now() + index, // Unique ID for each rule
+      id: Date.now() + index,
       ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
       rulesetId: rule.rulesetid || '',
       definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
@@ -24,21 +24,20 @@ const CPRMVTab = ({
       ruleIdPath: rule.rule_id_path || '',
     }));
 
-    // Set all rules at once
     setCprmvRules(mappedRules);
   };
+
   return (
     <div className="space-y-4">
-      {/* Import JSON Button - Top, matches Import TTL purple color */}
+      {/* Import JSON Button */}
       <div className="flex items-center justify-end gap-3">
-        {/* Load Example Button */}
         <button
           onClick={loadExampleData}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer shadow-md transition-colors"
         >
           <Database size={20} />
           Load Example
-        </button>{' '}
+        </button>
         <input
           type="file"
           id="json-import"
@@ -55,37 +54,62 @@ const CPRMVTab = ({
         </label>
       </div>
 
-      {/* Information Banner */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-sm text-blue-800">
-          <strong>CPRMV Rules</strong> are normative values extracted with the experimental{' '}
-          <a
-            href="https://cprmv.open-regels.nl/docs#/default/rules_rules__rule_id_path__get"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline font-medium"
-          >
-            CPRMV Rules Serve API
-          </a>{' '}
-          from Dutch legislation used in calculations and decision rules. For example: benefit
-          amounts, income thresholds, percentages defined in social assistance laws.
-          <br />
-          <br /> The <strong>Import JSON</strong> function allows you to load the collected output
-          into this tab, or try the{' '}
-          <button
-            onClick={loadExampleData}
-            className="text-blue-600 hover:text-blue-800 underline font-medium"
-          >
-            example data
-          </button>
-          .
-        </p>
+      {/* RPP Architecture Banner */}
+      <div className="bg-purple-50 border-l-4 border-purple-500 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            <FileText className="w-5 h-5 text-purple-600 mt-0.5" />
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <h3 className="font-bold text-purple-900">Norms & Standards (Policy)</h3>
+              <span className="px-2 py-0.5 bg-purple-600 text-white text-xs rounded-full font-medium">
+                RPP Layer: Policy
+              </span>
+            </div>
+            <p className="text-sm text-purple-700 leading-relaxed mb-3">
+              Normative values derived directly from laws and regulations (CPRMV vocabulary). These
+              policies are traceable to authoritative legal sources and remain stable across
+              implementations. Changes require legal amendments.
+            </p>
+            <p className="text-xs text-purple-600 mb-3">
+              <strong>RPP Pattern:</strong> Legislation - Policy - Rules - Parameters
+            </p>
+
+            <div className="border-t border-purple-200 my-3"></div>
+
+            <div className="text-sm text-purple-700">
+              <p className="mb-2">
+                <strong>Data Source:</strong> CPRMV rules are extracted using the experimental{' '}
+                <a
+                  href="https://cprmv.open-regels.nl/docs#/default/rules_rules__rule_id_path__get"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-purple-600 hover:text-purple-800 underline font-medium"
+                >
+                  CPRMV Rules API
+                </a>{' '}
+                from Dutch legislation. Examples: benefit amounts, income thresholds, percentages
+                defined in social assistance laws.
+              </p>
+              <p className="text-xs text-purple-600">
+                Quick start: Use{' '}
+                <button
+                  onClick={loadExampleData}
+                  className="text-purple-600 hover:text-purple-800 underline font-semibold"
+                >
+                  example data
+                </button>{' '}
+                or import JSON from normenbrief format.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Rules List */}
       {cprmvRules.map((rule, index) => (
         <div key={rule.id} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-          {/* Rule Header */}
           <div className="flex justify-between items-center mb-3">
             <h4 className="font-semibold text-gray-700">Rule {index + 1}</h4>
             {cprmvRules.length >= 1 && (
@@ -99,9 +123,7 @@ const CPRMVTab = ({
             )}
           </div>
 
-          {/* Rule Fields */}
           <div className="space-y-3">
-            {/* Rule ID Path - Top position, full width */}
             <div>
               <label className="block text-sm text-gray-700 mb-1">
                 <span className="font-medium">Rule ID Path</span>
@@ -117,7 +139,6 @@ const CPRMVTab = ({
               />
             </div>
 
-            {/* Rule ID and Ruleset ID - Two columns */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm text-gray-700 mb-1">
@@ -150,7 +171,6 @@ const CPRMVTab = ({
               </div>
             </div>
 
-            {/* Definition - Full width */}
             <div>
               <label className="block text-sm text-gray-700 mb-1">
                 <span className="font-medium">Definition</span>
@@ -166,7 +186,6 @@ const CPRMVTab = ({
               />
             </div>
 
-            {/* Situation and Norm - Two columns */}
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm text-gray-700 mb-1">
@@ -211,7 +230,7 @@ const CPRMVTab = ({
         </div>
       )}
 
-      {/* Add Rule Button - Bottom, blue like Parameters tab */}
+      {/* Add Rule Button */}
       <button
         onClick={addCPRMVRule}
         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-colors"
