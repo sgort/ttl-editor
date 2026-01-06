@@ -116,17 +116,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasTemporalRules() {
-    return this.temporalRules.some(
-      (rule) =>
-        rule.uri ||
-        rule.extends ||
-        rule.identifier ||
-        rule.title ||
-        rule.validFrom ||
-        rule.validUntil ||
-        rule.confidenceLevel ||
-        rule.description
-    );
+    return this.temporalRules.length > 0;
   }
 
   /**
@@ -134,7 +124,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasParameters() {
-    return this.parameters.some((param) => param.notation || param.value || param.label);
+    return this.parameters.length > 0;
   }
 
   /**
@@ -142,7 +132,7 @@ export class TTLGenerator {
    * @returns {boolean}
    */
   hasCprmvRules() {
-    return this.cprmvRules.some((rule) => rule.ruleId || rule.rulesetId || rule.definition);
+    return this.cprmvRules.length > 0;
   }
 
   /**
