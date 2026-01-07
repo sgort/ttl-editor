@@ -150,6 +150,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (
           detectedType === 'dmnModel' ||
           detectedType === 'dmnInput' ||
+          detectedType === 'dmnOutput' ||
           detectedType === 'dmnRule'
         ) {
           // Mark that we found DMN data
@@ -179,6 +180,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           inDmnSection &&
           detectedType !== 'dmnModel' &&
           detectedType !== 'dmnInput' &&
+          detectedType !== 'dmnOutput' &&
           detectedType !== 'dmnRule'
         ) {
           inDmnSection = false;
@@ -233,35 +235,9 @@ export const parseTTLEnhanced = (ttlContent) => {
         continue;
       }
 
-      // ========================================
-      // DMN PROPERTY CAPTURE (Option 3)
-      // ========================================
       if (inDmnSection) {
-        // Capture the raw line
         dmnLines.push(rawLine);
-
-        // Check for end of entity (period without semicolon)
-        if (line.includes('.') && !line.includes(';')) {
-          // Check if next non-empty line is also DMN
-          let nextNonEmpty = i + 1;
-          while (nextNonEmpty < lines.length && lines[nextNonEmpty].trim() === '') {
-            nextNonEmpty++;
-          }
-
-          if (nextNonEmpty < lines.length) {
-            const nextLine = lines[nextNonEmpty].trim();
-            const nextType = detectEntityType(nextLine);
-            if (nextType !== 'dmnModel' && nextType !== 'dmnInput' && nextType !== 'dmnRule') {
-              // End of DMN section
-              inDmnSection = false;
-              dmnLines.push(''); // Add blank line after section
-            }
-          } else {
-            // End of file
-            inDmnSection = false;
-          }
-        }
-        continue; // Skip all property parsing for DMN entities
+        continue; // Standard detection handles section closing
       }
 
       // Parse properties based on current section
