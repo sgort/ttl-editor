@@ -9,8 +9,6 @@
 [![Version](https://img.shields.io/badge/version-1.5.1-green)]()
 ![License](https://img.shields.io/badge/License-EUPL-yellow.svg)
 
-
-
 ---
 
 ## 📋 Table of Contents
