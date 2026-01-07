@@ -5,29 +5,31 @@
       "status": "Enhancement",
       "statusColor": "purple",
       "borderColor": "purple",
-      "date": "January 6, 2026",
+      "date": "January 7, 2026",
       "sections": [
         {
           "title": "Further Modularization",
           "icon": "✨",
           "iconColor": "emerald",
           "items": [
-            "Isolated State Management, Data clearing only, UI logic remains in App",
-            "Extracted TTL Generation from App",
-            "Centralized import logic for TTL files",
-            "DRY code (Don't Repeat Yourself) adding Array Handlers"
+            "Phase 1: Extracted state management to useEditorState hook",
+            "Phase 2: Extracted TTL generation to TTLGenerator class",
+            "Phase 3: Centralized import logic in importHandler.js",
+            "Phase 4: Created useArrayHandlers hook for DRY array operations",
+            "Better code organization and maintainability"
           ]
         },
         {
-          "title": "UI Improvements",
-          "icon": "✨",
-          "iconColor": "emerald",
+          "title": "RPP Architecture Alignment",
+          "icon": "🎯",
+          "iconColor": "blue",
           "items": [
-            "Added Rules--Policy--Parameters (RPP) Separation pattern layer identification to Rules, Parameters, CPRMV tabs",
-            "Color-code tabs: Blue (Rules), Green (Parameters), Purple (Policy)",
-            "Add explanatory banners with architecture context",
-            "Include RPP pattern flow in each tab",
-            "Maintain CPRMV API link and example data functionality"
+            "Implemented Rules--Policy--Parameters (RPP) Separation pattern visualization",
+            "Added RPP layer badges to Rules (Blue), Parameters (Green), CPRMV/Policy (Purple) tabs",
+            "Color-coded tab navigation with distinct colors per RPP layer",
+            "Added explanatory banners with architecture context in each tab",
+            "Included RPP pattern flow descriptions: Legislation → Policy → Rules → Parameters",
+            "Maintained CPRMV API link and example data functionality"
           ]
         },
         {
@@ -35,11 +37,13 @@
           "icon": "🐛",
           "iconColor": "blue",
           "items": [
-            "Fixed TTL parsing collision issue, where the parser is overwriting the Legal Resource data with data from the last parsed resource",
-            "Clean empty state by default with only the + button for Rules, Parameter and CPRMV tabs",
-            "TTL generator only wrote items when specific fields are present, not when any mandatory field is filled.",
-            "iKnow Mappings Bug: Fixed availability after Clear All / Import",
-            "Fixed inconsistency adding Rules, Parameters and/or CPRMV"
+            "Fixed: Missing cprmv:hasDecisionModel link in Service section when DMN is present",
+            "Fixed: Organization dct:identifier now shows short ID instead of full URI",
+            "Fixed: DMN section now appears when importing TTL with DMN (was checking fileName instead of hasDMN())",
+            "Fixed: File input reset issue - can now import same file multiple times",
+            "Fixed: iKnow mappings persist correctly after Clear All and Import operations",
+            "Fixed: Array sections (Rules/Parameters/CPRMV) now show immediately when + button clicked",
+            "Fixed: Changed hasTemporalRules/hasParameters/hasCprmvRules to check array length instead of field values"
           ]
         },
         {
@@ -61,7 +65,7 @@
       "status": "Release",
       "statusColor": "green",
       "borderColor": "green",
-      "date": "December 22, 2025",
+      "date": "December 29, 2025",
       "sections": [
         {
           "title": "DMN Integration",
@@ -73,6 +77,17 @@
             "Property ronl:implementedBy documents which software system executes the decision logic",
             "Documents the required inputs with: Variable name, Data type (String, Integer, Boolean), Example value (from test)",
             "Links back to the DMN model with cpsv:isRequiredBy"
+          ]
+        },
+        {
+          "title": "DMN Import Preservation",
+          "icon": "🔄",
+          "iconColor": "emerald",
+          "items": [
+            "Automatic detection of DMN data in imported TTL files",
+            "Perfect preservation of DMN blocks during import/export cycles",
+            "Clear visual indication of imported DMN status",
+            "Ability to clear and recreate DMN data"
           ]
         },
         {

@@ -139,28 +139,147 @@ export default function ChangelogTab() {
         ))}
       </div>
 
-      {/* Future Roadmap - unchanged */}
-      {roadmapData?.items && roadmapData.items.length > 0 && (
+      {/* Future Roadmap */}
+      {roadmapData?.planned && roadmapData.planned.length > 0 && (
         <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
-          {/* Future Roadmap */}
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              🔮 Future Roadmap
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {roadmapData.items.map((item, index) => (
-                <div key={index} className="bg-white rounded-lg p-4 shadow-sm">
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">{item.icon}</span>
-                    <div>
-                      <h4 className="font-semibold text-gray-800">{item.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+          <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            🔮 Future Roadmap
+          </h3>
+
+          {/* Completed Features */}
+          {roadmapData?.completed && roadmapData.completed.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
+                <span className="text-green-600">✅</span> Recently Completed
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                {roadmapData.completed.map((item, index) => (
+                  <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div className="flex items-start gap-3">
+                      <span className="text-xl">{item.icon}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <h5 className="font-semibold text-gray-800 text-sm">{item.title}</h5>
+                          <span className="text-xs text-green-700 font-medium">{item.version}</span>
+                        </div>
+                        <p className="text-xs text-gray-600 mt-1">{item.description}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Planned Features by Phase */}
+          <h4 className="text-lg font-semibold text-gray-700 mb-3">📋 Planned Features</h4>
+
+          {/* Group by phase */}
+          {['Phase B', 'Phase 2', 'Phase 3', 'Phase 4', 'Phase 5', 'Phase 6'].map((phase) => {
+            const phaseItems = roadmapData.planned.filter((item) => item.phase === phase);
+            if (phaseItems.length === 0) return null;
+
+            // Get phase description from notes
+            const phaseDescription = roadmapData?.notes?.phases?.[phase];
+
+            return (
+              <div key={phase} className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <h5 className="text-md font-semibold text-purple-700">{phase}</h5>
+                  {phaseDescription && (
+                    <span className="text-xs text-purple-600 italic">({phaseDescription})</span>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {phaseItems.map((item, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-lg p-3 shadow-sm border border-gray-200"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-xl flex-shrink-0">{item.icon}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2 mb-1">
+                            <h6 className="font-semibold text-gray-800 text-sm">{item.title}</h6>
+                            <div className="flex gap-1 flex-shrink-0">
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded font-medium ${
+                                  item.priority === 'High'
+                                    ? 'bg-red-100 text-red-700'
+                                    : item.priority === 'Medium'
+                                      ? 'bg-yellow-100 text-yellow-700'
+                                      : 'bg-gray-100 text-gray-700'
+                                }`}
+                              >
+                                {item.priority}
+                              </span>
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded font-medium ${
+                                  item.effort === 'Very High' || item.effort === 'High'
+                                    ? 'bg-orange-100 text-orange-700'
+                                    : item.effort === 'Medium'
+                                      ? 'bg-blue-100 text-blue-700'
+                                      : 'bg-green-100 text-green-700'
+                                }`}
+                              >
+                                {item.effort}
+                              </span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-600 leading-relaxed">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* Legend */}
+          {roadmapData?.notes && (
+            <div className="mt-6 pt-4 border-t border-purple-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <h6 className="font-semibold text-gray-700 mb-2">Priority Levels:</h6>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>
+                      <span className="font-medium text-red-700">High:</span>{' '}
+                      {roadmapData.notes.priority.High}
+                    </li>
+                    <li>
+                      <span className="font-medium text-yellow-700">Medium:</span>{' '}
+                      {roadmapData.notes.priority.Medium}
+                    </li>
+                    <li>
+                      <span className="font-medium text-gray-700">Low:</span>{' '}
+                      {roadmapData.notes.priority.Low}
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h6 className="font-semibold text-gray-700 mb-2">Effort Estimates:</h6>
+                  <ul className="space-y-1 text-gray-600">
+                    <li>
+                      <span className="font-medium">Low:</span> {roadmapData.notes.effort.Low}
+                    </li>
+                    <li>
+                      <span className="font-medium">Medium:</span> {roadmapData.notes.effort.Medium}
+                    </li>
+                    <li>
+                      <span className="font-medium">High:</span> {roadmapData.notes.effort.High}
+                    </li>
+                    <li>
+                      <span className="font-medium">Very High:</span>{' '}
+                      {roadmapData.notes.effort['Very High']}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
