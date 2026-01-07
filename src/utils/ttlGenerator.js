@@ -46,6 +46,18 @@ export class TTLGenerator {
       ttl += this.generateServiceSection();
     }
 
+    // Cost section
+    if (this.cost.identifier) {
+      ttl += this.generateSectionHeader('Cost');
+      ttl += this.generateCostSection();
+    }
+
+    // Output section
+    if (this.output.identifier) {
+      ttl += this.generateSectionHeader('Output');
+      ttl += this.generateOutputSection();
+    }
+
     // Organization section
     if (this.organization.identifier) {
       ttl += this.generateSectionHeader('Organization');
@@ -68,18 +80,6 @@ export class TTLGenerator {
     if (this.hasParameters()) {
       ttl += this.generateSectionHeader('Parameters');
       ttl += this.generateParametersSection();
-    }
-
-    // Cost section
-    if (this.cost.identifier) {
-      ttl += this.generateSectionHeader('Cost');
-      ttl += this.generateCostSection();
-    }
-
-    // Output section
-    if (this.output.identifier) {
-      ttl += this.generateSectionHeader('Output');
-      ttl += this.generateOutputSection();
     }
 
     // CPRMV Rules section
