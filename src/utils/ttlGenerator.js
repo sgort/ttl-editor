@@ -1,5 +1,9 @@
-/* eslint-disable no-unused-vars */
-import { generateCompleteDMNSection, sanitizeServiceIdentifier } from './dmnHelpers';
+import {
+  extractInputsFromTestResult,
+  extractOutputsFromTestResult, // ADD THIS
+  extractRulesFromDMN,
+  sanitizeServiceIdentifier,
+} from './dmnHelpers';
 import { buildResourceUri, encodeURIComponentTTL, escapeTTLString, TTL_NAMESPACES } from './index';
 
 /**
@@ -42,6 +46,18 @@ export class TTLGenerator {
       ttl += this.generateServiceSection();
     }
 
+    // Cost section
+    if (this.cost.identifier) {
+      ttl += this.generateSectionHeader('Cost');
+      ttl += this.generateCostSection();
+    }
+
+    // Output section
+    if (this.output.identifier) {
+      ttl += this.generateSectionHeader('Output');
+      ttl += this.generateOutputSection();
+    }
+
     // Organization section
     if (this.organization.identifier) {
       ttl += this.generateSectionHeader('Organization');
@@ -64,18 +80,6 @@ export class TTLGenerator {
     if (this.hasParameters()) {
       ttl += this.generateSectionHeader('Parameters');
       ttl += this.generateParametersSection();
-    }
-
-    // Cost section
-    if (this.cost.identifier) {
-      ttl += this.generateSectionHeader('Cost');
-      ttl += this.generateCostSection();
-    }
-
-    // Output section
-    if (this.output.identifier) {
-      ttl += this.generateSectionHeader('Output');
-      ttl += this.generateOutputSection();
     }
 
     // CPRMV Rules section
@@ -564,16 +568,117 @@ export class TTLGenerator {
    * @returns {string} DMN TTL
    */
   generateDmnSection() {
-    // Option 3: Imported DMN (preserved blocks)
+    // Imported DMN (preserved blocks)
     if (this.dmnData.isImported && this.dmnData.importedDmnBlocks) {
-      // Strip any existing headers from preserved blocks
-      // The header will be added by generate() method
       return this.stripDmnHeaders(this.dmnData.importedDmnBlocks);
     }
 
-    // Regular DMN: newly created in DMN tab
+    // Regular DMN (generate fresh TTL)
     if (this.dmnData && this.dmnData.fileName && this.dmnData.content) {
-      return generateCompleteDMNSection(this.dmnData, this.serviceUri);
+      let ttl = '';
+      const dmnUri = `${this.serviceUri}/dmn`;
+
+      // 1. DMN Model metadata
+      ttl += `<${dmnUri}> a cprmv:DecisionModel ;\n`;
+      ttl += `    dct:identifier "${this.dmnData.decisionKey || 'unknown'}" ;\n`;
+      ttl += `    dct:title "${this.dmnData.fileName}"@nl ;\n`;
+      ttl += `    dct:source <${this.serviceUri}/dmn/file> ;\n`;
+
+      if (this.dmnData.deploymentId) {
+        ttl += `    cprmv:deploymentId "${this.dmnData.deploymentId}" ;\n`;
+      }
+
+      if (this.dmnData.deployedAt) {
+        ttl += `    cprmv:deployedAt "${this.dmnData.deployedAt}"^^xsd:dateTime ;\n`;
+      }
+
+      if (this.dmnData.apiEndpoint) {
+        ttl += `    ronl:implementedBy <${this.dmnData.apiEndpoint}> ;\n`;
+      }
+
+      if (this.dmnData.lastTestResult && this.dmnData.lastTestTimestamp) {
+        ttl += `    cprmv:lastTested "${this.dmnData.lastTestTimestamp}"^^xsd:dateTime ;\n`;
+        ttl += `    cprmv:testStatus "passed" ;\n`;
+      }
+
+      ttl += `    dct:description "DMN decision model for service evaluation"@nl .\n\n`;
+
+      // 2. Extract inputs
+      const inputs = extractInputsFromTestResult(this.dmnData);
+      if (inputs.length > 0) {
+        inputs.forEach((input, index) => {
+          const inputUri = `${dmnUri}/input/${index + 1}`;
+          ttl += `<${inputUri}> a cpsv:Input ;\n`;
+          ttl += `    dct:identifier "${input.name}" ;\n`;
+          ttl += `    dct:title "${input.name}"@nl ;\n`;
+          ttl += `    dct:type "${input.type}" ;\n`;
+          if (input.exampleValue !== null && input.exampleValue !== undefined) {
+            const valueStr =
+              typeof input.exampleValue === 'string'
+                ? `"${escapeTTLString(input.exampleValue)}"`
+                : input.exampleValue;
+            ttl += `    schema:value ${valueStr} ;\n`;
+          }
+          ttl += `    cpsv:isRequiredBy <${dmnUri}> .\n\n`;
+        });
+      }
+
+      // 3. Extract outputs (NEW!)
+      const outputs = extractOutputsFromTestResult(this.dmnData);
+      if (outputs.length > 0) {
+        outputs.forEach((output, index) => {
+          const outputUri = `${dmnUri}/output/${index + 1}`;
+          ttl += `<${outputUri}> a cpsv:Output ;\n`;
+          ttl += `    dct:identifier "${output.name}" ;\n`;
+          ttl += `    dct:title "${output.name}"@nl ;\n`;
+          ttl += `    dct:type "${output.type}" ;\n`;
+          if (output.exampleValue !== null && output.exampleValue !== undefined) {
+            const valueStr =
+              typeof output.exampleValue === 'string'
+                ? `"${escapeTTLString(output.exampleValue)}"`
+                : output.exampleValue;
+            ttl += `    schema:value ${valueStr} ;\n`;
+          }
+          ttl += `    cpsv:produces <${dmnUri}> .\n\n`;
+        });
+      }
+
+      // 4. Extract DMN rules
+      const rules = extractRulesFromDMN(this.dmnData.content, this.serviceUri);
+      if (rules.length > 0) {
+        rules.forEach((rule) => {
+          ttl += `<${rule.uri}> a cpsv:Rule, cprmv:DecisionRule ;\n`;
+          ttl += `    dct:identifier "${rule.id}" ;\n`;
+          ttl += `    cpsv:implements <${this.serviceUri}> ;\n`;
+
+          if (rule.extends) {
+            const extendsUri = rule.extends.startsWith('http')
+              ? rule.extends
+              : `https://wetten.overheid.nl/${rule.extends}`;
+            ttl += `    cprmv:extends <${extendsUri}> ;\n`;
+          }
+
+          if (rule.validFrom) {
+            ttl += `    cprmv:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
+          }
+
+          if (rule.validUntil) {
+            ttl += `    cprmv:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
+          }
+
+          ttl += `    cprmv:ruleType "${rule.ruleType}" ;\n`;
+          ttl += `    cprmv:confidence "${rule.confidence}" ;\n`;
+
+          if (rule.note) {
+            ttl += `    cprmv:note "${escapeTTLString(rule.note)}"@nl ;\n`;
+          }
+
+          ttl += `    cprmv:decisionTable "${rule.tableId}" ;\n`;
+          ttl += `    cprmv:rulesetType "${rule.rulesetType}" .\n\n`;
+        });
+      }
+
+      return ttl;
     }
 
     return '';

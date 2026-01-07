@@ -250,9 +250,13 @@ const DMNTab = ({ dmnData, setDmnData }) => {
           let value = '';
           let type = 'String';
 
-          // Date patterns
-          if (name.toLowerCase().includes('datum') || name.toLowerCase().includes('date')) {
-            value = '2025-01-01';
+          // Date patterns - check for datum, date, OR dag (Dutch for "day")
+          if (
+            name.toLowerCase().includes('datum') ||
+            name.toLowerCase().includes('date') ||
+            name.toLowerCase().includes('dag')
+          ) {
+            value = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD
             type = 'String';
           }
           // Boolean patterns

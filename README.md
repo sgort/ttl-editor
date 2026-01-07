@@ -7,7 +7,7 @@
 
 [![CPSV-AP](https://img.shields.io/badge/CPSV--AP-3.2.0-blue)](https://semiceu.github.io/CPSV-AP/)
 [![Version](https://img.shields.io/badge/version-1.5.1-green)]()
-[![License](https://img.shields.io/badge/license-MIT-blue)]()
+![License](https://img.shields.io/badge/License-EUPL-yellow.svg)
 
 ---
 

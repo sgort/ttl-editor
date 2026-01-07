@@ -131,28 +131,21 @@
     schema:unitCode "PCT" ;
     dct:description "Percentage van de kosten dat vergoed wordt voor huishoudens met een laag inkomen (onder 60% van modaal)."@nl ;
     ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2025-12-31"^^xsd:date .
+    ronl:validUntil "2024-12-31"^^xsd:date .
 
 <https://regels.overheid.nl/parameters/test-comprehensive-service/param-4> a ronl:ParameterWaarde ;
-    skos:prefLabel "Wachttijd in Dagen"@nl ;
-    skos:notation "WACHTTIJD_DAGEN" ;
-    schema:value "30"^^xsd:decimal ;
-    schema:unitCode "DAYS" ;
-    dct:description "Aantal dagen dat een aanvrager moet wachten voordat de regeling van kracht wordt na goedkeuring van de aanvraag."@nl ;
-    ronl:validFrom "2023-01-01"^^xsd:date .
+    skos:prefLabel "Percentage Bijdrage Gemiddeld Inkomen"@nl ;
+    skos:notation "PERC_BIJDRAGE_GEMIDDELD" ;
+    schema:value "60.00"^^xsd:decimal ;
+    schema:unitCode "PCT" ;
+    dct:description "Percentage van de kosten dat vergoed wordt voor huishoudens met een gemiddeld inkomen (60%-120% van modaal)."@nl ;
+    ronl:validFrom "2024-01-01"^^xsd:date ;
+    ronl:validUntil "2024-12-31"^^xsd:date .
 
 <https://regels.overheid.nl/parameters/test-comprehensive-service/param-5> a ronl:ParameterWaarde ;
-    skos:prefLabel "Minimum Leeftijd Aanvrager"@nl ;
-    skos:notation "MIN_LEEFTIJD" ;
-    schema:value "18"^^xsd:decimal ;
-    schema:unitCode "NUM" ;
-    dct:description "Minimum leeftijd in jaren die een aanvrager moet hebben om in aanmerking te komen voor deze regeling."@nl ;
-    ronl:validFrom "2020-01-01"^^xsd:date .
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-6> a ronl:ParameterWaarde ;
     skos:prefLabel "Maximum Subsidiebedrag per Maand"@nl ;
     skos:notation "MAX_SUBSIDIE_MAAND" ;
-    schema:value "750.00"^^xsd:decimal ;
+    schema:value "1500.00"^^xsd:decimal ;
     schema:unitCode "EUR" ;
     dct:description "Maximum bedrag aan subsidie dat per maand kan worden uitgekeerd aan een individuele aanvrager of huishouden."@nl ;
     ronl:validFrom "2024-01-01"^^xsd:date ;
@@ -241,11 +234,12 @@
     dct:source <https://regels.overheid.nl/services/test-comprehensive-service/dmn/RONL_BerekenLeeftijden_CPRMV.dmn> ;
     dct:created "2025-12-29T12:00:00.000Z"^^xsd:dateTime ;
     cprmv:deploymentId "test-deployment-12345" ;
+    cprmv:deployedAt "2025-12-29T12:00:00.000Z"^^xsd:dateTime ;
     cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
     ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/RONL_BerekenLeeftijden/evaluate> ;
     cprmv:lastTested "2025-12-29T12:30:00.000Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
-    dct:description "DMN decision model for comprehensive test service evaluation - calculates ages"@nl .
+    dct:description "DMN decision model for comprehensive test service evaluation - calculates ages and AOW dates for applicant and partner"@nl .
 
 <https://regels.overheid.nl/services/test-comprehensive-service/dmn/input/1> a cpsv:Input ;
     dct:identifier "dagVanAanvraag" ;
@@ -268,6 +262,33 @@
     schema:value "1987-07-12" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/test-comprehensive-service/dmn> .
 
+<https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/1> a cpsv:Output ;
+    dct:identifier "leeftijdAanvrager" ;
+    dct:title "leeftijdAanvrager"@nl ;
+    dct:type "Integer" ;
+    schema:value 39 ;
+    cpsv:produces <https://regels.overheid.nl/services/test-comprehensive-service/dmn> .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/2> a cpsv:Output ;
+    dct:identifier "leeftijdPartner" ;
+    dct:title "leeftijdPartner"@nl ;
+    dct:type "Integer" ;
+    schema:value 37 ;
+    cpsv:produces <https://regels.overheid.nl/services/test-comprehensive-service/dmn> .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/3> a cpsv:Output ;
+    dct:identifier "AOWDatumAanvrager" ;
+    dct:title "AOWDatumAanvrager"@nl ;
+    dct:type "String" ;
+    schema:value "2052-03-20" ;
+    cpsv:produces <https://regels.overheid.nl/services/test-comprehensive-service/dmn> .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/4> a cpsv:Output ;
+    dct:identifier "AOWDatumPartner" ;
+    dct:title "AOWDatumPartner"@nl ;
+    dct:type "String" ;
+    schema:value "2054-07-12" ;
+    cpsv:produces <https://regels.overheid.nl/services/test-comprehensive-service/dmn> .
 
 <https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_withPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "DecisionRule_withPartner_bereken" ;
@@ -288,3 +309,27 @@
     cprmv:note "Berekent alleen de leeftijd van de aanvrager wanneer er geen partner is"@nl ;
     cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
     cprmv:rulesetType "conditional-calculation" .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_2024> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024" ;
+    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR9999999_2024-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2024-01-01"^^xsd:date ;
+    cprmv:validUntil "2024-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:note "AOW leeftijd voor personen geboren in 1985: 67 jaar"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_2025> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025" ;
+    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR9999999_2025-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2025-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:note "AOW leeftijd voor personen geboren in 1985: 67 jaar"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .

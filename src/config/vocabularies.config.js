@@ -80,6 +80,10 @@ export const detectEntityType = (line) => {
   if (line.includes('a cpsv:Input') || line.includes('a cv:Input')) {
     return 'dmnInput';
   }
+  // Only detect cpsv:Output (DMN), NOT cv:Output (service)
+  if (line.includes('a cpsv:Output')) {
+    return 'dmnOutput';
+  }
   if (line.includes('a cprmv:DecisionRule') || line.includes(', cprmv:DecisionRule')) {
     return 'dmnRule';
   }
