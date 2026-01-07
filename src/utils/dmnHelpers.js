@@ -1,9 +1,4 @@
 /**
- * DMN TTL Generation Utilities
- * Functions to generate TTL metadata for DMN decision models
- */
-
-/**
  * Sanitizes a service identifier to create valid URIs
  * @param {string} identifier - Service identifier
  * @returns {string} - Sanitized identifier suitable for URIs
@@ -31,82 +26,11 @@ export function buildServiceUri(identifier) {
 }
 
 /**
- * Generates TTL for DMN metadata
- * @param {Object} dmnData - DMN metadata object
- * @param {string} serviceUri - URI of the service this DMN implements
- * @returns {string} - TTL representation of DMN metadata
- */
-export function generateDMNTTL(dmnData, serviceUri) {
-  if (!dmnData || !dmnData.fileName) {
-    return '';
-  }
-
-  // Ensure serviceUri is properly formatted
-  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
-  const dmnUri = `${cleanServiceUri}/dmn`;
-  const sections = [];
-
-  // DMN Resource
-  sections.push(`<${dmnUri}> a cprmv:DecisionModel ;`);
-  sections.push(`    dct:identifier "${dmnData.decisionKey || 'unknown'}" ;`);
-  sections.push(`    dct:title "${dmnData.fileName}"@nl ;`);
-  sections.push(`    dct:format "application/dmn+xml" ;`);
-
-  // Source: placeholder for where the DMN file is stored
-  sections.push(`    dct:source <${cleanServiceUri}/dmn/${dmnData.fileName}> ;`);
-
-  if (dmnData.deployedAt) {
-    sections.push(`    dct:created "${dmnData.deployedAt}"^^xsd:dateTime ;`);
-  }
-
-  if (dmnData.deploymentId) {
-    sections.push(`    cprmv:deploymentId "${dmnData.deploymentId}" ;`);
-  }
-
-  sections.push(`    cpsv:implements <${cleanServiceUri}> ;`);
-
-  // implementedBy: the software system (Operaton evaluation endpoint)
-  if (dmnData.apiEndpoint) {
-    sections.push(`    ronl:implementedBy <${dmnData.apiEndpoint}> ;`);
-  }
-
-  // Add test results as metadata if available
-  if (dmnData.lastTestResult && dmnData.lastTestTimestamp) {
-    sections.push(`    cprmv:lastTested "${dmnData.lastTestTimestamp}"^^xsd:dateTime ;`);
-    sections.push(`    cprmv:testStatus "passed" ;`);
-  }
-
-  sections.push(`    dct:description "DMN decision model for service evaluation"@nl .`);
-  sections.push('');
-
-  // Add required inputs if test data is available
-  if (dmnData.lastTestResult) {
-    const inputs = extractInputsFromTestResult(dmnData);
-    inputs.forEach((input, index) => {
-      const inputUri = `${dmnUri}/input/${index + 1}`;
-      sections.push(`<${inputUri}> a cpsv:Input ;`);
-      sections.push(`    dct:identifier "${input.name}" ;`);
-      sections.push(`    dct:title "${input.name}"@nl ;`);
-      sections.push(`    dct:type "${input.type}" ;`);
-      if (input.exampleValue !== null && input.exampleValue !== undefined) {
-        const valueStr =
-          typeof input.exampleValue === 'string' ? `"${input.exampleValue}"` : input.exampleValue;
-        sections.push(`    schema:value ${valueStr} ;`);
-      }
-      sections.push(`    cpsv:isRequiredBy <${dmnUri}> .`);
-      sections.push('');
-    });
-  }
-
-  return sections.join('\n');
-}
-
-/**
  * Extract input variables from test result data
  * @param {Object} dmnData - DMN metadata object with test results
  * @returns {Array} - Array of input objects {name, type, exampleValue}
  */
-function extractInputsFromTestResult(dmnData) {
+export function extractInputsFromTestResult(dmnData) {
   const inputs = [];
 
   // Try to parse the test body if it exists
@@ -130,6 +54,55 @@ function extractInputsFromTestResult(dmnData) {
   }
 
   return inputs;
+}
+
+/**
+ * Extract output variables from DMN test result data
+ * @param {Object} dmnData - DMN metadata object with test results
+ * @returns {Array} - Array of output objects {name, type, exampleValue}
+ */
+export function extractOutputsFromTestResult(dmnData) {
+  const outputs = [];
+
+  if (!dmnData.lastTestResult) {
+    return outputs;
+  }
+
+  try {
+    const result = dmnData.lastTestResult;
+
+    // Operaton returns outputs in two possible formats:
+    // Format 1: Array of output objects
+    // Format 2: Direct object with outputs
+
+    if (Array.isArray(result)) {
+      // Format 1: [{outputName: {value: X, type: Y}}]
+      result.forEach((outputObj) => {
+        Object.entries(outputObj).forEach(([name, varData]) => {
+          outputs.push({
+            name: name,
+            type: varData.type || 'String',
+            exampleValue: varData.value,
+          });
+        });
+      });
+    } else if (typeof result === 'object') {
+      // Format 2: {outputName: {value: X, type: Y}}
+      Object.entries(result).forEach(([name, varData]) => {
+        if (varData && typeof varData === 'object' && 'value' in varData) {
+          outputs.push({
+            name: name,
+            type: varData.type || 'String',
+            exampleValue: varData.value,
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.error('Error extracting outputs from test result:', err);
+  }
+
+  return outputs;
 }
 
 /**
@@ -207,93 +180,6 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
 }
 
 /**
- * Generates TTL for extracted DMN rules
- * @param {Array} rules - Array of rule objects from extractRulesFromDMN
- * @param {string} serviceUri - URI of the service
- * @returns {string} - TTL representation of DMN rules
- */
-export function generateRulesTTL(rules, serviceUri) {
-  if (!rules || rules.length === 0) {
-    return '';
-  }
-
-  // Ensure serviceUri is properly formatted
-  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
-
-  const sections = [];
-  // Sub-header removed
-  sections.push('');
-
-  rules.forEach((rule) => {
-    sections.push(`<${rule.uri}> a cpsv:Rule, cprmv:DecisionRule ;`);
-    sections.push(`    dct:identifier "${rule.id}" ;`);
-    sections.push(`    cpsv:implements <${cleanServiceUri}> ;`);
-
-    if (rule.extends) {
-      // Check if extends is already a full URI
-      const extendsUri = rule.extends.startsWith('http')
-        ? rule.extends
-        : `https://wetten.overheid.nl/${rule.extends}`;
-      sections.push(`    cprmv:extends <${extendsUri}> ;`);
-    }
-
-    if (rule.validFrom) {
-      sections.push(`    cprmv:validFrom "${rule.validFrom}"^^xsd:date ;`);
-    }
-
-    if (rule.validUntil) {
-      sections.push(`    cprmv:validUntil "${rule.validUntil}"^^xsd:date ;`);
-    }
-
-    sections.push(`    cprmv:ruleType "${rule.ruleType}" ;`);
-    sections.push(`    cprmv:confidence "${rule.confidence}" ;`);
-
-    if (rule.note) {
-      const escapedNote = rule.note.replace(/"/g, '\\"').replace(/\n/g, '\\n');
-      sections.push(`    cprmv:note "${escapedNote}"@nl ;`);
-    }
-
-    sections.push(`    cprmv:decisionTable "${rule.tableId}" ;`);
-    sections.push(`    cprmv:rulesetType "${rule.rulesetType}" .`);
-    sections.push('');
-  });
-
-  return sections.join('\n');
-}
-
-/**
- * Generates complete DMN section for TTL export
- * @param {Object} dmnData - DMN metadata object
- * @param {string} serviceUri - URI of the service
- * @returns {string} - Complete TTL section for DMN
- */
-export function generateCompleteDMNSection(dmnData, serviceUri) {
-  if (!dmnData || !dmnData.fileName) {
-    return '';
-  }
-
-  // Ensure serviceUri is properly formatted
-  const cleanServiceUri = serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
-
-  const sections = [];
-
-  // Header is now added by ttlGenerator.js
-
-  // Add DMN metadata
-  sections.push(generateDMNTTL(dmnData, cleanServiceUri));
-
-  // Add extracted rules if DMN content is available
-  if (dmnData.content) {
-    const rules = extractRulesFromDMN(dmnData.content, cleanServiceUri);
-    if (rules.length > 0) {
-      sections.push(generateRulesTTL(rules, cleanServiceUri));
-    }
-  }
-
-  return sections.join('\n');
-}
-
-/**
  * Validates DMN data before export
  * @param {Object} dmnData - DMN metadata object
  * @returns {Object} - Validation result {valid: boolean, errors: string[]}
@@ -332,22 +218,12 @@ export function validateDMNData(dmnData) {
   };
 }
 
-/**
- * Generates DMN namespace declarations for TTL
- * @returns {string} - Namespace declarations
- */
-export function getDMNNamespaces() {
-  return `@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .`;
-}
-
 // Default export object for convenience
 const dmnHelpers = {
-  generateDMNTTL,
   extractRulesFromDMN,
-  generateRulesTTL,
-  generateCompleteDMNSection,
+  extractInputsFromTestResult,
+  extractOutputsFromTestResult,
   validateDMNData,
-  getDMNNamespaces,
   sanitizeServiceIdentifier,
   buildServiceUri,
 };

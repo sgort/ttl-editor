@@ -1,6 +1,33 @@
 {
   "versions": [
     {
+      "version": "1.5.2",
+      "status": "Release",
+      "statusColor": "green",
+      "borderColor": "green",
+      "date": "January X, 2026",
+      "sections": [
+        {
+          "title": "Fix Incomplete Modularization",
+          "icon": "✨",
+          "iconColor": "emerald",
+          "items": [
+            "Removed TTL generation code for DMN from dmnHelpers.js",
+            "Moved all TTL generation code for DMN to ttlGenerator.js",
+            "Extract outputs from DMN as well (was only inputs)"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "icon": "🐛",
+          "iconColor": "blue",
+          "items": [
+            "Fixed: auto-generated request body shows empty value whicht causes the DMN evaluation to return null outputs"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.5.1",
       "status": "Enhancement",
       "statusColor": "purple",
