@@ -31,6 +31,7 @@
 The **Core Public Service Editor** is a React-based web application that simplifies the creation and management of RDF/Turtle files for government services in the Netherlands. It provides an intuitive interface for creating service definitions that comply with EU CPSV-AP 3.2.0 and Dutch RONL/CPRMV standards.
 
 **Key Features:**
+
 - ✅ **CPSV-AP 3.2.0 compliant** TTL generation
 - ✅ **DMN integration** with Operaton rule engine
 - ✅ **RPP Architecture** (Rules--Policy--Parameters separation)
@@ -45,42 +46,49 @@ The **Core Public Service Editor** is a React-based web application that simplif
 ### Core Functionality
 
 #### 📝 **Service Definition**
+
 - Public service metadata (title, description, keywords)
 - Thematic areas and sector classification
 - Cost and output specification
 - Legal resource linking
 
 #### 🏛️ **Organization Management**
+
 - Public organization details
 - Geographic jurisdiction (mandatory)
 - Homepage and contact information
 - URI support (short IDs or full URIs)
 
 #### ⚖️ **Legal Resource Integration**
+
 - BWB ID support for Dutch legislation
 - Version and consolidation tracking
 - Direct linking to wetten.overheid.nl
 - Validation of BWB formats
 
 #### 🔵 **Rules (Decision Logic) - RPP Layer**
+
 - Temporal rules with validity periods
 - Rule versioning and inheritance chains
 - Confidence level tracking (high/medium/low)
 - Rule-to-policy traceability
 
 #### 🟢 **Parameters (Configuration) - RPP Layer**
+
 - Configurable values for rule behavior
 - Multiple unit types (EUR, PCT, NUM, DAYS, MONTHS, YEARS)
 - Temporal validity per parameter
 - Regional variation support
 
 #### 🟣 **CPRMV (Policy/Norms) - RPP Layer**
+
 - Normative values from legislation
 - CPRMV Rules API integration
 - JSON import from normenbrief format
 - Policy-to-legal-source traceability
 
 #### 🎯 **DMN (Decision Models)**
+
 - Upload and deploy DMN files to Operaton
 - Test decision evaluations with live data
 - Automatic input variable extraction
@@ -88,6 +96,7 @@ The **Core Public Service Editor** is a React-based web application that simplif
 - Import preservation for existing DMN
 
 #### 📊 **iKnow Integration**
+
 - Parse iKnow XML exports
 - Configurable field mappings
 - Import legislative analysis data
@@ -101,13 +110,14 @@ The **Core Public Service Editor** is a React-based web application that simplif
 
 The editor implements the **RPP architectural pattern** for Business Rule Management:
 
-| Layer | Color | Description | Examples |
-|-------|-------|-------------|----------|
-| **Rules** 🔵 | Blue | Executable decision logic that operationalizes policies | Eligibility checks, calculations |
-| **Policy** 🟣 | Purple | Normative values derived from laws | Legal thresholds, mandated rates |
-| **Parameters** 🟢 | Green | Configurable values that tune rules | Regional rates, pilot adjustments |
+| Layer             | Color  | Description                                             | Examples                          |
+| ----------------- | ------ | ------------------------------------------------------- | --------------------------------- |
+| **Rules** 🔵      | Blue   | Executable decision logic that operationalizes policies | Eligibility checks, calculations  |
+| **Policy** 🟣     | Purple | Normative values derived from laws                      | Legal thresholds, mandated rates  |
+| **Parameters** 🟢 | Green  | Configurable values that tune rules                     | Regional rates, pilot adjustments |
 
 **Benefits:**
+
 - **Legal Traceability:** Law → Policy → Rule → Parameter → Decision
 - **Organizational Agility:** Adjust parameters without changing rules or laws
 - **Governance:** Clear ownership and approval workflows per layer
@@ -117,11 +127,13 @@ The editor implements the **RPP architectural pattern** for Business Rule Manage
 ### Code Architecture (v1.5.1)
 
 **Modularization Journey:**
+
 - **v1.0:** Monolithic App.js
 - **v1.3:** Component extraction
 - **v1.5.1:** Full modularization
 
 **Key Modules:**
+
 - **`useEditorState.js`** - State management hook
 - **`ttlGenerator.js`** - TTL generation class
 - **`importHandler.js`** - Import logic
@@ -138,6 +150,7 @@ The editor implements the **RPP architectural pattern** for Business Rule Manage
 The editor generates TTL files compliant with the **Core Public Service Vocabulary Application Profile 3.2.0**.
 
 **Compliance Status:**
+
 - ✅ All mandatory properties implemented
 - ✅ Correct class types (cv:PublicOrganisation, cpsv:PublicService)
 - ✅ Proper relationships (cv:hasLegalResource, cv:hasCompetentAuthority)
@@ -148,6 +161,7 @@ The editor generates TTL files compliant with the **Core Public Service Vocabula
 ### Dutch Extensions
 
 **RONL (Regels Overheid Nederland):**
+
 - `ronl:TemporalRule` - Time-bounded rules
 - `ronl:ParameterWaarde` - Configuration parameters
 - `ronl:validFrom` / `ronl:validUntil` - Temporal validity
@@ -155,6 +169,7 @@ The editor generates TTL files compliant with the **Core Public Service Vocabula
 - `ronl:extends` - Rule versioning chains
 
 **CPRMV (Core Public Rule Management Vocabulary):**
+
 - `cprmv:Rule` - Normative rules from legislation
 - `cprmv:definition` - Full legal text
 - `cprmv:situatie` - Situational context
@@ -275,6 +290,7 @@ ttl-editor/
 ### Production Deployment
 
 The application is deployed to:
+
 - **Production:** https://cpsv.open-regels.nl
 - **Acceptance:** https://acc.cpsv.open-regels.nl
 
@@ -306,6 +322,7 @@ No environment variables required - fully client-side application.
 ### Planned Features 🔜
 
 **Phase B: RPP Deep Integration**
+
 - Cross-references between layers
 - "This rule implements Policy X" indicators
 - "This parameter is used by Rules Y, Z" tracking
@@ -313,11 +330,13 @@ No environment variables required - fully client-side application.
 - Impact analysis
 
 **Phase C - Governance Features (Optional)**
+
 - Add approval workflows
 - Layer-specific validation
 - Separate exports
 
 **Phase 2: Extended CPSV-AP**
+
 - Channel support (cv:Channel)
 - Contact points (cv:ContactPoint)
 - Criteria requirements
@@ -325,6 +344,7 @@ No environment variables required - fully client-side application.
 - Agent relationships
 
 **Phase 3: Advanced Features**
+
 - Multi-language support
 - Collaboration features
 - Version control integration
@@ -392,4 +412,4 @@ For support or questions about this project, please create an issue in the repos
 
 **Built with ❤️ for Dutch Government Services**
 
-*Version 1.5.1 - January 2026*
+_Version 1.5.1 - January 2026_

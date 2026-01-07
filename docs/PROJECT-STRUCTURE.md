@@ -14,12 +14,14 @@ The TTL Editor has evolved from a monolithic 1,800+ line application to a fully 
 **Architecture:** Component-based with custom hooks for state management, utilities for business logic, and modular TTL generation.
 
 **Modularization Journey:**
+
 - **v1.0:** Monolithic App.js
 - **v1.3:** Component extraction
 - **v1.5.0:** State + TTL extraction
 - **v1.5.1:** Full modularization
 
 **Key Architectural Patterns:**
+
 - **Custom Hooks:** State management, array operations
 - **Utility Classes:** TTL generation, import handling
 - **DRY Principles:** Reusable handlers for common operations
@@ -109,9 +111,10 @@ ttl-editor/
 
 ### `src/App.js`
 
-**Function:** Main application orchestrator and UI container  
+**Function:** Main application orchestrator and UI container
 
 **Responsibilities:**
+
 - Tab navigation and routing
 - Import/Export TTL workflow
 - Validation coordination
@@ -121,11 +124,13 @@ ttl-editor/
 - Status message display
 
 **State Management:**
+
 - Uses `useEditorState` hook for all editor state
 - Uses `useArrayHandlers` hooks for Rules, Parameters, CPRMV
 - Local UI state (activeTab, showPreviewPanel, importStatus, showClearDialog)
 
 **Key Features:**
+
 - Modular tab rendering
 - Real-time TTL generation for preview
 - Import status notifications with auto-hide
@@ -133,6 +138,7 @@ ttl-editor/
 - Responsive layout with optional preview panel
 
 **Props Passed to Tabs:**
+
 - Service, Organization, Legal: state + setter functions
 - Rules, Parameters, CPRMV: arrays + handler functions (add/remove/update)
 - DMN: dmnData + setDmnData
@@ -144,34 +150,49 @@ ttl-editor/
 
 ### `src/hooks/useEditorState.js`
 
-**Function:** Centralized state management for editor data  
+**Function:** Centralized state management for editor data
 
 **Responsibilities:**
+
 - Initialize all editor state (service, organization, legal, rules, parameters, CPRMV, cost, output, DMN, iKnow)
 - Provide state setters
 - Implement `clearAllData()` function
 - Load default iKnow mappings on mount
 
 **Returns:**
+
 ```javascript
 {
   // State
-  service, organization, legalResource,
-  temporalRules, parameters, cprmvRules,
-  cost, output, dmnData, iknowMappingConfig,
-  availableIKnowMappings,
-  
-  // Setters
-  setService, setOrganization, setLegalResource,
-  setTemporalRules, setParameters, setCprmvRules,
-  setCost, setOutput, setDmnData, setIknowMappingConfig,
-  
-  // Actions
-  clearAllData
+  (service,
+    organization,
+    legalResource,
+    temporalRules,
+    parameters,
+    cprmvRules,
+    cost,
+    output,
+    dmnData,
+    iknowMappingConfig,
+    availableIKnowMappings,
+    // Setters
+    setService,
+    setOrganization,
+    setLegalResource,
+    setTemporalRules,
+    setParameters,
+    setCprmvRules,
+    setCost,
+    setOutput,
+    setDmnData,
+    setIknowMappingConfig,
+    // Actions
+    clearAllData);
 }
 ```
 
 **Benefits:**
+
 - Single source of truth for state
 - Encapsulated clear logic
 - Easier to test
@@ -181,32 +202,36 @@ ttl-editor/
 
 ### `src/hooks/useArrayHandlers.js`
 
-**Function:** DRY handlers for array CRUD operations  
+**Function:** DRY handlers for array CRUD operations
 
 **Exports:**
+
 - `useArrayHandlers(items, setItems, createDefaultItem)` - Core hook
 - `useTemporalRulesHandlers()` - Pre-configured for rules
 - `useParametersHandlers()` - Pre-configured for parameters
 - `useCprmvRulesHandlers()` - Pre-configured for CPRMV
 
 **Provided Handlers:**
+
 ```javascript
 {
-  handleAdd,           // Add new item with unique ID
-  handleUpdate,        // Update item by ID with partial updates
-  handleRemove,        // Remove item by ID
-  handleUpdateField,   // Update single field (convenience)
-  handleClear,         // Clear entire array
-  handleReplace        // Replace entire array
+  (handleAdd, // Add new item with unique ID
+    handleUpdate, // Update item by ID with partial updates
+    handleRemove, // Remove item by ID
+    handleUpdateField, // Update single field (convenience)
+    handleClear, // Clear entire array
+    handleReplace); // Replace entire array
 }
 ```
 
 **ID Generation:**
+
 - Uses `Math.max(...ids) + 1` for new IDs
 - Falls back to 1 for empty arrays
 - Better than `Date.now()` for rapid additions
 
 **Benefits:**
+
 - Eliminates duplicate array logic across tabs
 - Consistent behavior for all array operations
 - Easier to maintain and test
@@ -218,14 +243,16 @@ ttl-editor/
 
 ### PreviewPanel
 
-**File:** `src/components/PreviewPanel.jsx`  
+**File:** `src/components/PreviewPanel.jsx`
 
-**Function:** Live TTL code preview with copy functionality  
+**Function:** Live TTL code preview with copy functionality
 
 **Props:**
+
 - `ttlContent`: String - Generated TTL content
 
 **Features:**
+
 - Syntax highlighting (numbered lines)
 - Copy to clipboard button
 - Fixed position side panel (500px width)
@@ -240,9 +267,10 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `ServiceTab.jsx`
 
-**Function:** Public service metadata form  
+**Function:** Public service metadata form
 
 **Props:**
+
 - `service`: Object - Service state
 - `setService`: Function - Update service
 - `cost`: Object - Cost state
@@ -253,12 +281,14 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 **Compliance:** CPSV-AP 3.2.0 cpsv:PublicService
 
 **Sections:**
+
 - Service Details (identifier, title, description)
 - Classification (thematic area, sector, keywords, language)
 - Cost Information (optional)
 - Output Information (optional)
 
 **Features:**
+
 - URI sanitization (spaces → hyphens)
 - Language selection (ISO 639-1)
 - Sector selection (EU authority codes)
@@ -268,21 +298,24 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `OrganizationTab.jsx`
 
-**Function:** Organization/competent authority form  
+**Function:** Organization/competent authority form
 
 **Props:**
+
 - `organization`: Object - Organization state
 - `setOrganization`: Function - Update organization
 
 **Compliance:** CPSV-AP 3.2.0 cv:PublicOrganisation
 
 **Fields:**
+
 - Organization identifier or URI
 - Preferred name (mandatory)
 - Homepage URL
 - Geographic jurisdiction (mandatory, cv:spatial)
 
 **Features:**
+
 - Auto-detects full URIs vs short identifiers
 - Visual indicator for URI detection
 - Geographic jurisdiction selection
@@ -291,21 +324,24 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `LegalTab.jsx`
 
-**Function:** Legal resource metadata form  
+**Function:** Legal resource metadata form
 
 **Props:**
+
 - `legalResource`: Object - Legal resource state
 - `setLegalResource`: Function - Update legal resource
 
 **Compliance:** ELI eli:LegalResource
 
 **Fields:**
+
 - BWB ID or URI (mandatory)
 - Version/consolidation date
 - Document title
 - Document description
 
 **Features:**
+
 - BWB ID validation (BWBR/BWBV format)
 - Auto-detects full URIs
 - Links to wetten.overheid.nl
@@ -315,9 +351,10 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `RulesTab.jsx` (RPP: Rules Layer 🔵)
 
-**Function:** Temporal rules management form  
+**Function:** Temporal rules management form
 
 **Props:**
+
 - `temporalRules`: Array - Rules array
 - `addTemporalRule`: Function - Add handler
 - `removeTemporalRule`: Function - Remove handler
@@ -326,6 +363,7 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 **Compliance:** RONL ronl:TemporalRule + CPSV-AP cpsv:Rule
 
 **Fields per Rule:**
+
 - Rule URI (auto-generated from index)
 - Rule identifier (dct:identifier)
 - Rule title (dct:title)
@@ -335,6 +373,7 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 - Description (dct:description)
 
 **RPP Features (v1.5.1):**
+
 - Blue banner with "RPP Layer: Rules" badge
 - Architecture explanation
 - RPP pattern flow description
@@ -343,9 +382,10 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `ParametersTab.jsx` (RPP: Parameters Layer 🟢)
 
-**Function:** Parameters management form  
+**Function:** Parameters management form
 
 **Props:**
+
 - `parameters`: Array - Parameters array
 - `addParameter`: Function - Add handler
 - `removeParameter`: Function - Remove handler
@@ -354,6 +394,7 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 **Compliance:** RONL ronl:ParameterWaarde + CPRMV
 
 **Fields per Parameter:**
+
 - Notation (skos:notation, mandatory, machine-readable)
 - Label (skos:prefLabel, mandatory, human-readable)
 - Value (schema:value, mandatory, decimal)
@@ -362,11 +403,13 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 - Valid from/until dates (ronl:validFrom/validUntil)
 
 **RPP Features (v1.5.1):**
+
 - Green banner with "RPP Layer: Parameters" badge
 - Architecture explanation
 - RPP pattern flow description
 
 **Features:**
+
 - Uppercase notation convention
 - Unit selection dropdown
 - Decimal value input
@@ -376,9 +419,10 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `CPRMVTab.jsx` (RPP: Policy Layer 🟣)
 
-**Function:** CPRMV normative rules management form  
+**Function:** CPRMV normative rules management form
 
 **Props:**
+
 - `cprmvRules`: Array - CPRMV rules array
 - `addCPRMVRule`: Function - Add handler
 - `removeCPRMVRule`: Function - Remove handler
@@ -389,6 +433,7 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 **Compliance:** CPRMV vocabulary
 
 **Fields per Rule:**
+
 - Rule ID Path (cprmv:ruleIdPath, mandatory)
 - Rule ID (cprmv:id, mandatory)
 - Ruleset ID (cprmv:rulesetId, mandatory)
@@ -397,12 +442,14 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 - Norm (cprmv:norm)
 
 **RPP Features (v1.5.1):**
+
 - Purple banner with "RPP Layer: Policy" badge
 - Architecture explanation with CPRMV API link
 - Example data button
 - RPP pattern flow description
 
 **Features:**
+
 - JSON import from normenbrief format
 - Load example data button
 - CPRMV Rules API integration
@@ -412,13 +459,15 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `DMNTab.jsx`
 
-**Function:** DMN decision model management  
+**Function:** DMN decision model management
 
 **Props:**
+
 - `dmnData`: Object - DMN state
 - `setDmnData`: Function - Update DMN
 
 **Features:**
+
 - Upload DMN files
 - Deploy to Operaton rule engine
 - Test decision evaluations
@@ -427,6 +476,7 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 - Import preservation mode for imported TTL
 
 **Imported DMN Mode:**
+
 - Read-only display of imported DMN blocks
 - "Imported" badge indicator
 - Clear option to start fresh
@@ -436,15 +486,17 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `IKnowMappingTab.jsx`
 
-**Function:** iKnow legislative analysis integration  
+**Function:** iKnow legislative analysis integration
 
 **Props:**
+
 - `mappingConfig`: Object - Current mapping configuration
 - `setMappingConfig`: Function - Update mapping
 - `availableMappings`: Array - Available mapping templates
 - `onImportComplete`: Function - Callback after import
 
 **Features:**
+
 - Parse iKnow XML exports (CognitatieAnnotation/Semantics)
 - Configurable field mappings
 - Import/Configure dual mode
@@ -455,11 +507,12 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 #### `ChangelogTab.jsx`
 
-**Function:** Version history and roadmap display  
+**Function:** Version history and roadmap display
 
 **Props:** None (reads from data files)
 
 **Features:**
+
 - Version history from `changelog.json`
 - Color-coded version statuses
 - Icon-based categorization
@@ -472,20 +525,28 @@ All tabs are in `src/components/tabs/` and exported via `index.js`.
 
 ### `src/utils/ttlGenerator.js` (NEW v1.5.0)
 
-**Function:** TTL generation class  
+**Function:** TTL generation class
 
 **Class:** `TTLGenerator`
 
 **Constructor:**
+
 ```javascript
 new TTLGenerator({
-  service, organization, legalResource,
-  temporalRules, parameters, cprmvRules,
-  cost, output, dmnData
-})
+  service,
+  organization,
+  legalResource,
+  temporalRules,
+  parameters,
+  cprmvRules,
+  cost,
+  output,
+  dmnData,
+});
 ```
 
 **Methods:**
+
 - `generate()` - Generate complete TTL document
 - `generateNamespaces()` - RDF namespace prefixes
 - `generateSectionHeader(title)` - Section comment headers
@@ -505,11 +566,13 @@ new TTLGenerator({
 - `stripDmnHeaders(dmnBlocks)` - Remove duplicate headers
 
 **Helper Function:**
+
 ```javascript
-generateTTL(state) // Convenience wrapper
+generateTTL(state); // Convenience wrapper
 ```
 
 **Benefits:**
+
 - Encapsulated generation logic
 - Easier to test and maintain
 - Clear method responsibilities
@@ -519,7 +582,7 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/importHandler.js` (NEW v1.5.1)
 
-**Function:** Centralized import logic for TTL files  
+**Function:** Centralized import logic for TTL files
 
 **Functions:**
 
@@ -531,6 +594,7 @@ generateTTL(state) // Convenience wrapper
 - `handleTTLImport(event, setters, setImportStatus)` - React event handler
 
 **Features:**
+
 - Async/await pattern
 - Comprehensive error handling
 - Status message generation
@@ -539,6 +603,7 @@ generateTTL(state) // Convenience wrapper
 - Proper state setter orchestration
 
 **Benefits:**
+
 - Reusable import logic
 - Better error handling
 - Easier to test
@@ -548,9 +613,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/dmnHelpers.js`
 
-**Function:** DMN-specific utilities  
+**Function:** DMN-specific utilities
 
 **Functions:**
+
 - `generateCompleteDMNSection(dmnData, serviceUri)` - DMN TTL generation
 - `extractInputsFromTestResult(dmnData)` - Extract input variables
 - `extractRulesFromDMN(dmnContent)` - Parse DMN XML for rules
@@ -558,6 +624,7 @@ generateTTL(state) // Convenience wrapper
 - `sanitizeServiceIdentifier(identifier)` - URI sanitization
 
 **Features:**
+
 - DMN XML parsing
 - Rule extraction with CPRMV attributes
 - Input variable documentation
@@ -567,9 +634,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/constants.js`
 
-**Function:** Shared constants and configuration  
+**Function:** Shared constants and configuration
 
 **Exports:**
+
 - `NAMESPACES`: Object - RDF namespace URIs
 - `TTL_NAMESPACES`: String - Formatted namespace prefixes for TTL
 - `CONFIDENCE_LEVELS`: Array - Rule confidence options
@@ -586,9 +654,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/validators.js`
 
-**Function:** Validation logic  
+**Function:** Validation logic
 
 **Functions:**
+
 - `validateForm(state)` - Complete form validation
 - `validateService(service)` - Service validation
 - `validateOrganization(organization)` - Organization validation
@@ -601,11 +670,12 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/parseTTL.enhanced.js`
 
-**Function:** Enhanced TTL parser  
+**Function:** Enhanced TTL parser
 
 **Function:** `parseTTL(ttlContent)`
 
 **Features:**
+
 - Vocabulary detection (CPSV-AP, RONL, CPRMV, ELI)
 - Multi-line value parsing
 - Namespace resolution
@@ -620,9 +690,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/utils/index.js`
 
-**Function:** Barrel export for all utilities  
+**Function:** Barrel export for all utilities
 
 **Exports:**
+
 - All from `constants.js`
 - `generateTTL` from `ttlGenerator.js`
 - `validateForm`, `sanitizeFilename` from `validators.js`
@@ -634,9 +705,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/data/changelog.json`
 
-**Function:** Version history data  
+**Function:** Version history data
 
 **Structure:**
+
 ```json
 {
   "versions": [
@@ -665,9 +737,10 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/data/roadmap.json`
 
-**Function:** Future features roadmap  
+**Function:** Future features roadmap
 
 **Structure:**
+
 ```json
 {
   "items": [
@@ -686,7 +759,7 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/data/cprmv-example.json`
 
-**Function:** Example CPRMV data  
+**Function:** Example CPRMV data
 
 **Purpose:** Provides example data for "Load Example" button in CPRMV tab
 
@@ -696,21 +769,24 @@ generateTTL(state) // Convenience wrapper
 
 ### `src/config/vocabularies_config.js`
 
-**Function:** RDF vocabulary mappings  
+**Function:** RDF vocabulary mappings
 
 **Exports:**
+
 - `vocabularies`: Object - Vocabulary configurations for parser
 
 **Vocabularies:**
+
 - CPSV-AP, RONL, CPRMV, ELI, DCT, SKOS, SCHEMA, FOAF, ORG
 
 ---
 
 ### `src/config/iknow-mappings.js`
 
-**Function:** iKnow field mapping configurations  
+**Function:** iKnow field mapping configurations
 
 **Exports:**
+
 - `iknowMappings`: Array - Pre-configured mapping templates
 
 **Purpose:** Provides default mappings for iKnow XML to CPSV-AP fields
@@ -734,6 +810,7 @@ All documentation is in `docs/` directory:
 ## Key Metrics (v1.5.1)
 
 **Code Reduction:**
+
 - Original App.js: 1,723 lines
 - After Phase 1 (Components): 1,007 lines (-716, -42%)
 - After Phase 2 (TTL Generator): 757 lines (-250, -25%)
@@ -742,12 +819,14 @@ All documentation is in `docs/` directory:
 - **Total Reduction: -1,133 lines (-66% from original)**
 
 **New Modules Created:**
+
 - `useEditorState.js` - 135 lines
 - `ttlGenerator.js` - 443 lines
 - `importHandler.js` - 250 lines
 - `useArrayHandlers.js` - 150 lines
 
 **Component Distribution:**
+
 - Main App: ~590 lines
 - Tab Components: 9 tabs × ~150-200 lines avg
 - Hooks: 2 hooks × ~135-150 lines
@@ -755,6 +834,7 @@ All documentation is in `docs/` directory:
 - Total Codebase: ~3,500 lines (well-organized)
 
 **Maintainability:**
+
 - ✅ Clear separation of concerns
 - ✅ Reusable hooks and utilities
 - ✅ DRY principles applied
@@ -884,13 +964,14 @@ Export Flow:
 
 The editor implements visual separation for the **Rules--Policy--Parameters** pattern:
 
-| Layer | Tab | Color | Badge | Description |
-|-------|-----|-------|-------|-------------|
-| **Rules** | Rules | 🔵 Blue | "RPP Layer: Rules" | Decision logic that operationalizes policies |
-| **Policy** | CPRMV | 🟣 Purple | "RPP Layer: Policy" | Normative values from legislation |
-| **Parameters** | Parameters | 🟢 Green | "RPP Layer: Parameters" | Configurable values for tuning |
+| Layer          | Tab        | Color     | Badge                   | Description                                  |
+| -------------- | ---------- | --------- | ----------------------- | -------------------------------------------- |
+| **Rules**      | Rules      | 🔵 Blue   | "RPP Layer: Rules"      | Decision logic that operationalizes policies |
+| **Policy**     | CPRMV      | 🟣 Purple | "RPP Layer: Policy"     | Normative values from legislation            |
+| **Parameters** | Parameters | 🟢 Green  | "RPP Layer: Parameters" | Configurable values for tuning               |
 
 **Features:**
+
 - Color-coded tab navigation
 - Explanatory banners in each tab
 - RPP pattern flow descriptions
@@ -910,5 +991,5 @@ See `src/data/roadmap.json` for detailed roadmap:
 
 ---
 
-*Public Service CPSV Editor - Project Structure Documentation*  
-*Version 1.5.1 - Fully Modularized Architecture with RPP Alignment* ✅
+_Public Service CPSV Editor - Project Structure Documentation_  
+_Version 1.5.1 - Fully Modularized Architecture with RPP Alignment_ ✅
