@@ -1,39 +1,177 @@
 {
-  "items": [
+  "completed": [
+    {
+      "icon": "✅",
+      "title": "CPSV-AP 3.2.0 Compliance",
+      "description": "Full compliance with EU Core Public Service Vocabulary Application Profile 3.2.0",
+      "version": "1.4.0"
+    },
+    {
+      "icon": "✅",
+      "title": "DMN Integration",
+      "description": "Upload, deploy, and test DMN decision models with Operaton rule engine",
+      "version": "1.5.0"
+    },
+    {
+      "icon": "✅",
+      "title": "iKnow Integration",
+      "description": "Import legislative analysis data from iKnow XML exports with configurable field mappings",
+      "version": "1.5.0"
+    },
+    {
+      "icon": "✅",
+      "title": "Full Modularization",
+      "description": "Complete codebase refactoring with hooks, utilities, and DRY principles (-66% code reduction)",
+      "version": "1.5.1"
+    },
+    {
+      "icon": "✅",
+      "title": "RPP Architecture Visualization",
+      "description": "Visual separation of Rules-Policy-Parameters pattern with color-coded tabs and explanatory banners",
+      "version": "1.5.1"
+    }
+  ],
+  "planned": [
+    {
+      "icon": "🎯",
+      "phase": "Phase B",
+      "title": "RPP Deep Integration",
+      "description": "Cross-references between layers: 'This rule implements Policy X', 'This parameter is used by Rules Y, Z', with traceability visualization and impact analysis",
+      "priority": "High",
+      "effort": "Medium"
+    },
+    {
+      "icon": "📊",
+      "phase": "Phase 2",
+      "title": "Extended CPSV-AP Support",
+      "description": "Add Channel (cv:Channel), Contact Points (cv:ContactPoint), Criteria requirements, and Evidence requirements",
+      "priority": "High",
+      "effort": "High"
+    },
+    {
+      "icon": "🌍",
+      "phase": "Phase 3",
+      "title": "Multi-Language Support",
+      "description": "Support for multiple languages beyond Dutch, with language-specific fields and automatic translation workflows",
+      "priority": "Medium",
+      "effort": "High"
+    },
     {
       "icon": "⭐",
+      "phase": "Phase 3",
       "title": "Template System",
-      "description": "Pre-fill forms from AOW example or custom templates"
+      "description": "Pre-configured templates for common service types (AOW, bijstand, WMO) with quick-start functionality",
+      "priority": "Medium",
+      "effort": "Medium"
+    },
+    {
+      "icon": "👥",
+      "phase": "Phase 3",
+      "title": "Collaboration Features",
+      "description": "Real-time collaborative editing, comments, change tracking, and review workflows for team-based service definition",
+      "priority": "Medium",
+      "effort": "High"
     },
     {
       "icon": "🔧",
-      "title": "Browser Storage",
-      "description": "Auto-save progress to localStorage"
-    },
-    {
-      "icon": "🎯",
-      "title": "Additional Sections",
-      "description": "Channel, Contact, DMN Distribution forms"
+      "phase": "Phase 3",
+      "title": "Browser Storage Auto-Save",
+      "description": "Automatic progress saving to localStorage with recovery on browser crash or accidental closure",
+      "priority": "Low",
+      "effort": "Low"
     },
     {
       "icon": "🚀",
+      "phase": "Phase 4",
       "title": "Advanced Validation",
-      "description": "Field-level error messages and real-time validation"
+      "description": "SHACL-based validation, field-level error messages, real-time validation, and compliance checking",
+      "priority": "Medium",
+      "effort": "Medium"
     },
     {
       "icon": "📥",
-      "title": "Export Options",
-      "description": "JSON and YAML export formats"
+      "phase": "Phase 4",
+      "title": "Additional Export Formats",
+      "description": "Export to JSON-LD, RDF/XML, N-Triples, and YAML formats beyond Turtle",
+      "priority": "Low",
+      "effort": "Low"
+    },
+    {
+      "icon": "🔗",
+      "phase": "Phase 4",
+      "title": "Version Control Integration",
+      "description": "Git integration for service versioning, diff viewing, and collaborative development workflows",
+      "priority": "Medium",
+      "effort": "High"
     },
     {
       "icon": "🎯",
-      "title": "DMN File Upload",
-      "description": "Upload and link DMN files to services"
-    },
-    {
-      "icon": "🎯",
+      "phase": "Phase 5",
       "title": "Multi-Service Management",
-      "description": "Manage multiple services in one session"
+      "description": "Manage multiple services in one session with service catalog, bulk operations, and cross-service references",
+      "priority": "Low",
+      "effort": "High"
+    },
+    {
+      "icon": "📊",
+      "phase": "Phase 5",
+      "title": "Quality Metrics & Analytics",
+      "description": "Completeness scores, compliance metrics, usage statistics, and quality dashboards for service definitions",
+      "priority": "Low",
+      "effort": "Medium"
+    },
+    {
+      "icon": "🔍",
+      "phase": "Phase 5",
+      "title": "Semantic Search",
+      "description": "Search across services using semantic queries, find related services, and discover reusable components",
+      "priority": "Low",
+      "effort": "High"
+    },
+    {
+      "icon": "🧪",
+      "phase": "Phase 6",
+      "title": "Automated Testing",
+      "description": "Automated validation tests, regression testing, and CI/CD integration for service definitions",
+      "priority": "Low",
+      "effort": "Medium"
+    },
+    {
+      "icon": "🗄️",
+      "phase": "Phase 6",
+      "title": "TriplyDB Integration",
+      "description": "Direct publishing to TriplyDB, SPARQL query interface, and linked data exploration",
+      "priority": "Low",
+      "effort": "High"
+    },
+    {
+      "icon": "🔐",
+      "phase": "Phase 6",
+      "title": "User Authentication & Permissions",
+      "description": "User accounts, role-based access control, organizational workspaces, and audit logging",
+      "priority": "Low",
+      "effort": "Very High"
     }
-  ]
+  ],
+  "notes": {
+    "priority": {
+      "High": "Important for core functionality and user experience",
+      "Medium": "Valuable enhancement but not critical",
+      "Low": "Nice to have, future consideration"
+    },
+    "effort": {
+      "Low": "1-2 days development",
+      "Medium": "1-2 weeks development",
+      "High": "2-4 weeks development",
+      "Very High": "1+ months development"
+    },
+    "phases": {
+      "Phase B": "RPP architecture enhancements (2026 Q1-Q2)",
+      "Phase 2": "CPSV-AP extensions (2026 Q2)",
+      "Phase 3": "User experience improvements (2026 Q3)",
+      "Phase 4": "Technical enhancements (2026 Q4)",
+      "Phase 5": "Advanced features (2027 Q1)",
+      "Phase 6": "Enterprise features (2027 Q2+)"
+    }
+  }
 }
