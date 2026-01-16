@@ -32,28 +32,6 @@
 
 
 # ============================================================
-#  Organization
-# ============================================================
-
-<https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
-    dct:identifier "https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank" ;
-    skos:prefLabel "Sociale Verzekeringsbank"@nl ;
-    foaf:homepage <https://www.svb.nl> ;
-    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD>  .
-
-
-# ============================================================
-#  Legal Resource
-# ============================================================
-
-<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
-    dct:identifier "BWBR0002221" ;
-    dct:title "Algemene Ouderdomswet"@nl ;
-    dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
-    eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
-
-
-# ============================================================
 #  Cost
 # ============================================================
 
@@ -71,8 +49,29 @@
 <https://regels.overheid.nl/outputs/output-01> a cv:Output ;
     dct:identifier "output-01" ;
     dct:title "20"@nl ;
-    dct:description "Test Service Output Description"@nl ;
-    dct:type <Physical device>  .
+    dct:description "Test Service Output Description"@nl  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Verzekeringsbank" ;
+    skos:prefLabel "Sociale Verzekeringsbank"@nl ;
+    foaf:homepage <https://www.svb.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
+    dct:identifier "BWBR0002221" ;
+    dct:title "Algemene Ouderdomswet"@nl ;
+    dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
 
 
 # ============================================================
