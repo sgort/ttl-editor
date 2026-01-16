@@ -5,6 +5,7 @@ import {
   Building2,
   CheckCircle,
   Clock,
+  Cloud,
   Database,
   Download,
   FileText,
@@ -18,6 +19,7 @@ import {
 import React, { useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
+import PublishDialog from './components/PublishDialog';
 import {
   ChangelogTab,
   CPRMVTab,
@@ -36,6 +38,7 @@ import {
 } from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
+import { publishToTriplyDB, saveTriplyDBConfig } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
@@ -65,6 +68,8 @@ function App() {
     setIknowMappingConfig, // ← used by IKnowMappingTab
     availableIKnowMappings, // ← passed to IKnowMappingTab
     // setAvailableIKnowMappings! ← Not needed in App.js
+    triplyDBConfig,
+    setTriplyDBConfig,
     clearAllData,
   } = useEditorState();
 
@@ -108,6 +113,14 @@ function App() {
     cost,
     output,
     dmnData,
+  });
+
+  // state variables for Publish dialog
+  const [showPublishDialog, setShowPublishDialog] = useState(false);
+  const [publishStatus, setPublishStatus] = useState({
+    show: false,
+    success: false,
+    message: '',
   });
 
   // Helper to get TTL content
@@ -292,6 +305,84 @@ function App() {
     }
   };
 
+  const handlePublish = async (config) => {
+    // Close the publish dialog
+    setShowPublishDialog(false);
+
+    try {
+      // Validate form before publishing
+      const { isValid, errors } = validateForm({
+        service,
+        organization,
+        legalResource,
+        temporalRules,
+        parameters,
+      });
+
+      // DMN validation
+      const dmnValidation = validateDMNData(dmnData);
+      if (!dmnValidation.valid) {
+        errors.push(...dmnValidation.errors.map((err) => `DMN: ${err}`));
+      }
+
+      if (!isValid || !dmnValidation.valid) {
+        setPublishStatus({
+          show: true,
+          success: false,
+          message: `Validation failed: ${errors.join(', ')}`,
+        });
+        setTimeout(() => {
+          setPublishStatus({ show: false, success: false, message: '' });
+        }, 5000);
+        return;
+      }
+
+      // Generate TTL content
+      const ttlContent = generateTTL(buildStateForTTL());
+
+      // Create filename from service identifier
+      const filename = sanitizeFilename(service.identifier || service.name || 'service');
+
+      // Show publishing status
+      setPublishStatus({
+        show: true,
+        success: false,
+        message: 'Publishing to TriplyDB...',
+      });
+
+      // Publish to TriplyDB
+      const result = await publishToTriplyDB(ttlContent, config, filename);
+
+      // Save config for future use
+      saveTriplyDBConfig(config);
+      setTriplyDBConfig(config);
+
+      // Show success message
+      setPublishStatus({
+        show: true,
+        success: true,
+        message: `Successfully published to TriplyDB! View at: ${result.url}`,
+      });
+
+      // Auto-hide success message after 10 seconds
+      setTimeout(() => {
+        setPublishStatus({ show: false, success: false, message: '' });
+      }, 10000);
+    } catch (error) {
+      console.error('Publish error:', error);
+      setPublishStatus({
+        show: true,
+        success: false,
+        message: `Publish failed: ${error.message}`,
+      });
+
+      // Auto-hide error message after 8 seconds
+      setTimeout(() => {
+        setPublishStatus({ show: false, success: false, message: '' });
+      }, 8000);
+    }
+  };
+
   // Render functions
 
   return (
@@ -370,6 +461,38 @@ function App() {
                 )}
                 <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
                   {importStatus.message}
+                </p>
+              </div>
+            )}
+
+            {/* Publish Status Message - NEW */}
+            {publishStatus.show && (
+              <div
+                className={`mb-4 p-4 rounded-lg flex items-center gap-3 ${
+                  publishStatus.success
+                    ? 'bg-green-50 border border-green-200'
+                    : publishStatus.message.includes('Publishing')
+                      ? 'bg-blue-50 border border-blue-200'
+                      : 'bg-red-50 border border-red-200'
+                }`}
+              >
+                {publishStatus.success ? (
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+                ) : publishStatus.message.includes('Publishing') ? (
+                  <Cloud className="w-5 h-5 text-blue-600 flex-shrink-0 animate-pulse" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                )}
+                <p
+                  className={`text-sm ${
+                    publishStatus.success
+                      ? 'text-green-800'
+                      : publishStatus.message.includes('Publishing')
+                        ? 'text-blue-800'
+                        : 'text-red-800'
+                  }`}
+                >
+                  {publishStatus.message}
                 </p>
               </div>
             )}
@@ -530,19 +653,33 @@ function App() {
             </div>
           </div>
 
-          {/* Validate and Download Buttons */}
-          <div className="mt-6 flex gap-4 justify-end">
+          {/* Button Row - Buttons aligned to the RIGHT */}
+          <div className="flex flex-wrap items-center justify-end gap-3 mt-6">
+            {/* Validate Button */}
             <button
               onClick={handleValidate}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <CheckCircle size={20} /> Validate
+              <CheckCircle size={20} />
+              Validate
             </button>
+
+            {/* Publish Button */}
+            <button
+              onClick={() => setShowPublishDialog(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              <Cloud size={20} />
+              Publish
+            </button>
+
+            {/* Download Button */}
             <button
               onClick={downloadTTL}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
-              <Download size={20} /> Download TTL
+              <Download size={20} />
+              Download TTL
             </button>
           </div>
         </div>
@@ -588,6 +725,14 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Publish Dialog */}
+      <PublishDialog
+        isOpen={showPublishDialog}
+        onClose={() => setShowPublishDialog(false)}
+        onPublish={handlePublish}
+        currentConfig={triplyDBConfig}
+      />
     </div>
   );
 }

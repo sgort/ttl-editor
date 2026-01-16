@@ -1,6 +1,54 @@
 {
   "versions": [
     {
+      "version": "1.6.0",
+      "status": "Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "January 2026",
+      "sections": [
+        {
+          "title": "Direct Publishing to TriplyDB",
+          "icon": "☁️",
+          "iconColor": "purple",
+          "items": [
+            "Added 'Publish' button next to Validate and Download buttons",
+            "Direct upload of generated TTL files to TriplyDB datasets",
+            "Configuration dialog for TriplyDB settings (API URL, account, dataset, token)",
+            "Test connection functionality to verify TriplyDB credentials",
+            "Secure token storage in browser localStorage",
+            "Real-time status feedback during publishing",
+            "Automatic validation before publishing",
+            "Support for file size up to 5MB (TriplyDB API limit)"
+          ]
+        },
+        {
+          "title": "Technical Implementation",
+          "icon": "🔧",
+          "iconColor": "blue",
+          "items": [
+            "Created triplydbHelper.js utility module for API integration",
+            "Implemented PublishDialog component for configuration UI",
+            "Extended useEditorState hook with TriplyDB configuration state",
+            "Added publish status notifications with auto-hide",
+            "Integration with existing validation workflow",
+            "Configuration persistence across sessions"
+          ]
+        },
+        {
+          "title": "Security Features",
+          "icon": "🔒",
+          "iconColor": "yellow",
+          "items": [
+            "Secure API token handling with show/hide toggle",
+            "Security reminders in configuration dialog",
+            "Token storage only in browser (never on server)",
+            "Authentication via Bearer token as per TriplyDB standards"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.5.2",
       "status": "Release",
       "statusColor": "green",

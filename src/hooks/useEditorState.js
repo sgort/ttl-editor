@@ -8,6 +8,7 @@ import {
   DEFAULT_OUTPUT,
   DEFAULT_SERVICE,
 } from '../utils';
+import { loadTriplyDBConfig } from '../utils/triplydbHelper';
 
 export const useEditorState = () => {
   // Service state
@@ -57,6 +58,9 @@ export const useEditorState = () => {
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
   const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
 
+  // TriplyDB configuration state (NEW)
+  const [triplyDBConfig, setTriplyDBConfig] = useState(() => loadTriplyDBConfig());
+
   // Load available iKnow mappings on mount
   useEffect(() => {
     setAvailableIKnowMappings(iknowMappings);
@@ -90,43 +94,46 @@ export const useEditorState = () => {
       isImported: false,
     });
     setIknowMappingConfig({ mappings: {} });
-    setAvailableIKnowMappings(iknowMappings);
+    // Note: We don't clear TriplyDB config on clear all
   };
 
   return {
     // Service
     service,
     setService,
+    // Organization
     organization,
     setOrganization,
+    // Legal Resource
     legalResource,
     setLegalResource,
-
-    // Arrays
+    // Temporal Rules
     temporalRules,
     setTemporalRules,
+    // Parameters
     parameters,
     setParameters,
+    // CPRMV Rules
     cprmvRules,
     setCprmvRules,
-
-    // Cost & Output
+    // Cost
     cost,
     setCost,
+    // Output
     output,
     setOutput,
-
     // DMN
     dmnData,
     setDmnData,
-
     // iKnow
     iknowMappingConfig,
-    setIknowMappingConfig, // ← App.js needs this (user can change config)
-    availableIKnowMappings, // ← App.js needs this (read-only list)
-    // setAvailableIKnowMappings, // ← DON'T export! Only used internally
-
-    // Clear all data
+    setIknowMappingConfig,
+    availableIKnowMappings,
+    setAvailableIKnowMappings,
+    // TriplyDB (NEW)
+    triplyDBConfig,
+    setTriplyDBConfig,
+    // Actions
     clearAllData,
   };
 };
