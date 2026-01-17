@@ -41,6 +41,7 @@ The CPSV Editor now includes direct publishing to TriplyDB via an integrated pub
 ### For Developers
 
 **Files to deploy:**
+
 - `src/App.js` - Publish handler with progress tracking
 - `src/components/PublishDialog.jsx` - Dialog component
 - `src/utils/triplydbHelper.js` - TriplyDB API integration
@@ -99,6 +100,7 @@ Message appears under title
 ### Message Display (Top of Page)
 
 After dialog closes:
+
 - Green success with TriplyDB URL (auto-dismiss 10s)
 - Red error with details (auto-dismiss 8s)
 - Yellow warning (auto-dismiss 12s)
@@ -111,6 +113,7 @@ After dialog closes:
 ### User Configuration (via Dialog)
 
 **Required Fields:**
+
 - **Base URL:** `https://api.open-regels.triply.cc`
 - **Account:** Your TriplyDB account/organization name
 - **Dataset:** Target dataset name
@@ -123,6 +126,7 @@ After dialog closes:
 **Purpose:** Provides cumulative SPARQL endpoint
 
 **If unavailable:**
+
 - Upload still succeeds
 - Warning shown: "Service update failed"
 - Data is accessible in TriplyDB
@@ -134,6 +138,7 @@ After dialog closes:
 ## Testing Checklist
 
 ### ✅ Test 1: Successful Publish
+
 - [ ] Enter valid credentials
 - [ ] Click Publish
 - [ ] See progress tracking (all 4 steps)
@@ -144,6 +149,7 @@ After dialog closes:
 - [ ] Message auto-dismisses after 10s
 
 ### ✅ Test 2: Error Handling
+
 - [ ] Enter invalid account name
 - [ ] Click Publish
 - [ ] See progress start
@@ -154,6 +160,7 @@ After dialog closes:
 - [ ] Message auto-dismisses after 8s
 
 ### ✅ Test 3: Test Connection
+
 - [ ] Enter valid credentials
 - [ ] Click "Test Connection"
 - [ ] See green "Successfully connected"
@@ -162,6 +169,7 @@ After dialog closes:
 - [ ] Verify test result is gone (clean state)
 
 ### ✅ Test 4: No Duplicate Messages
+
 - [ ] Import TTL → see ONE message
 - [ ] Publish → see ONE message
 - [ ] Error → see ONE message
@@ -192,16 +200,17 @@ After dialog closes:
 
 ## Troubleshooting
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| "Not found or unauthorized" | Invalid credentials | Check account, dataset, token in TriplyDB |
-| "Network error" | Firewall blocking | Verify HTTPS access to TriplyDB API |
-| "Service update failed" | Backend proxy down | Continue without it (data still published) |
-| Stale test results | Old version | Update to v1.6.0 |
-| Duplicate messages | Old version | Update App.js |
-| Error not in dialog | Old version | Update PublishDialog.jsx |
+| Issue                       | Cause               | Solution                                   |
+| --------------------------- | ------------------- | ------------------------------------------ |
+| "Not found or unauthorized" | Invalid credentials | Check account, dataset, token in TriplyDB  |
+| "Network error"             | Firewall blocking   | Verify HTTPS access to TriplyDB API        |
+| "Service update failed"     | Backend proxy down  | Continue without it (data still published) |
+| Stale test results          | Old version         | Update to v1.6.0                           |
+| Duplicate messages          | Old version         | Update App.js                              |
+| Error not in dialog         | Old version         | Update PublishDialog.jsx                   |
 
 **Debug Mode:**
+
 ```javascript
 // In src/utils/triplydbHelper.js
 const DEBUG = true; // Enable console logging
@@ -216,6 +225,7 @@ const DEBUG = true; // Enable console logging
 Uploads TTL to TriplyDB with 3 automatic retries.
 
 **Returns:**
+
 ```javascript
 {
   success: true,
@@ -229,6 +239,7 @@ Uploads TTL to TriplyDB with 3 automatic retries.
 Tests connection without uploading.
 
 **Returns:**
+
 ```javascript
 {
   success: true,
@@ -241,19 +252,23 @@ Tests connection without uploading.
 ## Security
 
 ### API Token Storage
+
 - **Location:** Browser localStorage (client-side only)
 - **Transmission:** Only to TriplyDB API (HTTPS)
 - **Not logged** or stored server-side
 - **User controls** via TriplyDB settings
 
 ### Best Practices
+
 - Create tokens with minimal permissions
 - Rotate tokens regularly
 - Never commit tokens to version control
 - Don't share tokens between users
 
 ### Warning Box
+
 Yellow security reminder in dialog:
+
 - Never share API tokens
 - Don't commit to version control
 - Rotate regularly
@@ -263,6 +278,7 @@ Yellow security reminder in dialog:
 ## Deployment Checklist
 
 ### Frontend
+
 - [ ] HTTPS access to TriplyDB API
 - [ ] CORS enabled for your domain
 - [ ] Test with production credentials
@@ -270,6 +286,7 @@ Yellow security reminder in dialog:
 - [ ] Test all error scenarios
 
 ### Backend Proxy (Optional)
+
 - [ ] Deploy Node.js backend
 - [ ] Configure environment variables
 - [ ] Test TriplyDB connection
@@ -277,6 +294,7 @@ Yellow security reminder in dialog:
 - [ ] Configure CORS
 
 ### Users
+
 - [ ] Document API token creation
 - [ ] Explain security (local storage)
 - [ ] Provide TriplyDB instance URL
@@ -291,8 +309,9 @@ Yellow security reminder in dialog:
 **Background:** TriplyDB creates auto-numbered graphs (graph1, graph2...) instead of accumulating in single graph.
 
 **Attempts made:**
+
 - SPARQL UPDATE → 403 Forbidden
-- HTTP PUT → 405 Not Allowed  
+- HTTP PUT → 405 Not Allowed
 - Services API → Still auto-numbered
 - Named graphs → Still auto-numbered
 
@@ -307,6 +326,7 @@ Yellow security reminder in dialog:
 ## Version History
 
 ### v1.6.0 (2026-01-17) ⭐ Current
+
 - ✅ Complete publishing feature
 - ✅ Beautiful dialog with progress tracking
 - ✅ Fixed: Duplicate messages
@@ -321,10 +341,12 @@ Yellow security reminder in dialog:
 ## Support
 
 **Documentation:**
+
 - This file: `/docs/PUBLISH.md`
 - Graph details: `/docs/TRIPLYDB_GRAPH_ACCUMULATION.md`
 
 **Troubleshooting:**
+
 1. Check Troubleshooting section
 2. Enable debug mode
 3. Check browser console
