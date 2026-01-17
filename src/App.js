@@ -618,7 +618,27 @@ function App() {
               </div>
             )}
 
-            {/* Publish Status Messages - NEW */}
+            {/* Keep importStatus as-is */}
+            {importStatus.show && (
+              <div
+                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
+                  importStatus.success
+                    ? 'bg-green-50 border border-green-200'
+                    : 'bg-red-50 border border-red-200'
+                }`}
+              >
+                {importStatus.success ? (
+                  <CheckCircle className="text-green-600" size={24} />
+                ) : (
+                  <AlertCircle className="text-red-600" size={24} />
+                )}
+                <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
+                  {importStatus.message}
+                </p>
+              </div>
+            )}
+
+            {/* NEW: Unified message system for publish status */}
             {message && (
               <div
                 className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
@@ -660,6 +680,7 @@ function App() {
                     setMessageType('');
                   }}
                   className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                  aria-label="Close message"
                 >
                   <span className="text-xl">✕</span>
                 </button>
