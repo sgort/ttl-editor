@@ -117,7 +117,7 @@ function App() {
 
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' | 'warning' | 'error' | 'info'
-  const [setPublishingState] = useState(null);
+  const [publishingState, setPublishingState] = useState(null);
 
   // state variables for Publish dialog
   const [showPublishDialog, setShowPublishDialog] = useState(false);
@@ -598,6 +598,7 @@ function App() {
               </div>
             </div>
 
+            {/* Import Status Messages */}
             {importStatus.show && (
               <div
                 className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
@@ -614,6 +615,54 @@ function App() {
                 <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
                   {importStatus.message}
                 </p>
+              </div>
+            )}
+
+            {/* Publish Status Messages - NEW */}
+            {message && (
+              <div
+                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
+                  messageType === 'success'
+                    ? 'bg-green-50 border border-green-200'
+                    : messageType === 'warning'
+                      ? 'bg-yellow-50 border border-yellow-200'
+                      : messageType === 'error'
+                        ? 'bg-red-50 border border-red-200'
+                        : 'bg-blue-50 border border-blue-200'
+                }`}
+              >
+                <span className="flex-shrink-0">
+                  {messageType === 'success' && (
+                    <CheckCircle className="text-green-600" size={24} />
+                  )}
+                  {messageType === 'warning' && (
+                    <AlertCircle className="text-yellow-600" size={24} />
+                  )}
+                  {messageType === 'error' && <AlertCircle className="text-red-600" size={24} />}
+                  {messageType === 'info' && <Cloud className="text-blue-600" size={24} />}
+                </span>
+                <p
+                  className={`flex-1 text-sm ${
+                    messageType === 'success'
+                      ? 'text-green-800'
+                      : messageType === 'warning'
+                        ? 'text-yellow-800'
+                        : messageType === 'error'
+                          ? 'text-red-800'
+                          : 'text-blue-800'
+                  }`}
+                >
+                  {message}
+                </p>
+                <button
+                  onClick={() => {
+                    setMessage('');
+                    setMessageType('');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                >
+                  <span className="text-xl">✕</span>
+                </button>
               </div>
             )}
 
@@ -923,9 +972,20 @@ function App() {
       {/* Publish Dialog */}
       <PublishDialog
         isOpen={showPublishDialog}
-        onClose={() => setShowPublishDialog(false)}
+        onClose={() => {
+          setShowPublishDialog(false);
+          setPublishingState(null); // Reset state on close
+        }}
         onPublish={handlePublish}
-        currentConfig={triplyDBConfig}
+        currentConfig={
+          triplyDBConfig || {
+            baseUrl: 'https://api.open-regels.triply.cc',
+            account: '',
+            dataset: '',
+            apiToken: '',
+          }
+        }
+        publishingState={publishingState}
       />
     </div>
   );
