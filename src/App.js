@@ -599,25 +599,6 @@ function App() {
             </div>
 
             {/* Import Status Messages */}
-            {importStatus.show && (
-              <div
-                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
-                  importStatus.success
-                    ? 'bg-green-50 border border-green-200'
-                    : 'bg-red-50 border border-red-200'
-                }`}
-              >
-                {importStatus.success ? (
-                  <CheckCircle className="text-green-600" size={24} />
-                ) : (
-                  <AlertCircle className="text-red-600" size={24} />
-                )}
-                <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
-                  {importStatus.message}
-                </p>
-              </div>
-            )}
-
             {/* Keep importStatus as-is */}
             {importStatus.show && (
               <div
@@ -674,80 +655,6 @@ function App() {
                 >
                   {message}
                 </p>
-                <button
-                  onClick={() => {
-                    setMessage('');
-                    setMessageType('');
-                  }}
-                  className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
-                  aria-label="Close message"
-                >
-                  <span className="text-xl">✕</span>
-                </button>
-              </div>
-            )}
-
-            {/* Unified Message Display - Shows both import and publish messages */}
-            {importStatus.show && (
-              <div
-                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
-                  importStatus.success
-                    ? 'bg-green-50 border border-green-200'
-                    : 'bg-red-50 border border-red-200'
-                }`}
-              >
-                {importStatus.success ? (
-                  <CheckCircle className="text-green-600" size={24} />
-                ) : (
-                  <AlertCircle className="text-red-600" size={24} />
-                )}
-                <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
-                  {importStatus.message}
-                </p>
-              </div>
-            )}
-
-            {/* NEW: Publish Message Display using message/messageType */}
-            {message && (
-              <div
-                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
-                  messageType === 'success'
-                    ? 'bg-green-50 border border-green-200'
-                    : messageType === 'warning'
-                      ? 'bg-yellow-50 border border-yellow-200'
-                      : messageType === 'error'
-                        ? 'bg-red-50 border border-red-200'
-                        : 'bg-blue-50 border border-blue-200'
-                }`}
-              >
-                {/* Icon based on message type */}
-                <span className="text-2xl flex-shrink-0">
-                  {messageType === 'success' && (
-                    <CheckCircle className="text-green-600" size={24} />
-                  )}
-                  {messageType === 'warning' && (
-                    <AlertCircle className="text-yellow-600" size={24} />
-                  )}
-                  {messageType === 'error' && <AlertCircle className="text-red-600" size={24} />}
-                  {messageType === 'info' && <Cloud className="text-blue-600" size={24} />}
-                </span>
-
-                {/* Message text */}
-                <p
-                  className={`flex-1 text-sm ${
-                    messageType === 'success'
-                      ? 'text-green-800'
-                      : messageType === 'warning'
-                        ? 'text-yellow-800'
-                        : messageType === 'error'
-                          ? 'text-red-800'
-                          : 'text-blue-800'
-                  }`}
-                >
-                  {message}
-                </p>
-
-                {/* Close button */}
                 <button
                   onClick={() => {
                     setMessage('');
