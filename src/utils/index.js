@@ -60,5 +60,6 @@ export {
   publishToTriplyDB,
   saveTriplyDBConfig,
   testTriplyDBConnection,
+  updateTriplyDBService,
   validateTriplyDBConfig,
 } from './triplydbHelper';

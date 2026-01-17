@@ -1,5 +1,10 @@
 // triplydbHelper.js - TriplyDB API integration for publishing TTL files
-// Version 3 - Improved based on successful manual upload testing
+
+// Get backend URL from environment
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+
+// API version for compliance with API-57 (versioned APIs)
+const API_VERSION = 'v1';
 
 /**
  * TriplyDB API Configuration
@@ -151,6 +156,73 @@ export const publishToTriplyDB = async (ttlContent, config, filename = 'service.
 // const graphIRI = 'urn:graph:default';
 // const graphIRI = 'https://open-regels.nl/graphs/default';
 // const graphIRI = 'http://regels.overheid.nl/graphs/services';
+
+/**
+ * Update TriplyDB service via backend proxy
+ * Routes through Node.js backend package from Linked Data Explorer to avoid CORS issues
+ *
+ * @param {Object} config - TriplyDB configuration
+ * @param {string} serviceName - Service name to update
+ * @returns {Promise<Object>} Update result
+ */
+export const updateTriplyDBService = async (config, serviceName = null) => {
+  // Validate configuration
+  const configValidation = validateTriplyDBConfig(config);
+  if (!configValidation.valid) {
+    throw new Error(configValidation.error);
+  }
+
+  const targetService = serviceName || config.dataset;
+
+  console.log('=== TriplyDB Service Update (via Backend) ===');
+  console.log('Backend URL:', BACKEND_URL);
+  console.log('API Version:', API_VERSION);
+  console.log('Service name:', targetService);
+
+  try {
+    // Call backend proxy: http://localhost:3001/v1/triplydb/update-service
+    const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/update-service`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        config: config,
+        serviceName: targetService,
+      }),
+    });
+
+    console.log('Backend response:', {
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+      apiVersion: response.headers.get('API-Version'),
+    });
+
+    const result = await response.json();
+    console.log('Backend result:', result);
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || `Backend error: ${response.status}`);
+    }
+
+    console.log('✅ Service updated successfully via backend!');
+
+    return {
+      success: true,
+      message: result.message,
+      graphCount: result.graphCount,
+    };
+  } catch (error) {
+    console.error('Service update error:', error);
+
+    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+      throw new Error('Network error: Could not connect to backend.');
+    }
+
+    throw new Error(`Service update failed: ${error.message}`);
+  }
+};
 
 /**
  * Upload TTL content to TriplyDB using SPARQL UPDATE
