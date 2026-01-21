@@ -53,7 +53,7 @@
       "status": "Release",
       "statusColor": "green",
       "borderColor": "green",
-      "date": "January X, 2026",
+      "date": "January 7, 2026",
       "sections": [
         {
           "title": "Fix Incomplete Modularization",

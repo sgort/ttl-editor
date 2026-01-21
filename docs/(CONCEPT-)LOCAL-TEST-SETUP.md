@@ -310,11 +310,13 @@ curl http://localhost:3001/v1/health | jq '.'
 Open browser console (F12) for both applications and verify **no CORS errors**:
 
 **CPSV Editor Console (`http://localhost:3000`):**
+
 ```
 ✅ No errors like: "Access to fetch at 'http://localhost:3001/...' blocked by CORS"
 ```
 
 **Linked Data Explorer Console (`http://localhost:5173`):**
+
 ```
 ✅ No errors like: "Access to fetch at 'http://localhost:3001/...' blocked by CORS"
 ```
@@ -341,6 +343,7 @@ cp ~/path/to/routes_index.ts src/routes/index.ts
 ```
 
 **Watch backend terminal for:**
+
 ```
 [INFO] Changes detected, restarting...
 [INFO] Server started
@@ -374,6 +377,7 @@ cp ~/path/to/ChainBuilder.tsx src/components/ChainBuilder/
 ```
 
 **Watch frontend terminal for:**
+
 ```
 [vite] hmr update /src/components/ChainBuilder/ChainBuilder.tsx
 ```
@@ -397,6 +401,7 @@ Run through **all verification tests** again to ensure nothing broke:
 ### Issue: "Cannot connect to backend"
 
 **Symptoms:**
+
 - CPSV Editor shows "Network error"
 - Linked Data Explorer shows connection failures
 - Browser console: `Failed to fetch` errors
@@ -404,18 +409,22 @@ Run through **all verification tests** again to ensure nothing broke:
 **Solutions:**
 
 1. **Check backend is running:**
+
    ```bash
    curl http://localhost:3001/v1/health
    ```
+
    If no response → Backend not started
 
 2. **Check port 3001 is free:**
+
    ```bash
    lsof -i :3001
    # Should show node process
    ```
 
 3. **Check CORS configuration:**
+
    ```bash
    cd ~/govtech-workspace/linked-data-explorer/packages/backend
    grep CORS_ORIGIN .env
@@ -433,6 +442,7 @@ Run through **all verification tests** again to ensure nothing broke:
 ### Issue: "CORS policy blocked"
 
 **Symptoms:**
+
 - Browser console shows: `Access to fetch at '...' blocked by CORS policy`
 - Red CORS error in Network tab
 
@@ -459,12 +469,14 @@ npm run dev
 ### Issue: "DMN-discovery endpoint works but Facts endpoint doesn't"
 
 **Symptoms:**
+
 - Orchestration view loads DMNs from DMN-discovery
 - Switching to Facts endpoint shows no DMNs or errors
 
 **Solutions:**
 
 1. **Verify Facts endpoint exists in TriplyDB:**
+
    ```bash
    curl 'https://api.open-regels.triply.cc/datasets/stevengort/Facts/services/facts-jena/sparql' \
      -X POST \
@@ -473,6 +485,7 @@ npm run dev
    ```
 
 2. **Check if Facts dataset has DMN data:**
+
    ```bash
    curl 'https://api.open-regels.triply.cc/datasets/stevengort/Facts/services/facts-jena/sparql' \
      -X POST \
@@ -491,6 +504,7 @@ npm run dev
 ### Issue: "Port 3000 already in use"
 
 **Symptoms:**
+
 ```
 Something is already running on port 3000
 ```
@@ -516,6 +530,7 @@ PORT=3002 npm start
 ### Issue: "Port 5173 already in use"
 
 **Symptoms:**
+
 ```
 Port 5173 is in use, trying another one...
 ```
@@ -536,6 +551,7 @@ echo "CORS_ORIGIN=http://localhost:3000,http://localhost:5173,http://localhost:5
 ### Issue: "Changes not appearing"
 
 **Symptoms:**
+
 - Made changes to code but nothing updates
 - Browser still shows old version
 
@@ -574,6 +590,7 @@ tail -f logs/combined.log  # If file logging configured
 ```
 
 **Log Levels:**
+
 - `debug` - Detailed information (only in development)
 - `info` - General operations
 - `warn` - Warning conditions
@@ -582,12 +599,14 @@ tail -f logs/combined.log  # If file logging configured
 ### Browser DevTools
 
 **Network Tab:**
+
 - Monitor API requests
 - Check request/response headers
 - Verify CORS headers present
 - Inspect response payloads
 
 **Console Tab:**
+
 - JavaScript errors
 - React warnings
 - API error messages
@@ -670,9 +689,9 @@ A: No. TriplyDB and Operaton are remote services that are always available.
 
 ## 📝 Version History
 
-| Date | Version | Changes |
-|------|---------|---------|
-| 2026-01-17 | 1.0.0 | Initial version for dynamic endpoint feature |
+| Date       | Version | Changes                                      |
+| ---------- | ------- | -------------------------------------------- |
+| 2026-01-17 | 1.0.0   | Initial version for dynamic endpoint feature |
 
 ---
 
