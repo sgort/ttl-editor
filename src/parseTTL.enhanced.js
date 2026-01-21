@@ -304,6 +304,15 @@ export const parseTTLEnhanced = (ttlContent) => {
             parsed.organization.spatial = spatialMatch[1];
           }
         }
+
+        // Logo parsing
+        if (line.includes('foaf:logo') || line.includes('schema:image')) {
+          const logoMatch = line.match(/<([^>]+)>/);
+          if (logoMatch) {
+            // Store the logo URL (will be external URL or asset reference)
+            parsed.organization.logo = logoMatch[1];
+          }
+        }
       }
 
       if (currentSection === 'legalResource') {

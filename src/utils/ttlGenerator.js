@@ -266,6 +266,22 @@ export class TTLGenerator {
       ttl += `    cv:spatial <${this.organization.spatial}> ;\n`;
     }
 
+    // Logo output
+    if (this.organization.logo) {
+      // Check if it's a data URL or external URL
+      if (this.organization.logo.startsWith('data:')) {
+        // For base64 data URLs, we'll reference an asset file instead
+        // The actual file will be uploaded separately to TriplyDB
+        const logoFileName = `${orgId}_logo.png`;
+        ttl += `    foaf:logo <./assets/${logoFileName}> ;\n`;
+        ttl += `    schema:image <./assets/${logoFileName}> ;\n`;
+      } else {
+        // External URL
+        ttl += `    foaf:logo <${this.organization.logo}> ;\n`;
+        ttl += `    schema:image <${this.organization.logo}> ;\n`;
+      }
+    }
+
     ttl = ttl.slice(0, -2) + ' .\n\n';
 
     return ttl;

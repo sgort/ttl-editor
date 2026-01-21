@@ -26,6 +26,7 @@ export const parseTTL = (ttlContent) => {
       name: parsed.organization?.name || '',
       homepage: parsed.organization?.homepage || '',
       spatial: parsed.organization?.spatial || '',
+      logo: parsed.organization?.logo || '',
     },
     legalResource: {
       bwbId: parsed.legalResource?.bwbId || '',

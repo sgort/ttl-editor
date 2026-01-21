@@ -38,7 +38,12 @@ import {
 } from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
-import { publishToTriplyDB, saveTriplyDBConfig, updateTriplyDBService } from './utils';
+import {
+  publishToTriplyDB,
+  saveTriplyDBConfig,
+  updateTriplyDBService,
+  uploadLogoAsset,
+} from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
@@ -428,6 +433,38 @@ function App() {
         stepStatus: 'success',
         error: null,
       });
+
+      // Step 3.5: Upload logo if present (70-75%)
+      if (organization.logo && organization.logo.startsWith('data:')) {
+        try {
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Uploading logo...',
+            progress: 72,
+            stepStatus: 'loading',
+            error: null,
+          });
+
+          const orgId = organization.identifier.startsWith('http')
+            ? organization.identifier.split('/').pop()
+            : organization.identifier;
+          const logoFileName = `${orgId}_logo.png`;
+
+          await uploadLogoAsset(organization.logo, logoFileName, config);
+          console.log('Logo uploaded successfully');
+
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Logo uploaded ✓',
+            progress: 75,
+            stepStatus: 'success',
+            error: null,
+          });
+        } catch (logoError) {
+          console.warn('Logo upload failed (continuing):', logoError);
+          // Don't fail the entire publish if logo upload fails
+        }
+      }
 
       // Step 4: Update service (70-100%)
       setPublishingState({
