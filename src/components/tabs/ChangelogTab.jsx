@@ -1,5 +1,5 @@
-import { History } from 'lucide-react';
-import React from 'react';
+import { ChevronDown, ChevronUp, History } from 'lucide-react';
+import React, { useState } from 'react';
 
 import changelogData from '../../data/changelog.json';
 import roadmapData from '../../data/roadmap.json';
@@ -35,11 +35,28 @@ const iconColorMap = {
   gray: 'text-gray-600',
 };
 
-// Main ChangelogTab component
+// Main ChangelogTab component with collapsible versions
 export default function ChangelogTab() {
+  // Track which versions are expanded (only first one by default)
+  const [expandedVersions, setExpandedVersions] = useState(
+    new Set(changelogData.versions.length > 0 ? [0] : [])
+  );
+
+  const toggleVersion = (index) => {
+    setExpandedVersions((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header Box with Everything */}
+      {/* Header Box */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
         {/* Title and GitLab Link Row */}
         <div className="flex items-start justify-between mb-4">
@@ -96,47 +113,69 @@ export default function ChangelogTab() {
         </div>
       </div>
 
-      {/* Version History */}
-      <div className="space-y-6">
-        {changelogData.versions.map((version, versionIndex) => (
-          <div
-            key={versionIndex}
-            className={`border-l-4 ${borderColorMap[version.borderColor] || borderColorMap.blue} bg-white rounded-lg shadow-md p-6`}
-          >
-            {/* Version Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800">Version {version.version}</h3>
-                <p className="text-sm text-gray-600">{version.date}</p>
-              </div>
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-semibold ${statusBgColorMap[version.statusColor] || statusBgColorMap.blue}`}
-              >
-                {version.status}
-              </span>
-            </div>
+      {/* Collapsible Version History */}
+      <div className="space-y-4">
+        {changelogData.versions.map((version, versionIndex) => {
+          const isExpanded = expandedVersions.has(versionIndex);
 
-            {/* Version Sections */}
-            {version.sections?.map((section, sectionIndex) => (
-              <div key={sectionIndex} className="mb-6 last:mb-0">
-                <h4
-                  className={`text-lg font-semibold mb-3 flex items-center gap-2 ${iconColorMap[section.iconColor] || iconColorMap.blue}`}
-                >
-                  <span>{section.icon}</span>
-                  {section.title}
-                </h4>
-                <ul className="space-y-2 ml-8">
-                  {section.items?.map((item, itemIndex) => (
-                    <li key={itemIndex} className="text-gray-700 flex items-start gap-2">
-                      <span className="text-gray-400 mt-1">•</span>
-                      <span>{item}</span>
-                    </li>
+          return (
+            <div
+              key={versionIndex}
+              className={`border-l-4 ${borderColorMap[version.borderColor] || borderColorMap.blue} bg-white rounded-lg shadow-md overflow-hidden transition-all`}
+            >
+              {/* Clickable Header */}
+              <button
+                onClick={() => toggleVersion(versionIndex)}
+                className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors text-left"
+              >
+                <div className="flex items-center gap-4 flex-1">
+                  {/* Version Info */}
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-gray-800">Version {version.version}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{version.date}</p>
+                  </div>
+
+                  {/* Status Badge */}
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${statusBgColorMap[version.statusColor] || statusBgColorMap.blue}`}
+                  >
+                    {version.status}
+                  </span>
+                </div>
+
+                {/* Expand/Collapse Icon */}
+                <div className="ml-4 text-gray-400">
+                  {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                </div>
+              </button>
+
+              {/* Expandable Content */}
+              {isExpanded && (
+                <div className="px-6 pb-6">
+                  {/* Version Sections */}
+                  {version.sections?.map((section, sectionIndex) => (
+                    <div key={sectionIndex} className="mb-6 last:mb-0">
+                      <h4
+                        className={`text-lg font-semibold mb-3 flex items-center gap-2 ${iconColorMap[section.iconColor] || iconColorMap.blue}`}
+                      >
+                        <span>{section.icon}</span>
+                        {section.title}
+                      </h4>
+                      <ul className="space-y-2 ml-8">
+                        {section.items?.map((item, itemIndex) => (
+                          <li key={itemIndex} className="text-gray-700 flex items-start gap-2">
+                            <span className="text-gray-400 mt-1">•</span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Future Roadmap */}
@@ -226,9 +265,7 @@ export default function ChangelogTab() {
                               </span>
                             </div>
                           </div>
-                          <p className="text-xs text-gray-600 leading-relaxed">
-                            {item.description}
-                          </p>
+                          <p className="text-xs text-gray-600">{item.description}</p>
                         </div>
                       </div>
                     </div>
@@ -238,46 +275,12 @@ export default function ChangelogTab() {
             );
           })}
 
-          {/* Legend */}
-          {roadmapData?.notes && (
-            <div className="mt-6 pt-4 border-t border-purple-200">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                <div>
-                  <h6 className="font-semibold text-gray-700 mb-2">Priority Levels:</h6>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>
-                      <span className="font-medium text-red-700">High:</span>{' '}
-                      {roadmapData.notes.priority.High}
-                    </li>
-                    <li>
-                      <span className="font-medium text-yellow-700">Medium:</span>{' '}
-                      {roadmapData.notes.priority.Medium}
-                    </li>
-                    <li>
-                      <span className="font-medium text-gray-700">Low:</span>{' '}
-                      {roadmapData.notes.priority.Low}
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h6 className="font-semibold text-gray-700 mb-2">Effort Estimates:</h6>
-                  <ul className="space-y-1 text-gray-600">
-                    <li>
-                      <span className="font-medium">Low:</span> {roadmapData.notes.effort.Low}
-                    </li>
-                    <li>
-                      <span className="font-medium">Medium:</span> {roadmapData.notes.effort.Medium}
-                    </li>
-                    <li>
-                      <span className="font-medium">High:</span> {roadmapData.notes.effort.High}
-                    </li>
-                    <li>
-                      <span className="font-medium">Very High:</span>{' '}
-                      {roadmapData.notes.effort['Very High']}
-                    </li>
-                  </ul>
-                </div>
-              </div>
+          {/* Roadmap Notes */}
+          {roadmapData?.notes?.general && (
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-gray-700">
+                <span className="font-semibold">Note:</span> {roadmapData.notes.general}
+              </p>
             </div>
           )}
         </div>

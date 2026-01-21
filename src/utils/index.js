@@ -52,3 +52,14 @@ export {
   parseIKnowXML,
   parseSemanticsExport,
 } from './iknowParser';
+
+// TriplyDB helpers
+export {
+  getDefaultTriplyDBConfig,
+  loadTriplyDBConfig,
+  publishToTriplyDB,
+  saveTriplyDBConfig,
+  testTriplyDBConnection,
+  updateTriplyDBService,
+  validateTriplyDBConfig,
+} from './triplydbHelper';

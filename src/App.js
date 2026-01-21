@@ -5,6 +5,7 @@ import {
   Building2,
   CheckCircle,
   Clock,
+  Cloud,
   Database,
   Download,
   FileText,
@@ -18,6 +19,7 @@ import {
 import React, { useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
+import PublishDialog from './components/PublishDialog';
 import {
   ChangelogTab,
   CPRMVTab,
@@ -36,6 +38,7 @@ import {
 } from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
+import { publishToTriplyDB, saveTriplyDBConfig, updateTriplyDBService } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
@@ -65,6 +68,8 @@ function App() {
     setIknowMappingConfig, // ← used by IKnowMappingTab
     availableIKnowMappings, // ← passed to IKnowMappingTab
     // setAvailableIKnowMappings! ← Not needed in App.js
+    triplyDBConfig,
+    setTriplyDBConfig,
     clearAllData,
   } = useEditorState();
 
@@ -109,6 +114,13 @@ function App() {
     output,
     dmnData,
   });
+
+  const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' | 'warning' | 'error' | 'info'
+  const [publishingState, setPublishingState] = useState(null);
+
+  // state variables for Publish dialog
+  const [showPublishDialog, setShowPublishDialog] = useState(false);
 
   // Helper to get TTL content
   const getTTLContent = () => generateTTL(buildStateForTTL());
@@ -292,6 +304,237 @@ function App() {
     }
   };
 
+  // Returns progress updates for the dialog to display
+
+  const handlePublish = async (config) => {
+    // Don't close dialog immediately - keep it open for progress display
+    // setShowPublishDialog(false); // ← Remove this line if it exists
+
+    // Initialize publishing state
+    setPublishingState({
+      isPublishing: true,
+      currentStep: 'validating',
+      progress: 0,
+      stepStatus: 'loading',
+      error: null,
+    });
+
+    try {
+      // Step 1: Validate form (0-20%)
+      setPublishingState({
+        isPublishing: true,
+        currentStep: 'Validating form...',
+        progress: 10,
+        stepStatus: 'loading',
+        error: null,
+      });
+
+      const { isValid, errors } = validateForm({
+        service,
+        organization,
+        legalResource,
+        temporalRules,
+        parameters,
+      });
+
+      const dmnValidation = validateDMNData(dmnData);
+      if (!dmnValidation.valid) {
+        errors.push(...dmnValidation.errors.map((err) => `DMN: ${err}`));
+      }
+
+      if (!isValid || !dmnValidation.valid) {
+        setPublishingState({
+          isPublishing: false,
+          currentStep: 'Validation failed',
+          progress: 0,
+          stepStatus: 'error',
+          error: errors.join(', '),
+        });
+
+        setMessage(`Validation failed: ${errors.join(', ')}`);
+        setMessageType('error');
+
+        // Close dialog after 5 seconds
+        setTimeout(() => {
+          setShowPublishDialog(false);
+          setPublishingState(null);
+        }, 5000);
+
+        // Clear message after 8 seconds
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 8000);
+
+        return;
+      }
+
+      // Step 2: Generate TTL (20-40%)
+      setPublishingState({
+        isPublishing: true,
+        currentStep: 'Generating TTL...',
+        progress: 30,
+        stepStatus: 'loading',
+        error: null,
+      });
+
+      const ttlContent = generateTTL(buildStateForTTL());
+
+      if (!ttlContent || ttlContent.trim().length === 0) {
+        setPublishingState({
+          isPublishing: false,
+          currentStep: 'TTL generation failed',
+          progress: 0,
+          stepStatus: 'error',
+          error: 'Generated TTL content is empty',
+        });
+
+        setMessage('Cannot publish: Generated TTL content is empty.');
+        setMessageType('error');
+
+        setTimeout(() => {
+          setShowPublishDialog(false);
+          setPublishingState(null);
+        }, 5000);
+
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 8000);
+
+        return;
+      }
+
+      const filename = sanitizeFilename(service.identifier || service.name || 'service');
+
+      // Step 3: Upload to TriplyDB (40-70%)
+      setPublishingState({
+        isPublishing: true,
+        currentStep: 'Uploading to TriplyDB...',
+        progress: 50,
+        stepStatus: 'loading',
+        error: null,
+      });
+
+      console.log('Publishing with filename:', filename);
+
+      const publishResult = await publishToTriplyDB(ttlContent, config, filename);
+      console.log('Publish successful:', publishResult);
+
+      setPublishingState({
+        isPublishing: true,
+        currentStep: 'Upload successful ✓',
+        progress: 70,
+        stepStatus: 'success',
+        error: null,
+      });
+
+      // Step 4: Update service (70-100%)
+      setPublishingState({
+        isPublishing: true,
+        currentStep: 'Updating service...',
+        progress: 85,
+        stepStatus: 'loading',
+        error: null,
+      });
+
+      try {
+        const serviceName = config.dataset;
+        await updateTriplyDBService(config, serviceName);
+
+        console.log('Service updated successfully');
+
+        // Step 5: Complete success!
+        setPublishingState({
+          isPublishing: false,
+          currentStep: 'Published successfully! ✓',
+          progress: 100,
+          stepStatus: 'success',
+          error: null,
+        });
+
+        // Save config
+        saveTriplyDBConfig(config);
+        setTriplyDBConfig(config);
+
+        // Set success message under title (GREEN)
+        setMessage(`Published successfully! View at: ${publishResult.url || 'TriplyDB'}`);
+        setMessageType('success');
+
+        // Close dialog after 2 seconds
+        setTimeout(() => {
+          setShowPublishDialog(false);
+          setPublishingState(null);
+        }, 2000);
+
+        // Clear message after 10 seconds
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 10000);
+      } catch (updateError) {
+        console.warn('Service update failed:', updateError.message);
+
+        // Upload succeeded, but service update failed - this is a WARNING, not error
+        setPublishingState({
+          isPublishing: false,
+          currentStep: 'Published with warning',
+          progress: 100,
+          stepStatus: 'warning',
+          error: `Service update failed: ${updateError.message}`,
+        });
+
+        // Save config anyway since publish succeeded
+        saveTriplyDBConfig(config);
+        setTriplyDBConfig(config);
+
+        // Set warning message under title (YELLOW/ORANGE)
+        setMessage(
+          `Published successfully! Service update failed: ${updateError.message}. View at: ${publishResult.url || 'TriplyDB'}`
+        );
+        setMessageType('warning');
+
+        // Close dialog after 3 seconds
+        setTimeout(() => {
+          setShowPublishDialog(false);
+          setPublishingState(null);
+        }, 3000);
+
+        // Clear message after 12 seconds
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 12000);
+      }
+    } catch (error) {
+      console.error('Publish error:', error);
+
+      setPublishingState({
+        isPublishing: false,
+        currentStep: 'Publish failed',
+        progress: 0,
+        stepStatus: 'error',
+        error: error.message,
+      });
+
+      // Set error message under title (RED)
+      setMessage(`Publish failed: ${error.message}`);
+      setMessageType('error');
+
+      // Close dialog after 5 seconds
+      setTimeout(() => {
+        setShowPublishDialog(false);
+        setPublishingState(null);
+      }, 5000);
+
+      // Clear message after 8 seconds
+      setTimeout(() => {
+        setMessage('');
+        setMessageType('');
+      }, 8000);
+    }
+  };
+
   // Render functions
 
   return (
@@ -355,6 +598,8 @@ function App() {
               </div>
             </div>
 
+            {/* Import Status Messages */}
+            {/* Keep importStatus as-is */}
             {importStatus.show && (
               <div
                 className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
@@ -371,6 +616,55 @@ function App() {
                 <p className={importStatus.success ? 'text-green-800' : 'text-red-800'}>
                   {importStatus.message}
                 </p>
+              </div>
+            )}
+
+            {/* NEW: Unified message system for publish status */}
+            {message && (
+              <div
+                className={`mt-4 p-4 rounded-lg flex items-center gap-3 ${
+                  messageType === 'success'
+                    ? 'bg-green-50 border border-green-200'
+                    : messageType === 'warning'
+                      ? 'bg-yellow-50 border border-yellow-200'
+                      : messageType === 'error'
+                        ? 'bg-red-50 border border-red-200'
+                        : 'bg-blue-50 border border-blue-200'
+                }`}
+              >
+                <span className="flex-shrink-0">
+                  {messageType === 'success' && (
+                    <CheckCircle className="text-green-600" size={24} />
+                  )}
+                  {messageType === 'warning' && (
+                    <AlertCircle className="text-yellow-600" size={24} />
+                  )}
+                  {messageType === 'error' && <AlertCircle className="text-red-600" size={24} />}
+                  {messageType === 'info' && <Cloud className="text-blue-600" size={24} />}
+                </span>
+                <p
+                  className={`flex-1 text-sm ${
+                    messageType === 'success'
+                      ? 'text-green-800'
+                      : messageType === 'warning'
+                        ? 'text-yellow-800'
+                        : messageType === 'error'
+                          ? 'text-red-800'
+                          : 'text-blue-800'
+                  }`}
+                >
+                  {message}
+                </p>
+                <button
+                  onClick={() => {
+                    setMessage('');
+                    setMessageType('');
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
+                  aria-label="Close message"
+                >
+                  <span className="text-xl">✕</span>
+                </button>
               </div>
             )}
           </div>
@@ -530,19 +824,33 @@ function App() {
             </div>
           </div>
 
-          {/* Validate and Download Buttons */}
-          <div className="mt-6 flex gap-4 justify-end">
+          {/* Button Row - Buttons aligned to the RIGHT */}
+          <div className="flex flex-wrap items-center justify-end gap-3 mt-6">
+            {/* Validate Button */}
             <button
               onClick={handleValidate}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <CheckCircle size={20} /> Validate
+              <CheckCircle size={20} />
+              Validate
             </button>
+
+            {/* Publish Button */}
+            <button
+              onClick={() => setShowPublishDialog(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              <Cloud size={20} />
+              Publish
+            </button>
+
+            {/* Download Button */}
             <button
               onClick={downloadTTL}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 shadow-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
-              <Download size={20} /> Download TTL
+              <Download size={20} />
+              Download TTL
             </button>
           </div>
         </div>
@@ -588,6 +896,25 @@ function App() {
           </div>
         </div>
       )}
+
+      {/* Publish Dialog */}
+      <PublishDialog
+        isOpen={showPublishDialog}
+        onClose={() => {
+          setShowPublishDialog(false);
+          setPublishingState(null); // Reset state on close
+        }}
+        onPublish={handlePublish}
+        currentConfig={
+          triplyDBConfig || {
+            baseUrl: 'https://api.open-regels.triply.cc',
+            account: '',
+            dataset: '',
+            apiToken: '',
+          }
+        }
+        publishingState={publishingState}
+      />
     </div>
   );
 }
