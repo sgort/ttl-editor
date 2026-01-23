@@ -1,6 +1,5 @@
-import { CheckCircle, Image as ImageIcon, Upload, X } from 'lucide-react';
-import { useState } from 'react';
-
+import { CheckCircle, Upload, X } from 'lucide-react';
+import React from 'react';
 /**
  * OrganizationTab - Form for editing organization/competent authority metadata
  * Maps to cv:PublicOrganisation in CPSV-AP 3.2.0
