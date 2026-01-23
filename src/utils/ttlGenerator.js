@@ -598,6 +598,7 @@ export class TTLGenerator {
       ttl += `<${dmnUri}> a cprmv:DecisionModel ;\n`;
       ttl += `    dct:identifier "${this.dmnData.decisionKey || 'unknown'}" ;\n`;
       ttl += `    dct:title "${this.dmnData.fileName}"@nl ;\n`;
+      ttl += `    ronl:implements <${this.serviceUri}> ;\n`;
       ttl += `    dct:source <${this.serviceUri}/dmn/file> ;\n`;
 
       if (this.dmnData.deploymentId) {

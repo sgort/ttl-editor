@@ -59,6 +59,18 @@ The **Core Public Service Editor** is a React-based web application that simplif
 - Homepage and contact information
 - URI support (short IDs or full URIs)
 
+### Organization Logos
+
+Upload and manage organization logos directly in the Organization tab:
+
+- **Upload**: Support for JPG and PNG files (automatically resized to 256×256px)
+- **Preview**: Live preview with file size and encoding information
+- **Publishing**: Logos are automatically uploaded as assets to TriplyDB
+- **RDF Output**: Generates `foaf:logo` and `schema:image` properties
+- **Semantic Links**: Full traversal path: `DMN → Service → Organization → Logo`
+
+Logos are published alongside your service metadata and can be queried via SPARQL in the Linked Data Explorer.
+
 #### ⚖️ **Legal Resource Integration**
 
 - BWB ID support for Dutch legislation

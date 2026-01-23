@@ -1,6 +1,52 @@
 {
   "versions": [
     {
+      "version": "1.7.0",
+      "status": "Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "January 2026",
+      "sections": [
+        {
+          "title": "Organization Logo Management",
+          "icon": "🖼️",
+          "iconColor": "purple",
+          "items": [
+            "Upload organization logos (JPG/PNG) with automatic resizing to 256×256px",
+            "Live preview with file size and encoding information",
+            "Remove and replace logo functionality",
+            "Automatic publishing to TriplyDB as asset files",
+            "TTL generation with foaf:logo and schema:image properties",
+            "File validation (max 5MB, image formats only)"
+          ]
+        },
+        {
+          "title": "Semantic Linking Improvements",
+          "icon": "🔗",
+          "iconColor": "blue",
+          "items": [
+            "Added ronl:implements link from DMN to Service",
+            "Complete RDF graph traversal: DMN → Service → Organization → Logo",
+            "Bidirectional service-DMN relationships",
+            "Enhanced SPARQL query capabilities for logo resolution"
+          ]
+        },
+        {
+          "title": "Technical Implementation",
+          "icon": "⚙️",
+          "iconColor": "gray",
+          "items": [
+            "Canvas-based image resizing with aspect ratio preservation",
+            "Base64 encoding for state management",
+            "TriplyDB asset API integration",
+            "Asset filename generation based on organization identifier",
+            "Enhanced TTL parser for logo import/export",
+            "Graceful degradation if asset upload fails"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.6.0",
       "status": "Feature",
       "statusColor": "emerald",
