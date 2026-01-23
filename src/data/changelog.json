@@ -41,7 +41,9 @@
             "TriplyDB asset API integration",
             "Asset filename generation based on organization identifier",
             "Enhanced TTL parser for logo import/export",
-            "Graceful degradation if asset upload fails"
+            "Graceful degradation if asset upload fails",
+            "Import Limitation: When importing a TTL file, the logo will be a reference to the asset file, not the actual base64 data",
+            "TriplyDB Only: Logo upload to TriplyDB only works when publishing"
           ]
         }
       ]
