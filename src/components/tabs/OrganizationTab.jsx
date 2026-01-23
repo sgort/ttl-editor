@@ -205,7 +205,56 @@ export default function OrganizationTab({ organization, setOrganization }) {
         </label>
 
         <div className="space-y-3">
-          {/* Upload Button */}
+          {/* Logo Import Notice - Show when logo reference imported (not a data URL) */}
+          {organization.logo && !organization.logo.startsWith('data:') && (
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3 flex-1">
+                  <h3 className="text-sm font-medium text-blue-800">Logo Reference Imported</h3>
+                  <div className="mt-2 text-sm text-blue-700">
+                    <p>A logo reference was imported from the TTL file:</p>
+                    <code className="block mt-1 bg-blue-100 px-2 py-1 rounded text-xs break-all">
+                      {organization.logo}
+                    </code>
+                    <p className="mt-2">
+                      This reference is preserved in the TTL output. To display and edit the logo in
+                      the editor, upload a new logo file below.
+                    </p>
+                  </div>
+                  <div className="mt-3 flex gap-3">
+                    <label className="cursor-pointer text-sm font-medium text-blue-700 hover:text-blue-600 flex items-center gap-1">
+                      <Upload size={14} />
+                      Upload new logo
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                    </label>
+                    <button
+                      onClick={() => updateField('logo', '')}
+                      className="text-sm font-medium text-red-600 hover:text-red-700 flex items-center gap-1"
+                    >
+                      <X size={14} />
+                      Clear reference
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Upload Button - Show when no logo at all */}
           {!organization.logo && (
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
               <Upload className="mx-auto text-gray-400 mb-2" size={32} />
@@ -222,8 +271,8 @@ export default function OrganizationTab({ organization, setOrganization }) {
             </div>
           )}
 
-          {/* Logo Preview */}
-          {organization.logo && (
+          {/* Logo Preview - Show when logo is a data URL (actually uploaded) */}
+          {organization.logo && organization.logo.startsWith('data:') && (
             <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0">
