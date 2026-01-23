@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="NormbedragBepaling" name="Normbedrag bepaling" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.38.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <decision id="BijstandsnormBedragen" name="Bijstandsnorm bedragen" camunda:historyTimeToLive="10">
+    <decisionTable id="DecisionTable_05wib0m" hitPolicy="FIRST">
+      <input id="Input_1" label="termijn" biodi:width="647" camunda:inputVariable="peildatum">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Aanvrager is 21 of ouder en onder AOW leeftijd Geen kind Alleenstaand  " name="M" typeRef="double" />
+      <output id="OutputClause_15zrqtd" label="Aanvrager is 21 of ouder en onder AOW leeftijd Kind Alleenstaand" name="MK" typeRef="double" />
+      <output id="OutputClause_13nvzrg" label="Aanvrager is 21 of ouder en onder AOW leeftijd Partner is 21 of ouder en onder AOW leeftijd Geen kind" name="MM" typeRef="double" />
+      <output id="OutputClause_0ycmgv4" label="Aanvrager is 21 of ouder en onder AOW leeftijd Partner is 21 of ouder en onder AOW leeftijd Kind" name="MMK" typeRef="double" />
+      <output id="OutputClause_1ahdwvb" label="Aanvrager is 21 of ouder en onder AOW leeftijd Partner is &#62;AOW Geen kind" name="MO" typeRef="double" />
+      <output id="OutputClause_1kd849m" label="Aanvrager is 21 of ouder en onder AOW leeftijd Parner is &#62;AOW Kind" name="MOK" typeRef="double" />
+      <output id="OutputClause_0tfeuyd" label="Aanvrager is 21 of ouder en onder AOW leeftijd Partner is 18,19,20 Geen kind" name="MJ" typeRef="double" />
+      <output id="OutputClause_1mu3rg2" label="Aanvrager is 21 of ouder en onder AOW leeftijd Partner is 18,19,20 Kind" name="MJK" typeRef="double" />
+      <output id="OutputClause_10d0f5a" label="Aanvrager is 18,19,20 Geen kind Alleenstaand" name="J" typeRef="double" />
+      <output id="OutputClause_1tmoexy" label="Aanvrager is 18,19,20 Kind Alleenstaand" name="JK" typeRef="double" />
+      <output id="OutputClause_05t2ppi" label="Aanvrager is 18,19,20 Partner is 18,19,20 Geen kind" name="JJ" typeRef="double" />
+      <output id="OutputClause_13w81z0" label="Aanvrager is 18,19,20 Partner is 18,19,20 Kind" name="JJK" typeRef="double" />
+      <output id="OutputClause_1peoss7" label="Aanvrager is 18,19,20 Partner is &#62;AOW Geen Kind" name="JO" typeRef="double" biodi:width="192" />
+      <output id="OutputClause_1s8mtnf" label="Aanvrager is 18,19,20 Partner is &#62;AOW Kind" name="JOK" typeRef="double" />
+      <output id="OutputClause_0g4gytv" label="Aanvrager is &#62;AOW Geen kind Alleenstaand" name="O" typeRef="double" />
+      <output id="OutputClause_0txgdi3" label="Aanvrager is &#62;AOW Kind Alleenstaand" name="OK" typeRef="double" />
+      <output id="OutputClause_0wk1wrg" label="Aanvrager is &#62;AOW Partner is &#62;AOW Geen kind" name="OO" typeRef="double" />
+      <output id="OutputClause_0htihlg" label="Aanvrager is &#62;AOW Partner is &#62;AOW Kind" name="OOK" typeRef="double" />
+      <output id="OutputClause_1qmepax" label="Aanvrager in inrichting" name="I" typeRef="double" />
+      <output id="OutputClause_0qyjqkw" label="Aanvrager in inrichting Partner in inrichting" name="II" typeRef="string" />
+      <rule id="DecisionRule_12kjlua">
+        <inputEntry id="UnaryTests_0g16yxz">
+          <text>date("2024-07-01") &lt;= date(peildatum) and date(peildatum) &lt; date("2025-01-01")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12rc9ua">
+          <text>1308.45</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0snvm92">
+          <text>1308.45</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0iijjqx">
+          <text>1869.21</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0jgmgg7">
+          <text>1869.21</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0dvt3rb">
+          <text>1976.64</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zg6yu8">
+          <text>1976.64</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0olki6x">
+          <text>1257.64</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1iaoh8a">
+          <text>1631.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04fcy1o">
+          <text>323.03</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ie5s9f">
+          <text>323.03</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0vr4645">
+          <text>646.06</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15hzo85">
+          <text>1019.90</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1klxcem">
+          <text>1631.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ic8z50">
+          <text>1631.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_04wj6lc">
+          <text>1456.85</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rxo4om">
+          <text>1456.85</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1e7lwfn">
+          <text>1976.64</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dfay7b">
+          <text>1976.64</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_19x114j">
+          <text>414.31</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1opqu9k">
+          <text>644.45</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0h1w7x0">
+        <inputEntry id="UnaryTests_0q7vsl0">
+          <text>date("2025-01-01") &lt;= date(peildatum) and date(peildatum) &lt; date("2025-07-01")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xxmv1u">
+          <text>1345.45</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_001gtkx">
+          <text>1345.45</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lxespb">
+          <text>1922.07</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0u7kal1">
+          <text>1922.07</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xcb8mk">
+          <text>2053.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_065fxlp">
+          <text>2053.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01001kn">
+          <text>1293.21</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_139l8t5">
+          <text>1677.62</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fnl2df">
+          <text>332.17</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_10am1z9">
+          <text>332.17</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0sy3at6">
+          <text>664.34</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1lt987s">
+          <text>1048.75</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_17q9c0c">
+          <text>1677.62</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0nflmf3">
+          <text>1677.62</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1h5wmhs">
+          <text>1501.07</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14vtf4v">
+          <text>1501.07</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1oox6jr">
+          <text>2053.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0xl8y0a">
+          <text>2053.48</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1rd57zv">
+          <text>426.03</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08274j4">
+          <text>662.69</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1gk1h0n">
+        <inputEntry id="UnaryTests_1922ovi">
+          <text>date("2025-07-01") &lt;= date(peildatum) and date(peildatum) &lt; date("2026-01-01")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ajbb2x">
+          <text>1369.06</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0iildzk">
+          <text>1369.06</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1jkq2bf">
+          <text>1955.80</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0x5er5y">
+          <text>1955.80</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_13xeman">
+          <text>2094.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0545h9n">
+          <text>2094.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0w4tguf">
+          <text>1315.88</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ool6dv">
+          <text>1315.88</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_07ilwms">
+          <text>337.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1tg3hf1">
+          <text>337.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1r0wkpz">
+          <text>675.96</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bm63m9">
+          <text>1067.12</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0v4yv5d">
+          <text>1707.04</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1fd1sc1">
+          <text>1707.04</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0pp3akh">
+          <text>1530.21</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ek3wvv">
+          <text>1530.21</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1kplyfr">
+          <text>2094.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0zrkt61">
+          <text>2094.98</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_15q4g55">
+          <text>433.49</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0bqqbxp">
+          <text>674.29</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="ab-normbedragen" name="PW Normbedragen" camunda:versionTag="" camunda:historyTimeToLive="10">
+    <informationRequirement id="InformationRequirement_06igfm7">
+      <requiredDecision href="#BijstandsnormBedragen" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0zn46gi">
+      <input id="InputClause_1m5ssic" label="norm" biodi:width="586" camunda:inputVariable="norm">
+        <inputExpression id="LiteralExpression_0teqhby" typeRef="string">
+          <text>norm</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_06k8zcy" name="bedrag" typeRef="double" />
+      <rule id="DecisionRule_0yar3xr">
+        <inputEntry id="UnaryTests_06m15wh">
+          <text>"Alleenstaande in inrichting norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1m58iiy">
+          <text>I</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zzeplm">
+        <inputEntry id="UnaryTests_0h8qb5r">
+          <text>"Samenwonend in inrichting norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xy58ib">
+          <text>II</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05p8y4i">
+        <inputEntry id="UnaryTests_17q23lc">
+          <text>"Alleenstaande ouder jongere norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_06metwv">
+          <text>JK</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0lycko6">
+        <inputEntry id="UnaryTests_0jut2a0">
+          <text>"Samenwonende jongere met kinderen norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01d50r3">
+          <text>JJK</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_02fzff8">
+        <inputEntry id="UnaryTests_0zn4svg">
+          <text>"Samenwonende waarvan 1 jongere met kinderen norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_066bnkt">
+          <text>MJK</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0tv6bfi">
+        <inputEntry id="UnaryTests_04lml7g">
+          <text>"Alleenstaande jongere zonder kinderen norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11dyy07">
+          <text>J</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1y6sceg">
+        <inputEntry id="UnaryTests_1codt0n">
+          <text>"Samenwonende jongere zonder kinderen norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p3yzqf">
+          <text>JJ</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06gy25k">
+        <inputEntry id="UnaryTests_1frbnp8">
+          <text>"Samenwonende waarvan 1 jongere zonder kinderen norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nh648g">
+          <text>MO</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0l3sva9">
+        <inputEntry id="UnaryTests_14xbrdv">
+          <text>"Alleenstaande norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0vdmong">
+          <text>M</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1sqe0dq">
+        <inputEntry id="UnaryTests_1q625nf">
+          <text>"Samenwonende norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ihimht">
+          <text>MM</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ksktvy">
+        <inputEntry id="UnaryTests_0f6c6qv">
+          <text>"Alleenstaande oudere norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0zyukdv">
+          <text>O</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_025n7b3">
+        <inputEntry id="UnaryTests_1lifz1c">
+          <text>"Samenwonende oudere norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bmnrfq">
+          <text>OO</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1n8r7qq">
+        <inputEntry id="UnaryTests_01gqxt7">
+          <text>"Samen wonende 1 oudere norm"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1tcig0g">
+          <text>MO</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="BijstandsnormBedragen">
+        <dc:Bounds height="80" width="180" x="160" y="250" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_14kvpmv" dmnElementRef="InformationRequirement_06igfm7">
+        <di:waypoint x="250" y="250" />
+        <di:waypoint x="250" y="180" />
+        <di:waypoint x="250" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0j50vkp" dmnElementRef="ab-normbedragen">
+        <dc:Bounds height="80" width="180" x="160" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
