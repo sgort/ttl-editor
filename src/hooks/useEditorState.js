@@ -32,6 +32,9 @@ export const useEditorState = () => {
   // CPRMV Rules state
   const [cprmvRules, setCprmvRules] = useState([]);
 
+  // Concepts state
+  const [concepts, setConcepts] = useState([]);
+
   // Cost state
   const [cost, setCost] = useState(DEFAULT_COST);
 
@@ -77,6 +80,7 @@ export const useEditorState = () => {
     setTemporalRules([]);
     setParameters([]);
     setCprmvRules([]);
+    setConcepts([]);
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
     setDmnData({
@@ -125,6 +129,8 @@ export const useEditorState = () => {
     // DMN
     dmnData,
     setDmnData,
+    concepts,
+    setConcepts,
     // iKnow
     iknowMappingConfig,
     setIknowMappingConfig,

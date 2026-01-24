@@ -34,6 +34,7 @@ import {
   ServiceTab,
 } from './components/tabs';
 import {
+  useConceptsHandlers,
   useCprmvRulesHandlers,
   useParametersHandlers,
   useTemporalRulesHandlers,
@@ -69,6 +70,8 @@ function App() {
     setParameters,
     cprmvRules,
     setCprmvRules,
+    concepts,
+    setConcepts,
     cost,
     setCost,
     output,
@@ -113,6 +116,12 @@ function App() {
     handleRemove: removeCPRMVRule,
   } = useCprmvRulesHandlers(cprmvRules, setCprmvRules);
 
+  const {
+    handleAdd: addConcept,
+    handleUpdateField: updateConcept,
+    handleRemove: removeConcept,
+  } = useConceptsHandlers(concepts, setConcepts);
+
   // Helper to build state object for TTL generator
   const buildStateForTTL = () => ({
     service, // ← Use destructured variable
@@ -124,6 +133,7 @@ function App() {
     cost,
     output,
     dmnData,
+    concepts,
   });
 
   const [message, setMessage] = useState('');
@@ -156,6 +166,7 @@ function App() {
       setTemporalRules,
       setParameters,
       setCprmvRules,
+      setConcepts,
       setCost,
       setOutput,
       setDmnData,
@@ -872,8 +883,17 @@ function App() {
                   setCprmvRules={setCprmvRules}
                 />
               )}
-              {activeTab === 'dmn' && <DMNTab dmnData={dmnData} setDmnData={setDmnData} />}
-              {activeTab === 'concepts' && <ConceptsTab dmnData={dmnData} service={service} />}
+              {activeTab === 'dmn' && (
+                <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
+              )}
+              {activeTab === 'concepts' && (
+                <ConceptsTab
+                  dmnData={dmnData}
+                  service={service}
+                  concepts={concepts}
+                  setConcepts={setConcepts}
+                />
+              )}
               {activeTab === 'iknow-mapping' && (
                 <IKnowMappingTab
                   mappingConfig={iknowMappingConfig}

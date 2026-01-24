@@ -10,7 +10,16 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-const DMNTab = ({ dmnData, setDmnData }) => {
+import {
+  extractInputsFromTestResult,
+  extractOutputsFromTestResult,
+  generateConceptDefinition,
+  generateConceptLabel,
+  generateConceptNotation,
+  generateConceptUri,
+} from '../../utils/dmnHelpers';
+
+const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [testBody, setTestBody] = useState('');
   const [testResponse, setTestResponse] = useState(null);
@@ -226,6 +235,60 @@ const DMNTab = ({ dmnData, setDmnData }) => {
       </div>
     );
   }
+
+  /**
+   * Generate concepts from DMN test results and store in state
+   */
+  const generateConceptsFromTest = (testResult, testBodyData) => {
+    const serviceIdentifier = dmnData.decisionKey || 'unknown-service';
+    const inputs = extractInputsFromTestResult({ testBody: testBodyData });
+    const outputs = extractOutputsFromTestResult({ lastTestResult: testResult });
+
+    const usedNotations = [];
+    const generatedConcepts = [];
+    let idCounter = 1;
+
+    // Generate input concepts
+    inputs.forEach((input, index) => {
+      const notation = generateConceptNotation(input.name, usedNotations);
+      usedNotations.push(notation);
+
+      generatedConcepts.push({
+        id: idCounter++,
+        uri: generateConceptUri(input.name, serviceIdentifier),
+        variableName: input.name,
+        prefLabel: generateConceptLabel(input.name),
+        definition: generateConceptDefinition(input.name, input.type, 'input'),
+        notation: notation,
+        linkedTo: `input/${index + 1}`,
+        linkedToType: 'input',
+        exactMatch: '',
+        type: 'dmn:InputVariable',
+      });
+    });
+
+    // Generate output concepts
+    outputs.forEach((output, index) => {
+      const notation = generateConceptNotation(output.name, usedNotations);
+      usedNotations.push(notation);
+
+      generatedConcepts.push({
+        id: idCounter++,
+        uri: generateConceptUri(output.name, serviceIdentifier),
+        variableName: output.name,
+        prefLabel: generateConceptLabel(output.name),
+        definition: generateConceptDefinition(output.name, output.type, 'output'),
+        notation: notation,
+        linkedTo: `output/${index + 1}`,
+        linkedToType: 'output',
+        exactMatch: '',
+        type: 'dmn:OutputVariable',
+      });
+    });
+
+    // Store in state
+    setConcepts(generatedConcepts);
+  };
 
   // Generate request body from DMN input variables
   const generateRequestBodyFromDMN = (dmnContent) => {
@@ -529,6 +592,9 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         testBody: testBody,
         apiEndpoint: evaluateUrl,
       });
+
+      // Generate concepts from test results
+      generateConceptsFromTest(result, testBody);
     } catch (err) {
       setError(err.message);
       setTestResponse({
@@ -601,37 +667,43 @@ const DMNTab = ({ dmnData, setDmnData }) => {
           <h4 className="text-md font-semibold text-gray-800">API Configuration</h4>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Base URL</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Operaton Base URL
+            </label>
             <input
               type="text"
               value={apiConfig.baseUrl}
-              onChange={(e) => setApiConfig({ ...apiConfig, baseUrl: e.target.value })}
+              onChange={(e) =>
+                setApiConfig({
+                  ...apiConfig,
+                  baseUrl: e.target.value,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://operaton.open-regels.nl"
+              placeholder="https://operaton-doc.open-regels.nl"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Decision Key</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Decision Key
+              <span className="text-gray-500 font-normal ml-1">(auto-filled from DMN file)</span>
+            </label>
             <input
               type="text"
               value={apiConfig.decisionKey}
-              onChange={(e) => setApiConfig({ ...apiConfig, decisionKey: e.target.value })}
-              disabled={!uploadedFile}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-              placeholder="Decision Key"
+              onChange={(e) =>
+                setApiConfig({
+                  ...apiConfig,
+                  decisionKey: e.target.value,
+                })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="RONL_BerekenLeeftijden"
             />
           </div>
-        </div>
-
-        <div className="mt-3 text-sm text-gray-500">
-          <span className="font-medium">Evaluation URL:</span>{' '}
-          <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-            {apiConfig.baseUrl}
-            {apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}
-          </code>
         </div>
       </div>
 
@@ -640,9 +712,10 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Upload size={20} className="text-gray-600 mr-2" />
-            <h4 className="text-md font-semibold text-gray-800">DMN File</h4>
+            <h4 className="text-md font-semibold text-gray-800">Upload DMN File</h4>
           </div>
           <div className="flex items-center gap-2">
+            {/* RESTORED: Load Example in header */}
             <button
               onClick={loadExampleDMN}
               disabled={isLoading}
@@ -654,28 +727,21 @@ const DMNTab = ({ dmnData, setDmnData }) => {
             {uploadedFile && (
               <button
                 onClick={handleClearFile}
-                className="text-red-600 hover:text-red-700 flex items-center gap-1 text-sm"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-50 text-red-700 rounded-md hover:bg-red-100 border border-red-200"
               >
-                <Trash2 size={16} />
-                Clear
+                <Trash2 size={14} />
+                Clear File
               </button>
             )}
           </div>
         </div>
 
         {!uploadedFile ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
-            <Upload className="mx-auto text-gray-400 mb-3" size={48} />
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
+            <Upload className="mx-auto text-gray-400 mb-3" size={40} />
             <label className="cursor-pointer">
-              <span className="text-blue-600 hover:text-blue-700 font-medium">
-                Choose a DMN file
-              </span>
-              <input
-                type="file"
-                accept=".dmn,.xml"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
+              <span className="text-blue-600 hover:text-blue-700 font-medium">Choose a file</span>
+              <input type="file" accept=".dmn" onChange={handleFileUpload} className="hidden" />
             </label>
             <p className="text-gray-500 text-sm mt-2">or drag and drop</p>
             <p className="text-gray-400 text-xs mt-1">DMN, XML files supported</p>

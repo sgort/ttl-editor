@@ -26,6 +26,7 @@ export class TTLGenerator {
     this.cost = state.cost;
     this.output = state.output;
     this.dmnData = state.dmnData;
+    this.concepts = state.concepts || [];
 
     // Compute service URI once
     const sanitizedIdentifier =
@@ -710,24 +711,15 @@ export class TTLGenerator {
   }
 
   /**
-   * Generate NL-SBB concept definitions for DMN variables
-   * Creates skos:Concept entities linked to cpsv:Input/Output
+   * Generate NL-SBB concept definitions from state
    * @returns {string} TTL representation of concepts
    */
   generateConceptsSection() {
-    if (!this.dmnData || !this.dmnData.content) {
+    if (!this.concepts || this.concepts.length === 0) {
       return '';
     }
 
     let ttl = '';
-    const serviceIdentifier = this.service.identifier || 'unknown-service';
-
-    const inputs = extractInputsFromTestResult(this.dmnData);
-    const outputs = extractOutputsFromTestResult(this.dmnData);
-
-    if (inputs.length === 0 && outputs.length === 0) {
-      return '';
-    }
 
     ttl += '# =====================================\n';
     ttl += '# NL-SBB Concept Definitions (DMN Variables)\n';
@@ -741,45 +733,46 @@ export class TTLGenerator {
     ttl += `    dct:creator "RONL" ;\n`;
     ttl += `    dct:created "${new Date().toISOString().split('T')[0]}"^^xsd:date .\n\n`;
 
-    // Track all notations to prevent collisions across inputs AND outputs
-    const usedNotations = [];
+    // Separate inputs and outputs
+    const inputConcepts = this.concepts.filter((c) => c.linkedToType === 'input');
+    const outputConcepts = this.concepts.filter((c) => c.linkedToType === 'output');
 
     // 2. Input Concepts
-    if (inputs.length > 0) {
+    if (inputConcepts.length > 0) {
       ttl += '# Input Variable Concepts\n\n';
 
-      inputs.forEach((input, index) => {
-        const conceptUri = generateConceptUri(input.name, serviceIdentifier);
-        const inputUri = `${this.serviceUri}/dmn/input/${index + 1}`;
-        const notation = generateConceptNotation(input.name, usedNotations);
-        usedNotations.push(notation); // Track this notation
+      inputConcepts.forEach((concept) => {
+        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
+        ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
+        ttl += `    skos:notation "${concept.notation}" ;\n`;
+        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:type "${concept.type}" ;\n`;
 
-        ttl += `<${conceptUri}> a skos:Concept ;\n`;
-        ttl += `    skos:prefLabel "${generateConceptLabel(input.name)}"@nl ;\n`;
-        ttl += `    skos:definition "${generateConceptDefinition(input.name, input.type, 'input')}"@nl ;\n`;
-        ttl += `    skos:notation "${notation}" ;\n`;
-        ttl += `    dct:subject <${inputUri}> ;\n`;
-        ttl += `    dct:type "dmn:InputVariable" ;\n`;
+        if (concept.exactMatch && concept.exactMatch.trim() !== '') {
+          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+        }
+
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
       });
     }
 
     // 3. Output Concepts
-    if (outputs.length > 0) {
+    if (outputConcepts.length > 0) {
       ttl += '# Output Variable Concepts\n\n';
 
-      outputs.forEach((output, index) => {
-        const conceptUri = generateConceptUri(output.name, serviceIdentifier);
-        const outputUri = `${this.serviceUri}/dmn/output/${index + 1}`;
-        const notation = generateConceptNotation(output.name, usedNotations);
-        usedNotations.push(notation); // Track this notation
+      outputConcepts.forEach((concept) => {
+        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
+        ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
+        ttl += `    skos:notation "${concept.notation}" ;\n`;
+        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:type "${concept.type}" ;\n`;
 
-        ttl += `<${conceptUri}> a skos:Concept ;\n`;
-        ttl += `    skos:prefLabel "${generateConceptLabel(output.name)}"@nl ;\n`;
-        ttl += `    skos:definition "${generateConceptDefinition(output.name, output.type, 'output')}"@nl ;\n`;
-        ttl += `    skos:notation "${notation}" ;\n`;
-        ttl += `    dct:subject <${outputUri}> ;\n`;
-        ttl += `    dct:type "dmn:OutputVariable" ;\n`;
+        if (concept.exactMatch && concept.exactMatch.trim() !== '') {
+          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+        }
+
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
       });
     }

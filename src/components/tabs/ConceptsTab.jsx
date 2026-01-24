@@ -1,16 +1,14 @@
 import { BookOpen, ExternalLink } from 'lucide-react';
 import React from 'react';
 
-import {
-  extractInputsFromTestResult,
-  extractOutputsFromTestResult,
-  generateConceptLabel,
-  generateConceptNotation,
-} from '../../utils/dmnHelpers';
+export default function ConceptsTab({ dmnData, service, concepts }) {
+  // Separate inputs and outputs from state
+  const inputConcepts = concepts.filter((c) => c.linkedToType === 'input');
+  const outputConcepts = concepts.filter((c) => c.linkedToType === 'output');
+  const totalConcepts = concepts.length;
 
-export default function ConceptsTab({ dmnData }) {
-  // Empty state - no DMN uploaded
-  if (!dmnData || !dmnData.content) {
+  // Empty state - no concepts generated yet
+  if (concepts.length === 0) {
     return (
       <div className="space-y-4">
         {/* Primary Message */}
@@ -102,10 +100,7 @@ export default function ConceptsTab({ dmnData }) {
     );
   }
 
-  // Extract inputs/outputs
-  const inputs = extractInputsFromTestResult(dmnData);
-  const outputs = extractOutputsFromTestResult(dmnData);
-  const totalConcepts = inputs.length + outputs.length;
+  // Concepts exist - show them
   const conceptSchemeUri = 'https://regels.overheid.nl/schemes/dmn-variables';
 
   return (
@@ -121,8 +116,8 @@ export default function ConceptsTab({ dmnData }) {
               {totalConcepts} concepts automatically generated
             </h4>
             <p className="text-sm text-green-800 mt-1">
-              Based on {inputs.length} inputs and {outputs.length} outputs from the DMN model. These
-              concepts are automatically included in export.
+              Based on {inputConcepts.length} inputs and {outputConcepts.length} outputs from the
+              DMN model. These concepts are automatically included in export.
             </p>
           </div>
         </div>
@@ -169,14 +164,16 @@ export default function ConceptsTab({ dmnData }) {
       </div>
 
       {/* Input Concepts */}
-      {inputs.length > 0 && (
+      {inputConcepts.length > 0 && (
         <div className="bg-white border border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold text-gray-900 mb-4">Input Concepts ({inputs.length})</h4>
+          <h4 className="font-semibold text-gray-900 mb-4">
+            Input Concepts ({inputConcepts.length})
+          </h4>
           <div className="space-y-4">
-            {inputs.map((input, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+            {inputConcepts.map((concept) => (
+              <div key={concept.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
                 <div className="flex items-start justify-between mb-2">
-                  <h5 className="font-medium text-gray-900">{generateConceptLabel(input.name)}</h5>
+                  <h5 className="font-medium text-gray-900">{concept.prefLabel}</h5>
                   <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Input</span>
                 </div>
 
@@ -184,17 +181,31 @@ export default function ConceptsTab({ dmnData }) {
                   <div className="flex gap-2">
                     <span className="text-gray-600 min-w-24">Notation:</span>
                     <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {generateConceptNotation(input.name)}
+                      {concept.notation}
                     </code>
                   </div>
                   <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Type:</span>
-                    <span className="text-gray-800">{input.type}</span>
+                    <span className="text-gray-600 min-w-24">Variable:</span>
+                    <span className="text-gray-800">{concept.variableName}</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="text-gray-600 min-w-24">Definition:</span>
+                    <span className="text-gray-800">{concept.definition}</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-gray-600 min-w-24">Linked to:</span>
-                    <code className="text-xs text-blue-600">cpsv:Input #{index + 1}</code>
+                    <code className="text-xs text-blue-600">
+                      cpsv:Input #{concept.linkedTo.split('/')[1]}
+                    </code>
                   </div>
+                  {concept.exactMatch && concept.exactMatch.trim() !== '' && (
+                    <div className="flex gap-2">
+                      <span className="text-gray-600 min-w-24">Exact Match:</span>
+                      <code className="text-xs text-purple-600 break-all">
+                        {concept.exactMatch}
+                      </code>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -203,14 +214,16 @@ export default function ConceptsTab({ dmnData }) {
       )}
 
       {/* Output Concepts */}
-      {outputs.length > 0 && (
+      {outputConcepts.length > 0 && (
         <div className="bg-white border border-gray-300 rounded-lg p-4">
-          <h4 className="font-semibold text-gray-900 mb-4">Output Concepts ({outputs.length})</h4>
+          <h4 className="font-semibold text-gray-900 mb-4">
+            Output Concepts ({outputConcepts.length})
+          </h4>
           <div className="space-y-4">
-            {outputs.map((output, index) => (
-              <div key={index} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+            {outputConcepts.map((concept) => (
+              <div key={concept.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
                 <div className="flex items-start justify-between mb-2">
-                  <h5 className="font-medium text-gray-900">{generateConceptLabel(output.name)}</h5>
+                  <h5 className="font-medium text-gray-900">{concept.prefLabel}</h5>
                   <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
                     Output
                   </span>
@@ -220,17 +233,31 @@ export default function ConceptsTab({ dmnData }) {
                   <div className="flex gap-2">
                     <span className="text-gray-600 min-w-24">Notation:</span>
                     <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {generateConceptNotation(output.name)}
+                      {concept.notation}
                     </code>
                   </div>
                   <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Type:</span>
-                    <span className="text-gray-800">{output.type}</span>
+                    <span className="text-gray-600 min-w-24">Variable:</span>
+                    <span className="text-gray-800">{concept.variableName}</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="text-gray-600 min-w-24">Definition:</span>
+                    <span className="text-gray-800">{concept.definition}</span>
                   </div>
                   <div className="flex gap-2">
                     <span className="text-gray-600 min-w-24">Linked to:</span>
-                    <code className="text-xs text-green-600">cpsv:Output #{index + 1}</code>
+                    <code className="text-xs text-green-600">
+                      cpsv:Output #{concept.linkedTo.split('/')[1]}
+                    </code>
                   </div>
+                  {concept.exactMatch && concept.exactMatch.trim() !== '' && (
+                    <div className="flex gap-2">
+                      <span className="text-gray-600 min-w-24">Exact Match:</span>
+                      <code className="text-xs text-purple-600 break-all">
+                        {concept.exactMatch}
+                      </code>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -246,7 +273,6 @@ export default function ConceptsTab({ dmnData }) {
             <p className="text-gray-700 mb-1">
               <strong>NL-SBB Documentation:</strong>
             </p>
-
             <a
               href="https://geonovum.github.io/NL-SBB/"
               target="_blank"
