@@ -218,6 +218,66 @@ export function validateDMNData(dmnData) {
   };
 }
 
+/**
+ * Generate NL-SBB compliant concept URI from variable name
+ * @param {string} variableName - DMN variable name (e.g., "geboortedatumAanvrager")
+ * @param {string} serviceIdentifier - Service identifier for scoping
+ * @returns {string} - Concept URI
+ */
+export function generateConceptUri(variableName, serviceIdentifier) {
+  const cleanServiceId = sanitizeServiceIdentifier(serviceIdentifier);
+  return `https://regels.overheid.nl/concepts/${cleanServiceId}/${variableName}`;
+}
+
+/**
+ * Generate human-readable concept label from variable name
+ * @param {string} variableName - Camel case variable name
+ * @returns {string} - Spaced Dutch label
+ */
+export function generateConceptLabel(variableName) {
+  return variableName
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
+    .trim();
+}
+
+/**
+ * Generate concept definition from variable context
+ * @param {string} variableName - Variable name
+ * @param {string} type - Variable type (String, Integer, Boolean)
+ * @param {string} ioType - 'input' or 'output'
+ * @returns {string} - Dutch definition
+ */
+export function generateConceptDefinition(variableName, type, ioType) {
+  const label = generateConceptLabel(variableName);
+  const typeMap = {
+    String: 'tekstuele waarde',
+    Integer: 'numerieke waarde',
+    Boolean: 'ja/nee waarde',
+    Date: 'datumwaarde',
+  };
+  const typeDescription = typeMap[type] || 'waarde';
+
+  if (ioType === 'input') {
+    return `${label} is een ${typeDescription} die als invoer dient voor de beslisregel.`;
+  } else {
+    return `${label} is een ${typeDescription} die als uitvoer wordt gegenereerd door de beslisregel.`;
+  }
+}
+
+/**
+ * Generate notation (code) for concept
+ * @param {string} variableName - Variable name
+ * @returns {string} - Notation code
+ */
+export function generateConceptNotation(variableName) {
+  const capitals = variableName.match(/[A-Z]/g);
+  if (capitals && capitals.length >= 2) {
+    return capitals.join('');
+  }
+  return variableName.substring(0, Math.min(6, variableName.length)).toUpperCase();
+}
+
 // Default export object for convenience
 const dmnHelpers = {
   extractRulesFromDMN,
@@ -226,6 +286,10 @@ const dmnHelpers = {
   validateDMNData,
   sanitizeServiceIdentifier,
   buildServiceUri,
+  generateConceptUri,
+  generateConceptLabel,
+  generateConceptDefinition,
+  generateConceptNotation,
 };
 
 export default dmnHelpers;

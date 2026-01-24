@@ -26,6 +26,10 @@ export const VOCABULARY_CONFIG = {
       acceptedTypes: ['cv:PublicOrganisation'],
       canonicalType: 'cv:PublicOrganisation',
     },
+    concept: {
+      acceptedTypes: ['skos:Concept'],
+      canonicalType: 'skos:Concept',
+    },
     cost: {
       acceptedTypes: ['cv:Cost'],
       canonicalType: 'cv:Cost',

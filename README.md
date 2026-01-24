@@ -107,6 +107,14 @@ Logos are published alongside your service metadata and can be queried via SPARQ
 - Rule extraction with CPRMV attributes
 - Import preservation for existing DMN
 
+#### 📚 **NL-SBB Concepts**
+
+- Auto-generate concept definitions for DMN variables
+- Dutch standard (NL-SBB) compliant SKOS concepts
+- Enables semantic matching across DMNs
+- Foundation for advanced chain validation
+- Clean separation: technical variables ↔ semantic concepts
+
 #### 📊 **iKnow Integration**
 
 - Parse iKnow XML exports

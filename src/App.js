@@ -2,6 +2,7 @@ import './App.css';
 
 import {
   AlertCircle,
+  BookOpen,
   Building2,
   CheckCircle,
   Clock,
@@ -22,6 +23,7 @@ import PreviewPanel from './components/PreviewPanel';
 import PublishDialog from './components/PublishDialog';
 import {
   ChangelogTab,
+  ConceptsTab,
   CPRMVTab,
   DMNTab,
   IKnowMappingTab,
@@ -44,7 +46,11 @@ import {
   updateTriplyDBService,
   uploadLogoAsset,
 } from './utils';
-import { validateDMNData } from './utils/dmnHelpers';
+import {
+  extractInputsFromTestResult,
+  extractOutputsFromTestResult,
+  validateDMNData,
+} from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
 
@@ -717,6 +723,7 @@ function App() {
                 'parameters',
                 'cprmv',
                 'dmn',
+                'concepts',
                 'iknow-mapping',
                 'changelog',
               ].map((tab) => {
@@ -734,6 +741,7 @@ function App() {
                 return (
                   <button
                     key={tab}
+                    data-tab-id={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
                       activeTab === tab
@@ -775,6 +783,22 @@ function App() {
                       <span className="flex items-center justify-center gap-2">
                         <Database size={18} />
                         CPRMV
+                      </span>
+                    )}
+                    {tab === 'concepts' && (
+                      <span className="flex items-center justify-center gap-2">
+                        <BookOpen size={18} />
+                        Concepts
+                        {dmnData && dmnData.content ? (
+                          <span className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded font-medium">
+                            {extractInputsFromTestResult(dmnData).length +
+                              extractOutputsFromTestResult(dmnData).length}
+                          </span>
+                        ) : (
+                          <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded font-medium">
+                            Needs DMN
+                          </span>
+                        )}
                       </span>
                     )}
                     {tab === 'dmn' && (
@@ -849,6 +873,7 @@ function App() {
                 />
               )}
               {activeTab === 'dmn' && <DMNTab dmnData={dmnData} setDmnData={setDmnData} />}
+              {activeTab === 'concepts' && <ConceptsTab dmnData={dmnData} service={service} />}
               {activeTab === 'iknow-mapping' && (
                 <IKnowMappingTab
                   mappingConfig={iknowMappingConfig}

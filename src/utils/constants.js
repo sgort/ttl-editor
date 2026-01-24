@@ -147,3 +147,7 @@ export const DEFAULT_CPRMV_RULE = {
   norm: '', // cprmv:norm
   ruleIdPath: '', // cprmv:ruleIdPath
 };
+
+// NL-SBB Concept Scheme Configuration
+export const CONCEPT_SCHEME_URI = 'https://regels.overheid.nl/schemes/dmn-variables';
+export const CONCEPT_BASE_URI = 'https://regels.overheid.nl/concepts/';

@@ -1,7 +1,11 @@
 import {
   extractInputsFromTestResult,
-  extractOutputsFromTestResult, // ADD THIS
+  extractOutputsFromTestResult,
   extractRulesFromDMN,
+  generateConceptDefinition,
+  generateConceptLabel,
+  generateConceptNotation,
+  generateConceptUri,
   sanitizeServiceIdentifier,
 } from './dmnHelpers';
 import { buildResourceUri, encodeURIComponentTTL, escapeTTLString, TTL_NAMESPACES } from './index';
@@ -94,6 +98,10 @@ export class TTLGenerator {
       ttl += this.generateDmnSection();
     }
 
+    // NL-SBB Concepts section
+    if (this.hasDMN()) {
+      ttl += this.generateConceptsSection();
+    }
     return ttl;
   }
 
@@ -699,6 +707,77 @@ export class TTLGenerator {
     }
 
     return '';
+  }
+
+  /**
+   * Generate NL-SBB concept definitions for DMN variables
+   * Creates skos:Concept entities linked to cpsv:Input/Output
+   * @returns {string} TTL representation of concepts
+   */
+  generateConceptsSection() {
+    if (!this.dmnData || !this.dmnData.content) {
+      return '';
+    }
+
+    let ttl = '';
+    const serviceIdentifier = this.service.identifier || 'unknown-service';
+
+    const inputs = extractInputsFromTestResult(this.dmnData);
+    const outputs = extractOutputsFromTestResult(this.dmnData);
+
+    if (inputs.length === 0 && outputs.length === 0) {
+      return '';
+    }
+
+    ttl += '# =====================================\n';
+    ttl += '# NL-SBB Concept Definitions (DMN Variables)\n';
+    ttl += '# =====================================\n\n';
+
+    // 1. Concept Scheme
+    const schemeUri = 'https://regels.overheid.nl/schemes/dmn-variables';
+    ttl += `<${schemeUri}> a skos:ConceptScheme ;\n`;
+    ttl += `    dct:title "DMN Variabelen Begrippenkader"@nl ;\n`;
+    ttl += `    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;\n`;
+    ttl += `    dct:creator "RONL" ;\n`;
+    ttl += `    dct:created "${new Date().toISOString().split('T')[0]}"^^xsd:date .\n\n`;
+
+    // 2. Input Concepts
+    if (inputs.length > 0) {
+      ttl += '# Input Variable Concepts\n\n';
+
+      inputs.forEach((input, index) => {
+        const conceptUri = generateConceptUri(input.name, serviceIdentifier);
+        const inputUri = `${this.serviceUri}/dmn/input/${index + 1}`;
+
+        ttl += `<${conceptUri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${generateConceptLabel(input.name)}"@nl ;\n`;
+        ttl += `    skos:definition "${generateConceptDefinition(input.name, input.type, 'input')}"@nl ;\n`;
+        ttl += `    skos:notation "${generateConceptNotation(input.name)}" ;\n`;
+        ttl += `    dct:subject <${inputUri}> ;\n`;
+        ttl += `    dct:type "dmn:InputVariable" ;\n`;
+        ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
+      });
+    }
+
+    // 3. Output Concepts
+    if (outputs.length > 0) {
+      ttl += '# Output Variable Concepts\n\n';
+
+      outputs.forEach((output, index) => {
+        const conceptUri = generateConceptUri(output.name, serviceIdentifier);
+        const outputUri = `${this.serviceUri}/dmn/output/${index + 1}`;
+
+        ttl += `<${conceptUri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${generateConceptLabel(output.name)}"@nl ;\n`;
+        ttl += `    skos:definition "${generateConceptDefinition(output.name, output.type, 'output')}"@nl ;\n`;
+        ttl += `    skos:notation "${generateConceptNotation(output.name)}" ;\n`;
+        ttl += `    dct:subject <${outputUri}> ;\n`;
+        ttl += `    dct:type "dmn:OutputVariable" ;\n`;
+        ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
+      });
+    }
+
+    return ttl;
   }
 }
 

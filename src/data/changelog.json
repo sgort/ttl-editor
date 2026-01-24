@@ -1,6 +1,55 @@
 {
   "versions": [
     {
+      "version": "1.8.0",
+      "status": "Major Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "January 24, 2026",
+      "sections": [
+        {
+          "title": "NL-SBB Concept Layer for DMN Variables",
+          "icon": "📚",
+          "iconColor": "purple",
+          "items": [
+            "Implemented clean separation architecture with skos:Concept definitions for all DMN inputs and outputs",
+            "Automatic concept generation from DMN test results with Dutch NL-SBB standard compliance",
+            "Concept scheme generation (skos:ConceptScheme) for organizing semantic definitions",
+            "Bidirectional linking: concepts link to technical variables via dct:subject",
+            "Foundation for semantic matching across different DMNs using skos:exactMatch",
+            "Enables advanced chain validation and cycle detection in Linked Data Explorer"
+          ]
+        },
+        {
+          "title": "Concepts Tab with Smart Workflow",
+          "icon": "🎯",
+          "iconColor": "blue",
+          "items": [
+            "New dedicated tab for viewing auto-generated NL-SBB concept definitions",
+            "Dynamic badge shows concept count when DMN is present or 'Needs DMN' when empty",
+            "Empty state with step-by-step workflow instructions guiding users through DMN upload",
+            "Success indicator showing total concepts generated from inputs and outputs",
+            "Displays concept prefLabel, definition, notation, type, and linkage for each variable",
+            "Quick navigation button to DMN tab from empty state",
+            "Link to NL-SBB official documentation (Geonovum)"
+          ]
+        },
+        {
+          "title": "Semantic Interoperability Foundation",
+          "icon": "🔗",
+          "iconColor": "green",
+          "items": [
+            "Variables from different DMNs can now be semantically matched (e.g., geboortedatum = birthdate)",
+            "Support for skos:exactMatch relationships for cross-DMN equivalence declarations",
+            "Human-readable labels auto-generated from camelCase variable names",
+            "Unique notation codes generated for each concept (uppercase abbreviations)",
+            "Dutch language definitions with proper grammar for inputs and outputs",
+            "Concepts organized under single scheme: https://regels.overheid.nl/schemes/dmn-variables"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.7.0",
       "status": "Feature",
       "statusColor": "emerald",
