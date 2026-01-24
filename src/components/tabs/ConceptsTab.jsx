@@ -1,7 +1,7 @@
 import { BookOpen, ExternalLink } from 'lucide-react';
 import React from 'react';
 
-export default function ConceptsTab({ dmnData, service, concepts }) {
+export default function ConceptsTab({ concepts }) {
   // Separate inputs and outputs from state
   const inputConcepts = concepts.filter((c) => c.linkedToType === 'input');
   const outputConcepts = concepts.filter((c) => c.linkedToType === 'output');

@@ -34,7 +34,6 @@ import {
   ServiceTab,
 } from './components/tabs';
 import {
-  useConceptsHandlers,
   useCprmvRulesHandlers,
   useParametersHandlers,
   useTemporalRulesHandlers,
@@ -115,12 +114,6 @@ function App() {
     handleUpdateField: updateCPRMVRule,
     handleRemove: removeCPRMVRule,
   } = useCprmvRulesHandlers(cprmvRules, setCprmvRules);
-
-  const {
-    handleAdd: addConcept,
-    handleUpdateField: updateConcept,
-    handleRemove: removeConcept,
-  } = useConceptsHandlers(concepts, setConcepts);
 
   // Helper to build state object for TTL generator
   const buildStateForTTL = () => ({
@@ -886,14 +879,7 @@ function App() {
               {activeTab === 'dmn' && (
                 <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
               )}
-              {activeTab === 'concepts' && (
-                <ConceptsTab
-                  dmnData={dmnData}
-                  service={service}
-                  concepts={concepts}
-                  setConcepts={setConcepts}
-                />
-              )}
+              {activeTab === 'concepts' && <ConceptsTab concepts={concepts} />}
               {activeTab === 'iknow-mapping' && (
                 <IKnowMappingTab
                   mappingConfig={iknowMappingConfig}

@@ -2,10 +2,6 @@ import {
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
   extractRulesFromDMN,
-  generateConceptDefinition,
-  generateConceptLabel,
-  generateConceptNotation,
-  generateConceptUri,
   sanitizeServiceIdentifier,
 } from './dmnHelpers';
 import { buildResourceUri, encodeURIComponentTTL, escapeTTLString, TTL_NAMESPACES } from './index';
