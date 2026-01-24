@@ -1,7 +1,7 @@
-import { BookOpen, ExternalLink } from 'lucide-react';
+import { BookOpen, ExternalLink, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
-export default function ConceptsTab({ concepts }) {
+export default function ConceptsTab({ concepts, removeConcept, updateConcept, setConcepts }) {
   // Separate inputs and outputs from state
   const inputConcepts = concepts.filter((c) => c.linkedToType === 'input');
   const outputConcepts = concepts.filter((c) => c.linkedToType === 'output');
@@ -100,7 +100,7 @@ export default function ConceptsTab({ concepts }) {
     );
   }
 
-  // Concepts exist - show them
+  // Concepts exist - show editable list
   const conceptSchemeUri = 'https://regels.overheid.nl/schemes/dmn-variables';
 
   return (
@@ -112,12 +112,10 @@ export default function ConceptsTab({ concepts }) {
             ✓
           </div>
           <div>
-            <h4 className="font-semibold text-green-900">
-              {totalConcepts} concepts automatically generated
-            </h4>
+            <h4 className="font-semibold text-green-900">{totalConcepts} concepts</h4>
             <p className="text-sm text-green-800 mt-1">
-              Based on {inputConcepts.length} inputs and {outputConcepts.length} outputs from the
-              DMN model. These concepts are automatically included in export.
+              {inputConcepts.length} inputs and {outputConcepts.length} outputs. Edit semantic
+              properties below to refine concept definitions.
             </p>
           </div>
         </div>
@@ -171,41 +169,136 @@ export default function ConceptsTab({ concepts }) {
           </h4>
           <div className="space-y-4">
             {inputConcepts.map((concept) => (
-              <div key={concept.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-                <div className="flex items-start justify-between mb-2">
-                  <h5 className="font-medium text-gray-900">{concept.prefLabel}</h5>
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Input</span>
+              <div
+                key={concept.id}
+                data-concept-id={concept.id}
+                className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+              >
+                {/* Concept Header */}
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex items-center gap-2">
+                    <h5 className="font-medium text-gray-900">{concept.variableName}</h5>
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                      Input #{concept.linkedTo.split('/')[1]}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => removeConcept(concept.id)}
+                    className="text-red-600 hover:text-red-800 transition-colors"
+                    aria-label={`Remove concept ${concept.variableName}`}
+                  >
+                    <Trash2 size={18} />
+                  </button>
                 </div>
 
-                <div className="space-y-2 text-sm">
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Notation:</span>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {concept.notation}
-                    </code>
+                {/* Editable Fields */}
+                <div className="space-y-3">
+                  {/* Preferred Label */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Preferred Label</span>
+                      <span className="text-gray-500"> (skos:prefLabel)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.prefLabel}
+                      onChange={(e) => updateConcept(concept.id, 'prefLabel', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g., Geboortedatum Aanvrager"
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Variable:</span>
-                    <span className="text-gray-800">{concept.variableName}</span>
+
+                  {/* Notation */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Notation (Machine Code)</span>
+                      <span className="text-gray-500"> (skos:notation)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.notation}
+                      onChange={(e) => updateConcept(concept.id, 'notation', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g., GA"
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Definition:</span>
-                    <span className="text-gray-800">{concept.definition}</span>
+
+                  {/* Definition */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Definition</span>
+                      <span className="text-gray-500"> (skos:definition)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <textarea
+                      value={concept.definition}
+                      onChange={(e) => updateConcept(concept.id, 'definition', e.target.value)}
+                      rows="3"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Describe the semantic meaning of this concept..."
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Linked to:</span>
-                    <code className="text-xs text-blue-600">
+
+                  {/* Exact Match (Optional) */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Exact Match URI</span>
+                      <span className="text-gray-500"> (skos:exactMatch)</span>
+                      <span className="text-gray-400"> - Optional</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.exactMatch || ''}
+                      onChange={(e) => updateConcept(concept.id, 'exactMatch', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      placeholder="e.g., https://begrippen.regels.overheid.nl/concept/geboortedatum"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Link to an equivalent concept in another ontology for semantic
+                      interoperability
+                    </p>
+                  </div>
+
+                  {/* Variable Name (Editable) */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Variable Name</span>
+                      <span className="text-gray-500"> (used in URI)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.variableName}
+                      onChange={(e) => {
+                        const newVariableName = e.target.value;
+                        const baseUri = concept.uri.substring(0, concept.uri.lastIndexOf('/') + 1);
+                        const newUri = baseUri + newVariableName;
+
+                        // Update both fields at once using setConcepts directly
+                        setConcepts(
+                          concepts.map((c) =>
+                            c.id === concept.id
+                              ? { ...c, variableName: newVariableName, uri: newUri }
+                              : c
+                          )
+                        );
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                      placeholder="e.g., geboortedatumAanvrager"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Technical variable name (camelCase, no spaces)
+                    </p>
+                  </div>
+
+                  {/* Read-only field: Linked To */}
+                  <div className="pt-2 border-t">
+                    <span className="text-xs text-gray-600">Linked To:</span>
+                    <code className="block text-sm text-blue-600 mt-1">
                       cpsv:Input #{concept.linkedTo.split('/')[1]}
                     </code>
                   </div>
-                  {concept.exactMatch && concept.exactMatch.trim() !== '' && (
-                    <div className="flex gap-2">
-                      <span className="text-gray-600 min-w-24">Exact Match:</span>
-                      <code className="text-xs text-purple-600 break-all">
-                        {concept.exactMatch}
-                      </code>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -221,49 +314,221 @@ export default function ConceptsTab({ concepts }) {
           </h4>
           <div className="space-y-4">
             {outputConcepts.map((concept) => (
-              <div key={concept.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-                <div className="flex items-start justify-between mb-2">
-                  <h5 className="font-medium text-gray-900">{concept.prefLabel}</h5>
-                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                    Output
-                  </span>
+              <div
+                key={concept.id}
+                data-concept-id={concept.id}
+                className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+              >
+                {/* Concept Header */}
+                <div className="flex justify-between items-center mb-3">
+                  <div className="flex items-center gap-2">
+                    <h5 className="font-medium text-gray-900">{concept.variableName}</h5>
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                      Output #{concept.linkedTo.split('/')[1]}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => removeConcept(concept.id)}
+                    className="text-red-600 hover:text-red-800 transition-colors"
+                    aria-label={`Remove concept ${concept.variableName}`}
+                  >
+                    <Trash2 size={18} />
+                  </button>
                 </div>
 
-                <div className="space-y-2 text-sm">
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Notation:</span>
-                    <code className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {concept.notation}
-                    </code>
+                {/* Editable Fields */}
+                <div className="space-y-3">
+                  {/* Preferred Label */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Preferred Label</span>
+                      <span className="text-gray-500"> (skos:prefLabel)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.prefLabel}
+                      onChange={(e) => updateConcept(concept.id, 'prefLabel', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="e.g., Leeftijd Aanvrager"
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Variable:</span>
-                    <span className="text-gray-800">{concept.variableName}</span>
+
+                  {/* Notation */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Notation (Machine Code)</span>
+                      <span className="text-gray-500"> (skos:notation)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.notation}
+                      onChange={(e) => updateConcept(concept.id, 'notation', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="e.g., LA"
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Definition:</span>
-                    <span className="text-gray-800">{concept.definition}</span>
+
+                  {/* Definition */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Definition</span>
+                      <span className="text-gray-500"> (skos:definition)</span>
+                      <span className="text-red-500"> *</span>
+                    </label>
+                    <textarea
+                      value={concept.definition}
+                      onChange={(e) => updateConcept(concept.id, 'definition', e.target.value)}
+                      rows="3"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                      placeholder="Describe the semantic meaning of this concept..."
+                    />
                   </div>
-                  <div className="flex gap-2">
-                    <span className="text-gray-600 min-w-24">Linked to:</span>
-                    <code className="text-xs text-green-600">
+
+                  {/* Exact Match (Optional) */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Exact Match URI</span>
+                      <span className="text-gray-500"> (skos:exactMatch)</span>
+                      <span className="text-gray-400"> - Optional</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.exactMatch || ''}
+                      onChange={(e) => updateConcept(concept.id, 'exactMatch', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                      placeholder="e.g., https://begrippen.regels.overheid.nl/concept/leeftijd"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Link to an equivalent concept in another ontology for semantic
+                      interoperability
+                    </p>
+                  </div>
+
+                  {/* Variable Name (Editable) */}
+                  <div>
+                    <label className="block text-sm text-gray-700 mb-1">
+                      <span className="font-medium">Variable Name</span>
+                      <span className="text-gray-500"> (used in URI)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={concept.variableName}
+                      onChange={(e) => {
+                        const newVariableName = e.target.value;
+                        const baseUri = concept.uri.substring(0, concept.uri.lastIndexOf('/') + 1);
+                        const newUri = baseUri + newVariableName;
+
+                        // Update both fields at once using setConcepts directly
+                        setConcepts(
+                          concepts.map((c) =>
+                            c.id === concept.id
+                              ? { ...c, variableName: newVariableName, uri: newUri }
+                              : c
+                          )
+                        );
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500 font-mono text-sm"
+                      placeholder="e.g., leeftijdAanvrager"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Technical variable name (camelCase, no spaces)
+                    </p>
+                  </div>
+
+                  {/* Read-only field: Linked To */}
+                  <div className="pt-2 border-t">
+                    <span className="text-xs text-gray-600">Linked To:</span>
+                    <code className="block text-sm text-green-600 mt-1">
                       cpsv:Output #{concept.linkedTo.split('/')[1]}
                     </code>
                   </div>
-                  {concept.exactMatch && concept.exactMatch.trim() !== '' && (
-                    <div className="flex gap-2">
-                      <span className="text-gray-600 min-w-24">Exact Match:</span>
-                      <code className="text-xs text-purple-600 break-all">
-                        {concept.exactMatch}
-                      </code>
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
           </div>
         </div>
       )}
+
+      {/* Add Concept Buttons */}
+      <div className="flex gap-3">
+        <button
+          onClick={() => {
+            // Calculate next input number
+            const nextInputNum = inputConcepts.length + 1;
+
+            // Add input concept with proper defaults
+            const newId = Math.max(0, ...concepts.map((c) => c.id)) + 1;
+            const newConcept = {
+              id: newId,
+              uri: `https://regels.overheid.nl/concepts/manual/input${newId}`,
+              variableName: `manualInput${newId}`,
+              prefLabel: '',
+              definition: '',
+              notation: '',
+              linkedTo: `input/${nextInputNum}`,
+              linkedToType: 'input',
+              exactMatch: '',
+              type: 'dmn:InputVariable',
+            };
+
+            // Use the handler's update function directly
+            setConcepts([...concepts, newConcept]);
+
+            // Scroll to new concept
+            setTimeout(() => {
+              const newElement = document.querySelector(`[data-concept-id="${newId}"]`);
+              if (newElement) {
+                newElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const firstInput = newElement.querySelector('input');
+                if (firstInput) firstInput.focus();
+              }
+            }, 100);
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        >
+          <Plus size={18} /> Add Input Concept
+        </button>
+
+        <button
+          onClick={() => {
+            // Calculate next output number
+            const nextOutputNum = outputConcepts.length + 1;
+
+            // Add output concept with proper defaults
+            const newId = Math.max(0, ...concepts.map((c) => c.id)) + 1;
+            const newConcept = {
+              id: newId,
+              uri: `https://regels.overheid.nl/concepts/manual/output${newId}`,
+              variableName: `manualOutput${newId}`,
+              prefLabel: '',
+              definition: '',
+              notation: '',
+              linkedTo: `output/${nextOutputNum}`,
+              linkedToType: 'output',
+              exactMatch: '',
+              type: 'dmn:OutputVariable',
+            };
+
+            // Use the handler's update function directly
+            setConcepts([...concepts, newConcept]);
+
+            // Scroll to new concept
+            setTimeout(() => {
+              const newElement = document.querySelector(`[data-concept-id="${newId}"]`);
+              if (newElement) {
+                newElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                const firstInput = newElement.querySelector('input');
+                if (firstInput) firstInput.focus();
+              }
+            }, 100);
+          }}
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+        >
+          <Plus size={18} /> Add Output Concept
+        </button>
+      </div>
 
       {/* Documentation Link */}
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">

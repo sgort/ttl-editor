@@ -163,8 +163,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                     if (
                       window.confirm(
                         'Clear imported DMN data?\n\n' +
-                          'This will remove the imported DMN blocks and allow you to create new DMN models.\n\n' +
-                          'Note: You can always re-import the original TTL file to restore the DMN data.'
+                          'This will remove the imported DMN blocks AND all associated concepts.\n\n' +
+                          'Note: You can always re-import the original TTL file to restore both DMN data and concepts.'
                       )
                     ) {
                       setDmnData({
@@ -181,6 +181,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                         importedDmnBlocks: null,
                         isImported: false,
                       });
+                      setConcepts([]);
                     }
                   }}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
@@ -627,6 +628,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       lastTestResult: null,
       lastTestTimestamp: null,
     });
+    setConcepts([]);
   };
 
   const formatJSON = (obj) => {

@@ -109,11 +109,34 @@ Logos are published alongside your service metadata and can be queried via SPARQ
 
 #### 📚 **NL-SBB Concepts**
 
-- Auto-generate concept definitions for DMN variables
-- Dutch standard (NL-SBB) compliant SKOS concepts
-- Enables semantic matching across DMNs
-- Foundation for advanced chain validation
-- Clean separation: technical variables ↔ semantic concepts
+The CPSV Editor automatically generates semantic concept definitions for DMN decision variables according to the **Dutch Standard for Describing Concepts (NL-SBB)**. These concepts enable semantic interoperability across different decision models.
+
+**Key Features:**
+- **Automatic Generation**: Concepts are automatically created when you test a DMN model
+- **Full CRUD Operations**: Add, edit, and delete concepts with a user-friendly interface
+- **Semantic Linking**: Use `skos:exactMatch` to link concepts across different ontologies
+- **Import/Export**: Concepts are preserved in round-trip import/export cycles
+- **Manual Management**: Add custom input/output concepts beyond auto-generated ones
+
+**Concept Properties:**
+- **Preferred Label** (skos:prefLabel): Human-readable name in Dutch
+- **Notation** (skos:notation): Short machine code (e.g., "GA", "LP")
+- **Definition** (skos:definition): Semantic description of the concept
+- **Variable Name**: Technical name used in DMN and URIs
+- **Exact Match** (skos:exactMatch): Optional URI to equivalent concept in another ontology
+
+**Use Cases:**
+- **Cross-DMN Validation**: Link variables like "geboortedatum" = "birthdate" across different models
+- **Chain Detection**: Enable the Linked Data Explorer to detect cycles and validate decision chains
+- **Concept Harmonization**: Standardize terminology across different government organizations
+- **Semantic Search**: Enable semantic queries across multiple decision models
+
+**Standards Compliance:**
+- NL-SBB (Nederlandse Standaard voor het Beschrijven van Begrippen)
+- SKOS (Simple Knowledge Organization System)
+- Linked Data principles with dereferenceable URIs
+
+**Documentation**: [Dutch Standard for Describing Concepts](https://geonovum.github.io/NL-SBB/)
 
 #### 📊 **iKnow Integration**
 
