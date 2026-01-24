@@ -41,6 +41,7 @@ export const parseTTL = (ttlContent) => {
     })),
     parameters: parsed.parameters || [],
     cprmvRules: parsed.cprmvRules || [],
+    concepts: parsed.concepts || [],
     cost: {
       identifier: parsed.cost?.identifier || '',
       value: parsed.cost?.value || '',
@@ -155,6 +156,7 @@ export const applyImportedData = (importedData, setters) => {
     setTemporalRules,
     setParameters,
     setCprmvRules,
+    setConcepts,
     setCost,
     setOutput,
     setDmnData,
@@ -168,6 +170,7 @@ export const applyImportedData = (importedData, setters) => {
   setTemporalRules(importedData.temporalRules);
   setParameters(importedData.parameters);
   setCprmvRules(importedData.cprmvRules);
+  setConcepts(importedData.concepts || []);
   setCost(importedData.cost);
   setOutput(importedData.output);
 

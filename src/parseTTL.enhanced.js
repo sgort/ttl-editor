@@ -39,6 +39,7 @@ export const parseTTLEnhanced = (ttlContent) => {
       temporalRules: [],
       parameters: [],
       cprmvRules: [],
+      concepts: [],
       cost: {
         identifier: '',
         value: '',
@@ -68,6 +69,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentRule = null;
     let currentParameter = null;
     let currentCprmvRule = null;
+    let currentConcept = null;
     let currentSubject = null;
 
     // NEW: DMN block tracking
@@ -223,6 +225,22 @@ export const parseTTLEnhanced = (ttlContent) => {
             situatie: '',
             norm: '',
             ruleIdPath: '',
+          };
+        } else if (detectedType === 'concept') {
+          const uriParts = currentSubject.split('/');
+          const idCounter = parsed.concepts.length + 1;
+
+          currentConcept = {
+            id: idCounter,
+            uri: currentSubject,
+            variableName: uriParts[uriParts.length - 1],
+            prefLabel: '',
+            definition: '',
+            notation: '',
+            linkedTo: '',
+            linkedToType: '',
+            exactMatch: '',
+            type: '',
           };
         }
 
@@ -411,6 +429,47 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (line.includes('.') && !line.includes(';')) {
           parsed.parameters.push(currentParameter);
           currentParameter = null;
+          currentSection = null;
+        }
+      }
+
+      // Concept properties
+      if (currentSection === 'concept' && currentConcept) {
+        if (line.includes('skos:prefLabel')) {
+          currentConcept.prefLabel =
+            extractValue(line.split('skos:prefLabel')[1]) || currentConcept.prefLabel;
+        }
+        if (line.includes('skos:definition')) {
+          currentConcept.definition =
+            extractValue(line.split('skos:definition')[1]) || currentConcept.definition;
+        }
+        if (line.includes('skos:notation')) {
+          currentConcept.notation =
+            extractValue(line.split('skos:notation')[1]) || currentConcept.notation;
+        }
+        if (line.includes('dct:subject')) {
+          const subjectUri = extractValue(line.split('dct:subject')[1]);
+          if (subjectUri) {
+            // Extract linkedTo from URI: .../dmn/input/1 → "input/1"
+            const match = subjectUri.match(/\/dmn\/(input|output)\/(\d+)/);
+            if (match) {
+              currentConcept.linkedToType = match[1];
+              currentConcept.linkedTo = `${match[1]}/${match[2]}`;
+            }
+          }
+        }
+        if (line.includes('dct:type')) {
+          currentConcept.type = extractValue(line.split('dct:type')[1]) || currentConcept.type;
+        }
+        if (line.includes('skos:exactMatch')) {
+          currentConcept.exactMatch =
+            extractValue(line.split('skos:exactMatch')[1]) || currentConcept.exactMatch;
+        }
+
+        // End of concept definition
+        if (line.includes('.') && !line.includes(';')) {
+          parsed.concepts.push(currentConcept);
+          currentConcept = null;
           currentSection = null;
         }
       }

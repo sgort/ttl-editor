@@ -46,11 +46,7 @@ import {
   updateTriplyDBService,
   uploadLogoAsset,
 } from './utils';
-import {
-  extractInputsFromTestResult,
-  extractOutputsFromTestResult,
-  validateDMNData,
-} from './utils/dmnHelpers';
+import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
 
@@ -793,13 +789,12 @@ function App() {
                       <span className="flex items-center justify-center gap-2">
                         <BookOpen size={18} />
                         Concepts
-                        {dmnData && dmnData.content ? (
-                          <span className="ml-2 px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded font-medium">
-                            {extractInputsFromTestResult(dmnData).length +
-                              extractOutputsFromTestResult(dmnData).length}
+                        {concepts.length > 0 ? (
+                          <span className="ml-2 px-2 py-0.5 bg-purple-600 text-white text-xs rounded font-medium">
+                            {concepts.length}
                           </span>
                         ) : (
-                          <span className="ml-2 px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded font-medium">
+                          <span className="ml-2 px-2 py-0.5 bg-gray-400 text-white text-xs rounded font-medium">
                             Needs DMN
                           </span>
                         )}
