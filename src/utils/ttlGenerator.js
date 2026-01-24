@@ -741,6 +741,9 @@ export class TTLGenerator {
     ttl += `    dct:creator "RONL" ;\n`;
     ttl += `    dct:created "${new Date().toISOString().split('T')[0]}"^^xsd:date .\n\n`;
 
+    // Track all notations to prevent collisions across inputs AND outputs
+    const usedNotations = [];
+
     // 2. Input Concepts
     if (inputs.length > 0) {
       ttl += '# Input Variable Concepts\n\n';
@@ -748,11 +751,13 @@ export class TTLGenerator {
       inputs.forEach((input, index) => {
         const conceptUri = generateConceptUri(input.name, serviceIdentifier);
         const inputUri = `${this.serviceUri}/dmn/input/${index + 1}`;
+        const notation = generateConceptNotation(input.name, usedNotations);
+        usedNotations.push(notation); // Track this notation
 
         ttl += `<${conceptUri}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${generateConceptLabel(input.name)}"@nl ;\n`;
         ttl += `    skos:definition "${generateConceptDefinition(input.name, input.type, 'input')}"@nl ;\n`;
-        ttl += `    skos:notation "${generateConceptNotation(input.name)}" ;\n`;
+        ttl += `    skos:notation "${notation}" ;\n`;
         ttl += `    dct:subject <${inputUri}> ;\n`;
         ttl += `    dct:type "dmn:InputVariable" ;\n`;
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
@@ -766,11 +771,13 @@ export class TTLGenerator {
       outputs.forEach((output, index) => {
         const conceptUri = generateConceptUri(output.name, serviceIdentifier);
         const outputUri = `${this.serviceUri}/dmn/output/${index + 1}`;
+        const notation = generateConceptNotation(output.name, usedNotations);
+        usedNotations.push(notation); // Track this notation
 
         ttl += `<${conceptUri}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${generateConceptLabel(output.name)}"@nl ;\n`;
         ttl += `    skos:definition "${generateConceptDefinition(output.name, output.type, 'output')}"@nl ;\n`;
-        ttl += `    skos:notation "${generateConceptNotation(output.name)}" ;\n`;
+        ttl += `    skos:notation "${notation}" ;\n`;
         ttl += `    dct:subject <${outputUri}> ;\n`;
         ttl += `    dct:type "dmn:OutputVariable" ;\n`;
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;

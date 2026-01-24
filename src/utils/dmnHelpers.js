@@ -231,13 +231,16 @@ export function generateConceptUri(variableName, serviceIdentifier) {
 
 /**
  * Generate human-readable concept label from variable name
+ * Handles acronyms better (AOW stays together, not "A O W")
  * @param {string} variableName - Camel case variable name
- * @returns {string} - Spaced Dutch label
+ * @returns {string} - Spaced label
  */
 export function generateConceptLabel(variableName) {
+  // Split on capital letters but keep consecutive capitals together
   return variableName
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^./, (str) => str.toUpperCase())
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2') // Handle acronyms: "AOWDatum" → "AOW Datum"
+    .replace(/([a-z\d])([A-Z])/g, '$1 $2') // Handle normal camelCase: "datumAanvrager" → "datum Aanvrager"
+    .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
     .trim();
 }
 
@@ -266,16 +269,50 @@ export function generateConceptDefinition(variableName, type, ioType) {
 }
 
 /**
- * Generate notation (code) for concept
+ * Generate notation by taking first letter of each word in camelCase
+ * Example: "geboortedatumAanvrager" → "GA"
+ * Example: "AOWDatumPartner" → "AOWDP"
  * @param {string} variableName - Variable name
- * @returns {string} - Notation code
+ * @param {string[]} existingNotations - Already used notations to avoid collisions
+ * @returns {string} - Unique notation code
  */
-export function generateConceptNotation(variableName) {
-  const capitals = variableName.match(/[A-Z]/g);
-  if (capitals && capitals.length >= 2) {
-    return capitals.join('');
+export function generateConceptNotation(variableName, existingNotations = []) {
+  // Split camelCase into words
+  // Insert space before uppercase letters, then split
+  const words = variableName
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2') // "AOWDatum" → "AOW Datum"
+    .replace(/([a-z\d])([A-Z])/g, '$1 $2') // "datumAanvrager" → "datum Aanvrager"
+    .split(' ')
+    .filter((word) => word.length > 0); // Remove empty strings
+
+  // Take first letter of each word
+  let notation = words.map((word) => word.charAt(0).toUpperCase()).join('');
+
+  // If notation is too short (1 char), use more letters
+  if (notation.length === 1 && words.length === 1) {
+    notation = words[0].substring(0, Math.min(4, words[0].length)).toUpperCase();
   }
-  return variableName.substring(0, Math.min(6, variableName.length)).toUpperCase();
+
+  // If notation is too long (>6 chars), intelligently shorten
+  if (notation.length > 6) {
+    // Keep first word (max 3 chars) + first letter of remaining words
+    const firstWord = words[0].substring(0, 3).toUpperCase();
+    const restLetters = words
+      .slice(1)
+      .map((w) => w.charAt(0).toUpperCase())
+      .join('');
+    notation = firstWord + restLetters;
+  }
+
+  // Handle collision by appending number
+  let finalNotation = notation;
+  let counter = 1;
+  while (existingNotations.includes(finalNotation)) {
+    finalNotation = `${notation}${counter}`;
+    counter++;
+  }
+
+  return finalNotation;
 }
 
 // Default export object for convenience
