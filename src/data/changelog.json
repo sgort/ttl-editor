@@ -1,6 +1,52 @@
 {
   "versions": [
     {
+      "version": "1.8.2",
+      "date": "2026-01-27",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "description": "Enhanced DMN type detection, CVDR legal resource support, and UI improvements",
+      "sections": [
+        {
+          "title": "DMN Type Detection",
+          "icon": "🎯",
+          "iconColor": "blue",
+          "items": [
+            "DMN files now read typeRef from <variable> elements for accurate type detection",
+            "Added intelligent birth date generation (random age 25-68 years) for demographic variables",
+            "Enhanced boolean pattern detection with Dutch keywords: alleenstaand, uitkering, voedselbank, kwijtschelding, schuldhulp, inwoner",
+            "Fallback pattern matching for legacy DMN files without typeRef declarations",
+            "Auto-generated request bodies now respect DMN semantic types (boolean, number, string, date)"
+          ]
+        },
+        {
+          "title": "Legal Resource Support",
+          "icon": "⚖️",
+          "iconColor": "purple",
+          "items": [
+            "Added CVDR (Municipal/Local Regulations) support alongside BWB (National Legislation)",
+            "Legal tab now accepts CVDR IDs (e.g., CVDR603544) from lokaleregelgeving.overheid.nl",
+            "Automatic repository detection with visual badges (BWB = blue, CVDR = purple)",
+            "Smart URI generation: CVDR includes version number (/1), BWB uses standard format",
+            "Quick links to view documents in appropriate repository",
+            "Enhanced validation to support both BWB and CVDR identifier patterns"
+          ]
+        },
+        {
+          "title": "User Interface",
+          "icon": "🎨",
+          "iconColor": "green",
+          "items": [
+            "Compact tab navigation: reduced padding and font size to eliminate horizontal scroll",
+            "Improved tab spacing (px-3, py-2.5, text-sm) for better screen space utilization",
+            "All 10 tabs now fit without scrollbar on standard screen widths",
+            "Maintained icon size (18px) for optimal clickability and visual balance"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.8.1",
       "status": "Major Feature",
       "statusColor": "emerald",
