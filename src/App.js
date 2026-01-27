@@ -749,50 +749,50 @@ function App() {
                     key={tab}
                     data-tab-id={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                    className={`flex-shrink-0 px-3 py-2.5 text-sm font-medium transition-colors ${
                       activeTab === tab
                         ? activeColor
                         : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                     }`}
                   >
                     {tab === 'service' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <FileText size={18} />
                         Service
                       </span>
                     )}
                     {tab === 'organization' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Building2 size={18} />
                         Organization
                       </span>
                     )}
                     {tab === 'legal' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Scale size={18} />
                         Legal
                       </span>
                     )}
                     {tab === 'rules' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Clock size={18} />
                         Rules
                       </span>
                     )}
                     {tab === 'parameters' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Plus size={18} />
                         Parameters
                       </span>
                     )}
                     {tab === 'cprmv' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Database size={18} />
                         CPRMV
                       </span>
                     )}
                     {tab === 'concepts' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <BookOpen size={18} />
                         Concepts
                         {concepts.length > 0 ? (
@@ -807,7 +807,7 @@ function App() {
                       </span>
                     )}
                     {tab === 'dmn' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <FileUp size={18} />
                         DMN
                         {dmnData.isImported && (
@@ -818,13 +818,13 @@ function App() {
                       </span>
                     )}
                     {tab === 'iknow-mapping' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Upload size={18} />
                         iKnow
                       </span>
                     )}
                     {tab === 'changelog' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <History size={18} />
                         Changelog
                       </span>
