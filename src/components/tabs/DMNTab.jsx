@@ -311,75 +311,119 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         if (name) {
           const nameLower = name.toLowerCase();
 
-          // Determine appropriate default value and type based on name patterns
+          // FIRST: Try to read typeRef from <variable> child element
+          const variableElement = inputData.querySelector('variable');
+          const typeRef = variableElement?.getAttribute('typeRef')?.toLowerCase();
+
           let value = '';
           let type = 'String';
 
-          // Boolean patterns (expanded for Dutch)
-          // Check BEFORE date patterns since some booleans contain "dag"
-          if (
-            nameLower.includes('is') || // is21, isActive
-            nameLower.includes('heeft') || // heeftKinderen, heeftAOW
-            nameLower.includes('alleenstaand') || // aanvragerAlleenstaand
-            nameLower.includes('getrouwd') || // isGetrouwd
-            nameLower.includes('gescheiden') || // isGescheiden
-            nameLower.includes('samenwonend') || // isSamenwonend
-            nameLower.includes('weduwe') || // isWeduwe, isWeduwenaar
-            nameLower.includes('actief') || // isActief
-            nameLower.includes('geldig') || // isGeldig
-            nameLower.includes('enabled') || // isEnabled
-            nameLower.includes('disabled') || // isDisabled
-            nameLower.includes('aanwezig') || // isAanwezig
-            nameLower.includes('vereist') || // isVereist
-            nameLower.includes('verplicht') // isVerplicht
-          ) {
-            value = false;
-            type = 'Boolean';
-          }
-          // Date patterns - check for datum, date, OR dag (Dutch for "day")
-          // BUT exclude if it's part of a boolean pattern (like "aanwezig")
-          else if (
-            (nameLower.includes('datum') ||
-              nameLower.includes('date') ||
-              nameLower.includes('dag')) &&
-            !nameLower.includes('aanwezig') // Exclude "aanwezig" (present)
-          ) {
-            // Check if it's a birth date variable
-            const isBirthDate =
-              nameLower.includes('geboorte') || // Dutch: birth
-              nameLower.includes('birth') ||
-              nameLower.includes('dob') || // Date of birth
-              nameLower.includes('geboortedatum');
-
-            if (isBirthDate) {
-              // Generate random birth date for age 25-68
-              const today = new Date();
-              const minAge = 25;
-              const maxAge = 68;
-
-              const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
-              const birthYear = today.getFullYear() - randomAge;
-              const randomMonth = Math.floor(Math.random() * 12);
-              const randomDay = Math.floor(Math.random() * 28) + 1;
-
-              const birthDate = new Date(birthYear, randomMonth, randomDay);
-              value = birthDate.toISOString().split('T')[0];
-            } else {
-              // For other date fields (application date, request date, etc.), use today
-              value = new Date().toISOString().split('T')[0];
+          // If typeRef exists in DMN, use it directly
+          if (typeRef) {
+            switch (typeRef) {
+              case 'boolean':
+                value = false;
+                type = 'Boolean';
+                break;
+              case 'number':
+              case 'double':
+              case 'integer':
+              case 'long':
+                value = 0;
+                type = typeRef === 'integer' || typeRef === 'long' ? 'Integer' : 'Double';
+                break;
+              case 'string':
+                value = '';
+                type = 'String';
+                break;
+              case 'date':
+                value = new Date().toISOString().split('T')[0];
+                type = 'String';
+                break;
+              default:
+                // Unknown type, default to string
+                value = '';
+                type = 'String';
             }
-
-            type = 'String';
           }
-          // Number patterns
-          else if (nameLower.includes('aantal') || nameLower.includes('bedrag')) {
-            value = 0;
-            type = 'Integer';
-          }
-          // Default to string
+          // 🔄 FALLBACK: Use pattern matching if no typeRef (for legacy DMN files)
           else {
-            value = '';
-            type = 'String';
+            // Boolean patterns (expanded for Dutch)
+            if (
+              nameLower.includes('is') ||
+              nameLower.includes('heeft') ||
+              nameLower.includes('alleenstaand') ||
+              nameLower.includes('getrouwd') ||
+              nameLower.includes('gescheiden') ||
+              nameLower.includes('samenwonend') ||
+              nameLower.includes('weduwe') ||
+              nameLower.includes('actief') ||
+              nameLower.includes('geldig') ||
+              nameLower.includes('enabled') ||
+              nameLower.includes('disabled') ||
+              nameLower.includes('aanwezig') ||
+              nameLower.includes('vereist') ||
+              nameLower.includes('verplicht') ||
+              nameLower.includes('uitkering') || // Benefit
+              nameLower.includes('voedselbank') || // Food bank
+              nameLower.includes('kwijtschelding') || // Debt forgiveness
+              nameLower.includes('schuldhulp') || // Debt assistance
+              nameLower.includes('aanvraag') || // Application
+              nameLower.includes('aanmerking') || // Eligibility
+              nameLower.includes('inwoner') // Resident
+            ) {
+              value = false;
+              type = 'Boolean';
+            }
+            // Date patterns
+            else if (
+              (nameLower.includes('datum') ||
+                nameLower.includes('date') ||
+                nameLower.includes('dag')) &&
+              !nameLower.includes('aanwezig')
+            ) {
+              // Check if it's a birth date variable
+              const isBirthDate =
+                nameLower.includes('geboorte') ||
+                nameLower.includes('birth') ||
+                nameLower.includes('dob') ||
+                nameLower.includes('geboortedatum');
+
+              if (isBirthDate) {
+                // Generate random birth date for age 25-68
+                const today = new Date();
+                const minAge = 25;
+                const maxAge = 68;
+
+                const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+                const birthYear = today.getFullYear() - randomAge;
+                const randomMonth = Math.floor(Math.random() * 12);
+                const randomDay = Math.floor(Math.random() * 28) + 1;
+
+                const birthDate = new Date(birthYear, randomMonth, randomDay);
+                value = birthDate.toISOString().split('T')[0];
+              } else {
+                // For other date fields, use today
+                value = new Date().toISOString().split('T')[0];
+              }
+
+              type = 'String';
+            }
+            // Number patterns
+            else if (
+              nameLower.includes('aantal') ||
+              nameLower.includes('bedrag') ||
+              nameLower.includes('inkomen') || // Income
+              nameLower.includes('norm') // Standard/norm (like bijstandsnorm)
+            ) {
+              value = 0;
+              type = 'Integer';
+            }
+            // Default to string
+            else {
+              value = '';
+              type = 'String';
+            }
           }
 
           variables[name] = {
@@ -400,37 +444,29 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     }
   };
 
-  // ENHANCED PATTERN DETECTION EXPLANATION:
+  // EXPLANATION:
   //
-  // The key change is checking boolean patterns BEFORE date patterns,
-  // and adding many more Dutch boolean keywords:
+  // The function now works in two modes:
   //
-  // NEW BOOLEAN PATTERNS:
-  // - alleenstaand (single/alone)
-  // - getrouwd (married)
-  // - gescheiden (divorced)
-  // - samenwonend (cohabiting)
-  // - weduwe/weduwenaar (widow/widower)
-  // - actief (active)
-  // - geldig (valid)
-  // - aanwezig (present)
-  // - vereist (required)
-  // - verplicht (mandatory)
+  // 1. DMN-FIRST MODE (Preferred):
+  //    - Reads <variable typeRef="..."> from inputData elements
+  //    - Maps DMN types to Operaton types:
+  //      * boolean → Boolean (false)
+  //      * number/double → Double (0)
+  //      * integer/long → Integer (0)
+  //      * string → String ("")
+  //      * date → String (today's date)
   //
-  // PATTERN PRIORITY:
-  // 1. Boolean patterns (FIRST - most specific)
-  // 2. Date patterns (SECOND)
-  // 3. Number patterns (THIRD)
-  // 4. String (DEFAULT)
+  // 2. FALLBACK MODE (For legacy DMN files without typeRef):
+  //    - Uses pattern matching on variable names
+  //    - Enhanced with more Dutch patterns
   //
-  // EXAMPLES:
-  //
-  // aanvragerAlleenstaand → Boolean (contains "alleenstaand")
-  // dagVanAanvraag → String date (contains "dag")
-  // geboortedatumAanvrager → String date (contains "geboorte" + "datum")
-  // aanvragerHeeftKinderen → Boolean (contains "heeft")
-  // aanvragerIs181920 → Boolean (contains "is")
-  // aantalKinderen → Integer (contains "aantal")
+  // BENEFITS:
+  // Respects DMN type declarations
+  // Works with properly-typed DMN files
+  // Still works with legacy DMN files (pattern matching)
+  // More accurate type detection
+  // No guessing needed when types are explicit
 
   const loadExampleDMN = async () => {
     try {
