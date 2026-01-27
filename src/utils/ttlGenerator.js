@@ -297,24 +297,41 @@ export class TTLGenerator {
    * @returns {string} Legal Resource TTL
    */
   generateLegalResourceSection() {
-    if (!this.legalResource.bwbId) {
+    if (!this.legalResource || !this.legalResource.bwbId) {
       return '';
     }
 
     let ttl = '';
 
-    // Support both full URIs and plain BWB IDs
-    const lowerBwbId = this.legalResource.bwbId.toLowerCase();
-    const legalUri =
-      lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
-        ? this.legalResource.bwbId
-        : `https://wetten.overheid.nl/${this.legalResource.bwbId}`;
+    // Determine the legal URI based on identifier type
+    let legalUri;
+    const identifier = this.legalResource.bwbId;
+    const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+
+    if (isFullUri) {
+      // Use the provided URI directly
+      legalUri = identifier;
+    } else {
+      // Detect BWB or CVDR and generate appropriate URI
+      const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
+      const isCVDR = /CVDR\d+/i.test(identifier);
+
+      if (isBWB) {
+        legalUri = `https://wetten.overheid.nl/${identifier}`;
+      } else if (isCVDR) {
+        // CVDR URIs include version number, default to /1
+        legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
+      } else {
+        // Fallback: assume BWB format
+        legalUri = `https://wetten.overheid.nl/${identifier}`;
+      }
+    }
 
     ttl += `<${legalUri}> a eli:LegalResource ;\n`;
 
-    // Extract just the BWB ID portion if it's a full URI
-    const bwbIdOnly = this.legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
-    ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
+    // Extract just the ID portion (without URI prefix) for dct:identifier
+    const identifierOnly = identifier.replace(/^https?:\/\/[^/]+\//, '').replace(/\/\d+$/, '');
+    ttl += `    dct:identifier "${escapeTTLString(identifierOnly)}" ;\n`;
 
     if (this.legalResource.title) {
       ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;
