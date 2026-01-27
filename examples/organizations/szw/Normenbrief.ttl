@@ -1,0 +1,52 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/normbedragen> a cpsv:PublicService ;
+    dct:identifier "normbedragen" ;
+    dct:title "Normenbrief - Informatie voor gemeenten"@nl ;
+    dct:description "Ieder half jaar veranderen de bedragen en percentages voor de uitvoering van de Participatiewet, IOAW, IOAZ en het Bbz 2004. Het gaat onder meer om de bijstandsnormen, de minimumbedragen studietoeslag en de grondslagen IOAW en IOAZ. De uitkeringen worden ieder halfjaar aangepast als gevolg van de indexering van het wettelijk minimumuurloon."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "allowance, social, income,"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Zaken_en_Werkgelegenheid" ;
+    skos:prefLabel "Sociale Zaken en Werkgelegenheid (SZW)"@nl ;
+    foaf:homepage <https://szw.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png> ;
+    schema:image <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> a eli:LegalResource ;
+    dct:identifier "BWBR0015703/2026-01-01/0" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+

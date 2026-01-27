@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="szw_bijstand_drd" name="SZW Bijstand" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.43.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="szw_bijstand_drd" name="SZW Bijstand" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.36.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <decision id="SZW_BijstandsnormInformatie" name="SZW Bijstandsnorm Informatie" camunda:historyTimeToLive="10">
     <informationRequirement id="InformationRequirement_bedragen">
       <requiredDecision href="#SZW_BijstandsnormBedragen" />
@@ -648,6 +648,204 @@
           <text>2094.98</text>
         </outputEntry>
       </rule>
+      <rule id="DecisionRule_0b83iz7">
+        <inputEntry id="UnaryTests_1wflakf">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0uxi59a">
+          <text>"M"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mglt48">
+          <text>1401.5</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1b6dy60">
+        <inputEntry id="UnaryTests_1egxkwp">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1jejda9">
+          <text>"MK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1686vxo">
+          <text>1401.5</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0c4as9k">
+        <inputEntry id="UnaryTests_1rjdjph">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cq3ne4">
+          <text>"MM"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bn0kv0">
+          <text>2002.13</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nvwa0j">
+        <inputEntry id="UnaryTests_0q849x8">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0x3lw1x">
+          <text>"MMK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ssxc2c">
+          <text>2002.13</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0xhag3i">
+        <inputEntry id="UnaryTests_0r9dv2y">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gkpvbg">
+          <text>"MO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1q9d6a3">
+          <text>2144.16</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_036ofbe">
+        <inputEntry id="UnaryTests_0owghlq">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ndi8bt">
+          <text>"MOK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yoh7q7">
+          <text>2144.16</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0fhyq5c">
+        <inputEntry id="UnaryTests_0wc3nui">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19t903u">
+          <text>"MJ"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0d5sw75">
+          <text>1347.06</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_07q72b8">
+        <inputEntry id="UnaryTests_1cgv4yj">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1u717ac">
+          <text>"MJK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00g4qpg">
+          <text>1747.49</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06bxggb">
+        <inputEntry id="UnaryTests_155r5k4">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wx6hfx">
+          <text>"J"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ou2tw0">
+          <text>345.99</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1pcittq">
+        <inputEntry id="UnaryTests_0v0fiuj">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q1ykgc">
+          <text>"JK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0nkentw">
+          <text>345.99</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1s0az1o">
+        <inputEntry id="UnaryTests_1dwu0i5">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_09s6152">
+          <text>"JJ"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1mdrvc5">
+          <text>691.98</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ttwxry">
+        <inputEntry id="UnaryTests_03kwbog">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1t1ahcq">
+          <text>"JJK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1b0i89y">
+          <text>1092.41</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0tfsw0y">
+        <inputEntry id="UnaryTests_1qmuza2">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zmuhij">
+          <text>"JO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09p0x30">
+          <text>1747.49</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qbc2is">
+        <inputEntry id="UnaryTests_0rdup5s">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0m8onw0">
+          <text>"JOK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0g3gac1">
+          <text>1747.49</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1hz90lm">
+        <inputEntry id="UnaryTests_11ieqh8">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u2149y">
+          <text>"O"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mivimi">
+          <text>1564.69</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1x6dzfq">
+        <inputEntry id="UnaryTests_0bjq2j1">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0yx2bzo">
+          <text>"OK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0j1puip">
+          <text>1564.69</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ajwshm">
+        <inputEntry id="UnaryTests_17d2ack">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0s2ciqv">
+          <text>"OO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0my9c7a">
+          <text>2144.16</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_17dcoql">
+        <inputEntry id="UnaryTests_1bmikn3">
+          <text>"1e helft 2026"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0k9g7nu">
+          <text>"OOK"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15aj5n8">
+          <text>2144.16</text>
+        </outputEntry>
+      </rule>
     </decisionTable>
   </decision>
   <decision id="SZW_Bijstandsnormtype" name="SZW Bijstandsnormtype" camunda:historyTimeToLive="10">
@@ -1282,6 +1480,14 @@
         </inputEntry>
         <outputEntry>
           <text>"2e helft 2025"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1412yud">
+        <inputEntry id="UnaryTests_1kfk50m">
+          <text>date("2026-01-01") &lt;= date(dagVanAanvraag) and date(dagVanAanvraag) &lt;= date("2026-06-30")</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ii2fhb">
+          <text>"1e helft 2026"</text>
         </outputEntry>
       </rule>
     </decisionTable>

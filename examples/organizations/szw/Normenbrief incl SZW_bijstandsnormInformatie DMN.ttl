@@ -1,0 +1,1024 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/normbedragen> a cpsv:PublicService ;
+    dct:identifier "normbedragen" ;
+    dct:title "Normenbrief - Informatie voor gemeenten"@nl ;
+    dct:description "Ieder half jaar veranderen de bedragen en percentages voor de uitvoering van de Participatiewet, IOAW, IOAZ en het Bbz 2004. Het gaat onder meer om de bijstandsnormen, de minimumbedragen studietoeslag en de grondslagen IOAW en IOAZ. De uitkeringen worden ieder halfjaar aangepast als gevolg van de indexering van het wettelijk minimumuurloon."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "allowance, social, income,"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/normbedragen/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Zaken_en_Werkgelegenheid" ;
+    skos:prefLabel "Sociale Zaken en Werkgelegenheid (SZW)"@nl ;
+    foaf:homepage <https://szw.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png> ;
+    schema:image <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> a eli:LegalResource ;
+    dct:identifier "BWBR0015703/2026-01-01/0" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/normbedragen/dmn> a cprmv:DecisionModel ;
+    dct:identifier "SZW_BijstandsnormInformatie" ;
+    dct:title "SZW_BijstandsnormInformatie.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/normbedragen> ;
+    dct:source <https://regels.overheid.nl/services/normbedragen/dmn/file> ;
+    cprmv:deploymentId "eb736cd6-fb79-11f0-a5a4-3a5e81cd33b0" ;
+    cprmv:deployedAt "2026-01-27T12:15:51.375Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/SZW_BijstandsnormInformatie/evaluate> ;
+    cprmv:lastTested "2026-01-27T12:16:05.407Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/1> a cpsv:Input ;
+    dct:identifier "dagVanAanvraag" ;
+    dct:title "dagVanAanvraag"@nl ;
+    dct:type "String" ;
+    schema:value "2026-01-27" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/2> a cpsv:Input ;
+    dct:identifier "aanvragerAlleenstaand" ;
+    dct:title "aanvragerAlleenstaand"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/3> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftKinderen" ;
+    dct:title "aanvragerHeeftKinderen"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/4> a cpsv:Input ;
+    dct:identifier "aanvragerIs181920" ;
+    dct:title "aanvragerIs181920"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/5> a cpsv:Input ;
+    dct:identifier "aanvragerIsTenminste21" ;
+    dct:title "aanvragerIsTenminste21"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/6> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftAOWLeeftijd" ;
+    dct:title "aanvragerHeeftAOWLeeftijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/7> a cpsv:Input ;
+    dct:identifier "partnerIs181920" ;
+    dct:title "partnerIs181920"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/8> a cpsv:Input ;
+    dct:identifier "partnerIsTenminste21" ;
+    dct:title "partnerIsTenminste21"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/input/9> a cpsv:Input ;
+    dct:identifier "partnerHeeftAOWLeeftijd" ;
+    dct:title "partnerHeeftAOWLeeftijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/1> a cpsv:Output ;
+    dct:identifier "bijstandsnormTermijn" ;
+    dct:title "bijstandsnormTermijn"@nl ;
+    dct:type "String" ;
+    schema:value "1e helft 2026" ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/2> a cpsv:Output ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 1401.5 ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/3> a cpsv:Output ;
+    dct:identifier "bijstandsnormType" ;
+    dct:title "bijstandsnormType"@nl ;
+    dct:type "String" ;
+    schema:value "M" ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_passthrough_bijstand> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_passthrough_bijstand" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_BijstandsnormInfo" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0b83iz7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0b83iz7" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1b6dy60> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1b6dy60" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0c4as9k> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0c4as9k" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0nvwa0j> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0nvwa0j" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0xhag3i> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0xhag3i" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_036ofbe> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_036ofbe" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0fhyq5c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0fhyq5c" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_07q72b8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_07q72b8" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_06bxggb> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_06bxggb" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1pcittq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1pcittq" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1s0az1o> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1s0az1o" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1ttwxry> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1ttwxry" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0tfsw0y> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0tfsw0y" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0qbc2is> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0qbc2is" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1hz90lm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1hz90lm" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1x6dzfq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1x6dzfq" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1ajwshm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1ajwshm" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_17dcoql> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_17dcoql" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1412yud> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1412yud" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-01-27"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/dagVanAanvraag> a skos:Concept ;
+    skos:prefLabel "Dag Van Aanvraag"@nl ;
+    skos:definition "Dag Van Aanvraag is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DVA" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerAlleenstaand> a skos:Concept ;
+    skos:prefLabel "Aanvrager Alleenstaand"@nl ;
+    skos:definition "Aanvrager Alleenstaand is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AA" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerHeeftKinderen> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft Kinderen"@nl ;
+    skos:definition "Aanvrager Heeft Kinderen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerIs181920> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is181920"@nl ;
+    skos:definition "Aanvrager Is181920 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AI" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is Tenminste21"@nl ;
+    skos:definition "Aanvrager Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AIT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft AOW Leeftijd"@nl ;
+    skos:definition "Aanvrager Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHAL" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerIs181920> a skos:Concept ;
+    skos:prefLabel "Partner Is181920"@nl ;
+    skos:definition "Partner Is181920 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PI" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Partner Is Tenminste21"@nl ;
+    skos:definition "Partner Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PIT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Partner Heeft AOW Leeftijd"@nl ;
+    skos:definition "Partner Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PHAL" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsnormTermijn> a skos:Concept ;
+    skos:prefLabel "Bijstandsnorm Termijn"@nl ;
+    skos:definition "Bijstandsnorm Termijn is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsNorm> a skos:Concept ;
+    skos:prefLabel "Bijstands Norm"@nl ;
+    skos:definition "Bijstands Norm is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BN" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsnormType> a skos:Concept ;
+    skos:prefLabel "Bijstandsnorm Type"@nl ;
+    skos:definition "Bijstandsnorm Type is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BT1" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
