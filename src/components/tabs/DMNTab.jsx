@@ -320,7 +320,39 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
             name.toLowerCase().includes('date') ||
             name.toLowerCase().includes('dag')
           ) {
-            value = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD
+            // Check if it's a birth date variable
+            const isBirthDate =
+              name.toLowerCase().includes('geboorte') || // Dutch: birth
+              name.toLowerCase().includes('birth') ||
+              name.toLowerCase().includes('dob') || // Date of birth
+              name.toLowerCase().includes('geboortedatum');
+
+            if (isBirthDate) {
+              // Generate random birth date for age 25-68
+              const today = new Date();
+              const minAge = 25;
+              const maxAge = 68;
+
+              // Random age between 25 and 68
+              const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+
+              // Calculate birth year
+              const birthYear = today.getFullYear() - randomAge;
+
+              // Random month (0-11)
+              const randomMonth = Math.floor(Math.random() * 12);
+
+              // Random day (1-28 to avoid month-end issues)
+              const randomDay = Math.floor(Math.random() * 28) + 1;
+
+              // Create date and format as YYYY-MM-DD
+              const birthDate = new Date(birthYear, randomMonth, randomDay);
+              value = birthDate.toISOString().split('T')[0];
+            } else {
+              // For other date fields (application date, request date, etc.), use today
+              value = new Date().toISOString().split('T')[0];
+            }
+
             type = 'String';
           }
           // Boolean patterns
