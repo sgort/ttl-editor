@@ -1,0 +1,201 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/zorgtoeslag> a cpsv:PublicService ;
+    dct:identifier "zorgtoeslag" ;
+    dct:title "Zorgtoeslag"@nl ;
+    dct:description "Zorgtoeslag is geld om je te helpen jouw zorgverzekering te betalen. Dit geld krijg je niet automatisch. Je vraagt zorgtoeslag zelf aan bij de Belastingdienst."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/zorgtoeslag> ;
+    dcat:keyword "allowance, health, insurrance"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/71117/Directoraat-generaal_Toeslagen> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/71117/Directoraat-generaal_Toeslagen> a cv:PublicOrganisation ;
+    dct:identifier "Directoraat-generaal_Toeslagen" ;
+    skos:prefLabel "Directoraat-generaal Toeslagen (DGTSL)"@nl ;
+    foaf:homepage <https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/toeslagen> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Directoraat-generaal_Toeslagen_logo.png> ;
+    schema:image <./assets/Directoraat-generaal_Toeslagen_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2> a eli:LegalResource ;
+    dct:identifier "jci1.3:c:BWBR0018451&artikel=2" ;
+    dct:title "Wet op de zorgtoeslag"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2/2026-01-01>  .
+
+
+# ============================================================
+#  Temporal Rules
+# ============================================================
+
+<https://regels.overheid.nl/register/toeslagen/hoogte-toeslag> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 001" ;
+    dct:title "Regelgroep Hoogte toeslag bij ontbrekende draagkracht"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Het jaarbedrag toeslag van de toeslagaanvraag van een verzekerde moet gesteld worden op leeg\nindien hij aan alle volgende voorwaarden voldoet :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan waar\n  • zijn toetsingsinkomen is leeg."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/hoogte-toeslag-alleenstaand> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 002" ;
+    dct:title "Regelgroep Hoogte toeslag (alleenstaand)"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Het jaarbedrag toeslag van de toeslagaanvraag van een verzekerde moet berekend worden als zijn standaardpremie min zijn normpremie , met een minimum van 0 EUR\nindien de toeslagaanvraag aan alle volgende voorwaarden voldoet :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan waar\n  • zijn toetsingsinkomen is gevuld.\n\nDe normpremie van een burger moet berekend worden als (het DREMPELINKOMENPERCENTAGE ZONDER PARTNER van het DREMPELINKOMEN) plus (het OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER van zijn inkomen boven drempelinkomen) rekenkundig afgerond op 8 decimalen , met een minimum van 0 EUR."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/inkomen-boven-drempel> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 003" ;
+    dct:title "Regelgroep Inkomen boven drempel"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Het inkomen boven drempelinkomen van een burger moet berekend worden als zijn toetsingsinkomen min het DREMPELINKOMEN , met een minimum van 0 EUR."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/standaard-premie> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 004" ;
+    dct:title "Regelgroep Standaardpremie"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De standaardpremie van een verzekerde moet berekend worden als de STANDAARDPREMIE maal zijn woonlandfactor rekenkundig afgerond op 8 decimalen."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/woonlandfactor> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 005" ;
+    dct:title "Regelgroep Woonlandfactor"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De woonlandfactor van een burger moet geïnitialiseerd worden op 0.\n\nDe woonlandfactor buitenland van een burger moet geïnitialiseerd worden op 0.\n\nDe woonlandfactor van een burger moet gesteld worden op 1\nindien zijn status zorgverzekerd gelijk is aan 'Binnenlands zorgverzekerd'.\n\nDe woonlandfactor van een burger moet gesteld worden op zijn woonlandfactor buitenland\nindien zijn status zorgverzekerd gelijk is aan 'Buitenlands verdragsgerechtigd'.\n\nde woonlandfactor buitenland van een burger moet gesteld worden op\nindien zijn woonland gelijk is aan TABELLIJST\n"@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/datumberekening> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 006" ;
+    dct:title "Regelgroep Datum berekening"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De laatste dag van de vorige maand van een toeslagaanvraag moet berekend worden als de datum met jaar, maand en dag (het jaar uit (de datum berekening van de toeslagaanvraag), de maand uit (de datum berekening van de toeslagaanvraag), 1) min 1 dg.\n\nDe laatste dag van de huidige maand van een toeslagaanvraag moet berekend worden als de datum met jaar, maand en dag (het jaar uit ((de datum berekening van de toeslagaanvraag plus 1 mnd)), de maand uit ((de datum berekening van de toeslagaanvraag plus 1 mnd)), 1) min 1 dg.\n\nDe eerste dag van de huidige maand van een toeslagaanvraag moet gesteld worden op de datum met jaar, maand en dag (het jaar uit (de datum berekening van de toeslagaanvraag), de maand uit (de datum berekening van de toeslagaanvraag), 1)."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/leeftijd> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 007" ;
+    dct:title "Regelgroep Leeftijd"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De leeftijd van de verzekerde van een toeslagaanvraag moet berekend worden als de numerieke waarde van de tijdsduur van zijn geboortedatum tot de datum berekening van de toeslagaanvraag in hele jaren."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/inleven> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 008" ;
+    dct:title "Regelgroep In leven"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Een burger is in leven\nindien zijn overlijdensdatum leeg is."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/recht> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 009" ;
+    dct:title "Regelgroep Recht op zorgtoeslag"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Een burger heeft recht op toeslag\nindien er aan alle volgende voorwaarden wordt voldaan :\n  • er worden voldaan aan ten minste één van de volgende voorwaarden :\n    •• hij voldoet aan alle volgende voorwaarden :\n      ••• hij heeft een rechtmatig verblijf in Nederland\n      ••• zijn status zorgverzekerd is gelijk aan 'Binnenlands zorgverzekerd'\n    •• hij voldoet aan alle volgende voorwaarden :\n      ••• hij is niet woonachtig in Nederland\n      ••• zijn status zorgverzekerd is gelijk aan 'Buitenlands verdragsgerechtigd' of 'Binnenlands zorgverzekerd'\n  • hij heeft een rechtgevende leeftijd\n  • hij is niet gedetineerd\n  • hij is in leven.\n\nEen burger heeft rechtgevende status zorgverzekerdheid\nindien er aan ten minste één van de volgende voorwaarden wordt voldaan :\n  • zijn status zorgverzekerd is gelijk aan 'Binnenlands zorgverzekerd'\n  • zijn status zorgverzekerd is gelijk aan 'Buitenlands verdragsgerechtigd'."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/recht> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 010" ;
+    dct:title "Regelgroep Initialisatie recht op zorgtoeslag"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Recht op toeslag van een toeslagaanvraag moet geïnitialiseerd worden op onwaar."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/recht-geen-partner> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 011" ;
+    dct:title "Regelgroep Recht op zorgtoeslag verzekerde zonder partner"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Recht op toeslag van de toeslagaanvraag van een verzekerde moet gesteld worden op waar\nindien hij een recht op toeslag heeft."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/rechtgevende-leeftijd> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 012" ;
+    dct:title "Regelgroep Rechtgevende leeftijd"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Een burger heeft rechtgevende leeftijd\nindien hij aan alle volgende voorwaarden voldoet :\n  • zijn leeftijd is groter of gelijk aan de MEERDERJARIGHEIDSLEEFTIJD\n  • hij is niet in deze berekeningsmaand meerderjarig geworden.\n\nDe verzekerde van een toeslagaanvraag is in deze berekeningsmaand meerderjarig geworden\nindien hij aan alle volgende voorwaarden voldoet :\n  • de numerieke waarde van de tijdsduur van zijn geboortedatum tot de laatste dag van de vorige maand van de toeslagaanvraag in hele jaren is kleiner dan de MEERDERJARIGHEIDSLEEFTIJD\n  • de numerieke waarde van de tijdsduur van zijn geboortedatum tot de laatste dag van de huidige maand van de toeslagaanvraag in hele jaren is gelijk aan de MEERDERJARIGHEIDSLEEFTIJD."@nl  .
+
+<https://regels.overheid.nl/register/toeslagen/motivaties> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
+    dct:identifier "Regelgroep 013" ;
+    dct:title "Regelgroep Motivaties recht op zorgtoeslag"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "De toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'aanvrager is niet verzekerd' en deelnamerol gelijk aan 'aanvrager'\nindien er aan alle volgende voorwaarden wordt voldaan :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan onwaar\n  • hij heeft geen rechtgevende status zorgverzekerdheid.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'aanvrager verblijft niet rechtmatig in Nederland' en deelnamerol gelijk aan 'aanvrager'\nindien er aan alle volgende voorwaarden wordt voldaan :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan onwaar\n  • hij heeft geen rechtmatig verblijf in Nederland.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'inkomen is te hoog' en deelnamerol gelijk aan 'aanvrager'\nindien het jaarbedrag toeslag van de toeslagaanvraag aan alle volgende voorwaarden voldoet :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan waar\n  • het jaarbedrag toeslag is kleiner of gelijk aan 0 EUR.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'doelmatigheidsgrens is toegepast' en deelnamerol gelijk aan 'aanvrager'\nindien het jaarbedrag toeslag van de toeslagaanvraag aan alle volgende voorwaarden voldoet :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan waar\n  • het jaarbedrag toeslag is kleiner dan de DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG\n  • het jaarbedrag toeslag is groter dan 0 EUR.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'aanvrager is onder meerderjarigheidsleeftijd' en deelnamerol gelijk aan 'aanvrager'\nindien hij geen rechtgevende leeftijd heeft.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'woonlandfactor is toegepast' en deelnamerol gelijk aan 'aanvrager'\nindien er aan alle volgende voorwaarden wordt voldaan :\n  • zijn status zorgverzekerd is gelijk aan 'Buitenlands verdragsgerechtigd'\n  • het jaarbedrag toeslag van de toeslagaanvraag is gevuld.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'aanvrager is geen verzekerde wegens gedetineerdheid' en deelnamerol gelijk aan 'aanvrager'\nindien er aan alle volgende voorwaarden wordt voldaan :\n  • recht op toeslag van de toeslagaanvraag is gelijk aan onwaar\n  • hij is gedetineerd.\n\nDe toeslagaanvraag van een verzekerde heeft een motivatie recht met motivatie gelijk aan 'aanvrager is overleden' en deelnamerol gelijk aan 'aanvrager'\nindien hij niet in leven is.\n"@nl  .
+
+
+# ============================================================
+#  Parameters
+# ============================================================
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-1> a ronl:ParameterWaarde ;
+    skos:prefLabel " STANDAARDPREMIE"@nl ;
+    skos:notation " STANDAARDPREMIE" ;
+    schema:value "1987"^^xsd:decimal ;
+    schema:unitCode "EUR"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-2> a ronl:ParameterWaarde ;
+    skos:prefLabel "DREMPELINKOMEN"@nl ;
+    skos:notation "DREMPELINKOMEN" ;
+    schema:value "26819"^^xsd:decimal ;
+    schema:unitCode "EUR"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-3> a ronl:ParameterWaarde ;
+    skos:prefLabel "DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG "@nl ;
+    skos:notation "DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG " ;
+    schema:value "23.5"^^xsd:decimal ;
+    schema:unitCode "EUR"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-4> a ronl:ParameterWaarde ;
+    skos:prefLabel "DREMPELINKOMENPERCENTAGE ZONDER PARTNER"@nl ;
+    skos:notation "DREMPELINKOMENPERCENTAGE ZONDER PARTNER" ;
+    schema:value "1.879"^^xsd:decimal ;
+    schema:unitCode "PCT"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-5> a ronl:ParameterWaarde ;
+    skos:prefLabel "OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER"@nl ;
+    skos:notation "OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER" ;
+    schema:value "13.67"^^xsd:decimal ;
+    schema:unitCode "PCT"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-6> a ronl:ParameterWaarde ;
+    skos:prefLabel "MEERDERJARIGHEIDSLEEFTIJD"@nl ;
+    skos:notation "MEERDERJARIGHEIDSLEEFTIJD" ;
+    schema:value "18"^^xsd:decimal ;
+    schema:unitCode "NUM"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-7> a ronl:ParameterWaarde ;
+    skos:prefLabel "MAXIMALE ZORGTOESLAG VERZEKERDE ZONDER PARTNER"@nl ;
+    skos:notation "MAXIMALE ZORGTOESLAG VERZEKERDE ZONDER PARTNER" ;
+    schema:value "1483"^^xsd:decimal ;
+    schema:unitCode "EUR"  .
+
+<https://regels.overheid.nl/parameters/Zorgtoeslag/param-8> a ronl:ParameterWaarde ;
+    skos:prefLabel "NORMPREMIE OVER HET DREMPELINKOMEN ZONDER PARTNER"@nl ;
+    skos:notation "NORMPREMIE OVER HET DREMPELINKOMEN ZONDER PARTNER" ;
+    schema:value "503.93"^^xsd:decimal ;
+    schema:unitCode "EUR"  .
+
