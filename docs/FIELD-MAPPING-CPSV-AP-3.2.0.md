@@ -1,5 +1,5 @@
 # Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
- 
+
 **Editor Version:** 1.8.3  
 **Date:** Januari 2026  
 **Status:** ✅ CPSV-AP 3.2.0 Compliant + DMN Integration
@@ -149,25 +149,29 @@ The organization identifier field intelligently handles both formats:
 
 **New in v1.8.3:** Integration with RONL (Regels Open Nederland) vocabulary for legislative analysis and rules management methodologies.
 
-| Field Label | UI Tab | State Property | RDF Property | Required | Format | Notes |
-|------------|--------|----------------|--------------|----------|--------|-------|
-| Analysis | Legal | `ronlAnalysis` | `ronl:hasAnalysis` | No | URI | Legislative analysis methodology from RONL vocabulary |
-| Method | Legal | `ronlMethod` | `ronl:hasMethod` | No | URI | Rules management methodology from RONL vocabulary |
+| Field Label | UI Tab | State Property | RDF Property       | Required | Format | Notes                                                 |
+| ----------- | ------ | -------------- | ------------------ | -------- | ------ | ----------------------------------------------------- |
+| Analysis    | Legal  | `ronlAnalysis` | `ronl:hasAnalysis` | No       | URI    | Legislative analysis methodology from RONL vocabulary |
+| Method      | Legal  | `ronlMethod`   | `ronl:hasMethod`   | No       | URI    | Rules management methodology from RONL vocabulary     |
 
-**Data Source:** 
+**Data Source:**
+
 - **Endpoint:** `https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql`
 - **Analysis Concepts:** Fetched via SPARQL query: `ronl:AnalysisConcept skos:narrower ?narrower`
 - **Method Concepts:** Fetched via SPARQL query: `ronl:MethodConcept skos:narrower ?narrower`
 
 **Available Analysis Options (3):**
+
 - `ronl:WetsanalyseJAS` - Wetsanalyse (JAS) - Legal Analysis Schema
 - `ronl:WetsanalyseJRM` - Wetsanalyse (JRM) - Legal Reference Model
 - `ronl:FLINT` - FLINT protocol for normative tasks
 
 **Available Method Options (16):**
+
 - `ronl:AKN4EU`, `ronl:ALEF`, `ronl:Avola`, `ronl:Beinformed`, `ronl:Blawx`, `ronl:Blueriq`, `ronl:Catala`, `ronl:CircuLaw`, `ronl:ConcordiaLegal`, `ronl:DataLex`, `ronl:Demo`, `ronl:Leos`, `ronl:OpenFisca`, `ronl:RuleSpeak`, `ronl:Sparkwise`, `ronl:USoft`
 
 **Implementation Details:**
+
 - Dropdowns populate on component mount via `fetchAllRonlConcepts()` utility
 - Values stored as full URIs (e.g., `https://regels.overheid.nl/termen/WetsanalyseJAS`)
 - Backend proxy used for SPARQL queries to avoid CORS issues
@@ -175,6 +179,7 @@ The organization identifier field intelligently handles both formats:
 - Loading states and error handling for network issues
 
 **Example TTL Output:**
+
 ```turtle
 <https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
     dct:identifier "BWBR0002221" ;
@@ -185,6 +190,7 @@ The organization identifier field intelligently handles both formats:
 ```
 
 **Technical Implementation:**
+
 - **Utility:** `src/utils/ronlHelper.js` - SPARQL query functions
 - **State Management:** `useEditorState` hook with `ronlAnalysis` and `ronlMethod` properties
 - **TTL Generator:** `generateLegalResourceSection()` in `src/utils/ttlGenerator.js`
