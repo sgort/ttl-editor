@@ -60,6 +60,10 @@ function App() {
     setOrganization,
     legalResource,
     setLegalResource,
+    ronlAnalysis,
+    setRonlAnalysis,
+    ronlMethod,
+    setRonlMethod,
     temporalRules,
     setTemporalRules,
     parameters,
@@ -849,7 +853,14 @@ function App() {
                 <OrganizationTab organization={organization} setOrganization={setOrganization} />
               )}
               {activeTab === 'legal' && (
-                <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
+                <LegalTab
+                  legalResource={legalResource}
+                  setLegalResource={setLegalResource}
+                  ronlAnalysis={ronlAnalysis}
+                  setRonlAnalysis={setRonlAnalysis}
+                  ronlMethod={ronlMethod}
+                  setRonlMethod={setRonlMethod}
+                />
               )}
               {activeTab === 'rules' && (
                 <RulesTab

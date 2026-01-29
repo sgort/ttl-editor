@@ -1,6 +1,42 @@
 {
   "versions": [
     {
+      "version": "1.8.23",
+      "status": "Minor Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "2026-01-29",
+      "description": "RONL Concepts Integration",
+      "sections": [
+        {
+          "title": "Added support for selecting legislative analysis and rules management methodologies from the RONL vocabulary.",
+          "icon": "⚖️",
+          "iconColor": "blue",
+          "items": [
+            "Added Analysis dropdown on Legal tab for selecting legislative analysis methodology (e.g., Wetsanalyse JAS, Wetsanalyse JRM, FLINT)",
+            "Added Method dropdown on Legal tab for selecting rules management methodology (e.g., ALEF, Avola, DMN)",
+            "Dynamic loading of concepts from TriplyDB SPARQL endpoint (ronl vocabulary)",
+            "Side-by-side dropdown layout with consistent field styling",
+            "Full round-trip support: selected concepts are preserved in TTL export and restored on import",
+            "ronl:hasAnalysis and ronl:hasMethod properties link services to RONL vocabulary concepts"
+          ]
+        },
+        {
+          "title": "Technical Implementation",
+          "icon": "⚙️",
+          "iconColor": "gray",
+          "items": [
+            "New utility: src/utils/ronlHelper.js for SPARQL queries",
+            "New state properties: ronlAnalysis, ronlMethod in useEditorState hook",
+            "Backend proxy endpoint /v1/triplydb/query used for CORS-free SPARQL queries",
+            "Concepts fetched from https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql",
+            "SPARQL queries filter for Dutch labels (LANG = 'nl')",
+            "Error handling and loading states for network issues"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.8.2",
       "date": "2026-01-27",
       "status": "Released",

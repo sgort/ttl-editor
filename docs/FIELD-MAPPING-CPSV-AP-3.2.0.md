@@ -1,29 +1,8 @@
 # Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
-
-**Version:** 2.1 (Phase 1 Complete + DMN Integration)  
-**Editor Version:** 1.5.0  
-**Date:** December 2025  
+ 
+**Editor Version:** 1.5.2  
+**Date:** Januari 2026  
 **Status:** ✅ CPSV-AP 3.2.0 Compliant + DMN Integration
-
----
-
-## Version History
-
-**Version 2.1 - December 2025** (Editor v1.5.0)
-
-- ✅ Added DMN Tab with decision engine integration
-- ✅ Added cprmv:DecisionModel support
-- ✅ Added automatic input variable extraction
-- ✅ Added Operaton deployment and testing
-- ✅ Enhanced metadata with dct:source, ronl:implementedBy
-- ✅ Added URI sanitization for service identifiers
-- ✅ Fixed organization URI handling (supports both short IDs and full URIs)
-
-**Version 2.0 - December 2025** (Editor v1.4.0)
-
-- ✅ Achieved minimal CPSV-AP 3.2.0 compliance (Phase 1)
-- ✅ Added Cost and Output sections
-- ✅ Fixed Organization and Legal Resource compliance
 
 ---
 
@@ -166,6 +145,30 @@ The organization identifier field intelligently handles both formats:
 | `eli:implements`       | 0..\*       | Medium   | Implements Legal Resource | Phase 2 |
 | `eli:establishedUnder` | 0..\*       | Low      | Established Under         | Phase 3 |
 
+### RONL Concepts
+
+| Field Label | UI Tab | State Property | RDF Property | Required | Format | Notes |
+|------------|--------|----------------|--------------|----------|--------|-------|
+| Analysis | Legal | `ronlAnalysis` | `ronl:hasAnalysis` | No | URI | Legislative analysis methodology (e.g., ronl:WetsanalyseJAS, ronl:WetsanalyseJRM, ronl:FLINT) |
+| Method | Legal | `ronlMethod` | `ronl:hasMethod` | No | URI | Rules management methodology (e.g., ronl:ALEF, ronl:Avola, ronl:DMN) |
+
+**Data Source:** Fetched dynamically from TriplyDB SPARQL endpoint:
+- Endpoint: `https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql`
+- Analysis concepts: `ronl:AnalysisConcept skos:narrower` query
+- Method concepts: `ronl:MethodConcept skos:narrower` query
+
+**Implementation:**
+- Dropdowns populate on component mount via `fetchAllRonlConcepts()` utility
+- Values stored as full URIs (e.g., `https://regels.overheid.nl/termen/WetsanalyseJAS`)
+- Links Public Service to RONL vocabulary concepts
+- Backend proxy used for SPARQL queries to avoid CORS issues
+
+**Example TTL Output:**
+```turtle
+<https://example.org/id/service/aow-leeftijd>
+  ronl:hasAnalysis ronl:WetsanalyseJAS ;
+  ronl:hasMethod ronl:ALEF .
+```
 ---
 
 ## 4. Rules Tab

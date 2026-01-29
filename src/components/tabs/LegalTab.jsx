@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { fetchAllRonlConcepts } from '../../utils/ronlHelper';
 
 /**
  * LegalTab - Form for editing legal resource metadata
@@ -7,8 +9,51 @@ import React from 'react';
  * Supports:
  * - BWB: National legislation (wetten.overheid.nl)
  * - CVDR: Municipal/local regulations (lokaleregelgeving.overheid.nl)
+ * - RONL concepts: Analysis and Method concepts from TriplyDB
  */
-export default function LegalTab({ legalResource, setLegalResource }) {
+export default function LegalTab({
+  legalResource,
+  setLegalResource,
+  ronlAnalysis,
+  setRonlAnalysis,
+  ronlMethod,
+  setRonlMethod,
+}) {
+  // State for dropdown options
+  const [analysisConcepts, setAnalysisConcepts] = useState([]);
+  const [methodConcepts, setMethodConcepts] = useState([]);
+  const [loadingConcepts, setLoadingConcepts] = useState(false);
+  const [conceptsError, setConceptsError] = useState('');
+
+  // RONL endpoint
+  const RONL_ENDPOINT =
+    'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
+
+  // Fetch concepts on component mount
+  useEffect(() => {
+    const loadConcepts = async () => {
+      setLoadingConcepts(true);
+      setConceptsError('');
+
+      try {
+        const { analysisConcepts: analysis, methodConcepts: methods } =
+          await fetchAllRonlConcepts(RONL_ENDPOINT);
+
+        setAnalysisConcepts(analysis);
+        setMethodConcepts(methods);
+
+        console.log('Loaded RONL concepts successfully');
+      } catch (error) {
+        console.error('Failed to load RONL concepts:', error);
+        setConceptsError('Failed to load concepts from TriplyDB. Please check your connection.');
+      } finally {
+        setLoadingConcepts(false);
+      }
+    };
+
+    loadConcepts();
+  }, []); // Empty dependency array = run once on mount
+
   // Helper to update a single field
   const updateField = (field, value) => {
     setLegalResource({ ...legalResource, [field]: value });
@@ -33,6 +78,7 @@ export default function LegalTab({ legalResource, setLegalResource }) {
     repositoryUrl = 'https://wetten.overheid.nl';
     repositoryName = 'National Legislation (BWB)';
   } else if (isCVDR) {
+    // eslint-disable-next-line no-unused-vars
     repositoryUrl = 'https://lokaleregelgeving.overheid.nl';
     repositoryName = 'Local Regulations (CVDR)';
   }
@@ -57,70 +103,56 @@ export default function LegalTab({ legalResource, setLegalResource }) {
             </a>
           </li>
           <li>
-            <strong>CVDR:</strong> Municipal/local regulations (e.g., "CVDR603544") from{' '}
+            <strong>CVDR:</strong> Municipal/local regulations (e.g., "CVDR123456") from{' '}
             <a
               href="https://lokaleregelgeving.overheid.nl"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline hover:text-blue-600"
+              className="underline hover:text-purple-600"
             >
               lokaleregelgeving.overheid.nl
             </a>
           </li>
+          <li>
+            <strong>Full URI:</strong> Complete HTTP(S) URL to any legal document
+          </li>
         </ul>
-        <p className="text-blue-800 mt-2">
-          You can enter either an ID or a full URI (e.g.,
-          "https://lokaleregelgeving.overheid.nl/CVDR603544/1")
-        </p>
       </div>
 
-      {/* Legal Resource Identifier */}
+      {/* BWB/CVDR Identifier */}
       <div>
         <label className="block text-sm text-gray-700 mb-1">
-          <span className="font-medium">Dutch legal document identifier or URI</span>
+          <span className="font-medium">BWB ID, CVDR ID, or full document URI</span>
           <span className="text-gray-500"> (eli:LegalResource)</span>
+          <span className="text-red-500"> *</span>
         </label>
         <input
           type="text"
           value={legalResource.bwbId}
           onChange={(e) => updateField('bwbId', e.target.value)}
-          className={`w-full px-3 py-2 border rounded-md ${
-            hasInvalidIdentifier
-              ? 'border-red-300 focus:ring-red-500'
-              : 'border-gray-300 focus:ring-blue-500'
+          className={`w-full px-3 py-2 border rounded-md focus:ring-blue-500 ${
+            hasInvalidIdentifier ? 'border-red-500' : 'border-gray-300'
           }`}
-          placeholder="e.g., BWBR0011453, CVDR603544, or full URI"
+          placeholder="e.g., BWBR0011453 or CVDR123456 or https://..."
         />
-
-        {/* Validation feedback */}
         {hasInvalidIdentifier && (
           <p className="text-xs text-red-600 mt-1">
-            ⚠ Should contain a BWB ID (e.g., BWBR0011453) or CVDR ID (e.g., CVDR603544)
+            ⚠️ Must be a BWB ID (BWBR/BWBV...), CVDR ID (CVDR...), or full URI (https://...)
           </p>
         )}
-
-        {/* Success feedback for full URI */}
-        {isFullUri && isValidIdentifier && (
-          <p className="text-xs text-green-600 mt-1">✓ Full URI detected - will be used directly</p>
-        )}
-
-        {/* Success feedback for BWB ID */}
-        {!isFullUri && isBWB && (
-          <p className="text-xs text-green-600 mt-1">
-            ✓ BWB ID detected → Will generate: {repositoryUrl}/{legalResource.bwbId}
-          </p>
-        )}
-
-        {/* Success feedback for CVDR ID */}
-        {!isFullUri && isCVDR && (
-          <div>
-            <p className="text-xs text-green-600 mt-1">
-              ✓ CVDR ID detected → Will generate: {repositoryUrl}/{legalResource.bwbId}/1
+        {isValidIdentifier && !isFullUri && (
+          <div className="mt-2 text-sm">
+            <p className="text-gray-600 mb-1">
+              <strong>Detected format:</strong>{' '}
+              {isBWB ? 'BWB National Legislation' : 'CVDR Local Regulation'}
             </p>
-            <p className="text-xs text-amber-600 mt-1">
-              💡 Note: CVDR URIs include version number. Default is "/1" - you can specify a
-              different version in the URI field directly.
-            </p>
+            {isCVDR && (
+              <p className="text-xs text-gray-500 italic">
+                💡 For CVDR documents, the URI will be generated as: lokaleregelgeving.overheid.nl/
+                {legalResource.bwbId}/1. Default is "/1" - you can specify a different version in
+                the URI field directly.
+              </p>
+            )}
           </div>
         )}
 
@@ -191,6 +223,72 @@ export default function LegalTab({ legalResource, setLegalResource }) {
           rows="3"
           placeholder="Describe the legal resource..."
         />
+      </div>
+
+      {/* RONL CONCEPTS SECTION */}
+      <div className="border-t pt-4 mt-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">RONL Concepts</h3>
+
+        {/* Error message */}
+        {conceptsError && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+            <p className="text-sm text-red-800">⚠️ {conceptsError}</p>
+          </div>
+        )}
+
+        {/* Loading state */}
+        {loadingConcepts && (
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+            <p className="text-sm text-gray-600">Loading concepts from TriplyDB...</p>
+          </div>
+        )}
+
+        {/* Analysis and Method Dropdowns - Side by side */}
+        <div className="grid grid-cols-2 gap-4">
+          {/* Analysis Concept Dropdown */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              <span className="font-medium">Analysis</span>
+              <span className="text-gray-500"> (ronl:AnalysisConcept)</span>
+              <span className="text-red-500"> *</span>
+            </label>
+            <select
+              value={ronlAnalysis}
+              onChange={(e) => setRonlAnalysis(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              disabled={loadingConcepts || analysisConcepts.length === 0}
+            >
+              <option value="">-- Select analysis method --</option>
+              {analysisConcepts.map((concept) => (
+                <option key={concept.uri} value={concept.uri}>
+                  {concept.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Method Concept Dropdown */}
+          <div>
+            <label className="block text-sm text-gray-700 mb-1">
+              <span className="font-medium">Method</span>
+              <span className="text-gray-500"> (ronl:MethodConcept)</span>
+              <span className="text-red-500"> *</span>
+            </label>
+            <select
+              value={ronlMethod}
+              onChange={(e) => setRonlMethod(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              disabled={loadingConcepts || methodConcepts.length === 0}
+            >
+              <option value="">-- Select method --</option>
+              {methodConcepts.map((concept) => (
+                <option key={concept.uri} value={concept.uri}>
+                  {concept.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
       {/* Quick link to view the document */}
