@@ -312,6 +312,8 @@ function App() {
       service,
       organization,
       legalResource,
+      ronlAnalysis,
+      ronlMethod,
       temporalRules,
       parameters,
     });
@@ -358,6 +360,8 @@ function App() {
         service,
         organization,
         legalResource,
+        ronlAnalysis,
+        ronlMethod,
         temporalRules,
         parameters,
       });

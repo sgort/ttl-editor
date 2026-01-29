@@ -46,9 +46,11 @@ export function validateOrganization(organization) {
 /**
  * Validate legal resource fields
  * @param {object} legalResource - Legal resource state object
+ * @param {string} ronlAnalysis - RONL analysis concept URI
+ * @param {string} ronlMethod - RONL method concept URI
  * @returns {string[]} - Array of error messages
  */
-export function validateLegalResource(legalResource) {
+export function validateLegalResource(legalResource, ronlAnalysis, ronlMethod) {
   const errors = [];
 
   // Legal resource identifier validation - accepts:
@@ -71,6 +73,15 @@ export function validateLegalResource(legalResource) {
     if (isFullUri && !isBWB && !isCVDR) {
       errors.push('Full URI must contain a BWB ID or CVDR ID');
     }
+  }
+
+  // RONL Concepts validation (NEW)
+  if (!ronlAnalysis) {
+    errors.push('RONL Analysis concept is required');
+  }
+
+  if (!ronlMethod) {
+    errors.push('RONL Method concept is required');
   }
 
   return errors;
@@ -152,6 +163,8 @@ export function validateForm(formState) {
     service = {},
     organization = {},
     legalResource = {},
+    ronlAnalysis = '',
+    ronlMethod = '',
     temporalRules = [],
     parameters = [],
   } = formState || {};
@@ -159,7 +172,7 @@ export function validateForm(formState) {
   const errors = [
     ...validateService(service),
     ...validateOrganization(organization),
-    ...validateLegalResource(legalResource),
+    ...validateLegalResource(legalResource, ronlAnalysis, ronlMethod), // UPDATE THIS
     ...temporalRules.flatMap((rule, idx) => validateTemporalRule(rule, idx)),
     ...parameters.flatMap((param, idx) => validateParameter(param, idx)),
   ];
