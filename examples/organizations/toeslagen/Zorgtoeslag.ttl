@@ -49,6 +49,8 @@
     dct:identifier "jci1.3:c:BWBR0018451&artikel=2" ;
     dct:title "Wet op de zorgtoeslag"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> ;
     eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2/2026-01-01>  .
 
 
@@ -152,49 +154,49 @@
 #  Parameters
 # ============================================================
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-1> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-1> a ronl:ParameterWaarde ;
     skos:prefLabel " STANDAARDPREMIE"@nl ;
     skos:notation " STANDAARDPREMIE" ;
     schema:value "1987"^^xsd:decimal ;
     schema:unitCode "EUR"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-2> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-2> a ronl:ParameterWaarde ;
     skos:prefLabel "DREMPELINKOMEN"@nl ;
     skos:notation "DREMPELINKOMEN" ;
     schema:value "26819"^^xsd:decimal ;
     schema:unitCode "EUR"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-3> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-3> a ronl:ParameterWaarde ;
     skos:prefLabel "DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG "@nl ;
     skos:notation "DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG " ;
     schema:value "23.5"^^xsd:decimal ;
     schema:unitCode "EUR"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-4> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-4> a ronl:ParameterWaarde ;
     skos:prefLabel "DREMPELINKOMENPERCENTAGE ZONDER PARTNER"@nl ;
     skos:notation "DREMPELINKOMENPERCENTAGE ZONDER PARTNER" ;
     schema:value "1.879"^^xsd:decimal ;
     schema:unitCode "PCT"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-5> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-5> a ronl:ParameterWaarde ;
     skos:prefLabel "OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER"@nl ;
     skos:notation "OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER" ;
     schema:value "13.67"^^xsd:decimal ;
     schema:unitCode "PCT"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-6> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-6> a ronl:ParameterWaarde ;
     skos:prefLabel "MEERDERJARIGHEIDSLEEFTIJD"@nl ;
     skos:notation "MEERDERJARIGHEIDSLEEFTIJD" ;
     schema:value "18"^^xsd:decimal ;
     schema:unitCode "NUM"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-7> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-7> a ronl:ParameterWaarde ;
     skos:prefLabel "MAXIMALE ZORGTOESLAG VERZEKERDE ZONDER PARTNER"@nl ;
     skos:notation "MAXIMALE ZORGTOESLAG VERZEKERDE ZONDER PARTNER" ;
     schema:value "1483"^^xsd:decimal ;
     schema:unitCode "EUR"  .
 
-<https://regels.overheid.nl/parameters/Zorgtoeslag/param-8> a ronl:ParameterWaarde ;
+<https://regels.overheid.nl/parameters/zorgtoeslag/param-8> a ronl:ParameterWaarde ;
     skos:prefLabel "NORMPREMIE OVER HET DREMPELINKOMEN ZONDER PARTNER"@nl ;
     skos:notation "NORMPREMIE OVER HET DREMPELINKOMEN ZONDER PARTNER" ;
     schema:value "503.93"^^xsd:decimal ;
@@ -210,10 +212,10 @@
     dct:title "BerekenRechtEnHoogteZorg.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
     dct:source <https://regels.overheid.nl/services/zorgtoeslag/dmn/file> ;
-    cprmv:deploymentId "5d7edf58-fc7e-11f0-a931-8e0c375d6d16" ;
-    cprmv:deployedAt "2026-01-28T19:20:11.402Z"^^xsd:dateTime ;
+    cprmv:deploymentId "3d0bf4f2-fcfb-11f0-a931-8e0c375d6d16" ;
+    cprmv:deployedAt "2026-01-29T10:14:04.325Z"^^xsd:dateTime ;
     ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/berekenrechtenhoogtezorg/evaluate> ;
-    cprmv:lastTested "2026-01-28T19:20:32.437Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-01-29T10:14:23.466Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -337,7 +339,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-28"^^xsd:date .
+    dct:created "2026-01-29"^^xsd:date .
 
 # Input Variable Concepts
 

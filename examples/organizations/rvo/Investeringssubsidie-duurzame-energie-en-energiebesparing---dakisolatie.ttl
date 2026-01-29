@@ -49,6 +49,8 @@
     dct:identifier "BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5" ;
     dct:title "Regeling nationale EZ-, LVVN- en KGG-subsidies"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5/2026-01-01>  .
 
 
@@ -61,10 +63,10 @@
     dct:title "dakisolatie-berekening-final.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
     dct:source <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/file> ;
-    cprmv:deploymentId "71f2804e-fc26-11f0-a5a4-3a5e81cd33b0" ;
-    cprmv:deployedAt "2026-01-28T08:50:49.951Z"^^xsd:dateTime ;
+    cprmv:deploymentId "8ff2af5f-fcfc-11f0-a931-8e0c375d6d16" ;
+    cprmv:deployedAt "2026-01-29T10:23:32.912Z"^^xsd:dateTime ;
     ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
-    cprmv:lastTested "2026-01-28T08:52:14.587Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-01-29T10:23:53.157Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -100,7 +102,7 @@
     dct:identifier "install_cost_per_m2_per_100mm" ;
     dct:title "install_cost_per_m2_per_100mm"@nl ;
     dct:type "Integer" ;
-    schema:value 25 ;
+    schema:value 20 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/6> a cpsv:Input ;
@@ -121,21 +123,21 @@
     dct:identifier "netto_kosten" ;
     dct:title "netto_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 28 ;
+    schema:value -14 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/3> a cpsv:Output ;
     dct:identifier "installatie_kosten" ;
     dct:title "installatie_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 210 ;
+    schema:value 168 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/4> a cpsv:Output ;
     dct:identifier "totale_kosten" ;
     dct:title "totale_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 277 ;
+    schema:value 235 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/5> a cpsv:Output ;
@@ -149,7 +151,7 @@
     dct:identifier "terugverdientijd" ;
     dct:title "terugverdientijd"@nl ;
     dct:type "Double" ;
-    schema:value 0.4 ;
+    schema:value -0.2 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/7> a cpsv:Output ;
@@ -220,7 +222,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-28"^^xsd:date .
+    dct:created "2026-01-29"^^xsd:date .
 
 # Input Variable Concepts
 

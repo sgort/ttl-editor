@@ -48,10 +48,7 @@
     dct:identifier "BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5" ;
     dct:title "Regeling nationale EZ-, LVVN- en KGG-subsidies"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5/2026-01-01>  .
-
-
-# ============================================================
-#  Parameters
-# ============================================================
 
