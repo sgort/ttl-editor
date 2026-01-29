@@ -96,7 +96,7 @@ Service identifiers are automatically sanitized to create valid URIs:
 | Homepage URL of the organization      | `organization.homepage`   | `foaf:homepage`  | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)        |
 | Geographic Jurisdiction \*            | `organization.spatial`    | `cv:spatial`     | `cv:spatial`           | 🎯     | **MANDATORY** - Phase 1 added   |
 
-**Note on Organization URI:** 
+**Note on Organization URI:**
 The organization identifier field intelligently handles both formats:
 
 - **Short ID:** `"28212263"` → `<https://regels.overheid.nl/organizations/28212263>`
