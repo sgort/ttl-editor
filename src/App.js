@@ -147,14 +147,74 @@ function App() {
   // Helper to get TTL content
   const getTTLContent = () => generateTTL(buildStateForTTL());
 
-  const downloadTTL = () => {
+  const downloadTTL = async () => {
     const ttl = getTTLContent();
-    const blob = new Blob([ttl], { type: 'text/turtle' });
+    const suggestedName =
+      sanitizeFilename(service.name || service.identifier || 'service') + '.ttl';
+
+    // Check if File System Access API is supported (Chrome, Edge, Opera)
+    if ('showSaveFilePicker' in window) {
+      try {
+        // Show native Save As dialog
+        const fileHandle = await window.showSaveFilePicker({
+          suggestedName: suggestedName,
+          types: [
+            {
+              description: 'Turtle RDF Files',
+              accept: {
+                'text/turtle': ['.ttl'],
+              },
+            },
+          ],
+        });
+
+        // Create a writable stream
+        const writable = await fileHandle.createWritable();
+
+        // Write the TTL content
+        await writable.write(ttl);
+
+        // Close the file
+        await writable.close();
+
+        // Success message
+        setMessage(`File saved successfully as ${fileHandle.name}`);
+        setMessageType('success');
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 5000);
+      } catch (error) {
+        // User cancelled or error occurred
+        if (error.name !== 'AbortError') {
+          console.error('Error saving file:', error);
+          setMessage('Error saving file. Using fallback download...');
+          setMessageType('warning');
+
+          // Fallback to traditional download
+          fallbackDownload(ttl, suggestedName);
+
+          setTimeout(() => {
+            setMessage('');
+            setMessageType('');
+          }, 5000);
+        }
+        // If AbortError, user cancelled - do nothing
+      }
+    } else {
+      // Browser doesn't support File System Access API
+      // Use traditional download
+      fallbackDownload(ttl, suggestedName);
+    }
+  };
+
+  // Helper function for traditional download (fallback)
+  const fallbackDownload = (content, filename) => {
+    const blob = new Blob([content], { type: 'text/turtle' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = sanitizeFilename(service.name || service.identifier || 'service') + '.ttl';
-    //                                 ↑ Direct reference
+    link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
   };
