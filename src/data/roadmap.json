@@ -29,6 +29,14 @@
       "title": "RPP Architecture Visualization",
       "description": "Visual separation of Rules-Policy-Parameters pattern with color-coded tabs and explanatory banners",
       "version": "1.5.1"
+    },
+    {
+      "icon": "✅",
+      "phase": "Phase 6",
+      "title": "TriplyDB Integration",
+      "description": "Direct publishing to TriplyDB, fetching RONL concepts via SPARQL query",
+      "priority": "Low",
+      "effort": "High"
     }
   ],
   "planned": [
@@ -135,14 +143,6 @@
       "description": "Automated validation tests, regression testing, and CI/CD integration for service definitions",
       "priority": "Low",
       "effort": "Medium"
-    },
-    {
-      "icon": "🗄️",
-      "phase": "Phase 6",
-      "title": "TriplyDB Integration",
-      "description": "Direct publishing to TriplyDB, SPARQL query interface, and linked data exploration",
-      "priority": "Low",
-      "effort": "High"
     },
     {
       "icon": "🔐",
