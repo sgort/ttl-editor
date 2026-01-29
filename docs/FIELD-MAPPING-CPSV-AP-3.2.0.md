@@ -1,29 +1,8 @@
 # Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
 
-**Version:** 2.1 (Phase 1 Complete + DMN Integration)  
-**Editor Version:** 1.5.0  
-**Date:** December 2025  
+**Editor Version:** 1.8.3  
+**Date:** Januari 2026  
 **Status:** ✅ CPSV-AP 3.2.0 Compliant + DMN Integration
-
----
-
-## Version History
-
-**Version 2.1 - December 2025** (Editor v1.5.0)
-
-- ✅ Added DMN Tab with decision engine integration
-- ✅ Added cprmv:DecisionModel support
-- ✅ Added automatic input variable extraction
-- ✅ Added Operaton deployment and testing
-- ✅ Enhanced metadata with dct:source, ronl:implementedBy
-- ✅ Added URI sanitization for service identifiers
-- ✅ Fixed organization URI handling (supports both short IDs and full URIs)
-
-**Version 2.0 - December 2025** (Editor v1.4.0)
-
-- ✅ Achieved minimal CPSV-AP 3.2.0 compliance (Phase 1)
-- ✅ Added Cost and Output sections
-- ✅ Fixed Organization and Legal Resource compliance
 
 ---
 
@@ -165,6 +144,58 @@ The organization identifier field intelligently handles both formats:
 | `dct:type`             | 0..1        | Medium   | Legal Resource Type       | Phase 2 |
 | `eli:implements`       | 0..\*       | Medium   | Implements Legal Resource | Phase 2 |
 | `eli:establishedUnder` | 0..\*       | Low      | Established Under         | Phase 3 |
+
+### RONL Concepts (v1.8.3)
+
+**New in v1.8.3:** Integration with RONL (Regels Open Nederland) vocabulary for legislative analysis and rules management methodologies.
+
+| Field Label | UI Tab | State Property | RDF Property       | Required | Format | Notes                                                 |
+| ----------- | ------ | -------------- | ------------------ | -------- | ------ | ----------------------------------------------------- |
+| Analysis    | Legal  | `ronlAnalysis` | `ronl:hasAnalysis` | No       | URI    | Legislative analysis methodology from RONL vocabulary |
+| Method      | Legal  | `ronlMethod`   | `ronl:hasMethod`   | No       | URI    | Rules management methodology from RONL vocabulary     |
+
+**Data Source:**
+
+- **Endpoint:** `https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql`
+- **Analysis Concepts:** Fetched via SPARQL query: `ronl:AnalysisConcept skos:narrower ?narrower`
+- **Method Concepts:** Fetched via SPARQL query: `ronl:MethodConcept skos:narrower ?narrower`
+
+**Available Analysis Options (3):**
+
+- `ronl:WetsanalyseJAS` - Wetsanalyse (JAS) - Legal Analysis Schema
+- `ronl:WetsanalyseJRM` - Wetsanalyse (JRM) - Legal Reference Model
+- `ronl:FLINT` - FLINT protocol for normative tasks
+
+**Available Method Options (16):**
+
+- `ronl:AKN4EU`, `ronl:ALEF`, `ronl:Avola`, `ronl:Beinformed`, `ronl:Blawx`, `ronl:Blueriq`, `ronl:Catala`, `ronl:CircuLaw`, `ronl:ConcordiaLegal`, `ronl:DataLex`, `ronl:Demo`, `ronl:Leos`, `ronl:OpenFisca`, `ronl:RuleSpeak`, `ronl:Sparkwise`, `ronl:USoft`
+
+**Implementation Details:**
+
+- Dropdowns populate on component mount via `fetchAllRonlConcepts()` utility
+- Values stored as full URIs (e.g., `https://regels.overheid.nl/termen/WetsanalyseJAS`)
+- Backend proxy used for SPARQL queries to avoid CORS issues
+- Full round-trip support: values preserved in TTL export and restored on import
+- Loading states and error handling for network issues
+
+**Example TTL Output:**
+
+```turtle
+<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
+    dct:identifier "BWBR0002221" ;
+    dct:title "Algemene Ouderdomswet"@nl ;
+    dct:description "Wet van 31 mei 1956..."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> .
+```
+
+**Technical Implementation:**
+
+- **Utility:** `src/utils/ronlHelper.js` - SPARQL query functions
+- **State Management:** `useEditorState` hook with `ronlAnalysis` and `ronlMethod` properties
+- **TTL Generator:** `generateLegalResourceSection()` in `src/utils/ttlGenerator.js`
+- **Parser:** `parseTTLEnhanced()` in `src/parseTTL.enhanced.js`
+- **UI Component:** Side-by-side dropdowns in `LegalTab.jsx`
 
 ---
 

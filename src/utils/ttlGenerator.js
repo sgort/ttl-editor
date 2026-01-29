@@ -16,6 +16,8 @@ export class TTLGenerator {
     this.service = state.service;
     this.organization = state.organization;
     this.legalResource = state.legalResource;
+    this.ronlAnalysis = state.ronlAnalysis || '';
+    this.ronlMethod = state.ronlMethod || '';
     this.temporalRules = state.temporalRules;
     this.parameters = state.parameters;
     this.cprmvRules = state.cprmvRules;
@@ -339,6 +341,20 @@ export class TTLGenerator {
 
     if (this.legalResource.description) {
       ttl += `    dct:description "${escapeTTLString(this.legalResource.description)}"@nl ;\n`;
+    }
+
+    if (this.ronlAnalysis) {
+      const analysisUri = this.ronlAnalysis.startsWith('http')
+        ? `<${this.ronlAnalysis}>`
+        : this.ronlAnalysis;
+      ttl += `    ronl:hasAnalysis ${analysisUri} ;\n`;
+    }
+
+    if (this.ronlMethod) {
+      const methodUri = this.ronlMethod.startsWith('http')
+        ? `<${this.ronlMethod}>`
+        : this.ronlMethod;
+      ttl += `    ronl:hasMethod ${methodUri} ;\n`;
     }
 
     if (this.legalResource.version) {

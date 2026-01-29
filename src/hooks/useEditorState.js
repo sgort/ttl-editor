@@ -23,6 +23,9 @@ export const useEditorState = () => {
   // Legal Resource state
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
 
+  const [ronlAnalysis, setRonlAnalysis] = useState('');
+  const [ronlMethod, setRonlMethod] = useState('');
+
   // Temporal Rules state
   const [temporalRules, setTemporalRules] = useState([]);
 
@@ -77,6 +80,8 @@ export const useEditorState = () => {
     });
     setOrganization(DEFAULT_ORGANIZATION);
     setLegalResource(DEFAULT_LEGAL_RESOURCE);
+    setRonlAnalysis('');
+    setRonlMethod('');
     setTemporalRules([]);
     setParameters([]);
     setCprmvRules([]);
@@ -111,6 +116,11 @@ export const useEditorState = () => {
     // Legal Resource
     legalResource,
     setLegalResource,
+    // Legal Analysis and Method
+    ronlAnalysis,
+    setRonlAnalysis,
+    ronlMethod,
+    setRonlMethod,
     // Temporal Rules
     temporalRules,
     setTemporalRules,

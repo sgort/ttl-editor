@@ -34,6 +34,8 @@ export const parseTTL = (ttlContent) => {
       title: parsed.legalResource?.title || '',
       description: parsed.legalResource?.description || '',
     },
+    ronlAnalysis: parsed.ronlAnalysis || '',
+    ronlMethod: parsed.ronlMethod || '',
     temporalRules: (parsed.temporalRules || []).map((rule) => ({
       ...rule,
       identifier: rule.identifier || '',
@@ -153,6 +155,8 @@ export const applyImportedData = (importedData, setters) => {
     setService,
     setOrganization,
     setLegalResource,
+    setRonlAnalysis,
+    setRonlMethod,
     setTemporalRules,
     setParameters,
     setCprmvRules,
@@ -167,6 +171,8 @@ export const applyImportedData = (importedData, setters) => {
   setService(importedData.service);
   setOrganization(importedData.organization);
   setLegalResource(importedData.legalResource);
+  setRonlAnalysis(importedData.ronlAnalysis);
+  setRonlMethod(importedData.ronlMethod);
   setTemporalRules(importedData.temporalRules);
   setParameters(importedData.parameters);
   setCprmvRules(importedData.cprmvRules);
