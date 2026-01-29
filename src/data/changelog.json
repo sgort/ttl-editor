@@ -13,12 +13,14 @@
           "icon": "⚖️",
           "iconColor": "blue",
           "items": [
-            "Added Analysis dropdown on Legal tab for selecting legislative analysis methodology (e.g., Wetsanalyse JAS, Wetsanalyse JRM, FLINT)",
-            "Added Method dropdown on Legal tab for selecting rules management methodology (e.g., ALEF, Avola, DMN)",
-            "Dynamic loading of concepts from TriplyDB SPARQL endpoint (ronl vocabulary)",
-            "Side-by-side dropdown layout with consistent field styling",
-            "Full round-trip support: selected concepts are preserved in TTL export and restored on import",
-            "ronl:hasAnalysis and ronl:hasMethod properties link services to RONL vocabulary concepts"
+            "Added 'Analysis' dropdown on Legal tab for selecting legislative analysis methodology (Wetsanalyse JAS, Wetsanalyse JRM, FLINT)",
+            "Added 'Method' dropdown on Legal tab for selecting rules management methodology (16 options including ALEF, Avola, DMN, RuleSpeak, and more)",
+            "Dynamic loading of concepts from TriplyDB SPARQL endpoint (ronl vocabulary dataset)",
+            "Side-by-side dropdown layout with consistent field styling matching existing Legal tab fields",
+            "Full round-trip support: selected concepts are preserved in TTL export and correctly restored on import",
+            "Properties ronl:hasAnalysis and ronl:hasMethod link legal resources to RONL vocabulary concepts",
+            "Loading states with user-friendly feedback during SPARQL query execution",
+            "Comprehensive error handling for network issues with clear error messages"
           ]
         },
         {
@@ -26,12 +28,15 @@
           "icon": "⚙️",
           "iconColor": "gray",
           "items": [
-            "New utility: src/utils/ronlHelper.js for SPARQL queries",
-            "New state properties: ronlAnalysis, ronlMethod in useEditorState hook",
+            "New utility: src/utils/ronlHelper.js with fetchRonlConcepts() and fetchAllRonlConcepts() functions",
+            "New state properties: ronlAnalysis and ronlMethod in useEditorState hook",
             "Backend proxy endpoint /v1/triplydb/query used for CORS-free SPARQL queries",
             "Concepts fetched from https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql",
-            "SPARQL queries filter for Dutch labels (LANG = 'nl')",
-            "Error handling and loading states for network issues"
+            "SPARQL queries filter for Dutch labels using FILTER(LANG(?prefLabel) = 'nl')",
+            "TTL generation: ronlAnalysis and ronlMethod added to generateLegalResourceSection()",
+            "Parser: parseTTLEnhanced() updated to extract ronl:hasAnalysis and ronl:hasMethod",
+            "Import handler: applyImportedData() updated to apply RONL concept state",
+            "Console logging for debugging: 'Parsed RONL Analysis' and 'Parsed RONL Method' messages"
           ]
         }
       ]

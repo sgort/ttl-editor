@@ -36,6 +36,8 @@ export const parseTTLEnhanced = (ttlContent) => {
         title: '',
         description: '',
       },
+      ronlAnalysis: '',
+      ronlMethod: '',
       temporalRules: [],
       parameters: [],
       cprmvRules: [],
@@ -346,6 +348,22 @@ export const parseTTLEnhanced = (ttlContent) => {
         if (line.includes('dct:description')) {
           parsed.legalResource.description =
             extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
+        }
+
+        if (line.includes('ronl:hasAnalysis')) {
+          const match = line.match(/ronl:hasAnalysis\s+(?:<([^>]+)>|(ronl:\S+))/);
+          if (match) {
+            parsed.ronlAnalysis = match[1] || match[2];
+            console.log('Parsed RONL Analysis:', parsed.ronlAnalysis);
+          }
+        }
+
+        if (line.includes('ronl:hasMethod')) {
+          const match = line.match(/ronl:hasMethod\s+(?:<([^>]+)>|(ronl:\S+))/);
+          if (match) {
+            parsed.ronlMethod = match[1] || match[2];
+            console.log('Parsed RONL Method:', parsed.ronlMethod);
+          }
         }
 
         // Extract version date from eli:is_realized_by

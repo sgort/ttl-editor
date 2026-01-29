@@ -126,6 +126,8 @@ function App() {
     service, // ← Use destructured variable
     organization, // ← Use destructured variable
     legalResource,
+    ronlAnalysis,
+    ronlMethod,
     temporalRules,
     parameters,
     cprmvRules,
@@ -162,6 +164,8 @@ function App() {
       setService,
       setOrganization,
       setLegalResource,
+      setRonlAnalysis,
+      setRonlMethod,
       setTemporalRules,
       setParameters,
       setCprmvRules,
