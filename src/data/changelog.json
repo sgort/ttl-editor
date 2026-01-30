@@ -1,13 +1,28 @@
 {
   "versions": [
     {
-      "version": "1.8.23",
+      "version": "1.8.3",
       "status": "Minor Feature",
       "statusColor": "emerald",
       "borderColor": "emerald",
       "date": "2026-01-29",
       "description": "RONL Concepts Integration",
       "sections": [
+        {
+          "title": "Multi-Vendor Integration Architecture",
+          "icon": "🏢",
+          "iconColor": "purple",
+          "items": [
+            "Transformed 'iKnow Mapping' tab into 'Vendor' tab with vendor selection dropdown",
+            "Vendor dropdown dynamically loads all RONL Method Concepts from TriplyDB",
+            "Selecting 'iKnow' from dropdown displays full iKnow integration functionality (Configure and Import modes)",
+            "All existing iKnow XML mapping features preserved: field mapping configuration, CognitatieAnnotationExport and SemanticsExport format support",
+            "Professional placeholder content for non-iKnow vendors showing implementation roadmap and status",
+            "Consistent vendor selection pattern matching Legal tab's Method dropdown",
+            "Scalable architecture for adding new vendor integrations in the future",
+            "Loading states and error handling for vendor list retrieval from TriplyDB"
+          ]
+        },
         {
           "title": "Added support for selecting legislative analysis and rules management methodologies from the RONL vocabulary.",
           "icon": "⚖️",

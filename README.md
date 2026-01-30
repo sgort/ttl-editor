@@ -142,12 +142,101 @@ The CPSV Editor automatically generates semantic concept definitions for DMN dec
 
 **Documentation**: [Dutch Standard for Describing Concepts](https://geonovum.github.io/NL-SBB/)
 
-#### 📊 **iKnow Integration**
+## 🏢 Vendor Integration
 
-- Parse iKnow XML exports
-- Configurable field mappings
-- Import legislative analysis data
-- Support for multiple legal concept types
+The CPSV Editor supports integration with multiple vendor platforms for importing legislative and regulatory data. The **Vendor** tab provides a unified interface for configuring and importing data from various rules management systems.
+
+### Supported Vendors
+
+The editor integrates with vendors listed in the RONL vocabulary as **Method Concepts** (`ronl:MethodConcept`). Currently, 17 vendor platforms are supported:
+
+| Vendor     | Description                                            | Status              |
+| ---------- | ------------------------------------------------------ | ------------------- |
+| **iKnow**  | Legislative analysis and knowledge management platform | ✅ Fully Integrated |
+| ALEF       | Agile Law Execution Factory                            | 🔄 Planned          |
+| Avola      | Decision automation platform                           | 🔄 Planned          |
+| Beinformed | Intelligent automation platform                        | 🔄 Planned          |
+| Blueriq    | Digital decision management                            | 🔄 Planned          |
+| OpenFisca  | Tax and benefit system modeling                        | 🔄 Planned          |
+| RuleSpeak  | Business rule notation                                 | 🔄 Planned          |
+| USoft      | Rules-based application development                    | 🔄 Planned          |
+
+### Using the Vendor Tab
+
+1. **Navigate to Vendor Tab**
+   - Click the **Vendor** tab in the main navigation
+
+2. **Select a Vendor**
+   - Choose a vendor from the dropdown menu
+   - Vendors are loaded dynamically from the RONL vocabulary in TriplyDB
+
+3. **Configure Integration**
+   - Each vendor has its own integration interface
+   - Currently, only iKnow integration is fully implemented
+
+### iKnow Integration
+
+The iKnow integration allows you to import legislative knowledge from iKnow XML exports:
+
+#### Supported Formats
+
+- **CognitatieAnnotationExport.xml** - Concept-based exports with annotations
+- **SemanticsExport.xml** - Semantic knowledge exports
+
+#### Features
+
+- **Configure Mode**: Create reusable field mapping configurations
+  - Map iKnow XML fields to CPSV-AP properties
+  - Define mappings for Service, Legal, Rules, Parameters, and CPRMV sections
+  - Save and load mapping configurations as JSON
+- **Import Mode**: Import data using saved configurations
+  - Upload iKnow XML data files
+  - Select a mapping configuration
+  - Preview mapped data before import
+  - Import directly into the editor
+
+#### Workflow
+
+1. Switch to **Configure** mode
+2. Upload an example iKnow XML file (or use "Load Example")
+3. Map XML fields to CPSV-AP properties for each section
+4. Save the configuration
+5. Switch to **Import** mode
+6. Upload your actual iKnow data file
+7. Select the saved configuration
+8. Preview and import the data
+
+### Adding New Vendor Integrations
+
+The architecture supports easy addition of new vendor integrations:
+
+1. Create vendor-specific component in `src/components/tabs/vendors/`
+2. Add conditional rendering in `VendorTab.jsx` based on selected vendor URI
+3. Implement vendor-specific parser for data format
+4. Create field mapping configuration for CPSV-AP compliance
+5. Add state management for vendor-specific configuration
+
+### Technical Details
+
+**Vendor List Source**: RONL vocabulary in TriplyDB
+
+```
+Endpoint: https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql
+Concept: ronl:MethodConcept
+```
+
+**Integration Pattern**: Each vendor URI follows the format:
+
+```
+https://regels.overheid.nl/termen/{VendorName}
+```
+
+**Related Components**:
+
+- `src/components/tabs/VendorTab.jsx` - Main vendor interface
+- `src/components/tabs/IKnowMappingTab.jsx` - iKnow integration
+- `src/utils/iknowParser.js` - iKnow XML parser
+- `src/utils/ronlHelper.js` - RONL vocabulary queries
 
 ---
 

@@ -11,3 +11,4 @@ export { default as OrganizationTab } from './OrganizationTab';
 export { default as ParametersTab } from './ParametersTab';
 export { default as RulesTab } from './RulesTab';
 export { default as ServiceTab } from './ServiceTab';
+export { default as VendorTab } from './VendorTab';

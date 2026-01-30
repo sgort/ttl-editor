@@ -26,12 +26,12 @@ import {
   ConceptsTab,
   CPRMVTab,
   DMNTab,
-  IKnowMappingTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
   RulesTab,
   ServiceTab,
+  VendorTab,
 } from './components/tabs';
 import {
   useConceptsHandlers,
@@ -802,7 +802,7 @@ function App() {
                 'cprmv',
                 'dmn',
                 'concepts',
-                'iknow-mapping',
+                'vendor',
                 'changelog',
               ].map((tab) => {
                 // Determine active color based on RPP layer
@@ -860,7 +860,7 @@ function App() {
                     {tab === 'cprmv' && (
                       <span className="flex items-center justify-center gap-1.5">
                         <Database size={18} />
-                        CPRMV
+                        Policy
                       </span>
                     )}
                     {tab === 'concepts' && (
@@ -889,10 +889,10 @@ function App() {
                         )}
                       </span>
                     )}
-                    {tab === 'iknow-mapping' && (
+                    {tab === 'vendor' && (
                       <span className="flex items-center justify-center gap-1.5">
                         <Upload size={18} />
-                        iKnow
+                        Vendor
                       </span>
                     )}
                     {tab === 'changelog' && (
@@ -967,8 +967,8 @@ function App() {
                   setConcepts={setConcepts}
                 />
               )}
-              {activeTab === 'iknow-mapping' && (
-                <IKnowMappingTab
+              {activeTab === 'vendor' && (
+                <VendorTab
                   mappingConfig={iknowMappingConfig}
                   setMappingConfig={setIknowMappingConfig}
                   availableMappings={availableIKnowMappings}
