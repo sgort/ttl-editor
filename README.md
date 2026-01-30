@@ -150,16 +150,16 @@ The CPSV Editor supports integration with multiple vendor platforms for importin
 
 The editor integrates with vendors listed in the RONL vocabulary as **Method Concepts** (`ronl:MethodConcept`). Currently, 17 vendor platforms are supported:
 
-| Vendor | Description | Status |
-|--------|-------------|--------|
-| **iKnow** | Legislative analysis and knowledge management platform | ✅ Fully Integrated |
-| ALEF | Agile Law Execution Factory | 🔄 Planned |
-| Avola | Decision automation platform | 🔄 Planned |
-| Beinformed | Intelligent automation platform | 🔄 Planned |
-| Blueriq | Digital decision management | 🔄 Planned |
-| OpenFisca | Tax and benefit system modeling | 🔄 Planned |
-| RuleSpeak | Business rule notation | 🔄 Planned |
-| USoft | Rules-based application development | 🔄 Planned |
+| Vendor     | Description                                            | Status              |
+| ---------- | ------------------------------------------------------ | ------------------- |
+| **iKnow**  | Legislative analysis and knowledge management platform | ✅ Fully Integrated |
+| ALEF       | Agile Law Execution Factory                            | 🔄 Planned          |
+| Avola      | Decision automation platform                           | 🔄 Planned          |
+| Beinformed | Intelligent automation platform                        | 🔄 Planned          |
+| Blueriq    | Digital decision management                            | 🔄 Planned          |
+| OpenFisca  | Tax and benefit system modeling                        | 🔄 Planned          |
+| RuleSpeak  | Business rule notation                                 | 🔄 Planned          |
+| USoft      | Rules-based application development                    | 🔄 Planned          |
 
 ### Using the Vendor Tab
 
@@ -179,15 +179,16 @@ The editor integrates with vendors listed in the RONL vocabulary as **Method Con
 The iKnow integration allows you to import legislative knowledge from iKnow XML exports:
 
 #### Supported Formats
+
 - **CognitatieAnnotationExport.xml** - Concept-based exports with annotations
 - **SemanticsExport.xml** - Semantic knowledge exports
 
 #### Features
+
 - **Configure Mode**: Create reusable field mapping configurations
   - Map iKnow XML fields to CPSV-AP properties
   - Define mappings for Service, Legal, Rules, Parameters, and CPRMV sections
   - Save and load mapping configurations as JSON
-  
 - **Import Mode**: Import data using saved configurations
   - Upload iKnow XML data files
   - Select a mapping configuration
@@ -195,6 +196,7 @@ The iKnow integration allows you to import legislative knowledge from iKnow XML 
   - Import directly into the editor
 
 #### Workflow
+
 1. Switch to **Configure** mode
 2. Upload an example iKnow XML file (or use "Load Example")
 3. Map XML fields to CPSV-AP properties for each section
@@ -217,17 +219,20 @@ The architecture supports easy addition of new vendor integrations:
 ### Technical Details
 
 **Vendor List Source**: RONL vocabulary in TriplyDB
+
 ```
 Endpoint: https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql
 Concept: ronl:MethodConcept
 ```
 
 **Integration Pattern**: Each vendor URI follows the format:
+
 ```
 https://regels.overheid.nl/termen/{VendorName}
 ```
 
 **Related Components**:
+
 - `src/components/tabs/VendorTab.jsx` - Main vendor interface
 - `src/components/tabs/IKnowMappingTab.jsx` - iKnow integration
 - `src/utils/iknowParser.js` - iKnow XML parser
