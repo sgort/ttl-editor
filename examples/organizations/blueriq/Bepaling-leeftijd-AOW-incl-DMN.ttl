@@ -24,7 +24,7 @@
     cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
     dcat:keyword "AOW"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
-    cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/123456/Blueriq> ;
     cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
     cv:hasCost <https://regels.overheid.nl/costs/cost-001> ;
     cpsv:produces <https://regels.overheid.nl/outputs/output-01> ;
@@ -56,13 +56,13 @@
 #  Organization
 # ============================================================
 
-<https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
-    dct:identifier "Sociale_Verzekeringsbank" ;
-    skos:prefLabel "Sociale Verzekeringsbank"@nl ;
-    foaf:homepage <https://www.svb.nl> ;
+<https://organisaties.overheid.nl/123456/Blueriq> a cv:PublicOrganisation ;
+    dct:identifier "Blueriq" ;
+    skos:prefLabel "Blueriq"@nl ;
+    foaf:homepage <https://www.blueriq.nl> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
-    foaf:logo <./assets/Sociale_Verzekeringsbank_logo.png> ;
-    schema:image <./assets/Sociale_Verzekeringsbank_logo.png>  .
+    foaf:logo <./assets/Blueriq_logo.png> ;
+    schema:image <./assets/Blueriq_logo.png>  .
 
 
 # ============================================================
