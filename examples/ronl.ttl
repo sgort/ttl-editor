@@ -149,6 +149,7 @@ ronl:MethodConcept a skos:Concept ;
         ronl:ConcordiaLegal ,
         ronl:DataLex ,
         ronl:Demo ,
+        ronl:iKnow ,
         ronl:Leos ,
         ronl:OpenFisca ,
         ronl:RuleSpeak ,
@@ -469,6 +470,17 @@ ronl:Demo a skos:Concept ;
     skos:broader ronl:MethodConcept ;
     skos:inScheme ronl:Vocabulary .
 
+ronl:iKnow a skos:Concept ;
+    skos:prefLabel
+        "iKnow"@nl ,
+        "iKnow"@en ;
+    skos:definition
+        "Met iKnow Cognitatie beheert u de documenten die impact hebben op uw organisatie."@nl ,
+        "With iKnow Cognition you manage the documents that impact your organization."@en ;
+    rdfs:seeAlso <https://pna-group.com/software/iknow-cognitatie/> ;
+    skos:broader ronl:MethodConcept ;
+    skos:inScheme ronl:Vocabulary .
+    
 ronl:Leos a skos:Concept ;
     skos:prefLabel
         "LEOS"@nl ,
