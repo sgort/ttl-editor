@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.28.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.36.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0">
   <decision id="berekenrechtenhoogtezorg" name="berekenrechtenhoogtezorg" camunda:historyTimeToLive="P180D">
     <decisionTable id="decisionTable">
       <input id="input1" label="ingezetene">
@@ -219,30 +219,29 @@
       </rule>
     </decisionTable>
   </decision>
-  
-  <!-- ✅ ADDED: Input Data Elements with proper typeRef -->
   <inputData id="InputData_ingezetene_requirement" name="ingezetene_requirement">
     <variable id="Variable_ingezetene_requirement" name="ingezetene_requirement" typeRef="boolean" />
   </inputData>
-  
   <inputData id="InputData_leeftijd_requirement" name="leeftijd_requirement">
     <variable id="Variable_leeftijd_requirement" name="leeftijd_requirement" typeRef="boolean" />
   </inputData>
-  
   <inputData id="InputData_betalingsregeling_requirement" name="betalingsregeling_requirement">
     <variable id="Variable_betalingsregeling_requirement" name="betalingsregeling_requirement" typeRef="boolean" />
   </inputData>
-  
   <inputData id="InputData_detentie_requirement" name="detentie_requirement">
     <variable id="Variable_detentie_requirement" name="detentie_requirement" typeRef="boolean" />
   </inputData>
-  
   <inputData id="InputData_verzekering_requirement" name="verzekering_requirement">
     <variable id="Variable_verzekering_requirement" name="verzekering_requirement" typeRef="boolean" />
   </inputData>
-  
   <inputData id="InputData_inkomen_en_vermogen_requirement" name="inkomen_en_vermogen_requirement">
     <variable id="Variable_inkomen_en_vermogen_requirement" name="inkomen_en_vermogen_requirement" typeRef="double" />
   </inputData>
-  
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_0w7rvff">
+      <dmndi:DMNShape id="DMNShape_1m1l81w" dmnElementRef="berekenrechtenhoogtezorg">
+        <dc:Bounds height="80" width="180" x="150" y="150" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
 </definitions>

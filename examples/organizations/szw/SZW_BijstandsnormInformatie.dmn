@@ -1492,15 +1492,33 @@
       </rule>
     </decisionTable>
   </decision>
-  <inputData id="InputData_dagVanAanvraag" name="dagVanAanvraag" />
-  <inputData id="InputData_aanvragerAlleenstaand" name="aanvragerAlleenstaand" />
-  <inputData id="InputData_aanvragerHeeftKinderen" name="aanvragerHeeftKinderen" />
-  <inputData id="InputData_aanvragerIs181920" name="aanvragerIs181920" />
-  <inputData id="InputData_aanvragerIsTenminste21" name="aanvragerIsTenminste21" />
-  <inputData id="InputData_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd" />
-  <inputData id="InputData_partnerIs181920" name="partnerIs181920" />
-  <inputData id="InputData_partnerIsTenminste21" name="partnerIsTenminste21" />
-  <inputData id="InputData_partnerHeeftAOWLeeftijd" name="partnerHeeftAOWLeeftijd" />
+  <inputData id="InputData_dagVanAanvraag" name="dagVanAanvraag">
+    <variable id="Variable_dagVanAanvraag" name="dagVanAanvraag" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerAlleenstaand" name="aanvragerAlleenstaand">
+    <variable id="Variable_aanvragerAlleenstaand" name="aanvragerAlleenstaand" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aanvragerHeeftKinderen" name="aanvragerHeeftKinderen">
+    <variable id="Variable_aanvragerHeeftKinderen" name="aanvragerHeeftKinderen" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aanvragerIs181920" name="aanvragerIs181920">
+    <variable id="Variable_aanvragerIs181920" name="aanvragerIs181920" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aanvragerIsTenminste21" name="aanvragerIsTenminste21">
+    <variable id="Variable_aanvragerIsTenminste21" name="aanvragerIsTenminste21" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd">
+    <variable id="Variable_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_partnerIs181920" name="partnerIs181920">
+    <variable id="Variable_partnerIs181920" name="partnerIs181920" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_partnerIsTenminste21" name="partnerIsTenminste21">
+    <variable id="Variable_partnerIsTenminste21" name="partnerIsTenminste21" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_partnerHeeftAOWLeeftijd" name="partnerHeeftAOWLeeftijd">
+    <variable id="Variable_partnerHeeftAOWLeeftijd" name="partnerHeeftAOWLeeftijd" typeRef="boolean" />
+  </inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_1g6kpu6">
       <dmndi:DMNShape id="DMNShape_1734jqg" dmnElementRef="SZW_BijstandsnormInformatie">
