@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="szw_bijstand_drd" name="SZW Bijstand" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.36.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="szw_bijstand_drd" name="SZW Bijstand" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.43.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <decision id="SZW_BijstandsnormInformatie" name="SZW Bijstandsnorm Informatie" camunda:historyTimeToLive="10">
     <informationRequirement id="InformationRequirement_bedragen">
       <requiredDecision href="#SZW_BijstandsnormBedragen" />
@@ -649,6 +649,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0b83iz7">
+        <description>BWBR0015703_2026-01-01_0, Artikel 21, onderdeel a.</description>
         <inputEntry id="UnaryTests_1wflakf">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -656,10 +657,11 @@
           <text>"M"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mglt48">
-          <text>1501.5</text>
+          <text>1401.5</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1b6dy60">
+        <description>BWBR0015703_2026-01-01_0, Artikel 21, onderdeel a.</description>
         <inputEntry id="UnaryTests_1egxkwp">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -667,10 +669,11 @@
           <text>"MK"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1686vxo">
-          <text>1501.5</text>
+          <text>1401.5</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0c4as9k">
+        <description>BWBR0015703_2026-01-01_0, Artikel 21, onderdeel b.</description>
         <inputEntry id="UnaryTests_1rjdjph">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -682,6 +685,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0nvwa0j">
+        <description>BWBR0015703_2026-01-01_0, Artikel 21, onderdeel b.</description>
         <inputEntry id="UnaryTests_0q849x8">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -693,6 +697,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0xhag3i">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b.</description>
         <inputEntry id="UnaryTests_0r9dv2y">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -704,6 +709,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_036ofbe">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b.</description>
         <inputEntry id="UnaryTests_0owghlq">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -715,6 +721,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0fhyq5c">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel c.</description>
         <inputEntry id="UnaryTests_0wc3nui">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -726,6 +733,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_07q72b8">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c.</description>
         <inputEntry id="UnaryTests_1cgv4yj">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -737,6 +745,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_06bxggb">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a.</description>
         <inputEntry id="UnaryTests_155r5k4">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -748,6 +757,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1pcittq">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a.</description>
         <inputEntry id="UnaryTests_0v0fiuj">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -759,6 +769,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1s0az1o">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel b.</description>
         <inputEntry id="UnaryTests_1dwu0i5">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -770,6 +781,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ttwxry">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel b.</description>
         <inputEntry id="UnaryTests_03kwbog">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -781,6 +793,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0tfsw0y">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c.</description>
         <inputEntry id="UnaryTests_1qmuza2">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -792,6 +805,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0qbc2is">
+        <description>BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c.</description>
         <inputEntry id="UnaryTests_0rdup5s">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -803,6 +817,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1hz90lm">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel a.</description>
         <inputEntry id="UnaryTests_11ieqh8">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -814,6 +829,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1x6dzfq">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel a.</description>
         <inputEntry id="UnaryTests_0bjq2j1">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -825,6 +841,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1ajwshm">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b.</description>
         <inputEntry id="UnaryTests_17d2ack">
           <text>"1e helft 2026"</text>
         </inputEntry>
@@ -836,6 +853,7 @@
         </outputEntry>
       </rule>
       <rule id="DecisionRule_17dcoql">
+        <description>BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b.</description>
         <inputEntry id="UnaryTests_1bmikn3">
           <text>"1e helft 2026"</text>
         </inputEntry>
