@@ -29,7 +29,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
 
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: 'https://operaton-doc.open-regels.nl',
+    baseUrl: 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',
@@ -174,7 +174,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                         deployed: false,
                         deploymentId: null,
                         deployedAt: null,
-                        apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+                        apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
                         lastTestResult: null,
                         lastTestTimestamp: null,
                         testBody: null,
@@ -291,6 +291,9 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setConcepts(generatedConcepts);
   };
 
+  // UPDATED generateRequestBodyFromDMN - Detects date strings and fills with today's date
+  // Replace the function in src/components/tabs/DMNTab.jsx
+
   const generateRequestBodyFromDMN = (dmnContent) => {
     try {
       const parser = new DOMParser();
@@ -311,14 +314,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         if (name) {
           const nameLower = name.toLowerCase();
 
-          // FIRST: Try to read typeRef from <variable> child element
+          // 🆕 FIRST: Try to read typeRef from <variable> child element
           const variableElement = inputData.querySelector('variable');
           const typeRef = variableElement?.getAttribute('typeRef')?.toLowerCase();
 
           let value = '';
           let type = 'String';
 
-          // If typeRef exists in DMN, use it directly
+          // 🆕 If typeRef exists in DMN, use it directly
           if (typeRef) {
             switch (typeRef) {
               case 'boolean':
@@ -333,7 +336,43 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 type = typeRef === 'integer' || typeRef === 'long' ? 'Integer' : 'Double';
                 break;
               case 'string':
-                value = '';
+                // 🆕 Check if this string is actually a date based on variable name
+                const isDateVariable =
+                  nameLower.includes('dag') || // Dutch: day
+                  nameLower.includes('datum') || // Dutch: date
+                  nameLower.includes('date') || // English: date
+                  nameLower.includes('geboortedatum') || // Dutch: birth date
+                  (nameLower.includes('aanvraag') && nameLower.includes('dag')); // Application day
+
+                if (isDateVariable) {
+                  // Check if it's a birth date variable
+                  const isBirthDate =
+                    nameLower.includes('geboorte') ||
+                    nameLower.includes('birth') ||
+                    nameLower.includes('dob') ||
+                    nameLower.includes('geboortedatum');
+
+                  if (isBirthDate) {
+                    // Generate random birth date for age 25-68
+                    const today = new Date();
+                    const minAge = 25;
+                    const maxAge = 68;
+
+                    const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+                    const birthYear = today.getFullYear() - randomAge;
+                    const randomMonth = Math.floor(Math.random() * 12);
+                    const randomDay = Math.floor(Math.random() * 28) + 1;
+
+                    const birthDate = new Date(birthYear, randomMonth, randomDay);
+                    value = birthDate.toISOString().split('T')[0];
+                  } else {
+                    // For other date fields (like dagVanAanvraag), use today
+                    value = new Date().toISOString().split('T')[0];
+                  }
+                } else {
+                  // Regular string, leave empty
+                  value = '';
+                }
                 type = 'String';
                 break;
               case 'date':
@@ -446,27 +485,28 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
 
   // EXPLANATION:
   //
-  // The function now works in two modes:
+  // Enhanced date detection for string types:
   //
-  // 1. DMN-FIRST MODE (Preferred):
-  //    - Reads <variable typeRef="..."> from inputData elements
-  //    - Maps DMN types to Operaton types:
-  //      * boolean → Boolean (false)
-  //      * number/double → Double (0)
-  //      * integer/long → Integer (0)
-  //      * string → String ("")
-  //      * date → String (today's date)
+  // 1. When typeRef="string", check variable name for date indicators:
+  //    - "dag" (day in Dutch)
+  //    - "datum" (date in Dutch)
+  //    - "date" (date in English)
+  //    - "geboortedatum" (birth date in Dutch)
+  //    - Combined patterns like "dagVanAanvraag" (day of application)
   //
-  // 2. FALLBACK MODE (For legacy DMN files without typeRef):
-  //    - Uses pattern matching on variable names
-  //    - Enhanced with more Dutch patterns
+  // 2. If it's a date variable:
+  //    - Birth dates: Generate random age 25-68
+  //    - Other dates (like dagVanAanvraag): Use today's date
   //
-  // BENEFITS:
-  // Respects DMN type declarations
-  // Works with properly-typed DMN files
-  // Still works with legacy DMN files (pattern matching)
-  // More accurate type detection
-  // No guessing needed when types are explicit
+  // 3. If it's a regular string:
+  //    - Leave empty ("")
+  //
+  // EXAMPLE RESULTS:
+  //
+  // dagVanAanvraag (string) → "2026-02-04" (today)
+  // geboortedatum (string) → "1978-05-12" (random age 25-68)
+  // naam (string) → "" (regular string)
+  // aanvragerAlleenstaand (boolean) → false
 
   const loadExampleDMN = async () => {
     try {
@@ -795,7 +835,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 })
               }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="https://operaton-doc.open-regels.nl"
+              placeholder="https://operaton.open-regels.nl"
             />
           </div>
 
