@@ -55,7 +55,7 @@
           <text>&lt;= 26819</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_065u3ym">
-          <text>1250</text>
+          <text>1150</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0gdofz9">
           <text>"Provides allowance to eligible residents over 18 years old."</text>
@@ -240,7 +240,7 @@
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_0w7rvff">
       <dmndi:DMNShape id="DMNShape_1m1l81w" dmnElementRef="berekenrechtenhoogtezorg">
-        <dc:Bounds height="80" width="180" x="150" y="150" />
+        <dc:Bounds height="80" width="180" x="150" y="80" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>

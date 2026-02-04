@@ -46,9 +46,11 @@
 # ============================================================
 
 <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> a eli:LegalResource ;
-    dct:identifier "BWBR0015703/2026-01-01/0" ;
+    dct:identifier "BWBR0015703/2026-01-01" ;
     dct:title "Participatiewet"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
 
 
@@ -61,10 +63,10 @@
     dct:title "SZW_BijstandsnormInformatie.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/normbedragen> ;
     dct:source <https://regels.overheid.nl/services/normbedragen/dmn/file> ;
-    cprmv:deploymentId "eb736cd6-fb79-11f0-a5a4-3a5e81cd33b0" ;
-    cprmv:deployedAt "2026-01-27T12:15:51.375Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/SZW_BijstandsnormInformatie/evaluate> ;
-    cprmv:lastTested "2026-01-27T12:16:05.407Z"^^xsd:dateTime ;
+    cprmv:deploymentId "8e2c55b4-01be-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-04T11:42:17.372Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SZW_BijstandsnormInformatie/evaluate> ;
+    cprmv:lastTested "2026-02-04T11:43:29.778Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -72,7 +74,7 @@
     dct:identifier "dagVanAanvraag" ;
     dct:title "dagVanAanvraag"@nl ;
     dct:type "String" ;
-    schema:value "2026-01-27" ;
+    schema:value "2026-02-04" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
 <https://regels.overheid.nl/services/normbedragen/dmn/input/2> a cpsv:Input ;
@@ -121,7 +123,7 @@
     dct:identifier "partnerIsTenminste21" ;
     dct:title "partnerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value false ;
+    schema:value true ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
 <https://regels.overheid.nl/services/normbedragen/dmn/input/9> a cpsv:Input ;
@@ -920,7 +922,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-27"^^xsd:date .
+    dct:created "2026-02-04"^^xsd:date .
 
 # Input Variable Concepts
 

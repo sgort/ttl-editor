@@ -45,8 +45,10 @@
 # ============================================================
 
 <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> a eli:LegalResource ;
-    dct:identifier "BWBR0015703/2026-01-01/0" ;
+    dct:identifier "BWBR0015703/2026-01-01" ;
     dct:title "Participatiewet"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
 

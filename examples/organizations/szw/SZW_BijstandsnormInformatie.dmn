@@ -656,7 +656,7 @@
           <text>"M"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1mglt48">
-          <text>1401.5</text>
+          <text>1501.5</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1b6dy60">
@@ -667,7 +667,7 @@
           <text>"MK"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1686vxo">
-          <text>1401.5</text>
+          <text>1501.5</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0c4as9k">
