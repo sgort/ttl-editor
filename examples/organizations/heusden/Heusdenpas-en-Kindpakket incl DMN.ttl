@@ -1,0 +1,461 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket> a cpsv:PublicService ;
+    dct:identifier "heusdenpaskindpakket" ;
+    dct:title "Heusdenpas en Kindpakket"@nl ;
+    dct:description "De gratis HeusdenPas is er voor inwoners die rond moeten komen van een klein inkomen. Met de HeusdenPas ontvang je een budget dat je mag gebruiken voor sport of cultuurdeelname, bibliotheek of internet. Ook kan je korting krijgen op activiteiten in de gemeente Heusden.\nVoor kinderen van HeusdenPas-houders, in de leeftijd van 4 tot en met 17 jaar, is een KindPakket beschikbaar."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> ;
+    dcat:keyword "allowance, social, income, municipality"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/23118/Gemeente_Heusden> ;
+    cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR603544/1> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/23118/Gemeente_Heusden> a cv:PublicOrganisation ;
+    dct:identifier "Gemeente_Heusden" ;
+    skos:prefLabel "Gemeente Heusden (Heusden)"@nl ;
+    foaf:homepage <https://www.heusden.nl/> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Gemeente_Heusden_logo.png> ;
+    schema:image <./assets/Gemeente_Heusden_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://lokaleregelgeving.overheid.nl/CVDR603544/1> a eli:LegalResource ;
+    dct:identifier "CVDR603544" ;
+    dct:title "Gemeente Heusden - Beleidsregels HeusdenPas en kindpakket"@nl ;
+    dct:description "Gemeenten, provincies en waterschappen publiceren in het onderdeel 'Lokale wet- en regelgeving' van Overheid.nl van de geconsolideerde teksten van algemeen verbindende voorschriften, vastgesteld door een decentrale overheid."@nl ;
+    eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR603544/1/2017-11-04>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> a cprmv:DecisionModel ;
+    dct:identifier "RONL_HeusdenpasEindresultaat" ;
+    dct:title "HeusdenpasEindresultaat.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    dct:source <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/file> ;
+    cprmv:deploymentId "1486ab1e-fb84-11f0-a5a4-3a5e81cd33b0" ;
+    cprmv:deployedAt "2026-01-27T13:28:35.140Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
+    cprmv:lastTested "2026-01-27T13:29:00.953Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/1> a cpsv:Input ;
+    dct:identifier "aanvragerInwonerHeusden" ;
+    dct:title "aanvragerInwonerHeusden"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/2> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftKind4Tm17" ;
+    dct:title "aanvragerHeeftKind4Tm17"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/3> a cpsv:Input ;
+    dct:identifier "maandelijksBrutoInkomenAanvrager" ;
+    dct:title "maandelijksBrutoInkomenAanvrager"@nl ;
+    dct:type "Double" ;
+    schema:value 1200 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> a cpsv:Input ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 1100 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> a cpsv:Input ;
+    dct:identifier "aanvragerUitkeringBaanbrekers" ;
+    dct:title "aanvragerUitkeringBaanbrekers"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/6> a cpsv:Input ;
+    dct:identifier "aanvragerVoedselbankpasDenBosch" ;
+    dct:title "aanvragerVoedselbankpasDenBosch"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/7> a cpsv:Input ;
+    dct:identifier "aanvragerKwijtscheldingGemeentelijkeBelastingen" ;
+    dct:title "aanvragerKwijtscheldingGemeentelijkeBelastingen"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/8> a cpsv:Input ;
+    dct:identifier "aanvragerSchuldhulptrajectKredietbankNederland" ;
+    dct:title "aanvragerSchuldhulptrajectKredietbankNederland"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/9> a cpsv:Input ;
+    dct:identifier "aanvragerDitKalenderjaarAlAangevraagd" ;
+    dct:title "aanvragerDitKalenderjaarAlAangevraagd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/10> a cpsv:Input ;
+    dct:identifier "aanvragerAanmerkingStudieFinanciering" ;
+    dct:title "aanvragerAanmerkingStudieFinanciering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/11> a cpsv:Input ;
+    dct:identifier "aanvragerIs181920" ;
+    dct:title "aanvragerIs181920"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/12> a cpsv:Input ;
+    dct:identifier "aanvragerIsTenminste21" ;
+    dct:title "aanvragerIsTenminste21"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/13> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftAOWLeeftijd" ;
+    dct:title "aanvragerHeeftAOWLeeftijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/1> a cpsv:Output ;
+    dct:identifier "aanmerkingKindPakket" ;
+    dct:title "aanmerkingKindPakket"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:produces <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/2> a cpsv:Output ;
+    dct:identifier "aanmerkingHeusdenPas" ;
+    dct:title "aanmerkingHeusdenPas"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_passthrough> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_passthrough" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_eindresultaat" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_knockoffNee> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_knockoffNee" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_hoofdAanvraag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_automatischJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_automatischJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_hoofdAanvraag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_inkomenJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_inkomenJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_hoofdAanvraag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_andersNee> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_andersNee" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_hoofdAanvraag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_geenInwoner> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_geenInwoner" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_kindpakket" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_geenKind> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_geenKind" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_kindpakket" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_inkomenTeMuch> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_inkomenTeMuch" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_kindpakket" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_welKindpakket> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_welKindpakket" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_kindpakket" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_baanbrekersJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_baanbrekersJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_automatisch" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_voedselbankJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_voedselbankJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_automatisch" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_kwijtscheldingJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_kwijtscheldingJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_automatisch" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_schuldhulpJa> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_schuldhulpJa" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_automatisch" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_automatischNee> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_automatischNee" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_automatisch" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_geenInwonerKnock> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_geenInwonerKnock" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_knockoffs" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_alAangevraagdKnock> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_alAangevraagdKnock" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_knockoffs" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_studiefinancieringKnock> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_studiefinancieringKnock" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_knockoffs" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_jongerDan18Knock> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_jongerDan18Knock" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_knockoffs" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_geenKnockoff> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_geenKnockoff" ;
+    cpsv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_knockoffs" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-01-27"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerInwonerHeusden> a skos:Concept ;
+    skos:prefLabel "Aanvrager Inwoner Heusden"@nl ;
+    skos:definition "Aanvrager Inwoner Heusden is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AIH" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerHeeftKind4Tm17> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft Kind4 Tm17"@nl ;
+    skos:definition "Aanvrager Heeft Kind4 Tm17 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHKT" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/maandelijksBrutoInkomenAanvrager> a skos:Concept ;
+    skos:prefLabel "Maandelijks Bruto Inkomen Aanvrager"@nl ;
+    skos:definition "Maandelijks Bruto Inkomen Aanvrager is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MBIA" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/bijstandsNorm> a skos:Concept ;
+    skos:prefLabel "Bijstands Norm"@nl ;
+    skos:definition "Bijstands Norm is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BN" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerUitkeringBaanbrekers> a skos:Concept ;
+    skos:prefLabel "Aanvrager Uitkering Baanbrekers"@nl ;
+    skos:definition "Aanvrager Uitkering Baanbrekers is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AUB" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerVoedselbankpasDenBosch> a skos:Concept ;
+    skos:prefLabel "Aanvrager Voedselbankpas Den Bosch"@nl ;
+    skos:definition "Aanvrager Voedselbankpas Den Bosch is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AVDB" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerKwijtscheldingGemeentelijkeBelastingen> a skos:Concept ;
+    skos:prefLabel "Aanvrager Kwijtschelding Gemeentelijke Belastingen"@nl ;
+    skos:definition "Aanvrager Kwijtschelding Gemeentelijke Belastingen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AKGB" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerSchuldhulptrajectKredietbankNederland> a skos:Concept ;
+    skos:prefLabel "Aanvrager Schuldhulptraject Kredietbank Nederland"@nl ;
+    skos:definition "Aanvrager Schuldhulptraject Kredietbank Nederland is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ASKN" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerDitKalenderjaarAlAangevraagd> a skos:Concept ;
+    skos:prefLabel "Aanvrager Dit Kalenderjaar Al Aangevraagd"@nl ;
+    skos:definition "Aanvrager Dit Kalenderjaar Al Aangevraagd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ADKAA" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerAanmerkingStudieFinanciering> a skos:Concept ;
+    skos:prefLabel "Aanvrager Aanmerking Studie Financiering"@nl ;
+    skos:definition "Aanvrager Aanmerking Studie Financiering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AASF" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/10> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerIs181920> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is181920"@nl ;
+    skos:definition "Aanvrager Is181920 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AI" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/11> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is Tenminste21"@nl ;
+    skos:definition "Aanvrager Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AIT" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/12> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft AOW Leeftijd"@nl ;
+    skos:definition "Aanvrager Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHAL" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/13> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanmerkingKindPakket> a skos:Concept ;
+    skos:prefLabel "Aanmerking Kind Pakket"@nl ;
+    skos:definition "Aanmerking Kind Pakket is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AKP" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanmerkingHeusdenPas> a skos:Concept ;
+    skos:prefLabel "Aanmerking Heusden Pas"@nl ;
+    skos:definition "Aanmerking Heusden Pas is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AHP" ;
+    dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

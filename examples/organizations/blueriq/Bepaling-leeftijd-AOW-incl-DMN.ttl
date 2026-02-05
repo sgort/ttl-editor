@@ -1,0 +1,366 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq> a cpsv:PublicService ;
+    dct:identifier "aow-leeftijd-blrq" ;
+    dct:title "Bepaling leeftijd AOW"@nl ;
+    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet)."@nl ;
+    cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "AOW"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/123456/Blueriq> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
+    cv:hasCost <https://regels.overheid.nl/costs/cost-001> ;
+    cpsv:produces <https://regels.overheid.nl/outputs/output-01> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn>  .
+
+
+# ============================================================
+#  Cost
+# ============================================================
+
+<https://regels.overheid.nl/costs/cost-001> a cv:Cost ;
+    dct:identifier "cost-001" ;
+    cv:value "10" ;
+    cv:currency "EUR" ;
+    dct:description "Test Service Cost Description"@nl  .
+
+
+# ============================================================
+#  Output
+# ============================================================
+
+<https://regels.overheid.nl/outputs/output-01> a cv:Output ;
+    dct:identifier "output-01" ;
+    dct:title "20"@nl ;
+    dct:description "Test Service Output Description"@nl  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/123456/Blueriq> a cv:PublicOrganisation ;
+    dct:identifier "Blueriq" ;
+    skos:prefLabel "Blueriq"@nl ;
+    foaf:homepage <https://www.blueriq.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Blueriq_logo.png> ;
+    schema:image <./assets/Blueriq_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
+    dct:identifier "BWBR0002221" ;
+    dct:title "Algemene Ouderdomswet"@nl ;
+    dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/Blueriq> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
+
+
+# ============================================================
+#  Parameters
+# ============================================================
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> a cprmv:DecisionModel ;
+    dct:identifier "RONL_BerekenLeeftijden" ;
+    dct:title "RONL_BerekenLeeftijden_CPRMV.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    dct:source <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/file> ;
+    cprmv:deploymentId "6e9536de-fd32-11f0-a931-8e0c375d6d16" ;
+    cprmv:deployedAt "2026-01-29T16:49:09.953Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://regelservices.blueriq.com/shortcut/Doccle> ;
+    cprmv:lastTested "2026-01-29T16:49:34.159Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/1> a cpsv:Input ;
+    dct:identifier "dagVanAanvraag" ;
+    dct:title "dagVanAanvraag"@nl ;
+    dct:type "String" ;
+    schema:value "2026-01-29" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/2> a cpsv:Input ;
+    dct:identifier "geboortedatumAanvrager" ;
+    dct:title "geboortedatumAanvrager"@nl ;
+    dct:type "String" ;
+    schema:value "1975-09-17" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/3> a cpsv:Input ;
+    dct:identifier "geboortedatumPartner" ;
+    dct:title "geboortedatumPartner"@nl ;
+    dct:type "String" ;
+    schema:value "1958-04-19" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/1> a cpsv:Output ;
+    dct:identifier "leeftijdPartner" ;
+    dct:title "leeftijdPartner"@nl ;
+    dct:type "Integer" ;
+    schema:value 67 ;
+    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/2> a cpsv:Output ;
+    dct:identifier "leeftijdAanvrager" ;
+    dct:title "leeftijdAanvrager"@nl ;
+    dct:type "Integer" ;
+    schema:value 50 ;
+    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/3> a cpsv:Output ;
+    dct:identifier "AOWDatumAanvrager" ;
+    dct:title "AOWDatumAanvrager"@nl ;
+    dct:type "String" ;
+    schema:value "2042-09-17" ;
+    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/4> a cpsv:Output ;
+    dct:identifier "AOWDatumPartner" ;
+    dct:title "AOWDatumPartner"@nl ;
+    dct:type "String" ;
+    schema:value "2025-04-19" ;
+    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn> .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_withPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_withPartner_bereken" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221/Artikel_7a> ;
+    cprmv:ruleType "conditional-calculation" ;
+    cprmv:confidence "high" ;
+    cprmv:note "Berekent leeftijden voor zowel aanvrager als partner wanneer beide geboortedatums aanwezig zijn"@nl ;
+    cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
+    cprmv:rulesetType "conditional-calculation" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_withoutPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_withoutPartner_bereken" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221/Artikel_7a> ;
+    cprmv:ruleType "conditional-calculation" ;
+    cprmv:confidence "high" ;
+    cprmv:note "Berekent alleen de leeftijd van de aanvrager wanneer er geen partner is"@nl ;
+    cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
+    cprmv:rulesetType "conditional-calculation" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2020> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2020" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2020-01-01"^^xsd:date ;
+    cprmv:validUntil "2020-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2021> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2021" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2021-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:validUntil "2021-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2022> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2022" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2022-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2022-01-01"^^xsd:date ;
+    cprmv:validUntil "2022-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2023> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2023" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2023-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:validUntil "2023-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2024> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2024-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2024-01-01"^^xsd:date ;
+    cprmv:validUntil "2024-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2025> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2025-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2025-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "high" ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2026> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2026" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2026-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Geprojecteerde waarde op basis van huidige wetgeving"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2027> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2027" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2027-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2027-01-01"^^xsd:date ;
+    cprmv:validUntil "2027-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Geprojecteerde waarde op basis van huidige wetgeving"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2028> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2028" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2028-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2028-01-01"^^xsd:date ;
+    cprmv:validUntil "2028-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Geprojecteerde waarde op basis van huidige wetgeving"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2029> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2029" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2029-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2029-01-01"^^xsd:date ;
+    cprmv:validUntil "2029-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Geprojecteerde waarde op basis van huidige wetgeving"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-blrq/rules/DecisionRule_2030> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2030" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-blrq> ;
+    cprmv:extends <https://wetten.overheid.nl/BWBR0002221_2030-01-01_0/Artikel_7a/Lid_1> ;
+    cprmv:validFrom "2030-01-01"^^xsd:date ;
+    cprmv:validUntil "2030-12-31"^^xsd:date ;
+    cprmv:ruleType "temporal-period" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Geprojecteerde waarde op basis van huidige wetgeving"@nl ;
+    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:rulesetType "temporal-mapping" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-01-29"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/dagVanAanvraag> a skos:Concept ;
+    skos:prefLabel "Dag Van Aanvraag"@nl ;
+    skos:definition "Dag Van Aanvraag is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DVA" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/geboortedatumAanvrager> a skos:Concept ;
+    skos:prefLabel "Geboortedatum Aanvrager"@nl ;
+    skos:definition "Geboortedatum Aanvrager is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GA" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/geboortedatumPartner> a skos:Concept ;
+    skos:prefLabel "Geboortedatum Partner"@nl ;
+    skos:definition "Geboortedatum Partner is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GP" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/leeftijdPartner> a skos:Concept ;
+    skos:prefLabel "Leeftijd Partner"@nl ;
+    skos:definition "Leeftijd Partner is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "LP" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/leeftijdAanvrager> a skos:Concept ;
+    skos:prefLabel "Leeftijd Aanvrager"@nl ;
+    skos:definition "Leeftijd Aanvrager is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "LA" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/AOWDatumAanvrager> a skos:Concept ;
+    skos:prefLabel "AOW Datum Aanvrager"@nl ;
+    skos:definition "AOW Datum Aanvrager is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "ADA" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ronlberekenleeftijden/AOWDatumPartner> a skos:Concept ;
+    skos:prefLabel "AOW Datum Partner"@nl ;
+    skos:definition "AOW Datum Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "ADP" ;
+    dct:subject <https://regels.overheid.nl/services/aow-leeftijd-blrq/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

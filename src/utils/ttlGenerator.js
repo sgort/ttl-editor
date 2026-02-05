@@ -1,6 +1,6 @@
 import {
   extractInputsFromTestResult,
-  extractOutputsFromTestResult, // ADD THIS
+  extractOutputsFromTestResult,
   extractRulesFromDMN,
   sanitizeServiceIdentifier,
 } from './dmnHelpers';
@@ -16,12 +16,15 @@ export class TTLGenerator {
     this.service = state.service;
     this.organization = state.organization;
     this.legalResource = state.legalResource;
+    this.ronlAnalysis = state.ronlAnalysis || '';
+    this.ronlMethod = state.ronlMethod || '';
     this.temporalRules = state.temporalRules;
     this.parameters = state.parameters;
     this.cprmvRules = state.cprmvRules;
     this.cost = state.cost;
     this.output = state.output;
     this.dmnData = state.dmnData;
+    this.concepts = state.concepts || [];
 
     // Compute service URI once
     const sanitizedIdentifier =
@@ -94,6 +97,10 @@ export class TTLGenerator {
       ttl += this.generateDmnSection();
     }
 
+    // NL-SBB Concepts section
+    if (this.hasDMN()) {
+      ttl += this.generateConceptsSection();
+    }
     return ttl;
   }
 
@@ -266,6 +273,22 @@ export class TTLGenerator {
       ttl += `    cv:spatial <${this.organization.spatial}> ;\n`;
     }
 
+    // Logo output
+    if (this.organization.logo) {
+      // Check if it's a data URL or external URL
+      if (this.organization.logo.startsWith('data:')) {
+        // For base64 data URLs, we'll reference an asset file instead
+        // The actual file will be uploaded separately to TriplyDB
+        const logoFileName = `${orgId}_logo.png`;
+        ttl += `    foaf:logo <./assets/${logoFileName}> ;\n`;
+        ttl += `    schema:image <./assets/${logoFileName}> ;\n`;
+      } else {
+        // External URL
+        ttl += `    foaf:logo <${this.organization.logo}> ;\n`;
+        ttl += `    schema:image <${this.organization.logo}> ;\n`;
+      }
+    }
+
     ttl = ttl.slice(0, -2) + ' .\n\n';
 
     return ttl;
@@ -276,24 +299,41 @@ export class TTLGenerator {
    * @returns {string} Legal Resource TTL
    */
   generateLegalResourceSection() {
-    if (!this.legalResource.bwbId) {
+    if (!this.legalResource || !this.legalResource.bwbId) {
       return '';
     }
 
     let ttl = '';
 
-    // Support both full URIs and plain BWB IDs
-    const lowerBwbId = this.legalResource.bwbId.toLowerCase();
-    const legalUri =
-      lowerBwbId.startsWith('http://') || lowerBwbId.startsWith('https://')
-        ? this.legalResource.bwbId
-        : `https://wetten.overheid.nl/${this.legalResource.bwbId}`;
+    // Determine the legal URI based on identifier type
+    let legalUri;
+    const identifier = this.legalResource.bwbId;
+    const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+
+    if (isFullUri) {
+      // Use the provided URI directly
+      legalUri = identifier;
+    } else {
+      // Detect BWB or CVDR and generate appropriate URI
+      const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
+      const isCVDR = /CVDR\d+/i.test(identifier);
+
+      if (isBWB) {
+        legalUri = `https://wetten.overheid.nl/${identifier}`;
+      } else if (isCVDR) {
+        // CVDR URIs include version number, default to /1
+        legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
+      } else {
+        // Fallback: assume BWB format
+        legalUri = `https://wetten.overheid.nl/${identifier}`;
+      }
+    }
 
     ttl += `<${legalUri}> a eli:LegalResource ;\n`;
 
-    // Extract just the BWB ID portion if it's a full URI
-    const bwbIdOnly = this.legalResource.bwbId.replace(/^https?:\/\/[^/]+\//, '');
-    ttl += `    dct:identifier "${escapeTTLString(bwbIdOnly)}" ;\n`;
+    // Extract just the ID portion (without URI prefix) for dct:identifier
+    const identifierOnly = identifier.replace(/^https?:\/\/[^/]+\//, '').replace(/\/\d+$/, '');
+    ttl += `    dct:identifier "${escapeTTLString(identifierOnly)}" ;\n`;
 
     if (this.legalResource.title) {
       ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;
@@ -301,6 +341,20 @@ export class TTLGenerator {
 
     if (this.legalResource.description) {
       ttl += `    dct:description "${escapeTTLString(this.legalResource.description)}"@nl ;\n`;
+    }
+
+    if (this.ronlAnalysis) {
+      const analysisUri = this.ronlAnalysis.startsWith('http')
+        ? `<${this.ronlAnalysis}>`
+        : this.ronlAnalysis;
+      ttl += `    ronl:hasAnalysis ${analysisUri} ;\n`;
+    }
+
+    if (this.ronlMethod) {
+      const methodUri = this.ronlMethod.startsWith('http')
+        ? `<${this.ronlMethod}>`
+        : this.ronlMethod;
+      ttl += `    ronl:hasMethod ${methodUri} ;\n`;
     }
 
     if (this.legalResource.version) {
@@ -582,6 +636,7 @@ export class TTLGenerator {
       ttl += `<${dmnUri}> a cprmv:DecisionModel ;\n`;
       ttl += `    dct:identifier "${this.dmnData.decisionKey || 'unknown'}" ;\n`;
       ttl += `    dct:title "${this.dmnData.fileName}"@nl ;\n`;
+      ttl += `    ronl:implements <${this.serviceUri}> ;\n`;
       ttl += `    dct:source <${this.serviceUri}/dmn/file> ;\n`;
 
       if (this.dmnData.deploymentId) {
@@ -682,6 +737,76 @@ export class TTLGenerator {
     }
 
     return '';
+  }
+
+  /**
+   * Generate NL-SBB concept definitions from state
+   * @returns {string} TTL representation of concepts
+   */
+  generateConceptsSection() {
+    if (!this.concepts || this.concepts.length === 0) {
+      return '';
+    }
+
+    let ttl = '';
+
+    ttl += '# =====================================\n';
+    ttl += '# NL-SBB Concept Definitions (DMN Variables)\n';
+    ttl += '# =====================================\n\n';
+
+    // 1. Concept Scheme
+    const schemeUri = 'https://regels.overheid.nl/schemes/dmn-variables';
+    ttl += `<${schemeUri}> a skos:ConceptScheme ;\n`;
+    ttl += `    dct:title "DMN Variabelen Begrippenkader"@nl ;\n`;
+    ttl += `    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;\n`;
+    ttl += `    dct:creator "RONL" ;\n`;
+    ttl += `    dct:created "${new Date().toISOString().split('T')[0]}"^^xsd:date .\n\n`;
+
+    // Separate inputs and outputs
+    const inputConcepts = this.concepts.filter((c) => c.linkedToType === 'input');
+    const outputConcepts = this.concepts.filter((c) => c.linkedToType === 'output');
+
+    // 2. Input Concepts
+    if (inputConcepts.length > 0) {
+      ttl += '# Input Variable Concepts\n\n';
+
+      inputConcepts.forEach((concept) => {
+        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
+        ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
+        ttl += `    skos:notation "${concept.notation}" ;\n`;
+        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:type "${concept.type}" ;\n`;
+
+        if (concept.exactMatch && concept.exactMatch.trim() !== '') {
+          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+        }
+
+        ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
+      });
+    }
+
+    // 3. Output Concepts
+    if (outputConcepts.length > 0) {
+      ttl += '# Output Variable Concepts\n\n';
+
+      outputConcepts.forEach((concept) => {
+        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
+        ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
+        ttl += `    skos:notation "${concept.notation}" ;\n`;
+        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:type "${concept.type}" ;\n`;
+
+        if (concept.exactMatch && concept.exactMatch.trim() !== '') {
+          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+        }
+
+        ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
+      });
+    }
+
+    return ttl;
   }
 }
 

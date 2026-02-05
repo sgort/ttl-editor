@@ -46,23 +46,42 @@ export function validateOrganization(organization) {
 /**
  * Validate legal resource fields
  * @param {object} legalResource - Legal resource state object
+ * @param {string} ronlAnalysis - RONL analysis concept URI
+ * @param {string} ronlMethod - RONL method concept URI
  * @returns {string[]} - Array of error messages
  */
-export function validateLegalResource(legalResource) {
+export function validateLegalResource(legalResource, ronlAnalysis, ronlMethod) {
   const errors = [];
 
-  // BWB ID validation - accepts either:
-  // 1. Plain BWB ID (e.g., BWBR0002820)
-  // 2. Full URI containing a BWB ID (e.g., https://wetten.overheid.nl/BWBR0002820)
+  // Legal resource identifier validation - accepts:
+  // 1. BWB ID (e.g., BWBR0002820, BWBV0003018)
+  // 2. CVDR ID (e.g., CVDR603544)
+  // 3. Full URI containing BWB or CVDR ID
   if (legalResource.bwbId) {
-    const isPlainBwbId = /^[A-Za-z]{2,10}\d+$/i.test(legalResource.bwbId);
-    const containsBwbId = /BWB[A-Za-z]?\d+/i.test(legalResource.bwbId);
+    const isBWB = /BWB[A-Z]?\d+/i.test(legalResource.bwbId);
+    const isCVDR = /CVDR\d+/i.test(legalResource.bwbId);
+    const isFullUri = /^https?:\/\//i.test(legalResource.bwbId);
 
-    if (!isPlainBwbId && !containsBwbId) {
+    // If it's not a BWB, not a CVDR, and not a full URI - it's invalid
+    if (!isBWB && !isCVDR && !isFullUri) {
       errors.push(
-        'BWB ID must match pattern (e.g., BWBR0002820) or be a valid URI containing a BWB ID'
+        'Legal resource identifier must be a BWB ID (e.g., BWBR0002820), CVDR ID (e.g., CVDR603544), or a valid URI'
       );
     }
+
+    // If it's a full URI, verify it contains either BWB or CVDR
+    if (isFullUri && !isBWB && !isCVDR) {
+      errors.push('Full URI must contain a BWB ID or CVDR ID');
+    }
+  }
+
+  // RONL Concepts validation (NEW)
+  if (!ronlAnalysis) {
+    errors.push('RONL Analysis concept is required');
+  }
+
+  if (!ronlMethod) {
+    errors.push('RONL Method concept is required');
   }
 
   return errors;
@@ -144,6 +163,8 @@ export function validateForm(formState) {
     service = {},
     organization = {},
     legalResource = {},
+    ronlAnalysis = '',
+    ronlMethod = '',
     temporalRules = [],
     parameters = [],
   } = formState || {};
@@ -151,7 +172,7 @@ export function validateForm(formState) {
   const errors = [
     ...validateService(service),
     ...validateOrganization(organization),
-    ...validateLegalResource(legalResource),
+    ...validateLegalResource(legalResource, ronlAnalysis, ronlMethod), // UPDATE THIS
     ...temporalRules.flatMap((rule, idx) => validateTemporalRule(rule, idx)),
     ...parameters.flatMap((param, idx) => validateParameter(param, idx)),
   ];

@@ -26,6 +26,10 @@ export const VOCABULARY_CONFIG = {
       acceptedTypes: ['cv:PublicOrganisation'],
       canonicalType: 'cv:PublicOrganisation',
     },
+    concept: {
+      acceptedTypes: ['skos:Concept'],
+      canonicalType: 'skos:Concept',
+    },
     cost: {
       acceptedTypes: ['cv:Cost'],
       canonicalType: 'cv:Cost',
@@ -87,9 +91,20 @@ export const detectEntityType = (line) => {
   if (line.includes('a cprmv:DecisionRule') || line.includes(', cprmv:DecisionRule')) {
     return 'dmnRule';
   }
+  // Concept detection - must be exact "a skos:Concept" not "a skos:ConceptScheme"
+  if (
+    line.includes('a skos:Concept ') ||
+    line.includes('a skos:Concept;') ||
+    line.includes('a skos:Concept.')
+  ) {
+    return 'concept';
+  }
 
   // Regular entity detection
   for (const [entityName, config] of Object.entries(VOCABULARY_CONFIG.entityTypes)) {
+    // Skip 'concept' - already handled above with precise matching
+    if (entityName === 'concept') continue;
+
     for (const acceptedType of config.acceptedTypes) {
       if (line.includes(`a ${acceptedType}`)) {
         return entityName;

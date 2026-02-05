@@ -1,29 +1,8 @@
 # Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
 
-**Version:** 2.1 (Phase 1 Complete + DMN Integration)  
-**Editor Version:** 1.5.0  
-**Date:** December 2025  
+**Editor Version:** 1.8.3  
+**Date:** Januari 2026  
 **Status:** ✅ CPSV-AP 3.2.0 Compliant + DMN Integration
-
----
-
-## Version History
-
-**Version 2.1 - December 2025** (Editor v1.5.0)
-
-- ✅ Added DMN Tab with decision engine integration
-- ✅ Added cprmv:DecisionModel support
-- ✅ Added automatic input variable extraction
-- ✅ Added Operaton deployment and testing
-- ✅ Enhanced metadata with dct:source, ronl:implementedBy
-- ✅ Added URI sanitization for service identifiers
-- ✅ Fixed organization URI handling (supports both short IDs and full URIs)
-
-**Version 2.0 - December 2025** (Editor v1.4.0)
-
-- ✅ Achieved minimal CPSV-AP 3.2.0 compliance (Phase 1)
-- ✅ Added Cost and Output sections
-- ✅ Fixed Organization and Legal Resource compliance
 
 ---
 
@@ -36,7 +15,7 @@
 5. [Parameters Tab](#5-parameters-tab)
 6. [Cost & Output Sections](#6-cost--output-sections)
 7. [CPRMV Tab](#7-cprmv-tab)
-8. [DMN Tab](#8-dmn-tab) ⭐ **NEW in v1.5.0**
+8. [DMN Tab](#8-dmn-tab)
 9. [Future CPSV-AP Classes](#9-future-cpsv-ap-classes)
 10. [Implementation Summary](#10-implementation-summary)
 
@@ -71,7 +50,7 @@
 | Comma-separated keywords                   | `service.keywords`     | `dcat:keyword`    | `dcat:keyword`         | ✅     | Correct                        |
 | Language of the service \*                 | `service.language`     | `dct:language`    | `dct:language`         | 🎯     | **MANDATORY** (Phase 1)        |
 
-**Note on Identifier Sanitization (v1.5.0):** ⭐  
+**Note on Identifier Sanitization:**
 Service identifiers are automatically sanitized to create valid URIs:
 
 - Spaces → hyphens (`"aow leeftijd"` → `"aow-leeftijd"`)
@@ -79,7 +58,7 @@ Service identifiers are automatically sanitized to create valid URIs:
 - Special character removal
 - Result: `<https://regels.overheid.nl/services/aow-leeftijd>`
 
-### Service Relationships (v1.5.0)
+### Service Relationships
 
 | UI Field                | State Property            | TTL Output                 | CPSV-AP 3.2.0 Property      | Status | Notes                   |
 | ----------------------- | ------------------------- | -------------------------- | --------------------------- | ------ | ----------------------- |
@@ -89,7 +68,7 @@ Service identifiers are automatically sanitized to create valid URIs:
 | Produces Output         | `output.identifier`       | `cpsv:produces`            | `cpsv:produces`             | 🎯     | Links to Output         |
 | Has Decision Model      | `dmnData.fileName`        | `cprmv:hasDecisionModel`   | `cprmv:hasDecisionModel` ℹ️ | ⭐     | Links to DMN (v1.5.0)   |
 
-### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
+### Missing CPSV-AP 3.2.0 Fields
 
 | CPSV-AP Property     | Cardinality | Priority | Suggested UI Label  | Phase   |
 | -------------------- | ----------- | -------- | ------------------- | ------- |
@@ -108,7 +87,7 @@ Service identifiers are automatically sanitized to create valid URIs:
 
 **CPSV-AP Class:** `cv:PublicOrganisation` 🎯
 
-### Current Fields (v1.5.0)
+### Current Fields
 
 | UI Field Label                        | State Property            | TTL Output       | CPSV-AP 3.2.0 Property | Status | Notes                           |
 | ------------------------------------- | ------------------------- | ---------------- | ---------------------- | ------ | ------------------------------- |
@@ -117,20 +96,20 @@ Service identifiers are automatically sanitized to create valid URIs:
 | Homepage URL of the organization      | `organization.homepage`   | `foaf:homepage`  | `foaf:homepage`        | ✅     | Correct (via foaf:Agent)        |
 | Geographic Jurisdiction \*            | `organization.spatial`    | `cv:spatial`     | `cv:spatial`           | 🎯     | **MANDATORY** - Phase 1 added   |
 
-**Note on Organization URI (v1.5.0):** ⭐  
+**Note on Organization URI:**
 The organization identifier field intelligently handles both formats:
 
 - **Short ID:** `"28212263"` → `<https://regels.overheid.nl/organizations/28212263>`
 - **Full URI:** `"https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank"` → Used as-is  
   ✓ Full URI detected - will be used directly
 
-### Class Type Change (Phase 1 ✅)
+### Class Type Change
 
 | Before (v1.3.0)    | After (v1.4.0)          | Status                     |
 | ------------------ | ----------------------- | -------------------------- |
 | `org:Organization` | `cv:PublicOrganisation` | 🎯 CPSV-AP 3.2.0 compliant |
 
-### Missing CPSV-AP 3.2.0 Fields (Phase 3)
+### Missing CPSV-AP 3.2.0 Fields
 
 | CPSV-AP Property | Cardinality | Priority | Suggested UI Label | Phase   |
 | ---------------- | ----------- | -------- | ------------------ | ------- |
@@ -142,7 +121,7 @@ The organization identifier field intelligently handles both formats:
 
 **CPSV-AP Class:** `eli:LegalResource` 🎯
 
-### Current Fields (v1.4.0)
+### Current Fields
 
 | UI Field Label                    | State Property              | TTL Output           | CPSV-AP 3.2.0 Property | Status | Notes                   |
 | --------------------------------- | --------------------------- | -------------------- | ---------------------- | ------ | ----------------------- |
@@ -151,13 +130,13 @@ The organization identifier field intelligently handles both formats:
 | Title of the legal resource       | `legalResource.title`       | `dct:title`          | `dct:title`            | ✅     | Correct                 |
 | Description of the legal resource | `legalResource.description` | `dct:description`    | `dct:description`      | ✅     | Correct                 |
 
-### Property Change (Phase 1 ✅)
+### Property Change
 
 | Before (v1.3.0) | After (v1.4.0)        | Status                     |
 | --------------- | --------------------- | -------------------------- |
 | `cpsv:follows`  | `cv:hasLegalResource` | 🎯 CPSV-AP 3.2.0 compliant |
 
-### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
+### Missing CPSV-AP 3.2.0 Fields
 
 | CPSV-AP Property       | Cardinality | Priority | Suggested UI Label        | Phase   |
 | ---------------------- | ----------- | -------- | ------------------------- | ------- |
@@ -166,13 +145,65 @@ The organization identifier field intelligently handles both formats:
 | `eli:implements`       | 0..\*       | Medium   | Implements Legal Resource | Phase 2 |
 | `eli:establishedUnder` | 0..\*       | Low      | Established Under         | Phase 3 |
 
+### RONL Concepts
+
+**New in v1.8.3:** Integration with RONL (Regels Open Nederland) vocabulary for legislative analysis and rules management methodologies.
+
+| Field Label | UI Tab | State Property | RDF Property       | Required | Format | Notes                                                 |
+| ----------- | ------ | -------------- | ------------------ | -------- | ------ | ----------------------------------------------------- |
+| Analysis    | Legal  | `ronlAnalysis` | `ronl:hasAnalysis` | No       | URI    | Legislative analysis methodology from RONL vocabulary |
+| Method      | Legal  | `ronlMethod`   | `ronl:hasMethod`   | No       | URI    | Rules management methodology from RONL vocabulary     |
+
+**Data Source:**
+
+- **Endpoint:** `https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql`
+- **Analysis Concepts:** Fetched via SPARQL query: `ronl:AnalysisConcept skos:narrower ?narrower`
+- **Method Concepts:** Fetched via SPARQL query: `ronl:MethodConcept skos:narrower ?narrower`
+
+**Available Analysis Options (3):**
+
+- `ronl:WetsanalyseJAS` - Wetsanalyse (JAS) - Legal Analysis Schema
+- `ronl:WetsanalyseJRM` - Wetsanalyse (JRM) - Legal Reference Model
+- `ronl:FLINT` - FLINT protocol for normative tasks
+
+**Available Method Options (16):**
+
+- `ronl:AKN4EU`, `ronl:ALEF`, `ronl:Avola`, `ronl:Beinformed`, `ronl:Blawx`, `ronl:Blueriq`, `ronl:Catala`, `ronl:CircuLaw`, `ronl:ConcordiaLegal`, `ronl:DataLex`, `ronl:Demo`, `ronl:Leos`, `ronl:OpenFisca`, `ronl:RuleSpeak`, `ronl:Sparkwise`, `ronl:USoft`
+
+**Implementation Details:**
+
+- Dropdowns populate on component mount via `fetchAllRonlConcepts()` utility
+- Values stored as full URIs (e.g., `https://regels.overheid.nl/termen/WetsanalyseJAS`)
+- Backend proxy used for SPARQL queries to avoid CORS issues
+- Full round-trip support: values preserved in TTL export and restored on import
+- Loading states and error handling for network issues
+
+**Example TTL Output:**
+
+```turtle
+<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
+    dct:identifier "BWBR0002221" ;
+    dct:title "Algemene Ouderdomswet"@nl ;
+    dct:description "Wet van 31 mei 1956..."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> .
+```
+
+**Technical Implementation:**
+
+- **Utility:** `src/utils/ronlHelper.js` - SPARQL query functions
+- **State Management:** `useEditorState` hook with `ronlAnalysis` and `ronlMethod` properties
+- **TTL Generator:** `generateLegalResourceSection()` in `src/utils/ttlGenerator.js`
+- **Parser:** `parseTTLEnhanced()` in `src/parseTTL.enhanced.js`
+- **UI Component:** Side-by-side dropdowns in `LegalTab.jsx`
+
 ---
 
 ## 4. Rules Tab
 
 **CPSV-AP Class:** `cpsv:Rule, ronl:TemporalRule` 🎯 ℹ️
 
-### Current Fields (v1.4.0)
+### Current Fields
 
 | UI Field Label          | State Property         | TTL Output             | CPSV-AP 3.2.0 Property    | Status | Notes                   |
 | ----------------------- | ---------------------- | ---------------------- | ------------------------- | ------ | ----------------------- |
@@ -185,7 +216,7 @@ The organization identifier field intelligently handles both formats:
 | Confidence Level        | `rule.confidenceLevel` | `ronl:confidenceLevel` | `ronl:confidenceLevel` ℹ️ | ✅     | high/medium/low         |
 | Rule Description        | `rule.description`     | `dct:description`      | `dct:description`         | ✅     | Correct                 |
 
-### Dual Typing (Phase 1 ✅)
+### Dual Typing
 
 Rules are typed as both CPSV-AP core and RONL extension:
 
@@ -198,7 +229,7 @@ This allows:
 - **CPSV-AP compliance** - recognized as standard Rule
 - **RONL extensions** - temporal validity, confidence, extends properties
 
-### Missing CPSV-AP 3.2.0 Fields (Phase 2+)
+### Missing CPSV-AP 3.2.0 Fields
 
 | CPSV-AP Property       | Cardinality | Priority | Suggested UI Label        | Phase   |
 | ---------------------- | ----------- | -------- | ------------------------- | ------- |
@@ -213,7 +244,7 @@ This allows:
 
 **Current Class:** `ronl:ParameterWaarde` ℹ️
 
-### Current Fields (v1.4.0)
+### Current Fields
 
 | UI Field Label                 | State Property      | TTL Output        | Status | Notes          |
 | ------------------------------ | ------------------- | ----------------- | ------ | -------------- |
@@ -235,7 +266,7 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 
 ## 6. Cost & Output Sections
 
-### 6.1 Cost (cv:Cost) - 🎯 Phase 1 Complete
+### 6.1 Cost (cv:Cost)
 
 **Location:** Within Service Tab  
 **CPSV-AP Class:** `cv:Cost`
@@ -251,7 +282,7 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 
 ---
 
-### 6.2 Output (cv:Output) - 🎯 Phase 1 Complete
+### 6.2 Output (cv:Output)
 
 **Location:** Within Service Tab  
 **CPSV-AP Class:** `cv:Output`
@@ -290,7 +321,7 @@ CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for mana
 
 ---
 
-## 8. DMN Tab ⭐ **NEW in Version 1.5.0**
+## 8. DMN Tab
 
 **Location:** Dedicated "DMN" tab  
 **CPSV-AP Class:** `cprmv:DecisionModel` ℹ️  
@@ -439,7 +470,42 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 8.7 Operaton API Integration
+#### 8.7 NL-SBB Concepts
+
+The CPSV Editor automatically generates semantic concept definitions for DMN decision variables according to the **Dutch Standard for Describing Concepts (NL-SBB)**. These concepts enable semantic interoperability across different decision models.
+
+**Key Features:**
+
+- **Automatic Generation**: Concepts are automatically created when you test a DMN model
+- **Full CRUD Operations**: Add, edit, and delete concepts with a user-friendly interface
+- **Semantic Linking**: Use `skos:exactMatch` to link concepts across different ontologies
+- **Import/Export**: Concepts are preserved in round-trip import/export cycles
+- **Manual Management**: Add custom input/output concepts beyond auto-generated ones
+
+**Concept Properties:**
+
+- **Preferred Label** (skos:prefLabel): Human-readable name in Dutch
+- **Notation** (skos:notation): Short machine code (e.g., "GA", "LP")
+- **Definition** (skos:definition): Semantic description of the concept
+- **Variable Name**: Technical name used in DMN and URIs
+- **Exact Match** (skos:exactMatch): Optional URI to equivalent concept in another ontology
+
+**Use Cases:**
+
+- **Cross-DMN Validation**: Link variables like "geboortedatum" = "birthdate" across different models
+- **Chain Detection**: Enable the Linked Data Explorer to detect cycles and validate decision chains
+- **Concept Harmonization**: Standardize terminology across different government organizations
+- **Semantic Search**: Enable semantic queries across multiple decision models
+
+**Standards Compliance:**
+
+- NL-SBB (Nederlandse Standaard voor het Beschrijven van Begrippen)
+- SKOS (Simple Knowledge Organization System)
+- Linked Data principles with dereferenceable URIs
+
+**Documentation**: [Dutch Standard for Describing Concepts](https://geonovum.github.io/NL-SBB/)
+
+### 8.8 Operaton API Integration
 
 | API Endpoint                              | Method | Purpose           | Status |
 | ----------------------------------------- | ------ | ----------------- | ------ |
@@ -454,9 +520,9 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 8.8 Vocabulary Extensions
+### 8.9 Vocabulary Extensions
 
-**New CPRMV Properties (v1.5.0):**
+**New CPRMV Properties:**
 
 | Property                 | Domain                | Range                 | Description                     |
 | ------------------------ | --------------------- | --------------------- | ------------------------------- |
@@ -473,7 +539,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 | `cprmv:decisionTable`    | `cprmv:DecisionRule`  | `xsd:string`          | Decision table identifier       |
 | `cprmv:rulesetType`      | `cprmv:DecisionRule`  | `xsd:string`          | Type of ruleset                 |
 
-**New RONL Properties (v1.5.0):**
+**New RONL Properties:**
 
 | Property             | Domain                | Range           | Description                         |
 | -------------------- | --------------------- | --------------- | ----------------------------------- |
@@ -492,7 +558,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ## 9. Future CPSV-AP Classes
 
-### 9.1 Channel (cv:Channel) - 📋 Phase 2
+### 9.1 Channel (cv:Channel)
 
 **Priority:** MEDIUM
 
@@ -505,7 +571,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 9.2 ContactPoint (cv:ContactPoint) - 📋 Phase 2
+### 9.2 ContactPoint (cv:ContactPoint)
 
 **Priority:** MEDIUM
 
@@ -517,7 +583,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 9.3 Requirement (cv:Requirement) - 🔮 Phase 3
+### 9.3 Requirement (cv:Requirement)
 
 **Priority:** MEDIUM-LOW
 
@@ -530,7 +596,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 9.4 Evidence (cv:Evidence) - 🔮 Phase 3
+### 9.4 Evidence (cv:Evidence)
 
 **Priority:** LOW
 
@@ -543,7 +609,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 9.5 Event (cv:Event, cv:BusinessEvent, cv:LifeEvent) - 🔮 Phase 3
+### 9.5 Event (cv:Event, cv:BusinessEvent, cv:LifeEvent)
 
 **Priority:** LOW
 
@@ -556,7 +622,7 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-### 9.6 Address (locn:Address) - 🔮 Phase 3
+### 9.6 Address (locn:Address)
 
 **Priority:** LOW (sub-entity of Organization)
 
@@ -664,7 +730,6 @@ The DMN tab intelligently detects input types based on naming patterns:
 ### Editor Resources
 
 - **Application:** https://cpsv.open-regels.nl/
-- **Version:** 1.5.0 (DMN Integration Complete)
 - **Repository:** Part of RONL Initiative
 - **Documentation:**
   - [README.md](./../README.md)
@@ -673,11 +738,4 @@ The DMN tab intelligently detects input types based on naming patterns:
 
 ---
 
-**Document Version:** 2.1  
-**Document Status:** Current  
-**Last Updated:** December 23, 2025  
-**Next Review:** After Phase 2 implementation
-
----
-
-_Core Public Service Editor - CPSV-AP 3.2.0 Compliant + DMN Integration_ ✨
+_Core Public Service Editor - CPSV-AP 3.2.0 Compliant + DMN Integration_

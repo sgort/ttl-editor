@@ -1,6 +1,218 @@
 {
   "versions": [
     {
+      "version": "1.8.3",
+      "status": "Minor Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "2026-01-29",
+      "description": "RONL Concepts Integration",
+      "sections": [
+        {
+          "title": "Multi-Vendor Integration Architecture",
+          "icon": "🏢",
+          "iconColor": "purple",
+          "items": [
+            "Transformed 'iKnow Mapping' tab into 'Vendor' tab with vendor selection dropdown",
+            "Vendor dropdown dynamically loads all RONL Method Concepts from TriplyDB",
+            "Selecting 'iKnow' from dropdown displays full iKnow integration functionality (Configure and Import modes)",
+            "All existing iKnow XML mapping features preserved: field mapping configuration, CognitatieAnnotationExport and SemanticsExport format support",
+            "Professional placeholder content for non-iKnow vendors showing implementation roadmap and status",
+            "Consistent vendor selection pattern matching Legal tab's Method dropdown",
+            "Scalable architecture for adding new vendor integrations in the future",
+            "Loading states and error handling for vendor list retrieval from TriplyDB"
+          ]
+        },
+        {
+          "title": "Added support for selecting legislative analysis and rules management methodologies from the RONL vocabulary.",
+          "icon": "⚖️",
+          "iconColor": "blue",
+          "items": [
+            "Added 'Analysis' dropdown on Legal tab for selecting legislative analysis methodology (Wetsanalyse JAS, Wetsanalyse JRM, FLINT)",
+            "Added 'Method' dropdown on Legal tab for selecting rules management methodology (16 options including ALEF, Avola, DMN, RuleSpeak, and more)",
+            "Dynamic loading of concepts from TriplyDB SPARQL endpoint (ronl vocabulary dataset)",
+            "Side-by-side dropdown layout with consistent field styling matching existing Legal tab fields",
+            "Full round-trip support: selected concepts are preserved in TTL export and correctly restored on import",
+            "Properties ronl:hasAnalysis and ronl:hasMethod link legal resources to RONL vocabulary concepts",
+            "Loading states with user-friendly feedback during SPARQL query execution",
+            "Comprehensive error handling for network issues with clear error messages"
+          ]
+        },
+        {
+          "title": "Technical Implementation",
+          "icon": "⚙️",
+          "iconColor": "gray",
+          "items": [
+            "New utility: src/utils/ronlHelper.js with fetchRonlConcepts() and fetchAllRonlConcepts() functions",
+            "New state properties: ronlAnalysis and ronlMethod in useEditorState hook",
+            "Backend proxy endpoint /v1/triplydb/query used for CORS-free SPARQL queries",
+            "Concepts fetched from https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql",
+            "SPARQL queries filter for Dutch labels using FILTER(LANG(?prefLabel) = 'nl')",
+            "TTL generation: ronlAnalysis and ronlMethod added to generateLegalResourceSection()",
+            "Parser: parseTTLEnhanced() updated to extract ronl:hasAnalysis and ronl:hasMethod",
+            "Import handler: applyImportedData() updated to apply RONL concept state",
+            "Console logging for debugging: 'Parsed RONL Analysis' and 'Parsed RONL Method' messages"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.8.2",
+      "date": "2026-01-27",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "description": "Enhanced DMN type detection, CVDR legal resource support, and UI improvements",
+      "sections": [
+        {
+          "title": "DMN Type Detection",
+          "icon": "🎯",
+          "iconColor": "blue",
+          "items": [
+            "DMN files now read typeRef from <variable> elements for accurate type detection",
+            "Added intelligent birth date generation (random age 25-68 years) for demographic variables",
+            "Enhanced boolean pattern detection with Dutch keywords: alleenstaand, uitkering, voedselbank, kwijtschelding, schuldhulp, inwoner",
+            "Fallback pattern matching for legacy DMN files without typeRef declarations",
+            "Auto-generated request bodies now respect DMN semantic types (boolean, number, string, date)"
+          ]
+        },
+        {
+          "title": "Legal Resource Support",
+          "icon": "⚖️",
+          "iconColor": "purple",
+          "items": [
+            "Added CVDR (Municipal/Local Regulations) support alongside BWB (National Legislation)",
+            "Legal tab now accepts CVDR IDs (e.g., CVDR603544) from lokaleregelgeving.overheid.nl",
+            "Automatic repository detection with visual badges (BWB = blue, CVDR = purple)",
+            "Smart URI generation: CVDR includes version number (/1), BWB uses standard format",
+            "Quick links to view documents in appropriate repository",
+            "Enhanced validation to support both BWB and CVDR identifier patterns"
+          ]
+        },
+        {
+          "title": "User Interface",
+          "icon": "🎨",
+          "iconColor": "green",
+          "items": [
+            "Compact tab navigation: reduced padding and font size to eliminate horizontal scroll",
+            "Improved tab spacing (px-3, py-2.5, text-sm) for better screen space utilization",
+            "All 10 tabs now fit without scrollbar on standard screen widths",
+            "Maintained icon size (18px) for optimal clickability and visual balance"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.8.1",
+      "status": "Major Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "January 24, 2026",
+      "sections": [
+        {
+          "title": "NL-SBB Concept Layer for DMN Variables - Complete",
+          "icon": "📚",
+          "iconColor": "purple",
+          "items": [
+            "Phase A: Automatic concept generation from DMN test results with Dutch NL-SBB standard compliance",
+            "Phase B: Full import/export support - concepts preserved in round-trip TTL workflows",
+            "Phase C: Complete editable UI with add/edit/delete operations for all concept properties",
+            "Clean separation architecture with skos:Concept definitions for all DMN inputs and outputs",
+            "Bidirectional linking: concepts link to technical variables via dct:subject",
+            "Foundation for semantic matching across different DMNs using skos:exactMatch"
+          ]
+        },
+        {
+          "title": "Editable Concepts Tab",
+          "icon": "✏️",
+          "iconColor": "blue",
+          "items": [
+            "Edit preferred labels, definitions, notations, and exact match URIs",
+            "Edit variable names with automatic URI updates",
+            "Separate 'Add Input Concept' and 'Add Output Concept' buttons",
+            "Auto-scroll and focus on newly added concepts",
+            "Delete individual concepts with confirmation",
+            "Visual distinction between input (blue) and output (green) concepts",
+            "Read-only 'Linked To' field shows connection to DMN variables"
+          ]
+        },
+        {
+          "title": "Import/Export & Integration",
+          "icon": "🔄",
+          "iconColor": "green",
+          "items": [
+            "Concepts automatically parsed from imported TTL files",
+            "Perfect preservation in round-trip workflows",
+            "Clearing DMN data now also clears associated concepts",
+            "ConceptScheme correctly excluded from concept parsing",
+            "Badge shows accurate concept count (inputs + outputs)",
+            "Empty state guides users through DMN upload workflow"
+          ]
+        },
+        {
+          "title": "Semantic Interoperability Foundation",
+          "icon": "🔗",
+          "iconColor": "indigo",
+          "items": [
+            "Variables from different DMNs can now be semantically matched via skos:exactMatch",
+            "Support for cross-DMN equivalence declarations (e.g., geboortedatum = birthdate)",
+            "Human-readable labels auto-generated from camelCase variable names",
+            "Unique notation codes generated for each concept",
+            "Dutch language definitions following NL-SBB standard",
+            "Enables advanced chain validation and cycle detection in Linked Data Explorer"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.7.0",
+      "status": "Feature",
+      "statusColor": "emerald",
+      "borderColor": "emerald",
+      "date": "January 2026",
+      "sections": [
+        {
+          "title": "Organization Logo Management",
+          "icon": "🖼️",
+          "iconColor": "purple",
+          "items": [
+            "Upload organization logos (JPG/PNG) with automatic resizing to 256×256px",
+            "Live preview with file size and encoding information",
+            "Remove and replace logo functionality",
+            "Automatic publishing to TriplyDB as asset files",
+            "TTL generation with foaf:logo and schema:image properties",
+            "File validation (max 5MB, image formats only)"
+          ]
+        },
+        {
+          "title": "Semantic Linking Improvements",
+          "icon": "🔗",
+          "iconColor": "blue",
+          "items": [
+            "Added ronl:implements link from DMN to Service",
+            "Complete RDF graph traversal: DMN → Service → Organization → Logo",
+            "Bidirectional service-DMN relationships",
+            "Enhanced SPARQL query capabilities for logo resolution"
+          ]
+        },
+        {
+          "title": "Technical Implementation",
+          "icon": "⚙️",
+          "iconColor": "gray",
+          "items": [
+            "Canvas-based image resizing with aspect ratio preservation",
+            "Base64 encoding for state management",
+            "TriplyDB asset API integration",
+            "Asset filename generation based on organization identifier",
+            "Enhanced TTL parser for logo import/export",
+            "Graceful degradation if asset upload fails",
+            "Import Limitation: When importing a TTL file, the logo will be a reference to the asset file, not the actual base64 data",
+            "TriplyDB Only: Logo upload to TriplyDB only works when publishing"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.6.0",
       "status": "Feature",
       "statusColor": "emerald",
@@ -53,7 +265,7 @@
       "status": "Release",
       "statusColor": "green",
       "borderColor": "green",
-      "date": "January X, 2026",
+      "date": "January 7, 2026",
       "sections": [
         {
           "title": "Fix Incomplete Modularization",

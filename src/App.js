@@ -2,6 +2,7 @@ import './App.css';
 
 import {
   AlertCircle,
+  BookOpen,
   Building2,
   CheckCircle,
   Clock,
@@ -22,23 +23,30 @@ import PreviewPanel from './components/PreviewPanel';
 import PublishDialog from './components/PublishDialog';
 import {
   ChangelogTab,
+  ConceptsTab,
   CPRMVTab,
   DMNTab,
-  IKnowMappingTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
   RulesTab,
   ServiceTab,
+  VendorTab,
 } from './components/tabs';
 import {
+  useConceptsHandlers,
   useCprmvRulesHandlers,
   useParametersHandlers,
   useTemporalRulesHandlers,
 } from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
-import { publishToTriplyDB, saveTriplyDBConfig, updateTriplyDBService } from './utils';
+import {
+  publishToTriplyDB,
+  saveTriplyDBConfig,
+  updateTriplyDBService,
+  uploadLogoAsset,
+} from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import { generateTTL } from './utils/ttlGenerator';
@@ -52,12 +60,18 @@ function App() {
     setOrganization,
     legalResource,
     setLegalResource,
+    ronlAnalysis,
+    setRonlAnalysis,
+    ronlMethod,
+    setRonlMethod,
     temporalRules,
     setTemporalRules,
     parameters,
     setParameters,
     cprmvRules,
     setCprmvRules,
+    concepts,
+    setConcepts,
     cost,
     setCost,
     output,
@@ -102,17 +116,25 @@ function App() {
     handleRemove: removeCPRMVRule,
   } = useCprmvRulesHandlers(cprmvRules, setCprmvRules);
 
+  const { handleUpdateField: updateConcept, handleRemove: removeConcept } = useConceptsHandlers(
+    concepts,
+    setConcepts
+  );
+
   // Helper to build state object for TTL generator
   const buildStateForTTL = () => ({
     service, // ← Use destructured variable
     organization, // ← Use destructured variable
     legalResource,
+    ronlAnalysis,
+    ronlMethod,
     temporalRules,
     parameters,
     cprmvRules,
     cost,
     output,
     dmnData,
+    concepts,
   });
 
   const [message, setMessage] = useState('');
@@ -125,14 +147,74 @@ function App() {
   // Helper to get TTL content
   const getTTLContent = () => generateTTL(buildStateForTTL());
 
-  const downloadTTL = () => {
+  const downloadTTL = async () => {
     const ttl = getTTLContent();
-    const blob = new Blob([ttl], { type: 'text/turtle' });
+    const suggestedName =
+      sanitizeFilename(service.name || service.identifier || 'service') + '.ttl';
+
+    // Check if File System Access API is supported (Chrome, Edge, Opera)
+    if ('showSaveFilePicker' in window) {
+      try {
+        // Show native Save As dialog
+        const fileHandle = await window.showSaveFilePicker({
+          suggestedName: suggestedName,
+          types: [
+            {
+              description: 'Turtle RDF Files',
+              accept: {
+                'text/turtle': ['.ttl'],
+              },
+            },
+          ],
+        });
+
+        // Create a writable stream
+        const writable = await fileHandle.createWritable();
+
+        // Write the TTL content
+        await writable.write(ttl);
+
+        // Close the file
+        await writable.close();
+
+        // Success message
+        setMessage(`File saved successfully as ${fileHandle.name}`);
+        setMessageType('success');
+        setTimeout(() => {
+          setMessage('');
+          setMessageType('');
+        }, 5000);
+      } catch (error) {
+        // User cancelled or error occurred
+        if (error.name !== 'AbortError') {
+          console.error('Error saving file:', error);
+          setMessage('Error saving file. Using fallback download...');
+          setMessageType('warning');
+
+          // Fallback to traditional download
+          fallbackDownload(ttl, suggestedName);
+
+          setTimeout(() => {
+            setMessage('');
+            setMessageType('');
+          }, 5000);
+        }
+        // If AbortError, user cancelled - do nothing
+      }
+    } else {
+      // Browser doesn't support File System Access API
+      // Use traditional download
+      fallbackDownload(ttl, suggestedName);
+    }
+  };
+
+  // Helper function for traditional download (fallback)
+  const fallbackDownload = (content, filename) => {
+    const blob = new Blob([content], { type: 'text/turtle' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = sanitizeFilename(service.name || service.identifier || 'service') + '.ttl';
-    //                                 ↑ Direct reference
+    link.download = filename;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -142,9 +224,12 @@ function App() {
       setService,
       setOrganization,
       setLegalResource,
+      setRonlAnalysis,
+      setRonlMethod,
       setTemporalRules,
       setParameters,
       setCprmvRules,
+      setConcepts,
       setCost,
       setOutput,
       setDmnData,
@@ -287,6 +372,8 @@ function App() {
       service,
       organization,
       legalResource,
+      ronlAnalysis,
+      ronlMethod,
       temporalRules,
       parameters,
     });
@@ -333,6 +420,8 @@ function App() {
         service,
         organization,
         legalResource,
+        ronlAnalysis,
+        ronlMethod,
         temporalRules,
         parameters,
       });
@@ -428,6 +517,38 @@ function App() {
         stepStatus: 'success',
         error: null,
       });
+
+      // Step 3.5: Upload logo if present (70-75%)
+      if (organization.logo && organization.logo.startsWith('data:')) {
+        try {
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Uploading logo...',
+            progress: 72,
+            stepStatus: 'loading',
+            error: null,
+          });
+
+          const orgId = organization.identifier.startsWith('http')
+            ? organization.identifier.split('/').pop()
+            : organization.identifier;
+          const logoFileName = `${orgId}_logo.png`;
+
+          await uploadLogoAsset(organization.logo, logoFileName, config);
+          console.log('Logo uploaded successfully');
+
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Logo uploaded ✓',
+            progress: 75,
+            stepStatus: 'success',
+            error: null,
+          });
+        } catch (logoError) {
+          console.warn('Logo upload failed (continuing):', logoError);
+          // Don't fail the entire publish if logo upload fails
+        }
+      }
 
       // Step 4: Update service (70-100%)
       setPublishingState({
@@ -680,7 +801,8 @@ function App() {
                 'parameters',
                 'cprmv',
                 'dmn',
-                'iknow-mapping',
+                'concepts',
+                'vendor',
                 'changelog',
               ].map((tab) => {
                 // Determine active color based on RPP layer
@@ -697,51 +819,67 @@ function App() {
                 return (
                   <button
                     key={tab}
+                    data-tab-id={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-shrink-0 px-4 py-3 font-medium transition-colors ${
+                    className={`flex-shrink-0 px-3 py-2.5 text-sm font-medium transition-colors ${
                       activeTab === tab
                         ? activeColor
                         : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                     }`}
                   >
                     {tab === 'service' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <FileText size={18} />
                         Service
                       </span>
                     )}
                     {tab === 'organization' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Building2 size={18} />
                         Organization
                       </span>
                     )}
                     {tab === 'legal' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Scale size={18} />
                         Legal
                       </span>
                     )}
                     {tab === 'rules' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Clock size={18} />
                         Rules
                       </span>
                     )}
                     {tab === 'parameters' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Plus size={18} />
                         Parameters
                       </span>
                     )}
                     {tab === 'cprmv' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <Database size={18} />
-                        CPRMV
+                        Policy
+                      </span>
+                    )}
+                    {tab === 'concepts' && (
+                      <span className="flex items-center justify-center gap-1.5">
+                        <BookOpen size={18} />
+                        Concepts
+                        {concepts.length > 0 ? (
+                          <span className="ml-2 px-2 py-0.5 bg-purple-600 text-white text-xs rounded font-medium">
+                            {concepts.length}
+                          </span>
+                        ) : (
+                          <span className="ml-2 px-2 py-0.5 bg-gray-400 text-white text-xs rounded font-medium">
+                            Needs DMN
+                          </span>
+                        )}
                       </span>
                     )}
                     {tab === 'dmn' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <FileUp size={18} />
                         DMN
                         {dmnData.isImported && (
@@ -751,14 +889,14 @@ function App() {
                         )}
                       </span>
                     )}
-                    {tab === 'iknow-mapping' && (
-                      <span className="flex items-center justify-center gap-2">
+                    {tab === 'vendor' && (
+                      <span className="flex items-center justify-center gap-1.5">
                         <Upload size={18} />
-                        iKnow
+                        Vendor
                       </span>
                     )}
                     {tab === 'changelog' && (
-                      <span className="flex items-center justify-center gap-2">
+                      <span className="flex items-center justify-center gap-1.5">
                         <History size={18} />
                         Changelog
                       </span>
@@ -783,7 +921,14 @@ function App() {
                 <OrganizationTab organization={organization} setOrganization={setOrganization} />
               )}
               {activeTab === 'legal' && (
-                <LegalTab legalResource={legalResource} setLegalResource={setLegalResource} />
+                <LegalTab
+                  legalResource={legalResource}
+                  setLegalResource={setLegalResource}
+                  ronlAnalysis={ronlAnalysis}
+                  setRonlAnalysis={setRonlAnalysis}
+                  ronlMethod={ronlMethod}
+                  setRonlMethod={setRonlMethod}
+                />
               )}
               {activeTab === 'rules' && (
                 <RulesTab
@@ -811,9 +956,19 @@ function App() {
                   setCprmvRules={setCprmvRules}
                 />
               )}
-              {activeTab === 'dmn' && <DMNTab dmnData={dmnData} setDmnData={setDmnData} />}
-              {activeTab === 'iknow-mapping' && (
-                <IKnowMappingTab
+              {activeTab === 'dmn' && (
+                <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
+              )}
+              {activeTab === 'concepts' && (
+                <ConceptsTab
+                  concepts={concepts}
+                  removeConcept={removeConcept}
+                  updateConcept={updateConcept}
+                  setConcepts={setConcepts}
+                />
+              )}
+              {activeTab === 'vendor' && (
+                <VendorTab
                   mappingConfig={iknowMappingConfig}
                   setMappingConfig={setIknowMappingConfig}
                   availableMappings={availableIKnowMappings}

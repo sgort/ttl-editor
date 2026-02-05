@@ -26,6 +26,7 @@ export const parseTTL = (ttlContent) => {
       name: parsed.organization?.name || '',
       homepage: parsed.organization?.homepage || '',
       spatial: parsed.organization?.spatial || '',
+      logo: parsed.organization?.logo || '',
     },
     legalResource: {
       bwbId: parsed.legalResource?.bwbId || '',
@@ -33,6 +34,8 @@ export const parseTTL = (ttlContent) => {
       title: parsed.legalResource?.title || '',
       description: parsed.legalResource?.description || '',
     },
+    ronlAnalysis: parsed.ronlAnalysis || '',
+    ronlMethod: parsed.ronlMethod || '',
     temporalRules: (parsed.temporalRules || []).map((rule) => ({
       ...rule,
       identifier: rule.identifier || '',
@@ -40,6 +43,7 @@ export const parseTTL = (ttlContent) => {
     })),
     parameters: parsed.parameters || [],
     cprmvRules: parsed.cprmvRules || [],
+    concepts: parsed.concepts || [],
     cost: {
       identifier: parsed.cost?.identifier || '',
       value: parsed.cost?.value || '',
@@ -151,9 +155,12 @@ export const applyImportedData = (importedData, setters) => {
     setService,
     setOrganization,
     setLegalResource,
+    setRonlAnalysis,
+    setRonlMethod,
     setTemporalRules,
     setParameters,
     setCprmvRules,
+    setConcepts,
     setCost,
     setOutput,
     setDmnData,
@@ -164,9 +171,12 @@ export const applyImportedData = (importedData, setters) => {
   setService(importedData.service);
   setOrganization(importedData.organization);
   setLegalResource(importedData.legalResource);
+  setRonlAnalysis(importedData.ronlAnalysis);
+  setRonlMethod(importedData.ronlMethod);
   setTemporalRules(importedData.temporalRules);
   setParameters(importedData.parameters);
   setCprmvRules(importedData.cprmvRules);
+  setConcepts(importedData.concepts || []);
   setCost(importedData.cost);
   setOutput(importedData.output);
 
@@ -182,7 +192,7 @@ export const applyImportedData = (importedData, setters) => {
       deployed: false,
       deploymentId: null,
       deployedAt: null,
-      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+      apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
       lastTestResult: null,
       lastTestTimestamp: null,
       testBody: null,
@@ -199,7 +209,7 @@ export const applyImportedData = (importedData, setters) => {
       deployed: false,
       deploymentId: null,
       deployedAt: null,
-      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+      apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
       lastTestResult: null,
       lastTestTimestamp: null,
       testBody: null,

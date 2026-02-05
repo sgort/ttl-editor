@@ -18,6 +18,7 @@ export const DEFAULT_ORGANIZATION = {
   name: '',
   homepage: '',
   spatial: 'https://publications.europa.eu/resource/authority/country/NLD', // default
+  logo: '',
 };
 
 export const DEFAULT_LEGAL_RESOURCE = {
@@ -146,3 +147,7 @@ export const DEFAULT_CPRMV_RULE = {
   norm: '', // cprmv:norm
   ruleIdPath: '', // cprmv:ruleIdPath
 };
+
+// NL-SBB Concept Scheme Configuration
+export const CONCEPT_SCHEME_URI = 'https://regels.overheid.nl/schemes/dmn-variables';
+export const CONCEPT_BASE_URI = 'https://regels.overheid.nl/concepts/';

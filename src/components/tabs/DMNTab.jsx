@@ -10,7 +10,16 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 
-const DMNTab = ({ dmnData, setDmnData }) => {
+import {
+  extractInputsFromTestResult,
+  extractOutputsFromTestResult,
+  generateConceptDefinition,
+  generateConceptLabel,
+  generateConceptNotation,
+  generateConceptUri,
+} from '../../utils/dmnHelpers';
+
+const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [testBody, setTestBody] = useState('');
   const [testResponse, setTestResponse] = useState(null);
@@ -20,7 +29,7 @@ const DMNTab = ({ dmnData, setDmnData }) => {
 
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: 'https://operaton-doc.open-regels.nl',
+    baseUrl: 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',
@@ -154,8 +163,8 @@ const DMNTab = ({ dmnData, setDmnData }) => {
                     if (
                       window.confirm(
                         'Clear imported DMN data?\n\n' +
-                          'This will remove the imported DMN blocks and allow you to create new DMN models.\n\n' +
-                          'Note: You can always re-import the original TTL file to restore the DMN data.'
+                          'This will remove the imported DMN blocks AND all associated concepts.\n\n' +
+                          'Note: You can always re-import the original TTL file to restore both DMN data and concepts.'
                       )
                     ) {
                       setDmnData({
@@ -165,13 +174,14 @@ const DMNTab = ({ dmnData, setDmnData }) => {
                         deployed: false,
                         deploymentId: null,
                         deployedAt: null,
-                        apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+                        apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
                         lastTestResult: null,
                         lastTestTimestamp: null,
                         testBody: null,
                         importedDmnBlocks: null,
                         isImported: false,
                       });
+                      setConcepts([]);
                     }
                   }}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
@@ -227,7 +237,63 @@ const DMNTab = ({ dmnData, setDmnData }) => {
     );
   }
 
-  // Generate request body from DMN input variables
+  /**
+   * Generate concepts from DMN test results and store in state
+   */
+  const generateConceptsFromTest = (testResult, testBodyData) => {
+    const serviceIdentifier = dmnData.decisionKey || 'unknown-service';
+    const inputs = extractInputsFromTestResult({ testBody: testBodyData });
+    const outputs = extractOutputsFromTestResult({ lastTestResult: testResult });
+
+    const usedNotations = [];
+    const generatedConcepts = [];
+    let idCounter = 1;
+
+    // Generate input concepts
+    inputs.forEach((input, index) => {
+      const notation = generateConceptNotation(input.name, usedNotations);
+      usedNotations.push(notation);
+
+      generatedConcepts.push({
+        id: idCounter++,
+        uri: generateConceptUri(input.name, serviceIdentifier),
+        variableName: input.name,
+        prefLabel: generateConceptLabel(input.name),
+        definition: generateConceptDefinition(input.name, input.type, 'input'),
+        notation: notation,
+        linkedTo: `input/${index + 1}`,
+        linkedToType: 'input',
+        exactMatch: '',
+        type: 'dmn:InputVariable',
+      });
+    });
+
+    // Generate output concepts
+    outputs.forEach((output, index) => {
+      const notation = generateConceptNotation(output.name, usedNotations);
+      usedNotations.push(notation);
+
+      generatedConcepts.push({
+        id: idCounter++,
+        uri: generateConceptUri(output.name, serviceIdentifier),
+        variableName: output.name,
+        prefLabel: generateConceptLabel(output.name),
+        definition: generateConceptDefinition(output.name, output.type, 'output'),
+        notation: notation,
+        linkedTo: `output/${index + 1}`,
+        linkedToType: 'output',
+        exactMatch: '',
+        type: 'dmn:OutputVariable',
+      });
+    });
+
+    // Store in state
+    setConcepts(generatedConcepts);
+  };
+
+  // UPDATED generateRequestBodyFromDMN - Detects date strings and fills with today's date
+  // Replace the function in src/components/tabs/DMNTab.jsx
+
   const generateRequestBodyFromDMN = (dmnContent) => {
     try {
       const parser = new DOMParser();
@@ -246,33 +312,157 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         const name = inputData.getAttribute('name');
 
         if (name) {
-          // Determine appropriate default value and type based on name patterns
+          const nameLower = name.toLowerCase();
+
+          // 🆕 FIRST: Try to read typeRef from <variable> child element
+          const variableElement = inputData.querySelector('variable');
+          const typeRef = variableElement?.getAttribute('typeRef')?.toLowerCase();
+
           let value = '';
           let type = 'String';
 
-          // Date patterns - check for datum, date, OR dag (Dutch for "day")
-          if (
-            name.toLowerCase().includes('datum') ||
-            name.toLowerCase().includes('date') ||
-            name.toLowerCase().includes('dag')
-          ) {
-            value = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD
-            type = 'String';
+          // 🆕 If typeRef exists in DMN, use it directly
+          if (typeRef) {
+            switch (typeRef) {
+              case 'boolean':
+                value = false;
+                type = 'Boolean';
+                break;
+              case 'number':
+              case 'double':
+              case 'integer':
+              case 'long':
+                value = 0;
+                type = typeRef === 'integer' || typeRef === 'long' ? 'Integer' : 'Double';
+                break;
+              case 'string':
+                // 🆕 Check if this string is actually a date based on variable name
+                const isDateVariable =
+                  nameLower.includes('dag') || // Dutch: day
+                  nameLower.includes('datum') || // Dutch: date
+                  nameLower.includes('date') || // English: date
+                  nameLower.includes('geboortedatum') || // Dutch: birth date
+                  (nameLower.includes('aanvraag') && nameLower.includes('dag')); // Application day
+
+                if (isDateVariable) {
+                  // Check if it's a birth date variable
+                  const isBirthDate =
+                    nameLower.includes('geboorte') ||
+                    nameLower.includes('birth') ||
+                    nameLower.includes('dob') ||
+                    nameLower.includes('geboortedatum');
+
+                  if (isBirthDate) {
+                    // Generate random birth date for age 25-68
+                    const today = new Date();
+                    const minAge = 25;
+                    const maxAge = 68;
+
+                    const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+                    const birthYear = today.getFullYear() - randomAge;
+                    const randomMonth = Math.floor(Math.random() * 12);
+                    const randomDay = Math.floor(Math.random() * 28) + 1;
+
+                    const birthDate = new Date(birthYear, randomMonth, randomDay);
+                    value = birthDate.toISOString().split('T')[0];
+                  } else {
+                    // For other date fields (like dagVanAanvraag), use today
+                    value = new Date().toISOString().split('T')[0];
+                  }
+                } else {
+                  // Regular string, leave empty
+                  value = '';
+                }
+                type = 'String';
+                break;
+              case 'date':
+                value = new Date().toISOString().split('T')[0];
+                type = 'String';
+                break;
+              default:
+                // Unknown type, default to string
+                value = '';
+                type = 'String';
+            }
           }
-          // Boolean patterns
-          else if (name.toLowerCase().includes('is') || name.toLowerCase().includes('heeft')) {
-            value = false;
-            type = 'Boolean';
-          }
-          // Number patterns
-          else if (name.toLowerCase().includes('aantal') || name.toLowerCase().includes('bedrag')) {
-            value = 0;
-            type = 'Integer';
-          }
-          // Default to string
+          // 🔄 FALLBACK: Use pattern matching if no typeRef (for legacy DMN files)
           else {
-            value = '';
-            type = 'String';
+            // Boolean patterns (expanded for Dutch)
+            if (
+              nameLower.includes('is') ||
+              nameLower.includes('heeft') ||
+              nameLower.includes('alleenstaand') ||
+              nameLower.includes('getrouwd') ||
+              nameLower.includes('gescheiden') ||
+              nameLower.includes('samenwonend') ||
+              nameLower.includes('weduwe') ||
+              nameLower.includes('actief') ||
+              nameLower.includes('geldig') ||
+              nameLower.includes('enabled') ||
+              nameLower.includes('disabled') ||
+              nameLower.includes('aanwezig') ||
+              nameLower.includes('vereist') ||
+              nameLower.includes('verplicht') ||
+              nameLower.includes('uitkering') || // Benefit
+              nameLower.includes('voedselbank') || // Food bank
+              nameLower.includes('kwijtschelding') || // Debt forgiveness
+              nameLower.includes('schuldhulp') || // Debt assistance
+              nameLower.includes('aanvraag') || // Application
+              nameLower.includes('aanmerking') || // Eligibility
+              nameLower.includes('inwoner') // Resident
+            ) {
+              value = false;
+              type = 'Boolean';
+            }
+            // Date patterns
+            else if (
+              (nameLower.includes('datum') ||
+                nameLower.includes('date') ||
+                nameLower.includes('dag')) &&
+              !nameLower.includes('aanwezig')
+            ) {
+              // Check if it's a birth date variable
+              const isBirthDate =
+                nameLower.includes('geboorte') ||
+                nameLower.includes('birth') ||
+                nameLower.includes('dob') ||
+                nameLower.includes('geboortedatum');
+
+              if (isBirthDate) {
+                // Generate random birth date for age 25-68
+                const today = new Date();
+                const minAge = 25;
+                const maxAge = 68;
+
+                const randomAge = Math.floor(Math.random() * (maxAge - minAge + 1)) + minAge;
+                const birthYear = today.getFullYear() - randomAge;
+                const randomMonth = Math.floor(Math.random() * 12);
+                const randomDay = Math.floor(Math.random() * 28) + 1;
+
+                const birthDate = new Date(birthYear, randomMonth, randomDay);
+                value = birthDate.toISOString().split('T')[0];
+              } else {
+                // For other date fields, use today
+                value = new Date().toISOString().split('T')[0];
+              }
+
+              type = 'String';
+            }
+            // Number patterns
+            else if (
+              nameLower.includes('aantal') ||
+              nameLower.includes('bedrag') ||
+              nameLower.includes('inkomen') || // Income
+              nameLower.includes('norm') // Standard/norm (like bijstandsnorm)
+            ) {
+              value = 0;
+              type = 'Integer';
+            }
+            // Default to string
+            else {
+              value = '';
+              type = 'String';
+            }
           }
 
           variables[name] = {
@@ -292,6 +482,31 @@ const DMNTab = ({ dmnData, setDmnData }) => {
       return '';
     }
   };
+
+  // EXPLANATION:
+  //
+  // Enhanced date detection for string types:
+  //
+  // 1. When typeRef="string", check variable name for date indicators:
+  //    - "dag" (day in Dutch)
+  //    - "datum" (date in Dutch)
+  //    - "date" (date in English)
+  //    - "geboortedatum" (birth date in Dutch)
+  //    - Combined patterns like "dagVanAanvraag" (day of application)
+  //
+  // 2. If it's a date variable:
+  //    - Birth dates: Generate random age 25-68
+  //    - Other dates (like dagVanAanvraag): Use today's date
+  //
+  // 3. If it's a regular string:
+  //    - Leave empty ("")
+  //
+  // EXAMPLE RESULTS:
+  //
+  // dagVanAanvraag (string) → "2026-02-04" (today)
+  // geboortedatum (string) → "1978-05-12" (random age 25-68)
+  // naam (string) → "" (regular string)
+  // aanvragerAlleenstaand (boolean) → false
 
   const loadExampleDMN = async () => {
     try {
@@ -529,6 +744,9 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         testBody: testBody,
         apiEndpoint: evaluateUrl,
       });
+
+      // Generate concepts from test results
+      generateConceptsFromTest(result, testBody);
     } catch (err) {
       setError(err.message);
       setTestResponse({
@@ -561,6 +779,7 @@ const DMNTab = ({ dmnData, setDmnData }) => {
       lastTestResult: null,
       lastTestTimestamp: null,
     });
+    setConcepts([]);
   };
 
   const formatJSON = (obj) => {
@@ -601,37 +820,43 @@ const DMNTab = ({ dmnData, setDmnData }) => {
           <h4 className="text-md font-semibold text-gray-800">API Configuration</h4>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Base URL</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Operaton Base URL
+            </label>
             <input
               type="text"
               value={apiConfig.baseUrl}
-              onChange={(e) => setApiConfig({ ...apiConfig, baseUrl: e.target.value })}
+              onChange={(e) =>
+                setApiConfig({
+                  ...apiConfig,
+                  baseUrl: e.target.value,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="https://operaton.open-regels.nl"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Decision Key</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Decision Key
+              <span className="text-gray-500 font-normal ml-1">(auto-filled from DMN file)</span>
+            </label>
             <input
               type="text"
               value={apiConfig.decisionKey}
-              onChange={(e) => setApiConfig({ ...apiConfig, decisionKey: e.target.value })}
-              disabled={!uploadedFile}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-              placeholder="Decision Key"
+              onChange={(e) =>
+                setApiConfig({
+                  ...apiConfig,
+                  decisionKey: e.target.value,
+                })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="RONL_BerekenLeeftijden"
             />
           </div>
-        </div>
-
-        <div className="mt-3 text-sm text-gray-500">
-          <span className="font-medium">Evaluation URL:</span>{' '}
-          <code className="bg-gray-100 px-2 py-1 rounded text-xs">
-            {apiConfig.baseUrl}
-            {apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}
-          </code>
         </div>
       </div>
 
@@ -640,9 +865,10 @@ const DMNTab = ({ dmnData, setDmnData }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Upload size={20} className="text-gray-600 mr-2" />
-            <h4 className="text-md font-semibold text-gray-800">DMN File</h4>
+            <h4 className="text-md font-semibold text-gray-800">Upload DMN File</h4>
           </div>
           <div className="flex items-center gap-2">
+            {/* RESTORED: Load Example in header */}
             <button
               onClick={loadExampleDMN}
               disabled={isLoading}
@@ -654,28 +880,21 @@ const DMNTab = ({ dmnData, setDmnData }) => {
             {uploadedFile && (
               <button
                 onClick={handleClearFile}
-                className="text-red-600 hover:text-red-700 flex items-center gap-1 text-sm"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-red-50 text-red-700 rounded-md hover:bg-red-100 border border-red-200"
               >
-                <Trash2 size={16} />
-                Clear
+                <Trash2 size={14} />
+                Clear File
               </button>
             )}
           </div>
         </div>
 
         {!uploadedFile ? (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors">
-            <Upload className="mx-auto text-gray-400 mb-3" size={48} />
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
+            <Upload className="mx-auto text-gray-400 mb-3" size={40} />
             <label className="cursor-pointer">
-              <span className="text-blue-600 hover:text-blue-700 font-medium">
-                Choose a DMN file
-              </span>
-              <input
-                type="file"
-                accept=".dmn,.xml"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
+              <span className="text-blue-600 hover:text-blue-700 font-medium">Choose a file</span>
+              <input type="file" accept=".dmn" onChange={handleFileUpload} className="hidden" />
             </label>
             <p className="text-gray-500 text-sm mt-2">or drag and drop</p>
             <p className="text-gray-400 text-xs mt-1">DMN, XML files supported</p>

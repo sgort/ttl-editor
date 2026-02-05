@@ -1,0 +1,52 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/heusdenpaskindpakket> a cpsv:PublicService ;
+    dct:identifier "heusdenpaskindpakket" ;
+    dct:title "Heusdenpas en Kindpakket"@nl ;
+    dct:description "De gratis HeusdenPas is er voor inwoners die rond moeten komen van een klein inkomen. Met de HeusdenPas ontvang je een budget dat je mag gebruiken voor sport of cultuurdeelname, bibliotheek of internet. Ook kan je korting krijgen op activiteiten in de gemeente Heusden.\nVoor kinderen van HeusdenPas-houders, in de leeftijd van 4 tot en met 17 jaar, is een KindPakket beschikbaar."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> ;
+    dcat:keyword "allowance, social, income, municipality"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/23118/Gemeente_Heusden> ;
+    cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR603544/1>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/23118/Gemeente_Heusden> a cv:PublicOrganisation ;
+    dct:identifier "Gemeente_Heusden" ;
+    skos:prefLabel "Gemeente Heusden (Heusden)"@nl ;
+    foaf:homepage <https://www.heusden.nl/> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Gemeente_Heusden_logo.png> ;
+    schema:image <./assets/Gemeente_Heusden_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://lokaleregelgeving.overheid.nl/CVDR603544/1> a eli:LegalResource ;
+    dct:identifier "CVDR603544" ;
+    dct:title "Gemeente Heusden - Beleidsregels HeusdenPas en kindpakket"@nl ;
+    dct:description "Gemeenten, provincies en waterschappen publiceren in het onderdeel 'Lokale wet- en regelgeving' van Overheid.nl van de geconsolideerde teksten van algemeen verbindende voorschriften, vastgesteld door een decentrale overheid."@nl ;
+    eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR603544/1/2017-11-04>  .
+

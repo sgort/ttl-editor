@@ -1,0 +1,737 @@
+[
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een alleenstaande van 18, 19 of 20 jaar: € 345,99;",
+    "situatie": "een alleenstaande van 18, 19 of 20 jaar",
+    "norm": "345,99",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 691,98;",
+    "situatie": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn",
+    "norm": "691,98",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een alleenstaande ouder van 18, 19 of 20 jaar: € 345,99;",
+    "situatie": "een alleenstaande ouder van 18, 19 of 20 jaar",
+    "norm": "345,99",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.347,06.",
+    "situatie": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners",
+    "norm": "1.347,06",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel c."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.747,49.",
+    "situatie": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners",
+    "norm": "1.747,49",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.401,50;",
+    "situatie": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners",
+    "norm": "1.401,50",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners: € 2.002,13.",
+    "situatie": "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners",
+    "norm": "2.002,13",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 1.092,41;",
+    "situatie": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn",
+    "norm": "1.092,41",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.564,69;",
+    "situatie": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners",
+    "norm": "1.564,69",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners: € 2.144,16;",
+    "situatie": "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners",
+    "norm": "2.144,16",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "indien ze geen ten laste komende kinderen hebben: € 345,99 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder.",
+    "situatie": "indien ze geen ten laste komende kinderen hebben",
+    "norm": "345,99",
+    "plus": "de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "indien ze een of meer ten laste komende kinderen hebben: € 746,42 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder,",
+    "situatie": "indien ze een of meer ten laste komende kinderen hebben",
+    "norm": "746,42",
+    "plus": "de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "gehuwden: € 690,27.",
+    "situatie": "gehuwden",
+    "norm": "690,27",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een alleenstaande of een alleenstaande ouder: € 443,76;",
+    "situatie": "een alleenstaande of een alleenstaande ouder",
+    "norm": "443,76",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor gehuwden € 106,00.",
+    "situatie": "voor gehuwden",
+    "norm": "106,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor een alleenstaande of een alleenstaande ouder € 47,00;",
+    "situatie": "voor een alleenstaande of een alleenstaande ouder",
+    "norm": "47,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 3",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van 4,8 procent per 1 januari 2009: 5 procent van die bijstand.",
+    "situatie": "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van",
+    "origineel": "4,8",
+    "laatsteupdate": "per 1 januari 2009",
+    "norm": "5",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 19, lid 3"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel j.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een een- of tweemalige premie van ten hoogste € 3.398,00 per kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling;",
+    "situatie": "een een- of tweemalige premie van ten hoogste",
+    "norm": "3.398,00",
+    "per": "kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel j."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel n.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling;",
+    "situatie": "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van",
+    "norm": "285,00",
+    "per": "maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel n."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel r.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:",
+    "https://cprmv.open-regels.nl/0.3.0/contains": {
+      "onderdeel 1°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 1°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "hij de volledige zorg heeft voor een tot zijn last komend kind tot 12 jaar,"
+      },
+      "onderdeel 2°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 2°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "de periode van zes maanden, bedoeld in onderdeel n, is verstreken, en"
+      },
+      "onderdeel 3°.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 3°.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling;"
+      }
+    },
+    "situatie": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van",
+    "norm": "177,66",
+    "per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel r."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel y.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;",
+    "situatie": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "180,19",
+    "per": "maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel y."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel z.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;",
+    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "180,19",
+    "per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel z."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel aa.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
+    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+    "norm": "180,19",
+    "per": "maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel aa."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor een alleenstaande en een alleenstaande ouder: € 26,50 per kalendermaand;",
+    "situatie": "voor een alleenstaande en een alleenstaande ouder",
+    "norm": "26,50",
+    "per": "kalendermaand",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de gehuwden tezamen: € 53,00 per kalendermaand.",
+    "situatie": "voor de gehuwden tezamen",
+    "norm": "53,00",
+    "per": "kalendermaand",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel d.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan € 67.500,00;",
+    "situatie": "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan",
+    "norm": "67.500,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 34, lid 2, onderdeel d."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor een alleenstaande: € 8.000,00;",
+    "situatie": "voor een alleenstaande",
+    "norm": "8.000,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor een alleenstaande ouder: € 16.000,00;",
+    "situatie": "voor een alleenstaande ouder",
+    "norm": "16.000,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de gehuwden tezamen: € 16.000,00.",
+    "situatie": "voor de gehuwden tezamen",
+    "norm": "16.000,00",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel c."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van € 176,00 niet te boven gaan.",
+    "situatie": "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van",
+    "norm": "176,00",
+    "niet": "te boven gaan",
+    "rulesetid": "BWBR0015703",
+    "rule_id_path": "BWBR0015703_2026-01-01_0, Artikel 35, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "21-jarigen en ouder: € 385,14;",
+    "situatie": "21-jarigen en ouder",
+    "norm": "385,14",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "20-jarigen: € 308,12;",
+    "situatie": "20-jarigen",
+    "norm": "308,12",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel d.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "18-jarigen: € 192,57;",
+    "situatie": "18-jarigen",
+    "norm": "192,57",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel d."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel f.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "16-jarigen: € 132,88;",
+    "situatie": "16-jarigen",
+    "norm": "132,88",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel f."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "19-jarigen: € 231,09;",
+    "situatie": "19-jarigen",
+    "norm": "231,09",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel c."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel e.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "17-jarigen: € 152,14;",
+    "situatie": "17-jarigen",
+    "norm": "152,14",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel e."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel g.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "15-jarigen: € 115,55.",
+    "situatie": "15-jarigen",
+    "norm": "115,55",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel g."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 7b",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand € 231,09.",
+    "situatie": "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand",
+    "norm": "231,09",
+    "rulesetid": "BWBR0044894",
+    "rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b. ",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan € 251.233,00 slechts verleend indien dit eigen vermogen niet meer bedraagt dan 30 procent van het totaal vermogen.",
+    "situatie": "wordt, indien het eigen vermogen meer bedraagt dan",
+    "norm": "59.782",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt aan de zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, bijstand in de vorm van een bedrag om niet als bedoeld in de artikelen 12 en 26 niet verleend, indien het eigen vermogen meer bedraagt dan € 175.864,00.",
+    "situatie": "In afwijking van het eerste lid wordt aan de zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, bijstand in de vorm van een bedrag om niet als bedoeld in de artikelen 12 en 26 niet verleend, indien het eigen vermogen meer bedraagt dan",
+    "norm": "175.864,00",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 3, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Bij de bijstandsverlening aan een zelfstandige worden de verschuldigde inkomstenbelasting en premies volksverzekeringen over inkomen waarover geen loonbelasting is geheven gesteld op 20 procent per 1 januari 2025: 19 procent van dat inkomen.",
+    "situatie": "Bij de bijstandsverlening aan een zelfstandige worden de verschuldigde inkomstenbelasting en premies volksverzekeringen over inkomen waarover geen loonbelasting is geheven gesteld op",
+    "origineel": "20",
+    "laatsteupdate": "per 1 januari 2025",
+    "norm": "19",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 6, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "de rente van de geldlening bedraagt 5 procent per 1 juli 2009: 8 procent per jaar gedurende de gehele looptijd van de geldlening;",
+    "situatie": "de rente van de geldlening bedraagt",
+    "origineel": "5",
+    "laatsteupdate": "per 1 juli 2009",
+    "norm": "8",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 15, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b. ",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan € 251.233,00 slechts verleend indien dit eigen vermogen niet meer bedraagt dan 30 procent van het totaal vermogen.",
+    "situatie": "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan",
+    "norm": "251.233,00",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a. ",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "wordt niet verleend indien het eigen vermogen meer bedraagt dan  € 251.233,00;",
+    "situatie": "wordt niet verleend indien het eigen vermogen meer bedraagt dan",
+    "norm": "251.233,00",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 20",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, kan ter voorziening in de behoefte aan bedrijfskapitaal bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste € 261.048,00. Dit bedrag geldt per bedrijf of zelfstandig beroep.",
+    "situatie": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, kan ter voorziening in de behoefte aan bedrijfskapitaal bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste",
+    "norm": "261.048,00",
+    "opmerking": "Dit bedrag geldt per bedrijf of zelfstandig beroep",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 20"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 24",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel b, kan ter voorziening in de behoefte aan bedrijfskapitaal uitsluitend bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste € 48.060,00. Dit bedrag geldt per bedrijf of zelfstandig beroep.",
+    "situatie": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel b, kan ter voorziening in de behoefte aan bedrijfskapitaal uitsluitend bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste",
+    "norm": "48.060,00",
+    "opmerking": "Dit bedrag geldt per bedrijf of zelfstandig beroep",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 24"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 22",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Bijstand in de behoefte aan bedrijfskapitaal kan aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, worden verleend in de vorm van een bedrag om niet tot ten hoogste € 13.052,00, indien het inkomen van de zelfstandige duurzaam lager is dan de som van de bijstandsnorm, bedoeld in hoofdstuk 3, paragraaf 3.2 en 3.3, van de wet, en de verleende bijzondere bijstand en diens vermogen de grens genoemd in artikel 3, eerste lid, niet te boven gaat. Deze bijstand gaat niet samen met bijstand als bedoeld in artikel 20.",
+    "situatie": "Bijstand in de behoefte aan bedrijfskapitaal kan aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, worden verleend in de vorm van een bedrag om niet tot ten hoogste",
+    "norm": "13.052,00",
+    "indien": "het inkomen van de zelfstandige duurzaam lager is dan de som van de bijstandsnorm, bedoeld in hoofdstuk 3, paragraaf 3.2 en 3.3, van de wet, en de verleende bijzondere bijstand en diens vermogen de grens genoemd in artikel 3, eerste lid, niet te boven gaat. Deze bijstand gaat niet samen met bijstand als bedoeld in artikel 20",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 22"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 25",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, wordt algemene bijstand verleend voor de duur dat hij uit het bedrijf of zelfstandig beroep naar verwachting een bruto inkomen zal behalen dat gemiddeld minstens € 10.368,00 per boekjaar bedraagt.",
+    "situatie": "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, wordt algemene bijstand verleend voor de duur dat hij uit het bedrijf of zelfstandig beroep naar verwachting een bruto inkomen zal behalen dat gemiddeld minstens",
+    "norm": "10.368,00",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 25"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "Artikel 26",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Bijstand ter voorziening in de behoefte aan bedrijfskapitaal wordt aan de zelfstandige, bedoeld in artikel 2, eerste lid, onderdeel c, slechts verleend tot ten hoogste € 13.052,00. Deze bijstand wordt verstrekt in de vorm van een bedrag om niet of, voor zover het eigen vermogen meer bedraagt dan het bedrag, genoemd in artikel 3, tweede lid, in de vorm van een renteloze lening. Artikel 13 is van overeenkomstige toepassing.",
+    "situatie": "Bijstand ter voorziening in de behoefte aan bedrijfskapitaal wordt aan de zelfstandige, bedoeld in artikel 2, eerste lid, onderdeel c, slechts verleend tot ten hoogste",
+    "norm": "13.052,00",
+    "opmerking": "bijstand wordt verstrekt in de vorm van een bedrag om niet of, voor zover het eigen vermogen meer bedraagt dan het bedrag, genoemd in artikel 3, tweede lid, in de vorm van een renteloze lening. Artikel 13 is van overeenkomstige toepassing",
+    "rulesetid": "BWBR0015711",
+    "rule_id_path": "BWBR0015711_2026-01-01_0, Artikel 26"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de werkloze werknemer en de echtgenoot die beiden 21 jaar of ouder zijn, de helft van de grondslag netto gelijk is aan € 1.001,07;",
+    "situatie": "voor de werkloze werknemer en de echtgenoot die beiden 21 jaar of ouder zijn, de helft van de grondslag netto gelijk is aan",
+    "norm": "1.001,07",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 5, lid 3, onderdeel a"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de alleenstaande werkloze werknemer, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan € 1.001,07.",
+    "situatie": "voor de alleenstaande werkloze werknemer, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan",
+    "norm": "1.001,07",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 5, lid 3, onderdeel b"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 4",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "De grondslag, bedoeld in het eerste lid, wordt zodanig vastgesteld dat deze voor de alleenstaande werkloze werknemer van 23 jaar of ouder netto gelijk is aan € 1.401,50.",
+    "situatie": "De grondslag, bedoeld in het eerste lid, wordt zodanig vastgesteld dat deze voor de alleenstaande werkloze werknemer van 23 jaar of ouder netto gelijk is aan",
+    "norm": "1.401,50",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 5, lid 4"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "de gewezen zelfstandige en de echtgenoot de helft van de grondslag netto gelijk is aan € 1.001,07;",
+    "situatie": "de gewezen zelfstandige en de echtgenoot de helft van de grondslag netto gelijk is aan",
+    "norm": "1.001,07",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 5, lid 4, onderdeel a."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de alleenstaande gewezen zelfstandige, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan € 1.001,07.",
+    "situatie": "voor de alleenstaande gewezen zelfstandige, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan",
+    "norm": "1.001,07",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 5, lid 4, onderdeel c."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "voor de alleenstaande gewezen zelfstandige netto gelijk is aan € 1.401,50;",
+    "situatie": "voor de alleenstaande gewezen zelfstandige netto gelijk is aan",
+    "norm": "1.401,50",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 5, lid 4, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "een eenmalige premie die door burgemeester en wethouders kan worden toegekend in het kader van een voorziening gericht op arbeidsinschakeling van ten hoogste € 3.398,00 per kalenderjaar; en",
+    "situatie": "een eenmalige premie die door burgemeester en wethouders kan worden toegekend in het kader van een voorziening gericht op arbeidsinschakeling van ten hoogste",
+    "norm": "3.398,00",
+    "per": "kalenderjaar",
+    "rulesetid": "BWBR0029368",
+    "rule_id_path": "BWBR0029368_2026-01-01_0, Artikel 2:8, lid 1, onderdeel b."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 6",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste € 220 per maand en € 2.200 per kalenderjaar. Hierbij wordt onder vrijwilliger verstaan degene die niet bij wijze van beroep arbeid verricht voor een algemeen nut beogende instelling, een sportorganisatie of een niet als zodanig aan te merken lichaam dat niet is onderworpen aan de vennootschapsbelasting of daarvan is vrijgesteld. ",
+    "situatie": "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste",
+    "norm": "220",
+    "rulesetid": "BWBR0002471",
+    "rule_id_path": "BWBR0002471_2026-01-01_0, Artikel 2, lid 6"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 6",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste € 220 per maand en € 2.200 per kalenderjaar. Hierbij wordt onder vrijwilliger verstaan degene die niet bij wijze van beroep arbeid verricht voor een algemeen nut beogende instelling, een sportorganisatie of een niet als zodanig aan te merken lichaam dat niet is onderworpen aan de vennootschapsbelasting of daarvan is vrijgesteld. ",
+    "norm": "2.200",
+    "rulesetid": "BWBR0002471",
+    "rule_id_path": "BWBR0002471_2026-01-01_0, Artikel 2, lid 6"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van € 448,22 per maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van",
+    "norm": "448,22",
+    "per": "maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 8, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 5",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van € 276,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval:",
+    "https://cprmv.open-regels.nl/0.3.0/contains": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "hij de volledige zorg heeft voor zijn kind tot 12 jaar,"
+      },
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "de periode van zes maanden, bedoeld in het tweede lid, is verstreken, en"
+      },
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling."
+      }
+    },
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van",
+    "norm": "276,66",
+    "per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 8, lid 5"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 7",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van € 280,98 per maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het tweede of vijfde lid van toepassing is.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het tweede of vijfde lid van toepassing is",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 8, lid 7"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 9",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 280,98 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het tweede lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het zevende lid van toepassing is.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het tweede lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het zevende lid van toepassing is",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 8, lid 9"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 2°.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige bedroeg de laatste drie boekjaren gemiddeld minder dan € 33.467,00 per jaar;",
+    "situatie": "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige bedroeg de laatste drie boekjaren gemiddeld minder dan",
+    "norm": "33.467,00",
+    "per": "jaar",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 5, lid 2, onderdeel 2°."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 10",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 280,98 per maand, nadat de periode van twaalf maanden, bedoeld in het negende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, nadat de periode van twaalf maanden, bedoeld in het negende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
+    "rulesetid": "BWBR0004044",
+    "rule_id_path": "BWBR0004044_2026-01-01_0, Artikel 8, lid 10"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 3°.",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige zou bij voortzetting van het bedrijf of beroep naar verwachting duurzaam minder dan € 36.090,00 per jaar bedragen; en",
+    "situatie": "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige zou bij voortzetting van het bedrijf of beroep naar verwachting duurzaam minder dan",
+    "norm": "36.090,00",
+    "per": "jaar bedragen",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 5, lid 2, onderdeel 3°."
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": " Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van € 175.864,00 buiten beschouwing blijft. Het inkomen uit vermogen wordt bepaald op 5% per 1 januari 2025: 3% per jaar van het vermogen. ",
+    "situatie": "Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van",
+    "norm": "175.864,00",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 2",
+    "https://cprmv.open-regels.nl/0.3.0/definition": " Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van € 175.864,00 buiten beschouwing blijft. Het inkomen uit vermogen wordt bepaald op 5% per 1 januari 2025: 3% per jaar van het vermogen. ",
+    "situatie": "beschouwing blijft. Het inkomen uit vermogen wordt bepaald op",
+    "origineel": "5",
+    "laatsteupdate": "per 1 januari 2025",
+    "norm": "3",
+    "per": "jaar van het vermogen",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 2"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 3",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van € 448,22 per maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van",
+    "norm": "448,22",
+    "per": "maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 3"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 9",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van € 276,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval:",
+    "https://cprmv.open-regels.nl/0.3.0/contains": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel a.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "hij de volledige zorg heeft voor zijn kind tot 12 jaar,"
+      },
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel b.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "de periode van zes maanden, bedoeld in het derde lid, is verstreken, en"
+      },
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel c.",
+        "https://cprmv.open-regels.nl/0.3.0/definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling."
+      }
+    },
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van",
+    "norm": "276,66",
+    "per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 9"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 11",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van € 280,98 per maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het derde of negende lid van toepassing is.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het derde of negende lid van toepassing is",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 11"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 13",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 280,98 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het derde lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het elfde lid van toepassing is.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het derde lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het elfde lid van toepassing is",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 13"
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
+    "https://cprmv.open-regels.nl/0.3.0/id": "lid 14",
+    "https://cprmv.open-regels.nl/0.3.0/definition": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 280,98 per maand, nadat de periode van twaalf maanden, bedoeld in het dertiende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
+    "situatie": "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van",
+    "norm": "280,98",
+    "per": "maand, nadat de periode van twaalf maanden, bedoeld in het dertiende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
+    "rulesetid": "BWBR0004163",
+    "rule_id_path": "BWBR0004163_2026-01-01_0, Artikel 8, lid 14"
+  }
+]

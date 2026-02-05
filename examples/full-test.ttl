@@ -333,3 +333,77 @@
     cprmv:note "AOW leeftijd voor personen geboren in 1985: 67 jaar"@nl ;
     cprmv:decisionTable "DecisionTable_aow" ;
     cprmv:rulesetType "temporal-mapping" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-01-23"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/dagVanAanvraag> a skos:Concept ;
+    skos:prefLabel "Dag Van Aanvraag"@nl ;
+    skos:definition "Dag Van Aanvraag is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DVAA" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/geboortedatumAanvrager> a skos:Concept ;
+    skos:prefLabel "Geboortedatum Aanvrager"@nl ;
+    skos:definition "Geboortedatum Aanvrager is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GA" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> ;
+    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/geboortedatum> .
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/geboortedatumPartner> a skos:Concept ;
+    skos:prefLabel "Geboortedatum Partner"@nl ;
+    skos:definition "Geboortedatum Partner is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GP" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> ;
+    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/geboortedatum> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/leeftijdAanvrager> a skos:Concept ;
+    skos:prefLabel "Leeftijd Aanvrager"@nl ;
+    skos:definition "Leeftijd Aanvrager is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "LA" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> ;
+    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/leeftijd> .
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/leeftijdPartner> a skos:Concept ;
+    skos:prefLabel "Leeftijd Partner"@nl ;
+    skos:definition "Leeftijd Partner is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "LP" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> ;
+    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/leeftijd> .
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/AOWDatumAanvrager> a skos:Concept ;
+    skos:prefLabel "A O W Datum Aanvrager"@nl ;
+    skos:definition "A O W Datum Aanvrager is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AOWDA" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/test-comprehensive-service/AOWDatumPartner> a skos:Concept ;
+    skos:prefLabel "A O W Datum Partner"@nl ;
+    skos:definition "A O W Datum Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AOWDP" ;
+    dct:subject <https://regels.overheid.nl/services/test-comprehensive-service/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .

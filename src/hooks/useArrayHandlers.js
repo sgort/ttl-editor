@@ -122,6 +122,18 @@ export const createDefaultCprmvRule = () => ({
   ruleIdPath: '',
 });
 
+export const createDefaultConcept = () => ({
+  uri: '',
+  variableName: '',
+  prefLabel: '',
+  definition: '',
+  notation: '',
+  linkedTo: '',
+  linkedToType: 'input', // Default to input
+  exactMatch: '',
+  type: 'dmn:InputVariable', // Default to input (consistent with linkedToType)
+});
+
 /**
  * Pre-configured hooks for specific array types
  * Use these in components for convenience
@@ -146,4 +158,11 @@ export const useParametersHandlers = (parameters, setParameters) => {
  */
 export const useCprmvRulesHandlers = (cprmvRules, setCprmvRules) => {
   return useArrayHandlers(cprmvRules, setCprmvRules, createDefaultCprmvRule);
+};
+
+/**
+ * Hook for managing concepts
+ */
+export const useConceptsHandlers = (concepts, setConcepts) => {
+  return useArrayHandlers(concepts, setConcepts, createDefaultConcept);
 };

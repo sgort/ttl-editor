@@ -61,5 +61,6 @@ export {
   saveTriplyDBConfig,
   testTriplyDBConnection,
   updateTriplyDBService,
+  uploadLogoAsset,
   validateTriplyDBConfig,
 } from './triplydbHelper';

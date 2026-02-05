@@ -59,6 +59,18 @@ The **Core Public Service Editor** is a React-based web application that simplif
 - Homepage and contact information
 - URI support (short IDs or full URIs)
 
+### Organization Logos
+
+Upload and manage organization logos directly in the Organization tab:
+
+- **Upload**: Support for JPG and PNG files (automatically resized to 256×256px)
+- **Preview**: Live preview with file size and encoding information
+- **Publishing**: Logos are automatically uploaded as assets to TriplyDB
+- **RDF Output**: Generates `foaf:logo` and `schema:image` properties
+- **Semantic Links**: Full traversal path: `DMN → Service → Organization → Logo`
+
+Logos are published alongside your service metadata and can be queried via SPARQL in the Linked Data Explorer.
+
 #### ⚖️ **Legal Resource Integration**
 
 - BWB ID support for Dutch legislation
@@ -95,12 +107,136 @@ The **Core Public Service Editor** is a React-based web application that simplif
 - Rule extraction with CPRMV attributes
 - Import preservation for existing DMN
 
-#### 📊 **iKnow Integration**
+#### 📚 **NL-SBB Concepts**
 
-- Parse iKnow XML exports
-- Configurable field mappings
-- Import legislative analysis data
-- Support for multiple legal concept types
+The CPSV Editor automatically generates semantic concept definitions for DMN decision variables according to the **Dutch Standard for Describing Concepts (NL-SBB)**. These concepts enable semantic interoperability across different decision models.
+
+**Key Features:**
+
+- **Automatic Generation**: Concepts are automatically created when you test a DMN model
+- **Full CRUD Operations**: Add, edit, and delete concepts with a user-friendly interface
+- **Semantic Linking**: Use `skos:exactMatch` to link concepts across different ontologies
+- **Import/Export**: Concepts are preserved in round-trip import/export cycles
+- **Manual Management**: Add custom input/output concepts beyond auto-generated ones
+
+**Concept Properties:**
+
+- **Preferred Label** (skos:prefLabel): Human-readable name in Dutch
+- **Notation** (skos:notation): Short machine code (e.g., "GA", "LP")
+- **Definition** (skos:definition): Semantic description of the concept
+- **Variable Name**: Technical name used in DMN and URIs
+- **Exact Match** (skos:exactMatch): Optional URI to equivalent concept in another ontology
+
+**Use Cases:**
+
+- **Cross-DMN Validation**: Link variables like "geboortedatum" = "birthdate" across different models
+- **Chain Detection**: Enable the Linked Data Explorer to detect cycles and validate decision chains
+- **Concept Harmonization**: Standardize terminology across different government organizations
+- **Semantic Search**: Enable semantic queries across multiple decision models
+
+**Standards Compliance:**
+
+- NL-SBB (Nederlandse Standaard voor het Beschrijven van Begrippen)
+- SKOS (Simple Knowledge Organization System)
+- Linked Data principles with dereferenceable URIs
+
+**Documentation**: [Dutch Standard for Describing Concepts](https://geonovum.github.io/NL-SBB/)
+
+## 🏢 Vendor Integration
+
+The CPSV Editor supports integration with multiple vendor platforms for importing legislative and regulatory data. The **Vendor** tab provides a unified interface for configuring and importing data from various rules management systems.
+
+### Supported Vendors
+
+The editor integrates with vendors listed in the RONL vocabulary as **Method Concepts** (`ronl:MethodConcept`). Currently, 17 vendor platforms are supported:
+
+| Vendor     | Description                                            | Status              |
+| ---------- | ------------------------------------------------------ | ------------------- |
+| **iKnow**  | Legislative analysis and knowledge management platform | ✅ Fully Integrated |
+| ALEF       | Agile Law Execution Factory                            | 🔄 Planned          |
+| Avola      | Decision automation platform                           | 🔄 Planned          |
+| Beinformed | Intelligent automation platform                        | 🔄 Planned          |
+| Blueriq    | Digital decision management                            | 🔄 Planned          |
+| OpenFisca  | Tax and benefit system modeling                        | 🔄 Planned          |
+| RuleSpeak  | Business rule notation                                 | 🔄 Planned          |
+| USoft      | Rules-based application development                    | 🔄 Planned          |
+
+### Using the Vendor Tab
+
+1. **Navigate to Vendor Tab**
+   - Click the **Vendor** tab in the main navigation
+
+2. **Select a Vendor**
+   - Choose a vendor from the dropdown menu
+   - Vendors are loaded dynamically from the RONL vocabulary in TriplyDB
+
+3. **Configure Integration**
+   - Each vendor has its own integration interface
+   - Currently, only iKnow integration is fully implemented
+
+### iKnow Integration
+
+The iKnow integration allows you to import legislative knowledge from iKnow XML exports:
+
+#### Supported Formats
+
+- **CognitatieAnnotationExport.xml** - Concept-based exports with annotations
+- **SemanticsExport.xml** - Semantic knowledge exports
+
+#### Features
+
+- **Configure Mode**: Create reusable field mapping configurations
+  - Map iKnow XML fields to CPSV-AP properties
+  - Define mappings for Service, Legal, Rules, Parameters, and CPRMV sections
+  - Save and load mapping configurations as JSON
+- **Import Mode**: Import data using saved configurations
+  - Upload iKnow XML data files
+  - Select a mapping configuration
+  - Preview mapped data before import
+  - Import directly into the editor
+
+#### Workflow
+
+1. Switch to **Configure** mode
+2. Upload an example iKnow XML file (or use "Load Example")
+3. Map XML fields to CPSV-AP properties for each section
+4. Save the configuration
+5. Switch to **Import** mode
+6. Upload your actual iKnow data file
+7. Select the saved configuration
+8. Preview and import the data
+
+### Adding New Vendor Integrations
+
+The architecture supports easy addition of new vendor integrations:
+
+1. Create vendor-specific component in `src/components/tabs/vendors/`
+2. Add conditional rendering in `VendorTab.jsx` based on selected vendor URI
+3. Implement vendor-specific parser for data format
+4. Create field mapping configuration for CPSV-AP compliance
+5. Add state management for vendor-specific configuration
+
+### Technical Details
+
+**Vendor List Source**: RONL vocabulary in TriplyDB
+
+```
+Endpoint: https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql
+Concept: ronl:MethodConcept
+```
+
+**Integration Pattern**: Each vendor URI follows the format:
+
+```
+https://regels.overheid.nl/termen/{VendorName}
+```
+
+**Related Components**:
+
+- `src/components/tabs/VendorTab.jsx` - Main vendor interface
+- `src/components/tabs/IKnowMappingTab.jsx` - iKnow integration
+- `src/utils/iknowParser.js` - iKnow XML parser
+- `src/utils/ronlHelper.js` - RONL vocabulary queries
 
 ---
 

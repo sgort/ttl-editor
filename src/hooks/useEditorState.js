@@ -23,6 +23,9 @@ export const useEditorState = () => {
   // Legal Resource state
   const [legalResource, setLegalResource] = useState(DEFAULT_LEGAL_RESOURCE);
 
+  const [ronlAnalysis, setRonlAnalysis] = useState('');
+  const [ronlMethod, setRonlMethod] = useState('');
+
   // Temporal Rules state
   const [temporalRules, setTemporalRules] = useState([]);
 
@@ -31,6 +34,9 @@ export const useEditorState = () => {
 
   // CPRMV Rules state
   const [cprmvRules, setCprmvRules] = useState([]);
+
+  // Concepts state
+  const [concepts, setConcepts] = useState([]);
 
   // Cost state
   const [cost, setCost] = useState(DEFAULT_COST);
@@ -46,7 +52,7 @@ export const useEditorState = () => {
     deployed: false,
     deploymentId: null,
     deployedAt: null,
-    apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+    apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
     lastTestResult: null,
     lastTestTimestamp: null,
     testBody: null,
@@ -74,9 +80,12 @@ export const useEditorState = () => {
     });
     setOrganization(DEFAULT_ORGANIZATION);
     setLegalResource(DEFAULT_LEGAL_RESOURCE);
+    setRonlAnalysis('');
+    setRonlMethod('');
     setTemporalRules([]);
     setParameters([]);
     setCprmvRules([]);
+    setConcepts([]);
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
     setDmnData({
@@ -86,7 +95,7 @@ export const useEditorState = () => {
       deployed: false,
       deploymentId: null,
       deployedAt: null,
-      apiEndpoint: 'https://operaton-doc.open-regels.nl/engine-rest',
+      apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
       lastTestResult: null,
       lastTestTimestamp: null,
       testBody: null,
@@ -107,6 +116,11 @@ export const useEditorState = () => {
     // Legal Resource
     legalResource,
     setLegalResource,
+    // Legal Analysis and Method
+    ronlAnalysis,
+    setRonlAnalysis,
+    ronlMethod,
+    setRonlMethod,
     // Temporal Rules
     temporalRules,
     setTemporalRules,
@@ -125,6 +139,8 @@ export const useEditorState = () => {
     // DMN
     dmnData,
     setDmnData,
+    concepts,
+    setConcepts,
     // iKnow
     iknowMappingConfig,
     setIknowMappingConfig,

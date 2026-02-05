@@ -2,6 +2,7 @@
 // This allows importing like: import { ChangelogTab, ServiceTab } from "./components/tabs"
 
 export { default as ChangelogTab } from './ChangelogTab';
+export { default as ConceptsTab } from './ConceptsTab';
 export { default as CPRMVTab } from './CPRMVTab';
 export { default as DMNTab } from './DMNTab';
 export { default as IKnowMappingTab } from './IKnowMappingTab';
@@ -10,3 +11,4 @@ export { default as OrganizationTab } from './OrganizationTab';
 export { default as ParametersTab } from './ParametersTab';
 export { default as RulesTab } from './RulesTab';
 export { default as ServiceTab } from './ServiceTab';
+export { default as VendorTab } from './VendorTab';

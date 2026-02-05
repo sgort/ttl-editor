@@ -31,7 +31,7 @@ const ensureTTLExtension = (filename) => {
   return filename.endsWith('.ttl') ? filename : `${filename}.ttl`;
 };
 
-// FINAL FIX: Use proper IRI for graph name
+// Use proper IRI for graph name
 // TriplyDB requires a full URI, not just "default"
 
 /**
@@ -351,6 +351,63 @@ ${dataLines.join('\n')}
 
     throw new Error(`SPARQL UPDATE failed: ${error.message}`);
   }
+};
+
+/**
+ * Upload logo image as asset to TriplyDB
+ * @param {string} base64Data - Base64 data URL
+ * @param {string} fileName - Asset filename
+ * @param {Object} config - TriplyDB configuration
+ * @returns {Promise<Object>} Upload result
+ */
+export const uploadLogoAsset = async (base64Data, fileName, config) => {
+  if (!base64Data || !base64Data.startsWith('data:image/')) {
+    throw new Error('Invalid base64 image data');
+  }
+
+  // Extract base64 content
+  const base64Content = base64Data.split(',')[1];
+  const mimeType = base64Data.match(/data:([^;]+);/)[1];
+
+  // Convert base64 to Blob
+  const byteCharacters = atob(base64Content);
+  const byteArrays = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: mimeType });
+
+  // Create File object
+  const file = new File([blob], fileName, { type: mimeType });
+
+  // Upload to TriplyDB assets
+  const assetUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/assets`;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch(assetUrl, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${config.apiToken}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to upload logo: ${errorText}`);
+  }
+
+  return { success: true, assetUrl: `${assetUrl}/${fileName}` };
 };
 
 /**
