@@ -954,6 +954,7 @@ function App() {
                   updateCPRMVRule={updateCPRMVRule}
                   handleImportJSON={handleImportJSON}
                   setCprmvRules={setCprmvRules}
+                  legalResource={legalResource}
                 />
               )}
               {activeTab === 'dmn' && (

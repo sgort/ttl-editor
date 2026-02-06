@@ -590,6 +590,39 @@ export class TTLGenerator {
           ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
         }
 
+        if (rule.ruleIdPath) {
+          ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
+        }
+
+        // Auto-link to legal resource (versioned if available)
+        if (this.legalResource && this.legalResource.bwbId) {
+          let legalUri;
+          const identifier = this.legalResource.bwbId;
+          const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+
+          if (isFullUri) {
+            legalUri = identifier;
+          } else {
+            const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
+            const isCVDR = /CVDR\d+/i.test(identifier);
+
+            if (isBWB) {
+              legalUri = `https://wetten.overheid.nl/${identifier}`;
+            } else if (isCVDR) {
+              legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
+            } else {
+              legalUri = `https://wetten.overheid.nl/${identifier}`;
+            }
+          }
+
+          // If version exists, append it to create versioned URI
+          if (this.legalResource.version) {
+            legalUri = `${legalUri}/${this.legalResource.version}`;
+          }
+
+          ttl += `    cprmv:implements <${legalUri}> ;\n`;
+        }
+
         ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });

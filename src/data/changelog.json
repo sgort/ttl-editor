@@ -1,10 +1,56 @@
 {
   "versions": [
     {
+      "version": "1.9.0",
+      "date": "2026-02-06",
+      "status": "Feature",
+      "statusColor": "green",
+      "borderColor": "green",
+      "description": "Explicit semantic linking between CPRMV rules and legal resources via cprmv:implements property",
+      "sections": [
+        {
+          "title": "Semantic Linking Enhancement",
+          "icon": "🔗",
+          "iconColor": "emerald",
+          "items": [
+            "Added cprmv:implements property to automatically link each CPRMV rule to its source legal resource",
+            "Rules now explicitly reference the legal resource they implement, eliminating ambiguous string-based matching",
+            "Versioned URI support: when eli:is_realized_by version exists, rules link to the versioned legal resource URI (e.g., https://wetten.overheid.nl/BWBR0011453/2025-01-01)",
+            "Unversioned fallback: rules link to base legal resource URI when no version is specified",
+            "Enables clean SPARQL queries with direct Service → Legal Resource ← Rule traversal"
+          ]
+        },
+        {
+          "title": "Policy Tab UX Improvements",
+          "icon": "✨",
+          "iconColor": "blue",
+          "items": [
+            "Added informational banner showing which legal resource all rules will link to via cprmv:implements",
+            "Legal resource identifier displayed as clickable link opening legislation in new tab",
+            "Link always displays full URI for consistency (e.g., https://wetten.overheid.nl/BWBR0011453)",
+            "Version indicator shown when eli:is_realized_by is present (e.g., 📅 Version: 2025-01-01)",
+            "Warning banner displayed when no legal resource is defined in Legal tab"
+          ]
+        },
+        {
+          "title": "Data Model Benefits",
+          "icon": "🎯",
+          "iconColor": "purple",
+          "items": [
+            "Eliminates duplicate query results caused by string matching multiple legal resource versions",
+            "Makes data model more explicit and maintainable with direct semantic relationships",
+            "Supports temporal traceability by linking rules to specific legislation versions",
+            "Aligns with ELI vocabulary best practices for versioned legal resources",
+            "Reduces Linked Data Explorer query complexity by removing fragile rulesetId string parsing"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.8.3",
       "status": "Minor Feature",
-      "statusColor": "emerald",
-      "borderColor": "emerald",
+      "statusColor": "purple",
+      "borderColor": "purple",
       "date": "2026-01-29",
       "description": "RONL Concepts Integration",
       "sections": [
@@ -105,8 +151,8 @@
     {
       "version": "1.8.1",
       "status": "Major Feature",
-      "statusColor": "emerald",
-      "borderColor": "emerald",
+      "statusColor": "purple",
+      "borderColor": "prurple",
       "date": "January 24, 2026",
       "sections": [
         {
