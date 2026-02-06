@@ -9,6 +9,19 @@
       "description": "Explicit semantic linking between CPRMV rules and legal resources via cprmv:implements property",
       "sections": [
         {
+          "title": "Critical Bug Fix - Unique Rule URIs",
+          "icon": "🐛",
+          "iconColor": "red",
+          "items": [
+            "CRITICAL FIX: Rule URIs now generated using full cprmv:ruleIdPath for guaranteed uniqueness",
+            "Previous bug: Multiple rules with same cprmv:id (e.g., 'onderdeel a.') resulted in duplicate URIs, causing RDF triple merging",
+            "Impact: TriplyDB was showing fewer unique entities than were present in the original file",
+            "New URI pattern: BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a (includes full legal hierarchy)",
+            "URI sanitization: Commas→underscores, spaces→hyphens, periods removed for URL-safe identifiers",
+            "Fallback: If ruleIdPath is unavailable, uses rulesetId_ruleId pattern (backward compatible)"
+          ]
+        },
+        {
           "title": "Semantic Linking Enhancement",
           "icon": "🔗",
           "iconColor": "emerald",

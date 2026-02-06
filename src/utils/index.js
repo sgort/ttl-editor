@@ -30,6 +30,7 @@ export {
   formatTTLUri,
   isValidUri,
   sanitizeFilename,
+  sanitizeRuleIdPath,
 } from './ttlHelpers';
 
 // Validation functions

@@ -42,6 +42,28 @@ export function sanitizeFilename(str) {
 }
 
 /**
+ * Sanitize ruleIdPath to create a unique, URL-safe identifier
+ * Converts: "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a."
+ * To: "BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a"
+ *
+ * @param {string} ruleIdPath - Full hierarchical path from CPRMV
+ * @returns {string} - URL-safe identifier
+ */
+export function sanitizeRuleIdPath(ruleIdPath) {
+  if (!ruleIdPath) return 'incomplete';
+
+  return ruleIdPath
+    .replace(/,\s*/g, '_') // Replace ", " with "_"
+    .replace(/\s+/g, '-') // Replace spaces with "-"
+    .replace(/\./g, '') // Remove periods
+    .replace(/[()]/g, '') // Remove parentheses
+    .replace(/:/g, '-') // Replace colons with "-"
+    .replace(/_+/g, '_') // Collapse multiple underscores
+    .replace(/-+/g, '-') // Collapse multiple hyphens
+    .replace(/^[-_]+|[-_]+$/g, ''); // Trim leading/trailing separators
+}
+
+/**
  * Format a date string for TTL xsd:date format
  * @param {string} dateStr - Date string (YYYY-MM-DD format expected)
  * @returns {string} - Formatted date with xsd:date type

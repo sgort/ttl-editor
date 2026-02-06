@@ -4,7 +4,13 @@ import {
   extractRulesFromDMN,
   sanitizeServiceIdentifier,
 } from './dmnHelpers';
-import { buildResourceUri, encodeURIComponentTTL, escapeTTLString, TTL_NAMESPACES } from './index';
+import {
+  buildResourceUri,
+  encodeURIComponentTTL,
+  escapeTTLString,
+  sanitizeRuleIdPath,
+  TTL_NAMESPACES,
+} from './index';
 
 /**
  * TTL Generator Class
@@ -546,23 +552,26 @@ export class TTLGenerator {
     return ttl;
   }
 
-  /**
-   * Generate CPRMV Rules section
-   * @returns {string} CPRMV Rules TTL
-   */
   generateCprmvRulesSection() {
     let ttl = '';
 
     this.cprmvRules.forEach((rule) => {
       // Write if at least the core identifiers exist
-      // (User might be filling in the form progressively)
       const hasMinimalData = rule.ruleId || rule.rulesetId || rule.definition;
 
       if (hasMinimalData) {
-        // Generate URI (use placeholder if ruleId/rulesetId not yet filled)
-        const ruleId = rule.ruleId || 'incomplete';
-        const rulesetId = rule.rulesetId || 'incomplete';
-        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
+        // Generate URI using ruleIdPath for uniqueness (FIXED!)
+        // Fallback to rulesetId_ruleId if ruleIdPath is not available
+        let ruleUriIdentifier;
+        if (rule.ruleIdPath) {
+          ruleUriIdentifier = sanitizeRuleIdPath(rule.ruleIdPath);
+        } else {
+          const ruleId = rule.ruleId || 'incomplete';
+          const rulesetId = rule.rulesetId || 'incomplete';
+          ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
+        }
+
+        const ruleUri = `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
 
         ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
 
@@ -584,10 +593,6 @@ export class TTLGenerator {
 
         if (rule.norm) {
           ttl += `    cprmv:norm "${escapeTTLString(rule.norm)}" ;\n`;
-        }
-
-        if (rule.ruleIdPath) {
-          ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
         }
 
         if (rule.ruleIdPath) {
