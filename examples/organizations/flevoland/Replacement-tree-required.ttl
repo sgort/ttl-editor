@@ -1,0 +1,142 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/replacement-tree> a cpsv:PublicService ;
+    dct:identifier "replacement-tree" ;
+    dct:title "Replacement tree required?"@nl ;
+    dct:description "Example DMN for BPMN matching"@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/REGIONAL> ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/14866/Provincie_Flevoland> ;
+    cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR696459/7> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/replacement-tree/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/14866/Provincie_Flevoland> a cv:PublicOrganisation ;
+    dct:identifier "Provincie_Flevoland" ;
+    skos:prefLabel "Provincie Flevoland"@nl ;
+    foaf:homepage <https://flevoland.nl/home> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Provincie_Flevoland_logo.png> ;
+    schema:image <./assets/Provincie_Flevoland_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://lokaleregelgeving.overheid.nl/CVDR696459/7> a eli:LegalResource ;
+    dct:identifier "CVDR696459" ;
+    dct:title "Omgevingsplan gemeente Lelystad"@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR696459/7/2026-02-03>  .
+
+
+# ============================================================
+#  Temporal Rules
+# ============================================================
+
+<https://flevoland.nl/regels/regel002> a cpsv:Rule, ronl:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/replacement-tree> ;
+    dct:identifier "regel002" ;
+    dct:title "Replacement tree diameter"@nl ;
+    ronl:confidenceLevel "high" ;
+    dct:description "Business Logic\n• ≤30cm: No replacement required\n• >30cm: Replacement required"@nl  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/replacement-tree/dmn> a cprmv:DecisionModel ;
+    dct:identifier "ReplacementTreeDecision" ;
+    dct:title "replacement-tree-decision.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/replacement-tree> ;
+    dct:source <https://regels.overheid.nl/services/replacement-tree/dmn/file> ;
+    cprmv:deploymentId "751a0888-05ac-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-09T11:42:48.417Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/ReplacementTreeDecision/evaluate> ;
+    cprmv:lastTested "2026-02-09T11:42:57.507Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/replacement-tree/dmn/input/1> a cpsv:Input ;
+    dct:identifier "treeDiameter" ;
+    dct:title "treeDiameter"@nl ;
+    dct:type "Integer" ;
+    schema:value 45 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/replacement-tree/dmn> .
+
+<https://regels.overheid.nl/services/replacement-tree/dmn/output/1> a cpsv:Output ;
+    dct:identifier "replacementRequired" ;
+    dct:title "replacementRequired"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/replacement-tree/dmn> .
+
+<https://regels.overheid.nl/services/replacement-tree/rules/DecisionRule_03zv2gm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_03zv2gm" ;
+    cpsv:implements <https://regels.overheid.nl/services/replacement-tree> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0d4jygi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/replacement-tree/rules/DecisionRule_0tl6k1b> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0tl6k1b" ;
+    cpsv:implements <https://regels.overheid.nl/services/replacement-tree> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0d4jygi" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-09"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/replacementtreedecision/treeDiameter> a skos:Concept ;
+    skos:prefLabel "Tree Diameter"@nl ;
+    skos:definition "Tree Diameter is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "TD" ;
+    dct:subject <https://regels.overheid.nl/services/replacement-tree/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/replacementtreedecision/replacementRequired> a skos:Concept ;
+    skos:prefLabel "Replacement Required"@nl ;
+    skos:definition "Replacement Required is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RR" ;
+    dct:subject <https://regels.overheid.nl/services/replacement-tree/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
