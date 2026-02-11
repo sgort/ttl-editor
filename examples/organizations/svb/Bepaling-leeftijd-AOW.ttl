@@ -59,7 +59,9 @@
     dct:identifier "Sociale_Verzekeringsbank" ;
     skos:prefLabel "Sociale Verzekeringsbank"@nl ;
     foaf:homepage <https://www.svb.nl> ;
-    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD>  .
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Sociale_Verzekeringsbank_logo.png> ;
+    schema:image <./assets/Sociale_Verzekeringsbank_logo.png>  .
 
 
 # ============================================================
@@ -70,5 +72,7 @@
     dct:identifier "BWBR0002221" ;
     dct:title "Algemene Ouderdomswet"@nl ;
     dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
 

@@ -16,315 +16,1177 @@
 #  Public Service
 # ============================================================
 
-<https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
-    dct:identifier "aow-leeftijd" ;
-    dct:title "Bepaling leeftijd AOW"@nl ;
-    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet)."@nl ;
-    cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen> a cpsv:PublicService ;
+    dct:identifier "normbedragen" ;
+    dct:title "Normenbrief - Informatie voor gemeenten"@nl ;
+    dct:description "Ieder half jaar veranderen de bedragen en percentages voor de uitvoering van de Participatiewet, IOAW, IOAZ en het Bbz 2004. Het gaat onder meer om de bijstandsnormen, de minimumbedragen studietoeslag en de grondslagen IOAW en IOAZ. De uitkeringen worden ieder halfjaar aangepast als gevolg van de indexering van het wettelijk minimumuurloon."@nl ;
     cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
-    dcat:keyword "AOW"@nl ;
+    dcat:keyword "allowance, social, income,"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
-    cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
-    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
-    cv:hasCost <https://regels.overheid.nl/costs/cost-001> ;
-    cpsv:produces <https://regels.overheid.nl/outputs/output-01> ;
-    cprmv:hasDecisionModel <https://regels.overheid.nl/services/aow-leeftijd/dmn>  .
-
-
-# ============================================================
-#  Cost
-# ============================================================
-
-<https://regels.overheid.nl/costs/cost-001> a cv:Cost ;
-    dct:identifier "cost-001" ;
-    cv:value "10" ;
-    cv:currency "EUR" ;
-    dct:description "Test Service Cost Description"@nl  .
-
-
-# ============================================================
-#  Output
-# ============================================================
-
-<https://regels.overheid.nl/outputs/output-01> a cv:Output ;
-    dct:identifier "output-01" ;
-    dct:title "20"@nl ;
-    dct:description "Test Service Output Description"@nl  .
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/normbedragen/dmn>  .
 
 
 # ============================================================
 #  Organization
 # ============================================================
 
-<https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> a cv:PublicOrganisation ;
-    dct:identifier "Sociale_Verzekeringsbank" ;
-    skos:prefLabel "Sociale Verzekeringsbank"@nl ;
-    foaf:homepage <https://www.svb.nl> ;
+<https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Zaken_en_Werkgelegenheid" ;
+    skos:prefLabel "Sociale Zaken en Werkgelegenheid (SZW)"@nl ;
+    foaf:homepage <https://szw.nl> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
-    foaf:logo <./assets/Sociale_Verzekeringsbank_logo.png> ;
-    schema:image <./assets/Sociale_Verzekeringsbank_logo.png>  .
+    foaf:logo <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png> ;
+    schema:image <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png>  .
 
 
 # ============================================================
 #  Legal Resource
 # ============================================================
 
-<https://wetten.overheid.nl/BWBR0002221> a eli:LegalResource ;
-    dct:identifier "BWBR0002221" ;
-    dct:title "Algemene Ouderdomswet"@nl ;
-    dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+<https://wetten.overheid.nl/BWBR0015703/2026-01-01/0> a eli:LegalResource ;
+    dct:identifier "BWBR0015703/2026-01-01" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
     ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
-    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
-    eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
+    ronl:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+
+# ============================================================
+#  CPRMV Rules
+# ============================================================
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande van 18, 19 of 20 jaar: € 345,99;"@nl ;
+    cprmv:situatie "een alleenstaande van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 691,98;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "691,98" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande ouder van 18, 19 of 20 jaar: € 345,99;"@nl ;
+    cprmv:situatie "een alleenstaande ouder van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.347,06."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.347,06" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.747,49."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.747,49" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.401,50;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.401,50" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners: € 2.002,13."@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.002,13" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 1.092,41;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "1.092,41" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.564,69;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.564,69" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners: € 2.144,16;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.144,16" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22a_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze geen ten laste komende kinderen hebben: € 345,99 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder."@nl ;
+    cprmv:situatie "indien ze geen ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22a_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze een of meer ten laste komende kinderen hebben: € 746,42 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder,"@nl ;
+    cprmv:situatie "indien ze een of meer ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "746,42" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden: € 690,27."@nl ;
+    cprmv:situatie "gehuwden"@nl ;
+    cprmv:norm "690,27" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder: € 443,76;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "443,76" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor gehuwden € 106,00."@nl ;
+    cprmv:situatie "voor gehuwden"@nl ;
+    cprmv:norm "106,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande of een alleenstaande ouder € 47,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "47,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-19_lid-3> a cprmv:Rule ;
+    cprmv:id "lid 3" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van 4,8 procent per 1 januari 2009: 5 procent van die bijstand."@nl ;
+    cprmv:situatie "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van"@nl ;
+    cprmv:norm "5" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 19, lid 3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-j> a cprmv:Rule ;
+    cprmv:id "onderdeel j." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een een- of tweemalige premie van ten hoogste € 3.398,00 per kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "een een- of tweemalige premie van ten hoogste"@nl ;
+    cprmv:norm "3.398,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel j." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-n> a cprmv:Rule ;
+    cprmv:id "onderdeel n." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van"@nl ;
+    cprmv:norm "285,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel n." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-r> a cprmv:Rule ;
+    cprmv:id "onderdeel r." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van"@nl ;
+    cprmv:norm "177,66" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel r." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-y> a cprmv:Rule ;
+    cprmv:id "onderdeel y." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel y." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-z> a cprmv:Rule ;
+    cprmv:id "onderdeel z." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel z." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-aa> a cprmv:Rule ;
+    cprmv:id "onderdeel aa." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht."@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel aa." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-33_lid-5_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande en een alleenstaande ouder: € 26,50 per kalendermaand;"@nl ;
+    cprmv:situatie "voor een alleenstaande en een alleenstaande ouder"@nl ;
+    cprmv:norm "26,50" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-33_lid-5_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 53,00 per kalendermaand."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "53,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-2_onderdeel-d> a cprmv:Rule ;
+    cprmv:id "onderdeel d." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan € 67.500,00;"@nl ;
+    cprmv:situatie "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan"@nl ;
+    cprmv:norm "67.500,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 2, onderdeel d." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande: € 8.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande"@nl ;
+    cprmv:norm "8.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande ouder: € 16.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande ouder"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 16.000,00."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-35_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van € 176,00 niet te boven gaan."@nl ;
+    cprmv:situatie "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van"@nl ;
+    cprmv:norm "176,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 35, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01>  .
 
 
 # ============================================================
 #  DMN Decision Model
 # ============================================================
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> a cprmv:DecisionModel ;
-    dct:identifier "SVB_LeeftijdsInformatie" ;
-    dct:title "SVB_LeeftijdsInformatie.dmn"@nl ;
-    ronl:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
-    dct:source <https://regels.overheid.nl/services/aow-leeftijd/dmn/file> ;
-    cprmv:deploymentId "eccf90fb-068c-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-10T14:29:37.219Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SVB_LeeftijdsInformatie/evaluate> ;
-    cprmv:lastTested "2026-02-10T14:30:08.536Z"^^xsd:dateTime ;
+<https://regels.overheid.nl/services/normbedragen/dmn> a cprmv:DecisionModel ;
+    dct:identifier "SZW_BijstandsnormInformatie" ;
+    dct:title "SZW_BijstandsnormInformatie.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/normbedragen> ;
+    dct:source <https://regels.overheid.nl/services/normbedragen/dmn/file> ;
+    cprmv:deploymentId "841cd76b-0740-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T11:55:10.735Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SZW_BijstandsnormInformatie/evaluate> ;
+    cprmv:lastTested "2026-02-11T11:55:28.619Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/input/1> a cpsv:Input ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/1> a cpsv:Input ;
     dct:identifier "dagVanAanvraag" ;
     dct:title "dagVanAanvraag"@nl ;
     dct:type "String" ;
-    schema:value "2026-02-10" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    schema:value "2026-02-11" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/input/2> a cpsv:Input ;
-    dct:identifier "geboortedatumAanvrager" ;
-    dct:title "geboortedatumAanvrager"@nl ;
-    dct:type "String" ;
-    schema:value "1971-08-07" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+<https://regels.overheid.nl/services/normbedragen/dmn/input/2> a cpsv:Input ;
+    dct:identifier "aanvragerAlleenstaand" ;
+    dct:title "aanvragerAlleenstaand"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/input/3> a cpsv:Input ;
-    dct:identifier "geboortedatumPartner" ;
-    dct:title "geboortedatumPartner"@nl ;
-    dct:type "String" ;
-    schema:value "1977-11-30" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/1> a cpsv:Output ;
-    dct:identifier "aanvragerIsJongerDan18" ;
-    dct:title "aanvragerIsJongerDan18"@nl ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/3> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftKinderen" ;
+    dct:title "aanvragerHeeftKinderen"@nl ;
     dct:type "Boolean" ;
     schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/2> a cpsv:Output ;
-    dct:identifier "leeftijdPartner" ;
-    dct:title "leeftijdPartner"@nl ;
-    dct:type "Integer" ;
-    schema:value 48 ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/3> a cpsv:Output ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/4> a cpsv:Input ;
     dct:identifier "aanvragerIs181920" ;
     dct:title "aanvragerIs181920"@nl ;
     dct:type "Boolean" ;
     schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/4> a cpsv:Output ;
-    dct:identifier "aanvragerHeeftAOWLeeftijd" ;
-    dct:title "aanvragerHeeftAOWLeeftijd"@nl ;
-    dct:type "Boolean" ;
-    schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/5> a cpsv:Output ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/5> a cpsv:Input ;
     dct:identifier "aanvragerIsTenminste21" ;
     dct:title "aanvragerIsTenminste21"@nl ;
     dct:type "Boolean" ;
     schema:value true ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/6> a cpsv:Output ;
-    dct:identifier "leeftijdAanvrager" ;
-    dct:title "leeftijdAanvrager"@nl ;
-    dct:type "Integer" ;
-    schema:value 54 ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/7> a cpsv:Output ;
-    dct:identifier "AOWDatumAanvrager" ;
-    dct:title "AOWDatumAanvrager"@nl ;
-    dct:type "String" ;
-    schema:value "2038-08-07" ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/8> a cpsv:Output ;
-    dct:identifier "partnerHeeftAOWLeeftijd" ;
-    dct:title "partnerHeeftAOWLeeftijd"@nl ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/6> a cpsv:Input ;
+    dct:identifier "aanvragerHeeftAOWLeeftijd" ;
+    dct:title "aanvragerHeeftAOWLeeftijd"@nl ;
     dct:type "Boolean" ;
     schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/9> a cpsv:Output ;
-    dct:identifier "AOWDatumPartner" ;
-    dct:title "AOWDatumPartner"@nl ;
-    dct:type "String" ;
-    schema:value "2044-11-30" ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/10> a cpsv:Output ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/7> a cpsv:Input ;
     dct:identifier "partnerIs181920" ;
     dct:title "partnerIs181920"@nl ;
     dct:type "Boolean" ;
     schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/11> a cpsv:Output ;
-    dct:identifier "partnerIsJongerDan18" ;
-    dct:title "partnerIsJongerDan18"@nl ;
-    dct:type "Boolean" ;
-    schema:value false ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
-
-<https://regels.overheid.nl/services/aow-leeftijd/dmn/output/12> a cpsv:Output ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/8> a cpsv:Input ;
     dct:identifier "partnerIsTenminste21" ;
     dct:title "partnerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
-    cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_passthrough> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_passthrough" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/dmn/input/9> a cpsv:Input ;
+    dct:identifier "partnerHeeftAOWLeeftijd" ;
+    dct:title "partnerHeeftAOWLeeftijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/1> a cpsv:Output ;
+    dct:identifier "bijstandsnormTermijn" ;
+    dct:title "bijstandsnormTermijn"@nl ;
+    dct:type "String" ;
+    schema:value "1e helft 2026" ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/2> a cpsv:Output ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 1401.5 ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/dmn/output/3> a cpsv:Output ;
+    dct:identifier "bijstandsnormType" ;
+    dct:title "bijstandsnormType"@nl ;
+    dct:type "String" ;
+    schema:value "M" ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_passthrough_bijstand> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_passthrough_bijstand" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_LeeftijdsInfo" ;
+    cprmv:decisionTable "DecisionTable_BijstandsnormInfo" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_withPartner> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_withPartner" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_leeftijdsgrenzen" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_withoutPartner> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_withoutPartner" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_leeftijdsgrenzen" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_withPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_withPartner_bereken" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_withoutPartner_bereken> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_withoutPartner_bereken" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2020> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2020" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2021> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2021" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2022> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2022" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2023> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2023" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2024> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2024" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2025> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2025" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2026> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2026" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2027> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2027" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2028> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2028" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2029> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2029" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd/rules/DecisionRule_2030> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2030" ;
-    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0b83iz7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0b83iz7" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1b6dy60> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1b6dy60" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0c4as9k> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0c4as9k" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0nvwa0j> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0nvwa0j" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0xhag3i> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0xhag3i" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_036ofbe> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_036ofbe" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0fhyq5c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0fhyq5c" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_07q72b8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_07q72b8" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_06bxggb> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_06bxggb" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1pcittq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1pcittq" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1s0az1o> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1s0az1o" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1ttwxry> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1ttwxry" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0tfsw0y> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0tfsw0y" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_0qbc2is> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0qbc2is" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1hz90lm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1hz90lm" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1x6dzfq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1x6dzfq" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1ajwshm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1ajwshm" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_17dcoql> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_17dcoql" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bedragen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_M> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_M" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MM> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MM" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MMK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_MJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_MJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_J> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_J" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JJ> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JJ" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JJK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JJK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_JOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_O> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_O" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OO" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_OOK" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_bijstandsnormtype" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2024H2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2024H2" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H1" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_2025H2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2025H2" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen/rules/DecisionRule_1412yud> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1412yud" ;
+    cpsv:implements <https://regels.overheid.nl/services/normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_termijn" ;
     cprmv:rulesetType "decision-table" .
 
 # =====================================
@@ -335,135 +1197,117 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-10"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/dagVanAanvraag> a skos:Concept ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/dagVanAanvraag> a skos:Concept ;
     skos:prefLabel "Dag Van Aanvraag"@nl ;
     skos:definition "Dag Van Aanvraag is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "DVA" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/1> ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/dagvanaanvraag> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/dagVanAanvraag> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/geboortedatumAanvrager> a skos:Concept ;
-    skos:prefLabel "Geboortedatum Aanvrager"@nl ;
-    skos:definition "Geboortedatum Aanvrager is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
-    skos:notation "GA" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/2> ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerAlleenstaand> a skos:Concept ;
+    skos:prefLabel "Aanvrager Alleenstaand"@nl ;
+    skos:definition "Aanvrager Alleenstaand is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AA" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/geboortedatum> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerAlleenstaand> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/geboortedatumPartner> a skos:Concept ;
-    skos:prefLabel "Geboortedatum Partner"@nl ;
-    skos:definition "Geboortedatum Partner is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
-    skos:notation "GP" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/3> ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerHeeftKinderen> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft Kinderen"@nl ;
+    skos:definition "Aanvrager Heeft Kinderen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/3> ;
     dct:type "dmn:InputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/geboortedatum> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerHeeftKinderen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerIs181920> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is181920"@nl ;
+    skos:definition "Aanvrager Is181920 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AI" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerIs181920> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is Tenminste21"@nl ;
+    skos:definition "Aanvrager Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AIT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerIsTenminste21> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft AOW Leeftijd"@nl ;
+    skos:definition "Aanvrager Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHAL" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerHeeftAOWLeeftijd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerIs181920> a skos:Concept ;
+    skos:prefLabel "Partner Is181920"@nl ;
+    skos:definition "Partner Is181920 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PI" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerIs181920> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Partner Is Tenminste21"@nl ;
+    skos:definition "Partner Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PIT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerIsTenminste21> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/partnerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Partner Heeft AOW Leeftijd"@nl ;
+    skos:definition "Partner Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PHAL" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerHeeftAOWLeeftijd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/aanvragerIsJongerDan18> a skos:Concept ;
-    skos:prefLabel "Aanvrager Is Jonger Dan18"@nl ;
-    skos:definition "Aanvrager Is Jonger Dan18 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "AIJD" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/1> ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsnormTermijn> a skos:Concept ;
+    skos:prefLabel "Bijstandsnorm Termijn"@nl ;
+    skos:definition "Bijstandsnorm Termijn is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BT" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/jongerdan18> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsnormTermijn> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/leeftijdPartner> a skos:Concept ;
-    skos:prefLabel "Leeftijd Partner"@nl ;
-    skos:definition "Leeftijd Partner is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "LP" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/2> ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsNorm> a skos:Concept ;
+    skos:prefLabel "Bijstands Norm"@nl ;
+    skos:definition "Bijstands Norm is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BN" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/leeftijd> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsNorm> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/aanvragerIs181920> a skos:Concept ;
-    skos:prefLabel "Aanvrager Is181920"@nl ;
-    skos:definition "Aanvrager Is181920 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "AI" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/3> ;
+<https://regels.overheid.nl/concepts/szwbijstandsnorminformatie/bijstandsnormType> a skos:Concept ;
+    skos:prefLabel "Bijstandsnorm Type"@nl ;
+    skos:definition "Bijstandsnorm Type is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BT1" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen/dmn/output/3> ;
     dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
-    skos:prefLabel "Aanvrager Heeft AOW Leeftijd"@nl ;
-    skos:definition "Aanvrager Heeft AOW Leeftijd is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "AHAL" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/4> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://begrippen.regels.overheid.nl/concept/aow-leeftijd-boolean> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/aanvragerIsTenminste21> a skos:Concept ;
-    skos:prefLabel "Aanvrager Is Tenminste21"@nl ;
-    skos:definition "Aanvrager Is Tenminste21 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "AIT" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/5> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/leeftijdAanvrager> a skos:Concept ;
-    skos:prefLabel "Leeftijd Aanvrager"@nl ;
-    skos:definition "Leeftijd Aanvrager is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "LA" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/6> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/AOWDatumAanvrager> a skos:Concept ;
-    skos:prefLabel "AOW Datum Aanvrager"@nl ;
-    skos:definition "AOW Datum Aanvrager is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "ADA" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/7> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/partnerHeeftAOWLeeftijd> a skos:Concept ;
-    skos:prefLabel "Partner Heeft AOW Leeftijd"@nl ;
-    skos:definition "Partner Heeft AOW Leeftijd is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PHAL" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/8> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/AOWDatumPartner> a skos:Concept ;
-    skos:prefLabel "AOW Datum Partner"@nl ;
-    skos:definition "AOW Datum Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "ADP" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/9> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/partnerIs181920> a skos:Concept ;
-    skos:prefLabel "Partner Is181920"@nl ;
-    skos:definition "Partner Is181920 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PI" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/10> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/partnerIsJongerDan18> a skos:Concept ;
-    skos:prefLabel "Partner Is Jonger Dan18"@nl ;
-    skos:definition "Partner Is Jonger Dan18 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PIJD" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/11> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/svbleeftijdsinformatie/partnerIsTenminste21> a skos:Concept ;
-    skos:prefLabel "Partner Is Tenminste21"@nl ;
-    skos:definition "Partner Is Tenminste21 is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PIT" ;
-    dct:subject <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/12> ;
-    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsnormType> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 

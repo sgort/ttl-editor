@@ -65,6 +65,11 @@
 
 
 # ============================================================
+#  Parameters
+# ============================================================
+
+
+# ============================================================
 #  DMN Decision Model
 # ============================================================
 
@@ -73,10 +78,10 @@
     dct:title "replacement-tree-decision.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/replacement-tree> ;
     dct:source <https://regels.overheid.nl/services/replacement-tree/dmn/file> ;
-    cprmv:deploymentId "751a0888-05ac-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-09T11:42:48.417Z"^^xsd:dateTime ;
+    cprmv:deploymentId "0c2b5bdf-0742-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T12:06:08.428Z"^^xsd:dateTime ;
     ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/ReplacementTreeDecision/evaluate> ;
-    cprmv:lastTested "2026-02-09T11:42:57.507Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-11T12:06:16.940Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -118,7 +123,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-09"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -128,6 +133,7 @@
     skos:notation "TD" ;
     dct:subject <https://regels.overheid.nl/services/replacement-tree/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/treeDiameter> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
@@ -138,5 +144,6 @@
     skos:notation "RR" ;
     dct:subject <https://regels.overheid.nl/services/replacement-tree/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/replacementRequired> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 

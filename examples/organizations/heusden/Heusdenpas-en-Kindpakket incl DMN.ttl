@@ -49,6 +49,8 @@
     dct:identifier "CVDR603544" ;
     dct:title "Gemeente Heusden - Beleidsregels HeusdenPas en kindpakket"@nl ;
     dct:description "Gemeenten, provincies en waterschappen publiceren in het onderdeel 'Lokale wet- en regelgeving' van Overheid.nl van de geconsolideerde teksten van algemeen verbindende voorschriften, vastgesteld door een decentrale overheid."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> ;
     eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR603544/1/2017-11-04>  .
 
 
@@ -61,10 +63,10 @@
     dct:title "HeusdenpasEindresultaat.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
     dct:source <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/file> ;
-    cprmv:deploymentId "1486ab1e-fb84-11f0-a5a4-3a5e81cd33b0" ;
-    cprmv:deployedAt "2026-01-27T13:28:35.140Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
-    cprmv:lastTested "2026-01-27T13:29:00.953Z"^^xsd:dateTime ;
+    cprmv:deploymentId "715e4381-075a-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T15:00:46.108Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
+    cprmv:lastTested "2026-02-11T15:01:21.098Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -79,21 +81,21 @@
     dct:identifier "aanvragerHeeftKind4Tm17" ;
     dct:title "aanvragerHeeftKind4Tm17"@nl ;
     dct:type "Boolean" ;
-    schema:value false ;
+    schema:value true ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/3> a cpsv:Input ;
     dct:identifier "maandelijksBrutoInkomenAanvrager" ;
     dct:title "maandelijksBrutoInkomenAanvrager"@nl ;
     dct:type "Double" ;
-    schema:value 1200 ;
+    schema:value 1600 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> a cpsv:Input ;
     dct:identifier "bijstandsNorm" ;
     dct:title "bijstandsNorm"@nl ;
     dct:type "Double" ;
-    schema:value 1100 ;
+    schema:value 345 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> a cpsv:Input ;
@@ -170,7 +172,7 @@
     dct:identifier "aanmerkingHeusdenPas" ;
     dct:title "aanmerkingHeusdenPas"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
+    schema:value false ;
     cpsv:produces <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/rules/DecisionRule_passthrough> a cpsv:Rule, cprmv:DecisionRule ;
@@ -333,7 +335,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-27"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -343,6 +345,7 @@
     skos:notation "AIH" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerInwonerHeusden> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerHeeftKind4Tm17> a skos:Concept ;
@@ -351,6 +354,7 @@
     skos:notation "AHKT" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerHeeftKind4Tm17> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/maandelijksBrutoInkomenAanvrager> a skos:Concept ;
@@ -359,6 +363,7 @@
     skos:notation "MBIA" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/3> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/maandelijksBrutoInkomenAanvrager> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/bijstandsNorm> a skos:Concept ;
@@ -367,6 +372,7 @@
     skos:notation "BN" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsNorm> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerUitkeringBaanbrekers> a skos:Concept ;
@@ -375,6 +381,7 @@
     skos:notation "AUB" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerUitkeringBaanbrekers> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerVoedselbankpasDenBosch> a skos:Concept ;
@@ -383,6 +390,7 @@
     skos:notation "AVDB" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/6> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerVoedselbankpasDenBosch> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerKwijtscheldingGemeentelijkeBelastingen> a skos:Concept ;
@@ -391,6 +399,7 @@
     skos:notation "AKGB" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/7> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerKwijtscheldingGemeentelijkeBelastingen> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerSchuldhulptrajectKredietbankNederland> a skos:Concept ;
@@ -399,6 +408,7 @@
     skos:notation "ASKN" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/8> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerSchuldhulptrajectKredietbankNederland> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerDitKalenderjaarAlAangevraagd> a skos:Concept ;
@@ -407,6 +417,7 @@
     skos:notation "ADKAA" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/9> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerDitKalenderjaarAlAangevraagd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerAanmerkingStudieFinanciering> a skos:Concept ;
@@ -415,6 +426,7 @@
     skos:notation "AASF" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/10> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerAanmerkingStudieFinanciering> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerIs181920> a skos:Concept ;
@@ -423,6 +435,7 @@
     skos:notation "AI" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/11> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerIs181920> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerIsTenminste21> a skos:Concept ;
@@ -431,6 +444,7 @@
     skos:notation "AIT" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/12> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerIsTenminste21> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
@@ -439,6 +453,7 @@
     skos:notation "AHAL" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/13> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerHeeftAOWLeeftijd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
@@ -449,6 +464,7 @@
     skos:notation "AKP" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanmerkingKindPakket> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/ronlheusdenpaseindresultaat/aanmerkingHeusdenPas> a skos:Concept ;
@@ -457,5 +473,6 @@
     skos:notation "AHP" ;
     dct:subject <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanmerkingHeusdenPas> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 

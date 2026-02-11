@@ -63,10 +63,10 @@
     dct:title "dakisolatie-berekening-final.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
     dct:source <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/file> ;
-    cprmv:deploymentId "8ff2af5f-fcfc-11f0-a931-8e0c375d6d16" ;
-    cprmv:deployedAt "2026-01-29T10:23:32.912Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
-    cprmv:lastTested "2026-01-29T10:23:53.157Z"^^xsd:dateTime ;
+    cprmv:deploymentId "d7b19792-073f-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T11:50:21.480Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
+    cprmv:lastTested "2026-02-11T11:50:44.705Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -81,7 +81,7 @@
     dct:identifier "dak_oppervlakte_m2" ;
     dct:title "dak_oppervlakte_m2"@nl ;
     dct:type "Double" ;
-    schema:value 120 ;
+    schema:value 180 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/3> a cpsv:Input ;
@@ -95,14 +95,14 @@
     dct:identifier "materiaal_cost_per_m3" ;
     dct:title "materiaal_cost_per_m3"@nl ;
     dct:type "Integer" ;
-    schema:value 80 ;
+    schema:value 120 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/5> a cpsv:Input ;
     dct:identifier "install_cost_per_m2_per_100mm" ;
     dct:title "install_cost_per_m2_per_100mm"@nl ;
     dct:type "Integer" ;
-    schema:value 20 ;
+    schema:value 80 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/6> a cpsv:Input ;
@@ -123,21 +123,21 @@
     dct:identifier "netto_kosten" ;
     dct:title "netto_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value -14 ;
+    schema:value 910 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/3> a cpsv:Output ;
     dct:identifier "installatie_kosten" ;
     dct:title "installatie_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 168 ;
+    schema:value 1008 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/4> a cpsv:Output ;
     dct:identifier "totale_kosten" ;
     dct:title "totale_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 235 ;
+    schema:value 1159 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/5> a cpsv:Output ;
@@ -151,7 +151,7 @@
     dct:identifier "terugverdientijd" ;
     dct:title "terugverdientijd"@nl ;
     dct:type "Double" ;
-    schema:value -0.2 ;
+    schema:value 11.4 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/7> a cpsv:Output ;
@@ -165,7 +165,7 @@
     dct:identifier "materiaal_kosten" ;
     dct:title "materiaal_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 67 ;
+    schema:value 151 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/9> a cpsv:Output ;
@@ -222,7 +222,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-29"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -232,6 +232,7 @@
     skos:notation "HUID" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/huidige_r_waarde> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/dak_oppervlakte_m2> a skos:Concept ;
@@ -240,6 +241,7 @@
     skos:notation "DAK_" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/dak_oppervlakte_m2> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/lambda_w_mk> a skos:Concept ;
@@ -248,6 +250,7 @@
     skos:notation "LAMB" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/3> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/lambda_w_mk> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/materiaal_cost_per_m3> a skos:Concept ;
@@ -256,6 +259,7 @@
     skos:notation "MATE" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/4> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/materiaal_cost_per_m3> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/install_cost_per_m2_per_100mm> a skos:Concept ;
@@ -264,6 +268,7 @@
     skos:notation "INST" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/5> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/install_cost_per_m2_per_100mm> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/doel_r_waarde> a skos:Concept ;
@@ -272,6 +277,7 @@
     skos:notation "DOEL" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/6> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/doel_r_waarde> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
@@ -282,6 +288,7 @@
     skos:notation "EXTR" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/extra_dikte_mm> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/netto_kosten> a skos:Concept ;
@@ -290,6 +297,7 @@
     skos:notation "NETT" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/netto_kosten> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/installatie_kosten> a skos:Concept ;
@@ -298,6 +306,7 @@
     skos:notation "INST1" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/3> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/installatie_kosten> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/totale_kosten> a skos:Concept ;
@@ -306,6 +315,7 @@
     skos:notation "TOTA" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/4> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/totale_kosten> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/subsidie> a skos:Concept ;
@@ -314,6 +324,7 @@
     skos:notation "SUBS" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/5> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/subsidie> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/terugverdientijd> a skos:Concept ;
@@ -322,6 +333,7 @@
     skos:notation "TERU" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/6> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/terugverdientijd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/delta_r> a skos:Concept ;
@@ -330,6 +342,7 @@
     skos:notation "DELT" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/7> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/delta_r> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/materiaal_kosten> a skos:Concept ;
@@ -338,6 +351,7 @@
     skos:notation "MATE1" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/8> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/materiaal_kosten> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/besparing_jaar> a skos:Concept ;
@@ -346,6 +360,7 @@
     skos:notation "BESP" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/9> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/besparing_jaar> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenisolatieopties/aanbeveling> a skos:Concept ;
@@ -354,5 +369,6 @@
     skos:notation "AANB" ;
     dct:subject <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/10> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanbeveling> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 

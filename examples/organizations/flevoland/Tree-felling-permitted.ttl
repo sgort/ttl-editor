@@ -65,6 +65,11 @@
 
 
 # ============================================================
+#  Parameters
+# ============================================================
+
+
+# ============================================================
 #  DMN Decision Model
 # ============================================================
 
@@ -73,10 +78,10 @@
     dct:title "tree-felling-decision.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/tree-felling> ;
     dct:source <https://regels.overheid.nl/services/tree-felling/dmn/file> ;
-    cprmv:deploymentId "1ee73058-05ab-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-09T11:33:14.278Z"^^xsd:dateTime ;
+    cprmv:deploymentId "e4107b87-0741-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T12:05:01.169Z"^^xsd:dateTime ;
     ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/TreeFellingDecision/evaluate> ;
-    cprmv:lastTested "2026-02-09T11:33:21.350Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-11T12:05:08.750Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -84,7 +89,7 @@
     dct:identifier "treeDiameter" ;
     dct:title "treeDiameter"@nl ;
     dct:type "Integer" ;
-    schema:value 15 ;
+    schema:value 45 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/tree-felling/dmn> .
 
 <https://regels.overheid.nl/services/tree-felling/dmn/input/2> a cpsv:Input ;
@@ -141,7 +146,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-09"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -151,6 +156,7 @@
     skos:notation "TD" ;
     dct:subject <https://regels.overheid.nl/services/tree-felling/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/treeDiameter> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/treefellingdecision/protectedArea> a skos:Concept ;
@@ -159,6 +165,7 @@
     skos:notation "PA" ;
     dct:subject <https://regels.overheid.nl/services/tree-felling/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/protectedArea> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
@@ -169,5 +176,6 @@
     skos:notation "DECI" ;
     dct:subject <https://regels.overheid.nl/services/tree-felling/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/decision> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
