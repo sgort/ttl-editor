@@ -15,6 +15,14 @@
           "items": [
             "Prefill `skos:exactMatch` with https://regels.overheid.nl/concepts/<input/output.name> in Concepts tab"
           ]
+        },
+        {
+          "title": "Bug Fixes",
+          "icon": "🐛",
+          "iconColor": "red",
+          "items": [
+            " Remove NL-SBB concepts header block captured as trailing comment lines while importing TTL file"
+          ]
         }
       ]
     },
