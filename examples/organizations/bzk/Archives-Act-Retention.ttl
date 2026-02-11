@@ -1,0 +1,251 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/archives-act-retention> a cpsv:PublicService ;
+    dct:identifier "archives-act-retention" ;
+    dct:title "Archives Act Retention"@nl ;
+    dct:description "Archives Act 1995 / Archives Decree 1995 (Archiefwet / Archiefbesluit)\nDetermines the statutory retention period and class for each decision dossier, based on product type and decision outcome."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "awb, zgac, bpmn"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/9632/Binnenlandse_Zaken_en_Koninkrijksrelaties> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0007376> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/archives-act-retention/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/9632/Binnenlandse_Zaken_en_Koninkrijksrelaties> a cv:PublicOrganisation ;
+    dct:identifier "Binnenlandse_Zaken_en_Koninkrijksrelaties" ;
+    skos:prefLabel "Binnenlandse Zaken en Koninkrijksrelaties (BZK)"@nl ;
+    foaf:homepage <https://www.rijksoverheid.nl/ministeries/ministerie-van-binnenlandse-zaken-en-koninkrijksrelaties> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Binnenlandse_Zaken_en_Koninkrijksrelaties_logo.png> ;
+    schema:image <./assets/Binnenlandse_Zaken_en_Koninkrijksrelaties_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0007376> a eli:LegalResource ;
+    dct:identifier "BWBR0007376" ;
+    dct:title "Archiefwet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0007376/2024-06-19>  .
+
+
+# ============================================================
+#  Parameters
+# ============================================================
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn> a cprmv:DecisionModel ;
+    dct:identifier "ArchivesActRetention" ;
+    dct:title "archives-act-retention.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    dct:source <https://regels.overheid.nl/services/archives-act-retention/dmn/file> ;
+    cprmv:deploymentId "8dc74804-0733-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T10:22:23.332Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/ArchivesActRetention/evaluate> ;
+    cprmv:lastTested "2026-02-11T10:22:48.194Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/input/1> a cpsv:Input ;
+    dct:identifier "productType" ;
+    dct:title "productType"@nl ;
+    dct:type "String" ;
+    schema:value "TreeFellingPermit" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/input/2> a cpsv:Input ;
+    dct:identifier "decisionType" ;
+    dct:title "decisionType"@nl ;
+    dct:type "String" ;
+    schema:value "Granted" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/output/1> a cpsv:Output ;
+    dct:identifier "retentionYears" ;
+    dct:title "retentionYears"@nl ;
+    dct:type "Integer" ;
+    schema:value 10 ;
+    cpsv:produces <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/output/2> a cpsv:Output ;
+    dct:identifier "archiveCategory" ;
+    dct:title "archiveCategory"@nl ;
+    dct:type "String" ;
+    schema:value "Tree felling permit granted - destroy after 10 years" ;
+    cpsv:produces <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/output/3> a cpsv:Output ;
+    dct:identifier "destroyable" ;
+    dct:title "destroyable"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/output/4> a cpsv:Output ;
+    dct:identifier "legalBasis" ;
+    dct:title "legalBasis"@nl ;
+    dct:type "String" ;
+    schema:value "VNG Selection List 2020 - 7.1.3 Environmental permits - V 10 years after expiry date" ;
+    cpsv:produces <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/dmn/output/5> a cpsv:Output ;
+    dct:identifier "retentionClass" ;
+    dct:title "retentionClass"@nl ;
+    dct:type "String" ;
+    schema:value "V" ;
+    cpsv:produces <https://regels.overheid.nl/services/archives-act-retention/dmn> .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Tree_Granted> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Tree_Granted" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Tree_Rejected> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Tree_Rejected" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Tree_Refused> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Tree_Refused" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Building_Granted> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Building_Granted" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Building_Rejected> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Building_Rejected" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/archives-act-retention/rules/Rule_Default> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Default" ;
+    cpsv:implements <https://regels.overheid.nl/services/archives-act-retention> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Archives" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-11"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/archivesactretention/productType> a skos:Concept ;
+    skos:prefLabel "Product Type"@nl ;
+    skos:definition "Product Type is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PT" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/productType> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/archivesactretention/decisionType> a skos:Concept ;
+    skos:prefLabel "Decision Type"@nl ;
+    skos:definition "Decision Type is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DT" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/decisionType> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/archivesactretention/retentionYears> a skos:Concept ;
+    skos:prefLabel "Retention Years"@nl ;
+    skos:definition "Retention Years is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RY" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/retentionYears> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/archivesactretention/archiveCategory> a skos:Concept ;
+    skos:prefLabel "Archive Category"@nl ;
+    skos:definition "Archive Category is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AC" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/archiveCategory> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/archivesactretention/destroyable> a skos:Concept ;
+    skos:prefLabel "Destroyable"@nl ;
+    skos:definition "Destroyable is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "DEST" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/destroyable> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/archivesactretention/legalBasis> a skos:Concept ;
+    skos:prefLabel "Legal Basis"@nl ;
+    skos:definition "Legal Basis is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "LB" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/legalBasis> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/archivesactretention/retentionClass> a skos:Concept ;
+    skos:prefLabel "Retention Class"@nl ;
+    skos:definition "Retention Class is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RC" ;
+    dct:subject <https://regels.overheid.nl/services/archives-act-retention/dmn/output/5> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/retentionClass> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

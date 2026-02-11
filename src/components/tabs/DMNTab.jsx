@@ -263,7 +263,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         notation: notation,
         linkedTo: `input/${index + 1}`,
         linkedToType: 'input',
-        exactMatch: '',
+        exactMatch: `https://regels.overheid.nl/concepts/${input.name}`,
         type: 'dmn:InputVariable',
       });
     });
@@ -282,7 +282,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         notation: notation,
         linkedTo: `output/${index + 1}`,
         linkedToType: 'output',
-        exactMatch: '',
+        exactMatch: `https://regels.overheid.nl/concepts/${output.name}`,
         type: 'dmn:OutputVariable',
       });
     });
