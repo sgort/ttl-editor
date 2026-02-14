@@ -1,0 +1,347 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> a cpsv:PublicService ;
+    dct:identifier "zorgtoeslag-voorwaarden" ;
+    dct:title "Zorgtoeslag Voorwaarden Check"@nl ;
+    dct:description "Controleert of een persoon voldoet aan de basisvoorwaarden voor zorgtoeslag op basis van persoonsgegevens."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/zorgtoeslag> ;
+    dcat:keyword "eligibility, health, requirements"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/71117/Directoraat-generaal_Toeslagen> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/71117/Directoraat-generaal_Toeslagen> a cv:PublicOrganisation ;
+    dct:identifier "Directoraat-generaal_Toeslagen" ;
+    skos:prefLabel "Directoraat-generaal Toeslagen (DGTSL)"@nl ;
+    foaf:homepage <https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen/toeslagen> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Directoraat-generaal_Toeslagen_logo.png> ;
+    schema:image <./assets/Directoraat-generaal_Toeslagen_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2> a eli:LegalResource ;
+    dct:identifier "jci1.3:c:BWBR0018451&artikel=2" ;
+    dct:title "Wet op de zorgtoeslag"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> ;
+    eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2/2026-01-01>  .
+
+
+# ============================================================
+#  Parameters
+# ============================================================
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> a cprmv:DecisionModel ;
+    dct:identifier "ZorgtoeslagVoorwaardenCheck" ;
+    dct:title "ZorgtoeslagVoorwaardenCheck.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    dct:source <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/file> ;
+    cprmv:deploymentId "9760421d-08fa-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-13T16:39:40.072Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/ZorgtoeslagVoorwaardenCheck/evaluate> ;
+    cprmv:lastTested "2026-02-13T16:40:18.905Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/1> a cpsv:Input ;
+    dct:identifier "Geboortedatum" ;
+    dct:title "Geboortedatum"@nl ;
+    dct:type "String" ;
+    schema:value "1970-09-04" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/2> a cpsv:Input ;
+    dct:identifier "Woonadres" ;
+    dct:title "Woonadres"@nl ;
+    dct:type "String" ;
+    schema:value "Straat" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/3> a cpsv:Input ;
+    dct:identifier "Zorgverzekering Nummer" ;
+    dct:title "Zorgverzekering Nummer"@nl ;
+    dct:type "String" ;
+    schema:value "123456" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/4> a cpsv:Input ;
+    dct:identifier "Heeft Betalingsregeling" ;
+    dct:title "Heeft Betalingsregeling"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/5> a cpsv:Input ;
+    dct:identifier "In Detentie" ;
+    dct:title "In Detentie"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/6> a cpsv:Input ;
+    dct:identifier "Jaarinkomen" ;
+    dct:title "Jaarinkomen"@nl ;
+    dct:type "Integer" ;
+    schema:value 24000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/1> a cpsv:Output ;
+    dct:identifier "isIngezetene" ;
+    dct:title "isIngezetene"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/2> a cpsv:Output ;
+    dct:identifier "heeftJuisteLeeftijd" ;
+    dct:title "heeftJuisteLeeftijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/3> a cpsv:Output ;
+    dct:identifier "betalingsregelingOK" ;
+    dct:title "betalingsregelingOK"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/4> a cpsv:Output ;
+    dct:identifier "vrijVanDetentie" ;
+    dct:title "vrijVanDetentie"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/5> a cpsv:Output ;
+    dct:identifier "heeftGeldigeVerzekering" ;
+    dct:title "heeftGeldigeVerzekering"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/6> a cpsv:Output ;
+    dct:identifier "inkomenBinnenGrenzen" ;
+    dct:title "inkomenBinnenGrenzen"@nl ;
+    dct:type "Double" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn> .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_eligible> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_eligible" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_too_young> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_too_young" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_no_address> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_no_address" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_invalid_insurance> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_invalid_insurance" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_has_payment_arrangement> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_has_payment_arrangement" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_in_detention> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_in_detention" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_income_too_high> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_income_too_high" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/rules/DecisionRule_income_negative> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_income_negative" ;
+    cpsv:implements <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ZorgtoeslagVoorwaarden" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-13"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/Geboortedatum> a skos:Concept ;
+    skos:prefLabel "Geboortedatum"@nl ;
+    skos:definition "Geboortedatum is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GEBO" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/Geboortedatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/Woonadres> a skos:Concept ;
+    skos:prefLabel "Woonadres"@nl ;
+    skos:definition "Woonadres is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "WOON" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/Woonadres> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/zorgverzekeringNummer> a skos:Concept ;
+    skos:prefLabel "Zorgverzekering Nummer"@nl ;
+    skos:definition "Zorgverzekering Nummer is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ZN" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/ZorgverzekeringNummer> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/heeftBetalingsregeling> a skos:Concept ;
+    skos:prefLabel "Heeft Betalingsregeling"@nl ;
+    skos:definition "Heeft Betalingsregeling is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "HB" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/HeeftBetalingsregeling> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/inDetentie> a skos:Concept ;
+    skos:prefLabel "In Detentie"@nl ;
+    skos:definition "In Detentie is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ID" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/InDetentie> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/Jaarinkomen> a skos:Concept ;
+    skos:prefLabel "Jaarinkomen"@nl ;
+    skos:definition "Jaarinkomen is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "JAAR" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/Jaarinkomen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/isIngezetene> a skos:Concept ;
+    skos:prefLabel "Is Ingezetene"@nl ;
+    skos:definition "Boolean waarde die aangeeft of iemand als Nederlandse ingezetene wordt beschouwd."@nl ;
+    skos:notation "ISIN" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/ingezetene_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/heeftJuisteLeeftijd> a skos:Concept ;
+    skos:prefLabel "Heeft Juiste Leeftijd"@nl ;
+    skos:definition "Boolean waarde die aangeeft of iemand de vereiste leeftijd heeft."@nl ;
+    skos:notation "HJLE" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/leeftijd_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/betalingsregelingOK> a skos:Concept ;
+    skos:prefLabel "Betalingsregeling OK"@nl ;
+    skos:definition "Boolean waarde die aangeeft of betalingsregeling niet blokkeert."@nl ;
+    skos:notation "BROK" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/betalingsregeling_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/vrijVanDetentie> a skos:Concept ;
+    skos:prefLabel "Vrij Van Detentie"@nl ;
+    skos:definition "Boolean waarde die aangeeft of persoon niet in detentie is."@nl ;
+    skos:notation "VRDE" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/detentie_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/heeftGeldigeVerzekering> a skos:Concept ;
+    skos:prefLabel "Heeft Geldige Verzekering"@nl ;
+    skos:definition "Boolean waarde die aangeeft of persoon een geldige zorgverzekering heeft."@nl ;
+    skos:notation "HGVE" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/5> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verzekering_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/zorgtoeslagvoorwaardencheck/inkomenBinnenGrenzen> a skos:Concept ;
+    skos:prefLabel "Inkomen Binnen Grenzen"@nl ;
+    skos:definition "Boolean waarde die aangeeft of inkomen en vermogen binnen toegestane grenzen vallen."@nl ;
+    skos:notation "INBI" ;
+    dct:subject <https://regels.overheid.nl/services/zorgtoeslag-voorwaarden/dmn/output/6> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/inkomen_en_vermogen_requirement> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
