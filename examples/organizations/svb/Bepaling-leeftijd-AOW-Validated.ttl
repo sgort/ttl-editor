@@ -5,12 +5,11 @@
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
-
 
 # ============================================================
 #  Public Service
@@ -73,163 +72,10 @@
     dct:identifier "BWBR0002221" ;
     dct:title "Algemene Ouderdomswet"@nl ;
     dct:description "De informatie op wetten.overheid.nl onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
-    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
-    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/Demo> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0002221/2025-01-01>  .
 
-# ========================================
-# Temporal Rules
-# ========================================
-
-<https://regels.overheid.nl/rules/test-rule-001> a cpsv:Rule, ronl:TemporalRule ;
-    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
-    dct:identifier "test-rule-001" ;
-    dct:title "Basisregel 2024 - Hoge Zekerheid"@nl ;
-    ronl:extends <https://wetten.overheid.nl/BWBR9999999/Artikel_1> ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date ;
-    ronl:confidenceLevel "high" ;
-    dct:description "Dit is de basisregel voor 2024 met hoge zekerheid. Deze regel implementeert Artikel 1 van de testwetgeving en is van toepassing op alle standaard scenario's."@nl .
-
-<https://regels.overheid.nl/rules/test-rule-002> a cpsv:Rule, ronl:TemporalRule ;
-    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
-    dct:identifier "test-rule-002" ;
-    dct:title "Uitgebreide Regel 2025 - Gemiddelde Zekerheid"@nl ;
-    ronl:extends <https://regels.overheid.nl/rules/test-rule-001> ;
-    ronl:validFrom "2025-01-01"^^xsd:date ;
-    ronl:validUntil "2025-12-31"^^xsd:date ;
-    ronl:confidenceLevel "medium" ;
-    dct:description "Deze regel vervangt en breidt de basisregel uit voor 2025. Let op: dit is een voorlopige regel met gemiddelde zekerheid vanwege aankomende wetgevingswijzigingen."@nl .
-
-<https://regels.overheid.nl/rules/test-rule-003> a cpsv:Rule, ronl:TemporalRule ;
-    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
-    dct:identifier "test-rule-003" ;
-    dct:title "Speciale Uitzonderingsregel - Hoge Zekerheid"@nl ;
-    ronl:extends <https://wetten.overheid.nl/BWBR9999999/Artikel_5/Lid_2> ;
-    ronl:validFrom "2024-06-01"^^xsd:date ;
-    ronl:validUntil "2026-05-31"^^xsd:date ;
-    ronl:confidenceLevel "high" ;
-    dct:description "Uitzonderingsregel die dwars door meerdere periodes loopt. Implementeert specifieke uitzonderingen zoals beschreven in Artikel 5 lid 2."@nl .
-
-<https://regels.overheid.nl/rules/test-rule-004> a cpsv:Rule, ronl:TemporalRule ;
-    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
-    dct:identifier "test-rule-004" ;
-    dct:title "Toekomstige Regel 2026 - Lage Zekerheid"@nl ;
-    ronl:extends <https://regels.overheid.nl/rules/test-rule-002> ;
-    ronl:validFrom "2026-01-01"^^xsd:date ;
-    ronl:validUntil "2026-12-31"^^xsd:date ;
-    ronl:confidenceLevel "low" ;
-    dct:description "Projectie voor 2026 gebaseerd op verwachte wetgeving. Lage zekerheid vanwege politieke onzekerheden en mogelijke beleidswijzigingen. Gebruik met voorzichtigheid."@nl .
-
-<https://regels.overheid.nl/rules/test-rule-005> a cpsv:Rule, ronl:TemporalRule ;
-    cpsv:implements <https://regels.overheid.nl/services/test-comprehensive-service> ;
-    dct:identifier "test-rule-005" ;
-    dct:title "Permanente Regel - Geen Einddatum"@nl ;
-    ronl:extends <https://wetten.overheid.nl/BWBR9999999/Artikel_10> ;
-    ronl:validFrom "2023-01-01"^^xsd:date ;
-    ronl:confidenceLevel "high" ;
-    dct:description "Deze regel heeft geen einddatum en blijft van kracht totdat deze expliciet wordt ingetrokken. Implementeert fundamentele bepalingen uit Artikel 10."@nl .
-
-# ========================================
-# Parameters
-# ========================================
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-1> a ronl:ParameterWaarde ;
-    skos:prefLabel "Maximum Inkomensgrens Alleenstaande"@nl ;
-    skos:notation "MAX_INKOMEN_ALLEENSTAAND" ;
-    schema:value "35000.00"^^xsd:decimal ;
-    schema:unitCode "EUR" ;
-    dct:description "Maximale jaarlijkse inkomensgrens voor een alleenstaande aanvrager. Bedragen boven deze grens komen niet in aanmerking voor de regeling."@nl ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date .
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-2> a ronl:ParameterWaarde ;
-    skos:prefLabel "Maximum Inkomensgrens Gezin"@nl ;
-    skos:notation "MAX_INKOMEN_GEZIN" ;
-    schema:value "50000.00"^^xsd:decimal ;
-    schema:unitCode "EUR" ;
-    dct:description "Maximale jaarlijkse inkomensgrens voor een gezin (twee volwassenen). Voor elk extra kind wordt een toeslag toegepast."@nl ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date .
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-3> a ronl:ParameterWaarde ;
-    skos:prefLabel "Percentage Bijdrage Laag Inkomen"@nl ;
-    skos:notation "PERC_BIJDRAGE_LAAG" ;
-    schema:value "85.00"^^xsd:decimal ;
-    schema:unitCode "PCT" ;
-    dct:description "Percentage van de kosten dat vergoed wordt voor huishoudens met een laag inkomen (onder 60% van modaal)."@nl ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date .
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-4> a ronl:ParameterWaarde ;
-    skos:prefLabel "Percentage Bijdrage Gemiddeld Inkomen"@nl ;
-    skos:notation "PERC_BIJDRAGE_GEMIDDELD" ;
-    schema:value "60.00"^^xsd:decimal ;
-    schema:unitCode "PCT" ;
-    dct:description "Percentage van de kosten dat vergoed wordt voor huishoudens met een gemiddeld inkomen (60%-120% van modaal)."@nl ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date .
-
-<https://regels.overheid.nl/parameters/test-comprehensive-service/param-5> a ronl:ParameterWaarde ;
-    skos:prefLabel "Maximum Subsidiebedrag per Maand"@nl ;
-    skos:notation "MAX_SUBSIDIE_MAAND" ;
-    schema:value "1500.00"^^xsd:decimal ;
-    schema:unitCode "EUR" ;
-    dct:description "Maximum bedrag aan subsidie dat per maand kan worden uitgekeerd aan een individuele aanvrager of huishouden."@nl ;
-    ronl:validFrom "2024-01-01"^^xsd:date ;
-    ronl:validUntil "2024-12-31"^^xsd:date .
-
-# ========================================
-# CPRMV Rules
-# ========================================
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-aa> a cprmv:Rule ;
-    cprmv:id "onderdeel aa." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van de Wet op de loonbelasting 1964, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeid aangewezen acht"@nl ;
-    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van de Wet op de loonbelasting 1964"@nl ;
-    cprmv:norm "76" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_aa" .
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-ab> a cprmv:Rule ;
-    cprmv:id "onderdeel ab." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van de Wet op de loonbelasting 1964, tot 30 procent van deze inkomsten uit arbeid, met een maximum van € 352,70 per maand, voor zover hij participatieplaats als bedoeld in artikel 10a, vierde lid, onderdeel b, heeft en algemene bijstand ontvangt"@nl ;
-    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van de Wet op de loonbelasting 1964"@nl ;
-    cprmv:norm "77" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_ab" .
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-b> a cprmv:Rule ;
-    cprmv:id "onderdeel b." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "betalingen die voortvloeien uit een aanspraak op grond van een werknemersverzekering, de Wet arbeid en zorg of de Wet arbeidsongeschiktheidsvoorziening jonggehandicapten tot de helft van de som van deze betalingen, met een maximum van € 176,35 per maand"@nl ;
-    cprmv:situatie "betalingen die voortvloeien uit een aanspraak op grond van een werknemersverzekering, de Wet arbeid en zorg of de Wet arbeidsongeschiktheidsvoorziening jonggehandicapten"@nl ;
-    cprmv:norm "78" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_b" .
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-c> a cprmv:Rule ;
-    cprmv:id "onderdeel c." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "een deel, door het college vastgesteld op maximaal € 211,62 per maand, van de gezamenlijke inkomsten, bedoeld in de onderdelen a tot en met b, voor zover de belanghebbende jonger is dan de pensioengerechtigde leeftijd, bedoeld in artikel 7a, eerste lid, van de Algemene Ouderdomswet"@nl ;
-    cprmv:situatie "een deel van de gezamenlijke inkomsten"@nl ;
-    cprmv:norm "79" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_c" .
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-d> a cprmv:Rule ;
-    cprmv:id "onderdeel d." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "ontvangen alimentatie tot de helft van deze alimentatie, met een maximum van € 70,54 per maand"@nl ;
-    cprmv:situatie "ontvangen alimentatie"@nl ;
-    cprmv:norm "80" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_d" .
-
-<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel-e> a cprmv:Rule ;
-    cprmv:id "onderdeel e." ;
-    cprmv:rulesetId "BWBR0015703" ;
-    cprmv:definition "een door het college per geval te bepalen deel van een vergoeding die dient ter bestrijding van kosten van een cursus, opleiding of studie, voor zover deze vergoeding meer bedraagt dan de met deze cursus, opleiding of studie verband houdende kosten"@nl ;
-    cprmv:situatie "een vergoeding die dient ter bestrijding van kosten van een cursus, opleiding of studie"@nl ;
-    cprmv:norm "81" ;
-    cprmv:ruleIdPath "BWBR0015703_2025-07-01_0/Artikel_31/Lid_2/Onderdeel_e" .
 
 # ============================================================
 #  DMN Decision Model
@@ -238,16 +84,16 @@
 <https://regels.overheid.nl/services/aow-leeftijd/dmn> a cprmv:DecisionModel ;
     dct:identifier "SVB_LeeftijdsInformatie" ;
     dct:title "SVB_LeeftijdsInformatie.dmn"@nl ;
-    ronl:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
+    cprmv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
     dct:source <https://regels.overheid.nl/services/aow-leeftijd/dmn/file> ;
-    cprmv:deploymentId "3571e478-0986-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-14T09:19:05.250Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SVB_LeeftijdsInformatie/evaluate> ;
-    cprmv:lastTested "2026-02-14T09:19:26.821Z"^^xsd:dateTime ;
+    cprmv:deploymentId "5e7c102b-09b7-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-14T15:10:59.440Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SVB_LeeftijdsInformatie/evaluate> ;
+    cprmv:lastTested "2026-02-14T15:11:01.147Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     ronl:validationStatus "validated"^^xsd:string ;
     ronl:validatedBy <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
-    ronl:validatedAt "2026-12-02"^^xsd:date ;
+    ronl:validatedAt "2026-02-14"^^xsd:date ;
     ronl:validationNote "Validation note goes here..."@nl ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -255,21 +101,21 @@
     dct:identifier "dagVanAanvraag" ;
     dct:title "dagVanAanvraag"@nl ;
     dct:type "String" ;
-    schema:value "2026-02-02" ;
+    schema:value "2026-02-14" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/2> a cpsv:Input ;
     dct:identifier "geboortedatumAanvrager" ;
     dct:title "geboortedatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "1958-04-22" ;
+    schema:value "1978-05-26" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/input/3> a cpsv:Input ;
     dct:identifier "geboortedatumPartner" ;
     dct:title "geboortedatumPartner"@nl ;
     dct:type "String" ;
-    schema:value "1986-03-31" ;
+    schema:value "1969-12-12" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/1> a cpsv:Output ;
@@ -283,7 +129,7 @@
     dct:identifier "leeftijdPartner" ;
     dct:title "leeftijdPartner"@nl ;
     dct:type "Integer" ;
-    schema:value 39 ;
+    schema:value 56 ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/3> a cpsv:Output ;
@@ -297,7 +143,7 @@
     dct:identifier "aanvragerHeeftAOWLeeftijd" ;
     dct:title "aanvragerHeeftAOWLeeftijd"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
+    schema:value false ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/5> a cpsv:Output ;
@@ -311,14 +157,14 @@
     dct:identifier "leeftijdAanvrager" ;
     dct:title "leeftijdAanvrager"@nl ;
     dct:type "Integer" ;
-    schema:value 67 ;
+    schema:value 47 ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/7> a cpsv:Output ;
     dct:identifier "AOWDatumAanvrager" ;
     dct:title "AOWDatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "2025-04-22" ;
+    schema:value "2045-05-26" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/8> a cpsv:Output ;
@@ -332,7 +178,7 @@
     dct:identifier "AOWDatumPartner" ;
     dct:title "AOWDatumPartner"@nl ;
     dct:type "String" ;
-    schema:value "2053-03-31" ;
+    schema:value "2036-12-12" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd/dmn/output/10> a cpsv:Output ;

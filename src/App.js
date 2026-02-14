@@ -78,6 +78,8 @@ function App() {
     setOutput,
     dmnData,
     setDmnData,
+    vendorService,
+    setVendorService,
     iknowMappingConfig,
     setIknowMappingConfig, // ← used by IKnowMappingTab
     availableIKnowMappings, // ← passed to IKnowMappingTab
@@ -979,6 +981,10 @@ function App() {
                   setMappingConfig={setIknowMappingConfig}
                   availableMappings={availableIKnowMappings}
                   onImportComplete={handleIKnowImport}
+                  vendorService={vendorService}
+                  setVendorService={setVendorService}
+                  service={service}
+                  organization={organization}
                 />
               )}
               {activeTab === 'changelog' && <ChangelogTab />}

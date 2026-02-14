@@ -66,6 +66,31 @@ export const useEditorState = () => {
     validationNote: '',
   });
 
+  // Vendor state - Blueriq as a first
+  const [vendorService, setVendorService] = useState({
+    selectedVendor: '',
+    contact: {
+      organizationName: '',
+      contactPerson: '',
+      email: '',
+      phone: '',
+      website: '',
+      logo: '',
+    },
+    serviceNotes: '',
+    technical: {
+      serviceUrl: '',
+      license: '',
+      accessType: 'fair-use',
+    },
+    certification: {
+      status: 'not-certified',
+      certifiedBy: '',
+      certifiedAt: '',
+      certificationNote: '',
+    },
+  });
+
   // iKnow state
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
   const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
@@ -147,6 +172,9 @@ export const useEditorState = () => {
     setDmnData,
     concepts,
     setConcepts,
+    // Vendor
+    vendorService,
+    setVendorService,
     // iKnow
     iknowMappingConfig,
     setIknowMappingConfig,

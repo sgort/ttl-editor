@@ -5,12 +5,11 @@
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
-
 
 # ============================================================
 #  Public Service
@@ -49,8 +48,8 @@
     dct:identifier "CVDR603544" ;
     dct:title "Gemeente Heusden - Beleidsregels HeusdenPas en kindpakket"@nl ;
     dct:description "Gemeenten, provincies en waterschappen publiceren in het onderdeel 'Lokale wet- en regelgeving' van Overheid.nl van de geconsolideerde teksten van algemeen verbindende voorschriften, vastgesteld door een decentrale overheid."@nl ;
-    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
-    ronl:hasMethod <https://regels.overheid.nl/termen/ALEF> ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/ALEF> ;
     eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR603544/1/2017-11-04>  .
 
 
@@ -61,12 +60,12 @@
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> a cprmv:DecisionModel ;
     dct:identifier "RONL_HeusdenpasEindresultaat" ;
     dct:title "HeusdenpasEindresultaat.dmn"@nl ;
-    ronl:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    cprmv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
     dct:source <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/file> ;
-    cprmv:deploymentId "715e4381-075a-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-11T15:00:46.108Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
-    cprmv:lastTested "2026-02-11T15:01:21.098Z"^^xsd:dateTime ;
+    cprmv:deploymentId "8e7a13a1-09bd-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-14T15:55:16.949Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
+    cprmv:lastTested "2026-02-14T15:55:44.361Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -81,21 +80,21 @@
     dct:identifier "aanvragerHeeftKind4Tm17" ;
     dct:title "aanvragerHeeftKind4Tm17"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
+    schema:value false ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/3> a cpsv:Input ;
     dct:identifier "maandelijksBrutoInkomenAanvrager" ;
     dct:title "maandelijksBrutoInkomenAanvrager"@nl ;
     dct:type "Double" ;
-    schema:value 1600 ;
+    schema:value 1200 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> a cpsv:Input ;
     dct:identifier "bijstandsNorm" ;
     dct:title "bijstandsNorm"@nl ;
     dct:type "Double" ;
-    schema:value 345 ;
+    schema:value 1145 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> a cpsv:Input ;
@@ -151,7 +150,7 @@
     dct:identifier "aanvragerIsTenminste21" ;
     dct:title "aanvragerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
+    schema:value false ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/13> a cpsv:Input ;
@@ -327,6 +326,13 @@
     cprmv:decisionTable "DecisionTable_knockoffs" ;
     cprmv:rulesetType "decision-table" .
 
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-14"^^xsd:date .
+
+# Input Variable Concepts
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -335,7 +341,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-11"^^xsd:date .
+    dct:created "2026-02-14"^^xsd:date .
 
 # Input Variable Concepts
 

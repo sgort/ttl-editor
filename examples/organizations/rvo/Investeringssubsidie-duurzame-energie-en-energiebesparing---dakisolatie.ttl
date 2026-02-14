@@ -5,12 +5,11 @@
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
-
 
 # ============================================================
 #  Public Service
@@ -49,8 +48,8 @@
     dct:identifier "BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5" ;
     dct:title "Regeling nationale EZ-, LVVN- en KGG-subsidies"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
-    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
-    ronl:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
     eli:is_realized_by <https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5/2026-01-01>  .
 
 
@@ -61,11 +60,11 @@
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> a cprmv:DecisionModel ;
     dct:identifier "bereken_isolatie_opties" ;
     dct:title "dakisolatie-berekening-final.dmn"@nl ;
-    ronl:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    cprmv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
     dct:source <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/file> ;
     cprmv:deploymentId "d7b19792-073f-11f1-a5e9-f68ed60940f5" ;
     cprmv:deployedAt "2026-02-11T11:50:21.480Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
     cprmv:lastTested "2026-02-11T11:50:44.705Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
@@ -214,6 +213,13 @@
     cprmv:decisionTable "isolatie_tabel" ;
     cprmv:rulesetType "decision-table" .
 
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-11"^^xsd:date .
+
+# Input Variable Concepts
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -222,7 +228,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-11"^^xsd:date .
+    dct:created "2026-02-14"^^xsd:date .
 
 # Input Variable Concepts
 
