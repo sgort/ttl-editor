@@ -353,14 +353,14 @@ export class TTLGenerator {
       const analysisUri = this.ronlAnalysis.startsWith('http')
         ? `<${this.ronlAnalysis}>`
         : this.ronlAnalysis;
-      ttl += `    ronl:hasAnalysis ${analysisUri} ;\n`;
+      ttl += `    cprmv:hasAnalysis ${analysisUri} ;\n`;
     }
 
     if (this.ronlMethod) {
       const methodUri = this.ronlMethod.startsWith('http')
         ? `<${this.ronlMethod}>`
         : this.ronlMethod;
-      ttl += `    ronl:hasMethod ${methodUri} ;\n`;
+      ttl += `    cprmv:hasMethod ${methodUri} ;\n`;
     }
 
     if (this.legalResource.version) {
@@ -394,7 +394,7 @@ export class TTLGenerator {
       if (hasData) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
 
-        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        ttl += `<${ruleUri}> a cpsv:Rule, cprmv:TemporalRule ;\n`;
         ttl += `    cpsv:implements <${this.serviceUri}> ;\n`;
 
         if (rule.identifier) {
@@ -409,19 +409,19 @@ export class TTLGenerator {
           const extendsUri = rule.extends.startsWith('http')
             ? rule.extends
             : `https://regels.overheid.nl/rules/${encodeURIComponentTTL(rule.extends)}`;
-          ttl += `    ronl:extends <${extendsUri}> ;\n`;
+          ttl += `    cprmv:extends <${extendsUri}> ;\n`;
         }
 
         if (rule.validFrom) {
-          ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         }
 
         if (rule.validUntil) {
-          ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         }
 
         if (rule.confidenceLevel) {
-          ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
+          ttl += `    cprmv:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
         }
 
         if (rule.description) {
@@ -451,7 +451,7 @@ export class TTLGenerator {
           this.service.identifier || 'service'
         )}/param-${index + 1}`;
 
-        ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
+        ttl += `<${paramUri}> a cprmv:ParameterWaarde ;\n`;
 
         if (param.label) {
           ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
@@ -474,11 +474,11 @@ export class TTLGenerator {
         }
 
         if (param.validFrom) {
-          ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validFrom "${param.validFrom}"^^xsd:date ;\n`;
         }
 
         if (param.validUntil) {
-          ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validUntil "${param.validUntil}"^^xsd:date ;\n`;
         }
 
         ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -676,7 +676,7 @@ export class TTLGenerator {
       ttl += `<${dmnUri}> a cprmv:DecisionModel ;\n`;
       ttl += `    dct:identifier "${this.dmnData.decisionKey || 'unknown'}" ;\n`;
       ttl += `    dct:title "${this.dmnData.fileName}"@nl ;\n`;
-      ttl += `    ronl:implements <${this.serviceUri}> ;\n`;
+      ttl += `    cprmv:implements <${this.serviceUri}> ;\n`;
       ttl += `    dct:source <${this.serviceUri}/dmn/file> ;\n`;
 
       if (this.dmnData.deploymentId) {
@@ -688,7 +688,7 @@ export class TTLGenerator {
       }
 
       if (this.dmnData.apiEndpoint) {
-        ttl += `    ronl:implementedBy <${this.dmnData.apiEndpoint}> ;\n`;
+        ttl += `    cprmv:implementedBy <${this.dmnData.apiEndpoint}> ;\n`;
       }
 
       if (this.dmnData.lastTestResult && this.dmnData.lastTestTimestamp) {

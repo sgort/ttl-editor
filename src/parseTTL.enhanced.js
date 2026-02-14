@@ -262,7 +262,7 @@ export const parseTTLEnhanced = (ttlContent) => {
       }
 
       if (inDmnSection) {
-        // NEW: Parse validation properties BEFORE preserving raw line
+        // v2.0.0: Parse validation properties BEFORE preserving raw line
         if (currentSection === 'dmnModel') {
           // Parse validation metadata from DMN model lines
           if (line.includes('ronl:validationStatus')) {
@@ -287,8 +287,19 @@ export const parseTTLEnhanced = (ttlContent) => {
           }
         }
 
-        // Preserve raw line for round-trip
-        dmnLines.push(rawLine);
+        // v2.0.0: Replace old namespace in raw line before preserving
+        let processedLine = rawLine;
+        if (rawLine.includes('ronl:implements ') && !rawLine.includes('ronl:validat')) {
+          processedLine = rawLine.replace('ronl:implements', 'cprmv:implements');
+          console.log('🔄 Converted ronl:implements → cprmv:implements');
+        }
+        if (rawLine.includes('ronl:implementedBy')) {
+          processedLine = rawLine.replace('ronl:implementedBy', 'cprmv:implementedBy');
+          console.log('🔄 Converted ronl:implementedBy → cprmv:implementedBy');
+        }
+
+        // Preserve processed line for round-trip
+        dmnLines.push(processedLine);
         continue;
       }
 
@@ -382,16 +393,19 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
         }
 
-        if (line.includes('ronl:hasAnalysis')) {
-          const match = line.match(/ronl:hasAnalysis\s+(?:<([^>]+)>|(ronl:\S+))/);
+        // v2.0.0: Support both ronl: (legacy) and cprmv: (current)
+        if (line.includes('hasAnalysis')) {
+          // Match either ronl:hasAnalysis or cprmv:hasAnalysis
+          const match = line.match(/(?:ronl|cprmv):hasAnalysis\s+(?:<([^>]+)>|(\S+))/);
           if (match) {
             parsed.ronlAnalysis = match[1] || match[2];
             console.log('Parsed RONL Analysis:', parsed.ronlAnalysis);
           }
         }
 
-        if (line.includes('ronl:hasMethod')) {
-          const match = line.match(/ronl:hasMethod\s+(?:<([^>]+)>|(ronl:\S+))/);
+        if (line.includes('hasMethod')) {
+          // Match either ronl:hasMethod or cprmv:hasMethod
+          const match = line.match(/(?:ronl|cprmv):hasMethod\s+(?:<([^>]+)>|(\S+))/);
           if (match) {
             parsed.ronlMethod = match[1] || match[2];
             console.log('Parsed RONL Method:', parsed.ronlMethod);

@@ -58,6 +58,12 @@ export const useEditorState = () => {
     testBody: null,
     importedDmnBlocks: null, // Raw TTL blocks (string)
     isImported: false, // Flag to disable DMN tab
+
+    // Ensure validation fields always have string defaults (not undefined)
+    validationStatus: 'not-validated',
+    validatedBy: '',
+    validatedAt: '',
+    validationNote: '',
   });
 
   // iKnow state

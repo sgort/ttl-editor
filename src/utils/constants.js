@@ -73,12 +73,11 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
-
 `;
 
 // Base URIs for generated resources
