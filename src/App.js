@@ -918,7 +918,12 @@ function App() {
                 />
               )}{' '}
               {activeTab === 'organization' && (
-                <OrganizationTab organization={organization} setOrganization={setOrganization} />
+                <OrganizationTab
+                  organization={organization}
+                  setOrganization={setOrganization}
+                  dmnData={dmnData}
+                  setDmnData={setDmnData}
+                />
               )}
               {activeTab === 'legal' && (
                 <LegalTab

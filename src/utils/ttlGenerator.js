@@ -696,6 +696,23 @@ export class TTLGenerator {
         ttl += `    cprmv:testStatus "passed" ;\n`;
       }
 
+      // NEW: Validation metadata (only if status is not "not-validated")
+      if (this.dmnData.validationStatus && this.dmnData.validationStatus !== 'not-validated') {
+        ttl += `    ronl:validationStatus "${this.dmnData.validationStatus}"^^xsd:string ;\n`;
+
+        if (this.dmnData.validatedBy && this.dmnData.validatedBy.trim() !== '') {
+          ttl += `    ronl:validatedBy <${this.dmnData.validatedBy}> ;\n`;
+        }
+
+        if (this.dmnData.validatedAt && this.dmnData.validatedAt.trim() !== '') {
+          ttl += `    ronl:validatedAt "${this.dmnData.validatedAt}"^^xsd:date ;\n`;
+        }
+
+        if (this.dmnData.validationNote && this.dmnData.validationNote.trim() !== '') {
+          ttl += `    ronl:validationNote "${escapeTTLString(this.dmnData.validationNote)}"@nl ;\n`;
+        }
+      }
+
       ttl += `    dct:description "DMN decision model for service evaluation"@nl .\n\n`;
 
       // 2. Extract inputs

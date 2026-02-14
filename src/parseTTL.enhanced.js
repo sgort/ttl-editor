@@ -55,9 +55,15 @@ export const parseTTLEnhanced = (ttlContent) => {
         type: '',
       },
 
-      // NEW: DMN preservation for Option 3
+      // DMN preservation for Option 3
       importedDmnBlocks: null, // Raw TTL blocks (string)
       hasDmnData: false, // Detection flag
+
+      // NEW: DMN validation metadata (for import)
+      dmnValidationStatus: 'not-validated',
+      dmnValidatedBy: '',
+      dmnValidatedAt: '',
+      dmnValidationNote: '',
     };
 
     // Validate prefixes (silent by default to reduce console noise)
@@ -256,8 +262,34 @@ export const parseTTLEnhanced = (ttlContent) => {
       }
 
       if (inDmnSection) {
+        // NEW: Parse validation properties BEFORE preserving raw line
+        if (currentSection === 'dmnModel') {
+          // Parse validation metadata from DMN model lines
+          if (line.includes('ronl:validationStatus')) {
+            const value = extractValue(line.split('ronl:validationStatus')[1]) || 'not-validated';
+            parsed.dmnValidationStatus = value;
+            console.log('🔍 Parsed validationStatus:', value);
+          }
+          if (line.includes('ronl:validatedBy')) {
+            const value = extractValue(line.split('ronl:validatedBy')[1]) || '';
+            parsed.dmnValidatedBy = value;
+            console.log('🔍 Parsed validatedBy:', value);
+          }
+          if (line.includes('ronl:validatedAt')) {
+            const value = extractValue(line.split('ronl:validatedAt')[1]) || '';
+            parsed.dmnValidatedAt = value;
+            console.log('🔍 Parsed validatedAt:', value);
+          }
+          if (line.includes('ronl:validationNote')) {
+            const value = extractValue(line.split('ronl:validationNote')[1]) || '';
+            parsed.dmnValidationNote = value;
+            console.log('🔍 Parsed validationNote:', value);
+          }
+        }
+
+        // Preserve raw line for round-trip
         dmnLines.push(rawLine);
-        continue; // Standard detection handles section closing
+        continue;
       }
 
       // Parse properties based on current section
@@ -571,6 +603,14 @@ export const parseTTLEnhanced = (ttlContent) => {
     if (parsed.hasDmnData && dmnLines.length > 0) {
       parsed.importedDmnBlocks = dmnLines.join('\n');
       console.log('✅ DMN data detected and preserved:', dmnLines.length, 'lines');
+
+      // NEW: Log validation metadata summary
+      console.log('📋 DMN Validation Metadata Parsed:', {
+        status: parsed.dmnValidationStatus,
+        validatedBy: parsed.dmnValidatedBy,
+        validatedAt: parsed.dmnValidatedAt,
+        hasNote: !!parsed.dmnValidationNote,
+      });
     }
 
     return parsed;
