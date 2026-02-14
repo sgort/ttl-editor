@@ -5,7 +5,7 @@
 **Version:** 1.0.0  
 **Status:** Draft / Under Development  
 **Release Date:** 2026-02-15 (planned)  
-**Maintainer:** RONL Initiative / VWS  
+**Maintainer:** RONL Initiative / VWS
 
 ---
 
@@ -35,6 +35,7 @@ The RONL Ontology defines a vocabulary for **organizational governance** in the 
 ### Purpose
 
 Enable transparent, traceable governance of government rules by:
+
 - Tracking who validates decision models and services
 - Recording official certification by competent authorities
 - Supporting multi-vendor implementations of government services
@@ -43,6 +44,7 @@ Enable transparent, traceable governance of government rules by:
 ### Scope
 
 The ronl ontology primarily defines **properties** that describe governance relationships. It leverages existing classes from:
+
 - **CPSV-AP**: `cpsv:PublicService`, `cv:PublicOrganisation`
 - **CPRMV**: `cprmv:DecisionModel`
 - **ORG**: `org:Organization`
@@ -55,29 +57,31 @@ The ronl ontology primarily defines **properties** that describe governance rela
 
 The RONL namespace has been reorganized to separate concerns:
 
-| Namespace | Purpose | Prefix |
-|-----------|---------|--------|
-| `https://regels.overheid.nl/ontology#` | Organizational governance | `ronl:` |
-| `https://cprmv.open-regels.nl/0.3.0/` | Rule management | `cprmv:` |
+| Namespace                              | Purpose                   | Prefix   |
+| -------------------------------------- | ------------------------- | -------- |
+| `https://regels.overheid.nl/ontology#` | Organizational governance | `ronl:`  |
+| `https://cprmv.open-regels.nl/0.3.0/`  | Rule management           | `cprmv:` |
 
 ### What Changed
 
 **OLD (deprecated):**
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/termen/> .
 
-<something> 
+<something>
     ronl:hasAnalysis <...> ;
     ronl:hasMethod <...> ;
     ronl:implements <...> .
 ```
 
 **NEW (current):**
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
 
-<something> 
+<something>
     cprmv:hasAnalysis <...> ;
     cprmv:hasMethod <...> ;
     cprmv:implements <...> .
@@ -87,21 +91,22 @@ The RONL namespace has been reorganized to separate concerns:
 
 Properties moved from old `ronl:` to `cprmv:`:
 
-| Legacy Property | New Property | Purpose |
-|----------------|--------------|---------|
-| `ronl:hasAnalysis` | `cprmv:hasAnalysis` | Legal analysis method |
-| `ronl:hasMethod` | `cprmv:hasMethod` | Rule extraction methodology |
-| `ronl:TemporalRule` | `cprmv:TemporalRule` | Temporal rule class |
-| `ronl:ParameterWaarde` | `cprmv:ParameterWaarde` | Parameter value class |
-| `ronl:implements` | `cprmv:implements` | Implementation relationship |
-| `ronl:implementedBy` | `cprmv:implementedBy` | API endpoint |
-| `ronl:confidenceLevel` | `cprmv:confidenceLevel` | Rule confidence |
-| `ronl:validFrom` | `cprmv:validFrom` | Temporal validity start |
-| `ronl:validUntil` | `cprmv:validUntil` | Temporal validity end |
+| Legacy Property        | New Property            | Purpose                     |
+| ---------------------- | ----------------------- | --------------------------- |
+| `ronl:hasAnalysis`     | `cprmv:hasAnalysis`     | Legal analysis method       |
+| `ronl:hasMethod`       | `cprmv:hasMethod`       | Rule extraction methodology |
+| `ronl:TemporalRule`    | `cprmv:TemporalRule`    | Temporal rule class         |
+| `ronl:ParameterWaarde` | `cprmv:ParameterWaarde` | Parameter value class       |
+| `ronl:implements`      | `cprmv:implements`      | Implementation relationship |
+| `ronl:implementedBy`   | `cprmv:implementedBy`   | API endpoint                |
+| `ronl:confidenceLevel` | `cprmv:confidenceLevel` | Rule confidence             |
+| `ronl:validFrom`       | `cprmv:validFrom`       | Temporal validity start     |
+| `ronl:validUntil`      | `cprmv:validUntil`      | Temporal validity end       |
 
 ### Backward Compatibility
 
 **The CPSV Editor parser maintains backward compatibility:**
+
 - ✅ **Import**: Old TTL files with `ronl: <.../termen/>` are automatically migrated
 - ✅ **Export**: Always uses new namespaces (`ronl:` for governance, `cprmv:` for rules)
 - ✅ **No data loss**: Property aliases ensure seamless migration
@@ -121,11 +126,12 @@ Properties describing technical correctness and quality assurance.
 **Domain:** `cprmv:DecisionModel`, `cpsv:PublicService`  
 **Range:** `org:Organization` (URI reference)  
 **Cardinality:** 0..1  
-**Constraint:** MUST be a valid organization URI  
+**Constraint:** MUST be a valid organization URI
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> 
+<https://regels.overheid.nl/services/aow-leeftijd/dmn>
     ronl:validatedBy <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> .
 ```
 
@@ -139,11 +145,12 @@ Properties describing technical correctness and quality assurance.
 **Range:** `xsd:string`  
 **Cardinality:** 0..1  
 **Constraint:** MUST be one of: `"validated"`, `"in-review"`, `"not-validated"`  
-**Default:** `"not-validated"`  
+**Default:** `"not-validated"`
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> 
+<https://regels.overheid.nl/services/aow-leeftijd/dmn>
     ronl:validationStatus "validated"^^xsd:string .
 ```
 
@@ -156,11 +163,12 @@ Properties describing technical correctness and quality assurance.
 **Domain:** `cprmv:DecisionModel`, `cpsv:PublicService`  
 **Range:** `xsd:date`  
 **Cardinality:** 0..1  
-**Constraint:** ISO 8601 date format (YYYY-MM-DD)  
+**Constraint:** ISO 8601 date format (YYYY-MM-DD)
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> 
+<https://regels.overheid.nl/services/aow-leeftijd/dmn>
     ronl:validatedAt "2026-02-15"^^xsd:date .
 ```
 
@@ -173,11 +181,12 @@ Properties describing technical correctness and quality assurance.
 **Domain:** `cprmv:DecisionModel`, `cpsv:PublicService`  
 **Range:** `rdf:langString`  
 **Cardinality:** 0..1  
-**Language Tag:** `@nl` (Dutch)  
+**Language Tag:** `@nl` (Dutch)
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> 
+<https://regels.overheid.nl/services/aow-leeftijd/dmn>
     ronl:validationNote "Validated against AOW legislation Article 7a. Test suite: 127 cases passed."@nl .
 ```
 
@@ -194,11 +203,12 @@ Properties describing official approval and authorization.
 **Domain:** `cpsv:PublicService`  
 **Range:** `org:Organization` (URI reference)  
 **Cardinality:** 0..1  
-**Constraint:** MUST be a valid organization URI. Typically the competent authority.  
+**Constraint:** MUST be a valid organization URI. Typically the competent authority.
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd> 
+<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd>
     ronl:certifiedBy <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> .
 ```
 
@@ -212,11 +222,12 @@ Properties describing official approval and authorization.
 **Range:** `xsd:string`  
 **Cardinality:** 0..1  
 **Constraint:** MUST be one of: `"certified"`, `"pending"`, `"rejected"`, `"expired"`  
-**Default:** `"pending"`  
+**Default:** `"pending"`
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd> 
+<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd>
     ronl:certificationStatus "certified"^^xsd:string .
 ```
 
@@ -229,11 +240,12 @@ Properties describing official approval and authorization.
 **Domain:** `cpsv:PublicService`  
 **Range:** `xsd:date`  
 **Cardinality:** 0..1  
-**Constraint:** ISO 8601 date format (YYYY-MM-DD)  
+**Constraint:** ISO 8601 date format (YYYY-MM-DD)
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd> 
+<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd>
     ronl:certifiedAt "2026-02-15"^^xsd:date .
 ```
 
@@ -246,11 +258,12 @@ Properties describing official approval and authorization.
 **Domain:** `cpsv:PublicService`  
 **Range:** `rdf:langString`  
 **Cardinality:** 0..1  
-**Language Tag:** `@nl` (Dutch)  
+**Language Tag:** `@nl` (Dutch)
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd> 
+<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd>
     ronl:certificationNote "Meets SVB implementation requirements v2.1. Annual recertification required."@nl .
 ```
 
@@ -267,11 +280,12 @@ Properties describing relationships between reference implementations and vendor
 **Domain:** `cpsv:PublicService`, `cprmv:DecisionModel`  
 **Range:** `cpsv:PublicService` (URI reference)  
 **Cardinality:** 0..1  
-**Constraint:** MUST reference a published government service  
+**Constraint:** MUST reference a published government service
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd> 
+<https://regels.overheid.nl/vendor-services/blueriq/aow-leeftijd>
     ronl:basedOn <https://regels.overheid.nl/services/aow-leeftijd> .
 ```
 
@@ -284,11 +298,12 @@ Properties describing relationships between reference implementations and vendor
 **Domain:** `org:Organization`  
 **Range:** `xsd:string`  
 **Cardinality:** 0..1  
-**Constraint:** MUST be one of: `"commercial"`, `"open-source"`, `"government"`, `"non-profit"`  
+**Constraint:** MUST be one of: `"commercial"`, `"open-source"`, `"government"`, `"non-profit"`
 
 **Example:**
+
 ```turtle
-<https://regels.overheid.nl/vendors/blueriq> 
+<https://regels.overheid.nl/vendors/blueriq>
     ronl:vendorType "commercial"^^xsd:string .
 ```
 
@@ -306,12 +321,12 @@ Properties describing relationships between reference implementations and vendor
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://regels.overheid.nl/services/aow-leeftijd/dmn> 
+<https://regels.overheid.nl/services/aow-leeftijd/dmn>
     a cprmv:DecisionModel ;
     dct:identifier "SVB_LeeftijdsInformatie" ;
     dct:title "SVB Leeftijdsinformatie DMN"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/aow-leeftijd> ;
-    
+
     # Validation metadata
     ronl:validatedBy <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
     ronl:validationStatus "validated"^^xsd:string ;
@@ -320,6 +335,7 @@ Properties describing relationships between reference implementations and vendor
 ```
 
 **Key Points:**
+
 - SVB validates their own reference implementation
 - Status is "validated" - ready for vendor consumption
 - Validation date provides temporal tracking
@@ -346,19 +362,19 @@ Properties describing relationships between reference implementations and vendor
     dct:identifier "blueriq-aow-leeftijd" ;
     dct:title "AOW Leeftijd - Blueriq Implementation"@nl ;
     dct:description "Commercial rule engine implementation by Blueriq B.V."@nl ;
-    
+
     # Relationship to reference
     ronl:basedOn <https://regels.overheid.nl/services/aow-leeftijd> ;
-    
+
     # Service provider
     cv:hasCompetentAuthority <https://regels.overheid.nl/vendors/blueriq> ;
-    
+
     # Vendor self-validation
     ronl:validatedBy <https://regels.overheid.nl/vendors/blueriq> ;
     ronl:validationStatus "validated"^^xsd:string ;
     ronl:validatedAt "2026-02-10"^^xsd:date ;
     ronl:validationNote "Tested against SVB reference DMN test suite. 127/127 cases passed. Performance: avg 45ms response time."@nl ;
-    
+
     # SVB certification
     ronl:certifiedBy <https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank> ;
     ronl:certificationStatus "certified"^^xsd:string ;
@@ -374,6 +390,7 @@ Properties describing relationships between reference implementations and vendor
 ```
 
 **Key Points:**
+
 - Blueriq service is `basedOn` SVB reference (traceability)
 - Blueriq validates their own implementation (self-assessment)
 - SVB certifies the implementation (official approval)
@@ -408,6 +425,7 @@ Properties describing relationships between reference implementations and vendor
 ```
 
 **Key Points:**
+
 - Status transitions provide audit trail
 - Notes document progress and expectations
 - Lifecycle management through status field
@@ -420,6 +438,7 @@ Properties describing relationships between reference implementations and vendor
 **Scenario:** Civil servants in the Linked Data Explorer want to find all certified implementations of a specific service.
 
 **SPARQL Query:**
+
 ```sparql
 PREFIX ronl: <https://regels.overheid.nl/ontology#>
 PREFIX cpsv: <http://purl.org/vocab/cpsv#>
@@ -436,10 +455,10 @@ WHERE {
            cv:hasCompetentAuthority ?vendor ;
            ronl:certificationStatus ?certStatus ;
            ronl:certifiedAt ?certDate .
-  
+
   # Get vendor name
   ?vendor skos:prefLabel ?vendorName .
-  
+
   # Only show certified implementations
   FILTER(?certStatus = "certified")
 }
@@ -453,6 +472,7 @@ ORDER BY DESC(?certDate)
 | `.../another/aow` | AOW - Another Impl | `.../another` | Another Inc. | certified | 2026-01-20 |
 
 **Key Points:**
+
 - Enables vendor comparison and selection
 - Filters by certification status
 - Shows temporal information for recency
@@ -467,6 +487,7 @@ ORDER BY DESC(?certDate)
 These constraints should be enforced by applications using the RONL ontology:
 
 #### 1. Validation Completeness
+
 ```
 IF ronl:validationStatus = "validated"
 THEN ronl:validatedBy MUST exist
@@ -478,6 +499,7 @@ AND ronl:validatedAt MUST exist
 ---
 
 #### 2. Certification Completeness
+
 ```
 IF ronl:certificationStatus = "certified"
 THEN ronl:certifiedBy MUST exist
@@ -489,6 +511,7 @@ AND ronl:certifiedAt MUST exist
 ---
 
 #### 3. Temporal Consistency
+
 ```
 IF ronl:certifiedAt exists AND ronl:validatedAt exists
 THEN ronl:certifiedAt >= ronl:validatedAt
@@ -499,6 +522,7 @@ THEN ronl:certifiedAt >= ronl:validatedAt
 ---
 
 #### 4. Organizational Consistency (Reference DMNs)
+
 ```
 IF Subject is cprmv:DecisionModel
 AND ronl:validatedBy = X
@@ -510,6 +534,7 @@ THEN X SHOULD BE cv:hasCompetentAuthority of the implementing service
 ---
 
 #### 5. Vendor Service Requirements
+
 ```
 IF Subject has ronl:certifiedBy
 THEN Subject MUST have ronl:basedOn
@@ -523,15 +548,15 @@ THEN Subject MUST have ronl:basedOn
 
 For implementation in the CPSV Editor:
 
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| `validationStatus` = "validated" | `validatedBy` must be filled | "Validator organization required for validated status" |
-| `validationStatus` = "validated" | `validatedAt` must be filled | "Validation date required for validated status" |
-| `certificationStatus` = "certified" | `certifiedBy` must be filled | "Certifying organization required for certified status" |
-| `certificationStatus` = "certified" | `certifiedAt` must be filled | "Certification date required for certified status" |
-| `certifiedAt` | Must be >= `validatedAt` | "Certification date cannot be before validation date" |
-| `validatedBy` | Must be valid organization URI | "Invalid organization URI format" |
-| `certifiedBy` | Must be valid organization URI | "Invalid organization URI format" |
+| Field                               | Rule                           | Error Message                                           |
+| ----------------------------------- | ------------------------------ | ------------------------------------------------------- |
+| `validationStatus` = "validated"    | `validatedBy` must be filled   | "Validator organization required for validated status"  |
+| `validationStatus` = "validated"    | `validatedAt` must be filled   | "Validation date required for validated status"         |
+| `certificationStatus` = "certified" | `certifiedBy` must be filled   | "Certifying organization required for certified status" |
+| `certificationStatus` = "certified" | `certifiedAt` must be filled   | "Certification date required for certified status"      |
+| `certifiedAt`                       | Must be >= `validatedAt`       | "Certification date cannot be before validation date"   |
+| `validatedBy`                       | Must be valid organization URI | "Invalid organization URI format"                       |
+| `certifiedBy`                       | Must be valid organization URI | "Invalid organization URI format"                       |
 
 ---
 
@@ -548,13 +573,14 @@ namespaces: {
   // Current namespaces
   'https://regels.overheid.nl/ontology#': ['ronl'],
   'https://cprmv.open-regels.nl/0.3.0/': ['cprmv'],
-  
+
   // Legacy namespace (backward compatibility)
   'https://regels.overheid.nl/termen/': ['ronl-legacy'],
 }
 ```
 
 **Key Points:**
+
 - `ronl` → New governance ontology
 - `cprmv` → Rule management vocabulary
 - `ronl-legacy` → Internal alias for old namespace (never exported)
@@ -581,6 +607,7 @@ propertyAliases: {
 ```
 
 **Behavior:**
+
 - **Import**: Properties from old namespace are automatically mapped to cprmv
 - **Export**: Always uses cprmv namespace for rule properties
 - **Transparency**: Users see only the new namespace in exports
@@ -603,7 +630,7 @@ entityTypes: {
     ],
     canonicalType: 'cprmv:TemporalRule'
   },
-  
+
   parameter: {
     acceptedTypes: [
       'cprmv:ParameterWaarde',        // NEW (primary)
@@ -616,6 +643,7 @@ entityTypes: {
 ```
 
 **Behavior:**
+
 - Parser recognizes multiple type variants
 - Canonical type is always used in exports
 - No data loss during import/export cycles
@@ -664,15 +692,17 @@ entityTypes: {
 **Test Case 1: Import Old File**
 
 Input (old-format.ttl):
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/termen/> .
 
-<https://regels.overheid.nl/services/test> 
+<https://regels.overheid.nl/services/test>
     ronl:hasAnalysis <https://regels.overheid.nl/termen/ALEF> ;
     ronl:implements <https://regels.overheid.nl/services/test> .
 ```
 
 Expected State After Import:
+
 ```javascript
 {
   ronlAnalysis: "https://regels.overheid.nl/termen/ALEF",
@@ -681,6 +711,7 @@ Expected State After Import:
 ```
 
 Expected Output After Export:
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
@@ -697,6 +728,7 @@ Expected Output After Export:
 **Test Case 2: Round-Trip Validation Properties**
 
 Input (new-format.ttl):
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/ontology#> .
 
@@ -707,6 +739,7 @@ Input (new-format.ttl):
 ```
 
 Expected State After Import:
+
 ```javascript
 {
   dmnData: {
@@ -718,6 +751,7 @@ Expected State After Import:
 ```
 
 Expected Output After Export:
+
 ```turtle
 @prefix ronl: <https://regels.overheid.nl/ontology#> .
 
@@ -778,17 +812,17 @@ If you're building tools that consume RONL TTL files:
 
 #### Update Property References
 
-| Old | New |
-|-----|-----|
-| `ronl:hasAnalysis` | `cprmv:hasAnalysis` |
-| `ronl:hasMethod` | `cprmv:hasMethod` |
-| `ronl:TemporalRule` | `cprmv:TemporalRule` |
+| Old                    | New                     |
+| ---------------------- | ----------------------- |
+| `ronl:hasAnalysis`     | `cprmv:hasAnalysis`     |
+| `ronl:hasMethod`       | `cprmv:hasMethod`       |
+| `ronl:TemporalRule`    | `cprmv:TemporalRule`    |
 | `ronl:ParameterWaarde` | `cprmv:ParameterWaarde` |
-| `ronl:implements` | `cprmv:implements` |
-| `ronl:implementedBy` | `cprmv:implementedBy` |
+| `ronl:implements`      | `cprmv:implements`      |
+| `ronl:implementedBy`   | `cprmv:implementedBy`   |
 | `ronl:confidenceLevel` | `cprmv:confidenceLevel` |
-| `ronl:validFrom` | `cprmv:validFrom` |
-| `ronl:validUntil` | `cprmv:validUntil` |
+| `ronl:validFrom`       | `cprmv:validFrom`       |
+| `ronl:validUntil`      | `cprmv:validUntil`      |
 
 ---
 
@@ -803,7 +837,7 @@ PREFIX cprmv: <https://cprmv.open-regels.nl/0.3.0/>
 SELECT ?service ?analysis
 WHERE {
   ?service a cpsv:PublicService .
-  
+
   # Try new property first, fall back to old
   OPTIONAL { ?service cprmv:hasAnalysis ?analysis }
   OPTIONAL { ?service ronl-old:hasAnalysis ?analysis }
@@ -816,18 +850,18 @@ WHERE {
 
 ### RONL Ontology Properties (9 total)
 
-| Property | Domain | Purpose | Cardinality |
-|----------|--------|---------|-------------|
-| `ronl:validatedBy` | DecisionModel, Service | Who validated | 0..1 |
-| `ronl:validationStatus` | DecisionModel, Service | Validation state | 0..1 |
-| `ronl:validatedAt` | DecisionModel, Service | When validated | 0..1 |
-| `ronl:validationNote` | DecisionModel, Service | Validation notes | 0..1 |
-| `ronl:certifiedBy` | Service | Who certified | 0..1 |
-| `ronl:certificationStatus` | Service | Certification state | 0..1 |
-| `ronl:certifiedAt` | Service | When certified | 0..1 |
-| `ronl:certificationNote` | Service | Certification notes | 0..1 |
-| `ronl:basedOn` | Service | Reference implementation | 0..1 |
-| `ronl:vendorType` | Organization | Vendor classification | 0..1 |
+| Property                   | Domain                 | Purpose                  | Cardinality |
+| -------------------------- | ---------------------- | ------------------------ | ----------- |
+| `ronl:validatedBy`         | DecisionModel, Service | Who validated            | 0..1        |
+| `ronl:validationStatus`    | DecisionModel, Service | Validation state         | 0..1        |
+| `ronl:validatedAt`         | DecisionModel, Service | When validated           | 0..1        |
+| `ronl:validationNote`      | DecisionModel, Service | Validation notes         | 0..1        |
+| `ronl:certifiedBy`         | Service                | Who certified            | 0..1        |
+| `ronl:certificationStatus` | Service                | Certification state      | 0..1        |
+| `ronl:certifiedAt`         | Service                | When certified           | 0..1        |
+| `ronl:certificationNote`   | Service                | Certification notes      | 0..1        |
+| `ronl:basedOn`             | Service                | Reference implementation | 0..1        |
+| `ronl:vendorType`          | Organization           | Vendor classification    | 0..1        |
 
 ---
 
@@ -854,6 +888,7 @@ WHERE {
 ### v1.0.0 (2026-02-15)
 
 **Added:**
+
 - Initial release of RONL Ontology
 - 9 governance properties (validation, certification, vendor integration)
 - Migration from legacy ronl namespace to cprmv
@@ -861,10 +896,12 @@ WHERE {
 - Comprehensive documentation and examples
 
 **Changed:**
+
 - Namespace reorganization: governance (ronl) vs rules (cprmv)
 - All rule-related properties moved to cprmv namespace
 
 **Deprecated:**
+
 - Old namespace `https://regels.overheid.nl/termen/` (parser still supports for backward compatibility)
 
 ---

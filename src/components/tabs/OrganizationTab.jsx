@@ -6,17 +6,6 @@ import React, { useState } from 'react';
  * Maps to cv:PublicOrganisation in CPSV-AP 3.2.0
  */
 export default function OrganizationTab({ organization, setOrganization, dmnData, setDmnData }) {
-  // *** DEBUG LOG ***
-  console.log('🎯 OrganizationTab - dmnData state:', {
-    fileName: dmnData.fileName,
-    deployed: dmnData.deployed,
-    lastTestResult: !!dmnData.lastTestResult,
-    isImported: dmnData.isImported,
-    validationStatus: dmnData.validationStatus,
-    validatedBy: dmnData.validatedBy,
-    validatedAt: dmnData.validatedAt,
-    validationNote: dmnData.validationNote?.substring(0, 30) + '...',
-  });
   // State for collapsible validation section
   const [showValidationSection, setShowValidationSection] = useState(false);
 
@@ -48,16 +37,6 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
   const isImported = dmnData.isImported;
   const hasValidationMetadata =
     dmnData.validationStatus && dmnData.validationStatus !== 'not-validated';
-
-  // *** DEBUG LOG ***
-  console.log('🔍 OrganizationTab - Conditions:', {
-    hasDMN,
-    isImported,
-    hasValidationMetadata,
-    shouldShowEmpty: !hasDMN && !isImported,
-    shouldShowImported: isImported && hasValidationMetadata,
-    shouldShowEditable: hasDMN && !isImported,
-  });
 
   const handleLogoUpload = async (event) => {
     const file = event.target.files[0];
