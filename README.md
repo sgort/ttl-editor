@@ -53,19 +53,21 @@ The **Core Public Service Editor** is a React-based web application that simplif
 The Vendor Tab enables Dutch government services to document **vendor-specific implementations** of their decision models. While the CPSV Editor creates reference DMN decision models, vendors like Blueriq, iKnow, and others provide commercial implementations with additional features, support, and enterprise capabilities.
 
 This tab creates a bridge between:
+
 - **Reference Implementation**: Open-source DMN model validated by government
 - **Vendor Implementation**: Commercial service with SLAs, support, and certification
 
 ### Key Features
 
 - **Multi-Vendor Architecture**: Dropdown loads all RONL Method Concepts from TriplyDB
-- **Blueriq Service Metadata**: Full contact, technical, and certification information  
-- **Logo Management**: Asset path generation matching Organization tab pattern  
-- **URL Validation**: Real-time feedback for vendor website and service endpoint  
-- **Certification Workflow**: Track conformance assessment status and certification  
-- **TTL Generation**: Complete RDF output with schema.org and RONL vocabularies  
+- **Blueriq Service Metadata**: Full contact, technical, and certification information
+- **Logo Management**: Asset path generation matching Organization tab pattern
+- **URL Validation**: Real-time feedback for vendor website and service endpoint
+- **Certification Workflow**: Track conformance assessment status and certification
+- **TTL Generation**: Complete RDF output with schema.org and RONL vocabularies
 
 ### References
+
 See further the [detailed docs](./docs/VENDOR_BLUERIQ.md)
 
 ---

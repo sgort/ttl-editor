@@ -29,6 +29,7 @@
 The Vendor Tab enables Dutch government services to document **vendor-specific implementations** of their decision models. While the CPSV Editor creates reference DMN decision models, vendors like Blueriq, iKnow, and others provide commercial implementations with additional features, support, and enterprise capabilities.
 
 This tab creates a bridge between:
+
 - **Reference Implementation**: Open-source DMN model validated by government
 - **Vendor Implementation**: Commercial service with SLAs, support, and certification
 
@@ -39,7 +40,7 @@ This tab creates a bridge between:
 ✅ **Logo Management**: Asset path generation matching Organization tab pattern  
 ✅ **URL Validation**: Real-time feedback for vendor website and service endpoint  
 ✅ **Certification Workflow**: Track conformance assessment status and certification  
-✅ **TTL Generation**: Complete RDF output with schema.org and RONL vocabularies  
+✅ **TTL Generation**: Complete RDF output with schema.org and RONL vocabularies
 
 ---
 
@@ -62,27 +63,27 @@ VendorTab
 ```javascript
 // Global State (useEditorState hook)
 const [vendorService, setVendorService] = useState({
-  selectedVendor: '',           // RONL Method Concept URI
+  selectedVendor: '', // RONL Method Concept URI
   contact: {
     organizationName: '',
     contactPerson: '',
     email: '',
     phone: '',
     website: '',
-    logo: ''                     // Base64 for preview, asset path for TTL
+    logo: '', // Base64 for preview, asset path for TTL
   },
   serviceNotes: '',
   technical: {
     serviceUrl: '',
     license: '',
-    accessType: 'fair-use'       // or 'iam-required'
+    accessType: 'fair-use', // or 'iam-required'
   },
   certification: {
-    status: 'not-certified',     // or 'in-review', 'certified'
+    status: 'not-certified', // or 'in-review', 'certified'
     certifiedBy: '',
     certifiedAt: '',
-    certificationNote: ''
-  }
+    certificationNote: '',
+  },
 });
 
 // Local UI State (VendorTab component)
@@ -115,12 +116,14 @@ Without this dual update, TTL generation fails because `vendorService.selectedVe
 ### Vendor Selection
 
 **Dropdown Population:**
+
 - Fetches RONL Method Concepts via SPARQL query on component mount
 - Endpoint: `https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql`
 - Query: `SELECT ?narrower ?prefLabel WHERE { ronl:MethodConcept skos:narrower ?narrower }`
 - Populates dropdown with 17 vendor options (as of Feb 2026)
 
 **SPARQL Query:**
+
 ```sparql
 PREFIX ronl: <https://regels.overheid.nl/termen/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
@@ -138,13 +141,13 @@ ORDER BY ?prefLabel
 
 #### Section 1: Vendor Contact Information (70% width)
 
-| Field | RDF Property | Required | Validation |
-|-------|-------------|----------|------------|
-| Organization Name | schema:name | ✅ | - |
-| Contact Person | schema:contactPoint/schema:name | - | - |
-| Email | schema:contactPoint/schema:email | - | Email format |
-| Phone | schema:contactPoint/schema:telephone | - | - |
-| Website | foaf:homepage | - | **URL validation** |
+| Field             | RDF Property                         | Required | Validation         |
+| ----------------- | ------------------------------------ | -------- | ------------------ |
+| Organization Name | schema:name                          | ✅       | -                  |
+| Contact Person    | schema:contactPoint/schema:name      | -        | -                  |
+| Email             | schema:contactPoint/schema:email     | -        | Email format       |
+| Phone             | schema:contactPoint/schema:telephone | -        | -                  |
+| Website           | foaf:homepage                        | -        | **URL validation** |
 
 #### Section 2: Vendor Logo (30% width)
 
@@ -156,11 +159,11 @@ ORDER BY ?prefLabel
 
 #### Section 3: Technical Information
 
-| Field | RDF Property | Required | Validation |
-|-------|-------------|----------|------------|
-| Service URL | schema:url | - | **URL validation** |
-| License | schema:license | - | Free text |
-| Access Type | ronl:accessType | ✅ | Radio: fair-use / iam-required |
+| Field       | RDF Property    | Required | Validation                     |
+| ----------- | --------------- | -------- | ------------------------------ |
+| Service URL | schema:url      | -        | **URL validation**             |
+| License     | schema:license  | -        | Free text                      |
+| Access Type | ronl:accessType | ✅       | Radio: fair-use / iam-required |
 
 #### Section 4: Service Notes
 
@@ -172,18 +175,22 @@ ORDER BY ?prefLabel
 #### Section 5: Conformance Assessment and Approved Provider Registry
 
 **Certification Status Options:**
+
 1. **Not Validated** (default) - Initial state
 2. **In Review** - Submitted for assessment
 3. **Certified** - Approved by competent authority
 
 **Conditional Fields** (shown only for in-review/certified):
+
 - Certification Date (ronl:certifiedAt)
 - Certification Note (ronl:certificationNote)
 
 **Auto-Populated Field:**
+
 - Certified By URI (ronl:certifiedBy) - Auto-fills from Organization tab identifier
 
 **Action Button:**
+
 - "Request Certification" - Opens modal with email template
 
 ---
@@ -242,7 +249,7 @@ schema:contactPoint rdfs:domain schema:Organization ;
 ```javascript
 vendorService: {
   selectedVendor: "https://regels.overheid.nl/termen/Blueriq",
-  
+
   contact: {
     organizationName: "Blueriq",
     contactPerson: "René Frankena",
@@ -251,15 +258,15 @@ vendorService: {
     website: "https://www.blueriq.com",
     logo: "data:image/png;base64,iVBORw0KGgoAAAA..."  // Base64 string
   },
-  
+
   serviceNotes: "Service Notes goes here...",
-  
+
   technical: {
     serviceUrl: "https://regelservices.blueriq.com/shortcut/Doccle",
     license: "Commercial",
     accessType: "iam-required"  // or "fair-use"
   },
-  
+
   certification: {
     status: "not-certified",  // or "in-review", "certified"
     certifiedBy: "https://organisaties.overheid.nl/28212263/Sociale_Verzekeringsbank",
@@ -290,9 +297,9 @@ vendorService: {
         schema:contactPoint [
             schema:name "René Frankena" ;
             schema:email "contact@blueriq.com" ;
-            schema:telephone "+31 6 12 34 56 78" 
+            schema:telephone "+31 6 12 34 56 78"
         ] ;
-        foaf:homepage <https://www.blueriq.com> 
+        foaf:homepage <https://www.blueriq.com>
     ] ;
     schema:url <https://regelservices.blueriq.com/shortcut/Doccle> ;
     schema:license "Commercial" ;
@@ -303,11 +310,13 @@ vendorService: {
 ### URI Construction
 
 **Vendor Service URI Pattern:**
+
 ```
 {serviceUri}/vendor
 ```
 
 **Example:**
+
 - Service URI: `https://regels.overheid.nl/services/aow-leeftijd`
 - Vendor URI: `https://regels.overheid.nl/services/aow-leeftijd/vendor`
 
@@ -346,8 +355,7 @@ if (hasContact) {
 #### Rule 3: Certification Metadata Only for Non-Default Status
 
 ```javascript
-if (vendor.certification.status && 
-    vendor.certification.status !== 'not-certified') {
+if (vendor.certification.status && vendor.certification.status !== 'not-certified') {
   ttl += `    ronl:certificationStatus "${vendor.certification.status}"^^xsd:string ;\n`;
   // ... additional certification fields
 }
@@ -362,12 +370,13 @@ if (vendor.contact.logo && vendor.contact.logo.trim() !== '') {
   const vendorUri = vendor.selectedVendor;
   const vendorName = vendorUri.split('/').pop(); // "Blueriq"
   const logoPath = `./assets/${vendorName}_vendor_logo.png`;
-  
+
   ttl += `        schema:image <${logoPath}> ;\n`;
 }
 ```
 
-**Why?** 
+**Why?**
+
 - Keeps TTL files small (~10KB vs 188KB)
 - Matches Organization tab pattern
 - Actual upload happens during publish workflow
@@ -400,7 +409,7 @@ src/
 export async function fetchAllRonlConcepts(endpoint) {
   const queries = [
     { type: 'analysis', concept: 'ronl:AnalysisConcept' },
-    { type: 'method', concept: 'ronl:MethodConcept' }
+    { type: 'method', concept: 'ronl:MethodConcept' },
   ];
 
   const results = await Promise.all(
@@ -417,24 +426,24 @@ export async function fetchAllRonlConcepts(endpoint) {
         }
         ORDER BY ?prefLabel
       `;
-      
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/sparql-query' },
-        body: query
+        body: query,
       });
-      
+
       const data = await response.json();
-      return data.results.bindings.map(b => ({
+      return data.results.bindings.map((b) => ({
         uri: b.narrower.value,
-        label: b.prefLabel.value
+        label: b.prefLabel.value,
       }));
     })
   );
 
   return {
     analysisConcepts: results[0],
-    methodConcepts: results[1]
+    methodConcepts: results[1],
   };
 }
 ```
@@ -456,33 +465,33 @@ generateVendorServiceSection() {
   ttl += `    ronl:implementedBy <${vendor.selectedVendor}> ;\n`;
 
   // Contact information block
-  const hasContact = vendor.contact.organizationName || 
-                     vendor.contact.contactPerson || 
-                     vendor.contact.email || 
-                     vendor.contact.phone || 
-                     vendor.contact.website || 
+  const hasContact = vendor.contact.organizationName ||
+                     vendor.contact.contactPerson ||
+                     vendor.contact.email ||
+                     vendor.contact.phone ||
+                     vendor.contact.website ||
                      vendor.contact.logo;
 
   if (hasContact) {
     ttl += `    schema:provider [\n`;
     ttl += `        a schema:Organization ;\n`;
-    
+
     if (vendor.contact.organizationName) {
       ttl += `        schema:name "${escapeTTLString(vendor.contact.organizationName)}" ;\n`;
     }
-    
+
     // Logo as asset path
     if (vendor.contact.logo && vendor.contact.logo.trim() !== '') {
       const vendorName = vendor.selectedVendor.split('/').pop();
       const logoPath = `./assets/${vendorName}_vendor_logo.png`;
       ttl += `        schema:image <${logoPath}> ;\n`;
     }
-    
+
     // Contact point nested structure
-    const hasContactPoint = vendor.contact.contactPerson || 
-                            vendor.contact.email || 
+    const hasContactPoint = vendor.contact.contactPerson ||
+                            vendor.contact.email ||
                             vendor.contact.phone;
-    
+
     if (hasContactPoint) {
       ttl += `        schema:contactPoint [\n`;
       if (vendor.contact.contactPerson) {
@@ -496,11 +505,11 @@ generateVendorServiceSection() {
       }
       ttl += `        ] ;\n`;
     }
-    
+
     if (vendor.contact.website) {
       ttl += `        foaf:homepage <${vendor.contact.website}> \n`;
     }
-    
+
     ttl += `    ] ;\n`;
   }
 
@@ -521,10 +530,10 @@ generateVendorServiceSection() {
   }
 
   // Certification (only if status is not "not-certified")
-  if (vendor.certification.status && 
+  if (vendor.certification.status &&
       vendor.certification.status !== 'not-certified') {
     ttl += `    ronl:certificationStatus "${vendor.certification.status}"^^xsd:string ;\n`;
-    
+
     if (vendor.certification.certifiedBy) {
       ttl += `    ronl:certifiedBy <${vendor.certification.certifiedBy}> ;\n`;
     }
@@ -586,9 +595,10 @@ function isValidUrl(str) {
 ### Real-Time Validation
 
 **Input Type Validation:**
+
 ```javascript
 <input
-  type="url"  // Browser validation
+  type="url" // Browser validation
   value={vendorService.contact.website || ''}
   className={`... ${
     vendorService.contact.website && !isValidUrl(vendorService.contact.website)
@@ -599,6 +609,7 @@ function isValidUrl(str) {
 ```
 
 **Visual Feedback:**
+
 - ✅ Valid URL: Green/normal border
 - ❌ Invalid URL: Red border + warning text
 - ⚪ Empty: Normal state (optional field)
@@ -606,6 +617,7 @@ function isValidUrl(str) {
 ### Form Validation
 
 **Integrated into App.js validation:**
+
 ```javascript
 const handleValidate = () => {
   const validation = validateForm({
@@ -616,9 +628,9 @@ const handleValidate = () => {
     ronlMethod,
     temporalRules,
     parameters,
-    vendorService  // ✅ Added vendor validation
+    vendorService, // ✅ Added vendor validation
   });
-  
+
   if (!validation.isValid) {
     // Show error messages
   }
@@ -626,6 +638,7 @@ const handleValidate = () => {
 ```
 
 **Example Error Messages:**
+
 ```
 Validation failed with 2 errors:
 - Vendor website must be a valid URL (e.g., https://www.blueriq.com)
@@ -639,6 +652,7 @@ Validation failed with 2 errors:
 ### Export (Download TTL)
 
 **State Flow:**
+
 ```
 User fills Vendor form
   → vendorService state updates
@@ -650,6 +664,7 @@ User fills Vendor form
 ```
 
 **TTL Position:**
+
 ```
 1. Namespaces
 2. Public Service
@@ -673,11 +688,12 @@ User fills Vendor form
 Currently, the TTL parser (`parseTTL.enhanced.js`) does **not** parse vendor service sections. This is a planned enhancement for v1.9.1.
 
 **Planned Implementation:**
+
 ```javascript
 // Add to parseTTL.enhanced.js
 if (subject.includes('/vendor')) {
   currentSection = 'vendor';
-  
+
   if (property === 'ronl:implementedBy') {
     extractedData.vendorService.selectedVendor = extractValue(rest);
   }
@@ -689,6 +705,7 @@ if (subject.includes('/vendor')) {
 ```
 
 **Round-Trip Support:**
+
 1. ✅ Export TTL with vendor section
 2. ❌ Import TTL (vendor section ignored currently)
 3. 🔄 v1.9.1 will add full import support
@@ -702,6 +719,7 @@ if (subject.includes('/vendor')) {
 **Trigger:** Click "Request Certification" button
 
 **Modal Contents:**
+
 1. **Pre-filled Email Template**
    - To: Certifying organization (from Organization tab)
    - Subject: "Conformance Assessment Request - {Service Name}"
@@ -722,16 +740,19 @@ if (subject.includes('/vendor')) {
 ### Certification States
 
 **State 1: Not Certified** (Default)
+
 - Status: `not-certified`
 - UI: Orange badge, "Request Certification" button visible
 - TTL: No certification metadata generated
 
 **State 2: In Review**
+
 - Status: `in-review`
 - UI: Blue badge, certification date/note fields shown
 - TTL: Includes `ronl:certificationStatus`, `ronl:certifiedBy`, `ronl:certifiedAt`, `ronl:certificationNote`
 
 **State 3: Certified**
+
 - Status: `certified`
 - UI: Green badge, certification date/note fields shown (read-only recommended)
 - TTL: Full certification metadata included
@@ -748,13 +769,13 @@ useEffect(() => {
     const orgUri = organization.identifier.startsWith('http')
       ? organization.identifier
       : `https://regels.overheid.nl/organizations/${organization.identifier}`;
-    
+
     setVendorService({
       ...vendorService,
       certification: {
         ...vendorService.certification,
-        certifiedBy: orgUri
-      }
+        certifiedBy: orgUri,
+      },
     });
   }
 }, [organization.identifier]);
@@ -771,6 +792,7 @@ useEffect(() => {
 **Goal:** Full round-trip support for vendor metadata
 
 **Implementation:**
+
 - Enhance `parseTTL.enhanced.js` to parse `ronl:VendorService` entities
 - Extract nested `schema:provider` and `schema:contactPoint` structures
 - Populate `vendorService` state from imported TTL
@@ -781,19 +803,20 @@ useEffect(() => {
 ### Phase 2: Multi-Vendor Support (v1.10.0)
 
 **Additional Vendors:**
+
 - **Oracle Policy Automation** - Similar metadata structure to Blueriq
 - **IBM ODM** - Enterprise decision management platform
 - **Signavio** - Process and decision modeling
 - **Custom/Other** - Generic vendor metadata form
 
 **Implementation Pattern:**
+
 ```javascript
-{selectedVendor === 'https://regels.overheid.nl/termen/Oracle' && (
-  <OracleVendorForm 
-    vendorService={vendorService}
-    setVendorService={setVendorService}
-  />
-)}
+{
+  selectedVendor === 'https://regels.overheid.nl/termen/Oracle' && (
+    <OracleVendorForm vendorService={vendorService} setVendorService={setVendorService} />
+  );
+}
 ```
 
 ### Phase 3: Publish Integration (v2.0.0)
@@ -801,19 +824,21 @@ useEffect(() => {
 **Goal:** Integrate vendor logo upload with TriplyDB publish workflow
 
 **Current State:**
+
 - Vendor logo stored as base64 in state
 - TTL references asset path `./assets/Blueriq_vendor_logo.png`
 - Logo not actually uploaded to TriplyDB
 
 **Enhancement:**
+
 ```javascript
 // In publishToTriplyDB function
 if (vendorService.contact.logo) {
   const vendorName = vendorService.selectedVendor.split('/').pop();
   const logoAssetName = `${vendorName}_vendor_logo.png`;
-  
+
   await uploadLogoAsset(
-    vendorService.contact.logo,  // Base64 data
+    vendorService.contact.logo, // Base64 data
     logoAssetName,
     triplyDBConfig
   );
@@ -827,12 +852,14 @@ if (vendorService.contact.logo) {
 **Goal:** Public registry of certified vendor implementations
 
 **Features:**
+
 - Query TriplyDB for all `ronl:VendorService` with `ronl:certificationStatus "certified"`
 - Display in table: Service Name, Vendor, Certification Date, Certifying Authority
 - Filter by service type, vendor, competent authority
 - Link to service detail page with full metadata
 
 **SPARQL Query:**
+
 ```sparql
 PREFIX ronl: <https://regels.overheid.nl/ontology#>
 PREFIX dct: <http://purl.org/dc/terms/>
@@ -845,7 +872,7 @@ WHERE {
     ronl:certificationStatus "certified"^^xsd:string ;
     ronl:certifiedAt ?certDate ;
     ronl:certifiedBy ?certOrg .
-  
+
   ?service dct:title ?serviceName .
 }
 ORDER BY DESC(?certDate)
@@ -856,40 +883,42 @@ ORDER BY DESC(?certDate)
 **Goal:** Validate vendor implementation against reference DMN
 
 **Features:**
+
 - Compare vendor service endpoint responses with reference DMN
 - Test identical inputs → verify identical outputs
 - Report conformance score (e.g., 127/127 test cases passed)
 - Store validation results in certification metadata
 
 **Implementation:**
+
 ```javascript
 async function validateVendorConformance(vendorUrl, referenceDmnUrl, testCases) {
   const results = await Promise.all(
     testCases.map(async (testCase) => {
       const vendorResponse = await fetch(vendorUrl, {
         method: 'POST',
-        body: JSON.stringify(testCase.input)
+        body: JSON.stringify(testCase.input),
       });
-      
+
       const referenceResponse = await fetch(referenceDmnUrl, {
         method: 'POST',
-        body: JSON.stringify(testCase.input)
+        body: JSON.stringify(testCase.input),
       });
-      
+
       return {
         input: testCase.input,
         vendorOutput: await vendorResponse.json(),
         referenceOutput: await referenceResponse.json(),
-        match: deepEqual(vendorOutput, referenceOutput)
+        match: deepEqual(vendorOutput, referenceOutput),
       };
     })
   );
-  
+
   return {
     totalTests: testCases.length,
-    passed: results.filter(r => r.match).length,
-    failed: results.filter(r => !r.match).length,
-    details: results
+    passed: results.filter((r) => r.match).length,
+    failed: results.filter((r) => !r.match).length,
+    details: results,
   };
 }
 ```
@@ -900,35 +929,38 @@ async function validateVendorConformance(vendorUrl, referenceDmnUrl, testCases) 
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| React | 18.3.1 | UI framework |
-| Tailwind CSS | 3.x | Styling |
-| Lucide React | 0.263.1 | Icons |
+| Package      | Version | Purpose      |
+| ------------ | ------- | ------------ |
+| React        | 18.3.1  | UI framework |
+| Tailwind CSS | 3.x     | Styling      |
+| Lucide React | 0.263.1 | Icons        |
 
 **No additional dependencies required** for vendor functionality
 
 ### Browser Compatibility
 
-| Feature | Chrome | Firefox | Safari | Edge |
-|---------|--------|---------|--------|------|
-| URL validation (type="url") | ✅ | ✅ | ✅ | ✅ |
-| File upload (logo) | ✅ | ✅ | ✅ | ✅ |
-| SPARQL fetch | ✅ | ✅ | ✅ | ✅ |
-| Modal dialog | ✅ | ✅ | ✅ | ✅ |
+| Feature                     | Chrome | Firefox | Safari | Edge |
+| --------------------------- | ------ | ------- | ------ | ---- |
+| URL validation (type="url") | ✅     | ✅      | ✅     | ✅   |
+| File upload (logo)          | ✅     | ✅      | ✅     | ✅   |
+| SPARQL fetch                | ✅     | ✅      | ✅     | ✅   |
+| Modal dialog                | ✅     | ✅      | ✅     | ✅   |
 
 ### Performance
 
 **Vendor Dropdown Load:**
+
 - SPARQL query: ~300ms
 - Parsing 17 concepts: <10ms
 - Total: ~310ms
 
 **TTL Generation:**
+
 - Vendor section: <5ms
 - Full TTL with vendor: ~50-100ms (depends on DMN size)
 
 **File Size:**
+
 - Without vendor logo: ~10KB
 - With logo (base64): ~188KB
 - With logo (asset path): ~10KB ✅
@@ -937,24 +969,25 @@ async function validateVendorConformance(vendorUrl, referenceDmnUrl, testCases) 
 
 ## Glossary
 
-| Term | Definition |
-|------|------------|
-| **CPSV-AP** | Core Public Service Vocabulary - Application Profile (EU standard) |
-| **CPRMV** | Core Public Rule Management Vocabulary (Dutch extension) |
-| **DMN** | Decision Model and Notation (OMG standard) |
-| **RONL** | Regels Open Nederland (Dutch government initiative) |
-| **Vendor Service** | Commercial implementation of a government decision model |
-| **Conformance Assessment** | Process of certifying a vendor implementation matches the reference |
-| **Method Concept** | RONL taxonomy term identifying a rule management method/platform |
-| **Asset Path** | Relative file path for resources (e.g., `./assets/logo.png`) |
-| **Base64** | Binary-to-text encoding for embedding images in data |
-| **Blank Node** | Anonymous RDF resource without a URI (e.g., `[ a schema:Organization ]`) |
+| Term                       | Definition                                                               |
+| -------------------------- | ------------------------------------------------------------------------ |
+| **CPSV-AP**                | Core Public Service Vocabulary - Application Profile (EU standard)       |
+| **CPRMV**                  | Core Public Rule Management Vocabulary (Dutch extension)                 |
+| **DMN**                    | Decision Model and Notation (OMG standard)                               |
+| **RONL**                   | Regels Open Nederland (Dutch government initiative)                      |
+| **Vendor Service**         | Commercial implementation of a government decision model                 |
+| **Conformance Assessment** | Process of certifying a vendor implementation matches the reference      |
+| **Method Concept**         | RONL taxonomy term identifying a rule management method/platform         |
+| **Asset Path**             | Relative file path for resources (e.g., `./assets/logo.png`)             |
+| **Base64**                 | Binary-to-text encoding for embedding images in data                     |
+| **Blank Node**             | Anonymous RDF resource without a URI (e.g., `[ a schema:Organization ]`) |
 
 ---
 
 ## Change Log
 
 ### v1.9.0 (February 15, 2026)
+
 - ✅ Initial vendor tab implementation
 - ✅ Blueriq service metadata form
 - ✅ Multi-vendor dropdown from TriplyDB
@@ -965,10 +998,12 @@ async function validateVendorConformance(vendorUrl, referenceDmnUrl, testCases) 
 - ✅ Integration with validateForm()
 
 ### v1.9.1 (Planned)
+
 - 🔄 Import support for vendor metadata
 - 🔄 Round-trip testing (export → import → export)
 
 ### v2.0.0 (Planned)
+
 - 🔄 TriplyDB publish integration with logo upload
 - 🔄 Additional vendor support (Oracle, IBM ODM)
 
@@ -977,17 +1012,20 @@ async function validateVendorConformance(vendorUrl, referenceDmnUrl, testCases) 
 ## References
 
 **Documentation:**
+
 - [CPSV-AP 3.2.0 Specification](https://joinup.ec.europa.eu/collection/semic-support-centre/solution/core-public-service-vocabulary-application-profile)
 - [CPRMV Vocabulary](https://cprmv.open-regels.nl/0.3.0/)
 - [RONL Initiative](https://regels.overheid.nl)
 - [Schema.org Vocabulary](https://schema.org)
 
 **Related Tabs:**
+
 - Organization Tab - Provides certifying authority URI
 - Service Tab - Service identifier for vendor URI construction
 - DMN Tab - Reference decision model for ronl:basedOn link
 
 **Code Files:**
+
 - `src/components/tabs/VendorTab.jsx`
 - `src/utils/ttlGenerator.js` (generateVendorServiceSection)
 - `src/utils/validators.js` (validateVendorService)
