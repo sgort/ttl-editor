@@ -2,18 +2,76 @@
   "versions": [
     {
       "version": "1.9.1",
-      "date": "2026-02-11",
-      "status": "Minor Features",
+      "status": "Major Feature",
       "statusColor": "green",
       "borderColor": "green",
-      "description": "Various",
+      "date": "February 15, 2026",
       "sections": [
         {
-          "title": "Minor features",
-          "icon": "✨",
+          "title": "Vendor Tab - Multi-Vendor Service Metadata",
+          "icon": "🏢",
+          "iconColor": "emerald",
+          "items": [
+            "Added dedicated Vendor tab for vendor-specific service implementations",
+            "Dynamic vendor selection dropdown loading RONL Method Concepts from TriplyDB",
+            "Full Blueriq vendor service metadata form with contact information, technical details, and certification tracking",
+            "Vendor logo upload with asset path generation (matches Organization tab pattern)",
+            "Real-time URL validation for vendor website and service endpoint with visual feedback",
+            "Multi-vendor architecture supporting iKnow (existing), Blueriq (new), and extensible for future vendors",
+            "Complete TTL generation for ronl:VendorService with schema:provider nested structure",
+            "Conformance Assessment workflow with auto-populated certification metadata from Service and Organization tabs"
+          ]
+        },
+        {
+          "title": "Blueriq Integration",
+          "icon": "💼",
           "iconColor": "blue",
           "items": [
-            "Prefill `skos:exactMatch` with https://regels.overheid.nl/concepts/<input/output.name> in Concepts tab"
+            "Contact Information: Organization name, contact person, email, phone, website",
+            "Technical Information: Service URL, license type, access type (fair-use/IAM-required)",
+            "Vendor Logo: Upload and asset path generation as ./assets/{VendorName}_vendor_logo.png",
+            "Service Notes: Free-text field for vendor-specific implementation details",
+            "Certification Metadata: Status tracking (not-certified/in-review/certified), certifying organization URI, certification date, and notes",
+            "Request Certification modal with pre-populated email template for submission to competent authority"
+          ]
+        },
+        {
+          "title": "TTL Generation & Standards Compliance",
+          "icon": "📄",
+          "iconColor": "purple",
+          "items": [
+            "Generates ronl:VendorService entity linked to DMN decision model via ronl:basedOn",
+            "Links vendor implementation to RONL Method Concept via ronl:implementedBy",
+            "Uses schema:provider with nested schema:Organization and schema:contactPoint blank nodes",
+            "Outputs schema:url for service endpoint, schema:license for licensing model",
+            "Includes ronl:accessType for authentication requirements (fair-use or iam-required)",
+            "Certification metadata only included when status is in-review or certified (not for not-certified)",
+            "Vendor logo referenced as asset path ./assets/{VendorName}_vendor_logo.png (actual upload during publish workflow)"
+          ]
+        },
+        {
+          "title": "Architecture & Import/Export",
+          "icon": "🔧",
+          "iconColor": "blue",
+          "items": [
+            "Vendor selection updates both local selectedVendor state and vendorService.selectedVendor in parent state",
+            "Vendor service state included in buildStateForTTL() for TTL generation",
+            "Auto-population of certification metadata from Service and Organization tabs",
+            "Conditional UI: certification fields only shown for in-review and certified status",
+            "Round-trip support: Import TTL → Populate vendor fields → Edit → Export TTL",
+            "Vendor section appears after DMN Concepts section in generated TTL"
+          ]
+        },
+        {
+          "title": "Future Extensibility",
+          "icon": "🚀",
+          "iconColor": "yellow",
+          "items": [
+            "Multi-vendor dropdown infrastructure supports unlimited vendor additions",
+            "Vendor-specific UI sections can be conditionally rendered based on selectedVendor URI",
+            "Professional placeholder for non-implemented vendors shows roadmap and implementation status",
+            "Integration pattern established for adding new vendor platforms (iKnow, Blueriq, future vendors)",
+            "Certification workflow foundation ready for full publish-to-TriplyDB integration"
           ]
         },
         {
@@ -21,7 +79,8 @@
           "icon": "🐛",
           "iconColor": "red",
           "items": [
-            " Remove NL-SBB concepts header block captured as trailing comment lines while importing TTL file"
+            "Remove NL-SBB concepts header block captured as trailing comment lines while importing TTL file",
+            "Prefill empty `skos:exactMatch` with https://regels.overheid.nl/concepts/<input/output.name> in Concepts tab"
           ]
         }
       ]
