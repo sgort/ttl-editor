@@ -49,6 +49,24 @@ const VendorTab = ({
   const RONL_ENDPOINT =
     'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
 
+  // Helper function to validate URLs
+  const isValidUrl = (str) => {
+    if (!str) return true; // Empty is valid (optional field)
+    try {
+      new URL(str);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  // Sync local selectedVendor state with vendorService.selectedVendor from props
+  useEffect(() => {
+    if (vendorService.selectedVendor && vendorService.selectedVendor !== selectedVendor) {
+      setSelectedVendor(vendorService.selectedVendor);
+    }
+  }, [selectedVendor, vendorService.selectedVendor]);
+
   // Helper to update vendor service fields
   const updateVendorField = (section, field, value) => {
     setVendorService({
@@ -149,7 +167,21 @@ const VendorTab = ({
           </label>
           <select
             value={selectedVendor}
-            onChange={(e) => setSelectedVendor(e.target.value)}
+            onChange={(e) => {
+              const newVendor = e.target.value;
+              setSelectedVendor(newVendor);
+
+              const updatedVendorService = {
+                ...vendorService,
+                selectedVendor: newVendor,
+              };
+
+              // ✅ DEBUG: Log what we're setting
+              console.log('🔍 Setting vendorService.selectedVendor to:', newVendor);
+              console.log('🔍 Full vendorService object:', updatedVendorService);
+
+              setVendorService(updatedVendorService);
+            }}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             disabled={loadingVendors || vendorConcepts.length === 0}
           >
@@ -281,8 +313,23 @@ const VendorTab = ({
                         value={vendorService.contact.website || ''}
                         onChange={(e) => updateVendorField('contact', 'website', e.target.value)}
                         placeholder="https://www.blueriq.com"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-blue-500 ${
+                          vendorService.contact.website &&
+                          !isValidUrl(vendorService.contact.website)
+                            ? 'border-red-500 focus:border-red-500'
+                            : 'border-gray-300 focus:border-blue-500'
+                        }`}
                       />
+                      {vendorService.contact.website &&
+                      !isValidUrl(vendorService.contact.website) ? (
+                        <p className="text-xs text-red-600 mt-1">
+                          ⚠ Must be a valid URL (e.g., https://www.blueriq.com)
+                        </p>
+                      ) : (
+                        <p className="text-xs text-gray-500 mt-1">
+                          Official website of the vendor organization
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -306,11 +353,23 @@ const VendorTab = ({
                           updateVendorField('technical', 'serviceUrl', e.target.value)
                         }
                         placeholder="https://api.blueriq.com/aow-leeftijd"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className={`w-full px-3 py-2 border rounded-md focus:ring-blue-500 ${
+                          vendorService.technical.serviceUrl &&
+                          !isValidUrl(vendorService.technical.serviceUrl)
+                            ? 'border-red-500 focus:border-red-500'
+                            : 'border-gray-300 focus:border-blue-500'
+                        }`}
                       />
-                      <p className="text-xs text-gray-500 mt-1">
-                        API endpoint for the vendor service
-                      </p>
+                      {vendorService.technical.serviceUrl &&
+                      !isValidUrl(vendorService.technical.serviceUrl) ? (
+                        <p className="text-xs text-red-600 mt-1">
+                          ⚠ Must be a valid URL (e.g., https://api.blueriq.com/service)
+                        </p>
+                      ) : (
+                        <p className="text-xs text-gray-500 mt-1">
+                          API endpoint for the vendor service
+                        </p>
+                      )}
                     </div>
 
                     <div>

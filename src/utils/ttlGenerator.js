@@ -104,16 +104,17 @@ export class TTLGenerator {
       ttl += this.generateDmnSection();
     }
 
+    // NL-SBB Concepts section
+    if (this.hasDMN()) {
+      ttl += this.generateConceptsSection();
+    }
+
     // Vendor Service section
     if (this.hasVendorService()) {
       ttl += this.generateSectionHeader('Vendor Service');
       ttl += this.generateVendorServiceSection();
     }
 
-    // NL-SBB Concepts section
-    if (this.hasDMN()) {
-      ttl += this.generateConceptsSection();
-    }
     return ttl;
   }
 
@@ -917,9 +918,14 @@ export class TTLGenerator {
         ttl += `        schema:name "${escapeTTLString(vendor.contact.organizationName)}" ;\n`;
       }
 
-      // Logo
-      if (vendor.contact.logo) {
-        ttl += `        schema:image <${vendor.contact.logo}> ;\n`;
+      // Logo - generate asset path reference (actual upload happens during publish)
+      if (vendor.contact.logo && vendor.contact.logo.trim() !== '') {
+        // Extract vendor name from URI for filename
+        const vendorUri = vendor.selectedVendor;
+        const vendorName = vendorUri.split('/').pop(); // e.g., "Blueriq"
+        const logoPath = `./assets/${vendorName}_vendor_logo.png`;
+
+        ttl += `        schema:image <${logoPath}> ;\n`;
       }
 
       const hasContactPoint =

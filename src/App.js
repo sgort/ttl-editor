@@ -137,6 +137,7 @@ function App() {
     output,
     dmnData,
     concepts,
+    vendorService,
   });
 
   const [message, setMessage] = useState('');
@@ -378,6 +379,7 @@ function App() {
       ronlMethod,
       temporalRules,
       parameters,
+      vendorService,
     });
 
     // DMN validation

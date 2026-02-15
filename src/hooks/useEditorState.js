@@ -133,6 +133,29 @@ export const useEditorState = () => {
       importedDmnBlocks: null,
       isImported: false,
     });
+    setVendorService({
+      selectedVendor: '',
+      contact: {
+        organizationName: '',
+        contactPerson: '',
+        email: '',
+        phone: '',
+        website: '',
+        logo: '',
+      },
+      serviceNotes: '',
+      technical: {
+        serviceUrl: '',
+        license: '',
+        accessType: 'fair-use',
+      },
+      certification: {
+        status: 'not-certified',
+        certifiedBy: '',
+        certifiedAt: '',
+        certificationNote: '',
+      },
+    });
     setIknowMappingConfig({ mappings: {} });
     // Note: We don't clear TriplyDB config on clear all
   };
