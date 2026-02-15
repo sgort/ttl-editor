@@ -41,6 +41,29 @@ export const parseTTLEnhanced = (ttlContent) => {
       temporalRules: [],
       parameters: [],
       cprmvRules: [],
+      vendorService: {
+        selectedVendor: '',
+        contact: {
+          organizationName: '',
+          contactPerson: '',
+          email: '',
+          phone: '',
+          website: '',
+          logo: '',
+        },
+        serviceNotes: '',
+        technical: {
+          serviceUrl: '',
+          license: '',
+          accessType: 'fair-use',
+        },
+        certification: {
+          status: 'not-certified',
+          certifiedBy: '',
+          certifiedAt: '',
+          certificationNote: '',
+        },
+      },
       concepts: [],
       cost: {
         identifier: '',
@@ -79,6 +102,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentCprmvRule = null;
     let currentConcept = null;
     let currentSubject = null;
+    let inContactPoint = false;
 
     // NEW: DMN block tracking
     let inDmnSection = false;
@@ -259,6 +283,112 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         continue;
+      }
+
+      if (currentSection === 'vendorService') {
+        // Parse ronl:implementedBy (vendor selection)
+        if (line.includes('ronl:implementedBy')) {
+          const match = line.match(/ronl:implementedBy\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.selectedVendor = match[1];
+            console.log('Parsed vendor selection:', match[1]);
+          }
+        }
+
+        // Parse schema:provider organization name
+        if (line.includes('schema:name') && !inContactPoint) {
+          parsed.vendorService.contact.organizationName = extractValue(
+            line.split('schema:name')[1]
+          );
+        }
+
+        // Parse logo
+        if (line.includes('schema:image')) {
+          const match = line.match(/schema:image\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.contact.logo = match[1];
+          }
+        }
+
+        // Track if we're inside contactPoint
+        if (line.includes('schema:contactPoint')) {
+          inContactPoint = true;
+        }
+
+        // Parse contact point fields
+        if (inContactPoint) {
+          if (line.includes('schema:name')) {
+            parsed.vendorService.contact.contactPerson = extractValue(line.split('schema:name')[1]);
+          }
+          if (line.includes('schema:email')) {
+            parsed.vendorService.contact.email = extractValue(line.split('schema:email')[1]);
+          }
+          if (line.includes('schema:telephone')) {
+            parsed.vendorService.contact.phone = extractValue(line.split('schema:telephone')[1]);
+          }
+
+          // Close contactPoint
+          if (line.includes(']') && !line.includes('[')) {
+            inContactPoint = false;
+          }
+        }
+
+        // Parse website
+        if (line.includes('foaf:homepage')) {
+          const match = line.match(/foaf:homepage\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.contact.website = match[1];
+          }
+        }
+
+        // Parse technical fields
+        if (line.includes('schema:url')) {
+          const match = line.match(/schema:url\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.technical.serviceUrl = match[1];
+          }
+        }
+
+        if (line.includes('schema:license')) {
+          parsed.vendorService.technical.license = extractValue(line.split('schema:license')[1]);
+        }
+
+        if (line.includes('ronl:accessType')) {
+          parsed.vendorService.technical.accessType = extractValue(
+            line.split('ronl:accessType')[1]
+          );
+        }
+
+        // Parse service notes
+        if (line.includes('dct:description')) {
+          parsed.vendorService.serviceNotes = extractValue(line.split('dct:description')[1]);
+        }
+
+        // Parse certification fields
+        if (line.includes('ronl:certificationStatus')) {
+          parsed.vendorService.certification.status = extractValue(
+            line.split('ronl:certificationStatus')[1]
+          );
+        }
+
+        if (line.includes('ronl:certifiedBy')) {
+          const match = line.match(/ronl:certifiedBy\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.certification.certifiedBy = match[1];
+          }
+        }
+
+        if (line.includes('ronl:certifiedAt')) {
+          parsed.vendorService.certification.certifiedAt = extractValue(
+            line.split('ronl:certifiedAt')[1]
+          );
+        }
+
+        if (line.includes('ronl:certificationNote')) {
+          parsed.vendorService.certification.certificationNote = extractValue(
+            line.split('ronl:certificationNote')[1]
+          );
+        }
       }
 
       if (inDmnSection) {

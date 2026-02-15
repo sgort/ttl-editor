@@ -79,6 +79,10 @@ export const VOCABULARY_CONFIG = {
       acceptedTypes: ['cprmv:Rule'],
       canonicalType: 'cprmv:Rule',
     },
+    vendorService: {
+      acceptedTypes: ['ronl:VendorService'],
+      canonicalType: 'ronl:VendorService',
+    },
   },
 
   propertyAliases: {
@@ -151,6 +155,10 @@ export const detectEntityType = (line) => {
         return entityName;
       }
     }
+  }
+
+  if (line.includes('a ronl:VendorService')) {
+    return 'vendorService';
   }
   return null;
 };

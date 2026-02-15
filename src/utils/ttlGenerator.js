@@ -31,6 +31,7 @@ export class TTLGenerator {
     this.output = state.output;
     this.dmnData = state.dmnData;
     this.concepts = state.concepts || [];
+    this.vendorService = state.vendorService || {};
 
     // Compute service URI once
     const sanitizedIdentifier =
@@ -103,6 +104,12 @@ export class TTLGenerator {
       ttl += this.generateDmnSection();
     }
 
+    // Vendor Service section
+    if (this.hasVendorService()) {
+      ttl += this.generateSectionHeader('Vendor Service');
+      ttl += this.generateVendorServiceSection();
+    }
+
     // NL-SBB Concepts section
     if (this.hasDMN()) {
       ttl += this.generateConceptsSection();
@@ -160,6 +167,14 @@ export class TTLGenerator {
     return (
       (this.dmnData.isImported && this.dmnData.importedDmnBlocks) ||
       (this.dmnData.fileName && this.dmnData.content)
+    );
+  }
+
+  hasVendorService() {
+    return (
+      this.vendorService &&
+      this.vendorService.selectedVendor &&
+      this.vendorService.selectedVendor.trim() !== ''
     );
   }
 
@@ -862,6 +877,121 @@ export class TTLGenerator {
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
       });
     }
+
+    return ttl;
+  }
+
+  /**
+   * Generate Vendor Service section
+   * @returns {string} Vendor Service TTL
+   */
+  generateVendorServiceSection() {
+    if (!this.hasVendorService()) {
+      return '';
+    }
+
+    const vendor = this.vendorService;
+    const vendorUri = `${this.serviceUri}/vendor`;
+
+    let ttl = '';
+
+    // Main vendor service entity
+    ttl += `<${vendorUri}> a ronl:VendorService ;\n`;
+    ttl += `    ronl:basedOn <${this.serviceUri}/dmn> ;\n`;
+    ttl += `    ronl:implementedBy <${vendor.selectedVendor}> ;\n`;
+
+    // Contact information (if any field is filled)
+    const hasContact =
+      vendor.contact.organizationName ||
+      vendor.contact.contactPerson ||
+      vendor.contact.email ||
+      vendor.contact.phone ||
+      vendor.contact.website ||
+      vendor.contact.logo;
+
+    if (hasContact) {
+      ttl += `    schema:provider [\n`;
+      ttl += `        a schema:Organization ;\n`;
+
+      if (vendor.contact.organizationName) {
+        ttl += `        schema:name "${escapeTTLString(vendor.contact.organizationName)}" ;\n`;
+      }
+
+      // Logo
+      if (vendor.contact.logo) {
+        ttl += `        schema:image <${vendor.contact.logo}> ;\n`;
+      }
+
+      const hasContactPoint =
+        vendor.contact.contactPerson || vendor.contact.email || vendor.contact.phone;
+
+      if (hasContactPoint) {
+        ttl += `        schema:contactPoint [\n`;
+
+        if (vendor.contact.contactPerson) {
+          ttl += `            schema:name "${escapeTTLString(vendor.contact.contactPerson)}" ;\n`;
+        }
+        if (vendor.contact.email) {
+          ttl += `            schema:email "${escapeTTLString(vendor.contact.email)}" ;\n`;
+        }
+        if (vendor.contact.phone) {
+          ttl += `            schema:telephone "${escapeTTLString(vendor.contact.phone)}" ;\n`;
+        }
+
+        // Remove trailing semicolon and close contactPoint
+        ttl = ttl.slice(0, -2) + '\n';
+        ttl += `        ] ;\n`;
+      }
+
+      if (vendor.contact.website) {
+        ttl += `        foaf:homepage <${vendor.contact.website}> ;\n`;
+      }
+
+      // Remove trailing semicolon and close provider
+      ttl = ttl.slice(0, -2) + '\n';
+      ttl += `    ] ;\n`;
+    }
+
+    // Technical information
+    if (vendor.technical.serviceUrl) {
+      ttl += `    schema:url <${vendor.technical.serviceUrl}> ;\n`;
+    }
+
+    if (vendor.technical.license) {
+      ttl += `    schema:license "${escapeTTLString(vendor.technical.license)}" ;\n`;
+    }
+
+    if (vendor.technical.accessType) {
+      ttl += `    ronl:accessType "${vendor.technical.accessType}" ;\n`;
+    }
+
+    // Service notes
+    if (vendor.serviceNotes && vendor.serviceNotes.trim() !== '') {
+      ttl += `    dct:description "${escapeTTLString(vendor.serviceNotes)}"@nl ;\n`;
+    }
+
+    // Certification metadata (only if status is not "not-certified")
+    if (vendor.certification.status && vendor.certification.status !== 'not-certified') {
+      ttl += `    ronl:certificationStatus "${vendor.certification.status}"^^xsd:string ;\n`;
+
+      if (vendor.certification.certifiedBy && vendor.certification.certifiedBy.trim() !== '') {
+        ttl += `    ronl:certifiedBy <${vendor.certification.certifiedBy}> ;\n`;
+      }
+
+      if (vendor.certification.certifiedAt && vendor.certification.certifiedAt.trim() !== '') {
+        ttl += `    ronl:certifiedAt "${vendor.certification.certifiedAt}"^^xsd:date ;\n`;
+      }
+
+      if (
+        vendor.certification.certificationNote &&
+        vendor.certification.certificationNote.trim() !== ''
+      ) {
+        ttl += `    ronl:certificationNote "${escapeTTLString(vendor.certification.certificationNote)}"@nl ;\n`;
+      }
+    }
+
+    // Close statement
+    ttl = ttl.slice(0, -2) + ' .\n\n';
 
     return ttl;
   }

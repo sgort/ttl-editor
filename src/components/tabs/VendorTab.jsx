@@ -62,23 +62,25 @@ const VendorTab = ({
 
   // Auto-populate certification fields from Service and Organization tabs
   useEffect(() => {
-    if (vendorService.certification.status === 'not-certified') {
-      const updatedCertification = { ...vendorService.certification };
-
-      // Auto-fill certifiedBy from organization if available
-      if (organization.identifier && !vendorService.certification.certifiedBy) {
-        const orgUri = organization.identifier.startsWith('http')
-          ? organization.identifier
-          : `https://regels.overheid.nl/organizations/${organization.identifier}`;
-        updatedCertification.certifiedBy = orgUri;
-      }
+    // Only auto-populate if status is not-certified AND certifiedBy is empty
+    if (
+      vendorService.certification.status === 'not-certified' &&
+      !vendorService.certification.certifiedBy &&
+      organization.identifier
+    ) {
+      const orgUri = organization.identifier.startsWith('http')
+        ? organization.identifier
+        : `https://regels.overheid.nl/organizations/${organization.identifier}`;
 
       setVendorService({
         ...vendorService,
-        certification: updatedCertification,
+        certification: {
+          ...vendorService.certification,
+          certifiedBy: orgUri,
+        },
       });
     }
-  }, [organization.identifier]);
+  }, [organization.identifier, setVendorService, vendorService]); // Only trigger when organization changes
 
   // Handle Request for Certification - Show modal instead of direct email
   const handleRequestCertification = () => {
