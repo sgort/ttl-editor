@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="def_studiefinanciering_demo" name="Studiefinanciering demo (RuleSpeak -&#62; DMN)" namespace="https://example.org/dmn/studiefinanciering/demo">
+  <inputData id="in_leeftijd" name="leeftijd">
+    <variable id="var_leeftijd" name="leeftijd" typeRef="number" />
+  </inputData>
+  <inputData id="in_onderwijsniveau" name="onderwijsniveau">
+    <variable id="var_onderwijsniveau" name="onderwijsniveau" typeRef="string" />
+  </inputData>
+  <inputData id="in_woontAnderAdresDanOuders" name="woontAnderAdresDanOuders">
+    <variable id="var_woontAnderAdresDanOuders" name="woontAnderAdresDanOuders" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_ingeschrevenGemeente" name="ingeschrevenGemeente">
+    <variable id="var_ingeschrevenGemeente" name="ingeschrevenGemeente" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_nationaliteitNL" name="nationaliteitNL">
+    <variable id="var_nationaliteitNL" name="nationaliteitNL" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_voldoetEU" name="voldoetEU">
+    <variable id="var_voldoetEU" name="voldoetEU" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_opleidingBekostigdVoltijd" name="opleidingBekostigdVoltijd">
+    <variable id="var_opleidingBekostigdVoltijd" name="opleidingBekostigdVoltijd" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_opleidingGoedgekeurd" name="opleidingGoedgekeurd">
+    <variable id="var_opleidingGoedgekeurd" name="opleidingGoedgekeurd" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_buitenlandseFinanciering" name="buitenlandseFinanciering">
+    <variable id="var_buitenlandseFinanciering" name="buitenlandseFinanciering" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_missendeMaand" name="missendeMaand">
+    <variable id="var_missendeMaand" name="missendeMaand" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_medischeVerklaring" name="medischeVerklaring">
+    <variable id="var_medischeVerklaring" name="medischeVerklaring" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_gewensteLening" name="gewensteLening">
+    <variable id="var_gewensteLening" name="gewensteLening" typeRef="number" />
+  </inputData>
+  <inputData id="in_aantalKinderenAanvBeurs" name="aantalKinderenAanvBeurs">
+    <variable id="var_aantalKinderenAanvBeurs" name="aantalKinderenAanvBeurs" typeRef="number" />
+  </inputData>
+  <inputData id="in_maandenGenoten" name="maandenGenoten">
+    <variable id="var_maandenGenoten" name="maandenGenoten" typeRef="number" />
+  </inputData>
+  <inputData id="in_maxMaanden" name="maxMaanden">
+    <variable id="var_maxMaanden" name="maxMaanden" typeRef="number" />
+  </inputData>
+  <inputData id="in_maandenSindsEersteMaandRecht" name="maandenSindsEersteMaandRecht">
+    <variable id="var_maandenSindsEersteMaandRecht" name="maandenSindsEersteMaandRecht" typeRef="number" />
+  </inputData>
+  <inputData id="in_belastbaarInkomen_ouder1" name="belastbaarInkomen_ouder1">
+    <variable id="var_belastbaarInkomen_ouder1" name="belastbaarInkomen_ouder1" typeRef="number" />
+  </inputData>
+  <inputData id="in_belastbaarInkomen_ouder2" name="belastbaarInkomen_ouder2">
+    <variable id="var_belastbaarInkomen_ouder2" name="belastbaarInkomen_ouder2" typeRef="number" />
+  </inputData>
+  <inputData id="in_termijnStudieschuldJaar_ouder1" name="termijnStudieschuldJaar_ouder1">
+    <variable id="var_termijnStudieschuldJaar_ouder1" name="termijnStudieschuldJaar_ouder1" typeRef="number" />
+  </inputData>
+  <inputData id="in_termijnStudieschuldJaar_ouder2" name="termijnStudieschuldJaar_ouder2">
+    <variable id="var_termijnStudieschuldJaar_ouder2" name="termijnStudieschuldJaar_ouder2" typeRef="number" />
+  </inputData>
+  <inputData id="in_aantalKinderenZonderSF_ouder1" name="aantalKinderenZonderSF_ouder1">
+    <variable id="var_aantalKinderenZonderSF_ouder1" name="aantalKinderenZonderSF_ouder1" typeRef="number" />
+  </inputData>
+  <inputData id="in_aantalKinderenZonderSF_ouder2" name="aantalKinderenZonderSF_ouder2">
+    <variable id="var_aantalKinderenZonderSF_ouder2" name="aantalKinderenZonderSF_ouder2" typeRef="number" />
+  </inputData>
+  <inputData id="in_leefsituatie_ouder1" name="leefsituatie_ouder1">
+    <variable id="var_leefsituatie_ouder1" name="leefsituatie_ouder1" typeRef="string" />
+  </inputData>
+  <inputData id="in_leefsituatie_ouder2" name="leefsituatie_ouder2">
+    <variable id="var_leefsituatie_ouder2" name="leefsituatie_ouder2" typeRef="string" />
+  </inputData>
+  <decision id="persoon_is_uitwonend" name="Persoon is uitwonend" camunda:historyTimeToLive="180">
+    <variable id="var_isUitwonend" name="isUitwonend" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1b9r669">
+      <requiredInput href="#in_woontAnderAdresDanOuders" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0wybgac">
+      <requiredInput href="#in_ingeschrevenGemeente" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1mq06fq">
+      <text>woontAnderAdresDanOuders and ingeschrevenGemeente</text>
+    </literalExpression>
+  </decision>
+  <decision id="inschrijving_ononderbroken" name="Inschrijving is ononderbroken" camunda:historyTimeToLive="180">
+    <variable id="var_inschrijving_ononderbroken" name="inschrijvingOnonderbroken" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1dm7m2p">
+      <requiredInput href="#in_missendeMaand" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1ubsw3j">
+      <requiredInput href="#in_medischeVerklaring" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1ste7v8">
+      <text>(not(missendeMaand)) or medischeVerklaring</text>
+    </literalExpression>
+  </decision>
+  <decision id="voldoet_leeftijdsvoorwaarden" name="Persoon voldoet aan de leeftijdsvoorwaarden" camunda:historyTimeToLive="180">
+    <variable id="var_voldoet_leeftijd" name="voldoetLeeftijd" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1ef3efj">
+      <requiredInput href="#in_leeftijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0y2nt12">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0zi2ua4">
+      <requiredDecision href="#inschrijving_ononderbroken" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_122w69a">
+      <input id="inp_leeftijd">
+        <inputExpression id="LiteralExpression_1v3jgzx" typeRef="number">
+          <text>leeftijd</text>
+        </inputExpression>
+      </input>
+      <input id="inp_onderwijs">
+        <inputExpression id="LiteralExpression_1k10oir" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <input id="inp_ononderbroken">
+        <inputExpression id="LiteralExpression_10siwvf" typeRef="boolean">
+          <text>inschrijvingOnonderbroken</text>
+        </inputExpression>
+      </input>
+      <output id="out_voldoet" name="voldoetLeeftijd" typeRef="boolean" />
+      <rule id="DecisionRule_0wbcvkr">
+        <inputEntry id="UnaryTests_01igjyo">
+          <text>[18..30)</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0a27e1r">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0y0ocq7">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0aq1ncs">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_16zuyqw">
+        <inputEntry id="UnaryTests_184x81v">
+          <text>&lt; 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0f8gl1r">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_10jdm4l">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_121q5s6">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_05tja8w">
+        <inputEntry id="UnaryTests_1bnbwdn">
+          <text>&lt; 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0im1gai">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ixzfml">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0259mvh">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1d3mhzu">
+        <inputEntry id="UnaryTests_0x9y76e">
+          <text>&gt;= 30</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1iy2kp0">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0d6e6ra">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0x6di0s">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1b1r235">
+        <inputEntry id="UnaryTests_1rfirb7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1djyevj">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1d1hd2q">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0av0unc">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="voldoet_nationaliteitseis" name="Persoon voldoet aan de nationaliteitseis" camunda:historyTimeToLive="180">
+    <variable id="var_voldoet_nat" name="voldoetNationaliteit" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1gysdyf">
+      <requiredInput href="#in_nationaliteitNL" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1gm2jmz">
+      <requiredInput href="#in_voldoetEU" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0g8cel9">
+      <text>nationaliteitNL or voldoetEU</text>
+    </literalExpression>
+  </decision>
+  <decision id="correcte_opleiding" name="Inschrijving is voor correcte opleiding" camunda:historyTimeToLive="180">
+    <variable id="var_correcte_opleiding" name="correcteOpleiding" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_0xb5jsd">
+      <requiredInput href="#in_opleidingBekostigdVoltijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1ucr11y">
+      <requiredInput href="#in_opleidingGoedgekeurd" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1qvrzbq">
+      <text>opleidingBekostigdVoltijd or opleidingGoedgekeurd</text>
+    </literalExpression>
+  </decision>
+  <decision id="geen_buitenlandse_financiering" name="Persoon krijgt geen buitenlandse financiering" camunda:historyTimeToLive="180">
+    <variable id="var_geen_buitenl" name="geenBuitenlandseFinanciering" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1kbhv74">
+      <requiredInput href="#in_buitenlandseFinanciering" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0soahpe">
+      <text>not(buitenlandseFinanciering)</text>
+    </literalExpression>
+  </decision>
+  <decision id="persoon_heeft_aanspraak" name="Persoon heeft aanspraak" camunda:historyTimeToLive="180">
+    <variable id="var_aanspraak" name="heeftAanspraak" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_15s76jz">
+      <requiredDecision href="#voldoet_leeftijdsvoorwaarden" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1sfrryn">
+      <requiredDecision href="#voldoet_nationaliteitseis" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1arvaz4">
+      <requiredDecision href="#correcte_opleiding" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_19255x4">
+      <requiredDecision href="#geen_buitenlandse_financiering" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1ksmrjs">
+      <text>voldoetLeeftijd and voldoetNationaliteit and correcteOpleiding and geenBuitenlandseFinanciering</text>
+    </literalExpression>
+  </decision>
+  <decision id="bedrag_basisbeurs" name="Bedrag basisbeurs" camunda:historyTimeToLive="180">
+    <variable id="var_basisbeurs" name="basisbeurs" typeRef="number" />
+    <informationRequirement id="InformationRequirement_05r7nc7">
+      <requiredDecision href="#persoon_is_uitwonend" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1lavrfw">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0ckffn5">
+      <input id="InputClause_1rjlyh1">
+        <inputExpression id="LiteralExpression_15gfwg6" typeRef="boolean">
+          <text>isUitwonend</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1etqitb">
+        <inputExpression id="LiteralExpression_1jq6br3" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1xu92an" name="basisbeurs" typeRef="number" />
+      <rule id="DecisionRule_07gxwax">
+        <inputEntry id="UnaryTests_0vkx4dy">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11x8ui3">
+          <text>"MBO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wucr2l">
+          <text>107.26</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1p9za8b">
+        <inputEntry id="UnaryTests_00kb46e">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1n1h1v6">
+          <text>"MBO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14h7x75">
+          <text>350.03</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vdjxec">
+        <inputEntry id="UnaryTests_0i00uz2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bt9uhq">
+          <text>"HO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1j7wqmw">
+          <text>130.21</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1mw1y2q">
+        <inputEntry id="UnaryTests_1n42ows">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0goxwfh">
+          <text>"HO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0qt5nfa">
+          <text>324.52</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="maximale_aanvullende_beurs" name="Maximale aanvullende beurs" camunda:historyTimeToLive="180">
+    <variable id="var_maxAanv" name="maxAanvullend" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0fbvvrw">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1gpgwk9">
+      <requiredDecision href="#persoon_is_uitwonend" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0i0ari9" hitPolicy="FIRST">
+      <input id="InputClause_1cc6cgh">
+        <inputExpression id="LiteralExpression_0ehi81j" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_07vwqdx">
+        <inputExpression id="LiteralExpression_0zwlzza" typeRef="boolean">
+          <text>isUitwonend</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0yvtniz" name="maxAanvullend" typeRef="number" />
+      <rule id="DecisionRule_1n2tx5q">
+        <inputEntry id="UnaryTests_0bu2ocr">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0u558v4">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17a77o0">
+          <text>438.08</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1q9f5ez">
+        <inputEntry id="UnaryTests_1bradpj">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0awvdnt">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08tun3l">
+          <text>466.40</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ol74b9">
+        <inputEntry id="UnaryTests_1e3ymav">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ehfxxz">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xn9ksm">
+          <text>491.08</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="vrijgesteld_bedrag_ouder" name="Vrijgesteld bedrag ouder (demo)" camunda:historyTimeToLive="180">
+    <variable id="var_vrijgesteld" name="vrijgesteldBedrag" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1q76hs9">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1860d5e">
+      <requiredInput href="#in_leefsituatie_ouder1" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0tv29xd" hitPolicy="FIRST">
+      <input id="InputClause_0q5jxjr">
+        <inputExpression id="LiteralExpression_07vrqk4" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0l8cuh1">
+        <inputExpression id="LiteralExpression_0jqsrde" typeRef="string">
+          <text>leefsituatie_ouder1</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0pg5tfa" name="vrijgesteldBedrag" typeRef="number" />
+      <rule id="DecisionRule_0w5l48n">
+        <inputEntry id="UnaryTests_0zdbdxr">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ekukhy">
+          <text>"Alleenstaand"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hw8bx4">
+          <text>29333.26</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1th6qqh">
+        <inputEntry id="UnaryTests_1rkmshb">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0makzqq">
+          <text>"Alleenstaand"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_198uyl5">
+          <text>29289.28</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0oxhhx2">
+        <inputEntry id="UnaryTests_0ou95wv">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0fs2czp">
+          <text>"Andere ouder is overleden"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00higfs">
+          <text>46305.40</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_198o16p">
+        <inputEntry id="UnaryTests_1wd4q8y">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bu9gp2">
+          <text>"Andere ouder is overleden"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1p74c81">
+          <text>41500.60</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1pflyy8">
+        <inputEntry id="UnaryTests_0h8wag8">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12t6aog">
+          <text>"Inkomen andere ouder telt niet mee"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0pmg0ww">
+          <text>46305.40</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1og1pc5">
+        <inputEntry id="UnaryTests_02f2w3f">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1boz9qq">
+          <text>"Inkomen andere ouder telt niet mee"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0baoh7c">
+          <text>41500.60</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zx2zwe">
+        <inputEntry id="UnaryTests_05spwrt">
+          <text>"MBO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_14o5yx6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_01csqae">
+          <text>23152.70</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0kvtfpq">
+        <inputEntry id="UnaryTests_1r7ys96">
+          <text>"HO"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06napwh">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00tx6yr">
+          <text>20750.30</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="percentage_meetellend_inkomen" name="Percentage meetellend inkomen" camunda:historyTimeToLive="180">
+    <variable id="var_pct" name="percentageMeetellend" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1yiyua7">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_04pbp9n">
+      <input id="InputClause_080havf">
+        <inputExpression id="LiteralExpression_14i5qlc" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_18g1iap" name="percentageMeetellend" typeRef="number" />
+      <rule id="DecisionRule_0gugwdm">
+        <inputEntry id="UnaryTests_0g4ff3u">
+          <text>"MBO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ixdz9n">
+          <text>26</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1l80n0u">
+        <inputEntry id="UnaryTests_1r3s06u">
+          <text>"HO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1afld62">
+          <text>13.6</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="aftrekpost_andere_kinderen_ouder1" name="Aftrekpost andere kinderen ouder1" camunda:historyTimeToLive="180">
+    <variable id="var_aftrek1" name="aftrekAndereKinderen_ouder1" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0qkpvgf">
+      <requiredInput href="#in_aantalKinderenZonderSF_ouder1" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0mjcwbl">
+      <text>aantalKinderenZonderSF_ouder1 * 363</text>
+    </literalExpression>
+  </decision>
+  <decision id="aftrekpost_andere_kinderen_ouder2" name="Aftrekpost andere kinderen ouder2" camunda:historyTimeToLive="180">
+    <variable id="var_aftrek2" name="aftrekAndereKinderen_ouder2" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0viea3s">
+      <requiredInput href="#in_aantalKinderenZonderSF_ouder2" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0hlqbhd">
+      <text>aantalKinderenZonderSF_ouder2 * 363</text>
+    </literalExpression>
+  </decision>
+  <decision id="rekeninkomen_ouder1" name="Rekeninkomen ouder1" camunda:historyTimeToLive="180">
+    <variable id="var_reken1" name="rekeninkomen_ouder1" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0vfgwdg">
+      <requiredInput href="#in_belastbaarInkomen_ouder1" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1qug0al">
+      <requiredDecision href="#vrijgesteld_bedrag_ouder" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_02dkk8w">
+      <requiredDecision href="#percentage_meetellend_inkomen" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0qiysnu">
+      <text>(percentageMeetellend / 100) * (belastbaarInkomen_ouder1 - vrijgesteldBedrag)</text>
+    </literalExpression>
+  </decision>
+  <decision id="rekeninkomen_ouder2" name="Rekeninkomen ouder2" camunda:historyTimeToLive="180">
+    <variable id="var_reken2" name="rekeninkomen_ouder2" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1t76t34">
+      <requiredInput href="#in_belastbaarInkomen_ouder2" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1oxt79m">
+      <requiredDecision href="#vrijgesteld_bedrag_ouder" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1cfkykd">
+      <requiredDecision href="#percentage_meetellend_inkomen" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_12ukrld">
+      <text>(percentageMeetellend / 100) * (belastbaarInkomen_ouder2 - vrijgesteldBedrag)</text>
+    </literalExpression>
+  </decision>
+  <decision id="ouderbijdrage_per_jaar_ouder1" name="Ouderbijdrage per jaar ouder1" camunda:historyTimeToLive="180">
+    <variable id="var_obj1" name="ouderbijdragePerJaar_ouder1" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1gmwe0p">
+      <requiredDecision href="#rekeninkomen_ouder1" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1mn2hfn">
+      <requiredDecision href="#aftrekpost_andere_kinderen_ouder1" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1gp8yqo">
+      <requiredInput href="#in_termijnStudieschuldJaar_ouder1" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1vc0sap">
+      <text>rekeninkomen_ouder1 - aftrekAndereKinderen_ouder1 - termijnStudieschuldJaar_ouder1</text>
+    </literalExpression>
+  </decision>
+  <decision id="ouderbijdrage_per_jaar_ouder2" name="Ouderbijdrage per jaar ouder2" camunda:historyTimeToLive="180">
+    <variable id="var_obj2" name="ouderbijdragePerJaar_ouder2" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0uwspfr">
+      <requiredDecision href="#rekeninkomen_ouder2" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0l2bufi">
+      <requiredDecision href="#aftrekpost_andere_kinderen_ouder2" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_02xoyt1">
+      <requiredInput href="#in_termijnStudieschuldJaar_ouder2" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1upwbal">
+      <text>rekeninkomen_ouder2 - aftrekAndereKinderen_ouder2 - termijnStudieschuldJaar_ouder2</text>
+    </literalExpression>
+  </decision>
+  <decision id="gezamenlijke_ouderbijdrage" name="Gezamenlijke ouderbijdrage" camunda:historyTimeToLive="180">
+    <variable id="var_gez" name="gezamenlijkeOuderbijdrage" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0uxn170">
+      <requiredDecision href="#ouderbijdrage_per_jaar_ouder1" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_124ztgi">
+      <requiredDecision href="#ouderbijdrage_per_jaar_ouder2" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_13oyatn">
+      <text>ouderbijdragePerJaar_ouder1 + ouderbijdragePerJaar_ouder2</text>
+    </literalExpression>
+  </decision>
+  <decision id="inhouding_per_jaar" name="Inhouding per jaar" camunda:historyTimeToLive="180">
+    <variable id="var_inh" name="inhoudingPerJaar" typeRef="number" />
+    <informationRequirement id="InformationRequirement_13715m3">
+      <requiredDecision href="#gezamenlijke_ouderbijdrage" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1m5c532">
+      <requiredInput href="#in_aantalKinderenAanvBeurs" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0fv8kvc">
+      <text>if aantalKinderenAanvBeurs &gt; 0 then gezamenlijkeOuderbijdrage / aantalKinderenAanvBeurs else gezamenlijkeOuderbijdrage</text>
+    </literalExpression>
+  </decision>
+  <decision id="maandelijkse_ouderlijke_bijdrage" name="Maandelijkse ouderlijke bijdrage" camunda:historyTimeToLive="180">
+    <variable id="var_mob" name="maandelijkseOuderBijdrage" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1y47mwt">
+      <requiredDecision href="#inhouding_per_jaar" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0qi7ta7">
+      <text>inhoudingPerJaar / 12</text>
+    </literalExpression>
+  </decision>
+  <decision id="aanvullende_beurs" name="Hoogte aanvullende beurs" camunda:historyTimeToLive="180">
+    <variable id="var_aanv" name="aanvullendeBeurs" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1g4iard">
+      <requiredDecision href="#maximale_aanvullende_beurs" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0ov8vyr">
+      <requiredDecision href="#maandelijkse_ouderlijke_bijdrage" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0ha2wzb">
+      <text>if maxAanvullend - maandelijkseOuderBijdrage &gt; 0 then maxAanvullend - maandelijkseOuderBijdrage else 0</text>
+    </literalExpression>
+  </decision>
+  <decision id="maximale_lening" name="Maximale lening (standaard)" camunda:historyTimeToLive="180">
+    <variable id="var_maxlen" name="maximaleLening" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0zpy3u9">
+      <requiredInput href="#in_onderwijsniveau" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1nc1opc">
+      <input id="InputClause_1ql4583">
+        <inputExpression id="LiteralExpression_16fs0be" typeRef="string">
+          <text>onderwijsniveau</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_19hb0ti" name="maximaleLening" typeRef="number" />
+      <rule id="DecisionRule_09nkh75">
+        <inputEntry id="UnaryTests_1eiuoef">
+          <text>"MBO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1bmu51r">
+          <text>233.65</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kscrnm">
+        <inputEntry id="UnaryTests_1wul2in">
+          <text>"HO"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_00ewsiu">
+          <text>315.17</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="maximaal_leenbedrag" name="Maximaal leenbedrag" camunda:historyTimeToLive="180">
+    <variable id="var_maxleen" name="maxLeenbedrag" typeRef="number" />
+    <informationRequirement id="InformationRequirement_12l65ng">
+      <requiredDecision href="#maandelijkse_ouderlijke_bijdrage" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_08k7dv0">
+      <requiredDecision href="#maximale_lening" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0oblgpm">
+      <text>maandelijkseOuderBijdrage + maximaleLening</text>
+    </literalExpression>
+  </decision>
+  <decision id="bedrag_lening" name="Bedrag lening" camunda:historyTimeToLive="180">
+    <variable id="var_len" name="lening" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0kz1rn7">
+      <requiredInput href="#in_gewensteLening" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0le9ch2">
+      <requiredDecision href="#maximaal_leenbedrag" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1bql48d">
+      <text>if gewensteLening &lt; maxLeenbedrag then gewensteLening else maxLeenbedrag</text>
+    </literalExpression>
+  </decision>
+  <decision id="totaal_bedrag" name="Totaal bedrag studiefinanciering" camunda:historyTimeToLive="180">
+    <variable id="var_totaal" name="totaalBedrag" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1j8dh54">
+      <requiredDecision href="#bedrag_basisbeurs" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_02n1raa">
+      <requiredDecision href="#aanvullende_beurs" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_07ypgwu">
+      <requiredDecision href="#bedrag_lening" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1p85ehe">
+      <text>basisbeurs + aanvullendeBeurs + lening</text>
+    </literalExpression>
+  </decision>
+  <decision id="nog_recht_min_1_maand" name="Nog recht op tenminste 1 maand" camunda:historyTimeToLive="180">
+    <variable id="var_nog1m" name="nogRechtMin1Maand" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_07wrl9d">
+      <requiredInput href="#in_maandenGenoten" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0l6jak5">
+      <requiredInput href="#in_maxMaanden" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0da0a03">
+      <requiredInput href="#in_maandenSindsEersteMaandRecht" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0yhvc47">
+      <text>((maxMaanden - maandenGenoten) &gt;= 1) and (maandenGenoten &gt; 0) and (maandenSindsEersteMaandRecht &lt; 120)</text>
+    </literalExpression>
+  </decision>
+  <decision id="besluit_aanvraag" name="Besluit aanvraag studiefinanciering" camunda:historyTimeToLive="180">
+    <variable id="var_besluit" name="toegekend" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_09yz1us">
+      <requiredDecision href="#totaal_bedrag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_00wxv43">
+      <requiredDecision href="#persoon_heeft_aanspraak" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_03ve5vb">
+      <requiredDecision href="#nog_recht_min_1_maand" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0d04gju">
+      <text>(totaalBedrag &gt; 0) and heeftAanspraak and nogRechtMin1Maand</text>
+    </literalExpression>
+  </decision>
+</definitions>
