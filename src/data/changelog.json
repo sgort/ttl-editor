@@ -1,6 +1,52 @@
 {
   "versions": [
     {
+      "version": "1.9.2",
+      "status": "Minor Feature",
+      "statusColor": "purple",
+      "borderColor": "purple",
+      "date": "February 17, 2026",
+      "sections": [
+        {
+          "title": "DMN Testing Suite",
+          "icon": "🧪",
+          "iconColor": "purple",
+          "items": [
+            "Added Intermediate Decision Tests - test each sub-decision in the DRD individually",
+            "Added Test Cases Upload - run multiple test scenarios from JSON files",
+            "Smart filtering automatically skips constant parameters (p_* decisions) from intermediate testing",
+            "Progressive result display - see test results appear in real-time as they execute",
+            "Supports both formats [{name, expected, requestBody}] and [{testName, testResult, variables}]",
+            "NL-SBB concepts auto-generated from last successful test case result",
+            "Collapsible UI sections with pass/fail statistics and expandable result details"
+          ]
+        },
+        {
+          "title": "Date Type Handling",
+          "icon": "📅",
+          "iconColor": "green",
+          "items": [
+            "Critical fix: Date values now use type: 'String' instead of type: 'Date' in request bodies",
+            "Simple format '2026-02-17' works correctly for all date variables regardless of DMN typeRef",
+            "Fixed InvalidRequestException errors for DMNs with typeRef='date' variables",
+            "Birth date generation creates random ages 25-68 for demographic testing"
+          ]
+        },
+        {
+          "title": "Developer Experience",
+          "icon": "🔧",
+          "iconColor": "gray",
+          "items": [
+            "Console logs filtering statistics: 'Filtered 8 constant parameter(s), kept 12 testable decision(s)'",
+            "Badge shows '12 testable decisions detected (p_* constants filtered)' on DMN upload",
+            "Test results show in expandable details elements with formatted JSON",
+            "File upload remembers filename and shows test case count",
+            "Run complete indicators and pass/fail counters for batch testing"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.1",
       "status": "Major Feature",
       "statusColor": "green",

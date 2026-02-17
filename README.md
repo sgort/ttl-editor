@@ -530,6 +530,11 @@ See [`src/data/roadmap.json`](src/data/roadmap.json) for detailed roadmap.
 
 ### Technical Documentation
 
+## Documentation
+
+- **[DMN Testing Suite](docs/DMN_TESTS.md)** - Comprehensive guide to intermediate tests and test cases upload
+- **[DMN Integration](docs/DMN-INTEGRATION-DOCUMENTATION-v1.5.1.md)** - DMN deployment and evaluation
+- **[Field Mapping: CPSV-AP 3.2.0](docs/FIELD-MAPPING-CPSV-AP-3.2.0.md)** - Complete property mappings
 - **[FIELD-MAPPING-CPSV-AP-3_2_0.md](docs/FIELD-MAPPING-CPSV-AP-3_2_0.md)** - UI field to TTL property mapping
 - **[NAMESPACE-PROPERTIES.md](docs/NAMESPACE-PROPERTIES.md)** - RDF namespace reference
 - **[PROJECT-STRUCTURE.md](docs/PROJECT-STRUCTURE.md)** - Code organization

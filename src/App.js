@@ -554,6 +554,38 @@ function App() {
         }
       }
 
+      // Step 3.6: Upload vendor logo if present (75-78%)
+      if (vendorService.contact.logo && vendorService.contact.logo.startsWith('data:')) {
+        try {
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Uploading vendor logo...',
+            progress: 76,
+            stepStatus: 'loading',
+            error: null,
+          });
+
+          // Extract vendor name from URI for filename
+          const vendorUri = vendorService.selectedVendor;
+          const vendorName = vendorUri.split('/').pop(); // e.g., "Blueriq"
+          const vendorLogoFileName = `${vendorName}_vendor_logo.png`;
+
+          await uploadLogoAsset(vendorService.contact.logo, vendorLogoFileName, config);
+          console.log('Vendor logo uploaded successfully');
+
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Vendor logo uploaded ✓',
+            progress: 78,
+            stepStatus: 'success',
+            error: null,
+          });
+        } catch (logoError) {
+          console.warn('Vendor logo upload failed (continuing):', logoError);
+          // Don't fail the entire publish if vendor logo upload fails
+        }
+      }
+
       // Step 4: Update service (70-100%)
       setPublishingState({
         isPublishing: true,

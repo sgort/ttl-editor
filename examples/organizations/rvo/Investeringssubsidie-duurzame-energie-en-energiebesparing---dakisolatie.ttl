@@ -62,11 +62,15 @@
     dct:title "dakisolatie-berekening-final.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
     dct:source <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/file> ;
-    cprmv:deploymentId "d7b19792-073f-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-11T11:50:21.480Z"^^xsd:dateTime ;
+    cprmv:deploymentId "0dabfa18-0a72-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-15T13:27:19.741Z"^^xsd:dateTime ;
     cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/bereken_isolatie_opties/evaluate> ;
-    cprmv:lastTested "2026-02-11T11:50:44.705Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-15T13:27:51.834Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
+    ronl:validationStatus "validated"^^xsd:string ;
+    ronl:validatedBy <https://organisaties.overheid.nl/28325623/Rijksdienst_voor_Ondernemend_Nederland> ;
+    ronl:validatedAt "2025-11-11"^^xsd:date ;
+    ronl:validationNote "Met de ISDE-rekentool krijgt u een schatting van het totale subsidiebedrag. Voor een juiste schatting is het belangrijk dat u de rekentool volledig invult. De DMN berekening komt overeen met de ISDE-rekentool"@nl ;
     dct:description "DMN decision model for service evaluation"@nl .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/1> a cpsv:Input ;
@@ -94,14 +98,14 @@
     dct:identifier "materiaal_cost_per_m3" ;
     dct:title "materiaal_cost_per_m3"@nl ;
     dct:type "Integer" ;
-    schema:value 120 ;
+    schema:value 80 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/5> a cpsv:Input ;
     dct:identifier "install_cost_per_m2_per_100mm" ;
     dct:title "install_cost_per_m2_per_100mm"@nl ;
     dct:type "Integer" ;
-    schema:value 80 ;
+    schema:value 20 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/input/6> a cpsv:Input ;
@@ -122,21 +126,21 @@
     dct:identifier "netto_kosten" ;
     dct:title "netto_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 910 ;
+    schema:value 104 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/3> a cpsv:Output ;
     dct:identifier "installatie_kosten" ;
     dct:title "installatie_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 1008 ;
+    schema:value 252 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/4> a cpsv:Output ;
     dct:identifier "totale_kosten" ;
     dct:title "totale_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 1159 ;
+    schema:value 353 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/5> a cpsv:Output ;
@@ -150,7 +154,7 @@
     dct:identifier "terugverdientijd" ;
     dct:title "terugverdientijd"@nl ;
     dct:type "Double" ;
-    schema:value 11.4 ;
+    schema:value 1.3 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/7> a cpsv:Output ;
@@ -164,7 +168,7 @@
     dct:identifier "materiaal_kosten" ;
     dct:title "materiaal_kosten"@nl ;
     dct:type "Integer" ;
-    schema:value 151 ;
+    schema:value 101 ;
     cpsv:produces <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn> .
 
 <https://regels.overheid.nl/services/isde-subsidie-dakisolatie/dmn/output/9> a cpsv:Output ;
@@ -213,13 +217,6 @@
     cprmv:decisionTable "isolatie_tabel" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
-    dct:title "DMN Variabelen Begrippenkader"@nl ;
-    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
-    dct:creator "RONL" ;
-    dct:created "2026-02-11"^^xsd:date .
-
-# Input Variable Concepts
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -228,7 +225,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-14"^^xsd:date .
+    dct:created "2026-02-15"^^xsd:date .
 
 # Input Variable Concepts
 

@@ -337,6 +337,13 @@
     dct:created "2026-02-14"^^xsd:date .
 
 # Input Variable Concepts
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-15"^^xsd:date .
+
+# Input Variable Concepts
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -496,11 +503,11 @@
     ronl:implementedBy <https://regels.overheid.nl/termen/Blueriq> ;
     schema:provider [
         a schema:Organization ;
-        schema:name "Blueriq" ;
+        schema:name "Blueriq B.V." ;
         schema:image <./assets/Blueriq_vendor_logo.png> ;
         schema:contactPoint [
-            schema:name "René Frankena" ;
-            schema:email "contact@blueriq.com" ;
+            schema:name "John Doe" ;
+            schema:email "john.doe@blueriq.com" ;
             schema:telephone "+31 6 12 34 56 78" 
         ] ;
         foaf:homepage <https://www.blueriq.com> 
@@ -508,5 +515,5 @@
     schema:url <https://regelservices.blueriq.com/shortcut/Doccle> ;
     schema:license "Commercial" ;
     ronl:accessType "iam-required" ;
-    dct:description "Service Notes goes here..."@nl  .
+    dct:description "Dit is een Pensioen Regelservice voor gebruik in combinatie met Doccle."@nl  .
 

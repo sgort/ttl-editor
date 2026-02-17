@@ -72,6 +72,21 @@
   <inputData id="in_leefsituatie_ouder2" name="leefsituatie_ouder2">
     <variable id="var_leefsituatie_ouder2" name="leefsituatie_ouder2" typeRef="string" />
   </inputData>
+    <decision id="besluit_aanvraag" name="Besluit aanvraag studiefinanciering" camunda:historyTimeToLive="180">
+    <variable id="var_besluit" name="toegekend" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_09yz1us">
+      <requiredDecision href="#totaal_bedrag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_00wxv43">
+      <requiredDecision href="#persoon_heeft_aanspraak" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_03ve5vb">
+      <requiredDecision href="#nog_recht_min_1_maand" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0d04gju">
+      <text>(totaalBedrag &gt; 0) and heeftAanspraak and nogRechtMin1Maand</text>
+    </literalExpression>
+  </decision>
   <decision id="persoon_is_uitwonend" name="Persoon is uitwonend" camunda:historyTimeToLive="180">
     <variable id="var_isUitwonend" name="isUitwonend" typeRef="boolean" />
     <informationRequirement id="InformationRequirement_1b9r669">
@@ -713,21 +728,6 @@
     </informationRequirement>
     <literalExpression id="LiteralExpression_0yhvc47">
       <text>((maxMaanden - maandenGenoten) &gt;= 1) and (maandenGenoten &gt; 0) and (maandenSindsEersteMaandRecht &lt; 120)</text>
-    </literalExpression>
-  </decision>
-  <decision id="besluit_aanvraag" name="Besluit aanvraag studiefinanciering" camunda:historyTimeToLive="180">
-    <variable id="var_besluit" name="toegekend" typeRef="boolean" />
-    <informationRequirement id="InformationRequirement_09yz1us">
-      <requiredDecision href="#totaal_bedrag" />
-    </informationRequirement>
-    <informationRequirement id="InformationRequirement_00wxv43">
-      <requiredDecision href="#persoon_heeft_aanspraak" />
-    </informationRequirement>
-    <informationRequirement id="InformationRequirement_03ve5vb">
-      <requiredDecision href="#nog_recht_min_1_maand" />
-    </informationRequirement>
-    <literalExpression id="LiteralExpression_0d04gju">
-      <text>(totaalBedrag &gt; 0) and heeftAanspraak and nogRechtMin1Maand</text>
     </literalExpression>
   </decision>
 </definitions>

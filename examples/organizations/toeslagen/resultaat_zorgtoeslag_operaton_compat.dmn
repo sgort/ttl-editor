@@ -84,6 +84,42 @@
       <text>503.93</text>
     </literalExpression>
   </decision>
+    <decision id="zorgtoeslag_resultaat" name="Resultaat zorgtoeslag" camunda:historyTimeToLive="180">
+    <informationRequirement id="InformationRequirement_0lbkyh8">
+      <requiredDecision href="#rechtOpToeslagAanvraag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0nkz3ps">
+      <requiredDecision href="#jaarbedragToeslag" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1jgvsw8" hitPolicy="FIRST">
+      <input id="i_elig">
+        <inputExpression id="LiteralExpression_0sko73t" typeRef="boolean">
+          <text>rechtOpToeslagAanvraag</text>
+        </inputExpression>
+      </input>
+      <input id="i_amt">
+        <inputExpression id="LiteralExpression_1vt328w" typeRef="number">
+          <text>amountYear</text>
+        </inputExpression>
+      </input>
+      <output id="o_eligible" name="eligible" typeRef="boolean" />
+      <output id="o_amountYear" name="amountYear" typeRef="number" />
+      <rule id="DecisionRule_0btwm30">
+        <inputEntry id="UnaryTests_1aj8eg8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05f96be">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hsm6o6">
+          <text>rechtOpToeslagAanvraag</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cfj6le">
+          <text>if rechtOpToeslagAanvraag then amountYear else 0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
   <decision id="leeftijd" name="Leeftijd (hele jaren)" camunda:historyTimeToLive="180">
     <variable id="v_leeftijd" name="leeftijd" typeRef="number" />
     <informationRequirement id="InformationRequirement_0u859x1">
@@ -303,41 +339,5 @@
         else jaarbedragToeslagBasis
       </text>
     </literalExpression>
-  </decision>
-  <decision id="zorgtoeslag_resultaat" name="Resultaat zorgtoeslag" camunda:historyTimeToLive="180">
-    <informationRequirement id="InformationRequirement_0lbkyh8">
-      <requiredDecision href="#rechtOpToeslagAanvraag" />
-    </informationRequirement>
-    <informationRequirement id="InformationRequirement_0nkz3ps">
-      <requiredDecision href="#jaarbedragToeslag" />
-    </informationRequirement>
-    <decisionTable id="DecisionTable_1jgvsw8" hitPolicy="FIRST">
-      <input id="i_elig">
-        <inputExpression id="LiteralExpression_0sko73t" typeRef="boolean">
-          <text>rechtOpToeslagAanvraag</text>
-        </inputExpression>
-      </input>
-      <input id="i_amt">
-        <inputExpression id="LiteralExpression_1vt328w" typeRef="number">
-          <text>amountYear</text>
-        </inputExpression>
-      </input>
-      <output id="o_eligible" name="eligible" typeRef="boolean" />
-      <output id="o_amountYear" name="amountYear" typeRef="number" />
-      <rule id="DecisionRule_0btwm30">
-        <inputEntry id="UnaryTests_1aj8eg8">
-          <text>-</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_05f96be">
-          <text>-</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_1hsm6o6">
-          <text>rechtOpToeslagAanvraag</text>
-        </outputEntry>
-        <outputEntry id="LiteralExpression_1cfj6le">
-          <text>if rechtOpToeslagAanvraag then amountYear else 0</text>
-        </outputEntry>
-      </rule>
-    </decisionTable>
   </decision>
 </definitions>
