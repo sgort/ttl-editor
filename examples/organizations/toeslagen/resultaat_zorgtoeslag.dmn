@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+  xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+  xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+  xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+  id="def_zorgtoeslag_temporal_demo"
+  name="Zorgtoeslag (Temporal Rules demo)"
+  namespace="https://example.org/dmn/zorgtoeslag/temporal-demo">
+
+  <!-- =========================================================
+       INPUT DATA (the "applicable parameters" as inputs to the model)
+       ========================================================= -->
+
+  <!-- Core temporal inputs -->
+  <inputData id="in_datumBerekening" name="datumBerekening">
+    <variable id="var_datumBerekening" name="datumBerekening" typeRef="date"/>
+  </inputData>
+
+  <inputData id="in_geboortedatum" name="geboortedatum">
+    <variable id="var_geboortedatum" name="geboortedatum" typeRef="date"/>
+  </inputData>
+
+  <inputData id="in_overlijdensdatum" name="overlijdensdatum">
+    <variable id="var_overlijdensdatum" name="overlijdensdatum" typeRef="date"/>
+  </inputData>
+
+  <!-- Eligibility-related inputs -->
+  <inputData id="in_woonachtigNL" name="woonachtigNL">
+    <variable id="var_woonachtigNL" name="woonachtigNL" typeRef="boolean"/>
+  </inputData>
+
+  <inputData id="in_rechtmatigVerblijfNL" name="rechtmatigVerblijfNL">
+    <variable id="var_rechtmatigVerblijfNL" name="rechtmatigVerblijfNL" typeRef="boolean"/>
+  </inputData>
+
+  <inputData id="in_statusZorgverzekerd" name="statusZorgverzekerd">
+    <variable id="var_statusZorgverzekerd" name="statusZorgverzekerd" typeRef="string"/>
+  </inputData>
+
+  <inputData id="in_gedetineerd" name="gedetineerd">
+    <variable id="var_gedetineerd" name="gedetineerd" typeRef="boolean"/>
+  </inputData>
+
+  <!-- Amount-related inputs -->
+  <inputData id="in_toetsingsinkomen" name="toetsingsinkomen">
+    <variable id="var_toetsingsinkomen" name="toetsingsinkomen" typeRef="number"/>
+  </inputData>
+
+  <inputData id="in_woonlandfactorBuitenland" name="woonlandfactorBuitenland">
+    <variable id="var_woonlandfactorBuitenland" name="woonlandfactorBuitenland" typeRef="number"/>
+  </inputData>
+
+  <!-- =========================================================
+       PARAMETER DECISIONS (constants from the TTL)
+       ========================================================= -->
+
+  <decision id="p_STANDAARDPREMIE" name="Parameter STANDAARDPREMIE">
+    <variable id="v_p_STANDAARDPREMIE" name="STANDAARDPREMIE" typeRef="number"/>
+    <literalExpression><text>1987</text></literalExpression>
+  </decision>
+
+  <decision id="p_DREMPELINKOMEN" name="Parameter DREMPELINKOMEN">
+    <variable id="v_p_DREMPELINKOMEN" name="DREMPELINKOMEN" typeRef="number"/>
+    <literalExpression><text>26819</text></literalExpression>
+  </decision>
+
+  <decision id="p_DREMPELINKOMENPCT_ZP" name="Parameter DREMPELINKOMENPERCENTAGE ZONDER PARTNER">
+    <variable id="v_p_DREMPELINKOMENPCT_ZP" name="DREMPELINKOMENPCT_ZP" typeRef="number"/>
+    <literalExpression><text>1.879</text></literalExpression>
+  </decision>
+
+  <decision id="p_OVERSCHOTPCT_ZP" name="Parameter OVERSCHOTPERCENTAGE DREMPELINKOMEN ZONDER PARTNER">
+    <variable id="v_p_OVERSCHOTPCT_ZP" name="OVERSCHOTPCT_ZP" typeRef="number"/>
+    <literalExpression><text>13.67</text></literalExpression>
+  </decision>
+
+  <decision id="p_DOELMATIGHEIDSGRENS" name="Parameter DOELMATIGHEIDSGRENS JAARBEDRAG TOESLAG">
+    <variable id="v_p_DOELMATIGHEIDSGRENS" name="DOELMATIGHEIDSGRENS" typeRef="number"/>
+    <literalExpression><text>23.5</text></literalExpression>
+  </decision>
+
+  <decision id="p_MEERDERJARIGHEIDSLEEFTIJD" name="Parameter MEERDERJARIGHEIDSLEEFTIJD">
+    <variable id="v_p_MEERDERJARIGHEIDSLEEFTIJD" name="MEERDERJARIGHEIDSLEEFTIJD" typeRef="number"/>
+    <literalExpression><text>18</text></literalExpression>
+  </decision>
+
+  <decision id="p_MAX_ZORGTOESLAG_ZP" name="Parameter MAXIMALE ZORGTOESLAG VERZEKERDE ZONDER PARTNER">
+    <variable id="v_p_MAX_ZORGTOESLAG_ZP" name="MAX_ZORGTOESLAG_ZP" typeRef="number"/>
+    <literalExpression><text>1483</text></literalExpression>
+  </decision>
+
+  <decision id="p_NORMPREMIE_OVER_DREMPEL_ZP" name="Parameter NORMPREMIE OVER HET DREMPELINKOMEN ZONDER PARTNER">
+    <variable id="v_p_NORMPREMIE_OVER_DREMPEL_ZP" name="NORMPREMIE_OVER_DREMPEL_ZP" typeRef="number"/>
+    <literalExpression><text>503.93</text></literalExpression>
+  </decision>
+
+  <!-- =========================================================
+       TEMPORAL CALCULATIONS
+       ========================================================= -->
+
+  <decision id="laatsteDagVorigeMaand" name="Laatste dag vorige maand">
+    <informationRequirement><requiredInput href="#in_datumBerekening"/></informationRequirement>
+    <variable id="v_lDVM" name="laatsteDagVorigeMaand" typeRef="date"/>
+    <literalExpression>
+      <!-- date(year(d), month(d), 1) - P1D -->
+      <text>date(year(datumBerekening), month(datumBerekening), 1) - duration("P1D")</text>
+    </literalExpression>
+  </decision>
+
+  <decision id="laatsteDagHuidigeMaand" name="Laatste dag huidige maand">
+    <informationRequirement><requiredInput href="#in_datumBerekening"/></informationRequirement>
+    <variable id="v_lDHM" name="laatsteDagHuidigeMaand" typeRef="date"/>
+    <literalExpression>
+      <!-- date(year(d+P1M), month(d+P1M), 1) - P1D -->
+      <text>date(year(datumBerekening + duration("P1M")), month(datumBerekening + duration("P1M")), 1) - duration("P1D")</text>
+    </literalExpression>
+  </decision>
+
+  <decision id="leeftijd" name="Leeftijd (hele jaren)">
+    <informationRequirement><requiredInput href="#in_geboortedatum"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_datumBerekening"/></informationRequirement>
+    <variable id="v_leeftijd" name="leeftijd" typeRef="number"/>
+    <literalExpression>
+      <!-- demo: whole years between birthdate and datumBerekening -->
+      <text>years and months duration(geboortedatum, datumBerekening).years</text>
+    </literalExpression>
+  </decision>
+
+  <decision id="meerderjarigDezeMaand" name="Meerderjarig geworden in deze berekeningsmaand">
+    <informationRequirement><requiredInput href="#in_geboortedatum"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#laatsteDagVorigeMaand"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#laatsteDagHuidigeMaand"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_MEERDERJARIGHEIDSLEEFTIJD"/></informationRequirement>
+    <variable id="v_mdm" name="meerderjarigDezeMaand" typeRef="boolean"/>
+    <literalExpression>
+      <text>
+        (years and months duration(geboortedatum, laatsteDagVorigeMaand).years &lt; MEERDERJARIGHEIDSLEEFTIJD)
+        and
+        (years and months duration(geboortedatum, laatsteDagHuidigeMaand).years = MEERDERJARIGHEIDSLEEFTIJD)
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="rechtgevendeLeeftijd" name="Rechtgevende leeftijd">
+    <informationRequirement><requiredDecision href="#leeftijd"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#meerderjarigDezeMaand"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_MEERDERJARIGHEIDSLEEFTIJD"/></informationRequirement>
+    <variable id="v_rl" name="rechtgevendeLeeftijd" typeRef="boolean"/>
+    <literalExpression>
+      <text>(leeftijd &gt;= MEERDERJARIGHEIDSLEEFTIJD) and (meerderjarigDezeMaand = false)</text>
+    </literalExpression>
+  </decision>
+
+  <decision id="inLeven" name="In leven">
+    <informationRequirement><requiredInput href="#in_overlijdensdatum"/></informationRequirement>
+    <variable id="v_inLeven" name="inLeven" typeRef="boolean"/>
+    <literalExpression>
+      <text>overlijdensdatum = null</text>
+    </literalExpression>
+  </decision>
+
+  <!-- =========================================================
+       ELIGIBILITY (simplified but faithful to TTL structure)
+       ========================================================= -->
+
+  <decision id="statusRouteOk" name="Status/route voorwaarden ok">
+    <informationRequirement><requiredInput href="#in_woonachtigNL"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_rechtmatigVerblijfNL"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_statusZorgverzekerd"/></informationRequirement>
+    <variable id="v_statusRouteOk" name="statusRouteOk" typeRef="boolean"/>
+    <literalExpression>
+      <text>
+        (
+          (rechtmatigVerblijfNL and statusZorgverzekerd = "Binnenlands zorgverzekerd")
+          or
+          ((woonachtigNL = false) and (statusZorgverzekerd = "Buitenlands verdragsgerechtigd" or statusZorgverzekerd = "Binnenlands zorgverzekerd"))
+        )
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="rechtOpToeslag" name="Recht op zorgtoeslag (eligibility)">
+    <informationRequirement><requiredDecision href="#statusRouteOk"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#rechtgevendeLeeftijd"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_gedetineerd"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#inLeven"/></informationRequirement>
+    <variable id="v_recht" name="eligible" typeRef="boolean"/>
+    <literalExpression>
+      <text>statusRouteOk and rechtgevendeLeeftijd and (gedetineerd = false) and inLeven</text>
+    </literalExpression>
+  </decision>
+
+  <!-- =========================================================
+       AMOUNT (year amount, “zonder partner” demo path)
+       ========================================================= -->
+
+  <decision id="woonlandfactor" name="Woonlandfactor">
+    <informationRequirement><requiredInput href="#in_statusZorgverzekerd"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_woonlandfactorBuitenland"/></informationRequirement>
+    <variable id="v_wlf" name="woonlandfactor" typeRef="number"/>
+    <literalExpression>
+      <text>
+        if statusZorgverzekerd = "Binnenlands zorgverzekerd" then 1
+        else if statusZorgverzekerd = "Buitenlands verdragsgerechtigd" then woonlandfactorBuitenland
+        else 0
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="standaardpremie" name="Standaardpremie">
+    <informationRequirement><requiredDecision href="#p_STANDAARDPREMIE"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#woonlandfactor"/></informationRequirement>
+    <variable id="v_sp" name="standaardpremie" typeRef="number"/>
+    <literalExpression>
+      <!-- demo rounding omitted; keep representative -->
+      <text>STANDAARDPREMIE * woonlandfactor</text>
+    </literalExpression>
+  </decision>
+
+  <decision id="inkomenBovenDrempel" name="Inkomen boven drempelinkomen">
+    <informationRequirement><requiredInput href="#in_toetsingsinkomen"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_DREMPELINKOMEN"/></informationRequirement>
+    <variable id="v_ibd" name="inkomenBovenDrempel" typeRef="number"/>
+    <literalExpression>
+      <text>
+        if toetsingsinkomen = null then null
+        else if (toetsingsinkomen - DREMPELINKOMEN) &gt; 0 then (toetsingsinkomen - DREMPELINKOMEN) else 0
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="normpremieZonderPartner" name="Normpremie (zonder partner)">
+    <informationRequirement><requiredDecision href="#p_NORMPREMIE_OVER_DREMPEL_ZP"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_OVERSCHOTPCT_ZP"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#inkomenBovenDrempel"/></informationRequirement>
+    <variable id="v_np" name="normpremie" typeRef="number"/>
+    <literalExpression>
+      <text>
+        if inkomenBovenDrempel = null then null
+        else
+          NORMPREMIE_OVER_DREMPEL_ZP + ((OVERSCHOTPCT_ZP / 100) * inkomenBovenDrempel)
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="jaarbedragToeslagBasis" name="Jaarbedrag toeslag (basis, alleenstaand demo)">
+    <informationRequirement><requiredDecision href="#rechtOpToeslag"/></informationRequirement>
+    <informationRequirement><requiredInput href="#in_toetsingsinkomen"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#standaardpremie"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#normpremieZonderPartner"/></informationRequirement>
+    <variable id="v_jb0" name="jaarbedragToeslagBasis" typeRef="number"/>
+    <literalExpression>
+      <text>
+        if eligible = false then 0
+        else if toetsingsinkomen = null then null
+        else
+          (if (standaardpremie - normpremie) &gt; 0 then (standaardpremie - normpremie) else 0)
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="jaarbedragToeslag" name="Jaarbedrag toeslag (doelmatigheidsgrens + max cap demo)">
+    <informationRequirement><requiredDecision href="#jaarbedragToeslagBasis"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_DOELMATIGHEIDSGRENS"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#p_MAX_ZORGTOESLAG_ZP"/></informationRequirement>
+    <variable id="v_jb" name="amountYear" typeRef="number"/>
+    <literalExpression>
+      <text>
+        if jaarbedragToeslagBasis = null then null
+        else if jaarbedragToeslagBasis &lt;= 0 then 0
+        else if jaarbedragToeslagBasis &lt; DOELMATIGHEIDSGRENS then 0
+        else if jaarbedragToeslagBasis &gt; MAX_ZORGTOESLAG_ZP then MAX_ZORGTOESLAG_ZP
+        else jaarbedragToeslagBasis
+      </text>
+    </literalExpression>
+  </decision>
+
+  <!-- Final decision returning eligibility + amount -->
+  <decision id="zorgtoeslag_resultaat" name="Zorgtoeslag resultaat">
+    <informationRequirement><requiredDecision href="#rechtOpToeslag"/></informationRequirement>
+    <informationRequirement><requiredDecision href="#jaarbedragToeslag"/></informationRequirement>
+
+    <!-- This decision returns a context -->
+    <variable id="v_result" name="resultaat" typeRef="Any"/>
+    <literalExpression>
+      <text>{ eligible: eligible, amountYear: amountYear }</text>
+    </literalExpression>
+  </decision>
+
+  <!-- =========================================================
+       DRD (simple clean layout)
+       ========================================================= -->
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_zorgtoeslag_demo" name="DRD">
+
+      <!-- Final -->
+      <dmndi:DMNShape id="sh_result" dmnElementRef="zorgtoeslag_resultaat">
+        <dc:Bounds x="820" y="40" width="260" height="80"/>
+      </dmndi:DMNShape>
+
+      <!-- Eligibility + Amount -->
+      <dmndi:DMNShape id="sh_recht" dmnElementRef="rechtOpToeslag">
+        <dc:Bounds x="520" y="180" width="260" height="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_bedrag" dmnElementRef="jaarbedragToeslag">
+        <dc:Bounds x="820" y="180" width="260" height="80"/>
+      </dmndi:DMNShape>
+
+      <!-- Temporal block -->
+      <dmndi:DMNShape id="sh_rl" dmnElementRef="rechtgevendeLeeftijd">
+        <dc:Bounds x="260" y="320" width="260" height="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_mdm" dmnElementRef="meerderjarigDezeMaand">
+        <dc:Bounds x="40" y="460" width="280" height="80"/>
+      </dmndi:DMNShape>
+
+      <!-- Amount chain -->
+      <dmndi:DMNShape id="sh_jb0" dmnElementRef="jaarbedragToeslagBasis">
+        <dc:Bounds x="820" y="320" width="260" height="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_sp" dmnElementRef="standaardpremie">
+        <dc:Bounds x="1120" y="460" width="260" height="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_np" dmnElementRef="normpremieZonderPartner">
+        <dc:Bounds x="820" y="460" width="280" height="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_ibd" dmnElementRef="inkomenBovenDrempel">
+        <dc:Bounds x="520" y="460" width="280" height="80"/>
+      </dmndi:DMNShape>
+
+      <!-- Key inputs -->
+      <dmndi:DMNShape id="sh_in_datum" dmnElementRef="in_datumBerekening">
+        <dc:Bounds x="40" y="600" width="220" height="55"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_in_birth" dmnElementRef="in_geboortedatum">
+        <dc:Bounds x="280" y="600" width="220" height="55"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_in_income" dmnElementRef="in_toetsingsinkomen">
+        <dc:Bounds x="520" y="600" width="220" height="55"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="sh_in_status" dmnElementRef="in_statusZorgverzekerd">
+        <dc:Bounds x="1120" y="600" width="260" height="55"/>
+      </dmndi:DMNShape>
+
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+
+</definitions>

@@ -303,19 +303,19 @@
 # ============================================================
 
 <https://regels.overheid.nl/services/studiefinanciering/dmn> a cprmv:DecisionModel ;
-    dct:identifier "persoon_is_uitwonend" ;
-    dct:title "Student-finance-application-fixed-feel.dmn"@nl ;
+    dct:identifier "besluit_aanvraag" ;
+    dct:title "Student-finance-application-fixed-feel-reorder.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
     dct:source <https://regels.overheid.nl/services/studiefinanciering/dmn/file> ;
-    cprmv:deploymentId "3076271c-0b43-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-16T14:24:23.364Z"^^xsd:dateTime ;
+    cprmv:deploymentId "5be430f9-0b4b-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-16T15:22:52.391Z"^^xsd:dateTime ;
     cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/besluit_aanvraag/evaluate> ;
-    cprmv:lastTested "2026-02-16T14:24:25.004Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-16T15:24:04.658Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     ronl:validationStatus "in-review"^^xsd:string ;
     ronl:validatedBy <https://organisaties.overheid.nl/71857/Dienst_Uitvoering_Onderwijs> ;
     ronl:validatedAt "2026-01-12"^^xsd:date ;
-    ronl:validationNote "Het is ontworpen om te kunnen worden ingezet in Operaton (compatibel met Camunda 7) en om een ​​conversie van \"RuleSpeak → DMN\" te demonstreren. Het is nog niet volledig afgerond/gevalideerd, maar de structuur is correct, het bevat een DRD met alle <inputData> aanwezig en het maakt gebruik van FEEL-vriendelijke variabelen."@nl ;
+    ronl:validationNote "Validation note goes here..."@nl ;
     dct:description "DMN decision model for service evaluation"@nl .
 
 <https://regels.overheid.nl/services/studiefinanciering/dmn/input/1> a cpsv:Input ;
@@ -697,7 +697,7 @@
 
 # Input Variable Concepts
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/leeftijd> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/leeftijd> a skos:Concept ;
     skos:prefLabel "Leeftijd"@nl ;
     skos:definition "Leeftijd is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "LEEF" ;
@@ -706,7 +706,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/leeftijd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/onderwijsniveau> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/onderwijsniveau> a skos:Concept ;
     skos:prefLabel "Onderwijsniveau"@nl ;
     skos:definition "Onderwijsniveau is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "ONDE" ;
@@ -715,7 +715,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/onderwijsniveau> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/woontAnderAdresDanOuders> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/woontAnderAdresDanOuders> a skos:Concept ;
     skos:prefLabel "Woont Ander Adres Dan Ouders"@nl ;
     skos:definition "Woont Ander Adres Dan Ouders is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "WAADO" ;
@@ -724,7 +724,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/woontAnderAdresDanOuders> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/ingeschrevenGemeente> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/ingeschrevenGemeente> a skos:Concept ;
     skos:prefLabel "Ingeschreven Gemeente"@nl ;
     skos:definition "Ingeschreven Gemeente is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "IG" ;
@@ -733,7 +733,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/ingeschrevenGemeente> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/nationaliteitNL> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/nationaliteitNL> a skos:Concept ;
     skos:prefLabel "Nationaliteit NL"@nl ;
     skos:definition "Nationaliteit NL is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "NN" ;
@@ -742,7 +742,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/nationaliteitNL> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/voldoetEU> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/voldoetEU> a skos:Concept ;
     skos:prefLabel "Voldoet EU"@nl ;
     skos:definition "Voldoet EU is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "VE" ;
@@ -751,7 +751,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/voldoetEU> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/opleidingBekostigdVoltijd> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/opleidingBekostigdVoltijd> a skos:Concept ;
     skos:prefLabel "Opleiding Bekostigd Voltijd"@nl ;
     skos:definition "Opleiding Bekostigd Voltijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "OBV" ;
@@ -760,7 +760,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/opleidingBekostigdVoltijd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/opleidingGoedgekeurd> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/opleidingGoedgekeurd> a skos:Concept ;
     skos:prefLabel "Opleiding Goedgekeurd"@nl ;
     skos:definition "Opleiding Goedgekeurd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "OG" ;
@@ -769,7 +769,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/opleidingGoedgekeurd> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/buitenlandseFinanciering> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/buitenlandseFinanciering> a skos:Concept ;
     skos:prefLabel "Buitenlandse Financiering"@nl ;
     skos:definition "Buitenlandse Financiering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "BF" ;
@@ -778,7 +778,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/buitenlandseFinanciering> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/missendeMaand> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/missendeMaand> a skos:Concept ;
     skos:prefLabel "Missende Maand"@nl ;
     skos:definition "Missende Maand is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "MM" ;
@@ -787,7 +787,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/missendeMaand> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/medischeVerklaring> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/medischeVerklaring> a skos:Concept ;
     skos:prefLabel "Medische Verklaring"@nl ;
     skos:definition "Medische Verklaring is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "MV" ;
@@ -796,7 +796,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/medischeVerklaring> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/gewensteLening> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/gewensteLening> a skos:Concept ;
     skos:prefLabel "Gewenste Lening"@nl ;
     skos:definition "Gewenste Lening is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "GL" ;
@@ -805,7 +805,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/gewensteLening> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/aantalKinderenAanvBeurs> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenAanvBeurs> a skos:Concept ;
     skos:prefLabel "Aantal Kinderen Aanv Beurs"@nl ;
     skos:definition "Aantal Kinderen Aanv Beurs is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "AKAB" ;
@@ -814,7 +814,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenAanvBeurs> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/belastbaarInkomen_ouder1> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/belastbaarInkomen_ouder1> a skos:Concept ;
     skos:prefLabel "Belastbaar Inkomen_ouder1"@nl ;
     skos:definition "Belastbaar Inkomen_ouder1 is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "BI" ;
@@ -823,7 +823,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/belastbaarInkomen_ouder1> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/belastbaarInkomen_ouder2> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/belastbaarInkomen_ouder2> a skos:Concept ;
     skos:prefLabel "Belastbaar Inkomen_ouder2"@nl ;
     skos:definition "Belastbaar Inkomen_ouder2 is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "BI1" ;
@@ -832,7 +832,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/belastbaarInkomen_ouder2> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/termijnStudieschuldJaar_ouder1> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/termijnStudieschuldJaar_ouder1> a skos:Concept ;
     skos:prefLabel "Termijn Studieschuld Jaar_ouder1"@nl ;
     skos:definition "Termijn Studieschuld Jaar_ouder1 is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "TSJ" ;
@@ -841,7 +841,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/termijnStudieschuldJaar_ouder1> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/termijnStudieschuldJaar_ouder2> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/termijnStudieschuldJaar_ouder2> a skos:Concept ;
     skos:prefLabel "Termijn Studieschuld Jaar_ouder2"@nl ;
     skos:definition "Termijn Studieschuld Jaar_ouder2 is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "TSJ1" ;
@@ -850,7 +850,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/termijnStudieschuldJaar_ouder2> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/aantalKinderenZonderSF_ouder1> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenZonderSF_ouder1> a skos:Concept ;
     skos:prefLabel "Aantal Kinderen Zonder SF_ouder1"@nl ;
     skos:definition "Aantal Kinderen Zonder SF_ouder1 is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "AKZS" ;
@@ -859,7 +859,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenZonderSF_ouder1> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/aantalKinderenZonderSF_ouder2> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenZonderSF_ouder2> a skos:Concept ;
     skos:prefLabel "Aantal Kinderen Zonder SF_ouder2"@nl ;
     skos:definition "Aantal Kinderen Zonder SF_ouder2 is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "AKZS1" ;
@@ -868,7 +868,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenZonderSF_ouder2> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/leefsituatie_ouder1> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/leefsituatie_ouder1> a skos:Concept ;
     skos:prefLabel "Leefsituatie_ouder1"@nl ;
     skos:definition "Leefsituatie_ouder1 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "LEEF1" ;
@@ -877,7 +877,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/leefsituatie_ouder1> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/leefsituatie_ouder2> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/leefsituatie_ouder2> a skos:Concept ;
     skos:prefLabel "Leefsituatie_ouder2"@nl ;
     skos:definition "Leefsituatie_ouder2 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "LEEF2" ;
@@ -886,7 +886,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/leefsituatie_ouder2> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/maandenGenoten> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/maandenGenoten> a skos:Concept ;
     skos:prefLabel "Maanden Genoten"@nl ;
     skos:definition "Maanden Genoten is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "MG" ;
@@ -895,7 +895,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/maandenGenoten> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/maxMaanden> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/maxMaanden> a skos:Concept ;
     skos:prefLabel "Max Maanden"@nl ;
     skos:definition "Max Maanden is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "MM1" ;
@@ -904,7 +904,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/maxMaanden> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/maandenSindsEersteMaandRecht> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/maandenSindsEersteMaandRecht> a skos:Concept ;
     skos:prefLabel "Maanden Sinds Eerste Maand Recht"@nl ;
     skos:definition "Maanden Sinds Eerste Maand Recht is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "MSEMR" ;
@@ -915,7 +915,7 @@
 
 # Output Variable Concepts
 
-<https://regels.overheid.nl/concepts/persoonisuitwonend/toegekend> a skos:Concept ;
+<https://regels.overheid.nl/concepts/besluitaanvraag/toegekend> a skos:Concept ;
     skos:prefLabel "Toegekend"@nl ;
     skos:definition "Toegekend is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
     skos:notation "TOEG" ;

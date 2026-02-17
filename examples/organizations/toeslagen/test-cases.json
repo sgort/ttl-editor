@@ -1,0 +1,98 @@
+[
+  {
+    "name": "TC1_Eligible_NL_insured_moderate_income",
+    "expected": "eligible=true, amountYear>0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
+        "geboortedatum": { "value": "2000-01-10T00:00:00.000+0100", "type": "Date" },
+
+        "leeftijdOpDatumBerekening": { "value": 26, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 26, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 26, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 30000.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC2_Not_eligible_detained",
+    "expected": "eligible=false, amountYear=0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
+        "geboortedatum": { "value": "1995-06-01T00:00:00.000+0100", "type": "Date" },
+
+        "leeftijdOpDatumBerekening": { "value": 30, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 30, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 30, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": true, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 25000.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC3_Not_eligible_became_18_this_month",
+    "expected": "eligible=false, amountYear=0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
+        "geboortedatum": { "value": "2008-02-20T00:00:00.000+0100", "type": "Date" },
+
+        "leeftijdOpDatumBerekening": { "value": 17, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 17, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 18, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 0.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC4_Eligible_treaty_abroad_missing_income",
+    "expected": "eligible=true, amountYear=null",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
+        "geboortedatum": { "value": "1990-11-12T00:00:00.000+0100", "type": "Date" },
+
+        "leeftijdOpDatumBerekening": { "value": 35, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 35, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 35, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": false, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Buitenlands verdragsgerechtigd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": null, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 0.85, "type": "Double" }
+      }
+    }
+  }
+]
