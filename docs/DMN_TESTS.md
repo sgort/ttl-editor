@@ -28,6 +28,7 @@ The DMN Testing Suite provides two advanced testing modes that complement the ex
 2. **Test Cases Upload** — Run multiple test scenarios from JSON files
 
 These features mirror the shell script testing patterns used in the examples directory:
+
 - `test-dmn-zorgtoeslag.sh` (intermediate decisions)
 - `test-cases-zorgtoeslag.sh` (batch test cases)
 
@@ -38,16 +39,19 @@ These features mirror the shell script testing patterns used in the examples dir
 ### ✅ Smart Constant Filtering
 
 Automatically skips constant parameters (decisions with `p_*` prefix) from:
+
 - Intermediate decision testing
 - Primary decision key extraction for deployment
 
 **Example:** For a DMN with 20 total decisions:
+
 - 8 constants filtered (p_maxaftrek, p_normpremie_alleenstaande, etc.)
 - 12 testable decisions retained (leeftijd, rechtOpToeslag, zorgtoeslag_resultaat, etc.)
 
 ### ✅ Progressive Result Display
 
 Test results appear in real-time as they execute:
+
 - Intermediate tests update row-by-row
 - Test cases show pass/fail counters incrementally
 - No need to wait for complete batch to see results
@@ -57,6 +61,7 @@ Test results appear in real-time as they execute:
 Test cases accept both formats automatically:
 
 **Toeslagen format:**
+
 ```json
 [{
   "name": "TC1_Eligible_NL_insured_moderate_income",
@@ -66,6 +71,7 @@ Test cases accept both formats automatically:
 ```
 
 **DUO format:**
+
 ```json
 [{
   "testName": "Test Case 1",
@@ -85,6 +91,7 @@ On successful test case execution, the last successful result automatically gene
 ### What It Does
 
 Tests each sub-decision in the DMN Decision Requirements Diagram (DRD) individually by calling:
+
 ```
 POST /engine-rest/decision-definition/key/{decisionId}/evaluate
 ```
@@ -100,7 +107,7 @@ POST /engine-rest/decision-definition/key/{decisionId}/evaluate
 1. Upload and deploy your DMN file
 2. DMN is parsed to extract all `<decision>` elements
 3. Constant parameters (`p_*` prefix) are automatically filtered out
-4. Badge shows: "12 testable decisions detected (p_* constants filtered)"
+4. Badge shows: "12 testable decisions detected (p\_\* constants filtered)"
 5. Click "Run Intermediate Tests" button
 6. Each decision is evaluated sequentially using the full test body
 7. Results display progressively: ✅ OK | ❌ ERROR | ⚠️ UNEXPECTED
@@ -125,6 +132,7 @@ POST /engine-rest/decision-definition/key/{decisionId}/evaluate
 ### UI Location
 
 **DMN Tab → Intermediate Decision Tests** (collapsible section)
+
 - Only visible after successful deployment
 - Only shows when `decisions.length > 1` (skips single-table DMNs)
 - Expand to see run button and results table
@@ -136,6 +144,7 @@ POST /engine-rest/decision-definition/key/{decisionId}/evaluate
 ### What It Does
 
 Runs multiple test scenarios from a JSON file against the primary decision key:
+
 ```
 POST /engine-rest/decision-definition/key/{primaryKey}/evaluate
 ```
@@ -165,13 +174,13 @@ POST /engine-rest/decision-definition/key/{primaryKey}/evaluate
 
 ✅ 1  TC1_Eligible_NL_insured_moderate_income
      Expected: eligible=true, amountYear>0
-     
+
 ✅ 2  TC2_Not_eligible_detained
      Expected: eligible=false, amountYear=0
-     
+
 ✅ 3  TC3_Not_eligible_became_18_this_month
      Expected: eligible=false, amountYear=0
-     
+
 ✅ 4  TC4_Eligible_treaty_abroad_missing_income
      Expected: eligible=true, amountYear=null
 ```
@@ -179,6 +188,7 @@ POST /engine-rest/decision-definition/key/{primaryKey}/evaluate
 ### UI Location
 
 **DMN Tab → Test Cases** (collapsible section)
+
 - Only visible after successful deployment
 - Upload button shows filename after selection
 - Results table shows after running tests
@@ -225,6 +235,7 @@ Used by: `examples/organizations/toeslagen/test-cases.json`
 ```
 
 **Required fields:**
+
 - `name` (string) — Test case identifier
 - `expected` (string) — Expected outcome description
 - `requestBody` (object) — Complete Operaton request body with `variables`
@@ -256,6 +267,7 @@ Used by: `examples/organizations/duo/test-cases.json`
 ```
 
 **Required fields:**
+
 - `testName` (string) — Test case identifier
 - `testResult` (string) — Expected outcome description
 - `variables` (object) — Operaton variables object (no `requestBody` wrapper)
@@ -263,6 +275,7 @@ Used by: `examples/organizations/duo/test-cases.json`
 ### Normalization
 
 Both formats are automatically normalized to:
+
 ```javascript
 {
   name: string,
@@ -283,26 +296,26 @@ Both formats are automatically normalized to:
    • File card shows: "12 testable decisions detected (p_* constants filtered)"
    • Decision Key field auto-filled with primary decision (e.g., zorgtoeslag_resultaat)
    • Request body auto-generated from inputData elements
-   
+
 2. DEPLOY TO OPERATON
    ↓
    • Deployment button shows: "Deployed — ID: ddbd0e2d..."
    • Console logs: "[DMN] Extracted primary decision key: 'zorgtoeslag_resultaat' (skipped 8 p_* constant(s))"
-   
+
 3. SINGLE EVALUATE (existing)
    ↓
    • Modify request body values if needed
    • Click "Evaluate Decision"
    • Response shows in formatted JSON
    • NL-SBB concepts generated on success
-   
+
 4. INTERMEDIATE TESTS (new)
    ↓
    • Expand "Intermediate Decision Tests" section
    • Click "Run Intermediate Tests"
    • See 12 results appear progressively
    • Expand any row to see raw JSON response
-   
+
 5. TEST CASES (new)
    ↓
    • Expand "Test Cases" section
@@ -311,7 +324,7 @@ Both formats are automatically normalized to:
    • Click "Run All Test Cases"
    • See 4 results: 4 passed / 0 failed
    • NL-SBB concepts updated from last success
-   
+
 6. EXPORT TTL
    ↓
    • Click "Download TTL"
@@ -327,10 +340,11 @@ Both formats are automatically normalized to:
 **File:** `examples/organizations/toeslagen/resultaat_zorgtoeslag_operaton_compat.dmn`
 
 **Total decisions:** 20  
-**Filtered (p_*):** 8 constants  
+**Filtered (p\_\*):** 8 constants  
 **Testable:** 12 decisions
 
 **Intermediate tests:**
+
 ```
 leeftijd                      ✅  Simple passthrough
 meerderjarigDezeMaand         ✅  Turns 18 logic
@@ -347,18 +361,21 @@ zorgtoeslag_resultaat         ✅  Final result
 ```
 
 **Test cases:** `examples/organizations/toeslagen/test-cases.json` (4 cases)
+
 - TC1: Eligible NL insured, moderate income → eligible=true, amountYear>0
 - TC2: Not eligible detained → eligible=false, amountYear=0
 - TC3: Not eligible became 18 this month → eligible=false, amountYear=0
 - TC4: Eligible treaty abroad missing income → eligible=true, amountYear=null
 
 **Shell script equivalents:**
+
 - Intermediate: `test-dmn-zorgtoeslag.sh`
 - Test cases: `test-cases-zorgtoeslag.sh`
 
 ### Example 2: DUO Studenten DMN
 
 **Test cases:** `examples/organizations/duo/test-cases.json` (3 cases)
+
 - Test Case 1: Eligible (toegekend = true)
 - Test Case 2: Not eligible due to foreign financing (toegekend = false)
 - Test Case 3: Not eligible due to age / not HO (toegekend = false)
@@ -372,6 +389,7 @@ zorgtoeslag_resultaat         ✅  Final result
 ### Issue: Wrong Decision Key Extracted
 
 **Symptom:**
+
 ```
 Decision Key: p_STANDAARDPREMIE
 Test cases fail: "Decision not found"
@@ -382,6 +400,7 @@ Test cases fail: "Decision not found"
 **Solution:** Already fixed in v1.9.2. The `extractPrimaryDecisionKey()` helper now skips `p_*` constants automatically.
 
 **Console should show:**
+
 ```
 [DMN] Extracted primary decision key: "zorgtoeslag_resultaat" (skipped 8 p_* constant(s))
 ```
@@ -389,6 +408,7 @@ Test cases fail: "Decision not found"
 ### Issue: Date Type Conversion Error
 
 **Symptom:**
+
 ```json
 {
   "type": "InvalidRequestException",
@@ -401,11 +421,13 @@ Test cases fail: "Decision not found"
 **Solution:** Already fixed in v1.9.2. Date values now use `type: 'String'` automatically.
 
 **Correct format:**
+
 ```json
 "datumBerekening": { "value": "2026-02-17", "type": "String" }
 ```
 
 **Incorrect format:**
+
 ```json
 "datumBerekening": { "value": "2026-02-17", "type": "Date" }
 ```
@@ -417,6 +439,7 @@ Test cases fail: "Decision not found"
 **Cause:** DMN file has no `<inputData>` elements or they're malformed
 
 **Solution:**
+
 1. Check DMN XML has `<inputData>` elements
 2. Verify `<variable typeRef="...">` children exist
 3. Use "Load Example" to see working format
@@ -427,11 +450,13 @@ Test cases fail: "Decision not found"
 **Symptom:** "Failed to parse test cases: ..."
 
 **Possible causes:**
+
 1. File is not valid JSON
 2. Array is missing (must be `[...]` not `{...}`)
 3. Test case format is unrecognized
 
 **Solution:**
+
 1. Validate JSON syntax (use jsonlint.com)
 2. Ensure top-level is an array
 3. Use one of the two supported formats (Toeslagen or DUO)
@@ -442,11 +467,13 @@ Test cases fail: "Decision not found"
 **Symptom:** Every decision returns ❌ ERROR
 
 **Possible causes:**
+
 1. DMN not deployed
 2. Decision keys incorrect
 3. Request body has wrong variable names
 
 **Solution:**
+
 1. Verify deployment status shows "Deployed — ID: ..."
 2. Check console for extraction logs
 3. Compare request body variable names to DMN `<inputData>` names
@@ -459,6 +486,7 @@ Test cases fail: "Decision not found"
 ### 1. Test Case Organization
 
 **Structure:**
+
 ```
 examples/
 └── organizations/
@@ -470,6 +498,7 @@ examples/
 ```
 
 **Naming conventions:**
+
 - DMN file: descriptive name, lowercase with underscores
 - Test cases: `test-cases.json` or `test-cases-{dmn-name}.json`
 - Shell scripts: `test-dmn-{name}.sh`, `test-cases-{name}.sh`
@@ -477,11 +506,13 @@ examples/
 ### 2. Test Case Coverage
 
 **Minimum coverage:**
+
 - ✅ Happy path (valid input, expected output)
 - ✅ Edge cases (boundary values, null handling)
 - ✅ Negative cases (invalid input, error conditions)
 
 **Example for zorgtoeslag:**
+
 - TC1: Eligible with typical values (happy path)
 - TC2: Not eligible due to detention (negative case)
 - TC3: Not eligible due to age boundary (edge case)
@@ -492,6 +523,7 @@ examples/
 **Be specific in `expected` field:**
 
 **Good:**
+
 ```json
 "expected": "eligible=true, amountYear>0"
 "expected": "toegekend=false, reason='Te jong'"
@@ -499,6 +531,7 @@ examples/
 ```
 
 **Avoid vague:**
+
 ```json
 "expected": "should work"
 "expected": "eligible"
@@ -507,6 +540,7 @@ examples/
 ### 4. Variable Naming
 
 **Use exact DMN names:**
+
 ```json
 // ✅ Correct - matches DMN <inputData name="...">
 "datumBerekening": { "value": "2026-02-17", "type": "String" }
@@ -521,15 +555,16 @@ examples/
 **Follow Operaton conventions:**
 
 | DMN typeRef | JSON type | Example value |
-|-------------|-----------|---------------|
-| date        | String    | "2026-02-17" |
-| boolean     | Boolean   | true |
-| integer     | Integer   | 42 |
-| long        | Integer   | 1234567890 |
-| double      | Double    | 1234.56 |
-| string      | String    | "text" |
+| ----------- | --------- | ------------- |
+| date        | String    | "2026-02-17"  |
+| boolean     | Boolean   | true          |
+| integer     | Integer   | 42            |
+| long        | Integer   | 1234567890    |
+| double      | Double    | 1234.56       |
+| string      | String    | "text"        |
 
 **Special cases:**
+
 ```json
 // Null date (use type: Date for null only)
 "overlijdensdatum": { "value": null, "type": "Date" }
@@ -541,6 +576,7 @@ examples/
 ### 6. Debugging Strategy
 
 **Start small:**
+
 1. Single evaluate first (verify request body works)
 2. Fix any errors in single evaluate
 3. Run intermediate tests (identify failing sub-decisions)
@@ -548,6 +584,7 @@ examples/
 5. Run all test cases (validate complete flows)
 
 **Progressive refinement:**
+
 ```
 Single evaluate (1 request)
   ↓
@@ -561,12 +598,14 @@ Shell scripts (batch automation)
 ### 7. Console Monitoring
 
 **Watch for:**
+
 ```
 [DMN Parse] Filtered 8 constant parameter(s), kept 12 testable decision(s)
 [DMN] Extracted primary decision key: "zorgtoeslag_resultaat" (skipped 8 p_* constant(s))
 ```
 
 **Red flags:**
+
 ```
 [DMN] All decisions are constants (p_*), using first one: "p_STANDAARDPREMIE"
 Error extracting decision key from DMN: ...
@@ -617,7 +656,7 @@ run_test() {
   local name=$2
   local expected=$3
   local data=$4
-  
+
   curl -s -X POST -u $AUTH \
     -H 'Content-Type: application/json' \
     -d "$data" \
@@ -656,6 +695,6 @@ The DMN Testing Suite provides comprehensive testing capabilities within the CPS
 ✅ **Dual format** support for both test case patterns  
 ✅ **Progressive display** shows results in real-time  
 ✅ **NL-SBB integration** generates concepts from successful tests  
-✅ **Shell script parity** mirrors existing test patterns  
+✅ **Shell script parity** mirrors existing test patterns
 
 These features enable thorough DMN validation without leaving the editor, while maintaining compatibility with existing shell-based testing workflows.
