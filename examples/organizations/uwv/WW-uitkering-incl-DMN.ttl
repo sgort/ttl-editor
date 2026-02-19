@@ -1,0 +1,312 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/ww-uitkering> a cpsv:PublicService ;
+    dct:identifier "ww-uitkering" ;
+    dct:title "WW uitkering"@nl ;
+    dct:description "Een WW-uitkering (werkloosheidsuitkering) is een tijdelijk inkomen voor mensen die werkloos raken."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/wwUitkering> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212254/Uitvoeringsinstituut_Werknemersverzekeringen> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0004045&hoofdstuk=II&paragraaf=1&artikel=15> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/ww-uitkering/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/28212254/Uitvoeringsinstituut_Werknemersverzekeringen> a cv:PublicOrganisation ;
+    dct:identifier "Uitvoeringsinstituut_Werknemersverzekeringen" ;
+    skos:prefLabel "Uitvoeringsinstituut Werknemersverzekeringen (UWV)"@nl ;
+    foaf:homepage <https://www.uwv.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Uitvoeringsinstituut_Werknemersverzekeringen_logo.png> ;
+    schema:image <./assets/Uitvoeringsinstituut_Werknemersverzekeringen_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0004045&hoofdstuk=II&paragraaf=1&artikel=15> a eli:LegalResource ;
+    dct:identifier "jci1.3:c:BWBR0004045&hoofdstuk=II&paragraaf=1&artikel=15" ;
+    dct:title "Werkloosheidswet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/IAM4RM> ;
+    eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0004045&hoofdstuk=II&paragraaf=1&artikel=15/2026-01-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/ww-uitkering/dmn> a cprmv:DecisionModel ;
+    dct:identifier "UWV_RechtOpWW" ;
+    dct:title "UWV_WerkloosheidsuitkeringInformatie.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    dct:source <https://regels.overheid.nl/services/ww-uitkering/dmn/file> ;
+    cprmv:deploymentId "8455241b-0d90-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-19T12:42:57.607Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest> ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_aow> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_nietverzekerd> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_nietverzekerd" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_niet_beschikbaar> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_niet_beschikbaar" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_recht> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_recht" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_dienstverband_fail> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_dienstverband_fail" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_uren_fail> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_uren_fail" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_catchall> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_catchall" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_rechtOpWW" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_dv_standaard> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_dv_standaard" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_dienstverbandeis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_dv_bijzonder> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_dv_bijzonder" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_dienstverbandeis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_dv_niet_vervuld> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_dv_niet_vervuld" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_dienstverbandeis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_uren_ontslag> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_uren_ontslag" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ureneis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_uren_standaard> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_uren_standaard" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ureneis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_uren_alternatief> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_uren_alternatief" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ureneis" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/ww-uitkering/rules/DecisionRule_uren_niet_vervuld> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_uren_niet_vervuld" ;
+    cpsv:implements <https://regels.overheid.nl/services/ww-uitkering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_ureneis" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-19"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/aanvragerHeeftAOWLeeftijd> a skos:Concept ;
+    skos:prefLabel "Aanvrager Heeft AOW Leeftijd"@nl ;
+    skos:definition "Aanvrager Heeft AOW Leeftijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AHAL" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerHeeftAOWLeeftijd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/aanvragerIsTenminste21> a skos:Concept ;
+    skos:prefLabel "Aanvrager Is Tenminste21"@nl ;
+    skos:definition "Aanvrager Is Tenminste21 is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AIT" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerIsTenminste21> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/verzekerdVoorWW> a skos:Concept ;
+    skos:prefLabel "Verzekerd Voor WW"@nl ;
+    skos:definition "Verzekerd Voor WW is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VVW" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verzekerdVoorWW> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/beschikbaarVoorArbeid> a skos:Concept ;
+    skos:prefLabel "Beschikbaar Voor Arbeid"@nl ;
+    skos:definition "Beschikbaar Voor Arbeid is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BVA" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/beschikbaarVoorArbeid> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/aantalWerkwekenIn36Weken> a skos:Concept ;
+    skos:prefLabel "Aantal Werkweken In36 Weken"@nl ;
+    skos:definition "Aantal Werkweken In36 Weken is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AWIW" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalWerkwekenIn36Weken> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/bijzondereOmstandighedenVanToepassing> a skos:Concept ;
+    skos:prefLabel "Bijzondere Omstandigheden Van Toepassing"@nl ;
+    skos:definition "Bijzondere Omstandigheden Van Toepassing is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BOVT" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijzondereOmstandighedenVanToepassing> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/gemiddeldUrenPerWeek> a skos:Concept ;
+    skos:prefLabel "Gemiddeld Uren Per Week"@nl ;
+    skos:definition "Gemiddeld Uren Per Week is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GUPW" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/gemiddeldUrenPerWeek> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/verliesUrenPerWeek> a skos:Concept ;
+    skos:prefLabel "Verlies Uren Per Week"@nl ;
+    skos:definition "Verlies Uren Per Week is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VUPW" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verliesUrenPerWeek> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/verliesLoon> a skos:Concept ;
+    skos:prefLabel "Verlies Loon"@nl ;
+    skos:definition "Verlies Loon is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VL" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verliesLoon> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/verliesMinimaalHalveUren> a skos:Concept ;
+    skos:prefLabel "Verlies Minimaal Halve Uren"@nl ;
+    skos:definition "Verlies Minimaal Halve Uren is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VMHU" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/10> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verliesMinimaalHalveUren> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/werkgeverOntslagMetVaststellingsovereenkomst> a skos:Concept ;
+    skos:prefLabel "Werkgever Ontslag Met Vaststellingsovereenkomst"@nl ;
+    skos:definition "Werkgever Ontslag Met Vaststellingsovereenkomst is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "WOMV" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/input/11> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/werkgeverOntslagMetVaststellingsovereenkomst> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/wwReden> a skos:Concept ;
+    skos:prefLabel "Ww Reden"@nl ;
+    skos:definition "Ww Reden is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "WR" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/wwReden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/uwvrechtopww/rechtOpWW> a skos:Concept ;
+    skos:prefLabel "Recht Op WW"@nl ;
+    skos:definition "Recht Op WW is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "ROW" ;
+    dct:subject <https://regels.overheid.nl/services/ww-uitkering/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/rechtOpWW> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
