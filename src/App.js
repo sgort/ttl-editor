@@ -78,6 +78,8 @@ function App() {
     setOutput,
     dmnData,
     setDmnData,
+    vendorService,
+    setVendorService,
     iknowMappingConfig,
     setIknowMappingConfig, // ← used by IKnowMappingTab
     availableIKnowMappings, // ← passed to IKnowMappingTab
@@ -135,6 +137,7 @@ function App() {
     output,
     dmnData,
     concepts,
+    vendorService,
   });
 
   const [message, setMessage] = useState('');
@@ -376,6 +379,7 @@ function App() {
       ronlMethod,
       temporalRules,
       parameters,
+      vendorService,
     });
 
     // DMN validation
@@ -547,6 +551,38 @@ function App() {
         } catch (logoError) {
           console.warn('Logo upload failed (continuing):', logoError);
           // Don't fail the entire publish if logo upload fails
+        }
+      }
+
+      // Step 3.6: Upload vendor logo if present (75-78%)
+      if (vendorService.contact.logo && vendorService.contact.logo.startsWith('data:')) {
+        try {
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Uploading vendor logo...',
+            progress: 76,
+            stepStatus: 'loading',
+            error: null,
+          });
+
+          // Extract vendor name from URI for filename
+          const vendorUri = vendorService.selectedVendor;
+          const vendorName = vendorUri.split('/').pop(); // e.g., "Blueriq"
+          const vendorLogoFileName = `${vendorName}_vendor_logo.png`;
+
+          await uploadLogoAsset(vendorService.contact.logo, vendorLogoFileName, config);
+          console.log('Vendor logo uploaded successfully');
+
+          setPublishingState({
+            isPublishing: true,
+            currentStep: 'Vendor logo uploaded ✓',
+            progress: 78,
+            stepStatus: 'success',
+            error: null,
+          });
+        } catch (logoError) {
+          console.warn('Vendor logo upload failed (continuing):', logoError);
+          // Don't fail the entire publish if vendor logo upload fails
         }
       }
 
@@ -918,7 +954,12 @@ function App() {
                 />
               )}{' '}
               {activeTab === 'organization' && (
-                <OrganizationTab organization={organization} setOrganization={setOrganization} />
+                <OrganizationTab
+                  organization={organization}
+                  setOrganization={setOrganization}
+                  dmnData={dmnData}
+                  setDmnData={setDmnData}
+                />
               )}
               {activeTab === 'legal' && (
                 <LegalTab
@@ -954,6 +995,7 @@ function App() {
                   updateCPRMVRule={updateCPRMVRule}
                   handleImportJSON={handleImportJSON}
                   setCprmvRules={setCprmvRules}
+                  legalResource={legalResource}
                 />
               )}
               {activeTab === 'dmn' && (
@@ -973,6 +1015,10 @@ function App() {
                   setMappingConfig={setIknowMappingConfig}
                   availableMappings={availableIKnowMappings}
                   onImportComplete={handleIKnowImport}
+                  vendorService={vendorService}
+                  setVendorService={setVendorService}
+                  service={service}
+                  organization={organization}
                 />
               )}
               {activeTab === 'changelog' && <ChangelogTab />}

@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" 
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" 
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" 
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" 
+             xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" 
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="Definitions_ZorgtoeslagVoorwaarden" 
+             name="Zorgtoeslag Voorwaarden Check" 
+             namespace="http://camunda.org/schema/1.0/dmn" 
+             exporter="Camunda Modeler" 
+             exporterVersion="5.25.0">
+  
+  <!-- Input Data Elements -->
+  <inputData id="InputData_geboortedatum" name="Geboortedatum" />
+  <inputData id="InputData_woonadres" name="Woonadres" />
+  <inputData id="InputData_zorgverzekeringNummer" name="Zorgverzekering Nummer" />
+  <inputData id="InputData_heeftBetalingsregeling" name="Heeft Betalingsregeling" />
+  <inputData id="InputData_inDetentie" name="In Detentie" />
+  <inputData id="InputData_jaarinkomen" name="Jaarinkomen" />
+  
+  <decision id="ZorgtoeslagVoorwaardenCheck" name="Zorgtoeslag Voorwaarden Check" camunda:historyTimeToLive="180">
+    
+    <!-- Information Requirements -->
+    <informationRequirement id="InformationRequirement_geboortedatum">
+      <requiredInput href="#InputData_geboortedatum" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_woonadres">
+      <requiredInput href="#InputData_woonadres" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_zorgverzekeringNummer">
+      <requiredInput href="#InputData_zorgverzekeringNummer" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_heeftBetalingsregeling">
+      <requiredInput href="#InputData_heeftBetalingsregeling" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_inDetentie">
+      <requiredInput href="#InputData_inDetentie" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_jaarinkomen">
+      <requiredInput href="#InputData_jaarinkomen" />
+    </informationRequirement>
+    
+    <decisionTable id="DecisionTable_ZorgtoeslagVoorwaarden" hitPolicy="FIRST">
+      
+      <!-- Input: Geboortedatum -->
+      <input id="Input_geboortedatum" label="Geboortedatum" biodi:width="150">
+        <inputExpression id="InputExpression_geboortedatum" typeRef="date">
+          <text>geboortedatum</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Input: Woonadres -->
+      <input id="Input_woonadres" label="Woonadres" biodi:width="150">
+        <inputExpression id="InputExpression_woonadres" typeRef="string">
+          <text>woonadres</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Input: Zorgverzekering Nummer -->
+      <input id="Input_zorgverzekeringNummer" label="Zorgverzekering Nummer" biodi:width="180">
+        <inputExpression id="InputExpression_zorgverzekeringNummer" typeRef="string">
+          <text>zorgverzekeringNummer</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Input: Heeft Betalingsregeling -->
+      <input id="Input_heeftBetalingsregeling" label="Heeft Betalingsregeling" biodi:width="180">
+        <inputExpression id="InputExpression_heeftBetalingsregeling" typeRef="boolean">
+          <text>heeftBetalingsregeling</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Input: In Detentie -->
+      <input id="Input_inDetentie" label="In Detentie" biodi:width="150">
+        <inputExpression id="InputExpression_inDetentie" typeRef="boolean">
+          <text>inDetentie</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Input: Jaarinkomen -->
+      <input id="Input_jaarinkomen" label="Jaarinkomen" biodi:width="150">
+        <inputExpression id="InputExpression_jaarinkomen" typeRef="integer">
+          <text>jaarinkomen</text>
+        </inputExpression>
+      </input>
+      
+      <!-- Output: Is Ingezetene -->
+      <output id="Output_isIngezetene" label="Is Ingezetene" name="isIngezetene" typeRef="boolean" biodi:width="150" />
+      
+      <!-- Output: Heeft Juiste Leeftijd -->
+      <output id="Output_heeftJuisteLeeftijd" label="Heeft Juiste Leeftijd" name="heeftJuisteLeeftijd" typeRef="boolean" biodi:width="180" />
+      
+      <!-- Output: Betalingsregeling OK -->
+      <output id="Output_betalingsregelingOK" label="Betalingsregeling OK" name="betalingsregelingOK" typeRef="boolean" biodi:width="180" />
+      
+      <!-- Output: Vrij Van Detentie -->
+      <output id="Output_vrijVanDetentie" label="Vrij Van Detentie" name="vrijVanDetentie" typeRef="boolean" biodi:width="150" />
+      
+      <!-- Output: Heeft Geldige Verzekering -->
+      <output id="Output_heeftGeldigeVerzekering" label="Heeft Geldige Verzekering" name="heeftGeldigeVerzekering" typeRef="boolean" biodi:width="200" />
+      
+      <!-- Output: Inkomen Binnen Grenzen -->
+      <output id="Output_inkomenBinnenGrenzen" label="Inkomen Binnen Grenzen" name="inkomenBinnenGrenzen" typeRef="boolean" biodi:width="200" />
+      
+      <!-- Rule 1: All conditions met - eligible -->
+      <rule id="DecisionRule_eligible">
+        <inputEntry id="InputEntry_geboortedatum_1">
+          <text>date and time(geboortedatum) &lt; date and time(today()) - duration("P18Y")</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_1">
+          <text>woonadres != null and woonadres != ""</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_1">
+          <text>zorgverzekeringNummer != null and string length(zorgverzekeringNummer) &gt;= 8</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_1">
+          <text>&gt;= 0, &lt;= 50000</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 2: Too young -->
+      <rule id="DecisionRule_too_young">
+        <inputEntry id="InputEntry_geboortedatum_2">
+          <text>date and time(geboortedatum) &gt;= date and time(today()) - duration("P18Y")</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_2">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_2">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_2">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_2">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_2">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 3: No valid address (not ingezetene) -->
+      <rule id="DecisionRule_no_address">
+        <inputEntry id="InputEntry_geboortedatum_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_3">
+          <text>woonadres = null or woonadres = ""</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_3">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_3">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_3">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_3">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_3">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_3">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_3">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 4: Invalid insurance number -->
+      <rule id="DecisionRule_invalid_insurance">
+        <inputEntry id="InputEntry_geboortedatum_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_4">
+          <text>zorgverzekeringNummer = null or string length(zorgverzekeringNummer) &lt; 8</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_4">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_4">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_4">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_4">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_4">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_4">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_4">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 5: Has payment arrangement -->
+      <rule id="DecisionRule_has_payment_arrangement">
+        <inputEntry id="InputEntry_geboortedatum_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_5">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_5">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_5">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_5">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_5">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 6: In detention -->
+      <rule id="DecisionRule_in_detention">
+        <inputEntry id="InputEntry_geboortedatum_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_6">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_6">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_6">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_6">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_6">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_6">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_6">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 7: Income too high -->
+      <rule id="DecisionRule_income_too_high">
+        <inputEntry id="InputEntry_geboortedatum_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_7">
+          <text>&gt; 50000</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_7">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_7">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_7">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_7">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_7">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_7">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      
+      <!-- Rule 8: Income negative (invalid) -->
+      <rule id="DecisionRule_income_negative">
+        <inputEntry id="InputEntry_geboortedatum_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_woonadres_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_zorgverzekeringNummer_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_heeftBetalingsregeling_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_inDetentie_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_jaarinkomen_8">
+          <text>&lt; 0</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_isIngezetene_8">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftJuisteLeeftijd_8">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_betalingsregelingOK_8">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_vrijVanDetentie_8">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_heeftGeldigeVerzekering_8">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="OutputEntry_inkomenBinnenGrenzen_8">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      
+    </decisionTable>
+  </decision>
+  
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <!-- Input Data Shapes -->
+      <dmndi:DMNShape id="DMNShape_InputData_geboortedatum" dmnElementRef="InputData_geboortedatum">
+        <dc:Bounds height="45" width="125" x="160" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_woonadres" dmnElementRef="InputData_woonadres">
+        <dc:Bounds height="45" width="125" x="310" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_zorgverzekeringNummer" dmnElementRef="InputData_zorgverzekeringNummer">
+        <dc:Bounds height="45" width="125" x="460" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_heeftBetalingsregeling" dmnElementRef="InputData_heeftBetalingsregeling">
+        <dc:Bounds height="45" width="125" x="160" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_inDetentie" dmnElementRef="InputData_inDetentie">
+        <dc:Bounds height="45" width="125" x="310" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_InputData_jaarinkomen" dmnElementRef="InputData_jaarinkomen">
+        <dc:Bounds height="45" width="125" x="460" y="330" />
+      </dmndi:DMNShape>
+      
+      <!-- Decision Shape -->
+      <dmndi:DMNShape dmnElementRef="ZorgtoeslagVoorwaardenCheck">
+        <dc:Bounds height="80" width="180" x="300" y="100" />
+      </dmndi:DMNShape>
+      
+      <!-- Information Requirement Edges -->
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_geboortedatum" dmnElementRef="InformationRequirement_geboortedatum">
+        <di:waypoint x="222" y="260" />
+        <di:waypoint x="360" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_woonadres" dmnElementRef="InformationRequirement_woonadres">
+        <di:waypoint x="372" y="260" />
+        <di:waypoint x="380" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_zorgverzekeringNummer" dmnElementRef="InformationRequirement_zorgverzekeringNummer">
+        <di:waypoint x="522" y="260" />
+        <di:waypoint x="420" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_heeftBetalingsregeling" dmnElementRef="InformationRequirement_heeftBetalingsregeling">
+        <di:waypoint x="222" y="330" />
+        <di:waypoint x="340" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_inDetentie" dmnElementRef="InformationRequirement_inDetentie">
+        <di:waypoint x="372" y="330" />
+        <di:waypoint x="400" y="180" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_InformationRequirement_jaarinkomen" dmnElementRef="InformationRequirement_jaarinkomen">
+        <di:waypoint x="522" y="330" />
+        <di:waypoint x="440" y="180" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+  
+</definitions>

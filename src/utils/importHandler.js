@@ -60,6 +60,12 @@ export const parseTTL = (ttlContent) => {
     // Pass through DMN preservation fields (Option 3)
     hasDmnData: parsed.hasDmnData || false,
     importedDmnBlocks: parsed.importedDmnBlocks || null,
+
+    // NEW: Pass through validation metadata
+    dmnValidationStatus: parsed.dmnValidationStatus || 'not-validated',
+    dmnValidatedBy: parsed.dmnValidatedBy || '',
+    dmnValidatedAt: parsed.dmnValidatedAt || '',
+    dmnValidationNote: parsed.dmnValidationNote || '',
   };
 };
 
@@ -198,6 +204,12 @@ export const applyImportedData = (importedData, setters) => {
       testBody: null,
       importedDmnBlocks: importedData.importedDmnBlocks,
       isImported: true,
+
+      // Apply validation metadata
+      validationStatus: importedData.dmnValidationStatus || 'not-validated',
+      validatedBy: importedData.dmnValidatedBy || '',
+      validatedAt: importedData.dmnValidatedAt || '',
+      validationNote: importedData.dmnValidationNote || '',
     });
   } else {
     // No DMN in imported file - reset to default state
@@ -215,6 +227,12 @@ export const applyImportedData = (importedData, setters) => {
       testBody: null,
       importedDmnBlocks: null,
       isImported: false,
+
+      // Reset validation metadata
+      validationStatus: 'not-validated',
+      validatedBy: '',
+      validatedAt: '',
+      validationNote: '',
     });
   }
 };

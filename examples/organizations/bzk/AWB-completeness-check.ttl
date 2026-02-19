@@ -1,0 +1,198 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/awb-completeness-check> a cpsv:PublicService ;
+    dct:identifier "awb-completeness-check" ;
+    dct:title "AWB completeness check"@nl ;
+    dct:description "AWB Phase 3 - Admissibility Check (Awb 2:3 / 4:5)\nDetermines whether a submitted application is complete. An incomplete application must be returned to the applicant for supplementation before processing can begin (Awb 4:5)."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "awb, zgac, bpmn"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/9632/Binnenlandse_Zaken_en_Koninkrijksrelaties> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0005537> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/awb-completeness-check/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/9632/Binnenlandse_Zaken_en_Koninkrijksrelaties> a cv:PublicOrganisation ;
+    dct:identifier "Binnenlandse_Zaken_en_Koninkrijksrelaties" ;
+    skos:prefLabel "Binnenlandse Zaken en Koninkrijksrelaties (BZK)"@nl ;
+    foaf:homepage <https://www.rijksoverheid.nl/ministeries/ministerie-van-binnenlandse-zaken-en-koninkrijksrelaties> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Binnenlandse_Zaken_en_Koninkrijksrelaties_logo.png> ;
+    schema:image <./assets/Binnenlandse_Zaken_en_Koninkrijksrelaties_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0005537> a eli:LegalResource ;
+    dct:identifier "BWBR0005537" ;
+    dct:title "Algemene wet bestuursrecht"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    ronl:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0005537/2026-01-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn> a cprmv:DecisionModel ;
+    dct:identifier "AwbCompletenessCheck" ;
+    dct:title "awb-completeness-check.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/awb-completeness-check> ;
+    dct:source <https://regels.overheid.nl/services/awb-completeness-check/dmn/file> ;
+    cprmv:deploymentId "484dea79-072b-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T09:23:10.712Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/AwbCompletenessCheck/evaluate> ;
+    cprmv:lastTested "2026-02-11T09:24:19.764Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn/input/1> a cpsv:Input ;
+    dct:identifier "productType" ;
+    dct:title "productType"@nl ;
+    dct:type "String" ;
+    schema:value "TreeFellingPermit" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/awb-completeness-check/dmn> .
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn/input/2> a cpsv:Input ;
+    dct:identifier "treeDiameter" ;
+    dct:title "treeDiameter"@nl ;
+    dct:type "Integer" ;
+    schema:value 30 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/awb-completeness-check/dmn> .
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn/output/1> a cpsv:Output ;
+    dct:identifier "missingFields" ;
+    dct:title "missingFields"@nl ;
+    dct:type "String" ;
+    schema:value "No missing fields." ;
+    cpsv:produces <https://regels.overheid.nl/services/awb-completeness-check/dmn> .
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn/output/2> a cpsv:Output ;
+    dct:identifier "awbArticle" ;
+    dct:title "awbArticle"@nl ;
+    dct:type "String" ;
+    schema:value "Awb 4:5 - application complete" ;
+    cpsv:produces <https://regels.overheid.nl/services/awb-completeness-check/dmn> .
+
+<https://regels.overheid.nl/services/awb-completeness-check/dmn/output/3> a cpsv:Output ;
+    dct:identifier "isComplete" ;
+    dct:title "isComplete"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/awb-completeness-check/dmn> .
+
+<https://regels.overheid.nl/services/awb-completeness-check/rules/Rule_TreeFelling_Incomplete> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_TreeFelling_Incomplete" ;
+    cpsv:implements <https://regels.overheid.nl/services/awb-completeness-check> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Completeness" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/awb-completeness-check/rules/Rule_TreeFelling_Complete> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_TreeFelling_Complete" ;
+    cpsv:implements <https://regels.overheid.nl/services/awb-completeness-check> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Completeness" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/awb-completeness-check/rules/Rule_BuildingPermit_Complete> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_BuildingPermit_Complete" ;
+    cpsv:implements <https://regels.overheid.nl/services/awb-completeness-check> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Completeness" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/awb-completeness-check/rules/Rule_Default> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_Default" ;
+    cpsv:implements <https://regels.overheid.nl/services/awb-completeness-check> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_Completeness" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-11"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/awbcompletenesscheck/productType> a skos:Concept ;
+    skos:prefLabel "Product Type"@nl ;
+    skos:definition "Product Type is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PT" ;
+    dct:subject <https://regels.overheid.nl/services/awb-completeness-check/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/productType> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/awbcompletenesscheck/treeDiameter> a skos:Concept ;
+    skos:prefLabel "Tree Diameter"@nl ;
+    skos:definition "Tree Diameter is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "TD" ;
+    dct:subject <https://regels.overheid.nl/services/awb-completeness-check/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/treeDiameter> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/awbcompletenesscheck/missingFields> a skos:Concept ;
+    skos:prefLabel "Missing Fields"@nl ;
+    skos:definition "Missing Fields is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MF" ;
+    dct:subject <https://regels.overheid.nl/services/awb-completeness-check/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/missingFields> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/awbcompletenesscheck/awbArticle> a skos:Concept ;
+    skos:prefLabel "Awb Article"@nl ;
+    skos:definition "Awb Article is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AA" ;
+    dct:subject <https://regels.overheid.nl/services/awb-completeness-check/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/awbArticle> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/awbcompletenesscheck/isComplete> a skos:Concept ;
+    skos:prefLabel "Is Complete"@nl ;
+    skos:definition "Is Complete is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "IC" ;
+    dct:subject <https://regels.overheid.nl/services/awb-completeness-check/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/isComplete> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

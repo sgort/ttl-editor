@@ -1,6 +1,16 @@
+/**
+ * Vocabulary Configuration v2.0.0
+ * Central configuration for RDF vocabularies and namespace management
+ *
+ * BREAKING CHANGE in v2.0.0:
+ * - Migrated rule properties from ronl: to cprmv:
+ * - ronl: now used exclusively for validation/certification governance
+ * - Backward compatibility via ronl-legacy alias
+ */
+
 export const VOCABULARY_CONFIG = {
-  version: '1.0.0',
-  lastUpdated: '2025-10-27',
+  version: '2.0.0',
+  lastUpdated: '2026-02-15',
 
   // Namespace URI to prefix mappings
   namespaces: {
@@ -9,12 +19,19 @@ export const VOCABULARY_CONFIG = {
     'http://www.w3.org/ns/org#': ['org'],
     'http://xmlns.com/foaf/0.1/': ['foaf'],
     'http://data.europa.eu/eli/ontology#': ['eli'],
-    'https://regels.overheid.nl/termen/': ['ronl'],
+
+    // NEW: Current ronl namespace (validation/governance only)
+    'https://regels.overheid.nl/ontology#': ['ronl'],
+
+    // NEW: Legacy ronl namespace (backward compatibility - IMPORT ONLY)
+    'https://regels.overheid.nl/termen/': ['ronl-legacy'],
+
     'https://cprmv.open-regels.nl/0.3.0/': ['cprmv'],
     'http://purl.org/dc/terms/': ['dct'],
     'http://www.w3.org/ns/dcat#': ['dcat'],
     'http://www.w3.org/2004/02/skos/core#': ['skos'],
     'http://www.w3.org/2001/XMLSchema#': ['xsd'],
+    'http://schema.org/': ['schema'],
   },
 
   entityTypes: {
@@ -43,22 +60,37 @@ export const VOCABULARY_CONFIG = {
       canonicalType: 'eli:LegalResource',
     },
     temporalRule: {
-      acceptedTypes: ['cpsv:Rule', 'ronl:TemporalRule'],
-      canonicalType: 'cpsv:Rule',
+      acceptedTypes: [
+        'cprmv:TemporalRule', // NEW (primary) - v2.0.0
+        'cpsv:Rule', // Standard CPSV
+        'ronl:TemporalRule', // OLD (backward compat)
+      ],
+      canonicalType: 'cprmv:TemporalRule',
     },
     parameter: {
-      acceptedTypes: ['skos:Concept', 'ronl:ParameterWaarde'],
-      canonicalType: 'ronl:ParameterWaarde',
+      acceptedTypes: [
+        'cprmv:ParameterWaarde', // NEW (primary) - v2.0.0
+        'skos:Concept', // Standard SKOS
+        'ronl:ParameterWaarde', // OLD (backward compat)
+      ],
+      canonicalType: 'cprmv:ParameterWaarde',
     },
     cprmvRule: {
       acceptedTypes: ['cprmv:Rule'],
       canonicalType: 'cprmv:Rule',
     },
+    vendorService: {
+      acceptedTypes: ['ronl:VendorService'],
+      canonicalType: 'ronl:VendorService',
+    },
   },
 
   propertyAliases: {
+    // Organization properties
     'foaf:name': 'skos:prefLabel',
     'org:name': 'skos:prefLabel',
+
+    // Service properties - CPSV-AP to CV mapping
     'cpsv-ap:hasCompetentAuthority': 'cv:hasCompetentAuthority',
     'cpsv-ap:thematicArea': 'cv:thematicArea',
     'cpsv-ap:sector': 'cv:sector',
@@ -67,11 +99,23 @@ export const VOCABULARY_CONFIG = {
     'cpsv-ap:hasCost': 'cv:hasCost',
     'cpsv-ap:hasOutput': 'cv:hasOutput',
     'cpsv-ap:hasLegalResource': 'cv:hasLegalResource',
-    'cprmv:validFrom': 'ronl:validFrom',
-    'cprmv:validUntil': 'ronl:validUntil',
-    'cprmv:confidence': 'ronl:confidenceLevel',
-    'cprmv:confidenceLevel': 'ronl:confidenceLevel',
-    'cprmv:extends': 'ronl:extends',
+
+    // NEW v2.0.0: Backward compatibility - Map old ronl properties to cprmv
+    'ronl-legacy:hasAnalysis': 'cprmv:hasAnalysis',
+    'ronl-legacy:hasMethod': 'cprmv:hasMethod',
+    'ronl-legacy:implements': 'cprmv:implements',
+    'ronl-legacy:implementedBy': 'cprmv:implementedBy',
+    'ronl-legacy:confidenceLevel': 'cprmv:confidenceLevel',
+    'ronl-legacy:validFrom': 'cprmv:validFrom',
+    'ronl-legacy:validUntil': 'cprmv:validUntil',
+    'ronl-legacy:extends': 'cprmv:extends',
+
+    // Existing CPRMV aliases (keep for flexibility)
+    'cprmv:validFrom': 'cprmv:validFrom',
+    'cprmv:validUntil': 'cprmv:validUntil',
+    'cprmv:confidence': 'cprmv:confidenceLevel',
+    'cprmv:confidenceLevel': 'cprmv:confidenceLevel',
+    'cprmv:extends': 'cprmv:extends',
   },
 };
 
@@ -91,30 +135,35 @@ export const detectEntityType = (line) => {
   if (line.includes('a cprmv:DecisionRule') || line.includes(', cprmv:DecisionRule')) {
     return 'dmnRule';
   }
-  // Concept detection - must be exact "a skos:Concept" not "a skos:ConceptScheme"
-  if (
-    line.includes('a skos:Concept ') ||
-    line.includes('a skos:Concept;') ||
-    line.includes('a skos:Concept.')
-  ) {
+
+  // Concept detection - exclude ConceptScheme
+  if (line.includes('a skos:Concept') && !line.includes('skos:ConceptScheme')) {
     return 'concept';
   }
 
   // Regular entity detection
   for (const [entityName, config] of Object.entries(VOCABULARY_CONFIG.entityTypes)) {
-    // Skip 'concept' - already handled above with precise matching
-    if (entityName === 'concept') continue;
+    if (entityName === 'concept') continue; // Already handled above
 
     for (const acceptedType of config.acceptedTypes) {
+      // NEW: Special handling for skos:Concept - exclude ConceptScheme
+      if (acceptedType === 'skos:Concept' && line.includes('skos:ConceptScheme')) {
+        continue; // Skip this type check - it's a ConceptScheme, not a Concept
+      }
+
       if (line.includes(`a ${acceptedType}`)) {
         return entityName;
       }
     }
   }
+
+  if (line.includes('a ronl:VendorService')) {
+    return 'vendorService';
+  }
   return null;
 };
 
-// Other helper functions remain unchanged...
+// Other helper functions remain unchanged
 export const normalizeProperty = (property) => {
   return VOCABULARY_CONFIG.propertyAliases[property] || property;
 };

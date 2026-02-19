@@ -1,8 +1,32 @@
 # Field-to-Property Mapping: Core Public Service Editor ↔ CPSV-AP 3.2.0
 
-**Editor Version:** 1.8.3  
-**Date:** Januari 2026  
+**Editor Version:** 1.9.0  
+**Date:** February 2026  
 **Status:** ✅ CPSV-AP 3.2.0 Compliant + DMN Integration
+
+---
+
+### Version 1.9.0 - CPRMV Semantic Linking ⭐
+
+**What's New:**
+
+- Explicit cprmv:implements property linking rules to legal resources
+- Automatic semantic linking (no user configuration needed)
+- Versioned URI support using eli:is_realized_by when available
+- Policy tab informational banner with clickable legal resource link
+- Eliminates fragile string-based SPARQL queries
+
+**Vocabulary Extensions:**
+
+- CPRMV: `implements` (links Rule to versioned LegalResource)
+
+**Benefits:**
+
+- ✅ Unambiguous rule-to-law relationships
+- ✅ Clean SPARQL queries without string parsing
+- ✅ Temporal traceability with version-specific links
+- ✅ Reduced query result duplication
+- ✅ Better semantic data quality
 
 ---
 
@@ -298,7 +322,7 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 
 ---
 
-## 7. CPRMV Tab
+## 7. Policy Tab (ie CPRMV tab)
 
 **CPSV-AP Class:** `cprmv:Rule` ℹ️
 
@@ -318,6 +342,132 @@ Parameters (`ronl:ParameterWaarde`) are a **RONL-specific extension** not part o
 CPRMV (Core Public Rule Management Vocabulary) is a **Dutch extension** for managing normative values extracted from legislation (normenbrief format). This tab supports JSON import for bulk rule loading.
 
 **No changes needed** - this is compliant as an extension.
+
+#### cprmv:implements (Semantic Link to Legal Resource)
+
+**Property:** `cprmv:implements`  
+**Type:** URI Reference  
+**Cardinality:** 0..1 (automatically added when legal resource exists)  
+**Status:** ⭐ **New in v1.9.0**
+
+**Purpose:**
+Creates an explicit semantic link from each CPRMV rule to its source legal resource, eliminating the need for fragile string-based matching in SPARQL queries.
+
+**Behavior:**
+
+- **Automatic linking:** When a legal resource is defined in the Legal tab, all CPRMV rules automatically link to it
+- **Versioned URI preference:** If `eli:is_realized_by` version exists, rules link to the versioned URI
+- **No user action required:** The link is generated during TTL export based on existing legal resource data
+
+**URI Construction:**
+
+| Legal Resource Input          | Version      | Generated cprmv:implements URI                                    |
+| ----------------------------- | ------------ | ----------------------------------------------------------------- |
+| `BWBR0011453`                 | `2025-01-01` | `<https://wetten.overheid.nl/BWBR0011453/2025-01-01>`             |
+| `BWBR0011453`                 | _(none)_     | `<https://wetten.overheid.nl/BWBR0011453>`                        |
+| `CVDR123456`                  | `2025-01-01` | `<https://lokaleregelgeving.overheid.nl/CVDR123456/1/2025-01-01>` |
+| `https://example.org/law/abc` | _(any)_      | `<https://example.org/law/abc>`                                   |
+
+---
+
+### Rule URI Generation (v1.9.0 - Critical Fix)
+
+**Background:**
+CPRMV rules must have **globally unique URIs**. The original implementation used only `rulesetId` and `ruleId` (e.g., "BWBR0015703_onderdeel a."), which caused **URI collisions** when multiple articles contained the same subsection identifier (e.g., "onderdeel a." appears in Artikel 20 lid 1, Artikel 20 lid 2, and Artikel 21).
+
+**Problem:**
+
+```turtle
+# BROKEN - Same URI for 3 different rules!
+<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel%20a.>  # Artikel 20, lid 1, onderdeel a.
+<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel%20a.>  # Artikel 20, lid 2, onderdeel a.
+<https://cprmv.open-regels.nl/rules/BWBR0015703_onderdeel%20a.>  # Artikel 21, onderdeel a.
+```
+
+**Impact:** RDF merges triples with identical URIs. TriplyDB showed only 12 unique entities instead of 30 separate rules.
+
+**Solution:**
+Rule URIs now use the complete `cprmv:ruleIdPath` to guarantee uniqueness:
+
+```turtle
+# FIXED - Each rule has a unique URI
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a>
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a>
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a>
+```
+
+**URI Sanitization Rules:**
+
+| Character            | Replacement | Example                                  |
+| -------------------- | ----------- | ---------------------------------------- |
+| `, ` (comma + space) | `_`         | `Artikel 20, lid 1` → `Artikel-20_lid-1` |
+| ` ` (space)          | `-`         | `onderdeel a` → `onderdeel-a`            |
+| `.` (period)         | _(removed)_ | `onderdeel a.` → `onderdeel-a`           |
+| `()` (parentheses)   | _(removed)_ | `lid 1(a)` → `lid-1a`                    |
+
+**Fallback:** If `ruleIdPath` is not available, the editor falls back to `rulesetId_ruleId` pattern (backward compatible with older data).
+
+---
+
+**Example TTL Output:**
+
+```turtle
+# Legal Resource with version
+<https://wetten.overheid.nl/BWBR0015703> a eli:LegalResource ;
+    dct:identifier "BWBR0015703" ;
+    dct:title "Participatiewet"@nl ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01> .
+
+# CPRMV Rule with unique URI and versioned legal resource link
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande van 18, 19 of 20 jaar: € 345,99;"@nl ;
+    cprmv:situatie "een alleenstaande van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01> .
+```
+
+**SPARQL Query Benefits:**
+
+Before (string matching):
+
+```sparql
+SELECT ?rule ?legalResource WHERE {
+  ?rule cprmv:rulesetId ?rulesetId .
+  ?legalResource dct:identifier ?identifier .
+  FILTER(CONTAINS(?identifier, ?rulesetId))  # Fragile string matching
+}
+```
+
+After (semantic link):
+
+```sparql
+SELECT ?rule ?legalResource WHERE {
+  ?rule cprmv:implements ?legalResource .  # Direct semantic relationship
+}
+```
+
+**Benefits:**
+
+- **Eliminates ambiguity:** No more multiple legal resources matching the same `rulesetId`
+- **Guarantees uniqueness:** Full hierarchical path ensures no URI collisions
+- **Reduces duplicates:** Query results now return actual rule count (30 rules = 30 results)
+- **Temporal precision:** Rules explicitly link to the legislation version they were extracted from
+- **Query simplification:** Direct RDF traversal replaces string parsing logic
+- **Maintainability:** Explicit semantic relationships are easier to understand and debug
+- **Human-readable URIs:** Include article, section, and subsection in the identifier
+
+**UI Indicator:**
+
+The Policy tab displays an informational banner showing which legal resource all rules will link to:
+
+```
+Legal Source: All rules will automatically link to
+https://wetten.overheid.nl/BWBR0015703/2026-01-01/0/2026-01-01 via cprmv:implements
+📅 Version: 2026-01-01/0/2026-01-01
+```
 
 ---
 

@@ -41,6 +41,37 @@ The **Core Public Service Editor** is a React-based web application that simplif
 
 ---
 
+# Vendor Tab Implementation - Blueriq Service Metadata ✨ NEW ✨
+
+**Version:** 1.9.0  
+**Date:** February 15, 2026  
+**Status:** Production Ready  
+**Feature:** Multi-Vendor Service Metadata Architecture
+
+## Purpose
+
+The Vendor Tab enables Dutch government services to document **vendor-specific implementations** of their decision models. While the CPSV Editor creates reference DMN decision models, vendors like Blueriq, iKnow, and others provide commercial implementations with additional features, support, and enterprise capabilities.
+
+This tab creates a bridge between:
+
+- **Reference Implementation**: Open-source DMN model validated by government
+- **Vendor Implementation**: Commercial service with SLAs, support, and certification
+
+### Key Features
+
+- **Multi-Vendor Architecture**: Dropdown loads all RONL Method Concepts from TriplyDB
+- **Blueriq Service Metadata**: Full contact, technical, and certification information
+- **Logo Management**: Asset path generation matching Organization tab pattern
+- **URL Validation**: Real-time feedback for vendor website and service endpoint
+- **Certification Workflow**: Track conformance assessment status and certification
+- **TTL Generation**: Complete RDF output with schema.org and RONL vocabularies
+
+### References
+
+See further the [detailed docs](./docs/VENDOR_BLUERIQ.md)
+
+---
+
 ## ✨ Features
 
 ### Core Functionality
@@ -499,6 +530,11 @@ See [`src/data/roadmap.json`](src/data/roadmap.json) for detailed roadmap.
 
 ### Technical Documentation
 
+## Documentation
+
+- **[DMN Testing Suite](docs/DMN_TESTS.md)** - Comprehensive guide to intermediate tests and test cases upload
+- **[DMN Integration](docs/DMN-INTEGRATION-DOCUMENTATION-v1.5.1.md)** - DMN deployment and evaluation
+- **[Field Mapping: CPSV-AP 3.2.0](docs/FIELD-MAPPING-CPSV-AP-3.2.0.md)** - Complete property mappings
 - **[FIELD-MAPPING-CPSV-AP-3_2_0.md](docs/FIELD-MAPPING-CPSV-AP-3_2_0.md)** - UI field to TTL property mapping
 - **[NAMESPACE-PROPERTIES.md](docs/NAMESPACE-PROPERTIES.md)** - RDF namespace reference
 - **[PROJECT-STRUCTURE.md](docs/PROJECT-STRUCTURE.md)** - Code organization

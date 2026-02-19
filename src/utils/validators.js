@@ -124,6 +124,32 @@ export function validateTemporalRule(rule, index) {
 }
 
 /**
+ * Validate vendor service fields
+ * @param {object} vendorService - Vendor service state object
+ * @returns {string[]} - Array of error messages
+ */
+export function validateVendorService(vendorService) {
+  const errors = [];
+
+  // Only validate if a vendor is selected
+  if (!vendorService.selectedVendor) {
+    return errors; // No vendor selected, no validation needed
+  }
+
+  // Validate website URL if provided
+  if (vendorService.contact.website && !isValidUrl(vendorService.contact.website)) {
+    errors.push('Vendor website must be a valid URL (e.g., https://www.blueriq.com)');
+  }
+
+  // Validate service URL if provided
+  if (vendorService.technical.serviceUrl && !isValidUrl(vendorService.technical.serviceUrl)) {
+    errors.push('Service URL must be a valid URL (e.g., https://api.blueriq.com/service)');
+  }
+
+  return errors;
+}
+
+/**
  * Validate parameter fields
  * @param {object} param - Parameter object
  * @param {number} index - Parameter index for error messages
@@ -167,6 +193,7 @@ export function validateForm(formState) {
     ronlMethod = '',
     temporalRules = [],
     parameters = [],
+    vendorService = {},
   } = formState || {};
 
   const errors = [
@@ -175,6 +202,7 @@ export function validateForm(formState) {
     ...validateLegalResource(legalResource, ronlAnalysis, ronlMethod), // UPDATE THIS
     ...temporalRules.flatMap((rule, idx) => validateTemporalRule(rule, idx)),
     ...parameters.flatMap((param, idx) => validateParameter(param, idx)),
+    ...validateVendorService(vendorService),
   ];
 
   return {

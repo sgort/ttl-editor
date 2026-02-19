@@ -4,7 +4,13 @@ import {
   extractRulesFromDMN,
   sanitizeServiceIdentifier,
 } from './dmnHelpers';
-import { buildResourceUri, encodeURIComponentTTL, escapeTTLString, TTL_NAMESPACES } from './index';
+import {
+  buildResourceUri,
+  encodeURIComponentTTL,
+  escapeTTLString,
+  sanitizeRuleIdPath,
+  TTL_NAMESPACES,
+} from './index';
 
 /**
  * TTL Generator Class
@@ -25,6 +31,7 @@ export class TTLGenerator {
     this.output = state.output;
     this.dmnData = state.dmnData;
     this.concepts = state.concepts || [];
+    this.vendorService = state.vendorService || {};
 
     // Compute service URI once
     const sanitizedIdentifier =
@@ -101,6 +108,13 @@ export class TTLGenerator {
     if (this.hasDMN()) {
       ttl += this.generateConceptsSection();
     }
+
+    // Vendor Service section
+    if (this.hasVendorService()) {
+      ttl += this.generateSectionHeader('Vendor Service');
+      ttl += this.generateVendorServiceSection();
+    }
+
     return ttl;
   }
 
@@ -154,6 +168,14 @@ export class TTLGenerator {
     return (
       (this.dmnData.isImported && this.dmnData.importedDmnBlocks) ||
       (this.dmnData.fileName && this.dmnData.content)
+    );
+  }
+
+  hasVendorService() {
+    return (
+      this.vendorService &&
+      this.vendorService.selectedVendor &&
+      this.vendorService.selectedVendor.trim() !== ''
     );
   }
 
@@ -347,14 +369,14 @@ export class TTLGenerator {
       const analysisUri = this.ronlAnalysis.startsWith('http')
         ? `<${this.ronlAnalysis}>`
         : this.ronlAnalysis;
-      ttl += `    ronl:hasAnalysis ${analysisUri} ;\n`;
+      ttl += `    cprmv:hasAnalysis ${analysisUri} ;\n`;
     }
 
     if (this.ronlMethod) {
       const methodUri = this.ronlMethod.startsWith('http')
         ? `<${this.ronlMethod}>`
         : this.ronlMethod;
-      ttl += `    ronl:hasMethod ${methodUri} ;\n`;
+      ttl += `    cprmv:hasMethod ${methodUri} ;\n`;
     }
 
     if (this.legalResource.version) {
@@ -388,7 +410,7 @@ export class TTLGenerator {
       if (hasData) {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
 
-        ttl += `<${ruleUri}> a cpsv:Rule, ronl:TemporalRule ;\n`;
+        ttl += `<${ruleUri}> a cpsv:Rule, cprmv:TemporalRule ;\n`;
         ttl += `    cpsv:implements <${this.serviceUri}> ;\n`;
 
         if (rule.identifier) {
@@ -403,19 +425,19 @@ export class TTLGenerator {
           const extendsUri = rule.extends.startsWith('http')
             ? rule.extends
             : `https://regels.overheid.nl/rules/${encodeURIComponentTTL(rule.extends)}`;
-          ttl += `    ronl:extends <${extendsUri}> ;\n`;
+          ttl += `    cprmv:extends <${extendsUri}> ;\n`;
         }
 
         if (rule.validFrom) {
-          ttl += `    ronl:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validFrom "${rule.validFrom}"^^xsd:date ;\n`;
         }
 
         if (rule.validUntil) {
-          ttl += `    ronl:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validUntil "${rule.validUntil}"^^xsd:date ;\n`;
         }
 
         if (rule.confidenceLevel) {
-          ttl += `    ronl:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
+          ttl += `    cprmv:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
         }
 
         if (rule.description) {
@@ -445,7 +467,7 @@ export class TTLGenerator {
           this.service.identifier || 'service'
         )}/param-${index + 1}`;
 
-        ttl += `<${paramUri}> a ronl:ParameterWaarde ;\n`;
+        ttl += `<${paramUri}> a cprmv:ParameterWaarde ;\n`;
 
         if (param.label) {
           ttl += `    skos:prefLabel "${escapeTTLString(param.label)}"@nl ;\n`;
@@ -468,11 +490,11 @@ export class TTLGenerator {
         }
 
         if (param.validFrom) {
-          ttl += `    ronl:validFrom "${param.validFrom}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validFrom "${param.validFrom}"^^xsd:date ;\n`;
         }
 
         if (param.validUntil) {
-          ttl += `    ronl:validUntil "${param.validUntil}"^^xsd:date ;\n`;
+          ttl += `    cprmv:validUntil "${param.validUntil}"^^xsd:date ;\n`;
         }
 
         ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -546,23 +568,26 @@ export class TTLGenerator {
     return ttl;
   }
 
-  /**
-   * Generate CPRMV Rules section
-   * @returns {string} CPRMV Rules TTL
-   */
   generateCprmvRulesSection() {
     let ttl = '';
 
     this.cprmvRules.forEach((rule) => {
       // Write if at least the core identifiers exist
-      // (User might be filling in the form progressively)
       const hasMinimalData = rule.ruleId || rule.rulesetId || rule.definition;
 
       if (hasMinimalData) {
-        // Generate URI (use placeholder if ruleId/rulesetId not yet filled)
-        const ruleId = rule.ruleId || 'incomplete';
-        const rulesetId = rule.rulesetId || 'incomplete';
-        const ruleUri = `https://cprmv.open-regels.nl/rules/${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
+        // Generate URI using ruleIdPath for uniqueness (FIXED!)
+        // Fallback to rulesetId_ruleId if ruleIdPath is not available
+        let ruleUriIdentifier;
+        if (rule.ruleIdPath) {
+          ruleUriIdentifier = sanitizeRuleIdPath(rule.ruleIdPath);
+        } else {
+          const ruleId = rule.ruleId || 'incomplete';
+          const rulesetId = rule.rulesetId || 'incomplete';
+          ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
+        }
+
+        const ruleUri = `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
 
         ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
 
@@ -590,6 +615,35 @@ export class TTLGenerator {
           ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
         }
 
+        // Auto-link to legal resource (versioned if available)
+        if (this.legalResource && this.legalResource.bwbId) {
+          let legalUri;
+          const identifier = this.legalResource.bwbId;
+          const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+
+          if (isFullUri) {
+            legalUri = identifier;
+          } else {
+            const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
+            const isCVDR = /CVDR\d+/i.test(identifier);
+
+            if (isBWB) {
+              legalUri = `https://wetten.overheid.nl/${identifier}`;
+            } else if (isCVDR) {
+              legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
+            } else {
+              legalUri = `https://wetten.overheid.nl/${identifier}`;
+            }
+          }
+
+          // If version exists, append it to create versioned URI
+          if (this.legalResource.version) {
+            legalUri = `${legalUri}/${this.legalResource.version}`;
+          }
+
+          ttl += `    cprmv:implements <${legalUri}> ;\n`;
+        }
+
         ttl = ttl.slice(0, -2) + ' .\n\n';
       }
     });
@@ -604,11 +658,13 @@ export class TTLGenerator {
    * @returns {string} DMN blocks without section header
    */
   stripDmnHeaders(dmnBlocks) {
-    // Simple regex to remove section header block
-    // Matches: # ==== \n # DMN... \n # ==== \n (optional empty line)
-    const headerPattern = /^# ={20,}\s*\n# .*DMN.*\n# ={20,}\s*\n\n?/gm;
+    // Remove DMN section header (60 = chars, generated by generateSectionHeader)
+    const sectionHeaderPattern = /^# ={20,}\s*\n# .*DMN.*\n# ={20,}\s*\n\n?/gm;
+    let cleaned = dmnBlocks.replace(sectionHeaderPattern, '');
 
-    let cleaned = dmnBlocks.replace(headerPattern, '');
+    // Remove NL-SBB concepts header block captured as trailing comment lines
+    // These are re-generated by generateConceptsSection()
+    cleaned = cleaned.replace(/\n?# ={20,}[^\n]*\n# NL-SBB[^\n]*\n# ={20,}[^\n]*/g, '');
 
     // Remove any leading whitespace
     cleaned = cleaned.replace(/^\s+/, '');
@@ -636,7 +692,7 @@ export class TTLGenerator {
       ttl += `<${dmnUri}> a cprmv:DecisionModel ;\n`;
       ttl += `    dct:identifier "${this.dmnData.decisionKey || 'unknown'}" ;\n`;
       ttl += `    dct:title "${this.dmnData.fileName}"@nl ;\n`;
-      ttl += `    ronl:implements <${this.serviceUri}> ;\n`;
+      ttl += `    cprmv:implements <${this.serviceUri}> ;\n`;
       ttl += `    dct:source <${this.serviceUri}/dmn/file> ;\n`;
 
       if (this.dmnData.deploymentId) {
@@ -648,12 +704,29 @@ export class TTLGenerator {
       }
 
       if (this.dmnData.apiEndpoint) {
-        ttl += `    ronl:implementedBy <${this.dmnData.apiEndpoint}> ;\n`;
+        ttl += `    cprmv:implementedBy <${this.dmnData.apiEndpoint}> ;\n`;
       }
 
       if (this.dmnData.lastTestResult && this.dmnData.lastTestTimestamp) {
         ttl += `    cprmv:lastTested "${this.dmnData.lastTestTimestamp}"^^xsd:dateTime ;\n`;
         ttl += `    cprmv:testStatus "passed" ;\n`;
+      }
+
+      // NEW: Validation metadata (only if status is not "not-validated")
+      if (this.dmnData.validationStatus && this.dmnData.validationStatus !== 'not-validated') {
+        ttl += `    ronl:validationStatus "${this.dmnData.validationStatus}"^^xsd:string ;\n`;
+
+        if (this.dmnData.validatedBy && this.dmnData.validatedBy.trim() !== '') {
+          ttl += `    ronl:validatedBy <${this.dmnData.validatedBy}> ;\n`;
+        }
+
+        if (this.dmnData.validatedAt && this.dmnData.validatedAt.trim() !== '') {
+          ttl += `    ronl:validatedAt "${this.dmnData.validatedAt}"^^xsd:date ;\n`;
+        }
+
+        if (this.dmnData.validationNote && this.dmnData.validationNote.trim() !== '') {
+          ttl += `    ronl:validationNote "${escapeTTLString(this.dmnData.validationNote)}"@nl ;\n`;
+        }
       }
 
       ttl += `    dct:description "DMN decision model for service evaluation"@nl .\n\n`;
@@ -805,6 +878,126 @@ export class TTLGenerator {
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
       });
     }
+
+    return ttl;
+  }
+
+  /**
+   * Generate Vendor Service section
+   * @returns {string} Vendor Service TTL
+   */
+  generateVendorServiceSection() {
+    if (!this.hasVendorService()) {
+      return '';
+    }
+
+    const vendor = this.vendorService;
+    const vendorUri = `${this.serviceUri}/vendor`;
+
+    let ttl = '';
+
+    // Main vendor service entity
+    ttl += `<${vendorUri}> a ronl:VendorService ;\n`;
+    ttl += `    ronl:basedOn <${this.serviceUri}/dmn> ;\n`;
+    ttl += `    ronl:implementedBy <${vendor.selectedVendor}> ;\n`;
+
+    // Contact information (if any field is filled)
+    const hasContact =
+      vendor.contact.organizationName ||
+      vendor.contact.contactPerson ||
+      vendor.contact.email ||
+      vendor.contact.phone ||
+      vendor.contact.website ||
+      vendor.contact.logo;
+
+    if (hasContact) {
+      ttl += `    schema:provider [\n`;
+      ttl += `        a schema:Organization ;\n`;
+
+      if (vendor.contact.organizationName) {
+        ttl += `        schema:name "${escapeTTLString(vendor.contact.organizationName)}" ;\n`;
+      }
+
+      // Logo - generate asset path reference (actual upload happens during publish)
+      if (vendor.contact.logo && vendor.contact.logo.trim() !== '') {
+        // Extract vendor name from URI for filename
+        const vendorUri = vendor.selectedVendor;
+        const vendorName = vendorUri.split('/').pop(); // e.g., "Blueriq"
+        const logoPath = `./assets/${vendorName}_vendor_logo.png`;
+
+        ttl += `        schema:image <${logoPath}> ;\n`;
+      }
+
+      const hasContactPoint =
+        vendor.contact.contactPerson || vendor.contact.email || vendor.contact.phone;
+
+      if (hasContactPoint) {
+        ttl += `        schema:contactPoint [\n`;
+
+        if (vendor.contact.contactPerson) {
+          ttl += `            schema:name "${escapeTTLString(vendor.contact.contactPerson)}" ;\n`;
+        }
+        if (vendor.contact.email) {
+          ttl += `            schema:email "${escapeTTLString(vendor.contact.email)}" ;\n`;
+        }
+        if (vendor.contact.phone) {
+          ttl += `            schema:telephone "${escapeTTLString(vendor.contact.phone)}" ;\n`;
+        }
+
+        // Remove trailing semicolon and close contactPoint
+        ttl = ttl.slice(0, -2) + '\n';
+        ttl += `        ] ;\n`;
+      }
+
+      if (vendor.contact.website) {
+        ttl += `        foaf:homepage <${vendor.contact.website}> ;\n`;
+      }
+
+      // Remove trailing semicolon and close provider
+      ttl = ttl.slice(0, -2) + '\n';
+      ttl += `    ] ;\n`;
+    }
+
+    // Technical information
+    if (vendor.technical.serviceUrl) {
+      ttl += `    schema:url <${vendor.technical.serviceUrl}> ;\n`;
+    }
+
+    if (vendor.technical.license) {
+      ttl += `    schema:license "${escapeTTLString(vendor.technical.license)}" ;\n`;
+    }
+
+    if (vendor.technical.accessType) {
+      ttl += `    ronl:accessType "${vendor.technical.accessType}" ;\n`;
+    }
+
+    // Service notes
+    if (vendor.serviceNotes && vendor.serviceNotes.trim() !== '') {
+      ttl += `    dct:description "${escapeTTLString(vendor.serviceNotes)}"@nl ;\n`;
+    }
+
+    // Certification metadata (only if status is not "not-certified")
+    if (vendor.certification.status && vendor.certification.status !== 'not-certified') {
+      ttl += `    ronl:certificationStatus "${vendor.certification.status}"^^xsd:string ;\n`;
+
+      if (vendor.certification.certifiedBy && vendor.certification.certifiedBy.trim() !== '') {
+        ttl += `    ronl:certifiedBy <${vendor.certification.certifiedBy}> ;\n`;
+      }
+
+      if (vendor.certification.certifiedAt && vendor.certification.certifiedAt.trim() !== '') {
+        ttl += `    ronl:certifiedAt "${vendor.certification.certifiedAt}"^^xsd:date ;\n`;
+      }
+
+      if (
+        vendor.certification.certificationNote &&
+        vendor.certification.certificationNote.trim() !== ''
+      ) {
+        ttl += `    ronl:certificationNote "${escapeTTLString(vendor.certification.certificationNote)}"@nl ;\n`;
+      }
+    }
+
+    // Close statement
+    ttl = ttl.slice(0, -2) + ' .\n\n';
 
     return ttl;
   }

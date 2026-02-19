@@ -1,4 +1,4 @@
-import { Database, FileText, FileUp, Plus, Trash2 } from 'lucide-react';
+import { AlertCircle, Database, FileText, FileUp, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
 import exampleCPRMVData from '../../data/cprmv-example.json';
@@ -10,6 +10,7 @@ const CPRMVTab = ({
   updateCPRMVRule,
   handleImportJSON,
   setCprmvRules,
+  legalResource,
 }) => {
   // Function to load example data
   const loadExampleData = () => {
@@ -106,6 +107,84 @@ const CPRMVTab = ({
           </div>
         </div>
       </div>
+
+      {/* Legal Resource Link Info Banner - NEW */}
+      {legalResource.bwbId &&
+        (() => {
+          // Determine the URL for the legal resource
+          const identifier = legalResource.bwbId;
+          const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+
+          let legalUrl;
+          if (isFullUri) {
+            legalUrl = identifier;
+          } else {
+            const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
+            const isCVDR = /CVDR\d+/i.test(identifier);
+
+            if (isBWB) {
+              legalUrl = `https://wetten.overheid.nl/${identifier}`;
+            } else if (isCVDR) {
+              legalUrl = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
+            } else {
+              legalUrl = `https://wetten.overheid.nl/${identifier}`;
+            }
+          }
+
+          // If version exists, append it to create versioned URI
+          if (legalResource.version) {
+            legalUrl = `${legalUrl}/${legalResource.version}`;
+          }
+
+          return (
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0">
+                  <FileText className="w-5 h-5 text-blue-600 mt-0.5" />
+                </div>
+                <div>
+                  <p className="text-sm text-blue-800">
+                    <strong>Legal Source:</strong> All rules will automatically link to{' '}
+                    <a
+                      href={legalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono underline hover:text-blue-600 transition-colors"
+                    >
+                      {legalUrl}
+                    </a>{' '}
+                    via <span className="font-mono">cprmv:implements</span>
+                  </p>
+                  {legalResource.title && (
+                    <p className="text-xs text-blue-700 mt-1">{legalResource.title}</p>
+                  )}
+                  {legalResource.version && (
+                    <p className="text-xs text-blue-700 mt-1">
+                      📅 Version: {legalResource.version}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+      {!legalResource.bwbId && (
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0">
+              <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+            </div>
+            <div>
+              <p className="text-sm text-yellow-800">
+                <strong>No legal resource defined.</strong> Add a legal resource in the Legal tab to
+                automatically link it to these rules via{' '}
+                <span className="font-mono">cprmv:implements</span>.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Rules List */}
       {cprmvRules.map((rule, index) => (

@@ -1,0 +1,926 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/studiefinanciering> a cpsv:PublicService ;
+    dct:identifier "studiefinanciering" ;
+    dct:title "Sudiefinanciering"@nl ;
+    dct:description "Studiefinanciering is geld van de Nederlandse overheid voor studenten in het middelbaar beroepsonderwijs (mbo), hoger beroepsonderwijs (hbo) en wetenschappelijk onderwijs (wo/universiteit). Als u hier recht op heeft, ontvangt u dit geld van de Dienst Uitvoering Onderwijs (DUO). Sommige onderdelen van studiefinanciering zijn een lening. Een lening moet u terugbetalen."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/studiefinanciering> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "student, studiefinanciering, lening, beurs, studiebeurs, prestatiebeurs, duo, ocw"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/71857/Dienst_Uitvoering_Onderwijs> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0011453> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/studiefinanciering/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/71857/Dienst_Uitvoering_Onderwijs> a cv:PublicOrganisation ;
+    dct:identifier "Dienst_Uitvoering_Onderwijs" ;
+    skos:prefLabel "Dienst Uitvoering Onderwijs"@nl ;
+    foaf:homepage <https://duo.nl/particulier/> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Dienst_Uitvoering_Onderwijs_logo.png> ;
+    schema:image <./assets/Dienst_Uitvoering_Onderwijs_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0011453> a eli:LegalResource ;
+    dct:identifier "BWBR0011453" ;
+    dct:title "Wet studiefinanciering 2000"@nl ;
+    dct:description "Deze informatie vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter. Dat geldt dus niet voor de eli:LegalResource hier."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0011453/2025-01-01>  .
+
+
+# ============================================================
+#  Temporal Rules
+# ============================================================
+
+<https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B01.01" ;
+    dct:title "Besluit aanvraag studiefinanciering"@nl ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nStudiefinanciering wordt toegekend indien aan alle volgende voorwaarden is voldaan:\n- Het totale bedrag van studiefinanciering van de Persoon is groter dan 0.\n- De Persoon heeft aanspraak.\n- De Persoon heeft nog recht op tenminste één maand studiefinanciering.\n\nVerder uitgewerkt in:\nB02.01 persoon heeft aanspraak\nB03.01 Totaal bedrag\nB04.01 Persoon heeft nog tenminste één maand studiefinanciering"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.01-aanspraak> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.01" ;
+    dct:title "Persoon heeft aanspraak"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft aanspraak indien aan alle volgende voorwaarden is voldaan:\n- De Persoon voldoet aan de leeftijdsvoorwaarden.\n- De Persoon voldoet aan de nationaliteitseis.\n- De Persoon is ingeschreven voor een opleiding waarvoor studiefinanciering wordt gegeven.\n- De Persoon krijgt geen buitenlandse financiering.\n\nVerder uitgewerkt in:\nB02.03 nationaliteitsvoorwaarden\nB02.04 Correcte opleiding\nB02.02 leeftijd"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.02-leeftijd> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.02" ;
+    dct:title "Leeftijd"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde leeftijd van de Persoon\tde leeftijd van de Persoon\tde Inschrijving is voor een HO opleiding\tde Inschrijving is ononderbroken\tde Persoon voldoet aan de leeftijdsvoorwaarden\n>= 18\t< 30\t= Waar\t= Waar\t= Waar\n< 18\tOnwaar\t= Waar\t= Waar\t= Waar\n< 18\t-\t= Onwaar\t= Waar\t= Onwaar\n>= 30\t-\t= Waar\t= Waar\t= Waar\n>= 30\t-\t= Waar\t= Onwaar\t= Onwaar\n\nVerder uitgewerkt in:\nB02.02.02 ononderbroken inschrijving (moet nog)"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.02.02-ononderbroken-inschrijving> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.02.02" ;
+    dct:title "Ononderbroken inschrijving"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B02.02-leeftijd> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Inschrijving is ononderbroken indien aan tenminste één van de volgende voorwaarden is voldaan:\n- De Inschrijving heeft van beginmaand tot en met nu geen missende maand.\n- De Inschrijving de inschrijving is onderbroken met een medische verklaring."@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.03-nationaliteitsvoorwaarden> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.03" ;
+    dct:title "Nationaliteitsvoorwaarden"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon voldoet aan de nationaliteitseis indien aan tenminste één van de volgende voorwaarden is voldaan:\n- De Persoon heeft de nederlandse nationalitiet.\n- De Persoon voldoet aan de EU voorwaarden (moet nog worden uitgewerkt).\n\nVerder uitgewerkt in:\nB02.03.02 arbeidsvwd EU burger (5jr in nl, werk + 24 uur permaand/50% bijstandsnorm, partner/ouder met werkvwd)"@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.03.02-EU-voorwaarden> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.03.02" ;
+    dct:title "EU voorwaarden"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B02.03-nationaliteitsvoorwaarden> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon voldoet aan de EU voorwaarden (moet nog worden uitgewerkt) indien aan alle volgende voorwaarden is voldaan:\n- Voorwaarde.\n- Voorwaarde."@nl  .
+
+<https://regels.overheid.nl/register/duo/B02.04-correcte-opleiding> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B02.04" ;
+    dct:title "Correcte opleiding"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B02.01-aanspraak> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon is ingeschreven voor een opleiding waarvoor studiefinanciering wordt gegeven indien aan tenminste één van de volgende voorwaarden is voldaan:\n- Opleiding is een bekostigde voltijd opleiding.\n- Opleiding is goedgekeurd door instantie."@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.01" ;
+    dct:title "Totaalbedrag"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B01.01-besluit-aanvraag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet totale bedrag van studiefinanciering van een Persoon moet worden berekend als A + B + C waarin geldt dat:\n- A = de bedrag basisbeurs van de Persoon.\n- B = de Hoogte van de toe te kennen aanvullende beurs van de Studiefinanciering.\n- C = het bedrag aan lening van de Persoon.\n\nVerder uitgewerkt in:\nB03.02 Basisbeurs\nB03.03 aanvullende beurs\nB03.04 bedrag aan lening"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.02-basisbeurs> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.02" ;
+    dct:title "Basisbeurs"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde Persoon is uitwonend\thet onderwijsniveau van de aanvraag van de Studiefinanciering\tde bedrag basisbeurs van de Persoon\n= Onwaar\t= MBO\t= 107,26\n= Waar\t= MBO\t= 350,03\n= Onwaar\t= HO\t= 130,21\n= Waar\t= HO\t= 324,52\n\nVerder uitgewerkt in:\nB03.04.01 Persoon is uitwonend"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03-aanvullende-beurs> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03" ;
+    dct:title "Aanvullende beurs"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe Hoogte van de toe te kennen aanvullende beurs van een Studiefinanciering moet worden berekend als Maximum(A - B, 0) waarin geldt dat:\n- A = de maximale aanvullende beurs van het Studiefinanciering.\n- B = de maandelijkse ouderlijke bijdrage van de Ouders.\n\nVerder uitgewerkt in:\nB03.03.01 maximale aanvullende beurs\nB03.03.02 maandelijkse inhouding op aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.04-bedrag-aan-lening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.04" ;
+    dct:title "Bedrag aan lening"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.01-totaal-bedrag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet bedrag aan lening van een Persoon moet worden berekend als Minimum(A,B) waarin geldt dat:\n- A = de gewenste lening van de Persoon.\n- B = het maximale leningsbedrag van de Persoon.\n\nVerder uitgewerkt in:\nB03.05 het maximale leenbedrag\nBedrijfslogica6659"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.01-maximaal-aanvullend> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.01" ;
+    dct:title "Maximaal aanvullend"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03-aanvullende-beurs> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde Persoon is uitwonend\tde maximale aanvullende beurs van het Studiefinanciering\n= MBO\t= Onwaar\t= 438.08\n= MBO\t= Waar\t= 466.40\n= HO\t-\t= 491.08\n\nVerder uitgewerkt in:\nB03.04.01 Persoon is uitwonend"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.02-maandelijkse-inhouding-aanvullend> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.02" ;
+    dct:title "Maandelijkse inhouding aanvullend"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03-aanvullende-beurs> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe maandelijkse ouderlijke bijdrage van een Ouders moet worden berekend als A / B waarin geldt dat:\n- A = de inhouding per jaar van de Ouders.\n- B = 12.\n\nVerder uitgewerkt in:\nB03.03.03 Totaalbedrag per kind met aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.03-totaal-bedrag-per-kind-aanvullend> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.03" ;
+    dct:title "Totaalbedrag per kind met aanvullende beurs"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.02-maandelijkse-inhouding-aanvullend> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe inhouding per jaar van de Ouders moet worden berekend als A / B waarin geldt dat:\n- A = het gezamelijke ouderbijdrage van de Ouders.\n- B = de aantal kinderen met een aanvullende beurs van de Ouders.\n\nVerder uitgewerkt in:\nB03.03.04 rekeninkomen ouders"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.04-rekeninkomen-ouders> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.04" ;
+    dct:title "Rekeninkomen ouders"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.03-totaal-bedrag-per-kind-aanvullend> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet gezamelijke ouderbijdrage van de Ouders moet worden berekend als som van het ouderbijdrage per jaar van de Ouder.\n\nVerder uitgewerkt in:\nB03.03.05 Jaarbedrag per ouder"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.05" ;
+    dct:title "Jaarbedrag per ouder"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.04-rekeninkomen-ouders> ;
+    cprmv:validFrom "2023-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet ouderbijdrage per jaar van een Ouder moet worden berekend als A - B - C waarin geldt dat:\n- A = het rekeninkomen van de Ouder.\n- B = de aftrekpost andere kinderen van de Ouder.\n- C = het termijnbedrag op jaarbasis van de studieschuld van de Ouder.\n\nVerder uitgewerkt in:\nB03.03.06 Aftrekpost andere kinderen\nB03.03.07 Rekeninkomen van een ouder"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.06-aftrekpost-andere-kinderen> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.06" ;
+    dct:title "Aftrekpost andere kinderen"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe aftrekpost andere kinderen van een Ouder moet worden berekend als A * B waarin geldt dat:\n- A = de ieder kind zonder studiefinanciering van de Ouder.\n- B = 363."@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.07" ;
+    dct:title "Rekeninkomen van een ouder"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.05-jaarbedrag-per-ouder> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet rekeninkomen van een Ouder moet worden berekend als C * (A - B) waarin geldt dat:\n- A = het belastbaar inkomen van de Ouder.\n- B = het Vrijgesteld bedrag van de Ouder.\n- C = het Percentage van inkomen dat meetelt van het Studiefinanciering.\n\nVerder uitgewerkt in:\nB03.03.08 Vrijgesteld bedrag van de ouder\nB03.03.09 Percentage meetellend inkomen"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.08-vrijgesteld-bedrag-van-de-ouder> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.08" ;
+    dct:title "Vrijgesteld bedrag van de ouder"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde leefsituatie van de Ouder\thet Vrijgesteld bedrag van de Ouder\n= MBO\t= Alleenstaand\t= 29333.26\n= HBO\t= Alleenstaand\t= 29289.28\n= MBO\t= Andere ouder is overleden\t= 46305.40\n= HBO\t= Andere ouder is overleden\t= 41500.60\n= MBO\t= Inkomen andere ouder telt niet mee\t= 46305.40\n= HBO\t= Inkomen andere ouder telt niet mee\t= 41500.60\n= MBO\t= -\t= 23152.70\n= MBO\t= -\t= 20750.30"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.03.09-percentage-meetellend-inkomen> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.03.09" ;
+    dct:title "Percentage meetellend inkomen"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.03.07-rekeninkomen-van-een-ouder> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\thet Percentage van inkomen dat meetelt van het Studiefinanciering\n= MBO\t= 26\n= HO\t= 13.6"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.05-maximale-leenbedrag> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.05" ;
+    dct:title "Het maximale leenbedrag"@nl ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet maximale leningsbedrag van een Persoon moet worden berekend als A + B waarin geldt dat:\n- A = de maandelijkse ouderlijke bijdrage van de Ouders.\n- B = de maximale lening van het Studiefinanciering.\n\nVerder uitgewerkt in:\nB03.06 Maximale lening\nB03.03.02 maandelijkse inhouding op aanvullende beurs"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.06-maximale-lening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.06" ;
+    dct:title "Maximale lening"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B03.05-maximale-leenbedrag> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nhet onderwijsniveau van de aanvraag van de Studiefinanciering\tde maximale lening van Studiefinanciering\n= MBO\t= 233,65\n= HO\t= 315,17"@nl  .
+
+<https://regels.overheid.nl/register/duo/B03.04.01-persoon-uitwonend> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B03.04.01" ;
+    dct:title "Persoon is uitwonend"@nl ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon is uitwonend indien aan alle volgende voorwaarden is voldaan:\n- De Persoon woont op een ander adres dan beide ouders.\n- De Persoon is ingeschreven op een adres bij een gemeente."@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B04.01" ;
+    dct:title "Persoon heeft nog tenminste één maand studiefinanciering"@nl ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft nog recht op tenminste één maand studiefinanciering indien aan alle volgende voorwaarden is voldaan:\n- De Persoon heeft nog tenminste één maand opnametermijn.\n- Het aantal maanden genoten studiefinanciering van zijn huidige inschrijving van de Persoon is groter dan 0.\n\nVerder uitgewerkt in:\nB04.02 verbruikte jaren van de persoon\nB04.05 opnametermijn"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.02-verbuikte-jaren> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B04.02" ;
+    dct:title "Verbruikte jaren van de persoon"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nHet aantal maanden genoten studiefinanciering van zijn huidige inschrijving van een Persoon moet worden berekend als A - B waarin geldt dat:\n- A = de maximale hoeveelheid studiefinancieringsjaren van Opleiding.\n- B = het aantal maanden genoten studiefinanciering van zijn huidige inschrijving van de Persoon.\n\nVerder uitgewerkt in:\nB04.04 aantal jaar voor een inschrijving\nB04.02 verbruikte jaren van de persoon\nB04.02 verbruikte jaren van de persoon"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.04-aantal-jaar-voor-een-inschrijving> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B04.04" ;
+    dct:title "Aantal jaar voor een inschrijving"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B04.02-verbuikte-jaren> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\t\nde Inschrijving van de Persoon\tde maximale hoeveelheid studiefinancieringsjaren van Opleiding\n= MBO 1 of 2\tOnbeperkt\n= MBO 3 of 4\t= 4\n= HO\t= 4 jaar of meer als de studie langer duurt"@nl  .
+
+<https://regels.overheid.nl/register/duo/B04.05-opnametermijn> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:identifier "B04.05" ;
+    dct:title "Opnametermijn"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/duo/B04.01-nog-een-maand-studiefinanciering> ;
+    cprmv:validFrom "2023-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Persoon heeft nog tenminste één maand opnametermijn indien huidige maand is kleiner dan de de eerste maand van het recht op het Studiefinanciering + 10 jaar."@nl  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn> a cprmv:DecisionModel ;
+    dct:identifier "besluit_aanvraag" ;
+    dct:title "Student-finance-application-fixed-feel-reorder.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    dct:source <https://regels.overheid.nl/services/studiefinanciering/dmn/file> ;
+    cprmv:deploymentId "5be430f9-0b4b-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-16T15:22:52.391Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/besluit_aanvraag/evaluate> ;
+    cprmv:lastTested "2026-02-16T15:24:04.658Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    ronl:validationStatus "in-review"^^xsd:string ;
+    ronl:validatedBy <https://organisaties.overheid.nl/71857/Dienst_Uitvoering_Onderwijs> ;
+    ronl:validatedAt "2026-01-12"^^xsd:date ;
+    ronl:validationNote "Validation note goes here..."@nl ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/1> a cpsv:Input ;
+    dct:identifier "leeftijd" ;
+    dct:title "leeftijd"@nl ;
+    dct:type "Integer" ;
+    schema:value 20 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/2> a cpsv:Input ;
+    dct:identifier "onderwijsniveau" ;
+    dct:title "onderwijsniveau"@nl ;
+    dct:type "String" ;
+    schema:value "HO" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/3> a cpsv:Input ;
+    dct:identifier "woontAnderAdresDanOuders" ;
+    dct:title "woontAnderAdresDanOuders"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/4> a cpsv:Input ;
+    dct:identifier "ingeschrevenGemeente" ;
+    dct:title "ingeschrevenGemeente"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/5> a cpsv:Input ;
+    dct:identifier "nationaliteitNL" ;
+    dct:title "nationaliteitNL"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/6> a cpsv:Input ;
+    dct:identifier "voldoetEU" ;
+    dct:title "voldoetEU"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/7> a cpsv:Input ;
+    dct:identifier "opleidingBekostigdVoltijd" ;
+    dct:title "opleidingBekostigdVoltijd"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/8> a cpsv:Input ;
+    dct:identifier "opleidingGoedgekeurd" ;
+    dct:title "opleidingGoedgekeurd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/9> a cpsv:Input ;
+    dct:identifier "buitenlandseFinanciering" ;
+    dct:title "buitenlandseFinanciering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/10> a cpsv:Input ;
+    dct:identifier "missendeMaand" ;
+    dct:title "missendeMaand"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/11> a cpsv:Input ;
+    dct:identifier "medischeVerklaring" ;
+    dct:title "medischeVerklaring"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/12> a cpsv:Input ;
+    dct:identifier "gewensteLening" ;
+    dct:title "gewensteLening"@nl ;
+    dct:type "Double" ;
+    schema:value 200 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/13> a cpsv:Input ;
+    dct:identifier "aantalKinderenAanvBeurs" ;
+    dct:title "aantalKinderenAanvBeurs"@nl ;
+    dct:type "Integer" ;
+    schema:value 1 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/14> a cpsv:Input ;
+    dct:identifier "belastbaarInkomen_ouder1" ;
+    dct:title "belastbaarInkomen_ouder1"@nl ;
+    dct:type "Double" ;
+    schema:value 32000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/15> a cpsv:Input ;
+    dct:identifier "belastbaarInkomen_ouder2" ;
+    dct:title "belastbaarInkomen_ouder2"@nl ;
+    dct:type "Double" ;
+    schema:value 28000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/16> a cpsv:Input ;
+    dct:identifier "termijnStudieschuldJaar_ouder1" ;
+    dct:title "termijnStudieschuldJaar_ouder1"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/17> a cpsv:Input ;
+    dct:identifier "termijnStudieschuldJaar_ouder2" ;
+    dct:title "termijnStudieschuldJaar_ouder2"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/18> a cpsv:Input ;
+    dct:identifier "aantalKinderenZonderSF_ouder1" ;
+    dct:title "aantalKinderenZonderSF_ouder1"@nl ;
+    dct:type "Integer" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/19> a cpsv:Input ;
+    dct:identifier "aantalKinderenZonderSF_ouder2" ;
+    dct:title "aantalKinderenZonderSF_ouder2"@nl ;
+    dct:type "Integer" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/20> a cpsv:Input ;
+    dct:identifier "leefsituatie_ouder1" ;
+    dct:title "leefsituatie_ouder1"@nl ;
+    dct:type "String" ;
+    schema:value "Alleenstaand" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/21> a cpsv:Input ;
+    dct:identifier "leefsituatie_ouder2" ;
+    dct:title "leefsituatie_ouder2"@nl ;
+    dct:type "String" ;
+    schema:value "Alleenstaand" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/22> a cpsv:Input ;
+    dct:identifier "maandenGenoten" ;
+    dct:title "maandenGenoten"@nl ;
+    dct:type "Integer" ;
+    schema:value 6 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/23> a cpsv:Input ;
+    dct:identifier "maxMaanden" ;
+    dct:title "maxMaanden"@nl ;
+    dct:type "Integer" ;
+    schema:value 48 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/input/24> a cpsv:Input ;
+    dct:identifier "maandenSindsEersteMaandRecht" ;
+    dct:title "maandenSindsEersteMaandRecht"@nl ;
+    dct:type "Integer" ;
+    schema:value 10 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/dmn/output/1> a cpsv:Output ;
+    dct:identifier "toegekend" ;
+    dct:title "toegekend"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:produces <https://regels.overheid.nl/services/studiefinanciering/dmn> .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0wbcvkr> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0wbcvkr" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_122w69a" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_16zuyqw> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_16zuyqw" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_122w69a" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_05tja8w> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_05tja8w" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_122w69a" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1d3mhzu> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1d3mhzu" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_122w69a" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1b1r235> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1b1r235" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_122w69a" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_07gxwax> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_07gxwax" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0ckffn5" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1p9za8b> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1p9za8b" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0ckffn5" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1vdjxec> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1vdjxec" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0ckffn5" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1mw1y2q> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1mw1y2q" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0ckffn5" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1n2tx5q> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1n2tx5q" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0i0ari9" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1q9f5ez> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1q9f5ez" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0i0ari9" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1ol74b9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1ol74b9" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0i0ari9" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0w5l48n> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0w5l48n" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1th6qqh> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1th6qqh" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0oxhhx2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0oxhhx2" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_198o16p> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_198o16p" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1pflyy8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1pflyy8" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1og1pc5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1og1pc5" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0zx2zwe> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0zx2zwe" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0kvtfpq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0kvtfpq" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0tv29xd" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_0gugwdm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0gugwdm" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_04pbp9n" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1l80n0u> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1l80n0u" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_04pbp9n" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_09nkh75> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_09nkh75" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_1nc1opc" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/studiefinanciering/rules/DecisionRule_1kscrnm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1kscrnm" ;
+    cpsv:implements <https://regels.overheid.nl/services/studiefinanciering> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_1nc1opc" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-02-16"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/leeftijd> a skos:Concept ;
+    skos:prefLabel "Leeftijd"@nl ;
+    skos:definition "Leeftijd is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "LEEF" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/leeftijd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/onderwijsniveau> a skos:Concept ;
+    skos:prefLabel "Onderwijsniveau"@nl ;
+    skos:definition "Onderwijsniveau is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ONDE" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/onderwijsniveau> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/woontAnderAdresDanOuders> a skos:Concept ;
+    skos:prefLabel "Woont Ander Adres Dan Ouders"@nl ;
+    skos:definition "Woont Ander Adres Dan Ouders is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "WAADO" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/woontAnderAdresDanOuders> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/ingeschrevenGemeente> a skos:Concept ;
+    skos:prefLabel "Ingeschreven Gemeente"@nl ;
+    skos:definition "Ingeschreven Gemeente is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "IG" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/ingeschrevenGemeente> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/nationaliteitNL> a skos:Concept ;
+    skos:prefLabel "Nationaliteit NL"@nl ;
+    skos:definition "Nationaliteit NL is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NN" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/nationaliteitNL> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/voldoetEU> a skos:Concept ;
+    skos:prefLabel "Voldoet EU"@nl ;
+    skos:definition "Voldoet EU is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VE" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/voldoetEU> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/opleidingBekostigdVoltijd> a skos:Concept ;
+    skos:prefLabel "Opleiding Bekostigd Voltijd"@nl ;
+    skos:definition "Opleiding Bekostigd Voltijd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "OBV" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/opleidingBekostigdVoltijd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/opleidingGoedgekeurd> a skos:Concept ;
+    skos:prefLabel "Opleiding Goedgekeurd"@nl ;
+    skos:definition "Opleiding Goedgekeurd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "OG" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/opleidingGoedgekeurd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/buitenlandseFinanciering> a skos:Concept ;
+    skos:prefLabel "Buitenlandse Financiering"@nl ;
+    skos:definition "Buitenlandse Financiering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BF" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/buitenlandseFinanciering> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/missendeMaand> a skos:Concept ;
+    skos:prefLabel "Missende Maand"@nl ;
+    skos:definition "Missende Maand is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MM" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/10> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/missendeMaand> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/medischeVerklaring> a skos:Concept ;
+    skos:prefLabel "Medische Verklaring"@nl ;
+    skos:definition "Medische Verklaring is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MV" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/11> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/medischeVerklaring> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/gewensteLening> a skos:Concept ;
+    skos:prefLabel "Gewenste Lening"@nl ;
+    skos:definition "Gewenste Lening is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GL" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/12> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/gewensteLening> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenAanvBeurs> a skos:Concept ;
+    skos:prefLabel "Aantal Kinderen Aanv Beurs"@nl ;
+    skos:definition "Aantal Kinderen Aanv Beurs is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AKAB" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/13> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenAanvBeurs> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/belastbaarInkomen_ouder1> a skos:Concept ;
+    skos:prefLabel "Belastbaar Inkomen_ouder1"@nl ;
+    skos:definition "Belastbaar Inkomen_ouder1 is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BI" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/14> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/belastbaarInkomen_ouder1> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/belastbaarInkomen_ouder2> a skos:Concept ;
+    skos:prefLabel "Belastbaar Inkomen_ouder2"@nl ;
+    skos:definition "Belastbaar Inkomen_ouder2 is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BI1" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/15> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/belastbaarInkomen_ouder2> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/termijnStudieschuldJaar_ouder1> a skos:Concept ;
+    skos:prefLabel "Termijn Studieschuld Jaar_ouder1"@nl ;
+    skos:definition "Termijn Studieschuld Jaar_ouder1 is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "TSJ" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/16> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/termijnStudieschuldJaar_ouder1> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/termijnStudieschuldJaar_ouder2> a skos:Concept ;
+    skos:prefLabel "Termijn Studieschuld Jaar_ouder2"@nl ;
+    skos:definition "Termijn Studieschuld Jaar_ouder2 is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "TSJ1" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/17> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/termijnStudieschuldJaar_ouder2> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenZonderSF_ouder1> a skos:Concept ;
+    skos:prefLabel "Aantal Kinderen Zonder SF_ouder1"@nl ;
+    skos:definition "Aantal Kinderen Zonder SF_ouder1 is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AKZS" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/18> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenZonderSF_ouder1> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/aantalKinderenZonderSF_ouder2> a skos:Concept ;
+    skos:prefLabel "Aantal Kinderen Zonder SF_ouder2"@nl ;
+    skos:definition "Aantal Kinderen Zonder SF_ouder2 is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AKZS1" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/19> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalKinderenZonderSF_ouder2> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/leefsituatie_ouder1> a skos:Concept ;
+    skos:prefLabel "Leefsituatie_ouder1"@nl ;
+    skos:definition "Leefsituatie_ouder1 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "LEEF1" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/20> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/leefsituatie_ouder1> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/leefsituatie_ouder2> a skos:Concept ;
+    skos:prefLabel "Leefsituatie_ouder2"@nl ;
+    skos:definition "Leefsituatie_ouder2 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "LEEF2" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/21> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/leefsituatie_ouder2> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/maandenGenoten> a skos:Concept ;
+    skos:prefLabel "Maanden Genoten"@nl ;
+    skos:definition "Maanden Genoten is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MG" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/22> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/maandenGenoten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/maxMaanden> a skos:Concept ;
+    skos:prefLabel "Max Maanden"@nl ;
+    skos:definition "Max Maanden is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MM1" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/23> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/maxMaanden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/maandenSindsEersteMaandRecht> a skos:Concept ;
+    skos:prefLabel "Maanden Sinds Eerste Maand Recht"@nl ;
+    skos:definition "Maanden Sinds Eerste Maand Recht is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MSEMR" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/input/24> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/maandenSindsEersteMaandRecht> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/besluitaanvraag/toegekend> a skos:Concept ;
+    skos:prefLabel "Toegekend"@nl ;
+    skos:definition "Toegekend is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "TOEG" ;
+    dct:subject <https://regels.overheid.nl/services/studiefinanciering/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/toegekend> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

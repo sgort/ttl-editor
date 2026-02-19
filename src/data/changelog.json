@@ -1,10 +1,200 @@
 {
   "versions": [
     {
+      "version": "1.9.2",
+      "status": "Minor Feature",
+      "statusColor": "purple",
+      "borderColor": "purple",
+      "date": "February 17, 2026",
+      "sections": [
+        {
+          "title": "DMN Testing Suite",
+          "icon": "🧪",
+          "iconColor": "purple",
+          "items": [
+            "Added Intermediate Decision Tests - test each sub-decision in the DRD individually",
+            "Added Test Cases Upload - run multiple test scenarios from JSON files",
+            "Smart filtering automatically skips constant parameters (p_* decisions) from intermediate testing",
+            "Progressive result display - see test results appear in real-time as they execute",
+            "Supports both formats [{name, expected, requestBody}] and [{testName, testResult, variables}]",
+            "NL-SBB concepts auto-generated from last successful test case result",
+            "Collapsible UI sections with pass/fail statistics and expandable result details"
+          ]
+        },
+        {
+          "title": "Date Type Handling",
+          "icon": "📅",
+          "iconColor": "green",
+          "items": [
+            "Critical fix: Date values now use type: 'String' instead of type: 'Date' in request bodies",
+            "Simple format '2026-02-17' works correctly for all date variables regardless of DMN typeRef",
+            "Fixed InvalidRequestException errors for DMNs with typeRef='date' variables",
+            "Birth date generation creates random ages 25-68 for demographic testing"
+          ]
+        },
+        {
+          "title": "Developer Experience",
+          "icon": "🔧",
+          "iconColor": "gray",
+          "items": [
+            "Console logs filtering statistics: 'Filtered 8 constant parameter(s), kept 12 testable decision(s)'",
+            "Badge shows '12 testable decisions detected (p_* constants filtered)' on DMN upload",
+            "Test results show in expandable details elements with formatted JSON",
+            "File upload remembers filename and shows test case count",
+            "Run complete indicators and pass/fail counters for batch testing"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.9.1",
+      "status": "Major Feature",
+      "statusColor": "green",
+      "borderColor": "green",
+      "date": "February 15, 2026",
+      "sections": [
+        {
+          "title": "Vendor Tab - Multi-Vendor Service Metadata",
+          "icon": "🏢",
+          "iconColor": "emerald",
+          "items": [
+            "Added dedicated Vendor tab for vendor-specific service implementations",
+            "Dynamic vendor selection dropdown loading RONL Method Concepts from TriplyDB",
+            "Full Blueriq vendor service metadata form with contact information, technical details, and certification tracking",
+            "Vendor logo upload with asset path generation (matches Organization tab pattern)",
+            "Real-time URL validation for vendor website and service endpoint with visual feedback",
+            "Multi-vendor architecture supporting iKnow (existing), Blueriq (new), and extensible for future vendors",
+            "Complete TTL generation for ronl:VendorService with schema:provider nested structure",
+            "Conformance Assessment workflow with auto-populated certification metadata from Service and Organization tabs"
+          ]
+        },
+        {
+          "title": "Blueriq Integration",
+          "icon": "💼",
+          "iconColor": "blue",
+          "items": [
+            "Contact Information: Organization name, contact person, email, phone, website",
+            "Technical Information: Service URL, license type, access type (fair-use/IAM-required)",
+            "Vendor Logo: Upload and asset path generation as ./assets/{VendorName}_vendor_logo.png",
+            "Service Notes: Free-text field for vendor-specific implementation details",
+            "Certification Metadata: Status tracking (not-certified/in-review/certified), certifying organization URI, certification date, and notes",
+            "Request Certification modal with pre-populated email template for submission to competent authority"
+          ]
+        },
+        {
+          "title": "TTL Generation & Standards Compliance",
+          "icon": "📄",
+          "iconColor": "purple",
+          "items": [
+            "Generates ronl:VendorService entity linked to DMN decision model via ronl:basedOn",
+            "Links vendor implementation to RONL Method Concept via ronl:implementedBy",
+            "Uses schema:provider with nested schema:Organization and schema:contactPoint blank nodes",
+            "Outputs schema:url for service endpoint, schema:license for licensing model",
+            "Includes ronl:accessType for authentication requirements (fair-use or iam-required)",
+            "Certification metadata only included when status is in-review or certified (not for not-certified)",
+            "Vendor logo referenced as asset path ./assets/{VendorName}_vendor_logo.png (actual upload during publish workflow)"
+          ]
+        },
+        {
+          "title": "Architecture & Import/Export",
+          "icon": "🔧",
+          "iconColor": "blue",
+          "items": [
+            "Vendor selection updates both local selectedVendor state and vendorService.selectedVendor in parent state",
+            "Vendor service state included in buildStateForTTL() for TTL generation",
+            "Auto-population of certification metadata from Service and Organization tabs",
+            "Conditional UI: certification fields only shown for in-review and certified status",
+            "Round-trip support: Import TTL → Populate vendor fields → Edit → Export TTL",
+            "Vendor section appears after DMN Concepts section in generated TTL"
+          ]
+        },
+        {
+          "title": "Future Extensibility",
+          "icon": "🚀",
+          "iconColor": "yellow",
+          "items": [
+            "Multi-vendor dropdown infrastructure supports unlimited vendor additions",
+            "Vendor-specific UI sections can be conditionally rendered based on selectedVendor URI",
+            "Professional placeholder for non-implemented vendors shows roadmap and implementation status",
+            "Integration pattern established for adding new vendor platforms (iKnow, Blueriq, future vendors)",
+            "Certification workflow foundation ready for full publish-to-TriplyDB integration"
+          ]
+        },
+        {
+          "title": "Bug Fixes",
+          "icon": "🐛",
+          "iconColor": "red",
+          "items": [
+            "Remove NL-SBB concepts header block captured as trailing comment lines while importing TTL file",
+            "Prefill empty `skos:exactMatch` with https://regels.overheid.nl/concepts/<input/output.name> in Concepts tab"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.9.0",
+      "date": "2026-02-06",
+      "status": "Feature",
+      "statusColor": "green",
+      "borderColor": "green",
+      "description": "Explicit semantic linking between CPRMV rules and legal resources via cprmv:implements property",
+      "sections": [
+        {
+          "title": "Critical Bug Fix - Unique Rule URIs",
+          "icon": "🐛",
+          "iconColor": "red",
+          "items": [
+            "CRITICAL FIX: Rule URIs now generated using full cprmv:ruleIdPath for guaranteed uniqueness",
+            "Previous bug: Multiple rules with same cprmv:id (e.g., 'onderdeel a.') resulted in duplicate URIs, causing RDF triple merging",
+            "Impact: TriplyDB was showing fewer unique entities than were present in the original file",
+            "New URI pattern: BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a (includes full legal hierarchy)",
+            "URI sanitization: Commas→underscores, spaces→hyphens, periods removed for URL-safe identifiers",
+            "Fallback: If ruleIdPath is unavailable, uses rulesetId_ruleId pattern (backward compatible)"
+          ]
+        },
+        {
+          "title": "Semantic Linking Enhancement",
+          "icon": "🔗",
+          "iconColor": "emerald",
+          "items": [
+            "Added cprmv:implements property to automatically link each CPRMV rule to its source legal resource",
+            "Rules now explicitly reference the legal resource they implement, eliminating ambiguous string-based matching",
+            "Versioned URI support: when eli:is_realized_by version exists, rules link to the versioned legal resource URI (e.g., https://wetten.overheid.nl/BWBR0011453/2025-01-01)",
+            "Unversioned fallback: rules link to base legal resource URI when no version is specified",
+            "Enables clean SPARQL queries with direct Service → Legal Resource ← Rule traversal"
+          ]
+        },
+        {
+          "title": "Policy Tab UX Improvements",
+          "icon": "✨",
+          "iconColor": "blue",
+          "items": [
+            "Added informational banner showing which legal resource all rules will link to via cprmv:implements",
+            "Legal resource identifier displayed as clickable link opening legislation in new tab",
+            "Link always displays full URI for consistency (e.g., https://wetten.overheid.nl/BWBR0011453)",
+            "Version indicator shown when eli:is_realized_by is present (e.g., 📅 Version: 2025-01-01)",
+            "Warning banner displayed when no legal resource is defined in Legal tab"
+          ]
+        },
+        {
+          "title": "Data Model Benefits",
+          "icon": "🎯",
+          "iconColor": "purple",
+          "items": [
+            "Eliminates duplicate query results caused by string matching multiple legal resource versions",
+            "Makes data model more explicit and maintainable with direct semantic relationships",
+            "Supports temporal traceability by linking rules to specific legislation versions",
+            "Aligns with ELI vocabulary best practices for versioned legal resources",
+            "Reduces Linked Data Explorer query complexity by removing fragile rulesetId string parsing"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.8.3",
       "status": "Minor Feature",
-      "statusColor": "emerald",
-      "borderColor": "emerald",
+      "statusColor": "purple",
+      "borderColor": "purple",
       "date": "2026-01-29",
       "description": "RONL Concepts Integration",
       "sections": [
@@ -105,8 +295,8 @@
     {
       "version": "1.8.1",
       "status": "Major Feature",
-      "statusColor": "emerald",
-      "borderColor": "emerald",
+      "statusColor": "purple",
+      "borderColor": "prurple",
       "date": "January 24, 2026",
       "sections": [
         {

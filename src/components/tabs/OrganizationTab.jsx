@@ -1,19 +1,42 @@
-import { CheckCircle, Upload, X } from 'lucide-react';
-import React from 'react';
+import { BookOpen, CheckCircle, Upload, X } from 'lucide-react';
+import React, { useState } from 'react';
+
 /**
  * OrganizationTab - Form for editing organization/competent authority metadata
  * Maps to cv:PublicOrganisation in CPSV-AP 3.2.0
  */
-export default function OrganizationTab({ organization, setOrganization }) {
-  // Helper to update a single field
+export default function OrganizationTab({ organization, setOrganization, dmnData, setDmnData }) {
+  // State for collapsible validation section
+  const [showValidationSection, setShowValidationSection] = useState(false);
+
+  // Helper to update organization fields
   const updateField = (field, value) => {
     setOrganization({ ...organization, [field]: value });
+  };
+
+  // Helper to update DMN validation fields
+  const updateDmnField = (field, value) => {
+    setDmnData({ ...dmnData, [field]: value });
+  };
+
+  // Auto-fill validated by with current organization URI
+  const autoFillValidatedBy = () => {
+    const orgUri = organization.identifier?.startsWith('http')
+      ? organization.identifier
+      : `https://regels.overheid.nl/organizations/${organization.identifier}`;
+    updateDmnField('validatedBy', orgUri);
   };
 
   // Check if identifier looks like a full URI
   const isFullUri =
     organization.identifier?.startsWith('http://') ||
     organization.identifier?.startsWith('https://');
+
+  // Determine validation metadata availability
+  const hasDMN = dmnData.fileName && dmnData.deployed && dmnData.lastTestResult;
+  const isImported = dmnData.isImported;
+  const hasValidationMetadata =
+    dmnData.validationStatus && dmnData.validationStatus !== 'not-validated';
 
   const handleLogoUpload = async (event) => {
     const file = event.target.files[0];
@@ -132,7 +155,7 @@ export default function OrganizationTab({ organization, setOrganization }) {
         )}
       </div>
 
-      {/* Organization Name - MANDATORY for CPSV-AP */}
+      {/* Organization Name - MANDATORY */}
       <div>
         <label className="block text-sm text-gray-700 mb-1">
           <span className="font-medium">Preferred name of the organization</span>
@@ -161,6 +184,293 @@ export default function OrganizationTab({ organization, setOrganization }) {
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           placeholder="e.g., https://www.svb.nl"
         />
+      </div>
+
+      {/* DMN Validation Metadata Section - Conditional */}
+      <div className="border-t border-gray-200 pt-4">
+        {/* State 1: No DMN at all - Empty State */}
+        {!hasDMN && !isImported && (
+          <div className="bg-gray-50 border border-gray-300 rounded-lg p-6">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="text-2xl">🔒</div>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">DMN Validation Metadata</h3>
+                <p className="text-sm text-gray-700 mb-4">
+                  DMN validation metadata requires a decision model to be uploaded, deployed, and
+                  evaluated.
+                </p>
+              </div>
+            </div>
+
+            {/* Workflow Instructions */}
+            <div className="bg-white rounded-lg p-4 mb-4">
+              <p className="text-sm font-medium text-gray-900 mb-3">
+                To enable validation metadata:
+              </p>
+              <ol className="space-y-2 text-sm text-gray-700">
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    1
+                  </span>
+                  <span>
+                    Go to the <strong>DMN</strong> tab
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    2
+                  </span>
+                  <span>Upload a DMN file (.dmn) or load an example</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    3
+                  </span>
+                  <span>Deploy to Operaton</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    4
+                  </span>
+                  <span>Run a test (so the DMN is verified)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="flex-shrink-0 w-6 h-6 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    ✓
+                  </span>
+                  <span>Validation metadata will become available here</span>
+                </li>
+              </ol>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              onClick={() => {
+                const dmnTab = document.querySelector('[data-tab-id="dmn"]');
+                if (dmnTab) dmnTab.click();
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <BookOpen size={18} />
+              Go to DMN tab
+            </button>
+          </div>
+        )}
+
+        {/* State 2: Imported DMN WITH validation metadata - Read-Only */}
+        {isImported && hasValidationMetadata && (
+          <div className="bg-blue-50 border border-blue-300 rounded-lg p-6">
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">🔒</div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-blue-900 mb-2">
+                  DMN Validation Metadata (imported)
+                </h3>
+                <p className="text-sm text-blue-800 mb-3">
+                  DMN data was imported from a TTL file and is preserved but cannot be edited.
+                  Validation metadata is included in the imported DMN blocks.
+                </p>
+
+                {/* Show current validation status for reference */}
+                <div className="bg-white rounded-lg p-4 mb-3 border border-blue-200">
+                  <p className="text-sm font-medium text-blue-900 mb-2">
+                    Current Validation Status:
+                  </p>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex gap-2">
+                      <span className="text-gray-600 min-w-[100px]">Status:</span>
+                      <span className="font-medium text-gray-900">
+                        {dmnData.validationStatus === 'validated' && '✅ Validated'}
+                        {dmnData.validationStatus === 'in-review' && '🔄 In Review'}
+                        {dmnData.validationStatus === 'not-validated' && '⭕ Not Validated'}
+                      </span>
+                    </div>
+                    {dmnData.validatedBy && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-600 min-w-[100px]">Validated by:</span>
+                        <span className="text-gray-900 break-all">{dmnData.validatedBy}</span>
+                      </div>
+                    )}
+                    {dmnData.validatedAt && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-600 min-w-[100px]">Validated at:</span>
+                        <span className="text-gray-900">{dmnData.validatedAt}</span>
+                      </div>
+                    )}
+                    {dmnData.validationNote && (
+                      <div className="flex gap-2">
+                        <span className="text-gray-600 min-w-[100px]">Note:</span>
+                        <span className="text-gray-900">{dmnData.validationNote}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <p className="text-sm text-blue-800 mb-2">
+                  To modify validation metadata for an imported DMN:
+                </p>
+                <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                  <li>Go to DMN tab and clear imported data</li>
+                  <li>Upload and deploy a new DMN</li>
+                  <li>Return here to add validation metadata</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* State 3: Imported DMN WITHOUT validation - Info notice */}
+        {isImported && !hasValidationMetadata && (
+          <div className="bg-blue-50 border border-blue-300 rounded-lg p-6">
+            <div className="flex items-start gap-2">
+              <span className="text-gray-600">ℹ️</span>
+              <div>
+                <p className="text-sm text-gray-700">
+                  <strong>DMN data imported</strong> without validation metadata.
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  To add validation metadata, clear the imported DMN and upload a new one.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* State 4: Fresh DMN uploaded - Editable Fields */}
+        {hasDMN && !isImported && (
+          <div>
+            {/* Collapsible Header */}
+            <button
+              type="button"
+              onClick={() => setShowValidationSection(!showValidationSection)}
+              className="flex items-center justify-between w-full text-left hover:bg-gray-50 p-2 rounded transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-gray-900">DMN Validation Metadata</span>
+                <span className="text-xs text-gray-500">(optional)</span>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-500 transition-transform ${
+                  showValidationSection ? 'transform rotate-180' : ''
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Collapsible Content */}
+            {showValidationSection && (
+              <div className="mt-4 space-y-4 pl-4 border-l-2 border-blue-200">
+                {/* DMN Context Info */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+                  <div className="flex items-start gap-2">
+                    <span className="text-blue-600">ℹ️</span>
+                    <div>
+                      <p className="text-blue-800">
+                        <strong>Validation for:</strong> {dmnData.fileName}
+                      </p>
+                      <p className="text-blue-700 text-xs mt-1">
+                        Deployed: {new Date(dmnData.deployedAt).toLocaleDateString()} | Tested:{' '}
+                        {new Date(dmnData.lastTestTimestamp).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Info Box */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+                  <p className="text-blue-800">
+                    <strong>About validation metadata:</strong> These fields describe the quality
+                    assurance status of your organization's reference decision models. The
+                    validating organization is typically your own.
+                  </p>
+                </div>
+
+                {/* Validation Status */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Validation Status
+                    <span className="text-gray-500 font-normal"> (ronl:validationStatus)</span>
+                  </label>
+                  <select
+                    value={dmnData.validationStatus}
+                    onChange={(e) => updateDmnField('validationStatus', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="not-validated">Not Validated</option>
+                    <option value="in-review">In Review</option>
+                    <option value="validated">Validated</option>
+                  </select>
+                </div>
+
+                {/* Validated By URI */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Validated By Organization URI
+                    <span className="text-gray-500 font-normal"> (ronl:validatedBy)</span>
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={dmnData.validatedBy}
+                      onChange={(e) => updateDmnField('validatedBy', e.target.value)}
+                      placeholder="https://organisaties.overheid.nl/28212263/..."
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={autoFillValidatedBy}
+                      className="px-3 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 text-sm whitespace-nowrap"
+                      title="Use current organization"
+                    >
+                      📋 Use This Org
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Full URI of the validating organization
+                  </p>
+                </div>
+
+                {/* Validation Date */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Validation Date
+                    <span className="text-gray-500 font-normal"> (ronl:validatedAt)</span>
+                  </label>
+                  <input
+                    type="date"
+                    value={dmnData.validatedAt}
+                    onChange={(e) => updateDmnField('validatedAt', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+
+                {/* Validation Note */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Validation Note
+                    <span className="text-gray-500 font-normal"> (ronl:validationNote)</span>
+                  </label>
+                  <textarea
+                    value={dmnData.validationNote}
+                    onChange={(e) => updateDmnField('validationNote', e.target.value)}
+                    placeholder="e.g., Validated against AOW legislation Article 7a. Test suite: 127 cases passed."
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Geographic Jurisdiction - MANDATORY */}
@@ -256,10 +566,16 @@ export default function OrganizationTab({ organization, setOrganization }) {
 
           {/* Upload Button - Show when no logo at all */}
           {!organization.logo && (
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors">
-              <Upload className="mx-auto text-gray-400 mb-2" size={32} />
+            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
               <label className="cursor-pointer">
-                <span className="text-blue-600 hover:text-blue-700 font-medium">Upload Logo</span>
+                <Upload className="mx-auto text-gray-400 mb-2" size={32} />
+                <p className="text-sm text-gray-600 mb-1">
+                  <span className="text-blue-600 font-medium">Click to upload</span> or drag and
+                  drop
+                </p>
+                <p className="text-xs text-gray-500">
+                  PNG or JPG (max 5MB, will be resized to 256x256px)
+                </p>
                 <input
                   type="file"
                   accept="image/jpeg,image/jpg,image/png"
@@ -267,7 +583,6 @@ export default function OrganizationTab({ organization, setOrganization }) {
                   className="hidden"
                 />
               </label>
-              <p className="text-gray-500 text-xs mt-2">JPG or PNG, will be resized to 256x256px</p>
             </div>
           )}
 
@@ -301,7 +616,7 @@ export default function OrganizationTab({ organization, setOrganization }) {
           )}
         </div>
 
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 mt-2">
           The logo will be included in the TTL output and published to TriplyDB
         </p>
       </div>

@@ -58,6 +58,37 @@ export const useEditorState = () => {
     testBody: null,
     importedDmnBlocks: null, // Raw TTL blocks (string)
     isImported: false, // Flag to disable DMN tab
+
+    // Ensure validation fields always have string defaults (not undefined)
+    validationStatus: 'not-validated',
+    validatedBy: '',
+    validatedAt: '',
+    validationNote: '',
+  });
+
+  // Vendor state - Blueriq as a first
+  const [vendorService, setVendorService] = useState({
+    selectedVendor: '',
+    contact: {
+      organizationName: '',
+      contactPerson: '',
+      email: '',
+      phone: '',
+      website: '',
+      logo: '',
+    },
+    serviceNotes: '',
+    technical: {
+      serviceUrl: '',
+      license: '',
+      accessType: 'fair-use',
+    },
+    certification: {
+      status: 'not-certified',
+      certifiedBy: '',
+      certifiedAt: '',
+      certificationNote: '',
+    },
   });
 
   // iKnow state
@@ -102,6 +133,29 @@ export const useEditorState = () => {
       importedDmnBlocks: null,
       isImported: false,
     });
+    setVendorService({
+      selectedVendor: '',
+      contact: {
+        organizationName: '',
+        contactPerson: '',
+        email: '',
+        phone: '',
+        website: '',
+        logo: '',
+      },
+      serviceNotes: '',
+      technical: {
+        serviceUrl: '',
+        license: '',
+        accessType: 'fair-use',
+      },
+      certification: {
+        status: 'not-certified',
+        certifiedBy: '',
+        certifiedAt: '',
+        certificationNote: '',
+      },
+    });
     setIknowMappingConfig({ mappings: {} });
     // Note: We don't clear TriplyDB config on clear all
   };
@@ -141,6 +195,9 @@ export const useEditorState = () => {
     setDmnData,
     concepts,
     setConcepts,
+    // Vendor
+    vendorService,
+    setVendorService,
     // iKnow
     iknowMappingConfig,
     setIknowMappingConfig,

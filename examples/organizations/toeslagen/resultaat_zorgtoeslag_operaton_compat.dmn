@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" xmlns:di="http://www.omg.org/spec/DMN/20151101/di.xsd" xmlns:dc="http://www.omg.org/spec/DMN/20151101/dc.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="def_zorgtoeslag_temporal_demo" name="Zorgtoeslag (Temporal Rules demo)" namespace="https://example.org/dmn/zorgtoeslag/temporal-demo">
+  <inputData id="in_datumBerekening" name="datumBerekening">
+    <variable id="var_datumBerekening" name="datumBerekening" typeRef="date" />
+  </inputData>
+  <inputData id="in_geboortedatum" name="geboortedatum">
+    <variable id="var_geboortedatum" name="geboortedatum" typeRef="date" />
+  </inputData>
+  <inputData id="in_leeftijdOpDatumBerekening" name="leeftijdOpDatumBerekening">
+    <variable id="var_leeftijdOpDatumBerekening" name="leeftijdOpDatumBerekening" typeRef="number" />
+  </inputData>
+  <inputData id="in_leeftijdOpLaatsteDagVorigeMaand" name="leeftijdOpLaatsteDagVorigeMaand">
+    <variable id="var_leeftijdOpLaatsteDagVorigeMaand" name="leeftijdOpLaatsteDagVorigeMaand" typeRef="number" />
+  </inputData>
+  <inputData id="in_leeftijdOpLaatsteDagHuidigeMaand" name="leeftijdOpLaatsteDagHuidigeMaand">
+    <variable id="var_leeftijdOpLaatsteDagHuidigeMaand" name="leeftijdOpLaatsteDagHuidigeMaand" typeRef="number" />
+  </inputData>
+  <inputData id="in_overlijdensdatum" name="overlijdensdatum">
+    <variable id="var_overlijdensdatum" name="overlijdensdatum" typeRef="date" />
+  </inputData>
+  <inputData id="in_woonachtigNL" name="woonachtigNL">
+    <variable id="var_woonachtigNL" name="woonachtigNL" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_rechtmatigVerblijfNL" name="rechtmatigVerblijfNL">
+    <variable id="var_rechtmatigVerblijfNL" name="rechtmatigVerblijfNL" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_statusZorgverzekerd" name="statusZorgverzekerd">
+    <variable id="var_statusZorgverzekerd" name="statusZorgverzekerd" typeRef="string" />
+  </inputData>
+  <inputData id="in_gedetineerd" name="gedetineerd">
+    <variable id="var_gedetineerd" name="gedetineerd" typeRef="boolean" />
+  </inputData>
+  <inputData id="in_toetsingsinkomen" name="toetsingsinkomen">
+    <variable id="var_toetsingsinkomen" name="toetsingsinkomen" typeRef="number" />
+  </inputData>
+  <inputData id="in_woonlandfactorBuitenland" name="woonlandfactorBuitenland">
+    <variable id="var_woonlandfactorBuitenland" name="woonlandfactorBuitenland" typeRef="number" />
+  </inputData>
+  <decision id="p_STANDAARDPREMIE" name="STANDAARDPREMIE" camunda:historyTimeToLive="180">
+    <variable id="v_p_STANDAARDPREMIE" name="STANDAARDPREMIE" typeRef="number" />
+    <literalExpression id="LiteralExpression_0mxcg2i">
+      <text>1987</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_DREMPELINKOMEN" name="DREMPELINKOMEN" camunda:historyTimeToLive="180">
+    <variable id="v_p_DREMPELINKOMEN" name="DREMPELINKOMEN" typeRef="number" />
+    <literalExpression id="LiteralExpression_1r8fqpp">
+      <text>26819</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_DOELMATIGHEIDSGRENS" name="DOELMATIGHEIDSGRENS_JAARBEDRAG_TOESLAG" camunda:historyTimeToLive="180">
+    <variable id="v_p_DOELMATIGHEIDSGRENS" name="DOELMATIGHEIDSGRENS" typeRef="number" />
+    <literalExpression id="LiteralExpression_0okmmrr">
+      <text>23.5</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_DREMPEL_PCT_ZP" name="DREMPELINKOMENPERCENTAGE_ZONDER_PARTNER" camunda:historyTimeToLive="180">
+    <variable id="v_p_DREMPEL_PCT_ZP" name="DREMPEL_PCT_ZP" typeRef="number" />
+    <literalExpression id="LiteralExpression_1anm777">
+      <text>1.879</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_OVERSCHOT_PCT_ZP" name="OVERSCHOTPERCENTAGE_DREMPELINKOMEN_ZONDER_PARTNER" camunda:historyTimeToLive="180">
+    <variable id="v_p_OVERSCHOT_PCT_ZP" name="OVERSCHOT_PCT_ZP" typeRef="number" />
+    <literalExpression id="LiteralExpression_1mc0luz">
+      <text>13.67</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_MEERDERJARIGHEIDSLEEFTIJD" name="MEERDERJARIGHEIDSLEEFTIJD" camunda:historyTimeToLive="180">
+    <variable id="v_p_MEERDERJARIGHEIDSLEEFTIJD" name="MEERDERJARIGHEIDSLEEFTIJD" typeRef="number" />
+    <literalExpression id="LiteralExpression_1vvfor5">
+      <text>18</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_MAX_ZORGTOESLAG_ZP" name="MAX_ZORGTOESLAG_ZP" camunda:historyTimeToLive="180">
+    <variable id="v_p_MAX_ZORGTOESLAG_ZP" name="MAX_ZORGTOESLAG_ZP" typeRef="number" />
+    <literalExpression id="LiteralExpression_1u6rxtg">
+      <text>1483</text>
+    </literalExpression>
+  </decision>
+  <decision id="p_NORMPREMIE_OVER_DREMPEL_ZP" name="NORMPREMIE_OVER_DREMPEL_ZP" camunda:historyTimeToLive="180">
+    <variable id="v_p_NORMPREMIE_OVER_DREMPEL_ZP" name="NORMPREMIE_OVER_DREMPEL_ZP" typeRef="number" />
+    <literalExpression id="LiteralExpression_0faz39t">
+      <text>503.93</text>
+    </literalExpression>
+  </decision>
+    <decision id="zorgtoeslag_resultaat" name="Resultaat zorgtoeslag" camunda:historyTimeToLive="180">
+    <informationRequirement id="InformationRequirement_0lbkyh8">
+      <requiredDecision href="#rechtOpToeslagAanvraag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0nkz3ps">
+      <requiredDecision href="#jaarbedragToeslag" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1jgvsw8" hitPolicy="FIRST">
+      <input id="i_elig">
+        <inputExpression id="LiteralExpression_0sko73t" typeRef="boolean">
+          <text>rechtOpToeslagAanvraag</text>
+        </inputExpression>
+      </input>
+      <input id="i_amt">
+        <inputExpression id="LiteralExpression_1vt328w" typeRef="number">
+          <text>amountYear</text>
+        </inputExpression>
+      </input>
+      <output id="o_eligible" name="eligible" typeRef="boolean" />
+      <output id="o_amountYear" name="amountYear" typeRef="number" />
+      <rule id="DecisionRule_0btwm30">
+        <inputEntry id="UnaryTests_1aj8eg8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05f96be">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hsm6o6">
+          <text>rechtOpToeslagAanvraag</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1cfj6le">
+          <text>if rechtOpToeslagAanvraag then amountYear else 0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="leeftijd" name="Leeftijd (hele jaren)" camunda:historyTimeToLive="180">
+    <variable id="v_leeftijd" name="leeftijd" typeRef="number" />
+    <informationRequirement id="InformationRequirement_0u859x1">
+      <requiredInput href="#in_leeftijdOpDatumBerekening" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_06zjtch">
+      <text>leeftijdOpDatumBerekening</text>
+    </literalExpression>
+  </decision>
+  <decision id="meerderjarigDezeMaand" name="Meerderjarig geworden in deze berekeningsmaand" camunda:historyTimeToLive="180">
+    <variable id="v_mdm" name="meerderjarigDezeMaand" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_0dlr8gu">
+      <requiredInput href="#in_leeftijdOpLaatsteDagVorigeMaand" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1yp7slp">
+      <requiredInput href="#in_leeftijdOpLaatsteDagHuidigeMaand" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_02d1o0j">
+      <requiredDecision href="#p_MEERDERJARIGHEIDSLEEFTIJD" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_068fqxm">
+      <text>
+        (leeftijdOpLaatsteDagVorigeMaand &lt; MEERDERJARIGHEIDSLEEFTIJD)
+        and
+        (leeftijdOpLaatsteDagHuidigeMaand = MEERDERJARIGHEIDSLEEFTIJD)
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="rechtgevendeLeeftijd" name="Rechtgevende leeftijd" camunda:historyTimeToLive="180">
+    <variable id="v_rl" name="rechtgevendeLeeftijd" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1ofqnkq">
+      <requiredDecision href="#leeftijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1xdcyw0">
+      <requiredDecision href="#meerderjarigDezeMaand" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_05f5qt9">
+      <requiredDecision href="#p_MEERDERJARIGHEIDSLEEFTIJD" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1mju16t">
+      <text>(leeftijd &gt;= MEERDERJARIGHEIDSLEEFTIJD) and (meerderjarigDezeMaand = false)</text>
+    </literalExpression>
+  </decision>
+  <decision id="inLeven" name="In leven" camunda:historyTimeToLive="180">
+    <variable id="v_inLeven" name="inLeven" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_0ccre9v">
+      <requiredInput href="#in_overlijdensdatum" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0ay9qhn">
+      <text>overlijdensdatum = null</text>
+    </literalExpression>
+  </decision>
+  <decision id="statusRouteOk" name="Rechtmatige route/status ok" camunda:historyTimeToLive="180">
+    <variable id="v_statusRouteOk" name="statusRouteOk" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_05nj99s">
+      <requiredInput href="#in_woonachtigNL" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0xiypjw">
+      <requiredInput href="#in_rechtmatigVerblijfNL" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0qt4t7i">
+      <requiredInput href="#in_statusZorgverzekerd" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0kpplme">
+      <text>
+        (
+          (rechtmatigVerblijfNL and statusZorgverzekerd = "Binnenlands zorgverzekerd")
+          or
+          ((woonachtigNL = false) and (statusZorgverzekerd = "Buitenlands verdragsgerechtigd" or statusZorgverzekerd = "Binnenlands zorgverzekerd"))
+        )
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="rechtOpToeslag" name="Recht op zorgtoeslag (burger)" camunda:historyTimeToLive="180">
+    <variable id="v_recht" name="eligible" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_0j3olcj">
+      <requiredDecision href="#statusRouteOk" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_14mtc5u">
+      <requiredDecision href="#rechtgevendeLeeftijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1j67hts">
+      <requiredInput href="#in_gedetineerd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1yde13n">
+      <requiredDecision href="#inLeven" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1pln709">
+      <text>statusRouteOk and rechtgevendeLeeftijd and (gedetineerd = false) and inLeven</text>
+    </literalExpression>
+  </decision>
+  <decision id="rechtOpToeslagAanvraag" name="Recht op toeslag (aanvraag)" camunda:historyTimeToLive="180">
+    <variable id="v_rechtAanvraag" name="rechtOpToeslagAanvraag" typeRef="boolean" />
+    <informationRequirement id="InformationRequirement_1tn55pj">
+      <requiredDecision href="#rechtOpToeslag" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1tkf3gz">
+      <text>eligible</text>
+    </literalExpression>
+  </decision>
+  <decision id="woonlandfactor" name="Woonlandfactor" camunda:historyTimeToLive="180">
+    <variable id="v_wlf" name="woonlandfactor" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1spasux">
+      <requiredInput href="#in_statusZorgverzekerd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_075z7g0">
+      <requiredInput href="#in_woonlandfactorBuitenland" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_09vr20b">
+      <text>
+        if statusZorgverzekerd = "Binnenlands zorgverzekerd" then 1
+        else if statusZorgverzekerd = "Buitenlands verdragsgerechtigd" then woonlandfactorBuitenland
+        else 0
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="standaardpremie" name="Standaardpremie" camunda:historyTimeToLive="180">
+    <variable id="v_sp" name="standaardpremie" typeRef="number" />
+    <informationRequirement id="InformationRequirement_04zltbv">
+      <requiredDecision href="#p_STANDAARDPREMIE" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1axqrb7">
+      <requiredDecision href="#woonlandfactor" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_1sl70ys">
+      <text>STANDAARDPREMIE * woonlandfactor</text>
+    </literalExpression>
+  </decision>
+  <decision id="inkomenBovenDrempel" name="Inkomen boven drempelinkomen" camunda:historyTimeToLive="180">
+    <variable id="v_ibd" name="inkomenBovenDrempel" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1nmls2o">
+      <requiredInput href="#in_toetsingsinkomen" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1ecc757">
+      <requiredDecision href="#p_DREMPELINKOMEN" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_10dlmfs">
+      <text>
+        if toetsingsinkomen = null then null
+        else if (toetsingsinkomen - DREMPELINKOMEN) &gt; 0 then (toetsingsinkomen - DREMPELINKOMEN) else 0
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="normpremie" name="Normpremie (zonder partner)" camunda:historyTimeToLive="180">
+    <variable id="v_np" name="normpremie" typeRef="number" />
+    <informationRequirement id="InformationRequirement_14pmrh9">
+      <requiredDecision href="#p_NORMPREMIE_OVER_DREMPEL_ZP" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_15mm3cg">
+      <requiredDecision href="#p_OVERSCHOT_PCT_ZP" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0um464x">
+      <requiredDecision href="#inkomenBovenDrempel" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0ns4jbw">
+      <text>
+        if inkomenBovenDrempel = null then null
+        else NORMPREMIE_OVER_DREMPEL_ZP + ((OVERSCHOT_PCT_ZP / 100) * inkomenBovenDrempel)
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="jaarbedragToeslagOntbrekendeDraagkracht" name="Jaarbedrag toeslag bij ontbrekende draagkracht" camunda:historyTimeToLive="180">
+    <variable id="v_jb_leeg" name="jaarbedragToeslagLeeg" typeRef="number" />
+    <informationRequirement id="InformationRequirement_11dn2h7">
+      <requiredDecision href="#rechtOpToeslagAanvraag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0ipdqao">
+      <requiredInput href="#in_toetsingsinkomen" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_16xiec2">
+      <text>
+        if rechtOpToeslagAanvraag and toetsingsinkomen = null then null else 0
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="jaarbedragToeslagBasis" name="Jaarbedrag toeslag basis (zonder partner)" camunda:historyTimeToLive="180">
+    <variable id="v_jb0" name="jaarbedragToeslagBasis" typeRef="number" />
+    <informationRequirement id="InformationRequirement_08suxib">
+      <requiredDecision href="#rechtOpToeslagAanvraag" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0chl44m">
+      <requiredInput href="#in_toetsingsinkomen" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0b5n5h4">
+      <requiredDecision href="#standaardpremie" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_04hc47l">
+      <requiredDecision href="#normpremie" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0hdhs52">
+      <text>
+        if rechtOpToeslagAanvraag = false then 0
+        else if toetsingsinkomen = null then null
+        else if (standaardpremie - normpremie) &gt; 0 then (standaardpremie - normpremie) else 0
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="jaarbedragToeslag" name="Jaarbedrag toeslag (doelmatigheidsgrens + max cap)" camunda:historyTimeToLive="180">
+    <variable id="v_jb" name="amountYear" typeRef="number" />
+    <informationRequirement id="InformationRequirement_1emz4c3">
+      <requiredDecision href="#jaarbedragToeslagOntbrekendeDraagkracht" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_025h368">
+      <requiredDecision href="#jaarbedragToeslagBasis" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0s9c89u">
+      <requiredDecision href="#p_DOELMATIGHEIDSGRENS" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1x64ok9">
+      <requiredDecision href="#p_MAX_ZORGTOESLAG_ZP" />
+    </informationRequirement>
+    <literalExpression id="LiteralExpression_0rdzrj3">
+      <text>
+        if jaarbedragToeslagBasis = null then null
+        else if jaarbedragToeslagBasis &lt; DOELMATIGHEIDSGRENS then 0
+        else if jaarbedragToeslagBasis &gt; MAX_ZORGTOESLAG_ZP then MAX_ZORGTOESLAG_ZP
+        else jaarbedragToeslagBasis
+      </text>
+    </literalExpression>
+  </decision>
+</definitions>

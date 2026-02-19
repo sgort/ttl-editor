@@ -1,0 +1,50 @@
+## EXAMPLE
+
+<https://regels.overheid.nl/services/normbedragen/dmn> a cprmv:DecisionModel ;
+    dct:identifier "SZW_BijstandsnormInformatie" ;
+    dct:title "SZW_BijstandsnormInformatie.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/normbedragen> ;
+    dct:source <https://regels.overheid.nl/services/normbedragen/dmn/file> ;
+    cprmv:deploymentId "b6d212aa-01f2-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-04T17:55:39.016Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/SZW_BijstandsnormInformatie/evaluate> ;
+    cprmv:lastTested "2026-02-04T17:55:55.188Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+    
+ <https://regels.overheid.nl/services/normbedragen/dmn/output/2> a cpsv:Output ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 1401.5 ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen/dmn> .
+    
+    
+ <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> a cprmv:DecisionModel ;
+    dct:identifier "RONL_HeusdenpasEindresultaat" ;
+    dct:title "HeusdenpasEindresultaat.dmn"@nl ;
+    ronl:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
+    dct:source <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/file> ;
+    cprmv:deploymentId "715e4381-075a-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T15:00:46.108Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
+    cprmv:lastTested "2026-02-11T15:01:21.098Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+    
+<https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/4> a cpsv:Input ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 345 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
+
+
+## EXPLANATION
+  
+Exact Match Links come from the findEnhancedChainLinks matchType: 'exact' branch — it requires two different DMNs where a cpsv:Output of one has the exact same dct:identifier string as a cpsv:Input of another. For example:
+
+DMN A outputs leeftijdAanvrager
+DMN B inputs leeftijdAanvrager
+
+This is the same mechanism the existing chain builder already uses (the original findChainLinks query). In your current dataset this is 0 because the SVB output identifier (aanvragerHeeftAOWLeeftijd) doesn't literally match the SZW input identifier — the connection exists only semantically via skos:exactMatch, which is exactly why the semantic matching is finding them instead.

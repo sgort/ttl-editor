@@ -41,6 +41,29 @@ export const parseTTLEnhanced = (ttlContent) => {
       temporalRules: [],
       parameters: [],
       cprmvRules: [],
+      vendorService: {
+        selectedVendor: '',
+        contact: {
+          organizationName: '',
+          contactPerson: '',
+          email: '',
+          phone: '',
+          website: '',
+          logo: '',
+        },
+        serviceNotes: '',
+        technical: {
+          serviceUrl: '',
+          license: '',
+          accessType: 'fair-use',
+        },
+        certification: {
+          status: 'not-certified',
+          certifiedBy: '',
+          certifiedAt: '',
+          certificationNote: '',
+        },
+      },
       concepts: [],
       cost: {
         identifier: '',
@@ -55,9 +78,15 @@ export const parseTTLEnhanced = (ttlContent) => {
         type: '',
       },
 
-      // NEW: DMN preservation for Option 3
+      // DMN preservation for Option 3
       importedDmnBlocks: null, // Raw TTL blocks (string)
       hasDmnData: false, // Detection flag
+
+      // NEW: DMN validation metadata (for import)
+      dmnValidationStatus: 'not-validated',
+      dmnValidatedBy: '',
+      dmnValidatedAt: '',
+      dmnValidationNote: '',
     };
 
     // Validate prefixes (silent by default to reduce console noise)
@@ -73,6 +102,7 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentCprmvRule = null;
     let currentConcept = null;
     let currentSubject = null;
+    let inContactPoint = false;
 
     // NEW: DMN block tracking
     let inDmnSection = false;
@@ -255,9 +285,152 @@ export const parseTTLEnhanced = (ttlContent) => {
         continue;
       }
 
+      if (currentSection === 'vendorService') {
+        // Parse ronl:implementedBy (vendor selection)
+        if (line.includes('ronl:implementedBy')) {
+          const match = line.match(/ronl:implementedBy\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.selectedVendor = match[1];
+            console.log('Parsed vendor selection:', match[1]);
+          }
+        }
+
+        // Parse schema:provider organization name
+        if (line.includes('schema:name') && !inContactPoint) {
+          parsed.vendorService.contact.organizationName = extractValue(
+            line.split('schema:name')[1]
+          );
+        }
+
+        // Parse logo
+        if (line.includes('schema:image')) {
+          const match = line.match(/schema:image\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.contact.logo = match[1];
+          }
+        }
+
+        // Track if we're inside contactPoint
+        if (line.includes('schema:contactPoint')) {
+          inContactPoint = true;
+        }
+
+        // Parse contact point fields
+        if (inContactPoint) {
+          if (line.includes('schema:name')) {
+            parsed.vendorService.contact.contactPerson = extractValue(line.split('schema:name')[1]);
+          }
+          if (line.includes('schema:email')) {
+            parsed.vendorService.contact.email = extractValue(line.split('schema:email')[1]);
+          }
+          if (line.includes('schema:telephone')) {
+            parsed.vendorService.contact.phone = extractValue(line.split('schema:telephone')[1]);
+          }
+
+          // Close contactPoint
+          if (line.includes(']') && !line.includes('[')) {
+            inContactPoint = false;
+          }
+        }
+
+        // Parse website
+        if (line.includes('foaf:homepage')) {
+          const match = line.match(/foaf:homepage\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.contact.website = match[1];
+          }
+        }
+
+        // Parse technical fields
+        if (line.includes('schema:url')) {
+          const match = line.match(/schema:url\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.technical.serviceUrl = match[1];
+          }
+        }
+
+        if (line.includes('schema:license')) {
+          parsed.vendorService.technical.license = extractValue(line.split('schema:license')[1]);
+        }
+
+        if (line.includes('ronl:accessType')) {
+          parsed.vendorService.technical.accessType = extractValue(
+            line.split('ronl:accessType')[1]
+          );
+        }
+
+        // Parse service notes
+        if (line.includes('dct:description')) {
+          parsed.vendorService.serviceNotes = extractValue(line.split('dct:description')[1]);
+        }
+
+        // Parse certification fields
+        if (line.includes('ronl:certificationStatus')) {
+          parsed.vendorService.certification.status = extractValue(
+            line.split('ronl:certificationStatus')[1]
+          );
+        }
+
+        if (line.includes('ronl:certifiedBy')) {
+          const match = line.match(/ronl:certifiedBy\s+<([^>]+)>/);
+          if (match) {
+            parsed.vendorService.certification.certifiedBy = match[1];
+          }
+        }
+
+        if (line.includes('ronl:certifiedAt')) {
+          parsed.vendorService.certification.certifiedAt = extractValue(
+            line.split('ronl:certifiedAt')[1]
+          );
+        }
+
+        if (line.includes('ronl:certificationNote')) {
+          parsed.vendorService.certification.certificationNote = extractValue(
+            line.split('ronl:certificationNote')[1]
+          );
+        }
+      }
+
       if (inDmnSection) {
-        dmnLines.push(rawLine);
-        continue; // Standard detection handles section closing
+        // v2.0.0: Parse validation properties BEFORE preserving raw line
+        if (currentSection === 'dmnModel') {
+          // Parse validation metadata from DMN model lines
+          if (line.includes('ronl:validationStatus')) {
+            const value = extractValue(line.split('ronl:validationStatus')[1]) || 'not-validated';
+            parsed.dmnValidationStatus = value;
+            console.log('🔍 Parsed validationStatus:', value);
+          }
+          if (line.includes('ronl:validatedBy')) {
+            const value = extractValue(line.split('ronl:validatedBy')[1]) || '';
+            parsed.dmnValidatedBy = value;
+            console.log('🔍 Parsed validatedBy:', value);
+          }
+          if (line.includes('ronl:validatedAt')) {
+            const value = extractValue(line.split('ronl:validatedAt')[1]) || '';
+            parsed.dmnValidatedAt = value;
+            console.log('🔍 Parsed validatedAt:', value);
+          }
+          if (line.includes('ronl:validationNote')) {
+            const value = extractValue(line.split('ronl:validationNote')[1]) || '';
+            parsed.dmnValidationNote = value;
+            console.log('🔍 Parsed validationNote:', value);
+          }
+        }
+
+        // v2.0.0: Replace old namespace in raw line before preserving
+        let processedLine = rawLine;
+        if (rawLine.includes('ronl:implements ') && !rawLine.includes('ronl:validat')) {
+          processedLine = rawLine.replace('ronl:implements', 'cprmv:implements');
+          console.log('🔄 Converted ronl:implements → cprmv:implements');
+        }
+        if (rawLine.includes('ronl:implementedBy')) {
+          processedLine = rawLine.replace('ronl:implementedBy', 'cprmv:implementedBy');
+          console.log('🔄 Converted ronl:implementedBy → cprmv:implementedBy');
+        }
+
+        // Preserve processed line for round-trip
+        dmnLines.push(processedLine);
+        continue;
       }
 
       // Parse properties based on current section
@@ -350,16 +523,19 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('dct:description')[1]) || parsed.legalResource.description;
         }
 
-        if (line.includes('ronl:hasAnalysis')) {
-          const match = line.match(/ronl:hasAnalysis\s+(?:<([^>]+)>|(ronl:\S+))/);
+        // v2.0.0: Support both ronl: (legacy) and cprmv: (current)
+        if (line.includes('hasAnalysis')) {
+          // Match either ronl:hasAnalysis or cprmv:hasAnalysis
+          const match = line.match(/(?:ronl|cprmv):hasAnalysis\s+(?:<([^>]+)>|(\S+))/);
           if (match) {
             parsed.ronlAnalysis = match[1] || match[2];
             console.log('Parsed RONL Analysis:', parsed.ronlAnalysis);
           }
         }
 
-        if (line.includes('ronl:hasMethod')) {
-          const match = line.match(/ronl:hasMethod\s+(?:<([^>]+)>|(ronl:\S+))/);
+        if (line.includes('hasMethod')) {
+          // Match either ronl:hasMethod or cprmv:hasMethod
+          const match = line.match(/(?:ronl|cprmv):hasMethod\s+(?:<([^>]+)>|(\S+))/);
           if (match) {
             parsed.ronlMethod = match[1] || match[2];
             console.log('Parsed RONL Method:', parsed.ronlMethod);
@@ -571,6 +747,14 @@ export const parseTTLEnhanced = (ttlContent) => {
     if (parsed.hasDmnData && dmnLines.length > 0) {
       parsed.importedDmnBlocks = dmnLines.join('\n');
       console.log('✅ DMN data detected and preserved:', dmnLines.length, 'lines');
+
+      // NEW: Log validation metadata summary
+      console.log('📋 DMN Validation Metadata Parsed:', {
+        status: parsed.dmnValidationStatus,
+        validatedBy: parsed.dmnValidatedBy,
+        validatedAt: parsed.dmnValidatedAt,
+        hasNote: !!parsed.dmnValidationNote,
+      });
     }
 
     return parsed;

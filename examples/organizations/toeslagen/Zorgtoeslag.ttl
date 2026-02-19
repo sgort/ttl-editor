@@ -212,10 +212,10 @@
     dct:title "BerekenRechtEnHoogteZorg.dmn"@nl ;
     ronl:implements <https://regels.overheid.nl/services/zorgtoeslag> ;
     dct:source <https://regels.overheid.nl/services/zorgtoeslag/dmn/file> ;
-    cprmv:deploymentId "3d0bf4f2-fcfb-11f0-a931-8e0c375d6d16" ;
-    cprmv:deployedAt "2026-01-29T10:14:04.325Z"^^xsd:dateTime ;
-    ronl:implementedBy <https://operaton-doc.open-regels.nl/engine-rest/decision-definition/key/berekenrechtenhoogtezorg/evaluate> ;
-    cprmv:lastTested "2026-01-29T10:14:23.466Z"^^xsd:dateTime ;
+    cprmv:deploymentId "e70d843e-0740-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-11T11:57:56.693Z"^^xsd:dateTime ;
+    ronl:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/berekenrechtenhoogtezorg/evaluate> ;
+    cprmv:lastTested "2026-02-11T11:58:15.994Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -272,7 +272,7 @@
     dct:identifier "zorgtoeslag" ;
     dct:title "zorgtoeslag"@nl ;
     dct:type "Double" ;
-    schema:value 1250 ;
+    schema:value 1460 ;
     cpsv:produces <https://regels.overheid.nl/services/zorgtoeslag/dmn> .
 
 <https://regels.overheid.nl/services/zorgtoeslag/rules/row-950612891-1> a cpsv:Rule, cprmv:DecisionRule ;
@@ -339,7 +339,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-01-29"^^xsd:date .
+    dct:created "2026-02-11"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -349,6 +349,7 @@
     skos:notation "INGE" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/1> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/ingezetene_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/leeftijd_requirement> a skos:Concept ;
@@ -357,6 +358,7 @@
     skos:notation "LEEF" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/leeftijd_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/betalingsregeling_requirement> a skos:Concept ;
@@ -365,6 +367,7 @@
     skos:notation "BETA" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/3> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/betalingsregeling_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/detentie_requirement> a skos:Concept ;
@@ -373,6 +376,7 @@
     skos:notation "DETE" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/4> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/detentie_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/verzekering_requirement> a skos:Concept ;
@@ -381,6 +385,7 @@
     skos:notation "VERZ" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/5> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/verzekering_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/inkomen_en_vermogen_requirement> a skos:Concept ;
@@ -389,6 +394,7 @@
     skos:notation "INKO" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/input/6> ;
     dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/inkomen_en_vermogen_requirement> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 # Output Variable Concepts
@@ -399,6 +405,7 @@
     skos:notation "ANNO" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/annotation> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/berekenrechtenhoogtezorg/zorgtoeslag> a skos:Concept ;
@@ -407,5 +414,6 @@
     skos:notation "ZORG" ;
     dct:subject <https://regels.overheid.nl/services/zorgtoeslag/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/zorgtoeslag> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
