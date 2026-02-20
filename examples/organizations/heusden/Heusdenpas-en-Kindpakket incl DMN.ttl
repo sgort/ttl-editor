@@ -62,11 +62,14 @@
     dct:title "HeusdenpasEindresultaat.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/heusdenpaskindpakket> ;
     dct:source <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/file> ;
-    cprmv:deploymentId "8e7a13a1-09bd-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-14T15:55:16.949Z"^^xsd:dateTime ;
+    cprmv:deploymentId "fff15f3e-0dbb-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-19T17:54:13.607Z"^^xsd:dateTime ;
     cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RONL_HeusdenpasEindresultaat/evaluate> ;
-    cprmv:lastTested "2026-02-14T15:55:44.361Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-19T17:54:41.327Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
+    ronl:validationStatus "validated"^^xsd:string ;
+    ronl:validatedBy <https://organisaties.overheid.nl/23118/Gemeente_Heusden> ;
+    ronl:validatedAt "2025-11-10"^^xsd:date ;
     dct:description "DMN decision model for service evaluation"@nl .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/1> a cpsv:Input ;
@@ -94,7 +97,7 @@
     dct:identifier "bijstandsNorm" ;
     dct:title "bijstandsNorm"@nl ;
     dct:type "Double" ;
-    schema:value 1145 ;
+    schema:value 450 ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/5> a cpsv:Input ;
@@ -150,7 +153,7 @@
     dct:identifier "aanvragerIsTenminste21" ;
     dct:title "aanvragerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value false ;
+    schema:value true ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn> .
 
 <https://regels.overheid.nl/services/heusdenpaskindpakket/dmn/input/13> a cpsv:Input ;
@@ -326,13 +329,6 @@
     cprmv:decisionTable "DecisionTable_knockoffs" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
-    dct:title "DMN Variabelen Begrippenkader"@nl ;
-    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
-    dct:creator "RONL" ;
-    dct:created "2026-02-14"^^xsd:date .
-
-# Input Variable Concepts
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -341,7 +337,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-14"^^xsd:date .
+    dct:created "2026-02-19"^^xsd:date .
 
 # Input Variable Concepts
 

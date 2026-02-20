@@ -4,11 +4,9 @@
     "expected": "rechtOpWW=true, wwReden=Voldoet aan alle WW-voorwaarden",
     "requestBody": {
       "variables": {
-        "dagVanAanvraag": { "value": false, "type": "String" },
-        "geboortedatumAanvrager": { "value": true, "type": "Boolean" },
-        "geboortedatumPartner": { "value": true, "type": "Boolean" },
-        "aanvragerHeeftAOWLeeftijd": { "value": false, "type": "Boolean" },
-        "aanvragerIsTenminste21": { "value": true, "type": "Boolean" },
+        "dagVanAanvraag": { "value": "2026-02-19", "type": "String" },
+        "geboortedatumAanvrager": { "value": "1968-06-20", "type": "String" },
+        "geboortedatumPartner": { "value": "", "type": "String" },
         "verzekerdVoorWW": { "value": true, "type": "Boolean" },
         "beschikbaarVoorArbeid": { "value": true, "type": "Boolean" },
         "aantalWerkwekenIn36Weken": { "value": 30, "type": "Integer" },
@@ -26,8 +24,9 @@
     "expected": "rechtOpWW=false, wwReden=AOW leeftijd bereikt; geen recht op WW",
     "requestBody": {
       "variables": {
-        "aanvragerHeeftAOWLeeftijd": { "value": true, "type": "Boolean" },
-        "aanvragerIsTenminste21": { "value": true, "type": "Boolean" },
+        "dagVanAanvraag": { "value": "2026-02-19", "type": "String" },
+        "geboortedatumAanvrager": { "value": "1954-06-20", "type": "String" },
+        "geboortedatumPartner": { "value": "", "type": "String" },
         "verzekerdVoorWW": { "value": true, "type": "Boolean" },
         "beschikbaarVoorArbeid": { "value": true, "type": "Boolean" },
         "aantalWerkwekenIn36Weken": { "value": 30, "type": "Integer" },
@@ -45,8 +44,9 @@
     "expected": "rechtOpWW=false, wwReden=Dienstverbandeis niet vervuld",
     "requestBody": {
       "variables": {
-        "aanvragerHeeftAOWLeeftijd": { "value": false, "type": "Boolean" },
-        "aanvragerIsTenminste21": { "value": true, "type": "Boolean" },
+        "dagVanAanvraag": { "value": "2026-02-19", "type": "String" },
+        "geboortedatumAanvrager": { "value": "1968-06-20", "type": "String" },
+        "geboortedatumPartner": { "value": "", "type": "String" },
         "verzekerdVoorWW": { "value": true, "type": "Boolean" },
         "beschikbaarVoorArbeid": { "value": true, "type": "Boolean" },
         "aantalWerkwekenIn36Weken": { "value": 18, "type": "Integer" },
@@ -64,8 +64,9 @@
     "expected": "rechtOpWW=true, wwReden=Voldoet aan alle WW-voorwaarden",
     "requestBody": {
       "variables": {
-        "aanvragerHeeftAOWLeeftijd": { "value": false, "type": "Boolean" },
-        "aanvragerIsTenminste21": { "value": true, "type": "Boolean" },
+        "dagVanAanvraag": { "value": "2026-02-19", "type": "String" },
+        "geboortedatumAanvrager": { "value": "1968-06-20", "type": "String" },
+        "geboortedatumPartner": { "value": "", "type": "String" },
         "verzekerdVoorWW": { "value": true, "type": "Boolean" },
         "beschikbaarVoorArbeid": { "value": true, "type": "Boolean" },
         "aantalWerkwekenIn36Weken": { "value": 18, "type": "Integer" },

@@ -18,10 +18,10 @@
 <https://regels.overheid.nl/services/aow-leeftijd-uwv> a cpsv:PublicService ;
     dct:identifier "aow-leeftijd-uwv" ;
     dct:title "Bepaling leeftijd AOW door UWV"@nl ;
-    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet) zoals die door UWV wordt vastgesteld."@nl ;
+    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet) door de UWV."@nl ;
     cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd-uwv> ;
     cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
-    dcat:keyword "AOW, WW"@nl ;
+    dcat:keyword "AOW"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
     cv:hasCompetentAuthority <https://organisaties.overheid.nl/28212254/Uitvoeringsinstituut_Werknemersverzekeringen> ;
     cv:hasLegalResource <https://wetten.overheid.nl/BWBR0002221> ;
@@ -86,10 +86,10 @@
     dct:title "UWV_Leeftijdsinformatie.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     dct:source <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/file> ;
-    cprmv:deploymentId "e5b50c83-0d92-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-19T13:00:00.003Z"^^xsd:dateTime ;
+    cprmv:deploymentId "fbfbb3c4-0d99-11f1-a5e9-f68ed60940f5" ;
+    cprmv:deployedAt "2026-02-19T13:50:43.964Z"^^xsd:dateTime ;
     cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/UWV_LeeftijdsInformatie/evaluate> ;
-    cprmv:lastTested "2026-02-19T13:00:03.340Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-02-19T13:50:56.824Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -104,14 +104,14 @@
     dct:identifier "geboortedatumAanvrager" ;
     dct:title "geboortedatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "1995-07-05" ;
+    schema:value "1973-08-01" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/input/3> a cpsv:Input ;
     dct:identifier "geboortedatumPartner" ;
     dct:title "geboortedatumPartner"@nl ;
     dct:type "String" ;
-    schema:value "1977-11-15" ;
+    schema:value "" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/1> a cpsv:Output ;
@@ -124,8 +124,7 @@
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/2> a cpsv:Output ;
     dct:identifier "leeftijdPartner" ;
     dct:title "leeftijdPartner"@nl ;
-    dct:type "Integer" ;
-    schema:value 48 ;
+    dct:type "Null" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/3> a cpsv:Output ;
@@ -153,14 +152,14 @@
     dct:identifier "leeftijdAanvrager" ;
     dct:title "leeftijdAanvrager"@nl ;
     dct:type "Integer" ;
-    schema:value 30 ;
+    schema:value 52 ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/7> a cpsv:Output ;
     dct:identifier "AOWDatumAanvrager" ;
     dct:title "AOWDatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "2062-07-05" ;
+    schema:value "2040-08-01" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/8> a cpsv:Output ;
@@ -173,8 +172,7 @@
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/9> a cpsv:Output ;
     dct:identifier "AOWDatumPartner" ;
     dct:title "AOWDatumPartner"@nl ;
-    dct:type "String" ;
-    schema:value "2044-11-15" ;
+    dct:type "Null" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/10> a cpsv:Output ;
@@ -195,7 +193,7 @@
     dct:identifier "partnerIsTenminste21" ;
     dct:title "partnerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value true ;
+    schema:value false ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_passthrough> a cpsv:Rule, cprmv:DecisionRule ;
@@ -378,7 +376,7 @@
 
 <https://regels.overheid.nl/concepts/uwvleeftijdsinformatie/leeftijdPartner> a skos:Concept ;
     skos:prefLabel "Leeftijd Partner"@nl ;
-    skos:definition "Leeftijd Partner is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:definition "Leeftijd Partner is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
     skos:notation "LP" ;
     dct:subject <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
@@ -441,7 +439,7 @@
 
 <https://regels.overheid.nl/concepts/uwvleeftijdsinformatie/AOWDatumPartner> a skos:Concept ;
     skos:prefLabel "AOW Datum Partner"@nl ;
-    skos:definition "AOW Datum Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:definition "AOW Datum Partner is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
     skos:notation "ADP" ;
     dct:subject <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/9> ;
     dct:type "dmn:OutputVariable" ;

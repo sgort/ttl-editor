@@ -15,11 +15,11 @@
 #  Public Service
 # ============================================================
 
-<https://regels.overheid.nl/services/aow-leeftijd> a cpsv:PublicService ;
-    dct:identifier "aow-leeftijd" ;
-    dct:title "Bepaling leeftijd AOW"@nl ;
-    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet)."@nl ;
-    cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd> ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv> a cpsv:PublicService ;
+    dct:identifier "aow-leeftijd-uwv" ;
+    dct:title "Bepaling leeftijd AOW door UWV"@nl ;
+    dct:description "Bepaling van de leeftijd AOW (Algemene Ouderdomswet) door de UWV."@nl ;
+    cv:thematicArea <https://standaarden.overheid.nl/owms/terms/aow-leeftijd-uwv> ;
     cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
     dcat:keyword "AOW"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
