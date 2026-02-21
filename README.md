@@ -67,11 +67,13 @@ App.js
 ### Data flow
 
 **Import:**
+
 ```
 TTL file uploaded → parseTTL() → extract entities → populate all tabs
 ```
 
 **Export:**
+
 ```
 Tab state → generateTTL() → combine sections + namespaces → download .ttl
 ```
@@ -88,17 +90,17 @@ Git push → GitHub Actions → npm run build → Azure Static Web Apps → cpsv
 
 The editor generates Turtle files compliant with the following vocabularies:
 
-| Vocabulary | Version | Purpose |
-|---|---|---|
-| CPSV-AP | 3.2.0 | EU Core Public Service Vocabulary |
-| CPRMV | 0.3.0 | Core Public Rule Management Vocabulary (Dutch) |
-| RONL | — | Regels Overheid Nederland governance vocabulary |
-| ELI | — | European Legislation Identifier |
-| Dublin Core | — | Metadata terms (title, description, identifier) |
-| SKOS | — | Simple Knowledge Organization System |
-| Schema.org | — | Value and unit definitions |
-| FOAF | — | Organization homepages |
-| ORG | — | Organization ontology |
+| Vocabulary  | Version | Purpose                                         |
+| ----------- | ------- | ----------------------------------------------- |
+| CPSV-AP     | 3.2.0   | EU Core Public Service Vocabulary               |
+| CPRMV       | 0.3.0   | Core Public Rule Management Vocabulary (Dutch)  |
+| RONL        | —       | Regels Overheid Nederland governance vocabulary |
+| ELI         | —       | European Legislation Identifier                 |
+| Dublin Core | —       | Metadata terms (title, description, identifier) |
+| SKOS        | —       | Simple Knowledge Organization System            |
+| Schema.org  | —       | Value and unit definitions                      |
+| FOAF        | —       | Organization homepages                          |
+| ORG         | —       | Organization ontology                           |
 
 ---
 
