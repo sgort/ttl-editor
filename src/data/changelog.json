@@ -1,6 +1,40 @@
 {
   "versions": [
     {
+      "version": "1.9.3",
+      "status": "Minor Feature",
+      "statusColor": "blue",
+      "borderColor": "blue",
+      "date": "February 25, 2026",
+      "sections": [
+        {
+          "title": "DMN Syntactic Validation",
+          "icon": "🛡️",
+          "iconColor": "blue",
+          "items": [
+            "Inline validation panel appears automatically after uploading or loading an example DMN file",
+            "Validation runs against the shared backend (REACT_APP_BACKEND_URL/v1/dmns/validate) without blocking the existing DMN workflow",
+            "Results are collapsible — panel auto-expands when issues are found, stays collapsed when the file is valid",
+            "Summary badges show error (E), warning (W), and info (I) counts at a glance",
+            "Issues grouped by layer: Execution Rules and Interaction Rules with severity icons and typed codes",
+            "Validation state clears automatically when the DMN file is removed via the Clear button"
+          ]
+        },
+        {
+          "title": "Validation Layers",
+          "icon": "🔍",
+          "iconColor": "indigo",
+          "items": [
+            "Base DMN: XML well-formedness, root element check, DMN namespace detection, required <definitions> attributes",
+            "Business Rules: hitPolicy enum, inputExpression and output typeRef presence and known FEEL types, rule entry count consistency",
+            "Execution Rules: CPRMV attribute validation — rulesetType, ruleType, confidence enums, ISO date format, BWB ID format, temporal-period completeness",
+            "Interaction Rules: informationRequirement href resolution, orphaned inputData detection, variable name consistency",
+            "Content: non-empty CPRMV descriptive attributes, variable typeRef presence, non-empty textAnnotation content"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.2",
       "status": "Minor Feature",
       "statusColor": "purple",
