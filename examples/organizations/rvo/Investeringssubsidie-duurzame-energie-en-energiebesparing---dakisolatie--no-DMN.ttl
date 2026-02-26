@@ -5,12 +5,11 @@
 @prefix eli: <http://data.europa.eu/eli/ontology#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix org: <http://www.w3.org/ns/org#> .
-@prefix ronl: <https://regels.overheid.nl/termen/> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
-
 
 # ============================================================
 #  Public Service
@@ -24,7 +23,7 @@
     dcat:keyword "subsidy, sustainability, homeowner"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
     cv:hasCompetentAuthority <https://organisaties.overheid.nl/28325623/Rijksdienst_voor_Ondernemend_Nederland> ;
-    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5>  .
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0035474/2026-02-19#Hoofdstuk4_Titeldeel4.5>  .
 
 
 # ============================================================
@@ -44,11 +43,11 @@
 #  Legal Resource
 # ============================================================
 
-<https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5> a eli:LegalResource ;
-    dct:identifier "BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5" ;
+<https://wetten.overheid.nl/BWBR0035474/2026-02-19#Hoofdstuk4_Titeldeel4.5> a eli:LegalResource ;
+    dct:identifier "BWBR0035474/2026-02-19#Hoofdstuk4_Titeldeel4.5" ;
     dct:title "Regeling nationale EZ-, LVVN- en KGG-subsidies"@nl ;
     dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
-    ronl:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
-    ronl:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
-    eli:is_realized_by <https://wetten.overheid.nl/BWBR0035474/2026-01-01#Hoofdstuk4_Titeldeel4.5/2026-01-01>  .
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/CircuLaw> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0035474/2026-02-19#Hoofdstuk4_Titeldeel4.5/2026-01-01>  .
 

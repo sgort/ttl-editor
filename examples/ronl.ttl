@@ -149,8 +149,10 @@ ronl:MethodConcept a skos:Concept ;
         ronl:ConcordiaLegal ,
         ronl:DataLex ,
         ronl:Demo ,
+        ronl:IAM4RM ,
         ronl:iKnow ,
         ronl:Leos ,
+        ronl:OIA ,
         ronl:OpenFisca ,
         ronl:RuleSpeak ,
         ronl:Sparkwise ,
@@ -470,6 +472,17 @@ ronl:Demo a skos:Concept ;
     skos:broader ronl:MethodConcept ;
     skos:inScheme ronl:Vocabulary .
 
+ronl:IAM4RM a skos:Concept ;
+    skos:prefLabel
+        "IAM4-RM-Suite"@nl ,
+        "IAM4-RM-Suite"@en ;
+    skos:definition
+        "De IAM4 RM Suite bundelt alle relevante productkennis met de bijbehorende wettelijke kaders in één eenvoudig te beheren omgeving."@nl ,
+        "The IAM4 RM Suite bundles all relevant product knowledge with the associated legal frameworks in one easy-to-manage environment."@en ;
+    rdfs:seeAlso <https://regels.overheid.nl/docs/methods/IAM4RM> ;
+    skos:broader ronl:MethodConcept ;
+    skos:inScheme ronl:Vocabulary .
+
 ronl:iKnow a skos:Concept ;
     skos:prefLabel
         "iKnow"@nl ,
@@ -500,6 +513,17 @@ ronl:OpenFisca a skos:Concept ;
         "OpenFisca is een open-source softwareframework voor het modelleren van belasting- en uitkeringssystemen op een manier die zowel leesbaar is voor mensen als uitvoerbaar is voor computers. Het maakt het mogelijk om wetten en regels te vertalen naar uitvoerbare Python-code, waardoor ze toegankelijk worden voor zowel juridische als technische experts."@nl ,
         "OpenFisca is an open-source software framework for modelling tax and benefit systems in a way that is both readable by humans and executable by computers. It enables translating laws and regulations into executable Python code, making them accessible for both legal and technical experts."@en ;
     rdfs:seeAlso <https://regels.overheid.nl/docs/methods/OPENFISCA> ;
+    skos:broader ronl:MethodConcept ;
+    skos:inScheme ronl:Vocabulary .
+
+ronl:OIA a skos:Concept ;
+    skos:prefLabel
+        "OracleIntelligenceAdvisor"@nl ,
+        "OracleIntelligenceAdvisor"@en ;
+    skos:definition
+        "Oracle Intelligent Advisor (OIA), voorheen bekend als Oracle Policy Automation (OPA), is een suite van softwareproducten voor beslissingsautomatisering die worden gebruikt voor het modelleren en implementeren van bedrijfsregels binnen de onderneming."@nl ,
+        "Oracle Intelligent Advisor (OIA), formerly known as Oracle Policy Automation (OPA), is a suite of decision automation software products used for modeling and deploying business rules within the enterprise."@en ;
+    rdfs:seeAlso <https://regels.overheid.nl/docs/methods/OIA> ;
     skos:broader ronl:MethodConcept ;
     skos:inScheme ronl:Vocabulary .
 

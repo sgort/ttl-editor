@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="nl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementatiehandboek 'Chat op de Wet'</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Source Serif Pro', serif;
+            scroll-margin-top: 20px; /* Zorgt voor ruimte boven de ankerlinks */
+        }
+        /* Stijlen voor de geneste navigatielijst */
+       .nav-h1 > a {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #111827; /* gray-900 */
+        }
+       .nav-h2 {
+            padding-left: 1rem; /* 16px */
+            border-left: 2px solid #E5E7EB; /* gray-200 */
+            margin-left: 0.25rem; /* 4px */
+        }
+       .nav-h2 a {
+            font-size: 0.95em;
+            color: #1D4ED8; /* blue-700 */
+        }
+       .nav-h2 a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Stijlen voor tabellen */
+        table {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            border-collapse: collapse;
+            border: 1px solid #E5E7EB;
+        }
+        th, td {
+            border: 1px solid #E5E7EB;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        thead th {
+            background-color: #F9FAFB; /* gray-50 */
+            font-weight: 600;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #F9FAFB; /* gray-50 */
+        }
+
+        /* Stijl voor codeblokken */
+        pre {
+            background-color: #1F2937; /* gray-800 */
+            color: #F9FAFB; /* gray-50 */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="flex flex-col md:flex-row">
+        <aside class="w-full md:w-96 md:h-screen md:sticky md:top-0 bg-white shadow-lg p-6 md:p-8 overflow-y-auto">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Inhoudsopgave</h2>
+            <nav>
+                <ul class="space-y-4">
+                    <li class="nav-h1">
+                        <a href="#h1">Hoofdstuk 1: Inleiding</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h1-1">1.1 De Business Case</a></li>
+                            <li><a href="#h1-2">1.2 Het Kernprobleem (AI)</a></li>
+                            <li><a href="#h1-3">1.3 De Gekozen Oplossing</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h2">Hoofdstuk 2: Fundament (RaC)</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h2-1">2.1 Waarom een Methode?</a></li>
+                            <li><a href="#h2-2">2.2 TNO RaC & FLINT</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h3">Hoofdstuk 3: Stap 1 - Choppr</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h3-1">3.1 Inleiding 'Choppr'</a></li>
+                            <li><a href="#h3-2">3.2 Functionaliteit en Proces</a></li>
+                            <li><a href="#h3-3">3.3 Waarom RDF en niet JSON?</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h4">Hoofdstuk 4: Stap 2 - Kennismodel</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h4-1">4.1 Inleiding Semantiek</a></li>
+                            <li><a href="#h4-2">4.2 Rol NLP API (BERTje)</a></li>
+                            <li><a href="#h4-3">4.3 Hoe de KAG Ontstaat</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h5">Hoofdstuk 5: Stap 3 - Rule Editor</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h5-1">5.1 Inleiding Handmatige Controle</a></li>
+                            <li><a href="#h5-2">5.2 Functionaliteit (Flint)</a></li>
+                            <li><a href="#h5-3">5.3 Rol in de Pijplijn</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h6">Hoofdstuk 6: Stap 4 - Triply</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h6-1">6.1 Inleiding Persistentie</a></li>
+                            <li><a href="#h6-2">6.2 Rol Triple Store</a></li>
+                            <li><a href="#h6-3">6.3 Bevragen (SPARQL)</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-h1">
+                        <a href="#h7">Hoofdstuk 7: Handleiding ICT-Beheer</a>
+                        <ul class="nav-h2 mt-2 space-y-2">
+                            <li><a href="#h7-1">7.1 Inleiding Beheer</a></li>
+                            <li><a href="#h7-2">7.2 Architectuur & Vereisten</a></li>
+                            <li><a href="#h7-3">7.3 Workflow (Werkpakket A)</a></li>
+                            <li><a href="#h7-4">7.4 Stabiliteit & Kwaliteit</a></li>
+                            <li><a href="#h7-5">7.5 Databeheer & Modellen</a></li>
+                        </ul>
+                    </li>
+                     <li class="nav-h1">
+                        <a href="#geciteerd-werk">Geciteerd werk</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-8 md:p-12 overflow-y-auto">
+            <div class="max-w-4xl mx-auto">
+                
+                <h1 id="title" class="text-4xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-300">
+                    Implementatiehandboek 'Chat op de Wet': Een Technische Gids voor Ontwikkelaars en Beheerders in 'Rules as Code' en Semantische Data
+                </h1>
+
+                <section id="h1" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 1: Inleiding - De Noodzaak van een Juridisch Correcte Dialoog</h2>
+                    <p class="mb-4 leading-relaxed">Dit document dient als technische en conceptuele handleiding voor de ontwikkelaars en ICT-beheerders die zijn toegewezen aan het project "Chat op de Wet". Het doel is om een datapipeline te realiseren die medewerkers en op termijn burgers ondersteunt met betrouwbare, juridisch onderbouwde antwoorden op basis van wet- en regelgeving.1</p>
+                    <p class="mb-4 leading-relaxed">Deze gids veronderstelt sterke technische vaardigheden op het gebied van softwareontwikkeling en ICT-beheer, maar een beperkte voorkennis van de toegepaste specialistische domeinen: Artificiële Intelligentie (AI), semantische technologie (Kennisgrafen) en de 'Rules as Code' (RaC) methodologie. Elk hoofdstuk is ontworpen om niet alleen wat u moet bouwen te beschrijven, maar vooral waarom deze specifieke architectuur en tooling noodzakelijk zijn voor het slagen van dit project.</p>
+                </section>
+                
+                <section id="h1-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">1.1 De Business Case: Van Vertrouwen en Complexiteit naar Transparantie</h3>
+                    <p class="mb-4 leading-relaxed">De aanleiding voor "Chat op de Wet" is een fundamentele spanning binnen de huidige dienstverlening van DUO. Hoewel de dienstverlening voor meer dan 90% digitaal is, wordt het onderliggende systeem, hoewel betrouwbaar, als complex ervaren. Dit roept in toenemende mate vragen op over de rechtmatigheid en transparantie van geautomatiseerde besluiten.1</p>
+                    <p class="mb-4 leading-relaxed">De kern van de business case is niet primair technologische innovatie; het is het herstellen en borgen van vertrouwen. Er bestaat een concrete behoefte aan "snelle, objectieve en transparante verantwoording", zowel voor klanten als voor interne medewerkers. Mensen moeten op DUO kunnen vertrouwen, en dat vraagt om transparantie over wat we doen, hoe we het doen, en wat een ander van ons mag verwachten.1</p>
+                    <p class="mb-4 leading-relaxed">Het project 'Chat op de Wet' heeft daarom als hoofddoelstelling het ontwikkelen van een digitale assistent die:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>Juridische vragen helpt beantwoorden.</li>
+                        <li>Medewerkers ondersteunt bij het toetsen van de rechtmatigheid van besluiten.</li>
+                        <li>Elk antwoord onderbouwt met een directe verwijzing naar de betreffende wet of regel.1</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">Het einddoel is het verhogen van de transparantie en traceerbaarheid, wat leidt tot een efficiëntere benutting van specialistische kennis en kortere doorlooptijden.1</p>
+                </section>
+
+                <section id="h1-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">1.2 Het Kernprobleem: Waarom Standaard AI (LLM/RAG) Juridisch Faalt</h3>
+                    <p class="mb-4 leading-relaxed">Een cruciale en onvermijdelijke vraag die binnen het team zal opkomen, is: "Waarom laten we ChatGPT (of een vergelijkbaar Large Language Model) niet gewoon los op het wetboek?".1 Het beantwoorden van deze vraag legitimeert de gehele, schijnbaar complexe, architectuur die in deze handleiding wordt gepresenteerd.</p>
+                    <p class="mb-4 leading-relaxed">Standaard AI-chatbots, zelfs wanneer ze worden uitgebreid met Retrieval-Augmented Generation (RAG) - waarbij het model toegang krijgt tot specifieke documenten - zijn fundamenteel ongeschikt voor deze taak. De redenen zijn diepgaand en raken de kern van onze verantwoordelijkheid als overheidsorganisatie.</p>
+                    
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">1. Juridisch Perspectief: Probabilistisch vs. Normatief</h4>
+                    <p class="mb-4 leading-relaxed">Wetteksten zijn geen verhalende teksten; het zijn normatieve teksten. Ze bevatten rechten, plichten, voorwaarden en, cruciaal, uitzonderingen. Deze normen moeten expliciet en uiterst precies worden geïnterpreteerd.1</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">Het Risico van LLM (RAG):</strong> Grote taalmodellen zijn probabilistisch. Ze genereren het woord dat statistisch gezien het meest waarschijnlijk volgt op de voorgaande woorden. Ze geven antwoorden op basis van waarschijnlijkheid, niet op basis van juridische juistheid. Dit leidt tot een onacceptabel risico op "juridisch onzinnige of incorrecte antwoorden" en "ongefundeerde interpretaties van de wet".1</p>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">2. Technisch Perspectief: Black Box vs. Traceerbaarheid</h4>
+                    <p class="mb-4 leading-relaxed">Voor overheidsverantwoording is een "black box" onaanvaardbaar. We moeten te allen tijde kunnen uitleggen hoe een antwoord of besluit tot stand is gekomen.</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">Het Risico van LLM (RAG):</strong> Er is "geen controle over waaruit het antwoord is opgebouwd".1 Het model kan "hallucineren" (feiten verzinnen) of inconsistente antwoorden geven.</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">De Eis van dit Project:</strong> We vereisen "traceerbare paden van redenering".1 De gekozen architectuur (Kennisgrafen) levert dit: het antwoord is een pad in een expliciet gemodelleerde graaf van juridische feiten.</p>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">3. Bestuurlijk Perspectief: Governance</h4>
+                    <p class="mb-4 leading-relaxed">Als bestuurlijke organisatie kunnen we de verantwoordelijkheid voor de interpretatie van de wet niet uitleggen aan een oncontroleerbaar, probabilistisch model. We moeten governance hebben over de AI-toepassing. We moeten weten wat het model doet en waarom.1</p>
+                    <p class="mb-4 leading-relaxed">De gekozen aanpak is daarom fundamenteel anders. We kiezen niet voor de probabilistische AI (LLM's), maar voor een deterministische, symbolische AI-aanpak: Norm Engineering en Kennisgrafen (KAG). We bouwen een expliciet, controleerbaar en herleidbaar model van de wet.</p>
+                    <p class="mb-4 leading-relaxed">De onderstaande tabel, gebaseerd op het projectvoorstel, vat het cruciale verschil samen 1:</p>
+
+                    <h5 class="text-lg font-semibold text-gray-600 mt-6 mb-3">Tabel 1.1: Vergelijking Gekozen Aanpak (KAG) vs. Alternatief (RAG)</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Met Norm Engineering (KAG)</th>
+                                <th>Alleen met LLM (RAG)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Juridisch correct</td>
+                                <td>✅ Normen expliciet en toepasbaar</td>
+                                <td>❌ Kans op misinterpretatie</td>
+                            </tr>
+                            <tr>
+                                <td>Transparantie</td>
+                                <td>✅ Herleidbare redenering</td>
+                                <td>❌ Black box</td>
+                            </tr>
+                            <tr>
+                                <td>Betrouwbaarheid</td>
+                                <td>✅ Controleerbare logica</td>
+                                <td>❌ Kans op hallucinerende antwoorden</td>
+                            </tr>
+                            <tr>
+                                <td>Gebruikservaring</td>
+                                <td>✅ Contextspecifiek en uitlegbaar</td>
+                                <td>❌ Soms onbegrijpelijk of inconsistent</td>
+                            </tr>
+                            <tr>
+                                <td>Verantwoord bestuur</td>
+                                <td>✅ In lijn met publieke waarden</td>
+                                <td>❌ Risico op schending van publieke waarden</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section id="h1-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">1.3 De Gekozen Oplossing: Het Proces "Van Wet naar Uitvoering"</h3>
+                    <p class="mb-4 leading-relaxed">Het project "Chat op de Wet" is een concrete implementatie van de landelijke 'Soll-situatie' (doelsituatie) voor Publiek Regelbeheer, zoals uiteengezet in de 'Doelarchitectuur Publiek regelbeheer'.1</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">Het 'Ist'-Probleem (Huidig):</strong> Momenteel wordt wetgeving op "honderden plekken en steeds opnieuw... opnieuw geïnterpreteerd". Dit leidt tot inconsistentie, onduidelijke rechtmatigheid en inefficiëntie.1</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">Het 'Soll'-Doel (Toekomst):</strong> De doelarchitectuur beschrijft een situatie waarin "publiek beheerde, openbaar gepubliceerde regels" bestaan die "volledig navolgbaar en uitlegbaar" zijn. Dit verwijdert de "ruis tussen wetgeving en uitvoering".1</p>
+                    <p class="mb-4 leading-relaxed">Om deze 'Soll-situatie' te bereiken, hanteert de overheid een gestandaardiseerd procesmodel (beschreven in Figuur 3 van de Doelarchitectuur).1 Voor de ontwikkelaar en beheerder van "Chat op de Wet" is het essentieel om te begrijpen dat onze datapipeline exact dit proces implementeert.</p>
+                    <p class="mb-4 leading-relaxed">Het proces bestaat uit drie hoofdfasen. Onze pipeline richt zich volledig op Fase B, de brug tussen de wet en de applicatie:</p>
+                    
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Fase A: Wet- en regelgeving maken (De Bron)</h4>
+                    <p class="mb-4 leading-relaxed">Dit is de input: de officiële wetteksten, ministeriële regelingen, beleidsregels, etc..1</p>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Fase B: Wet- en regelgeving modelleren (De Kern van Ons Project)</h4>
+                    <p class="mb-4 leading-relaxed">Dit is waar onze technische pipeline de waarde toevoegt. Het is de vertaalslag van juridische taal naar machineleesbare logica. Deze fase bestaat uit:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">B.1 Inventariseren wet- en regelgeving:</strong> Verzamelen van de relevante bronnen.</li>
+                        <li><strong class="font-semibold">B.2 Ontwikkelen kennismodel:</strong> Annoteren van de teksten, identificeren van normen, leggen van relaties (Norm Engineering).</li>
+                        <li><strong class="font-semibold">B.3 Ontwerpen specificaties:</strong> Creëren van formele, uitvoerbare regel-, gegevens- en procesmodellen.1</li>
+                    </ul>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Fase C: Wet- en regelgeving uitvoeren (De Applicatie)</h4>
+                    <p class="mb-4 leading-relaxed">Dit is de daadwerkelijke toepassing (de chatbot) die de gemodelleerde regels uit Fase B gebruikt om een antwoord te genereren of een besluit te ondersteunen.1</p>
+                    
+                    <p class="mb-4 leading-relaxed">De volgende tabel is de centrale routekaart voor deze handleiding. Het verbindt de abstracte processtappen uit de overheidsarchitectuur 1 direct aan de concrete tools uit ons projectvoorstel 1 die u moet implementeren.</p>
+
+                    <h5 class="text-lg font-semibold text-gray-600 mt-6 mb-3">Tabel 1.2: Overzicht van Processtappen en Gekoppelde Technologie</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Abstracte Processtap (uit , Fig. 3)</th>
+                                <th>Doel in de Pipeline</th>
+                                <th>Concrete Tool/Methode (uit )</th>
+                                <th>Zie Hoofdstuk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Fase B.1/B.2: Modelleren (Start)</td>
+                                <td><strong>Decompositie:</strong> Ruwe wettekst opknippen in gestructureerde, betekenisvolle eenheden (artikelen, leden).</td>
+                                <td>Choppr</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>Fase B.2: Ontwikkelen Kennismodel</td>
+                                <td><strong>Semantiek:</strong> De 'kale' eenheden verrijken met juridische betekenis (wie, wat, waar, wanneer). Dit is 'Norm Engineering'.</td>
+                                <td>NLP API (o.a. BERTje) & Kennismodel (KAG)</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>Fase B.3: Ontwerpen Specificaties</td>
+                                <td><strong>Kwaliteitsborging:</strong> De automatisch gegenereerde semantiek (KAG) visueel controleren, valideren en corrigeren door een juridisch expert.</td>
+                                <td>Norm Editor (Flint)</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>Fase B.3 / C.1: Opslag Model</td>
+                                <td><strong>Persistentie:</strong> De gevalideerde, complexe kennisgraaf (met al zijn relaties) permanent en bevraagbaar opslaan.</td>
+                                <td>Triply (Triple Store)</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>Fase C.2: Uitvoeren W&R</td>
+                                <td><strong>Applicatie:</strong> De eindgebruiker (medewerker) in staat stellen de kennisgraaf te bevragen via een interface.</td>
+                                <td>Gradio (Frontend)</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>Gehele Pijplijn</td>
+                                <td><strong>Beheer:</strong> Het automatiseren, hosten en monitoren van de volledige keten (Stap 1 t/m 5).</td>
+                                <td>ICT Beheer (Docker, Python, VPS)</td>
+                                <td>7</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <hr class="my-12 border-gray-300">
+
+                <section id="h2" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 2: Het Fundament - De TNO 'Rules as Code' (RaC) Methodologie</h2>
+                    <p class="mb-4 leading-relaxed">Voordat we de individuele tools (Choppr, Flint) installeren, is het cruciaal om de onderliggende filosofie te begrijpen die deze tools met elkaar verbindt. De gehele pipeline is gebaseerd op de 'Rules as Code' (RaC) methodologie, zoals ontwikkeld en beschikbaar gesteld door TNO.1</p>
+                </section>
+
+                <section id="h2-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">2.1 Inleiding: Waarom een Gestandaardiseerde Methode?</h3>
+                    <p class="mb-4 leading-relaxed">Voor een ontwikkelaar of beheerder is de RaC-methodologie het best te begrijpen via een analogie uit de eigen praktijk: <strong class="font-semibold">Infrastructure as Code (IaC)</strong>.</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-2">
+                        <li>Met <strong class="font-semibold">IaC</strong> (bv. Terraform, Ansible) wordt serverinfrastructuur niet langer handmatig en ad-hoc geconfigureerd. Het wordt vastgelegd in <em class="italic">deterministische, versie-beheerbare, testbare en herbruikbare</em> code. Dit levert consistentie en betrouwbaarheid op.</li>
+                        <li>Met <strong class="font-semibold">Rules as Code (RaC)</strong> passen we ditzelfde principe toe op <em class="italic">wet- en regelgeving</em>. Juridische interpretatie is niet langer een handmatig, inconsistent en ondoorzichtig proces dat verborgen zit in de hoofden van experts of diep in legacy-code. Het wordt vastgelegd in <em class="italic">deterministische, versie-beerbare, testbare en machineleesbare logica</em>.2</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">Het kernprobleem dat RaC oplost, is dat het interpreteren van "complexe juridische taal" (de wet) normaliter "traag, foutgevoelig en inconsistent" is. Dit leidt tot een kloof tussen het beleid (de wet) en de uitvoering (de dienstverlening).2 RaC transformeert deze regels in machineleesbare logica, wat leidt tot "grotere precisie, consistentie en automatisering" in de uitvoering.2 Dit is de <em class="italic">enige</em> manier om de in Hoofdstuk 1 gestelde doelen van transparantie en herleidbaarheid te bereiken.</p>
+                </section>
+
+                <section id="h2-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">2.2 De TNO RaC-Aanpak en de FLINT-Methode</h3>
+                    <p class="mb-4 leading-relaxed">Het project "Chat op de Wet" maakt gebruik van de specifieke TNO-toolbox die is ontwikkeld om RaC te implementeren. Deze toolbox is gebaseerd op de <strong class="font-semibold">FLINT-methode</strong>.2</p>
+                    <p class="mb-4 leading-relaxed">De relevantie voor u als technisch team is direct:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>De in het projectvoorstel genoemde 'Norm Editor' is expliciet 'Flint (interpretatie editor)'.1</li>
+                        <li>De NLP API, die de juridische betekenis extraheert, levert labels aan die "helpen bij het organiseren van gegevens volgens het FLINT-kader".1</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">U implementeert dus geen willekeurige set van losse open-source tools. U implementeert de TNO-toolbox (Choppr, Rule Editor) die specifiek is ontworpen om de FLINT-methode te ondersteunen.2 Deze methodologie is de overkoepelende filosofie die bepaalt <em class="italic">waarom</em> en <em class="italic">hoe</em> de tools in de volgende hoofdstukken samenwerken om van ruwe wetstekst (Fase A) naar een uitvoerbaar kennismodel (Fase B) te komen.</p>
+                </section>
+
+                <hr class="my-12 border-gray-300">
+
+                <section id="h3" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 3: Stap 1 - Choppr: Decompositie van Bronteksten</h2>
+                </section>
+
+                <section id="h3-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">3.1 Inleiding: Waarom een Wettekst 'Gehakt' (Chopped) moet Worden</h3>
+                    <p class="mb-4 leading-relaxed">De eerste technische stap in onze datapipeline (Fase B.1/B.2) is het verwerken van de ruwe wetteksten. Dit wordt gedaan door de tool <strong class="font-semibold">Choppr</strong>.</p>
+                    <p class="mb-4 leading-relaxed">Voor een ontwikkelaar die gewend is aan data-inname, lijkt dit misschien triviaal: "Ik schrijf toch zelf een parser, of gebruik een standaard tokenizer?" Deze aanpak faalt bij juridische teksten. Ruwe wetteksten zijn "lang, complex en lastig te interpreteren voor een algoritme".1 Ze zijn geen platte tekstbestanden, maar diep geneste, hiërarchische documenten met een specifieke juridische structuur (bv. Wetboek, Titel, Hoofdstuk, Artikel, Lid, Sublid, Clausule).</p>
+                    <p class="mb-4 leading-relaxed">Choppr is de <em class="italic">poortwachter</em> van onze pipeline. Het is de tool die de chaotische, voor mensen geschreven, juridische wereld vertaalt naar een gestructureerd startpunt voor onze machineleesbare Kennisgraaf.</p>
+                </section>
+
+                <section id="h3-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">3.2 Functionaliteit en Proces</h3>
+                    <p class="mb-4 leading-relaxed">Choppr is een tool die "specifiek ontwikkeld is voor juridische teksten".1 De functionaliteit is als volgt:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">Input:</strong> Ruwe wetteksten (bv. van wetten.overheid.nl).</li>
+                        <li><strong class="font-semibold">Proces:</strong> Choppr deelt deze teksten op in "kleinere, betekenisvolle eenheden".1 Het doet dit niet willekeurig, maar op basis van zelf gedefinieerde regels en, cruciaal, het "bevat uit zichzelf al standaard templates voor Nederlandse wetgeving".1 Het herkent de structuur van artikelen, bepalingen en voorwaarden.</li>
+                        <li><strong class="font-semibold">Output:</strong> Dit is het meest kritieke detail voor de gehele architectuur. Choppr zet deze eenheden om in <strong class="font-semibold">RDF-data</strong> (Resource Description Framework).1</li>
+                    </ul>
+                </section>
+
+                <section id="h3-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">3.3 Technisch Inzicht: Waarom RDF en niet JSON?</h3>
+                    <p class="mb-4 leading-relaxed">De keuze van Choppr om RDF te produceren (in plaats van bijvoorbeeld JSON, wat een ontwikkelaar eerder zou verwachten) <em class="italic">dicteert</em> de rest van onze architectuur (de Kennisgraaf, de Triple Store). Het is essentieel om te begrijpen waarom deze keuze correct is.</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">JSON</strong> is hiërarchisch; het modelleert <em class="italic">documenten</em> (trees). Het is uitstekend in het representeren van een object en zijn eigenschappen.</li>
+                        <li><strong class="font-semibold">RDF</strong> is relationeel; het modelleert <em class="italic">feiten</em> en <em class="italic">relaties</em> (graphs). Het bestaat uit 'triples'.</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">Een <strong class="font-semibold">triple</strong> is de atomaire eenheid van informatie in een kennisgraaf, bestaande uit een Subject, Predicate en Object.5 Bijvoorbeeld: (Bob, is, 35) of (Bob, kent, Fred).5</p>
+                    <p class="mb-4 leading-relaxed">Laten we dit toepassen op Choppr:</p>
+                    <p class="mb-4 leading-relaxed">Stel Choppr parseert 'Artikel 5, Lid 1' van een wet.</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>Een <strong class="font-semibold">JSON-output</strong> zou zijn: <code>{ "artikel": 5, "lid": 1, "tekst": "De student moet..." }</code>. Dit slaat het document op, maar de <em class="italic">relatie</em> tussen Artikel 5 en Lid 1 is impliciet (enkel door de nesting).</li>
+                        <li>De <strong class="font-semibold">RDF-output</strong> (in triples) modelleert de feiten expliciet:</li>
+                    </ul>
+                    <pre><code>(Subject: 'uri/Artikel_5', Predicate: 'heeftDeel', Object: 'uri/Lid_1')
+(Subject: 'uri/Lid_1', Predicate: 'heeftTekst', Object: 'De student moet...')</code></pre>
+                    <p class="mb-4 leading-relaxed">Choppr kiest voor RDF omdat het niet geïnteresseerd is in het opslaan van het <em class="italic">document</em>; het is de eerste stap in het bouwen van de <em class="italic">Kennisgraaf</em> (de 'G' in KAG). Het legt de structurele <em class="italic">relaties</em> ('heeftDeel') in de wet expliciet vast als data. De output van Choppr is niet zomaar data; het is het <em class="italic">bouwskelet</em> van ons Kennismodel (zie Hoofdstuk 4).</p>
+                </section>
+                
+                <hr class="my-12 border-gray-300">
+
+                <section id="h4" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 4: Stap 2 - Het Kennismodel: Van Structuur naar Semantiek</h2>
+                </section>
+
+                <section id="h4-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">4.1 Inleiding: Waarom Structuur niet Voldoende is</h3>
+                    <p class="mb-4 leading-relaxed">Na de uitvoering van Choppr (Hoofdstuk 3) hebben we een schone, gestructureerde dataset. We hebben een graaf die de <em class="italic">structuur</em> van de wet beschrijft (bv. Artikel_5 -> heeftDeel -> Lid_1). Dit is een noodzakelijke, maar onvoldoende stap. De ontwikkelaar vraagt zich terecht af: "Wat nu? Dit is slechts een geavanceerde inhoudsopgave. Het beantwoordt geen juridische vragen."</p>
+                    <p class="mb-4 leading-relaxed">De Kennisgraaf (KAG) moet niet alleen de structuur van de wet bevatten, maar ook de <em class="italic">betekenis</em> (semantiek) die <em class="italic">binnen</em> die structuur is vastgelegd. Dit proces—het systematisch en expliciet modelleren van normen—heet <strong class="font-semibold">Norm Engineering</strong>.1 Dit is het hart van Fase B.2 (Ontwikkelen Kennismodel).</p>
+                </section>
+
+                <section id="h4-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">4.2 De Rol van de NLP API (o.a. BERTje)</h3>
+                    <p class="mb-4 leading-relaxed">Om van structuur naar semantiek te komen, gebruiken we een NLP (Natural Language Processing) API, die gebruik maakt van een lokaal beheerd model zoals BERTje.1</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">Doel:</strong> De NLP API "geeft betekenis aan de gestructureerde onderdelen die we uit de Choppr tool hebben verkregen".1</li>
+                        <li><strong class="font-semibold">Proces:</strong> Het model leest de <em class="italic">tekstinhoud</em> van de eenheden die Choppr heeft gemaakt. Op basis van zijn training (volgens het FLINT-kader) identificeert het de kerncomponenten van een juridische norm.</li>
+                        <li><strong class="font-semibold">Output:</strong> De API identificeert en labelt de "actoren, ontvangers, acties en objecten" 1 die in de wettekst worden genoemd.</li>
+                    </ul>
+                </section>
+
+                <section id="h4-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">4.3 Technisch Inzicht: Hoe de Kennisgraaf (KAG) nu Ontstaat</h3>
+                    <p class="mb-4 leading-relaxed">Dit is de meest cruciale technische stap om te begrijpen. De Kennisgraaf (KAG) ontstaat door de <em class="italic">combinatie</em> van de outputs van Choppr (H3) en de NLP API (H4). De NLP API voegt <em class="italic">nieuwe triples</em> toe aan de graaf om de structurele data te verrijken met semantische data.</p>
+                    <p class="mb-4 leading-relaxed">Laten we het voorbeeld uit Hoofdstuk 3 voortzetten:</p>
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Stap 1. Output van Choppr (H3):</h4>
+                    <p class="mb-4 leading-relaxed">We hebben het volgende 'structuur'-triple:</p>
+                    <pre><code>(Subject: 'uri/Art_5_Lid_1', Predicate: 'heeftTekst', Object: 'De student moet voor 1 mei de aanvraag indienen.')</code></pre>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Stap 2. Analyse door NLP API (H4):</h4>
+                    <p class="mb-4 leading-relaxed">De NLP API leest de tekst <em class="italic">De student moet voor 1 mei de aanvraag indienen.</em> en identificeert de componenten van de norm:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>Actor: 'De student'</li>
+                        <li>Actie: 'indienen'</li>
+                        <li>Object: 'de aanvraag'</li>
+                        <li>Voorwaarde (Tijd): 'voor 1 mei'</li>
+                    </ul>
+
+                    <h4 class="text-xl font-semibold text-gray-700 mt-6 mb-3">Stap 3. Verrijking van de Kennisgraaf:</h4>
+                    <p class="mb-4 leading-relaxed">De NLP API schrijft nu <em class="italic">nieuwe feiten</em> (triples) naar onze Kennisgraaf, waarbij het Subject het structuur-element is dat door Choppr is geïdentificeerd:</p>
+                    <pre><code>(Subject: 'uri/Art_5_Lid_1', Predicate: 'heeftActor', Object: 'uri/concept/Student')
+(Subject: 'uri/Art_5_Lid_1', Predicate: 'heeftActie', Object: 'uri/concept/Indienen')
+(Subject: 'uri/Art_5_Lid_1', Predicate: 'heeftObject', Object: 'uri/concept/Aanvraag')
+(Subject: 'uri/Art_5_Lid_1', Predicate: 'heeftTijdsvoorwaarde', Object: '1 Mei')</code></pre>
+                    
+                    <p class="mb-4 leading-relaxed">Het resultaat is een rijke, machineleesbare Kennisgraaf die <em class="italic">expliciet</em> de juridische normen en hun relaties vastlegt.1 Dit is niet langer een "black box". Het is een transparante, herleidbare en controleerbare database van juridische feiten. Wanneer een gebruiker vraagt: "Wie moet een aanvraag indienen?", kan de applicatie de graaf bevragen om het expliciete 'heeftActor'-pad te vinden en "De student" te antwoorden, met 'uri/Art_5_Lid_1' als bronvermelding.</p>
+                </section>
+                
+                <hr class="my-12 border-gray-300">
+
+                <section id="h5" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 5: Stap 3 - De Rule Editor (Flint): Kwaliteitsborging door Experts</h2>
+                </section>
+
+                <section id="h5-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">5.1 Inleiding: Waarom Handmatige Controle Crucieel is (Human-in-the-Loop)</h3>
+                    <p class="mb-4 leading-relaxed">Na Hoofdstuk 4 hebben we een grotendeels geautomatiseerde pipeline (Choppr -> NLP API) die een rijke Kennisgraaf genereert. Een ontwikkelaar zou nu kunnen denken dat het werk klaar is. Er is echter een essentiële stap ingebouwd: Fase B.3 (Ontwerpen Specificaties), die we implementeren met de <strong class="font-semibold">Norm Editor</strong>, ook wel <strong class="font-semibold">Flint (interpretatie editor)</strong> genoemd.1</p>
+                    <p class="mb-4 leading-relaxed">De reden voor deze stap is <em class="italic">kwaliteitsborging</em>. De NLP API (Stap 2) is een vorm van AI (machine learning) en, hoewel geavanceerd, kan het fouten maken in de complexe en ambigue context van juridische taal. Gezien de business case (Hoofdstuk 1.1) is de kostprijs van een foute juridische interpretatie onaanvaardbaar hoog.</p>
+                    <p class="mb-4 leading-relaxed">Daarom vereist onze architectuur een <strong class="font-semibold">Human-in-the-Loop</strong> (HITL). De Norm Editor (Flint) is de tool die deze menselijke, expert-validatie faciliteert.</p>
+                </section>
+
+                <section id="h5-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">5.2 Functionaliteit van Flint (Interpretatie Editor)</h3>
+                    <p class="mb-4 leading-relaxed">De Norm Editor is <em class="italic">niet</em> bedoeld voor de ontwikkelaar of ICT-beheerder. Het is de primaire tool voor de "juridisch-technische Regels experts" die in het projectteam zijn opgenomen.1</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">Wat het is:</strong> Een "webapplicatie" die een "gebruiksvriendelijke en interactieve" en "visuele interface" biedt om data te bewerken en te organiseren.1</li>
+                        <li><strong class="font-semibold">Wat het doet:</strong> Het stelt de juridisch expert in staat om de data die door Choppr (structuur) en de NLP API (semantiek) is gegenereerd, te "visualiseren en daarmee handmatig te controleren".1</li>
+                    </ul>
+                </section>
+
+                <section id="h5-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">5.3 Technisch Inzicht: De Rol in de Pijplijn</h3>
+                    <p class="mb-4 leading-relaxed">Technisch gezien is de Flint Editor een <em class="italic">visuele RDF-graaf editor</em>, specifiek toegespitst op het FLINT-kader. De workflow is als volgt:</p>
+                    <ol class="list-decimal list-inside mb-4 pl-4 space-y-1">
+                        <li>De Kennisgraaf die door de NLP API (H4) is gegenereerd, wordt in een 'review'-status geladen.</li>
+                        <li>De juridisch expert opent de Norm Editor. Deze visualiseert de triples (bv. de relaties <code class="text-sm">heeftActor</code>, <code class="text-sm">heeftActie</code>) die de AI heeft gelegd.</li>
+                        <li>De expert valideert deze relaties. Als de NLP API een fout heeft gemaakt (bv. een 'Actor' als 'Object' gelabeld), kan de expert dit in de visuele interface corrigeren.</li>
+                        <li>De expert kan ook complexe, genuanceerde relaties (zoals uitzonderingen) <em class="italic">handmatig</em> toevoegen die de AI heeft gemist.</li>
+                        <li>Na goedkeuring door de expert wordt de data (de gevalideerde triples) 'gepromoveerd' van 'review' naar 'productie'.</li>
+                    </ol>
+                    <p class="mb-4 leading-relaxed">Dit handmatige controleproces "verhoogt de betrouwbaarheid en nauwkeurigheid van de gegevens die de chatbot verwerkt".1 Het is de stap die ervoor zorgt dat we van een <em class="italic">waarschijnlijke</em> interpretatie (de AI-output) naar een <em class="italic">gevalideerde, juridisch correcte</em> interpretatie (de uiteindelijke Kennisgraaf) gaan.</p>
+                </section>
+                
+                <hr class="my-12 border-gray-300">
+                
+                <section id="h6" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 6: Stap 4 - Triply als Triple Store: Persistentie van de Kennisgraaf</h2>
+                </section>
+                
+                <section id="h6-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">6.1 Inleiding: Waarom een Kennisgraaf een Speciale Database Nodig Heeft</h3>
+                    <p class="mb-4 leading-relaxed">De Kennisgraaf die we in de voorgaande stappen (H3, H4, H5) zo zorgvuldig hebben gebouwd en gevalideerd, moet permanent worden opgeslagen. Dit is de persistentielaag van onze architectuur (Fase B.3 / C.1).</p>
+                    <p class="mb-4 leading-relaxed">Het projectvoorstel noemt "Triplestore / PostgreSQL/MongoDB" als de database.1 Voor de ontwikkelaar en beheerder is het van cruciaal belang om te begrijpen waarom een <strong class="font-semibold">Triple Store</strong> (ook wel 'RDF store' genoemd) de <em class="italic">primaire en meest geschikte</em> technologie is voor het opslaan van de Kennisgraaf.</p>
+                    <p class="mb-4 leading-relaxed">Een Triple Store is een "purpose-built database" die specifiek is ontworpen voor de opslag en het bevragen van <em class="italic">triples</em> (Subject-Predicate-Object).5</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>Een <strong class="font-semibold">Relationele Database (SQL)</strong> slaat data op in rijen en tabellen.</li>
+                        <li>Een <strong class="font-semibold">Document Database (Mongo)</strong> slaat data op in geneste documenten (JSON).</li>
+                        <li>Een <strong class="font-semibold">Triple Store</strong> slaat data op als een netwerk van <em class="italic">feiten</em>.6</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">Onze data <em class="italic">is</em> al gemodelleerd als RDF-triples (zie H3 en H4). Het opslaan van deze data in zijn <em class="italic">native</em> formaat (een Triple Store) is de meest logische en efficiënte keuze.</p>
+                </section>
+
+                <section id="h6-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">6.2 De Rol van de Triple Store in de Pijplijn</h3>
+                    <p class="mb-4 leading-relaxed">De Kennisgrafen worden "gepersisteerd in een tripplestore".1 De regels uit de RMS van DUO worden "geëxporteerd in een leesbaar formaat voor de tripply".1 'Triply' is het platform of de specifieke tool die wordt gebruikt om deze Triple Store te hosten en te beheren.</p>
+                    <p class="mb-4 leading-relaxed">De reden om <em class="italic">geen</em> standaard SQL-database te gebruiken voor de Kennisgraaf is performance en flexibiliteit.</p>
+                    <p class="mb-4 leading-relaxed"><strong class="font-semibold">Technisch Inzicht:</strong> Stel dat de chatbot de vraag moet beantwoorden: "Toon mij alle uitzonderingen op de rechten van een student."</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li>In onze Kennisgraaf is dit een 'graph path query': <code class="text-sm">Student -> heeftRecht -> Recht_X -> heeftUitzondering -> Uitzondering_Y</code>.</li>
+                        <li>In een <strong class="font-semibold">Triple Store</strong> (met de SPARQL-taal) is dit een relatief simpele en zeer snelle query die deze expliciete relaties volgt. Een Triple Store is geoptimaliseerd voor het bevragen van relaties.8</li>
+                        <li>In een <strong class="font-semibold">SQL-database</strong> zou dit een catastrofale serie van <code class="text-sm">JOIN</code>-statements over meerdere tabellen zijn. SQL-databases zijn fundamenteel <em class="italic">niet</em> gebouwd om complexe, onvoorspelbare relaties (graphs) efficiënt te bevragen.</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">De Triple Store is daarom het <em class="italic">prestatiekritieke</em> hart van de applicatie. Het stelt de chatbot (Fase C.2) in staat om de complexe, herleidbare antwoorden te vinden die de business case vereist. PostgreSQL of MongoDB kunnen nog steeds worden gebruikt, maar waarschijnlijk voor secundaire doeleinden zoals het opslaan van operationele logs, monitoringdata of gebruikerssessies.</p>
+                </section>
+
+                <section id="h6-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">6.3 Bevragen van de Kennisgraaf: SPARQL</h3>
+                    <p class="mb-4 leading-relaxed">De taal die wordt gebruikt om een Triple Store te bevragen heet <strong class="font-semibold">SPARQL</strong> (SPARQL Protocol and RDF Query Language).5 Voor de ontwikkelaars van de frontend (Gradio) en de 'glue code' wordt SPARQL wat SQL is voor een traditionele backend: de taal om data op te halen. De chatbot zal 'onder de motorkap' de vraag van de gebruiker vertalen naar een SPARQL-query, deze afvuren op de Triply-database, en het resultaat (de gevonden feiten en hun bron-URI's) teruggeven aan de gebruiker.</p>
+                </section>
+
+                <hr class="my-12 border-gray-300">
+
+                <section id="h7" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Hoofdstuk 7: Handleiding ICT-Beheer: Opzet en Beheer van de Geautomatiseerde Pijplijn</h2>
+                </section>
+
+                <section id="h7-1" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">7.1 Inleiding: Van Losse Componenten naar een Geïntegreerd Systeem</h3>
+                    <p class="mb-4 leading-relaxed">Dit hoofdstuk is de praktische 'hands-on' handleiding voor de ICT-beheerder. Het vertaalt de vereisten uit "Werkpakket A: Technische pijplijn koppelen en automatiseren" en "Sectie 8: Technische randvoorwaarden" 1 naar concrete actiepunten.</p>
+                    <p class="mb-4 leading-relaxed">De hoofdtaak is het opzetten van een <em class="italic">proof of concept</em> dat aantoont dat alle losse componenten (Choppr, NLP API, Flint, Triplestore, Gradio) betrouwbaar samenwerken. De losse componenten zijn grotendeels ontwikkeld en beschikbaar; de focus van de beheerder ligt op de <em class="italic">automatisering van de keten</em>.1</p>
+                </section>
+
+                <section id="h7-2" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">7.2 Systeemarchitectuur en Technische Vereisten</h3>
+                    <p class="mb-4 leading-relaxed">De beheerder is verantwoordelijk voor het inrichten en onderhouden van de volledige technische stack. Dit begint met de basisinfrastructuur:</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">Omgeving:</strong> Een "veilige speeltuin", bijvoorbeeld binnen ODCN.1</li>
+                        <li><strong class="font-semibold">Hardware:</strong> Een "serveromgeving geschikt voor meerdere gebruikers" met:
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Minimaal <strong class="font-semibold">200 GB opslag</strong>.</li>
+                                <li><strong class="font-semibold">16–32 GB RAM</strong>.</li>
+                                <li>Besturingssysteem: <strong class="font-semibold">Linux of Windows</strong>.1</li>
+                            </ul>
+                        </li>
+                        <li><strong class="font-semibold">Versiebeheer:</strong> <strong class="font-semibold">Git</strong> is vereist voor het beheren van de code en configuraties.1</li>
+                        <li><strong class="font-semibold">Hosting:</strong> De stack zal draaien op een <strong class="font-semibold">VPS</strong> (Virtual Private Server).1</li>
+                    </ul>
+                    <p class="mb-4 leading-relaxed">De volgende tabel geeft een overzicht van de te beheren softwarecomponenten en de bijbehorende beheertaken.</p>
+
+                    <h5 class="text-lg font-semibold text-gray-600 mt-6 mb-3">Tabel 7.1: Technische Randvoorwaarden en Checklist Beheer</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Component</th>
+                                <th>Vereiste (uit , S8)</th>
+                                <th>Beheertaak</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Runtime</td>
+                                <td>Python 3.10+</td>
+                                <td>Installatie, dependency management (bv. via virtual environments), en beveiligingspatches.</td>
+                            </tr>
+                            <tr>
+                                <td>Containerisatie</td>
+                                <td>Docker</td>
+                                <td>Beheer van Docker-images voor de diverse pipeline-componenten (Choppr, NLP API, Flint, frontend). Dit is essentieel voor isolatie en reproduceerbaarheid.</td>
+                            </tr>
+                            <tr>
+                                <td>Frontend</td>
+                                <td>Gradio</td>
+                                <td>Beheer van de Gradio-applicatie. Ervoor zorgen dat deze "ontsloten [wordt] in een veilige testomgeving".1</td>
+                            </tr>
+                            <tr>
+                                <td>Database (Graaf)</td>
+                                <td>Tripple store (bv. Triply)</td>
+                                <td>Installatie, configuratie, back-ups, en performance monitoring van de Kennisgraaf. Dit is de primaire dataopslag.1</td>
+                            </tr>
+                            <tr>
+                                <td>Database (Secundair)</td>
+                                <td>PostgreSQL/MongoDB</td>
+                                <td>Opzet en beheer voor operationele data, zoals logs, monitoringdata, of gebruikersmetadata.1</td>
+                            </tr>
+                            <tr>
+                                <td>Modellen</td>
+                                <td>Lokale NLP-modellen (bv. BERTje)</td>
+                                <td>Opslag, versiebeheer (bv. via Git LFS), en het veilig ontsluiten van de (grote) modelbestanden voor de NLP API-container.1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+                
+                <section id="h7-3" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">7.3 De Geautomatiseerde Workflow (Werkpakket A)</h3>
+                    <p class="mb-4 leading-relaxed">De kern van "Werkpakket A" is "Workflow automatisering".1 De losse componenten (Docker-containers) moeten aan elkaar worden verbonden met 'glue code'.</p>
+                    <p class="mb-4 leading-relaxed">De beheerder/ontwikkelaar moet een <em class="italic">trigger-based</em> mechanisme ontwerpen. Een voorbeeld-flow kan zijn:</p>
+                    <ol class="list-decimal list-inside mb-4 pl-4 space-y-1">
+                        <li><strong class="font-semibold">Trigger:</strong> Een juridisch expert committ een nieuwe (of gewijzigde) wettekst naar een specifieke Git-repository.</li>
+                        <li><strong class="font-semibold">Stap 1 (Choppr):</strong> Een CI/CD-pipeline (of een cronjob die de Git-repo monitort) activeert de <strong class="font-semibold">Choppr</strong>-container.</li>
+                        <li><strong class="font-semibold">Stap 2 (NLP API):</strong> De RDF-output van Choppr wordt in een 'pending' map of databasestatus geplaatst. Dit triggert de <strong class="font-semibold">NLP API</strong>-container, die de data leest en verrijkt met semantische triples.</li>
+                        <li><strong class="font-semibold">Stap 3 (Validatie):</strong> De verrijkte data wordt in de Triplestore opgeslagen met de status 'review'. Een notificatie gaat naar de juridisch experts.</li>
+                        <li><strong class="font-semibold">Stap 4 (Persistentie):</strong> Na validatie in de <strong class="font-semibold">Flint</strong>-editor (H5), wordt de status in de Triplestore omgezet naar 'productie', waarmee het beschikbaar is voor de <strong class="font-semibold">Gradio</strong>-frontend.</li>
+                    </ol>
+                    <p class="mb-4 leading-relaxed">Dit is de "keten" die "geautomatiseerd" moet worden. Deze keten moet gebruikmaken van de opensource componenten zoals beschikbaar gesteld door TNO (via Gitlab).1</p>
+                </section>
+
+                <section id="h7-4" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">7.4 Essentieel Beheer: Stabiliteit en Kwaliteit (Werkpakket A)</h3>
+                    <p class="mb-4 leading-relaxed">De meest kritieke, doorlopende taak voor de ICT-beheerder is niet de installatie, maar het waarborgen van de stabiliteit en kwaliteit van deze geautomatiseerde keten.</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-2">
+                        <li><strong class="font-semibold">Logging en Monitoring:</strong> De beheerder <em class="italic">moet</em> robuuste "logging en monitoring" inbouwen.1 U moet <em class="italic">weten</em> waar en waarom de pipeline faalt. (Bijvoorbeeld: "Choppr-container faalde op Wettekst X vanwege onbekend template", "NLP API gaf 0 triples terug voor Artikel Y"). Deze logs zijn essentieel voor het detecteren van "huidige én toekomstige problemen".1</li>
+                        <li><strong class="font-semibold">Foutafhandeling:</strong> Ontwikkel robuuste "foutafhandeling".1 Wat gebeurt er als de NLP API faalt op een specifiek artikel? Stopt de hele keten? Wordt het bestand in quarantaine geplaatst? Wordt er automatisch een alert verstuurd naar de beheerder en de juridisch expert?</li>
+                        <li><strong class="font-semibold">Kwaliteit Meten:</strong> Implementeer mechanismen voor "Kwaliteit meten en foutdetectie".1 Dit kan een dashboard zijn dat basisstatistieken bijhoudt (bv. "Aantal verwerkte artikelen per dag", "Aantal triples gegenereerd", "Aantal handmatige correcties in Flint per week").</li>
+                    </ul>
+                </section>
+                
+                <section id="h7-5" class="mb-12">
+                    <h3 class="text-2xl font-semibold text-blue-700 mb-4">7.5 Databeheer en Modellen</h3>
+                    <p class="mb-4 leading-relaxed">Tot slot is de beheerder verantwoordelijk voor de twee meest waardevolle assets van het systeem: de data en de modellen.</p>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-2">
+                        <li><strong class="font-semibold">Databasebeheer:</strong> De beheerder is verantwoordelijk voor de data-integriteit, het versiebeheer en de back-ups van de Triplestore. Dit is de "kennisbank" van de organisatie.1</li>
+                        <li><strong class="font-semibold">Modelbeheer:</strong> De "Lokale NLP-modellen (bv BERTje)" 1 zijn statische bestanden, maar ze zullen periodiek worden geüpdatet. De beheerder moet een proces inrichten voor het updaten en 'hot-swappen' van deze modellen in de NLP API-container, idealiter zonder downtime van de volledige pipeline.</li>
+                    </ul>
+                </section>
+
+                <hr class="my-12 border-gray-300">
+
+                <section id="geciteerd-werk" class="mb-12">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Geciteerd werk</h2>
+                    <ul class="list-disc list-inside mb-4 pl-4 space-y-1 text-sm text-gray-600">
+                        <li>Projectvoorstel Chat op de Wet 0.4.docx</li>
+                        <li>Rules as Code: from complex rules to explainable interpretations - TNO, geopend op november 7, 2025, https://www.tno.nl/en/digital/data-sharing/rules-code/</li>
+                        <li>Rules as Code for a More Transparent and Efficient Global Economy - Centre for International Governance Innovation (CIGI), geopend op november 7, 2025, https://www.cigionline.org/static/documents/T7_TF2_Rapson_et_al.pdf</li>
+                        <li>Digitizing Policy + Rules as Code - Digital Government Hub, geopend op november 7, 2025, https://digitalgovernmenthub.org/topics/digitizing-policy-rules-as-code/</li>
+                        <li>Triplestore - Wikipedia, geopend op november 7, 2025, https://en.wikipedia.org/wiki/Triplestore</li>
+                        <li>Triplestores 101: Storing Data for Efficient Inferencing - Dataversity, geopend op november 7, 2025, https://www.dataversity.net/articles/triplestores-101-storing-data-efficient-inferencing/</li>
+                        <li>The Resource Description Framework (RDF) - Enterprise Knowledge, geopend op november 7, 2025, https://enterprise-knowledge.com/the-resource-description-framework-rdf/</li>
+                        <li>What Is an RDF Triplestore? | Ontotext Fundamentals, geopend op november 7, 2025, https://www.ontotext.com/knowledgehub/fundamentals/what-is-rdf-triplestore/</li>
+                        <li>RDF vs. Property Graphs: Choosing the Right Approach for Implementing a Knowledge Graph - Neo4j, geopend op november 7, 2025, https://neo4j.com/blog/knowledge-graph/rdf-vs-property-graphs-knowledge-graphs/</li>
+                    </ul>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Voegt 'smooth scrolling' toe aan alle ankerlinks die beginnen met #
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+
+                    // Update de URL hash zonder de pagina te 'springen' (optioneel)
+                    if (history.pushState) {
+                        history.pushState(null, null, targetId);
+                    } else {
+                        location.hash = targetId;
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

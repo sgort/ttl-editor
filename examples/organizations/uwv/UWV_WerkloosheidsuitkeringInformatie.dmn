@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:modeler="http://camunda.org/schema/modeler/1.0"
+             xmlns:camunda="http://camunda.org/schema/1.0/dmn"
+             id="uwv_ww_drd"
+             name="UWV WW Recht"
+             namespace="http://camunda.org/schema/1.0/dmn"
+             exporter="Camunda Modeler"
+             exporterVersion="5.36.0"
+             modeler:executionPlatform="Camunda Platform"
+             modeler:executionPlatformVersion="7.23.0">
+
+  <!-- ============================================================
+       Top-level decision: aggregates sub-decisions into final verdict
+       ============================================================ -->
+  <decision id="UWV_RechtOpWW" name="UWV Recht Op WW" camunda:historyTimeToLive="10">
+    <informationRequirement id="InformationRequirement_dienstverbandeis">
+      <requiredDecision href="#UWV_Dienstverbandeis" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_ureneis">
+      <requiredDecision href="#UWV_UrenEis" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aowLeeftijd">
+      <requiredInput href="#InputData_aanvragerHeeftAOWLeeftijd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_tenminste21">
+      <requiredInput href="#InputData_aanvragerIsTenminste21" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_verzekerd">
+      <requiredInput href="#InputData_verzekerdVoorWW" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_beschikbaar">
+      <requiredInput href="#InputData_beschikbaarVoorArbeid" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_rechtOpWW" hitPolicy="FIRST">
+      <input id="InputClause_aowLeeftijd" label="Aanvrager heeft AOW leeftijd">
+        <inputExpression id="LiteralExpression_aowLeeftijd" typeRef="boolean">
+          <text>aanvragerHeeftAOWLeeftijd</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_verzekerd" label="Verzekerd voor WW">
+        <inputExpression id="LiteralExpression_verzekerd" typeRef="boolean">
+          <text>verzekerdVoorWW</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_beschikbaar" label="Beschikbaar voor betaalde arbeid">
+        <inputExpression id="LiteralExpression_beschikbaar" typeRef="boolean">
+          <text>beschikbaarVoorArbeid</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_dienstverbandeis" label="Dienstverbandeis vervuld">
+        <inputExpression id="LiteralExpression_dienstverbandeis" typeRef="boolean">
+          <text>dienstverbandEisVervuld</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_ureneis" label="Ureneis vervuld">
+        <inputExpression id="LiteralExpression_ureneis" typeRef="boolean">
+          <text>urenEisVervuld</text>
+        </inputExpression>
+      </input>
+      <output id="Output_rechtOpWW" label="Recht op WW" name="rechtOpWW" typeRef="boolean" />
+      <output id="Output_wwReden" label="Reden" name="wwReden" typeRef="string" />
+
+      <!-- R1: AOW leeftijd bereikt — WW artikel 20 lid 1 sub a -->
+      <rule id="DecisionRule_aow">
+        <description>WW artikel 20 lid 1 sub a - uitsluitingsgrond AOW leeftijd</description>
+        <inputEntry id="UnaryTests_aow_true">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_aow_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_aow_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_aow_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_aow_any4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_aow_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_aow_reden">
+          <text>"AOW leeftijd bereikt; geen recht op WW"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R2: Niet verzekerd voor WW — WW artikel 3 -->
+      <rule id="DecisionRule_nietverzekerd">
+        <description>WW artikel 3 - verzekeringsplicht niet vervuld</description>
+        <inputEntry id="UnaryTests_nv_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nv_false">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nv_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nv_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nv_any4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_nv_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_nv_reden">
+          <text>"Niet verzekerd voor WW"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R3: Niet beschikbaar voor arbeid — WW artikel 16 lid 1 sub b -->
+      <rule id="DecisionRule_niet_beschikbaar">
+        <description>WW artikel 16 lid 1 sub b - beschikbaarheidseis niet vervuld</description>
+        <inputEntry id="UnaryTests_nb_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nb_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nb_false">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nb_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_nb_any4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_nb_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_nb_reden">
+          <text>"Niet direct beschikbaar voor betaalde arbeid"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R4: Alle voorwaarden vervuld — WW artikel 16 lid 1 -->
+      <rule id="DecisionRule_recht">
+        <description>WW artikel 16 lid 1 - volledig voldaan aan WW-voorwaarden</description>
+        <inputEntry id="UnaryTests_recht_false">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_recht_true1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_recht_true2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_recht_true3">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_recht_true4">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_recht_true">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_recht_reden">
+          <text>"Voldoet aan alle WW-voorwaarden"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R5: Dienstverbandeis niet vervuld — WW artikel 17 -->
+      <rule id="DecisionRule_dienstverband_fail">
+        <description>WW artikel 17 - dienstverbandeis niet vervuld</description>
+        <inputEntry id="UnaryTests_df_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_df_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_df_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_df_false">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_df_any4">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_df_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_df_reden">
+          <text>"Dienstverbandeis niet vervuld"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R6: Ureneis niet vervuld — WW artikel 16 lid 1 sub a -->
+      <rule id="DecisionRule_uren_fail">
+        <description>WW artikel 16 lid 1 sub a - ureneis niet vervuld</description>
+        <inputEntry id="UnaryTests_uf_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uf_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uf_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uf_any4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uf_false">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_uf_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_uf_reden">
+          <text>"Ureneis niet vervuld"</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R7: Vangnet -->
+      <rule id="DecisionRule_catchall">
+        <description>Vangnet - niet voldaan aan WW-voorwaarden</description>
+        <inputEntry id="UnaryTests_ca_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ca_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ca_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ca_any4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ca_any5">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_ca_recht">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_ca_reden">
+          <text>"Niet voldaan aan de WW-voorwaarden"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- ============================================================
+       Sub-decision 1: Dienstverbandeis
+       WW artikel 17 — 26 van de 36 weken gewerkt
+       ============================================================ -->
+  <decision id="UWV_Dienstverbandeis" name="UWV Dienstverbandeis" camunda:historyTimeToLive="10">
+    <informationRequirement id="InformationRequirement_werkweken">
+      <requiredInput href="#InputData_aantalWerkwekenIn36Weken" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_bijzonder">
+      <requiredInput href="#InputData_bijzondereOmstandighedenVanToepassing" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_dienstverbandeis" hitPolicy="FIRST">
+      <input id="InputClause_werkweken" label="Aantal werkweken in 36 weken">
+        <inputExpression id="LiteralExpression_werkweken" typeRef="integer">
+          <text>aantalWerkwekenIn36Weken</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_bijzonder" label="Bijzondere omstandigheid van toepassing">
+        <inputExpression id="LiteralExpression_bijzonder" typeRef="boolean">
+          <text>bijzondereOmstandighedenVanToepassing</text>
+        </inputExpression>
+      </input>
+      <output id="Output_dienstverbandEisVervuld" label="Dienstverbandeis vervuld" name="dienstverbandEisVervuld" typeRef="boolean" />
+
+      <!-- R1: Standaard — minimaal 26 weken gewerkt -->
+      <rule id="DecisionRule_dv_standaard">
+        <description>WW artikel 17 lid 1 - 26-wekeneis standaard vervuld</description>
+        <inputEntry id="UnaryTests_dv_genoeg">
+          <text>&gt;= 26</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_dv_any1">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_dv_true_standaard">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R2: Alternatief — minder dan 26 weken maar bijzondere omstandigheid (ziekte, verlof, zelfstandige) -->
+      <rule id="DecisionRule_dv_bijzonder">
+        <description>WW artikel 17 lid 2 - bijzondere omstandigheid telt mee voor referteperiode</description>
+        <inputEntry id="UnaryTests_dv_tekort">
+          <text>&lt; 26</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_dv_bijzonder_true">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_dv_true_bijzonder">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R3: Niet vervuld -->
+      <rule id="DecisionRule_dv_niet_vervuld">
+        <description>WW artikel 17 - onvoldoende weken gewerkt, geen bijzondere omstandigheid</description>
+        <inputEntry id="UnaryTests_dv_tekort2">
+          <text>&lt; 26</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_dv_bijzonder_false">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_dv_false">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- ============================================================
+       Sub-decision 2: UrenEis
+       WW artikel 16 lid 1 sub a — minimale urendrempel en loonverlies
+       ============================================================ -->
+  <decision id="UWV_UrenEis" name="UWV Ureneis" camunda:historyTimeToLive="10">
+    <informationRequirement id="InformationRequirement_gemiddeldeUren">
+      <requiredInput href="#InputData_gemiddeldUrenPerWeek" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_verliesUren">
+      <requiredInput href="#InputData_verliesUrenPerWeek" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_verliesLoon">
+      <requiredInput href="#InputData_verliesLoon" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_verliesHalveUren">
+      <requiredInput href="#InputData_verliesMinimaalHalveUren" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_werkgeverOntslag">
+      <requiredInput href="#InputData_werkgeverOntslagMetVaststellingsovereenkomst" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_ureneis" hitPolicy="FIRST">
+      <input id="InputClause_gemiddeld" label="Gemiddeld uren per week">
+        <inputExpression id="LiteralExpression_gemiddeld" typeRef="double">
+          <text>gemiddeldUrenPerWeek</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_verliesUren" label="Verlies uren per week">
+        <inputExpression id="LiteralExpression_verliesUren" typeRef="double">
+          <text>verliesUrenPerWeek</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_verliesLoon" label="Verlies loon voor die uren">
+        <inputExpression id="LiteralExpression_verliesLoon" typeRef="boolean">
+          <text>verliesLoon</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_verliesHalve" label="Verlies minimaal helft van uren (bij &lt; 10 uur/week)">
+        <inputExpression id="LiteralExpression_verliesHalve" typeRef="boolean">
+          <text>verliesMinimaalHalveUren</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_werkgeverOntslag" label="Werkgever ontslag met vaststellingsovereenkomst">
+        <inputExpression id="LiteralExpression_werkgeverOntslag" typeRef="boolean">
+          <text>werkgeverOntslagMetVaststellingsovereenkomst</text>
+        </inputExpression>
+      </input>
+      <output id="Output_urenEisVervuld" label="Ureneis vervuld" name="urenEisVervuld" typeRef="boolean" />
+
+      <!-- R1: Alternatief B — werkgever ontslag met vaststellingsovereenkomst -->
+      <rule id="DecisionRule_uren_ontslag">
+        <description>WW artikel 16 lid 3 - werkgever ontslag met vaststellingsovereenkomst; ureneis niet van toepassing</description>
+        <inputEntry id="UnaryTests_uo_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uo_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uo_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uo_any4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_uo_true">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_uo_true">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R2: Standaard — gemiddeld >= 10 uur/week, verlies >= 5 uur/week, loonverlies -->
+      <rule id="DecisionRule_uren_standaard">
+        <description>WW artikel 16 lid 1 sub a - standaard ureneis: gemiddeld &gt;= 10 uur, verlies &gt;= 5 uur</description>
+        <inputEntry id="UnaryTests_us_genoeg">
+          <text>&gt;= 10</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_us_verlies">
+          <text>&gt;= 5</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_us_loon">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_us_any">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_us_any2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_us_true">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R3: Alternatief A — gemiddeld < 10 uur/week, verlies >= helft van die uren, loonverlies -->
+      <rule id="DecisionRule_uren_alternatief">
+        <description>WW artikel 16 lid 2 - alternatieve ureneis: gemiddeld &lt; 10 uur, verlies &gt;= 50% van werkuren</description>
+        <inputEntry id="UnaryTests_ua_minder">
+          <text>&lt; 10</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ua_any">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ua_loon">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ua_halve">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_ua_any2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_ua_true">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+
+      <!-- R4: Vangnet — ureneis niet vervuld -->
+      <rule id="DecisionRule_uren_niet_vervuld">
+        <description>Ureneis niet vervuld op basis van standaard- of alternatieve criteria</description>
+        <inputEntry id="UnaryTests_un_any1">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_un_any2">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_un_any3">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_un_any4">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_un_any5">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_un_false">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+
+  <!-- ============================================================
+       InputData elements
+       SVB outputs consumed as inputs (from SVB_LeeftijdsInformatie)
+       ============================================================ -->
+  <inputData id="InputData_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd">
+    <variable id="Variable_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aanvragerIsTenminste21" name="aanvragerIsTenminste21">
+    <variable id="Variable_aanvragerIsTenminste21" name="aanvragerIsTenminste21" typeRef="boolean" />
+  </inputData>
+
+  <!-- WW-specific inputs -->
+  <inputData id="InputData_verzekerdVoorWW" name="verzekerdVoorWW">
+    <variable id="Variable_verzekerdVoorWW" name="verzekerdVoorWW" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_beschikbaarVoorArbeid" name="beschikbaarVoorArbeid">
+    <variable id="Variable_beschikbaarVoorArbeid" name="beschikbaarVoorArbeid" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_aantalWerkwekenIn36Weken" name="aantalWerkwekenIn36Weken">
+    <variable id="Variable_aantalWerkwekenIn36Weken" name="aantalWerkwekenIn36Weken" typeRef="integer" />
+  </inputData>
+  <inputData id="InputData_bijzondereOmstandighedenVanToepassing" name="bijzondereOmstandighedenVanToepassing">
+    <variable id="Variable_bijzondereOmstandighedenVanToepassing" name="bijzondereOmstandighedenVanToepassing" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_gemiddeldUrenPerWeek" name="gemiddeldUrenPerWeek">
+    <variable id="Variable_gemiddeldUrenPerWeek" name="gemiddeldUrenPerWeek" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_verliesUrenPerWeek" name="verliesUrenPerWeek">
+    <variable id="Variable_verliesUrenPerWeek" name="verliesUrenPerWeek" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_verliesLoon" name="verliesLoon">
+    <variable id="Variable_verliesLoon" name="verliesLoon" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_verliesMinimaalHalveUren" name="verliesMinimaalHalveUren">
+    <variable id="Variable_verliesMinimaalHalveUren" name="verliesMinimaalHalveUren" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_werkgeverOntslagMetVaststellingsovereenkomst" name="werkgeverOntslagMetVaststellingsovereenkomst">
+    <variable id="Variable_werkgeverOntslagMetVaststellingsovereenkomst" name="werkgeverOntslagMetVaststellingsovereenkomst" typeRef="boolean" />
+  </inputData>
+
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_ww">
+      <dmndi:DMNShape id="DMNShape_rechtOpWW" dmnElementRef="UWV_RechtOpWW">
+        <dc:Bounds height="80" width="180" x="270" y="110" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_dienstverbandeis" dmnElementRef="UWV_Dienstverbandeis">
+        <dc:Bounds height="80" width="180" x="80" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_ureneis" dmnElementRef="UWV_UrenEis">
+        <dc:Bounds height="80" width="180" x="460" y="260" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

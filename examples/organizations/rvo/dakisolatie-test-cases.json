@@ -1,0 +1,74 @@
+[
+  {
+    "testName": "Test Case 1 – Minimale upgrade naar R=3.0",
+    "testResult": "Rule 1 fires (doel_r_waarde=3.0). delta_r=1.5, extra_dikte=60mm, subsidie=249, besparing_jaar=80. No aanbeveling text.",
+    "variables": {
+      "huidige_r_waarde": { "value": 1.5, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 80.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 180, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 12, "type": "Integer" },
+      "doel_r_waarde": { "value": 3.0, "type": "Double" }
+    }
+  },
+  {
+    "testName": "Test Case 2 – Standaard upgrade naar R=4.0",
+    "testResult": "Rule 2 fires (doel_r_waarde=4.0). delta_r=2.5, extra_dikte=100mm, subsidie=1552, besparing_jaar=320. No aanbeveling text.",
+    "variables": {
+      "huidige_r_waarde": { "value": 1.5, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 80.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 180, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 12, "type": "Integer" },
+      "doel_r_waarde": { "value": 4.0, "type": "Double" }
+    }
+  },
+  {
+    "testName": "Test Case 3 – Aanbevolen upgrade naar R=6.0",
+    "testResult": "Rule 3 fires (doel_r_waarde=6.0). delta_r=4.5, extra_dikte=180mm, subsidie=2185, besparing_jaar=640. Aanbeveling text present (\"Aanbevolen: R-waarde 6.0...\").",
+    "variables": {
+      "huidige_r_waarde": { "value": 1.5, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 80.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 180, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 12, "type": "Integer" },
+      "doel_r_waarde": { "value": 6.0, "type": "Double" }
+    }
+  },
+  {
+    "testName": "Test Case 4 – Maximale isolatie naar R=8.0",
+    "testResult": "Rule 4 fires (doel_r_waarde=8.0). delta_r=6.5, extra_dikte=260mm, subsidie=3604, besparing_jaar=780. No aanbeveling text.",
+    "variables": {
+      "huidige_r_waarde": { "value": 1.5, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 80.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 180, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 12, "type": "Integer" },
+      "doel_r_waarde": { "value": 8.0, "type": "Double" }
+    }
+  },
+  {
+    "testName": "Test Case 5 – Groot dak (150m²), upgrade naar R=6.0",
+    "testResult": "Rule 3 fires (doel_r_waarde=6.0) on a larger roof. Costs and savings scale proportionally with dak_oppervlakte_m2=150. Aanbeveling text present.",
+    "variables": {
+      "huidige_r_waarde": { "value": 2.0, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 150.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 200, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 15, "type": "Integer" },
+      "doel_r_waarde": { "value": 6.0, "type": "Double" }
+    }
+  },
+  {
+    "testName": "Test Case 6 – Reeds deels geïsoleerd dak, upgrade naar R=4.0",
+    "testResult": "Rule 2 fires (doel_r_waarde=4.0). huidige_r_waarde=3.0 so delta_r=1.0; small extra_dikte and low costs. subsidie=1552, besparing_jaar=320.",
+    "variables": {
+      "huidige_r_waarde": { "value": 3.0, "type": "Double" },
+      "dak_oppervlakte_m2": { "value": 60.0, "type": "Double" },
+      "lambda_w_mk": { "value": 0.04, "type": "Double" },
+      "materiaal_cost_per_m3": { "value": 180, "type": "Integer" },
+      "install_cost_per_m2_per_100mm": { "value": 12, "type": "Integer" },
+      "doel_r_waarde": { "value": 4.0, "type": "Double" }
+    }
+  }
+]
