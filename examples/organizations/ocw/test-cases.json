@@ -3,88 +3,88 @@
     "testName": "TC1_Hoofdvestiging_standaard_geen_verticaal",
     "testResult": "vastBedrag = 93765.0 (hoofdvestiging, niet tijdelijk, voldoende leerlingen, geen verticale scholengemeenschap)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 120,   "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": true,  "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 120, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC2_Nevenvestiging_standaard_geen_verticaal",
     "testResult": "vastBedrag = 13779.0 (nevenvestiging, niet tijdelijk, voldoende leerlingen, geen verticale scholengemeenschap)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 45,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": false, "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 45, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
     "testName": "TC3_Tijdelijke_vestiging_geen_vast_bedrag",
     "testResult": "vastBedrag = 0.0 (vestiging is tijdelijk, eerste regel van beslissingstabel)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": true,  "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 200,   "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": true,  "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": true, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 200, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC4_Te_weinig_leerlingen_geen_vast_bedrag",
     "testResult": "vastBedrag = 0.0 (vestiging voldoet niet aan minimumeis leerlingen: 15 < 23)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 15,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": true,  "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 15, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC5_Verticale_scholengemeenschap_hoofdvestiging",
     "testResult": "vastBedrag = 93765.0 (onderdeel verticale scholengemeenschap, is hoofdvestiging)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 80,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": true,  "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": true,  "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 80, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": true, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC6_Verticale_scholengemeenschap_nevenvestiging",
     "testResult": "vastBedrag = 13779.0 (onderdeel verticale scholengemeenschap, is nevenvestiging)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 60,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": true,  "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": false, "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 60, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": true, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
     "testName": "TC7_Grenswaarde_exact_minimum_leerlingen",
     "testResult": "vastBedrag = 13779.0 (nevenvestiging, aantalLeerlingenVastBedrag precies op minimum: 23 = 23)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 23,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": false, "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 23, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
     "testName": "TC8_Grenswaarde_een_onder_minimum",
     "testResult": "vastBedrag = 0.0 (aantalLeerlingenVastBedrag één onder minimum: 22 < 23)",
     "variables": {
-      "vestigingIsTijdelijk":                   { "value": false, "type": "Boolean" },
-      "aantalLeerlingenVastBedrag":              { "value": 22,    "type": "Integer" },
-      "minimumAantalLeerlingen":                 { "value": 23,    "type": "Integer" },
-      "vestigingIsVerticaleScholengemeenschap":  { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":               { "value": true,  "type": "Boolean" }
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "aantalLeerlingenVastBedrag": { "value": 22, "type": "Integer" },
+      "minimumAantalLeerlingen": { "value": 23, "type": "Integer" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   }
 ]
