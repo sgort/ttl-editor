@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" xmlns:di="http://www.omg.org/spec/DMN/20151101/di.xsd" xmlns:dc="http://www.omg.org/spec/DMN/20151101/dc.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="def_zorgtoeslag_temporal_demo" name="Zorgtoeslag (Temporal Rules demo)" namespace="https://example.org/dmn/zorgtoeslag/temporal-demo">
-  <inputData id="in_datumBerekening" name="datumBerekening">
-    <variable id="var_datumBerekening" name="datumBerekening" typeRef="date" />
-  </inputData>
-  <inputData id="in_geboortedatum" name="geboortedatum">
-    <variable id="var_geboortedatum" name="geboortedatum" typeRef="date" />
-  </inputData>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dmndi_1="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc_1="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" xmlns:di="http://www.omg.org/spec/DMN/20151101/di.xsd" xmlns:dc="http://www.omg.org/spec/DMN/20151101/dc.xsd" id="def_zorgtoeslag_temporal_demo" name="Zorgtoeslag (Temporal Rules demo)" namespace="https://example.org/dmn/zorgtoeslag/temporal-demo" exporter="Camunda Modeler" exporterVersion="5.36.0">
   <inputData id="in_leeftijdOpDatumBerekening" name="leeftijdOpDatumBerekening">
     <variable id="var_leeftijdOpDatumBerekening" name="leeftijdOpDatumBerekening" typeRef="number" />
   </inputData>
@@ -84,7 +78,7 @@
       <text>503.93</text>
     </literalExpression>
   </decision>
-    <decision id="zorgtoeslag_resultaat" name="Resultaat zorgtoeslag" camunda:historyTimeToLive="180">
+  <decision id="zorgtoeslag_resultaat" name="Resultaat zorgtoeslag" camunda:historyTimeToLive="180">
     <informationRequirement id="InformationRequirement_0lbkyh8">
       <requiredDecision href="#rechtOpToeslagAanvraag" />
     </informationRequirement>
@@ -340,4 +334,77 @@
       </text>
     </literalExpression>
   </decision>
+  <dmndi_1:DMNDI>
+    <dmndi_1:DMNDiagram id="DMNDiagram_073n844">
+      <dmndi_1:DMNShape id="DMNShape_0rb03kc" dmnElementRef="p_STANDAARDPREMIE">
+        <dc_1:Bounds height="80" width="180" x="590" y="560" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1af2u3r" dmnElementRef="p_DREMPELINKOMEN">
+        <dc_1:Bounds height="80" width="180" x="810" y="560" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1mrqqu9" dmnElementRef="p_DOELMATIGHEIDSGRENS">
+        <dc_1:Bounds height="80" width="180" x="370" y="210" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_02rd90v" dmnElementRef="p_DREMPEL_PCT_ZP">
+        <dc_1:Bounds height="80" width="180" x="810" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0a2euni" dmnElementRef="p_OVERSCHOT_PCT_ZP">
+        <dc_1:Bounds height="80" width="180" x="590" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0qjamtt" dmnElementRef="p_MEERDERJARIGHEIDSLEEFTIJD">
+        <dc_1:Bounds height="80" width="180" x="150" y="210" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_00b4htv" dmnElementRef="p_MAX_ZORGTOESLAG_ZP">
+        <dc_1:Bounds height="80" width="180" x="590" y="320" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1ldz60u" dmnElementRef="p_NORMPREMIE_OVER_DREMPEL_ZP">
+        <dc_1:Bounds height="80" width="180" x="1040" y="210" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1gmkuaf" dmnElementRef="zorgtoeslag_resultaat">
+        <dc_1:Bounds height="80" width="180" x="810" y="90" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1xikpiq" dmnElementRef="leeftijd">
+        <dc_1:Bounds height="80" width="180" x="150" y="330" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0tb1wbe" dmnElementRef="meerderjarigDezeMaand">
+        <dc_1:Bounds height="80" width="180" x="150" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0t0q1gk" dmnElementRef="rechtgevendeLeeftijd">
+        <dc_1:Bounds height="80" width="180" x="150" y="560" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0pqo2qh" dmnElementRef="inLeven">
+        <dc_1:Bounds height="80" width="180" x="1040" y="670" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_02qsboi" dmnElementRef="statusRouteOk">
+        <dc_1:Bounds height="80" width="180" x="590" y="670" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0j89glg" dmnElementRef="rechtOpToeslag">
+        <dc_1:Bounds height="80" width="180" x="590" y="210" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_19h4fgy" dmnElementRef="rechtOpToeslagAanvraag">
+        <dc_1:Bounds height="80" width="180" x="810" y="210" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0i1y0oq" dmnElementRef="woonlandfactor">
+        <dc_1:Bounds height="80" width="180" x="1270" y="670" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1ly6mli" dmnElementRef="standaardpremie">
+        <dc_1:Bounds height="80" width="180" x="1040" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_08ea0b6" dmnElementRef="inkomenBovenDrempel">
+        <dc_1:Bounds height="80" width="180" x="810" y="320" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1ljqsdo" dmnElementRef="normpremie">
+        <dc_1:Bounds height="80" width="180" x="1040" y="320" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1ix9u7h" dmnElementRef="jaarbedragToeslagOntbrekendeDraagkracht">
+        <dc_1:Bounds height="80" width="180" x="1270" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1vhj2gk" dmnElementRef="jaarbedragToeslagBasis">
+        <dc_1:Bounds height="80" width="180" x="1270" y="320" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0zoxqcs" dmnElementRef="jaarbedragToeslag">
+        <dc_1:Bounds height="80" width="180" x="1270" y="210" />
+      </dmndi_1:DMNShape>
+    </dmndi_1:DMNDiagram>
+  </dmndi_1:DMNDI>
 </definitions>
