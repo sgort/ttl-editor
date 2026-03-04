@@ -101,7 +101,7 @@ export default function ChangelogTab() {
           </p>
           <p>
             <a
-              href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/FIELD-MAPPING-CPSV-AP-3.2.0.md"
+              href="https://iou-architectuur.open-regels.nl/cpsv-editor/reference/field-mapping/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline font-medium"

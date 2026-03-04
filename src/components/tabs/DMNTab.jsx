@@ -1,5 +1,6 @@
 import {
   AlertCircle,
+  AlertTriangle,
   CheckCircle,
   ChevronDown,
   ChevronUp,
@@ -7,8 +8,10 @@ import {
   Code,
   FileText,
   FlaskConical,
+  Info,
   Play,
   Settings,
+  ShieldCheck,
   Trash2,
   Upload,
 } from 'lucide-react';
@@ -43,6 +46,11 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [isRunningTestCases, setIsRunningTestCases] = useState(false);
   const [testCasesExpanded, setTestCasesExpanded] = useState(false);
   const [testCasesFileName, setTestCasesFileName] = useState('');
+
+  // Syntactic validation result (from backend /v1/dmns/validate)
+  const [validationResult, setValidationResult] = useState(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationExpanded, setValidationExpanded] = useState(true);
 
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
@@ -484,10 +492,49 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       setDecisions(parsedDecisions);
       setIntermediateResults([]);
       setTestCaseResults([]);
+
+      // Run backend syntactic validation
+      runBackendValidation(content);
     } catch (err) {
       setError(err.message || 'Failed to load example DMN file');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const runBackendValidation = async (content) => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    setIsValidating(true);
+    setValidationResult(null);
+    try {
+      const response = await fetch(`${backendUrl}/v1/dmns/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setValidationResult(data.data);
+        setValidationExpanded(!data.data.valid);
+      } else {
+        setValidationResult({
+          valid: false,
+          parseError: data.error?.message ?? 'Backend validation failed',
+          layers: {
+            base: { label: 'Base DMN', issues: [] },
+            business: { label: 'Business Rules', issues: [] },
+            execution: { label: 'Execution Rules', issues: [] },
+            interaction: { label: 'Interaction Rules', issues: [] },
+            content: { label: 'Content', issues: [] },
+          },
+          summary: { errors: 1, warnings: 0, infos: 0 },
+        });
+      }
+    } catch (err) {
+      // Backend unreachable — fail silently, don't block the DMN workflow
+      console.warn('[DMNTab] Validation backend unavailable:', err.message);
+    } finally {
+      setIsValidating(false);
     }
   };
 
@@ -535,6 +582,9 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       setDecisions(parsedDecisions);
       setIntermediateResults([]);
       setTestCaseResults([]);
+
+      // Run backend syntactic validation
+      runBackendValidation(content);
     };
 
     reader.onerror = () => setError('Error reading file');
@@ -824,6 +874,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setTestCaseResults([]);
     setTestCasesFileName('');
     setApiConfig((prev) => ({ ...prev, decisionKey: '' }));
+    setValidationResult(null);
+    setIsValidating(false);
     setDmnData({
       fileName: '',
       content: '',
@@ -985,6 +1037,114 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 )}
               </div>
             </div>
+
+            {/* Syntactic Validation */}
+            {(isValidating || validationResult) && (
+              <div className="mt-3 pt-3 border-t border-green-200">
+                <button
+                  type="button"
+                  onClick={() => setValidationExpanded((v) => !v)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    {isValidating ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent" />
+                        <span className="text-sm font-medium text-gray-700">Validating…</span>
+                      </>
+                    ) : validationResult?.valid ? (
+                      <>
+                        <ShieldCheck size={16} className="text-green-600" />
+                        <span className="text-sm font-medium text-green-700">Syntax valid</span>
+                      </>
+                    ) : (
+                      <>
+                        <AlertCircle size={16} className="text-red-500" />
+                        <span className="text-sm font-medium text-red-700">
+                          Syntax issues found
+                        </span>
+                      </>
+                    )}
+                    {validationResult && !isValidating && (
+                      <div className="flex gap-1 ml-1">
+                        {validationResult.summary.errors > 0 && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-red-100 text-red-700 text-xs font-medium">
+                            {validationResult.summary.errors}E
+                          </span>
+                        )}
+                        {validationResult.summary.warnings > 0 && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-yellow-100 text-yellow-700 text-xs font-medium">
+                            {validationResult.summary.warnings}W
+                          </span>
+                        )}
+                        {validationResult.summary.infos > 0 && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 text-xs font-medium">
+                            {validationResult.summary.infos}I
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {validationResult &&
+                    !isValidating &&
+                    (validationExpanded ? (
+                      <ChevronUp size={14} className="text-gray-400" />
+                    ) : (
+                      <ChevronDown size={14} className="text-gray-400" />
+                    ))}
+                </button>
+
+                {validationExpanded && validationResult && !isValidating && (
+                  <div className="mt-2 space-y-1.5">
+                    {validationResult.parseError && (
+                      <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded px-2 py-1.5 text-xs text-red-700">
+                        <AlertCircle size={12} className="flex-shrink-0 mt-0.5" />
+                        <span>{validationResult.parseError}</span>
+                      </div>
+                    )}
+                    {Object.values(validationResult.layers).map((layer) => {
+                      if (layer.issues.length === 0) return null;
+                      return (
+                        <div key={layer.label}>
+                          <p className="text-xs font-medium text-gray-500 mb-1">{layer.label}</p>
+                          {layer.issues.map((issue, idx) => {
+                            const bg =
+                              issue.severity === 'error'
+                                ? 'bg-red-50 border-red-100 text-red-700'
+                                : issue.severity === 'warning'
+                                  ? 'bg-yellow-50 border-yellow-100 text-yellow-700'
+                                  : 'bg-blue-50 border-blue-100 text-blue-700';
+                            const Icon =
+                              issue.severity === 'error'
+                                ? AlertCircle
+                                : issue.severity === 'warning'
+                                  ? AlertTriangle
+                                  : Info;
+                            return (
+                              <div
+                                key={`${issue.code}-${idx}`}
+                                className={`flex items-start gap-1.5 border rounded px-2 py-1.5 text-xs ${bg} mb-1`}
+                              >
+                                <Icon size={11} className="flex-shrink-0 mt-0.5" />
+                                <div className="min-w-0">
+                                  <span className="font-mono opacity-60 mr-1">{issue.code}</span>
+                                  {issue.message}
+                                  {issue.location && (
+                                    <span className="block font-mono opacity-50 truncate">
+                                      {issue.location}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Deployment Button */}
             <div className="mt-4 pt-4 border-t border-green-200">
