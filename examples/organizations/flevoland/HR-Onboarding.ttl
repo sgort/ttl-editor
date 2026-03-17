@@ -1,0 +1,251 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/hr-onboarding> a cpsv:PublicService ;
+    dct:identifier "hr-onboarding" ;
+    dct:title "HR Onboarding"@nl ;
+    dct:description "Example DMN for BPMN matching"@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/REGIONAL> ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/14866/Provincie_Flevoland> ;
+    cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR696459/7> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/hr-onboarding/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/14866/Provincie_Flevoland> a cv:PublicOrganisation ;
+    dct:identifier "Provincie_Flevoland" ;
+    skos:prefLabel "Provincie Flevoland"@nl ;
+    foaf:homepage <https://flevoland.nl/home> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Provincie_Flevoland_logo.png> ;
+    schema:image <./assets/Provincie_Flevoland_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://lokaleregelgeving.overheid.nl/CVDR696459/7> a eli:LegalResource ;
+    dct:identifier "CVDR696459" ;
+    dct:title "Omgevingsplan gemeente Lelystad"@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR696459/7/2026-02-03>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn> a cprmv:DecisionModel ;
+    dct:identifier "EmployeeRoleAssignment" ;
+    dct:title "EmployeeRoleAssignment.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    dct:source <https://regels.overheid.nl/services/hr-onboarding/dmn/file> ;
+    cprmv:deploymentId "bbb8dba0-1eee-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-03-13T15:10:12.627Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/EmployeeRoleAssignment/evaluate> ;
+    cprmv:lastTested "2026-03-13T15:12:35.105Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn/input/1> a cpsv:Input ;
+    dct:identifier "department" ;
+    dct:title "department"@nl ;
+    dct:type "String" ;
+    schema:value "infrastructuur" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hr-onboarding/dmn> .
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn/input/2> a cpsv:Input ;
+    dct:identifier "jobFunction" ;
+    dct:title "jobFunction"@nl ;
+    dct:type "String" ;
+    schema:value "projectleider" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hr-onboarding/dmn> .
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn/output/1> a cpsv:Output ;
+    dct:identifier "accessLevel" ;
+    dct:title "accessLevel"@nl ;
+    dct:type "String" ;
+    schema:value "admin" ;
+    cpsv:produces <https://regels.overheid.nl/services/hr-onboarding/dmn> .
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn/output/2> a cpsv:Output ;
+    dct:identifier "assignedRoles" ;
+    dct:title "assignedRoles"@nl ;
+    dct:type "String" ;
+    schema:value "caseworker,rip-verkenner,rip-planner,rip-contractbeheer" ;
+    cpsv:produces <https://regels.overheid.nl/services/hr-onboarding/dmn> .
+
+<https://regels.overheid.nl/services/hr-onboarding/dmn/output/3> a cpsv:Output ;
+    dct:identifier "candidateGroups" ;
+    dct:title "candidateGroups"@nl ;
+    dct:type "String" ;
+    schema:value "caseworker,rip-projectleider" ;
+    cpsv:produces <https://regels.overheid.nl/services/hr-onboarding/dmn> .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_01> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_01" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_02> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_02" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_03> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_03" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_04> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_04" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_05> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_05" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_06> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_06" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_07> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_07" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_08> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_08" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_09> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_09" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_10" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hr-onboarding/rules/Rule_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_11" ;
+    cpsv:implements <https://regels.overheid.nl/services/hr-onboarding> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_EmployeeRoleAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-03-13"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/employeeroleassignment/department> a skos:Concept ;
+    skos:prefLabel "Department"@nl ;
+    skos:definition "Department is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DEPA" ;
+    dct:subject <https://regels.overheid.nl/services/hr-onboarding/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/department> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/employeeroleassignment/jobFunction> a skos:Concept ;
+    skos:prefLabel "Job Function"@nl ;
+    skos:definition "Job Function is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "JF" ;
+    dct:subject <https://regels.overheid.nl/services/hr-onboarding/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/jobFunction> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/employeeroleassignment/accessLevel> a skos:Concept ;
+    skos:prefLabel "Access Level"@nl ;
+    skos:definition "Access Level is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AL" ;
+    dct:subject <https://regels.overheid.nl/services/hr-onboarding/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/accessLevel> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/employeeroleassignment/assignedRoles> a skos:Concept ;
+    skos:prefLabel "Assigned Roles"@nl ;
+    skos:definition "Assigned Roles is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AR" ;
+    dct:subject <https://regels.overheid.nl/services/hr-onboarding/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/assignedRoles> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/employeeroleassignment/candidateGroups> a skos:Concept ;
+    skos:prefLabel "Candidate Groups"@nl ;
+    skos:definition "Candidate Groups is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "CG" ;
+    dct:subject <https://regels.overheid.nl/services/hr-onboarding/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/candidateGroups> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
