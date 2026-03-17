@@ -4,11 +4,11 @@
     "testResult": "vastBedrag = 275595.52 (niet-uitsluitend PRO, 150 >= 130, hoofdvestiging, geen verticale scholengemeenschap)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 150,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 150, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
@@ -16,11 +16,11 @@
     "testResult": "vastBedrag = 137797.76 (niet-uitsluitend PRO, 145 >= 130, nevenvestiging, geen verticale scholengemeenschap)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 145,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": false, "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 145, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
@@ -28,11 +28,11 @@
     "testResult": "vastBedrag = 0.0 (vestiging is tijdelijk, eerste rij beslissingstabel)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 200,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": true,  "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 200, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": true, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
@@ -40,35 +40,35 @@
     "testResult": "vastBedrag = 0.0 (niet-uitsluitend PRO, 120 < 130, voldoet niet aan minimumeis)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 120,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 120, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC5_Uitsluitend_PRO_voldoende_leerlingen_hoofdvestiging",
     "testResult": "vastBedrag = 275595.52 (uitsluitend PRO, 75 >= 60, hoofdvestiging)",
     "variables": {
-      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true,  "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 75,    "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 0,     "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true, "type": "Boolean" },
+      "aantalLeerlingenUitsluitendPRO": { "value": 75, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
     "testName": "TC6_Uitsluitend_PRO_te_weinig_leerlingen_geen_vast_bedrag",
     "testResult": "vastBedrag = 0.0 (uitsluitend PRO, 45 < 60, voldoet niet aan minimumeis)",
     "variables": {
-      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true,  "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 45,    "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 0,     "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true, "type": "Boolean" },
+      "aantalLeerlingenUitsluitendPRO": { "value": 45, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
@@ -76,11 +76,11 @@
     "testResult": "vastBedrag = 137797.76 (niet-uitsluitend PRO, 135 >= 130, nevenvestiging, verticale scholengemeenschap)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 135,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": true,  "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": false, "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 135, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": true, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
@@ -88,23 +88,23 @@
     "testResult": "vastBedrag = 137797.76 (niet-uitsluitend PRO, 130 = 130, nevenvestiging)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 130,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": false, "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 130, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": false, "type": "Boolean" }
     }
   },
   {
     "testName": "TC9_Grenswaarde_PRO_exact_minimum_60",
     "testResult": "vastBedrag = 275595.52 (uitsluitend PRO, 60 = 60, hoofdvestiging)",
     "variables": {
-      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true,  "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 60,    "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 0,     "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": true, "type": "Boolean" },
+      "aantalLeerlingenUitsluitendPRO": { "value": 60, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   },
   {
@@ -112,11 +112,11 @@
     "testResult": "vastBedrag = 0.0 (niet-uitsluitend PRO, 129 < 130, voldoet niet aan minimumeis)",
     "variables": {
       "heeftUitsluitendLicentieVoorPraktijkonderwijs": { "value": false, "type": "Boolean" },
-      "aantalLeerlingenUitsluitendPRO":                { "value": 0,     "type": "Integer" },
-      "aantalLeerlingenNietUitsluitendPRO":            { "value": 129,   "type": "Integer" },
-      "vestigingIsTijdelijk":                          { "value": false, "type": "Boolean" },
-      "vestigingIsVerticaleScholengemeenschap":        { "value": false, "type": "Boolean" },
-      "vestigingIsHoofdvestiging":                     { "value": true,  "type": "Boolean" }
+      "aantalLeerlingenUitsluitendPRO": { "value": 0, "type": "Integer" },
+      "aantalLeerlingenNietUitsluitendPRO": { "value": 129, "type": "Integer" },
+      "vestigingIsTijdelijk": { "value": false, "type": "Boolean" },
+      "vestigingIsVerticaleScholengemeenschap": { "value": false, "type": "Boolean" },
+      "vestigingIsHoofdvestiging": { "value": true, "type": "Boolean" }
     }
   }
 ]
