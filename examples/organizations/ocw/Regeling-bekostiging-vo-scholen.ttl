@@ -64,7 +64,7 @@
     cprmv:validFrom "2025-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nEen Onderwijsinstelling komt in aanmerking voor een Basisbekostiging vo indien aan alle volgende voorwaarden is voldaan:\n- De Onderwijsinstelling valt onder standaarddoelgroep 1 voor bekostiging vo.\n- De Onderwijsinstelling valt niet onder Caribisch Nederland.\n- De datum in bedrijf van Onderwijsinstelling ligt voor of valt op 01-10-2024.\n- Onderwijsinstelling is actief in de bekostigingsperiode."@nl .
+    dct:description "Regel:\nEen Onderwijsinstelling komt in aanmerking voor een Basisbekostiging vo indien aan alle volgende voorwaarden is voldaan:\n- De Onderwijsinstelling valt onder standaarddoelgroep 1 voor bekostiging vo.\n- De Onderwijsinstelling valt niet onder Caribisch Nederland.\n- De datum in bedrijf van Onderwijsinstelling ligt voor of valt op 01-10-2024.\n- Onderwijsinstelling is actief in de bekostigingsperiode."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO003.02-eindbedrag-basisbekostiging-vo> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -73,7 +73,7 @@
     cprmv:extends <https://regels.overheid.nl/register/ocw/BASVO001.01-aanmerking-basisbekostiging-vo> ;
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nHet eindbedrag van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging vestigingen van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen van de Basisbekostiging vo."@nl .
+    dct:description "Regel:\nHet eindbedrag van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging vestigingen van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen van de Basisbekostiging vo."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO004.01-bekostiging-leerlingen> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -83,7 +83,7 @@
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nDe bekostiging leerlingen van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo."@nl .
+    dct:description "Regel:\nDe bekostiging leerlingen van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO004.02-bekostiging-leerlingen-pro-vbo> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -93,7 +93,7 @@
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nDe bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - B) * C waarin geldt dat:\n- A is gelijk aan het aantal leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb op 1/10/t-1 van de Onderwijsinstelling.\n- B is gelijk aan aantal nieuwkomers korter dan 1 jaar in NL bovenbouw vbo bb en kb op 1/10/t-1.\n- C is gelijk aan het bedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Regeling."@nl .
+    dct:description "Regel:\nDe bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - B) * C waarin geldt dat:\n- A is gelijk aan het aantal leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb op 1/10/t-1 van de Onderwijsinstelling.\n- B is gelijk aan aantal nieuwkomers korter dan 1 jaar in NL bovenbouw vbo bb en kb op 1/10/t-1.\n- C is gelijk aan het bedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Regeling (€ 11185,30 per leerling, 2025)."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO004.03-bekostiging-leerlingen-vwo-havo-vbo> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -103,7 +103,7 @@
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nDe bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - (B * E) - C) * D waarin geldt dat:\n- A is het aantal leerlingen onderbouw en bovenbouw vwo/havo/mavo/vmbo gl op 1/10/t-1.\n- B is het aantal leerlingen uitbesteed gedeeltelijk bekostigd op 1/10/t-1.\n- C is het aantal nieuwkomers korter dan 1 jaar in NL excl. bovenbouw vbo bb en kb op 1/10/t-1.\n- D is het bedrag leerlingen vwo/havo/mavo/vbo van de Regeling.\n- E is gelijk aan 0,5."@nl .
+    dct:description "Regel:\nDe bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - (B * E) - C) * D waarin geldt dat:\n- A is het aantal leerlingen onderbouw en bovenbouw vwo/havo/mavo/vmbo gl op 1/10/t-1.\n- B is het aantal leerlingen uitbesteed gedeeltelijk bekostigd op 1/10/t-1.\n- C is het aantal nieuwkomers korter dan 1 jaar in NL excl. bovenbouw vbo bb en kb op 1/10/t-1.\n- D is het bedrag leerlingen vwo/havo/mavo/vbo van de Regeling (€ 9507,49 per leerling, 2025).\n- E is gelijk aan 0,5."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO002.05-bedrag-leerlingen-vwo-havo-2025> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -113,7 +113,7 @@
     cprmv:validFrom "2025-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nBedrag leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo. Bedrag conform Artikel 2 lid 1. Geldig voor kalenderjaar 2025."@nl .
+    dct:description "Regel:\nBedrag leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 9507,49 euro. Bedrag conform Artikel 2 lid 1. Geldig voor kalenderjaar 2025."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO002.06-bedrag-leerlingen-pro-vbo-2025> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -123,7 +123,7 @@
     cprmv:validFrom "2025-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nBedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo exclusief vmbo gl van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo. Bedrag conform Artikel 2 lid 2. Geldig voor kalenderjaar 2025."@nl .
+    dct:description "Regel:\nBedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo exclusief vmbo gl van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 11185,30 euro. Bedrag conform Artikel 2 lid 2. Geldig voor kalenderjaar 2025."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -132,7 +132,7 @@
     cprmv:extends <https://regels.overheid.nl/register/ocw/BASVO003.02-eindbedrag-basisbekostiging-vo> ;
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel (beslissingstabel, hitbeleid FIRST):\n\nVestiging is tijdelijk | Voldoet aan eis min. leerlingen | Onderdeel verticale scholengemeenschap | Is hoofdvestiging | Vast bedrag\nWaar | - | - | - | Onwaar (geen vast bedrag)\nOnwaar | Onwaar | - | - | Onwaar (geen vast bedrag)\nOnwaar | Waar | Onwaar | Waar | vast bedrag hoofdvestiging\nOnwaar | Waar | Onwaar | Onwaar | vast bedrag nevenvestiging\nOnwaar | Waar | Waar | Waar | vast bedrag hoofdvestiging\nOnwaar | Waar | Waar | Onwaar | vast bedrag nevenvestiging"@nl .
+    dct:description "Regel (beslissingstabel, hitbeleid FIRST):\n\nVestiging is tijdelijk | Voldoet aan eis min. leerlingen | Onderdeel verticale scholengemeenschap | Is hoofdvestiging | Vast bedrag\nWaar | - | - | - | Onwaar (geen vast bedrag)\nOnwaar | Onwaar | - | - | Onwaar (geen vast bedrag)\nOnwaar | Waar | Onwaar | Waar | vast bedrag hoofdvestiging (€ 275.595,52)\nOnwaar | Waar | Onwaar | Onwaar | vast bedrag nevenvestiging (€ 137.797,76)\nOnwaar | Waar | Waar | Waar | vast bedrag hoofdvestiging (€ 275.595,52)\nOnwaar | Waar | Waar | Onwaar | vast bedrag nevenvestiging (€ 137.797,76)"@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -141,7 +141,7 @@
     cprmv:extends <https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> ;
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nEen Vestiging voldoet aan de minimumeis leerlingen voor het vast bedrag Basisbekostiging indien het minimum aantal leerlingen per vestiging is bereikt conform Uitvoeringsbesluit WVO 2020."@nl .
+    dct:description "Regel (beslissingstabel, hitbeleid FIRST):\nWijst toe naar de juiste drempeltoets op basis van vestigingstype.\n\nHeeftUitsluitendLicentiePRO | VoldoetAanMinimumUitsluitendPRO | VoldoetAanMinimumNietUitsluitendPRO | Uitkomst\nWaar | Waar | - | Waar\nWaar | Onwaar | - | Onwaar\nOnwaar | - | Waar | Waar\nOnwaar | - | Onwaar | Onwaar\n\nVerder uitgewerkt in:\nBASVO005.10 drempel uitsluitend PRO: 60 leerlingen\nBASVO005.09 drempel niet-uitsluitend PRO: 130 leerlingen"@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO005.09-vestiging-minimum-leerlingen-niet-pro> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -150,7 +150,16 @@
     cprmv:extends <https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> ;
     cprmv:validFrom "2021-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nEen Vestiging voldoet aan minimum aantal leerlingen niet uitsluitend praktijkonderwijs indien aantal leerlingen niet uitsluitend praktijkonderwijs voor vast bedrag basisbekostiging van Vestiging groter dan of gelijk aan minimum aantal leerlingen per vestiging niet-uitsluitend praktijkonderwijs van Uitvoeringsbesluit WVO 2020."@nl .
+    dct:description "Regel:\nEen Vestiging voldoet aan minimum aantal leerlingen niet uitsluitend praktijkonderwijs indien aantal leerlingen niet uitsluitend praktijkonderwijs voor vast bedrag basisbekostiging van Vestiging groter dan of gelijk aan 130 (minimum aantal leerlingen per vestiging niet-uitsluitend praktijkonderwijs van Uitvoeringsbesluit WVO 2020, BASVO002.02)."@nl  .
+
+<https://regels.overheid.nl/register/ocw/BASVO005.10-vestiging-minimum-leerlingen-uitsluitend-pro> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
+    dct:identifier "BASVO005.10" ;
+    dct:title "Vestiging voldoet aan minimum aantal leerlingen uitsluitend pro"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen Vestiging voldoet aan minimum aantal leerlingen uitsluitend praktijkonderwijs indien het aantal leerlingen uitsluitend praktijkonderwijs voor vast bedrag basisbekostiging van Vestiging groter dan of gelijk aan 60 (minimum aantal leerlingen per vestiging uitsluitend praktijkonderwijs van Uitvoeringsbesluit WVO 2020, BASVO002.01)."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO002.03-vast-bedrag-hoofdvestiging-2025> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -160,7 +169,7 @@
     cprmv:validFrom "2025-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nVast bedrag hoofdvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo. Bedrag conform Artikel 2 lid 3. Geldig voor kalenderjaar 2025. TODO: voeg het exacte bedrag toe."@nl .
+    dct:description "Regel:\nVast bedrag hoofdvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 275595,52 euro. Bedrag conform Artikel 2 lid 3. Geldig voor kalenderjaar 2025."@nl  .
 
 <https://regels.overheid.nl/register/ocw/BASVO002.04-vast-bedrag-nevenvestiging-2025> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
@@ -170,4 +179,5 @@
     cprmv:validFrom "2025-01-01"^^xsd:date ;
     cprmv:validUntil "2026-01-01"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Regel:\nVast bedrag nevenvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 13779 euro. Bedrag conform Artikel 2 lid 4. Geldig voor kalenderjaar 2025."@nl .
+    dct:description "Regel:\nVast bedrag nevenvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 137797,76 euro. Bedrag conform Artikel 2 lid 4. Geldig voor kalenderjaar 2025."@nl  .
+

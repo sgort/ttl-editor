@@ -19,19 +19,20 @@
     Source      : Regeling bekostiging vo-scholen en samenwerkingsverbanden vo
     Organisation: Ministerie van OCW / DUO uitvoering
     Period      : Kalenderjaar 2025 (2025-01-01 – 2026-01-01)
-    Primary key : vast_bedrag_op_vestiging  (BASVO005.03)  ← listed first = Operaton primary key
-    Sub-decision: vestiging_voldoet_aan_minimum_leerlingen (BASVO005.04 / 005.09)
+    Primary key : vast_bedrag_op_vestiging  (BASVO005.03)
 
-    Input data nodes and their wiring
-    ──────────────────────────────────
-    id_aantalLeerl   aantalLeerlingenVastBedrag             Integer  → sub-decision
-    id_minimumAant   minimumAantalLeerlingen                Integer  → sub-decision
-    id_tijdelijk     vestigingIsTijdelijk                   Boolean  → primary decision
-    id_verticaal     vestigingIsVerticaleScholengemeenschap Boolean  → primary decision
-    id_hoofd         vestigingIsHoofdvestiging              Boolean  → primary decision
+    Amounts confirmed from xmlBASVO2025.xml (IAM4RM export 2025-11-28):
+      VastBedragHoofdvestiging  = 275595.52  (BASVO002.03)
+      VastBedragNevenvestiging  = 137797.76  (BASVO002.04)
 
-    TODO BASVO002.03: replace 93765.0 with the official 2025 hoofdvestiging amount
-    once confirmed from the Staatscourant.
+    Input data nodes
+    ──────────────────────────────────────────────────────────────
+    id_uitsluitendLicentie   heeftUitsluitendLicentieVoorPraktijkonderwijs  Boolean  → sub-decision
+    id_aantalUitsluitendPRO  aantalLeerlingenUitsluitendPRO                 Integer  → sub-decision  (threshold 60,  BASVO002.01/005.10)
+    id_aantalNietPRO         aantalLeerlingenNietUitsluitendPRO             Integer  → sub-decision  (threshold 130, BASVO002.02/005.09)
+    id_tijdelijk             vestigingIsTijdelijk                           Boolean  → primary decision
+    id_verticaal             vestigingIsVerticaleScholengemeenschap         Boolean  → primary decision
+    id_hoofd                 vestigingIsHoofdvestiging                      Boolean  → primary decision
   -->
 
   <!-- ═══════════════════════════════════════════════════════════
@@ -42,12 +43,9 @@
             name="Vast bedrag van toepassing op vestiging (BASVO005.03)"
             camunda:historyTimeToLive="10">
 
-    <!-- Required sub-decision -->
     <informationRequirement id="ir_subDecision">
       <requiredDecision href="#vestiging_voldoet_aan_minimum_leerlingen"/>
     </informationRequirement>
-
-    <!-- Required input data -->
     <informationRequirement id="ir_tijdelijk">
       <requiredInput href="#id_tijdelijk"/>
     </informationRequirement>
@@ -90,9 +88,9 @@
               name="vastBedragToelichting"
               typeRef="string"/>
 
-      <!-- Row 1: tijdelijke vestiging → geen vast bedrag (BASVO005.03 row 1) -->
+      <!-- Row 1: tijdelijke vestiging → geen vast bedrag -->
       <rule id="rule_vb_1">
-        <description>Tijdelijke vestiging komt niet in aanmerking voor vast bedrag</description>
+        <description>Tijdelijke vestiging komt niet in aanmerking voor vast bedrag (BASVO005.03 rij 1)</description>
         <inputEntry id="ie_vb_1a"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_1b"><text></text></inputEntry>
         <inputEntry id="ie_vb_1c"><text></text></inputEntry>
@@ -101,9 +99,9 @@
         <outputEntry id="oe_vb_1b"><text>"Geen vast bedrag: vestiging is tijdelijk"</text></outputEntry>
       </rule>
 
-      <!-- Row 2: te weinig leerlingen → geen vast bedrag (BASVO005.03 row 2) -->
+      <!-- Row 2: te weinig leerlingen → geen vast bedrag -->
       <rule id="rule_vb_2">
-        <description>Vestiging voldoet niet aan minimumeis leerlingen</description>
+        <description>Vestiging voldoet niet aan minimumeis leerlingen (BASVO005.03 rij 2)</description>
         <inputEntry id="ie_vb_2a"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_2b"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_2c"><text></text></inputEntry>
@@ -112,79 +110,91 @@
         <outputEntry id="oe_vb_2b"><text>"Geen vast bedrag: vestiging voldoet niet aan minimumeis leerlingen"</text></outputEntry>
       </rule>
 
-      <!-- Row 3: geen verticale scholengemeenschap, hoofdvestiging (BASVO005.03 row 3) -->
+      <!-- Row 3: geen verticale scholengemeenschap, hoofdvestiging → 275595.52 (BASVO002.03) -->
       <rule id="rule_vb_3">
-        <description>Geen verticale scholengemeenschap, hoofdvestiging</description>
+        <description>Geen verticale scholengemeenschap, hoofdvestiging (BASVO005.03 rij 3)</description>
         <inputEntry id="ie_vb_3a"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_3b"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_3c"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_3d"><text>true</text></inputEntry>
-        <outputEntry id="oe_vb_3a"><text>93765.0</text></outputEntry>
-        <outputEntry id="oe_vb_3b"><text>"Vast bedrag hoofdvestiging 2025 (BASVO002.03) — TODO: vervang 93765.0 door officieel bedrag uit Staatscourant"</text></outputEntry>
+        <outputEntry id="oe_vb_3a"><text>275595.52</text></outputEntry>
+        <outputEntry id="oe_vb_3b"><text>"Vast bedrag hoofdvestiging 2025 (BASVO002.03): 275595.52 euro"</text></outputEntry>
       </rule>
 
-      <!-- Row 4: geen verticale scholengemeenschap, nevenvestiging (BASVO005.03 row 4) -->
+      <!-- Row 4: geen verticale scholengemeenschap, nevenvestiging → 137797.76 (BASVO002.04) -->
       <rule id="rule_vb_4">
-        <description>Geen verticale scholengemeenschap, nevenvestiging</description>
+        <description>Geen verticale scholengemeenschap, nevenvestiging (BASVO005.03 rij 4)</description>
         <inputEntry id="ie_vb_4a"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_4b"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_4c"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_4d"><text>false</text></inputEntry>
-        <outputEntry id="oe_vb_4a"><text>13779.0</text></outputEntry>
-        <outputEntry id="oe_vb_4b"><text>"Vast bedrag nevenvestiging 2025 (BASVO002.04): 13779 euro"</text></outputEntry>
+        <outputEntry id="oe_vb_4a"><text>137797.76</text></outputEntry>
+        <outputEntry id="oe_vb_4b"><text>"Vast bedrag nevenvestiging 2025 (BASVO002.04): 137797.76 euro"</text></outputEntry>
       </rule>
 
-      <!-- Row 5: verticale scholengemeenschap, hoofdvestiging (BASVO005.03 row 5) -->
+      <!-- Row 5: verticale scholengemeenschap, hoofdvestiging → 275595.52 (BASVO002.03) -->
       <rule id="rule_vb_5">
-        <description>Verticale scholengemeenschap, hoofdvestiging</description>
+        <description>Verticale scholengemeenschap, hoofdvestiging (BASVO005.03 rij 5)</description>
         <inputEntry id="ie_vb_5a"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_5b"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_5c"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_5d"><text>true</text></inputEntry>
-        <outputEntry id="oe_vb_5a"><text>93765.0</text></outputEntry>
-        <outputEntry id="oe_vb_5b"><text>"Vast bedrag hoofdvestiging 2025 – verticale scholengemeenschap (BASVO002.03) — TODO: vervang 93765.0 door officieel bedrag"</text></outputEntry>
+        <outputEntry id="oe_vb_5a"><text>275595.52</text></outputEntry>
+        <outputEntry id="oe_vb_5b"><text>"Vast bedrag hoofdvestiging 2025 – verticale scholengemeenschap (BASVO002.03): 275595.52 euro"</text></outputEntry>
       </rule>
 
-      <!-- Row 6: verticale scholengemeenschap, nevenvestiging (BASVO005.03 row 6) -->
+      <!-- Row 6: verticale scholengemeenschap, nevenvestiging → 137797.76 (BASVO002.04) -->
       <rule id="rule_vb_6">
-        <description>Verticale scholengemeenschap, nevenvestiging</description>
+        <description>Verticale scholengemeenschap, nevenvestiging (BASVO005.03 rij 6)</description>
         <inputEntry id="ie_vb_6a"><text>false</text></inputEntry>
         <inputEntry id="ie_vb_6b"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_6c"><text>true</text></inputEntry>
         <inputEntry id="ie_vb_6d"><text>false</text></inputEntry>
-        <outputEntry id="oe_vb_6a"><text>13779.0</text></outputEntry>
-        <outputEntry id="oe_vb_6b"><text>"Vast bedrag nevenvestiging 2025 – verticale scholengemeenschap (BASVO002.04): 13779 euro"</text></outputEntry>
+        <outputEntry id="oe_vb_6a"><text>137797.76</text></outputEntry>
+        <outputEntry id="oe_vb_6b"><text>"Vast bedrag nevenvestiging 2025 – verticale scholengemeenschap (BASVO002.04): 137797.76 euro"</text></outputEntry>
       </rule>
 
     </decisionTable>
   </decision>
 
   <!-- ═══════════════════════════════════════════════════════════
-       Sub-decision: BASVO005.04 / 005.09
+       Sub-decision: BASVO005.04 / 005.09 / 005.10
        Vestiging voldoet aan minimumeis leerlingen
+
+       PRO-only branch  (HeeftUitsluitendLicentiePRO = true):
+         threshold = 60  (BASVO002.01 / BASVO005.10)
+       Niet-uitsluitend-PRO branch (false):
+         threshold = 130 (BASVO002.02 / BASVO005.09)
        ═══════════════════════════════════════════════════════════ -->
   <decision id="vestiging_voldoet_aan_minimum_leerlingen"
             name="Vestiging voldoet aan minimumeis leerlingen (BASVO005.04)"
             camunda:historyTimeToLive="10">
 
-    <!-- Required input data -->
-    <informationRequirement id="ir_aantalLeerl">
-      <requiredInput href="#id_aantalLeerl"/>
+    <informationRequirement id="ir_uitsluitendLicentie">
+      <requiredInput href="#id_uitsluitendLicentie"/>
     </informationRequirement>
-    <informationRequirement id="ir_minimumAant">
-      <requiredInput href="#id_minimumAant"/>
+    <informationRequirement id="ir_aantalUitsluitendPRO">
+      <requiredInput href="#id_aantalUitsluitendPRO"/>
+    </informationRequirement>
+    <informationRequirement id="ir_aantalNietPRO">
+      <requiredInput href="#id_aantalNietPRO"/>
     </informationRequirement>
 
     <decisionTable id="dt_minimumLeerlingen" hitPolicy="FIRST">
 
-      <input id="in_aantalLeerlingen" label="aantal leerlingen vast bedrag basisbekostiging">
-        <inputExpression id="ie_aantalLeerlingen" typeRef="integer">
-          <text>aantalLeerlingenVastBedrag</text>
+      <input id="in_uitsluitendLicentie" label="vestiging heeft uitsluitend licentie voor praktijkonderwijs">
+        <inputExpression id="ie_uitsluitendLicentie" typeRef="boolean">
+          <text>heeftUitsluitendLicentieVoorPraktijkonderwijs</text>
         </inputExpression>
       </input>
-      <input id="in_minimumAantal" label="minimum aantal leerlingen (Uitvoeringsbesluit WVO 2020)">
-        <inputExpression id="ie_minimumAantal" typeRef="integer">
-          <text>minimumAantalLeerlingen</text>
+      <input id="in_aantalUitsluitendPRO" label="aantal leerlingen uitsluitend PRO (drempel 60, BASVO005.10)">
+        <inputExpression id="ie_aantalUitsluitendPRO" typeRef="integer">
+          <text>aantalLeerlingenUitsluitendPRO</text>
+        </inputExpression>
+      </input>
+      <input id="in_aantalNietPRO" label="aantal leerlingen niet-uitsluitend PRO (drempel 130, BASVO005.09)">
+        <inputExpression id="ie_aantalNietPRO" typeRef="integer">
+          <text>aantalLeerlingenNietUitsluitendPRO</text>
         </inputExpression>
       </input>
 
@@ -193,20 +203,40 @@
               name="vestigingVoldoetAanMinimumLeerlingen"
               typeRef="boolean"/>
 
-      <!-- Row 1: voldoende leerlingen (BASVO005.09) -->
+      <!-- Row 1: uitsluitend PRO, voldoende leerlingen (>= 60) -->
       <rule id="rule_min_1">
-        <description>Aantal leerlingen bereikt of overstijgt minimum (BASVO005.09)</description>
-        <inputEntry id="ie_min_1a"><text>&gt;= minimumAantalLeerlingen</text></inputEntry>
-        <inputEntry id="ie_min_1b"><text></text></inputEntry>
+        <description>Uitsluitend PRO, voldoet aan minimum 60 leerlingen (BASVO005.10)</description>
+        <inputEntry id="ie_min_1a"><text>true</text></inputEntry>
+        <inputEntry id="ie_min_1b"><text>&gt;= 60</text></inputEntry>
+        <inputEntry id="ie_min_1c"><text></text></inputEntry>
         <outputEntry id="oe_min_1"><text>true</text></outputEntry>
       </rule>
 
-      <!-- Row 2: onvoldoende leerlingen -->
+      <!-- Row 2: uitsluitend PRO, te weinig leerlingen (< 60) -->
       <rule id="rule_min_2">
-        <description>Aantal leerlingen ligt onder minimum</description>
-        <inputEntry id="ie_min_2a"><text>&lt; minimumAantalLeerlingen</text></inputEntry>
-        <inputEntry id="ie_min_2b"><text></text></inputEntry>
+        <description>Uitsluitend PRO, voldoet NIET aan minimum 60 leerlingen (BASVO005.10)</description>
+        <inputEntry id="ie_min_2a"><text>true</text></inputEntry>
+        <inputEntry id="ie_min_2b"><text>&lt; 60</text></inputEntry>
+        <inputEntry id="ie_min_2c"><text></text></inputEntry>
         <outputEntry id="oe_min_2"><text>false</text></outputEntry>
+      </rule>
+
+      <!-- Row 3: niet-uitsluitend PRO, voldoende leerlingen (>= 130) -->
+      <rule id="rule_min_3">
+        <description>Niet-uitsluitend PRO, voldoet aan minimum 130 leerlingen (BASVO005.09)</description>
+        <inputEntry id="ie_min_3a"><text>false</text></inputEntry>
+        <inputEntry id="ie_min_3b"><text></text></inputEntry>
+        <inputEntry id="ie_min_3c"><text>&gt;= 130</text></inputEntry>
+        <outputEntry id="oe_min_3"><text>true</text></outputEntry>
+      </rule>
+
+      <!-- Row 4: niet-uitsluitend PRO, te weinig leerlingen (< 130) -->
+      <rule id="rule_min_4">
+        <description>Niet-uitsluitend PRO, voldoet NIET aan minimum 130 leerlingen (BASVO005.09)</description>
+        <inputEntry id="ie_min_4a"><text>false</text></inputEntry>
+        <inputEntry id="ie_min_4b"><text></text></inputEntry>
+        <inputEntry id="ie_min_4c"><text>&lt; 130</text></inputEntry>
+        <outputEntry id="oe_min_4"><text>false</text></outputEntry>
       </rule>
 
     </decisionTable>
@@ -215,11 +245,26 @@
   <!-- ═══════════════════════════════════════════════════════════
        Input data nodes
        ═══════════════════════════════════════════════════════════ -->
-  <inputData id="id_tijdelijk"   name="vestigingIsTijdelijk"/>
-  <inputData id="id_verticaal"   name="vestigingIsVerticaleScholengemeenschap"/>
-  <inputData id="id_hoofd"       name="vestigingIsHoofdvestiging"/>
-  <inputData id="id_aantalLeerl" name="aantalLeerlingenVastBedrag"/>
-  <inputData id="id_minimumAant" name="minimumAantalLeerlingen"/>
+  <!-- Sub-decision inputs -->
+  <inputData id="id_uitsluitendLicentie" name="heeftUitsluitendLicentieVoorPraktijkonderwijs">
+    <variable id="var_uitsluitendLicentie" name="heeftUitsluitendLicentieVoorPraktijkonderwijs" typeRef="boolean"/>
+  </inputData>
+  <inputData id="id_aantalUitsluitendPRO" name="aantalLeerlingenUitsluitendPRO">
+    <variable id="var_aantalUitsluitendPRO" name="aantalLeerlingenUitsluitendPRO" typeRef="integer"/>
+  </inputData>
+  <inputData id="id_aantalNietPRO" name="aantalLeerlingenNietUitsluitendPRO">
+    <variable id="var_aantalNietPRO" name="aantalLeerlingenNietUitsluitendPRO" typeRef="integer"/>
+  </inputData>
+  <!-- Primary decision inputs -->
+  <inputData id="id_tijdelijk" name="vestigingIsTijdelijk">
+    <variable id="var_tijdelijk" name="vestigingIsTijdelijk" typeRef="boolean"/>
+  </inputData>
+  <inputData id="id_verticaal" name="vestigingIsVerticaleScholengemeenschap">
+    <variable id="var_verticaal" name="vestigingIsVerticaleScholengemeenschap" typeRef="boolean"/>
+  </inputData>
+  <inputData id="id_hoofd" name="vestigingIsHoofdvestiging">
+    <variable id="var_hoofd" name="vestigingIsHoofdvestiging" typeRef="boolean"/>
+  </inputData>
 
   <!-- ═══════════════════════════════════════════════════════════
        DMNDI layout
@@ -229,7 +274,7 @@
 
       <!-- Primary decision -->
       <dmndi:DMNShape dmnElementRef="vast_bedrag_op_vestiging">
-        <dc:Bounds x="200" y="280" width="300" height="80"/>
+        <dc:Bounds x="200" y="300" width="300" height="80"/>
       </dmndi:DMNShape>
 
       <!-- Sub-decision -->
@@ -237,53 +282,60 @@
         <dc:Bounds x="200" y="100" width="300" height="80"/>
       </dmndi:DMNShape>
 
-      <!-- Input data nodes wired to sub-decision -->
-      <dmndi:DMNShape dmnElementRef="id_aantalLeerl">
-        <dc:Bounds x="560" y="100" width="180" height="45"/>
+      <!-- Input data → sub-decision -->
+      <dmndi:DMNShape dmnElementRef="id_uitsluitendLicentie">
+        <dc:Bounds x="560" y="80"  width="210" height="45"/>
       </dmndi:DMNShape>
-      <dmndi:DMNShape dmnElementRef="id_minimumAant">
-        <dc:Bounds x="560" y="155" width="180" height="45"/>
+      <dmndi:DMNShape dmnElementRef="id_aantalUitsluitendPRO">
+        <dc:Bounds x="560" y="135" width="210" height="45"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape dmnElementRef="id_aantalNietPRO">
+        <dc:Bounds x="560" y="190" width="210" height="45"/>
       </dmndi:DMNShape>
 
-      <!-- Input data nodes wired to primary decision -->
+      <!-- Input data → primary decision -->
       <dmndi:DMNShape dmnElementRef="id_tijdelijk">
-        <dc:Bounds x="560" y="260" width="180" height="45"/>
+        <dc:Bounds x="560" y="280" width="210" height="45"/>
       </dmndi:DMNShape>
       <dmndi:DMNShape dmnElementRef="id_verticaal">
-        <dc:Bounds x="560" y="315" width="180" height="45"/>
+        <dc:Bounds x="560" y="335" width="210" height="45"/>
       </dmndi:DMNShape>
       <dmndi:DMNShape dmnElementRef="id_hoofd">
-        <dc:Bounds x="560" y="370" width="180" height="45"/>
+        <dc:Bounds x="560" y="390" width="210" height="45"/>
       </dmndi:DMNShape>
 
-      <!-- Edge: sub-decision → primary decision -->
+      <!-- Edge: sub-decision → primary -->
       <dmndi:DMNEdge dmnElementRef="ir_subDecision">
         <di:waypoint x="350" y="180"/>
-        <di:waypoint x="350" y="280"/>
+        <di:waypoint x="350" y="300"/>
       </dmndi:DMNEdge>
 
       <!-- Edges: inputData → sub-decision -->
-      <dmndi:DMNEdge dmnElementRef="ir_aantalLeerl">
-        <di:waypoint x="560" y="122"/>
-        <di:waypoint x="500" y="140"/>
+      <dmndi:DMNEdge dmnElementRef="ir_uitsluitendLicentie">
+        <di:waypoint x="560" y="102"/>
+        <di:waypoint x="500" y="130"/>
       </dmndi:DMNEdge>
-      <dmndi:DMNEdge dmnElementRef="ir_minimumAant">
-        <di:waypoint x="560" y="177"/>
-        <di:waypoint x="500" y="160"/>
+      <dmndi:DMNEdge dmnElementRef="ir_aantalUitsluitendPRO">
+        <di:waypoint x="560" y="157"/>
+        <di:waypoint x="500" y="150"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge dmnElementRef="ir_aantalNietPRO">
+        <di:waypoint x="560" y="212"/>
+        <di:waypoint x="500" y="165"/>
       </dmndi:DMNEdge>
 
       <!-- Edges: inputData → primary decision -->
       <dmndi:DMNEdge dmnElementRef="ir_tijdelijk">
-        <di:waypoint x="560" y="282"/>
-        <di:waypoint x="500" y="310"/>
+        <di:waypoint x="560" y="302"/>
+        <di:waypoint x="500" y="325"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge dmnElementRef="ir_verticaal">
-        <di:waypoint x="560" y="337"/>
-        <di:waypoint x="500" y="330"/>
+        <di:waypoint x="560" y="357"/>
+        <di:waypoint x="500" y="345"/>
       </dmndi:DMNEdge>
       <dmndi:DMNEdge dmnElementRef="ir_hoofd">
-        <di:waypoint x="560" y="392"/>
-        <di:waypoint x="500" y="350"/>
+        <di:waypoint x="560" y="412"/>
+        <di:waypoint x="500" y="360"/>
       </dmndi:DMNEdge>
 
     </dmndi:DMNDiagram>
