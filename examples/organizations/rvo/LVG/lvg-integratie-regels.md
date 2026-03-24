@@ -17,21 +17,21 @@ Dit document beschrijft de regels waarmee deze concepten semantisch worden uitge
 
 ## Bronconcepten per registratie
 
-| Concept | Registratie | Bestand |
-|---|---|---|
-| Persoon | BRP | `persoon.ttl` |
-| Adres binnenland | BRP | `adres_binnenland.ttl` |
-| Aanduiding hoofdadres verblijfsobject | WOZ | `aanduiding_hoofdadres_verblijfsobject.ttl` |
-| Verblijfsobject (eigendomsrecht) | BRK | `verblijfsobject.ttl` |
-| Verblijfsobject–Pand relatie | BAG | `verblijfsobject_pand-verblijfsobject.ttl` |
+| Concept                               | Registratie | Bestand                                     |
+| ------------------------------------- | ----------- | ------------------------------------------- |
+| Persoon                               | BRP         | `persoon.ttl`                               |
+| Adres binnenland                      | BRP         | `adres_binnenland.ttl`                      |
+| Aanduiding hoofdadres verblijfsobject | WOZ         | `aanduiding_hoofdadres_verblijfsobject.ttl` |
+| Verblijfsobject (eigendomsrecht)      | BRK         | `verblijfsobject.ttl`                       |
+| Verblijfsobject–Pand relatie          | BAG         | `verblijfsobject_pand-verblijfsobject.ttl`  |
 
 De sleutels die integratie mogelijk maken zijn:
 
-| BRP-veld | Koppelt aan |
-|---|---|
-| `identificatiecode_verblijfplaats` | BAG verblijfsobject identificatiecode |
+| BRP-veld                             | Koppelt aan                            |
+| ------------------------------------ | -------------------------------------- |
+| `identificatiecode_verblijfplaats`   | BAG verblijfsobject identificatiecode  |
 | `identificatiecode_nummeraanduiding` | BAG nummeraanduiding identificatiecode |
-| `burgerservicenummer` | WOZ-subject (eigenaar/gebruiker) |
+| `burgerservicenummer`                | WOZ-subject (eigenaar/gebruiker)       |
 
 ---
 
@@ -46,11 +46,11 @@ Namespace: https://regels.overheid.nl/lvg/ontology#
 
 ### Motivatie
 
-Geen van de vier registraties voorziet in een vocabulaire die de *onderlinge* relaties tussen haar eigen concepten en die van de andere registraties benoemt. De BAG definieert wat een verblijfsobject is; de BRP definieert wat een persoon is; maar de relatie "persoon woont in verblijfsobject" is een stelseloverkoepelende samenhang die in geen van beide registraties als eigenschap bestaat. Zonder een expliciete naamruimte hiervoor zou een implementatie ofwel vrije tekst gebruiken, ofwel bestaande predicaten zoals `schema:address` of `owl:sameAs` semantisch overbelasten op een manier die de oorspronkelijke specificatie niet dekt.
+Geen van de vier registraties voorziet in een vocabulaire die de _onderlinge_ relaties tussen haar eigen concepten en die van de andere registraties benoemt. De BAG definieert wat een verblijfsobject is; de BRP definieert wat een persoon is; maar de relatie "persoon woont in verblijfsobject" is een stelseloverkoepelende samenhang die in geen van beide registraties als eigenschap bestaat. Zonder een expliciete naamruimte hiervoor zou een implementatie ofwel vrije tekst gebruiken, ofwel bestaande predicaten zoals `schema:address` of `owl:sameAs` semantisch overbelasten op een manier die de oorspronkelijke specificatie niet dekt.
 
 ### Positionering
 
-De `lvg:`-naamruimte is een *integratieontologie*, niet een vervanging van de bronregistraties. Zij:
+De `lvg:`-naamruimte is een _integratieontologie_, niet een vervanging van de bronregistraties. Zij:
 
 - definieert uitsluitend predicaten, geen klassen — de klassen `brp:Persoon`, `bag:Verblijfsobject`, `woz:WOZObject` enz. blijven in de eigen bronregistraties;
 - verwijst via `rdfs:isDefinedBy` naar de wettelijke grondslag van elke relatie (bijv. Wet BRP, Wet BAG, Wet WOZ);
@@ -59,14 +59,14 @@ De `lvg:`-naamruimte is een *integratieontologie*, niet een vervanging van de br
 
 ### Gedefinieerde predicaten
 
-| Predicaat | Domein | Bereik | Stelselplaat-relatie |
-|---|---|---|---|
-| `lvg:woontOp` | `brp:Persoon` | `bag:Nummeraanduiding` | woont op |
-| `lvg:woontIn` | `brp:Persoon` | `bag:Verblijfsobject` | woont in |
-| `lvg:isAanduidingVan` | `bag:Nummeraanduiding` | `bag:Verblijfsobject` | is aanduiding van |
-| `lvg:isVerbondenMet` | `woz:WOZObject` | `bag:Verblijfsobject` | is verbonden met |
-| `lvg:isEigenaarGebruikerVan` | `brp:Persoon` | `woz:WOZObject` | is eigenaar/gebruiker van |
-| `lvg:maaktDeelUitVan` | `bag:Verblijfsobject` | `bag:Pand` | maakt deel uit van |
+| Predicaat                    | Domein                 | Bereik                 | Stelselplaat-relatie      |
+| ---------------------------- | ---------------------- | ---------------------- | ------------------------- |
+| `lvg:woontOp`                | `brp:Persoon`          | `bag:Nummeraanduiding` | woont op                  |
+| `lvg:woontIn`                | `brp:Persoon`          | `bag:Verblijfsobject`  | woont in                  |
+| `lvg:isAanduidingVan`        | `bag:Nummeraanduiding` | `bag:Verblijfsobject`  | is aanduiding van         |
+| `lvg:isVerbondenMet`         | `woz:WOZObject`        | `bag:Verblijfsobject`  | is verbonden met          |
+| `lvg:isEigenaarGebruikerVan` | `brp:Persoon`          | `woz:WOZObject`        | is eigenaar/gebruiker van |
+| `lvg:maaktDeelUitVan`        | `bag:Verblijfsobject`  | `bag:Pand`             | maakt deel uit van        |
 
 ### Naamruimtedeclaratie (TTL)
 
