@@ -1,0 +1,19 @@
+
+<http://opendata.stelselcatalogus.nl/bag/id/gegevenselement/verblijfsobject_pand-verblijfsobject>
+  a <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#Gegevenselement>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#attribuutVan> <http://opendata.stelselcatalogus.nl/bag/id/begrip/verblijfsobject>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#authentiek> "ja";
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#basisregistratie> <http://opendata.stelselcatalogus.nl/id/registratie/BAG>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#eigenaar> "Gemeente"@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#gebruiksvoorwaarden> "Dit gegeven is openbaar, maar er gelden wel enkele beperkingen, zie Artikel 5 van de Wet BAG Deel I."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#kwaliteit> "Er zijn verschillende kwaliteitswaarborgen aanwezig, zoals borging bij de bronhouder, terugmelding van fouten door afnemers, kwaliteitsmonitoring door kwaliteitsmanagement en het toezicht door de minister. De kwaliteitsborging wordt omschreven in het Kwaliteit- en Toezichtkader BAG."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#referentieWetgeving> <http://opendata.stelselcatalogus.nl/stelselcatalogus/id/regelgeving/regeling_basisregistratie_adressen_en_gebouwen_bijlage_i_paragraaf_789>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#toegankelijkheid> "Openbaar"@nl-nl;
+  <http://purl.org/dc/terms/isPartOf> <http://opendata.stelselcatalogus.nl/id/dataset/bag>,
+    <http://opendata.stelselcatalogus.nl/id/dataset/sc>;
+  <http://www.w3.org/2000/01/rdf-schema#label> "Verblijfsobject Pand"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#closeMatch> <https://imbag.github.io/catalogus/hoofdstukken/attributen--relaties#789-relatie-maakt-deel-uit-van-gerelateerd-pand>;
+  <http://www.w3.org/2004/02/skos/core#definition> "Een verblijfsobject maakt onderdeel uit van een pand."@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <http://opendata.stelselcatalogus.nl/id/conceptscheme/bag>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Verblijfsobject Pand"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Ten aanzien van elk in de BAG opgenomen verblijfsobject wordt aangegeven, welke identificatiecodes zijn toegekend aan de panden waarbinnen het verblijfsobject is gelegen. In de meeste gevallen zal dit een enkel pand betreffen. In een aantal gevallen zal het verblijfsobject zijn gelegen in meer dan een pand. In dat geval worden hier de identificatiecodes opgenomen van de verschillende panden waarbinnen het verblijfsobject is gelegen. Bij het relateren van het verblijfsobject aan het pand of de panden waarvan het verblijfsobject onderdeel uitmaakt, wordt gebruik gemaakt van de identificatie van een pand, zoals deze eveneens in de BAG is opgenomen. Voor verdere informatie wordt verwezen naar de Praktijkhandleiding (https://imbag.github.io/praktijkhandleiding/relaties/maakt-deel-uit-van)"@nl-nl .

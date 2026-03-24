@@ -1,0 +1,24 @@
+
+<http://opendata.stelselcatalogus.nl/woz/id/begrip/aanduiding_hoofdadres_verblijfsobject>
+  a <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#Begrip>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#attribuut> <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/huisletter-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/huisnummer-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/huisnummertoevoeging-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/naam_openbare_ruimte-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/postcode-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/straatnaam_verkort-aanduiding_hoofdadres_verblijfsobject>,
+    <http://opendata.stelselcatalogus.nl/woz/id/gegevenselement/woonplaatsnaam-aanduiding_hoofdadres_verblijfsobject>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#authentiek> "nee";
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#basisregistratie> <http://opendata.stelselcatalogus.nl/id/registratie/WOZ>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#eigenaar> "Gemeente"@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#kwaliteit> "Goed, komt uit BAG-WOZ-koppeling (WOZ-object isVerbondenMet verblijfsobject)."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#populatie> "Alle verblijfsobjecten in de BAG worden gekoppeld aan één of meer WOZ-objecten. In de Basisregistratie WOZ wordt bij een aan een WOZ-object gekoppeld verblijfsobject ook het adres (Nummeraanduiding) vastgelegd."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#referentieWetgeving> <http://opendata.stelselcatalogus.nl/stelselcatalogus/id/regelgeving/wet_waardering_onroerende_zaken_artikel_37a>;
+  <http://purl.org/dc/terms/isPartOf> <http://opendata.stelselcatalogus.nl/id/dataset/sc>,
+    <http://opendata.stelselcatalogus.nl/id/dataset/woz>;
+  <http://www.w3.org/2000/01/rdf-schema#label> "Aanduiding hoofdadres verblijfsobject"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#broadMatch> <http://opendata.stelselcatalogus.nl/id/clusterbegrip/Adres>;
+  <http://www.w3.org/2004/02/skos/core#definition> "De identificatiecode nummeraanduiding waaronder het hoofdadres van een verblijfsobject, dat in het kader van de basisregistratie gebouwen als zodanig is aangemerkt, is opgenomen in de basisregistratie adressen."@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <http://opendata.stelselcatalogus.nl/id/conceptscheme/woz>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Aanduiding hoofdadres verblijfsobject"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Met behulp van dit gegeven wordt aangegeven welk adres wordt aangemerkt als het hoofdadres van het verblijfsobject (zie ook het gegeven aanduiding nevenadressen). Het gegeven omvat niet de opname van de adresgegevens zelf. In de basisregistratie gebouwen wordt slechts de aanduiding (identificatiecode nummeraanduiding) opgenomen waaronder het betreffende adres in de basisregistratie adressen bekend is. Met deze aanduiding kunnen de feitelijke adresgegevens worden opgehaald uit de basisregistratie adressen. Voor de gebruikers van de registratie kan met behulp van technische oplossingen binnen de te gebruiken applicaties het feitelijke adres worden gepresenteerd in plaats van de genoemde identificatiecode nummeraanduiding."@nl-nl .

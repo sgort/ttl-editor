@@ -1,0 +1,27 @@
+
+<http://opendata.stelselcatalogus.nl/brp/id/begrip/persoon> a <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#Begrip>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#attribuut> <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/a_nummer-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/adellijke_titelpredicaat-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/burgerservicenummer-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/datum_overlijden-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/geboortedatum-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/geboorteland-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/geboorteplaats-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/geslachtsaanduiding-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/geslachtsnaam-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/land_overlijden-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/plaats_overlijden-persoon>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/voornamen-persoon>, <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/voorvoegsel_geslachtsnaam-persoon>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#basisregistratie> <http://opendata.stelselcatalogus.nl/id/registratie/BRP>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#populatie> "Alle personen met wie de Nederlandse overheid een relatie heeft."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#referentieWetgeving> <http://opendata.stelselcatalogus.nl/stelselcatalogus/id/regelgeving/wet_brp>;
+  <http://purl.org/dc/terms/isPartOf> <http://opendata.stelselcatalogus.nl/id/dataset/brp>,
+    <http://opendata.stelselcatalogus.nl/id/dataset/sc>;
+  <http://www.w3.org/2000/01/rdf-schema#label> "Persoon"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#altLabel> "Ingeschrevene", "Ingezetene", "Natuurlijk Persoon",
+    "Niet ingezetene";
+  <http://www.w3.org/2004/02/skos/core#broadMatch> <http://opendata.stelselcatalogus.nl/id/clusterbegrip/Natuurlijk_persoon>;
+  <http://www.w3.org/2004/02/skos/core#definition> "Een natuurlijk persoon is een mens van vlees en bloed die geregisteerd is in de BRP."@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <http://opendata.stelselcatalogus.nl/id/conceptscheme/brp>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Persoon"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Van ieder ingeschreven persoon wordt een persoonslijst (PL) aangemaakt."@nl-nl .
