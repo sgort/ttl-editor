@@ -1,0 +1,195 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ============================================================
+#  Temporal Rules
+# ============================================================
+#
+#  Source: Regeling nationale EZ-, LVVN- en KGG-subsidies
+#          (dakisolatie-berekening-final.dmn, deployed 2026-02-15)
+#  Regulation: Regeling nationale EZ-, LVVN- en KGG-subsidies,
+#              Hoofdstuk 4, Titeldeel 4.5 (BWBR0035474)
+#  Period: Vanaf 2026-01-01
+#
+#  Rule hierarchy (cprmv:extends):
+#
+#  ISDE001.01  ─┬─► ISDE002.01
+#                │     ├─► ISDE003.01   (ΔR = doel_r_waarde - huidige_r_waarde)
+#                │     ├─► ISDE003.02   (extra_dikte_mm = decimal(ΔR * lambda_w_mk * 1000, 0))
+#                │     ├─► ISDE003.03   (materiaal_kosten = decimal(ΔR * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3, 0))
+#                │     ├─► ISDE003.04   (installatie_kosten = decimal(dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * (ΔR * lambda_w_mk * 10), 0))
+#                │     ├─► ISDE003.05   (totale_kosten = decimal(materiaal_kosten + installatie_kosten, 0))
+#                │     ├─► ISDE003.06   (netto_kosten = decimal(totale_kosten - subsidie, 0))
+#                │     ├─► ISDE003.07   (terugverdientijd = decimal(netto_kosten / besparing_jaar, 1))
+#                │     ├─► ISDE004.01 ──► subsidie € 249    / besparing € 80/jr    (doel R = 3.0 m²K/W)
+#                │     ├─► ISDE004.02 ──► subsidie € 1.552  / besparing € 320/jr   (doel R = 4.0 m²K/W)
+#                │     ├─► ISDE004.03 ──► subsidie € 2.185  / besparing € 640/jr   (doel R = 6.0 m²K/W, aanbevolen)
+#                │     └─► ISDE004.04 ──► subsidie € 3.604  / besparing € 780/jr   (doel R = 8.0 m²K/W)
+#
+# ============================================================
+
+
+# --- ISDE001.01 : eligibility anchor -------------------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE001.01-aanvraag-dakisolatie-subsidie> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE001.01" ;
+    dct:title "Aanvraag dakisolatie komt in aanmerking voor ISDE-subsidie"@nl ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nEen aanvraag voor dakisolatie komt in aanmerking voor de Investeringssubsidie duurzame energie en energiebesparing (ISDE) indien aan alle volgende voorwaarden is voldaan:\n- De bestaande R-waarde van het dak (huidige_r_waarde) is groter dan of gelijk aan 0.\n- Het dakoppervlak (dak_oppervlakte_m2) is groter dan 0.\n- De gewenste doel-R-waarde (doel_r_waarde) is een van de vier subsidiabele drempelwaarden: 3,0 / 4,0 / 6,0 / 8,0 m²K/W.\n\nDeze regel vormt het eligibility-anker voor alle onderliggende berekenings- en tariefregels (ISDE002.01 t/m ISDE004.04)."@nl .
+
+
+# --- ISDE002.01 : master calculation dispatch ----------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE002.01" ;
+    dct:title "Bereken ISDE-subsidie dakisolatie"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE001.01-aanvraag-dakisolatie-subsidie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel (beslissingstabel, hitbeleid COLLECT):\nDe ISDE-subsidieberekening voor dakisolatie voert voor elke van de vier subsidiabele doel-R-waarden de volgende stappen uit:\n1. Bereken de R-waardewinst (ΔR): ISDE003.01\n2. Bereken de benodigde extra isolatiedikte: ISDE003.02\n3. Bereken de materiaalkosten: ISDE003.03\n4. Bereken de installatiekosten: ISDE003.04\n5. Bereken de totale kosten: ISDE003.05\n6. Pas het subsidiebedrag toe op basis van doel-R-waarde: ISDE004.01 t/m ISDE004.04\n7. Bereken de netto kosten na aftrek subsidie: ISDE003.06\n8. Bereken de terugverdientijd: ISDE003.07\n\nHet COLLECT-hitbeleid zorgt dat alle vier scenario's parallel worden berekend en als resultaatset worden teruggegeven."@nl .
+
+
+# ============================================================
+#  Berekeningsregels (FEEL-formules, gedeeld door alle scenario's)
+# ============================================================
+
+# --- ISDE003.01 : ΔR berekening ------------------------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.01-delta-r-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.01" ;
+    dct:title "Berekening R-waardewinst dakisolatie (ΔR)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe R-waardewinst (delta_r) van de dakisolatie wordt berekend als:\n  delta_r = doel_r_waarde - huidige_r_waarde\n\nWaarin geldt dat:\n- doel_r_waarde de gewenste R-waarde na isolatie is (m²K/W).\n- huidige_r_waarde de bestaande R-waarde van de dakconstructie is (m²K/W).\n\nFEEL-expressie (uitvoer delta_r):\n  doel_r_waarde - huidige_r_waarde"@nl .
+
+
+# --- ISDE003.02 : extra dikte berekening ---------------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.02-extra-dikte-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.02" ;
+    dct:title "Berekening benodigde extra isolatiedikte (mm)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe benodigde extra isolatiedikte in millimeters wordt berekend als:\n  extra_dikte_mm = decimal((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 1000, 0)\n\nWaarin geldt dat:\n- (doel_r_waarde - huidige_r_waarde) de R-waardewinst (ΔR) is.\n- lambda_w_mk de warmtegeleidingscoëfficiënt van het isolatiemateriaal is (W/mK).\n- De factor 1000 converteert meter naar millimeter.\n- decimal(..., 0) rondt af op het dichtstbijzijnde gehele getal.\n\nFEEL-expressie (uitvoer extra_dikte_mm):\n  decimal((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 1000, 0)"@nl .
+
+
+# --- ISDE003.03 : materiaalkosten berekening -----------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.03-materiaalkosten-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.03" ;
+    dct:title "Berekening materiaalkosten dakisolatie (€)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe materiaalkosten in euro worden berekend als:\n  materiaal_kosten = decimal((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3, 0)\n\nWaarin geldt dat:\n- (doel_r_waarde - huidige_r_waarde) de R-waardewinst (ΔR) is.\n- lambda_w_mk de warmtegeleidingscoëfficiënt van het isolatiemateriaal is (W/mK).\n- dak_oppervlakte_m2 het te isoleren dakoppervlak is (m²).\n- materiaal_cost_per_m3 de materiaalprijs per kubieke meter isolatie is (€/m³).\n- decimal(..., 0) rondt af op het dichtstbijzijnde gehele euro.\n\nFEEL-expressie (uitvoer materiaal_kosten):\n  decimal((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3, 0)"@nl .
+
+
+# --- ISDE003.04 : installatiekosten berekening ---------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.04-installatiekosten-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.04" ;
+    dct:title "Berekening installatiekosten dakisolatie (€)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe installatiekosten in euro worden berekend als:\n  installatie_kosten = decimal(dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10), 0)\n\nWaarin geldt dat:\n- dak_oppervlakte_m2 het te isoleren dakoppervlak is (m²).\n- install_cost_per_m2_per_100mm de installatieprijs per m² per 100 mm isolatiedikte is (€).\n- ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10) het aantal eenheden van 100 mm extra dikte uitdrukt.\n- decimal(..., 0) rondt af op het dichtstbijzijnde gehele euro.\n\nFEEL-expressie (uitvoer installatie_kosten):\n  decimal(dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10), 0)"@nl .
+
+
+# --- ISDE003.05 : totale kosten berekening -------------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.05-totale-kosten-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.05" ;
+    dct:title "Berekening totale kosten dakisolatie (€)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe totale investeringskosten in euro worden berekend als:\n  totale_kosten = decimal(materiaal_kosten + installatie_kosten, 0)\n\nIn uitgeschreven FEEL-vorm (conform DMN):\n  totale_kosten = decimal(\n    (doel_r_waarde - huidige_r_waarde) * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3\n    + dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10),\n  0)\n\nWaarin geldt dat:\n- A is gelijk aan de materiaalkosten (ISDE003.03).\n- B is gelijk aan de installatiekosten (ISDE003.04).\n- decimal(..., 0) rondt af op het dichtstbijzijnde gehele euro."@nl .
+
+
+# --- ISDE003.06 : netto kosten berekening --------------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.06-netto-kosten-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.06" ;
+    dct:title "Berekening netto kosten na subsidie dakisolatie (€)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe netto kosten na aftrek van de ISDE-subsidie worden berekend als:\n  netto_kosten = decimal(totale_kosten - subsidie, 0)\n\nIn uitgeschreven FEEL-vorm (conform DMN, per scenario):\n  netto_kosten = decimal(\n    (doel_r_waarde - huidige_r_waarde) * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3\n    + dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10)\n    - subsidie,\n  0)\n\nWaarin geldt dat:\n- totale_kosten de totale investeringskosten zijn (ISDE003.05).\n- subsidie het van toepassing zijnde vaste subsidiebedrag is conform het actieve scenario (ISDE004.01 t/m ISDE004.04).\n- decimal(..., 0) rondt af op het dichtstbijzijnde gehele euro."@nl .
+
+
+# --- ISDE003.07 : terugverdientijd berekening ----------------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE003.07-terugverdientijd-berekening> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE003.07" ;
+    dct:title "Berekening terugverdientijd dakisolatie (jaar)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel:\nDe terugverdientijd in jaren wordt berekend als:\n  terugverdientijd = decimal(netto_kosten / besparing_jaar, 1)\n\nIn uitgeschreven FEEL-vorm (conform DMN, per scenario):\n  terugverdientijd = decimal(\n    (\n      (doel_r_waarde - huidige_r_waarde) * lambda_w_mk * dak_oppervlakte_m2 * materiaal_cost_per_m3\n      + dak_oppervlakte_m2 * install_cost_per_m2_per_100mm * ((doel_r_waarde - huidige_r_waarde) * lambda_w_mk * 10)\n      - subsidie\n    ) / besparing_jaar,\n  1)\n\nWaarin geldt dat:\n- netto_kosten de netto investering na subsidie is (ISDE003.06).\n- besparing_jaar de vaste geschatte jaarlijkse energiebesparing is conform het actieve scenario (ISDE004.01 t/m ISDE004.04).\n- decimal(..., 1) rondt af op één decimaal."@nl .
+
+
+# ============================================================
+#  Subsidietarieven en besparingswaarden per doel-R-scenario
+# ============================================================
+
+# --- ISDE004.01 : subsidiescenario doel R = 3,0 m²K/W -------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE004.01-subsidietarief-r3> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE004.01" ;
+    dct:title "Subsidiescenario dakisolatie doel R = 3,0 m²K/W"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel (DMN rule1, doel_r_waarde = 3.0):\nWanneer de aanvrager als doelwaarde R = 3,0 m²K/W kiest, zijn de vaste parameters:\n- subsidie = 249 (euro, ISDE-subsidiebedrag voor de R=3,0-drempel)\n- besparing_jaar = 80 (euro per jaar, geschatte energiebesparing)\n\nDeze waarden worden gecombineerd met de berekeningsregels ISDE003.03 t/m ISDE003.07.\nInput-conditie (DMN): huidige_r_waarde >= 0, dak_oppervlakte_m2 > 0, doel_r_waarde = 3.0.\nAanbeveling: geen (lege string)."@nl .
+
+
+# --- ISDE004.02 : subsidiescenario doel R = 4,0 m²K/W -------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE004.02-subsidietarief-r4> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE004.02" ;
+    dct:title "Subsidiescenario dakisolatie doel R = 4,0 m²K/W"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel (DMN rule2, doel_r_waarde = 4.0):\nWanneer de aanvrager als doelwaarde R = 4,0 m²K/W kiest, zijn de vaste parameters:\n- subsidie = 1552 (euro, ISDE-subsidiebedrag voor de R=4,0-drempel)\n- besparing_jaar = 320 (euro per jaar, geschatte energiebesparing)\n\nDeze waarden worden gecombineerd met de berekeningsregels ISDE003.03 t/m ISDE003.07.\nInput-conditie (DMN): huidige_r_waarde >= 0, dak_oppervlakte_m2 > 0, doel_r_waarde = 4.0.\nAanbeveling: geen (lege string)."@nl .
+
+
+# --- ISDE004.03 : subsidiescenario doel R = 6,0 m²K/W (aanbevolen) ------------
+
+<https://regels.overheid.nl/register/rvo/ISDE004.03-subsidietarief-r6> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE004.03" ;
+    dct:title "Subsidiescenario dakisolatie doel R = 6,0 m²K/W (aanbevolen)"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel (DMN rule3, doel_r_waarde = 6.0):\nWanneer de aanvrager als doelwaarde R = 6,0 m²K/W kiest, zijn de vaste parameters:\n- subsidie = 2185 (euro, ISDE-subsidiebedrag voor de R=6,0-drempel)\n- besparing_jaar = 640 (euro per jaar, geschatte energiebesparing)\n\nDeze waarden worden gecombineerd met de berekeningsregels ISDE003.03 t/m ISDE003.07.\nInput-conditie (DMN): huidige_r_waarde >= 0, dak_oppervlakte_m2 > 0, doel_r_waarde = 6.0.\nAanbeveling (DMN aanbeveling-output): \"Aanbevolen: R-waarde 6.0 m\u00b2K/W (gemarkeerd in groen) biedt de beste balans tussen investering, subsidie en terugverdientijd.\""@nl .
+
+
+# --- ISDE004.04 : subsidiescenario doel R = 8,0 m²K/W -------------------------
+
+<https://regels.overheid.nl/register/rvo/ISDE004.04-subsidietarief-r8> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/isde-subsidie-dakisolatie> ;
+    dct:identifier "ISDE004.04" ;
+    dct:title "Subsidiescenario dakisolatie doel R = 8,0 m²K/W"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/rvo/ISDE002.01-bereken-subsidie-dakisolatie> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Regel (DMN rule4, doel_r_waarde = 8.0):\nWanneer de aanvrager als doelwaarde R = 8,0 m²K/W kiest, zijn de vaste parameters:\n- subsidie = 3604 (euro, ISDE-subsidiebedrag voor de R=8,0-drempel)\n- besparing_jaar = 780 (euro per jaar, geschatte energiebesparing)\n\nDeze waarden worden gecombineerd met de berekeningsregels ISDE003.03 t/m ISDE003.07.\nInput-conditie (DMN): huidige_r_waarde >= 0, dak_oppervlakte_m2 > 0, doel_r_waarde = 8.0.\nAanbeveling: geen (lege string)."@nl .
