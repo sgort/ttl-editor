@@ -78,6 +78,71 @@
 
 
 # ============================================================
+#  Temporal Rules
+# ============================================================
+
+<https://regels.overheid.nl/register/uwv/98a8bcb8-c4ff-4765-80ad-26778728abfb> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "IAOW_00001_Berekenen_ingangsdatum_AOW" ;
+    dct:title "Berekenen ingangsdatum AOW"@nl ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "De begindatum van een recht op uitkering AOW moet worden berekend als A + B jaren + C maanden waarin geldt dat: \n•\tA = de geboortedatum van de natuurlijk persoon met het recht op uitkering AOW. \n•\tB = het aantal jaren van de pensioengerechtigde leeftijd van de natuurlijk persoon. \n•\tC = het aantal aanvullende maanden van de pensioengerechtigde leeftijd van de natuurlijk persoon.\n"@nl  .
+
+<https://regels.overheid.nl/register/uwv/1ac92c1a-e90f-4f07-a3d3-8cbac25cd2d7> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "Tabel_IAOW_00002_Bepalen_pensioengerechtigde_leeftijd" ;
+    dct:title "Bepalen pensioengerechtigde leeftijd"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/uwv/97c245be-252b-46c2-ba39-9d8676e99e10> ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Beslistabel:\t\nDe geboortedatum van de natuurlijk persoon met het recht op uitkering AOW. \tDe geboortedatum van de natuurlijk persoon met het recht op uitkering AOW. \tHet aantal jaren van de pensioengerechtigde leeftijd van de natuurlijk persoon. \tHet aantal aanvullende maanden van de pensioengerechtigde leeftijd van de natuurlijk persoon. \tDe pensioengerechtigde leeftijd van de natuurlijk persoon is definitief. \n- \t<= 31-12-1947 \t= 65 \t= 0 \t= Waar \n>= 01-01-1948 \t<= 30-11-1948 \t= 65 \t= 1 \t= Waar \n>= 01-12-1948 \t<= 31-10-1949 \t= 65 \t= 2 \t= Waar \n>= 01-11-1949 \t<= 30-09-1950 \t= 65 \t= 3 \t= Waar \n>= 01-10-1950 \t<= 30-06-1951 \t= 65 \t= 6 \t= Waar \n>= 01-07-1951 \t<= 31-03-1952 \t= 65 \t= 9 \t= Waar \n>= 01-04-1952 \t<= 31-12-1952 \t= 66 \t= 0 \t= Waar \n>= 01-01-1953 \t<= 31-08-1955 \t= 66 \t= 4 \t= Waar \n>= 01-09-1955 \t<= 31-05-1956 \t= 66 \t= 7 \t= Waar \n>= 01-06-1956 \t<= 28-02-1957 \t= 66 \t= 10 \t= Waar \n>= 01-03-1957 \t<= 31-12-1960 \t= 67 \t= 0 \t= Waar \n>= 01-01-1961 \t<= 30-09-1962 \t= 67 \t= 3 \t= Waar \n>= 01-10-1962 \t<= 30-09-1963 \t= 67 \t= 3 \t= Waar \n>= 01-10-1963 \t<= 30-09-1964 \t= 67 \t= 3 \t= Waar \n>= 01-10-1964 \t- \t= 67 \t= 3 \t= Onwaar \n"@nl  .
+
+<https://regels.overheid.nl/register/uwv/39c60bb7-4905-48d0-8774-7b5718ca5a36> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "INVOER LT_01111_GEG_geboortedatum_van_de_natuurlijk_persoon" ;
+    dct:title "Geboortedatum van de natuurlijk persoon"@nl ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "De geboortedatum van de natuurlijk persoon = de _Geboortedatum van de _NATUURLIJK PERSOON"@nl  .
+
+<https://regels.overheid.nl/register/uwv/5ddf5fe2-729b-40a1-ae31-cb30f646761e> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "UITVOER _Aantal_aanvullende_maanden_pensioengerechtigde_leeftijd-van_RECHT_OP_UITKERING_AOW" ;
+    dct:title "Aantal aanvullende maanden pensioengerechtigde leeftijd van _RECHT OP UITKERING AOW"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/uwv/22a211aa-a909-418e-9661-cb1a08e98f07> ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Het _Aantal aanvullende maanden pensioengerechtigde leeftijd van het _RECHT OP UITKERING AOW = het aantal aanvullende maanden van de pensioengerechtigde leeftijd van de natuurlijk persoon"@nl  .
+
+<https://regels.overheid.nl/register/uwv/f2dd177e-db20-4723-b0b2-3a020f162f03> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "UITVOER _Aantal_jaren_pensioengerechtigde_leeftijd_van_RECHT_OP_UITKERING_AOW" ;
+    dct:title "Aantal jaren pensioengerechtigde leeftijd van _RECHT OP UITKERING AOW"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/uwv/22a211aa-a909-418e-9661-cb1a08e98f07> ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Het _Aantal jaren pensioengerechtigde leeftijd van het _RECHT OP UITKERING AOW = het aantal jaren van de pensioengerechtigde leeftijd van de natuurlijk persoon"@nl  .
+
+<https://regels.overheid.nl/register/uwv/22a211aa-a909-418e-9661-cb1a08e98f07> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "UITVOER _Datum_aanvang_recht_op_uitkering_van_RECHT_OP_UITKERING_AOW" ;
+    dct:title "Datum aanvang recht op uitkering van _RECHT OP UITKERING AOW"@nl ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "De _Datum aanvang recht op uitkering van het _RECHT OP UITKERING AOW = de begindatum van het recht op uitkering AOW"@nl  .
+
+<https://regels.overheid.nl/register/uwv/2fb80f23-e5ab-4513-a44b-3898d86bb802> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    dct:identifier "UITVOER _Indicatie_pensioengerechtigde_leeftijd_definitief_RECHT_OP_UITKERING_AOW" ;
+    dct:title "Indicatie pensioengerechtigde leeftijd definitief _RECHT OP UITKERING AOW"@nl ;
+    cprmv:extends <https://regels.overheid.nl/register/uwv/22a211aa-a909-418e-9661-cb1a08e98f07> ;
+    cprmv:validFrom "2025-02-01"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "Een _RECHT OP UITKERING AOW _Indicatie pensioengerechtigde leeftijd definitief indien de pensioengerechtigde leeftijd van de natuurlijk persoon is definitief"@nl  .
+
+
+# ============================================================
 #  DMN Decision Model
 # ============================================================
 
@@ -86,10 +151,10 @@
     dct:title "UWV_Leeftijdsinformatie.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     dct:source <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/file> ;
-    cprmv:deploymentId "fbfbb3c4-0d99-11f1-a5e9-f68ed60940f5" ;
-    cprmv:deployedAt "2026-02-19T13:50:43.964Z"^^xsd:dateTime ;
+    cprmv:deploymentId "8ba5b456-4eac-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-05-13T09:17:21.518Z"^^xsd:dateTime ;
     cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/UWV_LeeftijdsInformatie/evaluate> ;
-    cprmv:lastTested "2026-02-19T13:50:56.824Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-05-13T09:17:23.657Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
@@ -97,21 +162,21 @@
     dct:identifier "dagVanAanvraag" ;
     dct:title "dagVanAanvraag"@nl ;
     dct:type "String" ;
-    schema:value "2026-02-19" ;
+    schema:value "2026-05-13" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/input/2> a cpsv:Input ;
     dct:identifier "geboortedatumAanvrager" ;
     dct:title "geboortedatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "1973-08-01" ;
+    schema:value "1984-09-09" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/input/3> a cpsv:Input ;
     dct:identifier "geboortedatumPartner" ;
     dct:title "geboortedatumPartner"@nl ;
     dct:type "String" ;
-    schema:value "" ;
+    schema:value "1959-05-26" ;
     cpsv:isRequiredBy <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/1> a cpsv:Output ;
@@ -124,7 +189,8 @@
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/2> a cpsv:Output ;
     dct:identifier "leeftijdPartner" ;
     dct:title "leeftijdPartner"@nl ;
-    dct:type "Null" ;
+    dct:type "Integer" ;
+    schema:value 66 ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/3> a cpsv:Output ;
@@ -152,14 +218,14 @@
     dct:identifier "leeftijdAanvrager" ;
     dct:title "leeftijdAanvrager"@nl ;
     dct:type "Integer" ;
-    schema:value 52 ;
+    schema:value 41 ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/7> a cpsv:Output ;
     dct:identifier "AOWDatumAanvrager" ;
     dct:title "AOWDatumAanvrager"@nl ;
     dct:type "String" ;
-    schema:value "2040-08-01" ;
+    schema:value "2051-12-09" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/8> a cpsv:Output ;
@@ -172,7 +238,8 @@
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/9> a cpsv:Output ;
     dct:identifier "AOWDatumPartner" ;
     dct:title "AOWDatumPartner"@nl ;
-    dct:type "Null" ;
+    dct:type "String" ;
+    schema:value "2026-05-26" ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/10> a cpsv:Output ;
@@ -193,7 +260,7 @@
     dct:identifier "partnerIsTenminste21" ;
     dct:title "partnerIsTenminste21"@nl ;
     dct:type "Boolean" ;
-    schema:value false ;
+    schema:value true ;
     cpsv:produces <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn> .
 
 <https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_passthrough> a cpsv:Rule, cprmv:DecisionRule ;
@@ -236,92 +303,244 @@
     cprmv:decisionTable "DecisionTable_berekenLeeftijden" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2020> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2020" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_01> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_01" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2021> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2021" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_02> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_02" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2022> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2022" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_03> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_03" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2023> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2023" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_04> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_04" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2024> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2024" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_05> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_05" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2025> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2025" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_06> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_06" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2026> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2026" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_07> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_07" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2027> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2027" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_08> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_08" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2028> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2028" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_09> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_09" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2029> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2029" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_10" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
     cprmv:rulesetType "decision-table" .
 
-<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_2030> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_2030" ;
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_11" ;
     cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_aow" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_12> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_12" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_13> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_13" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_14> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_14" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_aanvrager_15> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_aanvrager_15" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_aanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_01> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_01" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_02> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_02" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_03> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_03" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_04> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_04" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_05> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_05" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_06> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_06" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_07> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_07" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_08> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_08" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_09> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_09" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_10" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_11" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_12> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_12" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_13> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_13" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_14> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_14" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aow-leeftijd-uwv/rules/DecisionRule_aow_partner_15> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_aow_partner_15" ;
+    cpsv:implements <https://regels.overheid.nl/services/aow-leeftijd-uwv> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_aow_partner" ;
     cprmv:rulesetType "decision-table" .
 
 # =====================================
@@ -332,7 +551,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-02-19"^^xsd:date .
+    dct:created "2026-05-13"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -376,7 +595,7 @@
 
 <https://regels.overheid.nl/concepts/uwvleeftijdsinformatie/leeftijdPartner> a skos:Concept ;
     skos:prefLabel "Leeftijd Partner"@nl ;
-    skos:definition "Leeftijd Partner is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:definition "Leeftijd Partner is een numerieke waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
     skos:notation "LP" ;
     dct:subject <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
@@ -439,7 +658,7 @@
 
 <https://regels.overheid.nl/concepts/uwvleeftijdsinformatie/AOWDatumPartner> a skos:Concept ;
     skos:prefLabel "AOW Datum Partner"@nl ;
-    skos:definition "AOW Datum Partner is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:definition "AOW Datum Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
     skos:notation "ADP" ;
     dct:subject <https://regels.overheid.nl/services/aow-leeftijd-uwv/dmn/output/9> ;
     dct:type "dmn:OutputVariable" ;

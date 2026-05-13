@@ -191,8 +191,11 @@
     </decisionTable>
   </decision>
   <decision id="UWV_BerekenLeeftijden" name="UWV Bereken Leeftijden" camunda:historyTimeToLive="0">
-    <informationRequirement id="InformationRequirement_aow">
-      <requiredDecision href="#UWV_AOWleeftijd" />
+    <informationRequirement id="InformationRequirement_aow_aanvrager">
+      <requiredDecision href="#UWV_AOWleeftijd_aanvrager" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aow_partner">
+      <requiredDecision href="#UWV_AOWleeftijd_partner" />
     </informationRequirement>
     <informationRequirement id="InformationRequirement_geboorteAanvrager">
       <requiredInput href="#InputData_geboortedatumAanvrager" />
@@ -216,9 +219,14 @@
           <text>dagVanAanvraag</text>
         </inputExpression>
       </input>
-      <input id="InputClause_leeftijdAOWMaanden_bereken" label="leeftijd AOW in maanden">
-        <inputExpression id="LiteralExpression_leeftijdAOWMaanden_bereken" typeRef="integer">
-          <text>leeftijdAOWMaanden</text>
+      <input id="InputClause_aowMaandenAanvrager_bereken" label="AOW leeftijd aanvrager in maanden">
+        <inputExpression id="LiteralExpression_aowMaandenAanvrager_bereken" typeRef="integer">
+          <text>aowMaandenAanvrager</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_aowMaandenPartner_bereken" label="AOW leeftijd partner in maanden">
+        <inputExpression id="LiteralExpression_aowMaandenPartner_bereken" typeRef="integer">
+          <text>aowMaandenPartner</text>
         </inputExpression>
       </input>
       <output id="OutputClause_leeftijdAanvrager_bereken" label="leeftijd aanvrager" name="leeftijdAanvrager" typeRef="integer" />
@@ -226,49 +234,35 @@
       <output id="OutputClause_leeftijdPartner_bereken" label="leeftijd partner" name="leeftijdPartner" typeRef="integer" />
       <output id="OutputClause_AOWDatumPartner_bereken" label="AOW ingangsdatum partner" name="AOWDatumPartner" typeRef="string" />
       <rule id="DecisionRule_withPartner_bereken">
-        <inputEntry id="UnaryTests_any7">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_notNull3">
-          <text>not(null)</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_any8">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_any9">
-          <text></text>
-        </inputEntry>
+        <inputEntry id="UnaryTests_any7"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_notNull3"><text>not(null)</text></inputEntry>
+        <inputEntry id="UnaryTests_any8"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_aowMaandenAanvrager_with"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_aowMaandenPartner_with"><text></text></inputEntry>
         <outputEntry id="LiteralExpression_leeftijdAanvrager_bereken">
           <text>years and months duration(date(geboortedatumAanvrager), date(dagVanAanvraag)).years</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_AOWDatumAanvrager_bereken">
-          <text>date(geboortedatumAanvrager) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+          <text>date(geboortedatumAanvrager) + duration("P"+string(aowMaandenAanvrager)+"M")</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_leeftijdPartner_bereken">
           <text>years and months duration(date(geboortedatumPartner), date(dagVanAanvraag)).years</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_AOWDatumPartner_bereken">
-          <text>date(geboortedatumPartner) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+          <text>date(geboortedatumPartner) + duration("P"+string(aowMaandenPartner)+"M")</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_withoutPartner_bereken">
-        <inputEntry id="UnaryTests_any10">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_null3">
-          <text>null</text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_any11">
-          <text></text>
-        </inputEntry>
-        <inputEntry id="UnaryTests_any12">
-          <text></text>
-        </inputEntry>
+        <inputEntry id="UnaryTests_any10"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_null3"><text>null</text></inputEntry>
+        <inputEntry id="UnaryTests_any11"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_aowMaandenAanvrager_without"><text></text></inputEntry>
+        <inputEntry id="UnaryTests_aowMaandenPartner_without"><text></text></inputEntry>
         <outputEntry id="LiteralExpression_leeftijdAanvrager_single_bereken">
           <text>years and months duration(date(geboortedatumAanvrager), date(dagVanAanvraag)).years</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_AOWDatumAanvrager_single_bereken">
-          <text>date(geboortedatumAanvrager) + duration("P"+string(leeftijdAOWMaanden)+"M")</text>
+          <text>date(geboortedatumAanvrager) + duration("P"+string(aowMaandenAanvrager)+"M")</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_leeftijdPartner_single_bereken">
           <text>null</text>
@@ -279,104 +273,149 @@
       </rule>
     </decisionTable>
   </decision>
-  <decision id="UWV_AOWleeftijd" name="UWV AOW leeftijd" camunda:historyTimeToLive="0">
-    <informationRequirement id="InformationRequirement_dag2">
-      <requiredInput href="#InputData_dagVanAanvraag" />
+  <decision id="UWV_AOWleeftijd_aanvrager" name="UWV AOW leeftijd aanvrager" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_geboorteAanvrager_aow">
+      <requiredInput href="#InputData_geboortedatumAanvrager" />
     </informationRequirement>
-    <decisionTable id="DecisionTable_aow">
-      <input id="InputClause_jaar_aow" label="jaar van berekening">
-        <inputExpression id="LiteralExpression_jaar_aow" typeRef="integer">
-          <text>date(dagVanAanvraag).year</text>
+    <decisionTable id="DecisionTable_aow_aanvrager">
+      <input id="InputClause_geboortedatumAanvrager_aow" label="geboortedatum aanvrager (jaar*100+maand)">
+        <inputExpression id="LiteralExpression_geboortedatumAanvrager_aow" typeRef="integer">
+          <text>date(geboortedatumAanvrager).year * 100 + date(geboortedatumAanvrager).month</text>
         </inputExpression>
       </input>
-      <output id="OutputClause_leeftijdAOWMaanden_aow" label="leeftijd AOW in maanden" name="leeftijdAOWMaanden" typeRef="integer" />
-      <rule id="DecisionRule_2020">
-        <inputEntry id="UnaryTests_2020">
-          <text>2020</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2020">
-          <text>66 * 12 + 4</text>
-        </outputEntry>
+      <output id="OutputClause_aowMaandenAanvrager" label="AOW leeftijd aanvrager in maanden" name="aowMaandenAanvrager" typeRef="integer" />
+      <rule id="DecisionRule_aow_aanvrager_01">
+        <inputEntry id="UnaryTests_aow_aanvrager_01"><text>&lt;= 194712</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_01"><text>65 * 12 + 0</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2021">
-        <inputEntry id="UnaryTests_2021">
-          <text>2021</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2021">
-          <text>66 * 12 + 7</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_02">
+        <inputEntry id="UnaryTests_aow_aanvrager_02"><text>[194801..194811]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_02"><text>65 * 12 + 1</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2022">
-        <inputEntry id="UnaryTests_2022">
-          <text>2022</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2022">
-          <text>66 * 12 + 7</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_03">
+        <inputEntry id="UnaryTests_aow_aanvrager_03"><text>[194812..194910]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_03"><text>65 * 12 + 2</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2023">
-        <inputEntry id="UnaryTests_2023">
-          <text>2023</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2023">
-          <text>66 * 12 + 10</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_04">
+        <inputEntry id="UnaryTests_aow_aanvrager_04"><text>[194911..195009]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_04"><text>65 * 12 + 3</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2024">
-        <inputEntry id="UnaryTests_2024">
-          <text>2024</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2024">
-          <text>67 * 12</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_05">
+        <inputEntry id="UnaryTests_aow_aanvrager_05"><text>[195010..195106]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_05"><text>65 * 12 + 6</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2025">
-        <inputEntry id="UnaryTests_2025">
-          <text>2025</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2025">
-          <text>67 * 12</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_06">
+        <inputEntry id="UnaryTests_aow_aanvrager_06"><text>[195107..195203]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_06"><text>65 * 12 + 9</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2026">
-        <inputEntry id="UnaryTests_2026">
-          <text>2026</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2026">
-          <text>67 * 12</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_07">
+        <inputEntry id="UnaryTests_aow_aanvrager_07"><text>[195204..195212]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_07"><text>66 * 12 + 0</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2027">
-        <inputEntry id="UnaryTests_2027">
-          <text>2027</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2027">
-          <text>67 * 12 + 3</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_08">
+        <inputEntry id="UnaryTests_aow_aanvrager_08"><text>[195301..195508]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_08"><text>66 * 12 + 4</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2028">
-        <inputEntry id="UnaryTests_2028">
-          <text>2028</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2028">
-          <text>67 * 12 + 3</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_09">
+        <inputEntry id="UnaryTests_aow_aanvrager_09"><text>[195509..195605]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_09"><text>66 * 12 + 7</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2029">
-        <inputEntry id="UnaryTests_2029">
-          <text>2029</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2029">
-          <text>67 * 12 + 3</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_10">
+        <inputEntry id="UnaryTests_aow_aanvrager_10"><text>[195606..195702]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_10"><text>66 * 12 + 10</text></outputEntry>
       </rule>
-      <rule id="DecisionRule_2030">
-        <inputEntry id="UnaryTests_2030">
-          <text>2030</text>
-        </inputEntry>
-        <outputEntry id="LiteralExpression_2030">
-          <text>67 * 12 + 3</text>
-        </outputEntry>
+      <rule id="DecisionRule_aow_aanvrager_11">
+        <inputEntry id="UnaryTests_aow_aanvrager_11"><text>[195703..196012]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_11"><text>67 * 12 + 0</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_aanvrager_12">
+        <inputEntry id="UnaryTests_aow_aanvrager_12"><text>[196101..196209]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_12"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_aanvrager_13">
+        <inputEntry id="UnaryTests_aow_aanvrager_13"><text>[196210..196309]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_13"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_aanvrager_14">
+        <inputEntry id="UnaryTests_aow_aanvrager_14"><text>[196310..196409]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_14"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_aanvrager_15">
+        <inputEntry id="UnaryTests_aow_aanvrager_15"><text>&gt;= 196410</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_aanvrager_15"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="UWV_AOWleeftijd_partner" name="UWV AOW leeftijd partner" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_geboortePartner_aow">
+      <requiredInput href="#InputData_geboortedatumPartner" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_aow_partner">
+      <input id="InputClause_geboortedatumPartner_aow" label="geboortedatum partner (jaar*100+maand)">
+        <inputExpression id="LiteralExpression_geboortedatumPartner_aow" typeRef="integer">
+          <text>date(geboortedatumPartner).year * 100 + date(geboortedatumPartner).month</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_aowMaandenPartner" label="AOW leeftijd partner in maanden" name="aowMaandenPartner" typeRef="integer" />
+      <rule id="DecisionRule_aow_partner_01">
+        <inputEntry id="UnaryTests_aow_partner_01"><text>&lt;= 194712</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_01"><text>65 * 12 + 0</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_02">
+        <inputEntry id="UnaryTests_aow_partner_02"><text>[194801..194811]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_02"><text>65 * 12 + 1</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_03">
+        <inputEntry id="UnaryTests_aow_partner_03"><text>[194812..194910]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_03"><text>65 * 12 + 2</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_04">
+        <inputEntry id="UnaryTests_aow_partner_04"><text>[194911..195009]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_04"><text>65 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_05">
+        <inputEntry id="UnaryTests_aow_partner_05"><text>[195010..195106]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_05"><text>65 * 12 + 6</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_06">
+        <inputEntry id="UnaryTests_aow_partner_06"><text>[195107..195203]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_06"><text>65 * 12 + 9</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_07">
+        <inputEntry id="UnaryTests_aow_partner_07"><text>[195204..195212]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_07"><text>66 * 12 + 0</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_08">
+        <inputEntry id="UnaryTests_aow_partner_08"><text>[195301..195508]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_08"><text>66 * 12 + 4</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_09">
+        <inputEntry id="UnaryTests_aow_partner_09"><text>[195509..195605]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_09"><text>66 * 12 + 7</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_10">
+        <inputEntry id="UnaryTests_aow_partner_10"><text>[195606..195702]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_10"><text>66 * 12 + 10</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_11">
+        <inputEntry id="UnaryTests_aow_partner_11"><text>[195703..196012]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_11"><text>67 * 12 + 0</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_12">
+        <inputEntry id="UnaryTests_aow_partner_12"><text>[196101..196209]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_12"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_13">
+        <inputEntry id="UnaryTests_aow_partner_13"><text>[196210..196309]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_13"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_14">
+        <inputEntry id="UnaryTests_aow_partner_14"><text>[196310..196409]</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_14"><text>67 * 12 + 3</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_aow_partner_15">
+        <inputEntry id="UnaryTests_aow_partner_15"><text>&gt;= 196410</text></inputEntry>
+        <outputEntry id="LiteralExpression_aow_partner_15"><text>67 * 12 + 3</text></outputEntry>
       </rule>
     </decisionTable>
   </decision>
@@ -394,8 +433,11 @@
       <dmndi:DMNShape id="DMNShape_04gxvwn" dmnElementRef="UWV_BerekenLeeftijden">
         <dc:Bounds height="80" width="180" x="160" y="370" />
       </dmndi:DMNShape>
-      <dmndi:DMNShape id="DMNShape_1aa7a2a" dmnElementRef="UWV_AOWleeftijd">
-        <dc:Bounds height="80" width="180" x="160" y="510" />
+      <dmndi:DMNShape id="DMNShape_1aa7a2a" dmnElementRef="UWV_AOWleeftijd_aanvrager">
+        <dc:Bounds height="80" width="180" x="60" y="510" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_2bb8b3b" dmnElementRef="UWV_AOWleeftijd_partner">
+        <dc:Bounds height="80" width="180" x="280" y="510" />
       </dmndi:DMNShape>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
