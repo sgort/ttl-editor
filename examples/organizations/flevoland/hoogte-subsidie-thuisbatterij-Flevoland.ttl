@@ -23,7 +23,7 @@
     cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/REGIONAL> ;
     dcat:keyword "thuisbatterij, Flevoland, subsidie"@nl ;
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
-    cv:hasCompetentAuthority <https://regels.overheid.nl/organizations/Provincie%20Flevoland> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/14866/Provincie_Flevoland> ;
     cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR750157/1> ;
     cprmv:hasDecisionModel <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn>  .
 
@@ -32,13 +32,13 @@
 #  Organization
 # ============================================================
 
-<https://regels.overheid.nl/organizations/Provincie%20Flevoland> a cv:PublicOrganisation ;
-    dct:identifier "Provincie Flevoland" ;
+<https://organisaties.overheid.nl/14866/Provincie_Flevoland> a cv:PublicOrganisation ;
+    dct:identifier "Provincie_Flevoland" ;
     skos:prefLabel "Provincie Flevoland"@nl ;
-    foaf:homepage <https://www.flevoland.nl/> ;
+    foaf:homepage <https://www.flevoland.nl/home> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
-    foaf:logo <./assets/Provincie Flevoland_logo.png> ;
-    schema:image <./assets/Provincie Flevoland_logo.png>  .
+    foaf:logo <./assets/Provincie_Flevoland_logo.png> ;
+    schema:image <./assets/Provincie_Flevoland_logo.png>  .
 
 
 # ============================================================
@@ -222,7 +222,15 @@
     cprmv:decisionTable "DecisionTable_SubsidieConstantenThuisbatterij" ;
     cprmv:rulesetType "decision-table" .
 
-# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-05-13"^^xsd:date .
+
+# Input Variable Concepts
+# =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
 
