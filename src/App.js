@@ -241,6 +241,7 @@ function App() {
       setOutput,
       setDmnData,
       setIknowMappingConfig,
+      setVendorService,
     };
 
     handleTTLImport(event, setters, setImportStatus);
