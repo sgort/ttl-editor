@@ -41,14 +41,15 @@ import {
 } from './hooks/useArrayHandlers';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
+import { validateDMNData } from './utils/dmnHelpers';
+import { handleTTLImport } from './utils/importHandler';
 import {
+  buildGraphIRI,
   publishToTriplyDB,
   saveTriplyDBConfig,
   updateTriplyDBService,
   uploadLogoAsset,
-} from './utils';
-import { validateDMNData } from './utils/dmnHelpers';
-import { handleTTLImport } from './utils/importHandler';
+} from './utils/triplydbHelper';
 import { generateTTL } from './utils/ttlGenerator';
 
 function App() {
@@ -516,7 +517,13 @@ function App() {
 
       console.log('Publishing with filename:', filename);
 
-      const publishResult = await publishToTriplyDB(ttlContent, config, filename);
+      const graphIRI = buildGraphIRI({
+        organizationIdentifier: organization.identifier,
+        serviceIdentifier: service.identifier,
+      });
+
+      const publishResult = await publishToTriplyDB(ttlContent, config, filename, graphIRI);
+
       console.log('Publish successful:', publishResult);
 
       setPublishingState({
@@ -602,7 +609,7 @@ function App() {
 
       try {
         const serviceName = config.dataset;
-        await updateTriplyDBService(config, serviceName);
+        await updateTriplyDBService(config, serviceName, graphIRI);
 
         console.log('Service updated successfully');
 
