@@ -8,7 +8,11 @@ import {
   DEFAULT_OUTPUT,
   DEFAULT_SERVICE,
 } from '../utils';
+import { fetchAllRonlConcepts } from '../utils/ronlHelper';
 import { loadTriplyDBConfig } from '../utils/triplydbHelper';
+
+const RONL_ENDPOINT =
+  'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
 
 export const useEditorState = () => {
   // Service state
@@ -98,9 +102,48 @@ export const useEditorState = () => {
   // TriplyDB configuration state (NEW)
   const [triplyDBConfig, setTriplyDBConfig] = useState(() => loadTriplyDBConfig());
 
+  // RONL concepts — fetched once on App mount, consumed by LegalTab and VendorTab
+  const [ronlAnalysisConcepts, setRonlAnalysisConcepts] = useState([]);
+  const [ronlMethodConcepts, setRonlMethodConcepts] = useState([]);
+  const [ronlConceptsLoading, setRonlConceptsLoading] = useState(false);
+  const [ronlConceptsError, setRonlConceptsError] = useState('');
+
   // Load available iKnow mappings on mount
   useEffect(() => {
     setAvailableIKnowMappings(iknowMappings);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadConcepts = async () => {
+      setRonlConceptsLoading(true);
+      setRonlConceptsError('');
+
+      try {
+        const { analysisConcepts, methodConcepts } = await fetchAllRonlConcepts(RONL_ENDPOINT);
+        if (cancelled) return;
+        setRonlAnalysisConcepts(analysisConcepts);
+        setRonlMethodConcepts(methodConcepts);
+        console.log('Loaded RONL concepts:', {
+          analysis: analysisConcepts.length,
+          method: methodConcepts.length,
+        });
+      } catch (error) {
+        if (cancelled) return;
+        console.error('Failed to load RONL concepts:', error);
+        setRonlConceptsError(
+          'Failed to load concepts from TriplyDB. Please check your connection.'
+        );
+      } finally {
+        if (!cancelled) setRonlConceptsLoading(false);
+      }
+    };
+
+    loadConcepts();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Clear all data
@@ -206,6 +249,11 @@ export const useEditorState = () => {
     // TriplyDB (NEW)
     triplyDBConfig,
     setTriplyDBConfig,
+    // RONL concepts
+    ronlAnalysisConcepts,
+    ronlMethodConcepts,
+    ronlConceptsLoading,
+    ronlConceptsError,
     // Actions
     clearAllData,
   };

@@ -86,6 +86,10 @@ function App() {
     // setAvailableIKnowMappings! ← Not needed in App.js
     triplyDBConfig,
     setTriplyDBConfig,
+    ronlAnalysisConcepts,
+    ronlMethodConcepts,
+    ronlConceptsLoading,
+    ronlConceptsError,
     clearAllData,
   } = useEditorState();
 
@@ -969,6 +973,10 @@ function App() {
                   setRonlAnalysis={setRonlAnalysis}
                   ronlMethod={ronlMethod}
                   setRonlMethod={setRonlMethod}
+                  analysisConcepts={ronlAnalysisConcepts}
+                  methodConcepts={ronlMethodConcepts}
+                  loadingConcepts={ronlConceptsLoading}
+                  conceptsError={ronlConceptsError}
                 />
               )}
               {activeTab === 'rules' && (
@@ -1019,6 +1027,9 @@ function App() {
                   setVendorService={setVendorService}
                   service={service}
                   organization={organization}
+                  vendorConcepts={ronlMethodConcepts}
+                  loadingVendors={ronlConceptsLoading}
+                  vendorsError={ronlConceptsError}
                 />
               )}
               {activeTab === 'changelog' && <ChangelogTab />}
