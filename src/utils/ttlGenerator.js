@@ -92,6 +92,12 @@ export class TTLGenerator {
       ttl += this.generateParametersSection();
     }
 
+    // CPRMV Dataset section (header for the Rules collection below)
+    if (this.hasCprmvRules()) {
+      ttl += this.generateSectionHeader('CPRMV Dataset');
+      ttl += this.generateDatasetsSection();
+    }
+
     // CPRMV Rules section
     if (this.hasCprmvRules()) {
       ttl += this.generateSectionHeader('CPRMV Rules');
@@ -568,6 +574,134 @@ export class TTLGenerator {
     return ttl;
   }
 
+  /**
+   * Build a versioned legal-resource URI from a rulesetId.
+   * Used by both the Rule emitter (with legalResource.bwbId) and the Dataset
+   * emitter (with each Dataset's own rulesetId).
+   *
+   * @param {string} rulesetId - BWB / CVDR identifier or full URI
+   * @param {string} version   - Optional version suffix; appended when truthy
+   * @returns {string|null}    - Canonical legal URI, or null when rulesetId is empty
+   */
+  buildLegalUriForRulesetId(rulesetId, version = '') {
+    if (!rulesetId) return null;
+
+    const isFullUri = rulesetId.startsWith('http://') || rulesetId.startsWith('https://');
+    let baseUri;
+
+    if (isFullUri) {
+      // Normalize: strip any trailing /YYYY-MM-DD[/INDEX] from the input URI.
+      // The base URI should not carry a version — `version` is re-appended below
+      // from the dedicated field. This makes the function robust to inputs that
+      // arrived already-versioned (parsed subject URIs, user-pasted URLs, etc).
+      baseUri = rulesetId.replace(/\/\d{4}-\d{2}-\d{2}(?:\/\d+)?$/, '');
+    } else {
+      const isBWB = /BWB[A-Z]?\d+/i.test(rulesetId);
+      const isCVDR = /CVDR\d+/i.test(rulesetId);
+
+      if (isBWB) {
+        baseUri = `https://wetten.overheid.nl/${rulesetId}`;
+      } else if (isCVDR) {
+        baseUri = `https://lokaleregelgeving.overheid.nl/${rulesetId}/1`;
+      } else {
+        baseUri = `https://wetten.overheid.nl/${rulesetId}`;
+      }
+    }
+
+    if (version) {
+      baseUri = `${baseUri}/${version}`;
+    }
+
+    return baseUri;
+  }
+
+  /**
+   * Build versioned URI for the service's primary Legal Resource.
+   * Thin wrapper for backwards-compatibility with the Rule emitter.
+   */
+  buildLegalResourceUri() {
+    return this.buildLegalUriForRulesetId(
+      this.legalResource?.bwbId,
+      this.legalResource?.version || ''
+    );
+  }
+
+  /**
+   * Generate CPRMV Dataset section.
+   *
+   * One Dataset per unique cprmv:rulesetId in the CPRMV Rules collection
+   * (in the typical case, that's exactly one). The Dataset acts as a
+   * DCAT-compliant catalogue entry anchoring all Rules from the same
+   * Legal Resource version.
+   *
+   * Joins to Rules:
+   *  - Loose (all versions): match on the cprmv:rulesetId literal
+   *  - Tight (version-exact): match on cprmv:implements pointing to the same
+   *    versioned legal URI; both Rule and Dataset emit this property
+   *
+   * No schema change to Rules required.
+   *
+   * @returns {string} CPRMV Dataset TTL
+   */
+  generateDatasetsSection() {
+    const rulesetIds = [...new Set(this.cprmvRules.map((rule) => rule.rulesetId).filter(Boolean))];
+
+    if (rulesetIds.length === 0) return '';
+
+    const version = this.legalResource?.version || '';
+    const issued = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+
+    // Normalize the service's primary identifier to a bare rulesetId for comparison
+    // (handles both "BWBR0015703" and "https://wetten.overheid.nl/BWBR0015703/..." inputs)
+    const primaryBwbId = this.legalResource?.bwbId || '';
+    const primaryMatch = primaryBwbId.match(/(BWB[A-Z]?\d+|CVDR\d+)/i);
+    const primaryRulesetId = primaryMatch ? primaryMatch[0] : '';
+
+    let ttl = '';
+
+    rulesetIds.forEach((rulesetId) => {
+      const isPrimary = rulesetId === primaryRulesetId;
+      const idSuffix = version ? `${rulesetId}_${version}` : rulesetId;
+      const datasetUri = `https://cprmv.open-regels.nl/datasets/${encodeURIComponentTTL(idSuffix)}`;
+
+      // Each Dataset's legal URI is built from its own rulesetId.
+      // We only attach the service's version when this Dataset corresponds to the
+      // service's primary legalResource — for the other rulesets we have no
+      // confidence in the version, so the URI is left un-versioned.
+      const legalUri = this.buildLegalUriForRulesetId(rulesetId, isPrimary ? version : '');
+
+      ttl += `<${datasetUri}> a cprmv:Dataset, dcat:Dataset ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(idSuffix)}" ;\n`;
+
+      // Title only when this Dataset matches the service's primary legalResource —
+      // applying the Participatiewet title to a BWBR0044894 Dataset would be wrong.
+      if (isPrimary && this.legalResource?.title) {
+        ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;
+      }
+
+      ttl += `    cprmv:rulesetId "${escapeTTLString(rulesetId)}" ;\n`;
+
+      if (legalUri) {
+        ttl += `    cprmv:implements <${legalUri}> ;\n`;
+      }
+
+      // dcat:version is only meaningful when we know the version of this specific ruleset
+      if (version && isPrimary) {
+        ttl += `    dcat:version "${escapeTTLString(version)}" ;\n`;
+      }
+
+      ttl += `    dct:issued "${issued}"^^xsd:dateTime ;\n`;
+
+      if (legalUri) {
+        ttl += `    dcat:landingPage <${legalUri}> ;\n`;
+      }
+
+      ttl = ttl.slice(0, -2) + ' .\n\n';
+    });
+
+    return ttl;
+  }
+
   generateCprmvRulesSection() {
     let ttl = '';
 
@@ -615,33 +749,32 @@ export class TTLGenerator {
           ttl += `    cprmv:ruleIdPath "${escapeTTLString(rule.ruleIdPath)}" ;\n`;
         }
 
-        // Auto-link to legal resource (versioned if available)
-        if (this.legalResource && this.legalResource.bwbId) {
-          let legalUri;
-          const identifier = this.legalResource.bwbId;
-          const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
+        // Auto-link to legal resource at the rule level.
+        // Preference order:
+        //   1. The rule's own rulesetId — most accurate for multi-BWB services;
+        //      the version is inherited from the service's legalResource only when
+        //      the rule's rulesetId matches the service's primary (since that's
+        //      the only ruleset whose version we know with confidence).
+        //   2. The service's primary legal resource — fallback for rules without
+        //      a rulesetId, preserves prior single-BWB behaviour.
+        let ruleLegalUri = null;
 
-          if (isFullUri) {
-            legalUri = identifier;
-          } else {
-            const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
-            const isCVDR = /CVDR\d+/i.test(identifier);
+        if (rule.rulesetId) {
+          // Extract bare rulesetId from the service's legalResource for comparison
+          // (handles both "BWBR0015703" and the full-URI form)
+          const primaryBwbId = this.legalResource?.bwbId || '';
+          const primaryMatch = primaryBwbId.match(/(BWB[A-Z]?\d+|CVDR\d+)/i);
+          const primaryRulesetId = primaryMatch ? primaryMatch[0] : '';
+          const isPrimary = rule.rulesetId === primaryRulesetId;
+          const version = isPrimary ? this.legalResource?.version || '' : '';
 
-            if (isBWB) {
-              legalUri = `https://wetten.overheid.nl/${identifier}`;
-            } else if (isCVDR) {
-              legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
-            } else {
-              legalUri = `https://wetten.overheid.nl/${identifier}`;
-            }
-          }
+          ruleLegalUri = this.buildLegalUriForRulesetId(rule.rulesetId, version);
+        } else {
+          ruleLegalUri = this.buildLegalResourceUri();
+        }
 
-          // If version exists, append it to create versioned URI
-          if (this.legalResource.version) {
-            legalUri = `${legalUri}/${this.legalResource.version}`;
-          }
-
-          ttl += `    cprmv:implements <${legalUri}> ;\n`;
+        if (ruleLegalUri) {
+          ttl += `    cprmv:implements <${ruleLegalUri}> ;\n`;
         }
 
         ttl = ttl.slice(0, -2) + ' .\n\n';
