@@ -333,33 +333,15 @@ export class TTLGenerator {
 
     let ttl = '';
 
-    // Determine the legal URI based on identifier type
-    let legalUri;
+    // Subject URI: canonical un-versioned form, regardless of whether bwbId
+    // arrived clean from the parser or carries a legacy /version[/index] suffix.
+    const legalUri = this.buildLegalUriForRulesetId(this.legalResource.bwbId, '');
     const identifier = this.legalResource.bwbId;
-    const isFullUri = identifier.startsWith('http://') || identifier.startsWith('https://');
-
-    if (isFullUri) {
-      // Use the provided URI directly
-      legalUri = identifier;
-    } else {
-      // Detect BWB or CVDR and generate appropriate URI
-      const isBWB = /BWB[A-Z]?\d+/i.test(identifier);
-      const isCVDR = /CVDR\d+/i.test(identifier);
-
-      if (isBWB) {
-        legalUri = `https://wetten.overheid.nl/${identifier}`;
-      } else if (isCVDR) {
-        // CVDR URIs include version number, default to /1
-        legalUri = `https://lokaleregelgeving.overheid.nl/${identifier}/1`;
-      } else {
-        // Fallback: assume BWB format
-        legalUri = `https://wetten.overheid.nl/${identifier}`;
-      }
-    }
 
     ttl += `<${legalUri}> a eli:LegalResource ;\n`;
 
-    // Extract just the ID portion (without URI prefix) for dct:identifier
+    // dct:identifier: strip http prefix and any trailing /<digits> for a clean
+    // human-readable identifier (e.g. "BWBR0015703").
     const identifierOnly = identifier.replace(/^https?:\/\/[^/]+\//, '').replace(/\/\d+$/, '');
     ttl += `    dct:identifier "${escapeTTLString(identifierOnly)}" ;\n`;
 
@@ -385,8 +367,15 @@ export class TTLGenerator {
       ttl += `    cprmv:hasMethod ${methodUri} ;\n`;
     }
 
+    // eli:is_realized_by: versioned manifestation URI.
+    // Reuses buildLegalUriForRulesetId so the version always appears exactly
+    // once, even if bwbId itself still carries a version from legacy state.
     if (this.legalResource.version) {
-      ttl += `    eli:is_realized_by <${legalUri}/${this.legalResource.version}> ;\n`;
+      const versionedUri = this.buildLegalUriForRulesetId(
+        this.legalResource.bwbId,
+        this.legalResource.version
+      );
+      ttl += `    eli:is_realized_by <${versionedUri}> ;\n`;
     }
 
     ttl = ttl.slice(0, -2) + ' .\n\n';

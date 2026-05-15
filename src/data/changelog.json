@@ -1,6 +1,68 @@
 {
   "versions": [
     {
+      "version": "1.9.4",
+      "date": "May 15, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🏷️",
+          "iconColor": "purple",
+          "title": "Vendor tab state retention",
+          "items": [
+            "Vendor tab data — selected vendor, contact details, technical fields, certification, service notes — now survives navigation between tabs and is no longer lost when switching away from and back to the Vendor tab",
+            "Local selectedVendor state in VendorTab.jsx replaced with a derived alias over lifted vendorService.selectedVendor; the lifted state in useEditorState is now the single source of truth for vendor data",
+            "RONL concept fetch (analysis, method, and vendor concepts from TriplyDB) lifted from LegalTab and VendorTab into useEditorState — concepts are fetched once on App mount and shared across both tabs, eliminating per-mount network calls and the dropdown flicker on tab re-entry"
+          ]
+        },
+        {
+          "icon": "📥",
+          "iconColor": "blue",
+          "title": "TTL import: Vendor data round-trip",
+          "items": [
+            "Vendor service data is now restored from imported TTL files: selectedVendor, provider organization name, contactPoint (name, email, telephone), foaf:homepage, schema:url, schema:license, ronl:accessType, dct:description, and schema:image",
+            "vendorService threaded through parseTTL() and applyImportedData() in importHandler.js; setVendorService added to the setters object handed to handleTTLImport from App.js",
+            "Round-trip verified against examples/organizations/svb/Bepaling-leeftijd-AOW-plus-Vendortab.ttl — exported and re-imported TTLs produce identical Vendor sections"
+          ]
+        },
+        {
+          "icon": "🗂️",
+          "iconColor": "green",
+          "title": "Deterministic graph IRI on publish",
+          "items": [
+            "TTL publishes now land in a per-service graph at https://regels.overheid.nl/graphs/{org-local}/{service-id} (e.g. .../graphs/Sociale_Verzekeringsbank/aow-leeftijd) instead of the auto-numbered graph:default-N series",
+            "Republishing the same service overwrites the previous graph rather than creating an incremented copy — each service now corresponds to a single, stable graph IRI in TriplyDB",
+            "New buildGraphIRI() helper in triplydbHelper.js derives the IRI from organization.identifier and service.identifier; passed through publishToTriplyDB and publishToTriplyDB_SPARQL as a graphIRI parameter (default: graphs/default fallback)",
+            "updateTriplyDBService extended with a graphName argument that is forwarded to the LDE backend's /v1/triplydb/update-service endpoint; logged on the backend as triggeredByGraph for end-to-end traceability of multi-publish flows"
+          ]
+        },
+        {
+          "icon": "📚",
+          "iconColor": "orange",
+          "title": "cprmv:Dataset generation",
+          "items": [
+            "TTL export now emits a cprmv:Dataset block per unique cprmv:rulesetId across the CPRMV Rules collection — one Dataset per legal source, dual-typed cprmv:Dataset and dcat:Dataset for DCAT catalogue interop",
+            "Dataset properties: dct:identifier, dct:title (primary only), cprmv:rulesetId, cprmv:implements (versioned for primary, un-versioned for non-primary), dcat:version (primary only), dct:issued, dcat:landingPage",
+            "CPRMV Rule emitter updated: cprmv:implements now uses the rule's own rulesetId instead of the service's primary legal resource, making rule-level claims accurate in multi-BWB services and ensuring tight (cprmv:implements) and loose (cprmv:rulesetId) SPARQL joins return identical result sets",
+            "New buildLegalUriForRulesetId() helper handles BWB, CVDR, and full-URI inputs; defensively strips /YYYY-MM-DD[/N] from already-versioned inputs before appending the version, eliminating doubled-version URIs",
+            "Vocabulary registration: cprmvDataset entity type added to vocabularies.config.js with acceptedTypes [cprmv:Dataset, dcat:Dataset]; dcat namespace already present in TTL_NAMESPACES"
+          ]
+        },
+        {
+          "icon": "🧹",
+          "iconColor": "gray",
+          "title": "Legal Resource URI normalization",
+          "items": [
+            "Parser normalizes legalResource.bwbId to its canonical un-versioned form on import — trailing /YYYY-MM-DD and /YYYY-MM-DD/<index> segments are stripped so version stays exclusively in legalResource.version",
+            "generateLegalResourceSection refactored to use buildLegalUriForRulesetId for both subject URI and eli:is_realized_by — produces a clean un-versioned LegalResource subject and a single-versioned manifestation URI, regardless of whether bwbId arrived clean or in a legacy already-versioned form",
+            "Side-effect: cv:hasLegalResource in the Service section now points to the un-versioned LegalResource URI (which matches the subject of the LegalResource block), closing the loop between Service → LegalResource → versioned manifestation"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.3",
       "status": "Minor Feature",
       "statusColor": "blue",
