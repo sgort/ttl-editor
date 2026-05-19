@@ -35,7 +35,7 @@
 <https://organisaties.overheid.nl/14866/Provincie_Flevoland> a cv:PublicOrganisation ;
     dct:identifier "Provincie_Flevoland" ;
     skos:prefLabel "Provincie Flevoland"@nl ;
-    foaf:homepage <https://www.flevoland.nl/home> ;
+    foaf:homepage <https://flevoland.nl/home> ;
     cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
     foaf:logo <./assets/Provincie_Flevoland_logo.png> ;
     schema:image <./assets/Provincie_Flevoland_logo.png>  .
@@ -77,54 +77,9 @@
     dct:title "behaalbare_hoogte_subsidie_budget_periode_all_tables_datetime.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:source <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/file> ;
-    cprmv:deploymentId "e173b6a2-4eb5-11f1-8761-8ae6f7653f6b" ;
-    cprmv:deployedAt "2026-05-13T10:24:10.635Z"^^xsd:dateTime ;
-    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/evaluate> ;
-    cprmv:lastTested "2026-05-13T10:24:43.844Z"^^xsd:dateTime ;
-    cprmv:testStatus "passed" ;
+    cprmv:deploymentId "42a4dbdb-5352-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-05-19T07:13:38.738Z"^^xsd:dateTime ;
     dct:description "DMN decision model for service evaluation"@nl .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/1> a cpsv:Input ;
-    dct:identifier "gemaakteKosten" ;
-    dct:title "gemaakteKosten"@nl ;
-    dct:type "Double" ;
-    schema:value 4000 ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/2> a cpsv:Input ;
-    dct:identifier "aanvraagDatum" ;
-    dct:title "aanvraagDatum"@nl ;
-    dct:type "String" ;
-    schema:value "2026-05-15T00:00:00" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/3> a cpsv:Input ;
-    dct:identifier "aanvragerType" ;
-    dct:title "aanvragerType"@nl ;
-    dct:type "String" ;
-    schema:value "eigenaar" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/4> a cpsv:Input ;
-    dct:identifier "reedsGesubsidieerdEigenaren" ;
-    dct:title "reedsGesubsidieerdEigenaren"@nl ;
-    dct:type "Double" ;
-    schema:value 436000 ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/5> a cpsv:Input ;
-    dct:identifier "reedsGesubsidieerdHuurders" ;
-    dct:title "reedsGesubsidieerdHuurders"@nl ;
-    dct:type "Double" ;
-    schema:value 100000 ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
-
-<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/output/1> a cpsv:Output ;
-    dct:identifier "hoogteSubsidie" ;
-    dct:title "hoogteSubsidie"@nl ;
-    dct:type "Double" ;
-    schema:value 1000 ;
-    cpsv:produces <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
 
 <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/Rule_Behaalbare_BasisPastBinnenResterendBudget> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "Rule_Behaalbare_BasisPastBinnenResterendBudget" ;
@@ -222,15 +177,7 @@
     cprmv:decisionTable "DecisionTable_SubsidieConstantenThuisbatterij" ;
     cprmv:rulesetType "decision-table" .
 
-
-<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
-    dct:title "DMN Variabelen Begrippenkader"@nl ;
-    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
-    dct:creator "RONL" ;
-    dct:created "2026-05-13"^^xsd:date .
-
-# Input Variable Concepts
-# =====================================
+# =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
 
@@ -238,7 +185,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-05-13"^^xsd:date .
+    dct:created "2026-05-19"^^xsd:date .
 
 # Input Variable Concepts
 
