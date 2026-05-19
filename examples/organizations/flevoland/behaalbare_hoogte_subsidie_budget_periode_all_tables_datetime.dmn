@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" id="Definitions_BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:cprmv="https://cprmv.open-regels.nl/0.3.0/" id="Definitions_BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0">
   <decision id="BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" camunda:historyTimeToLive="0">
     <variable name="hoogteSubsidie" typeRef="double" />
     <informationRequirement id="InformationRequirement_Behaalbare_Basis">
@@ -38,6 +38,9 @@
     <informationRequirement id="InformationRequirement_Basis_Constanten">
       <requiredDecision href="#SubsidieConstantenThuisbatterij" />
     </informationRequirement>
+    <informationRequirement id="InformationRequirement_Basis_GemaakteKosten">
+      <requiredInput href="#InputData_gemaakteKosten" />
+    </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBasisHoogteSubsidie">
       <input id="Input_GemaakteKosten" label="Gemaakte kosten">
         <inputExpression id="InputExpression_GemaakteKosten" typeRef="double" expressionLanguage="feel">
@@ -68,9 +71,21 @@
     <informationRequirement id="InformationRequirement_Platform_Constanten">
       <requiredDecision href="#SubsidieConstantenThuisbatterij" />
     </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_AanvraagDatum">
+      <requiredInput href="#InputData_aanvraagDatum" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_AanvragerType">
+      <requiredInput href="#InputData_aanvragerType" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_ReedsEigenaren">
+      <requiredInput href="#InputData_reedsGesubsidieerdEigenaren" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_ReedsHuurders">
+      <requiredInput href="#InputData_reedsGesubsidieerdHuurders" />
+    </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBeschikbaarSubsidiePlafond" hitPolicy="FIRST">
       <input id="Input_AanvraagDatum" label="Aanvraagdatum">
-        <inputExpression id="InputExpression_AanvraagDatum" expressionLanguage="feel">
+        <inputExpression id="InputExpression_AanvraagDatum" typeRef="date" expressionLanguage="feel">
           <text>date and time(aanvraagDatum)</text>
         </inputExpression>
       </input>
@@ -256,6 +271,21 @@
       </rule>
     </decisionTable>
   </decision>
+  <inputData id="InputData_gemaakteKosten" name="gemaakteKosten">
+    <variable id="Variable_gemaakteKosten" name="gemaakteKosten" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_aanvraagDatum" name="aanvraagDatum">
+    <variable id="Variable_aanvraagDatum" name="aanvraagDatum" typeRef="date" />
+  </inputData>
+  <inputData id="InputData_aanvragerType" name="aanvragerType">
+    <variable id="Variable_aanvragerType" name="aanvragerType" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_reedsGesubsidieerdEigenaren" name="reedsGesubsidieerdEigenaren">
+    <variable id="Variable_reedsGesubsidieerdEigenaren" name="reedsGesubsidieerdEigenaren" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_reedsGesubsidieerdHuurders" name="reedsGesubsidieerdHuurders">
+    <variable id="Variable_reedsGesubsidieerdHuurders" name="reedsGesubsidieerdHuurders" typeRef="double" />
+  </inputData>
   <dmndi:DMNDI>
     <dmndi:DMNDiagram id="DMNDiagram_BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie">
       <dmndi:DMNShape id="DMNShape_BehaalbareHoogteSubsidie" dmnElementRef="BehaalbareHoogteSubsidie">
