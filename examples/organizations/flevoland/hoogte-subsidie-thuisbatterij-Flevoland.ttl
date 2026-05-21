@@ -60,12 +60,21 @@
 
 <https://regels.overheid.nl/register/Flevoland/subsidie> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
-    dct:identifier "SubsidieThuisbatterij 001" ;
-    dct:title "Subsidiehoogte Thuisbatterij bepaling, rekening houdend met budget"@nl ;
+    dct:identifier "SubsidieThuisbatterij kale hoogte 001" ;
+    dct:title "kale Subsidiehoogte Thuisbatterij bepaling, zonder rekening houdend met budget"@nl ;
     cprmv:validFrom "2026-01-01"^^xsd:date ;
     cprmv:validUntil "2027-12-31"^^xsd:date ;
     cprmv:confidenceLevel "high" ;
-    dct:description "Provinciaal  \n-Algemene Subsidieverordening Flevoland 2023 \n-Nadere regels Subsidie Thuisbatterij Provincie Flevoland\n\nAanname van recht op subsidie, bepaling van hoogte mogelijk beperkt door lopend budget.\n\nArtikel 5 Regeling \n\nDe hoogte van de subsidie voor een thuisbatterij bedraagt 25% van de subsidiabele kosten, met een minimumbedrag van € 750 en een maximumbedrag van € 1.250. \n\nHoogte subsidie = 25% van subsidiabel bedrag (gegeven)  \nMinimum van 750 euro, max 1250 euro.\n\n2026: 875.000 totaal \n\nAanvragen 12 januari 2026 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  \n\n2027: 1.000.000 + wat over was van het vorige jaar totaal \n\nAanvragen 1 januari 2027 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  \n"@nl  .
+    dct:description "Provinciaal  \n-Algemene Subsidieverordening Flevoland 2023 \n-Nadere regels Subsidie Thuisbatterij Provincie Flevoland\n\nAanname van recht op subsidie, bepaling van hoogte mogelijk beperkt door lopend budget.\n\nArtikel 5 Regeling \n\nDe hoogte van de subsidie voor een thuisbatterij bedraagt 25% van de subsidiabele kosten, met een minimumbedrag van € 750 en een maximumbedrag van € 1.250. \n\nHoogte subsidie = 25% van subsidiabel bedrag (gegeven)  \nMinimum van 750 euro, max 1250 euro.\n\n"@nl  .
+
+<https://regels.overheid.nl/register/Flevoland/subsidie> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    dct:identifier "SubsidieThuisbatterijbudget ruimte 002" ;
+    dct:title "Subsidiehoogte Thuisbatterij bepaling, met welk jaargebonden budget"@nl ;
+    cprmv:validFrom "2026-01-12"^^xsd:date ;
+    cprmv:validUntil "2027-12-31"^^xsd:date ;
+    cprmv:confidenceLevel "high" ;
+    dct:description "2026: 875.000 totaal \n\nAanvragen 12 januari 2026 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  \n\n2027: 1.000.000 + wat over was van het vorige jaar totaal \n\nAanvragen 1 januari 2027 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  "@nl  .
 
 
 # ============================================================
@@ -74,12 +83,57 @@
 
 <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> a cprmv:DecisionModel ;
     dct:identifier "BehaalbareHoogteSubsidie" ;
-    dct:title "behaalbare_hoogte_subsidie_budget_periode_all_tables_datetime.dmn"@nl ;
+    dct:title "hoogteVergoedingThuisbatterijBijRechtEnBudget.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:source <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/file> ;
-    cprmv:deploymentId "42a4dbdb-5352-11f1-8761-8ae6f7653f6b" ;
-    cprmv:deployedAt "2026-05-19T07:13:38.738Z"^^xsd:dateTime ;
+    cprmv:deploymentId "92a94a28-5518-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-05-21T13:25:44.999Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/evaluate> ;
+    cprmv:lastTested "2026-05-21T13:27:22.957Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/1> a cpsv:Input ;
+    dct:identifier "gemaakteKosten" ;
+    dct:title "gemaakteKosten"@nl ;
+    dct:type "Double" ;
+    schema:value 7000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/2> a cpsv:Input ;
+    dct:identifier "aanvraagDatum" ;
+    dct:title "aanvraagDatum"@nl ;
+    dct:type "string" ;
+    schema:value "2026-05-15" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/3> a cpsv:Input ;
+    dct:identifier "aanvragerType" ;
+    dct:title "aanvragerType"@nl ;
+    dct:type "String" ;
+    schema:value "eigenaar" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/4> a cpsv:Input ;
+    dct:identifier "reedsGesubsidieerdEigenaren" ;
+    dct:title "reedsGesubsidieerdEigenaren"@nl ;
+    dct:type "Double" ;
+    schema:value 50000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/5> a cpsv:Input ;
+    dct:identifier "reedsGesubsidieerdHuurders" ;
+    dct:title "reedsGesubsidieerdHuurders"@nl ;
+    dct:type "Double" ;
+    schema:value 450000 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/output/1> a cpsv:Output ;
+    dct:identifier "hoogteSubsidie" ;
+    dct:title "hoogteSubsidie"@nl ;
+    dct:type "Double" ;
+    schema:value 1250 ;
+    cpsv:produces <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn> .
 
 <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/Rule_Behaalbare_BasisPastBinnenResterendBudget> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "Rule_Behaalbare_BasisPastBinnenResterendBudget" ;
@@ -169,12 +223,60 @@
     cprmv:decisionTable "DecisionTable_BerekenBeschikbaarSubsidiePlafond" ;
     cprmv:rulesetType "decision-table" .
 
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_0klv7yq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0klv7yq" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_BerekenBeschikbaarSubsidiePlafond" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_16qfnra> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_16qfnra" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_BerekenBeschikbaarSubsidiePlafond" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_1dqlhxp> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1dqlhxp" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_BerekenBeschikbaarSubsidiePlafond" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_1pjqt9f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1pjqt9f" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_BerekenBeschikbaarSubsidiePlafond" ;
+    cprmv:rulesetType "decision-table" .
+
 <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/Rule_Constanten_Standaard> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "Rule_Constanten_Standaard" ;
     cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
     cprmv:ruleType "decision-rule" ;
     cprmv:confidence "medium" ;
     cprmv:decisionTable "DecisionTable_SubsidieConstantenThuisbatterij" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_0nfr6kl> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0nfr6kl" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_1bhjh1w" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/rules/DecisionRule_1e5agpr> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1e5agpr" ;
+    cpsv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_1bhjh1w" ;
     cprmv:rulesetType "decision-table" .
 
 # =====================================
@@ -185,7 +287,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-05-19"^^xsd:date .
+    dct:created "2026-05-21"^^xsd:date .
 
 # Input Variable Concepts
 
@@ -200,7 +302,7 @@
 
 <https://regels.overheid.nl/concepts/behaalbarehoogtesubsidie/aanvraagDatum> a skos:Concept ;
     skos:prefLabel "Aanvraag Datum"@nl ;
-    skos:definition "Aanvraag Datum is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:definition "Aanvraag Datum is een waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "AD" ;
     dct:subject <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/input/2> ;
     dct:type "dmn:InputVariable" ;
