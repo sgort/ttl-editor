@@ -56,6 +56,29 @@ export const parseTTL = (ttlContent) => {
       description: parsed.output?.description || '',
       type: parsed.output?.type || '',
     },
+    vendorService: {
+      selectedVendor: parsed.vendorService?.selectedVendor || '',
+      contact: {
+        organizationName: parsed.vendorService?.contact?.organizationName || '',
+        contactPerson: parsed.vendorService?.contact?.contactPerson || '',
+        email: parsed.vendorService?.contact?.email || '',
+        phone: parsed.vendorService?.contact?.phone || '',
+        website: parsed.vendorService?.contact?.website || '',
+        logo: parsed.vendorService?.contact?.logo || '',
+      },
+      serviceNotes: parsed.vendorService?.serviceNotes || '',
+      technical: {
+        serviceUrl: parsed.vendorService?.technical?.serviceUrl || '',
+        license: parsed.vendorService?.technical?.license || '',
+        accessType: parsed.vendorService?.technical?.accessType || 'fair-use',
+      },
+      certification: {
+        status: parsed.vendorService?.certification?.status || 'not-certified',
+        certifiedBy: parsed.vendorService?.certification?.certifiedBy || '',
+        certifiedAt: parsed.vendorService?.certification?.certifiedAt || '',
+        certificationNote: parsed.vendorService?.certification?.certificationNote || '',
+      },
+    },
 
     // Pass through DMN preservation fields (Option 3)
     hasDmnData: parsed.hasDmnData || false,
@@ -169,6 +192,7 @@ export const applyImportedData = (importedData, setters) => {
     setConcepts,
     setCost,
     setOutput,
+    setVendorService,
     setDmnData,
     setIknowMappingConfig,
   } = setters;
@@ -185,7 +209,7 @@ export const applyImportedData = (importedData, setters) => {
   setConcepts(importedData.concepts || []);
   setCost(importedData.cost);
   setOutput(importedData.output);
-
+  setVendorService(importedData.vendorService);
   // Reset iKnow config on import
   setIknowMappingConfig({ mappings: {} });
 

@@ -1,0 +1,19 @@
+
+<http://opendata.stelselcatalogus.nl/brk/id/begrip/verblijfsobject> a <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#Begrip>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#authentiek> "httpswettenoverheidnljci13cbwbr0004541hoofdstuk3titeldeel1artikel48z2021_07_01g2021_07_01";
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#basisregistratie> <http://opendata.stelselcatalogus.nl/id/registratie/BRK>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#eigenaar> "Kadaster"@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#kwaliteit> "http://opendata.stelselcatalogus.nl/brk/id/begrip/Verblijfsobject"@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#referentieWetgeving> <http://opendata.stelselcatalogus.nl/stelselcatalogus/id/regelgeving/kadasterwet_artikel_48>;
+  <http://purl.org/dc/terms/isPartOf> <http://opendata.stelselcatalogus.nl/id/dataset/brk>,
+    <http://opendata.stelselcatalogus.nl/id/dataset/sc>;
+  <http://www.w3.org/2000/01/rdf-schema#comment> "BRK koppelt de gegevens van personen aan die in andere basisregistraties (Basisregistratie Personen of Handelsregister). Dit is echter niet altijd mogelijk, daarom kent het Kadaster ook personen die niet als authentiek zijn opgenomen in andere basisregist"@nl-nl;
+  <http://www.w3.org/2000/01/rdf-schema#label> "Verblijfsobject"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#broadMatch> <http://opendata.stelselcatalogus.nl/id/clusterbegrip/Onroerende_zaak>;
+  <http://www.w3.org/2004/02/skos/core#closeMatch> <http://brk.basisregistraties.overheid.nl/id/begrip/Beslag>;
+  <http://www.w3.org/2004/02/skos/core#definition> "Kleinste binnen één of meer panden gelegen en voor woon-, bedrijfsmatige, of recreatieve doeleinden geschikte eenheid van gebruik die ontsloten wordt via een eigen afsluitbare toegang vanaf de openbare weg, een erf of een gedeelde verkeersruimte, onderwerp kan zijn van goederenrechtelijke rechtshandelingen en in functioneel opzicht zelfstandig is."@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#exactMatch> <https://imbag.github.io/praktijkhandleiding/objecttypen/verblijfsobject>;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <http://opendata.stelselcatalogus.nl/id/conceptscheme/brk>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Verblijfsobject"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#related> <http://opendata.stelselcatalogus.nl/zie_kwaliteitshandvest_op_wwwkadasternl/id/begrip/kwaliteitshandvest>;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Het begrip verblijfsobject is onderdeel van de BAG en niet van de BRK maar kan, wanneer een adres gekoppeld is aan de BAG, in producten worden meegeleverd."@nl-nl .

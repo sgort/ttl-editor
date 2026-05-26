@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
-  xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
-  xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
-  xmlns:modeler="http://camunda.org/schema/modeler/1.0"
-  xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="ronl_heusden_drd" name="RONL Heusden Heusdenpas" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.38.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="ronl_heusden_drd" name="RONL Heusden Heusdenpas" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
   <decision id="RONL_HeusdenpasEindresultaat" name="RONL Heusdenpas Eindresultaat" camunda:historyTimeToLive="0">
     <informationRequirement id="InformationRequirement_hoofdAanvraag">
       <requiredDecision href="#RONL_HeusdenpasHoofdAanvraag" />
@@ -477,51 +473,39 @@
   <inputData id="InputData_aanvragerInwonerHeusden" name="aanvragerInwonerHeusden">
     <variable id="Variable_aanvragerInwonerHeusden" name="aanvragerInwonerHeusden" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerHeeftKind4Tm17" name="aanvragerHeeftKind4Tm17">
     <variable id="Variable_aanvragerHeeftKind4Tm17" name="aanvragerHeeftKind4Tm17" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_maandelijksBrutoInkomenAanvrager" name="maandelijksBrutoInkomenAanvrager">
     <variable id="Variable_maandelijksBrutoInkomenAanvrager" name="maandelijksBrutoInkomenAanvrager" typeRef="number" />
   </inputData>
-
   <inputData id="InputData_bijstandsNorm" name="bijstandsNorm">
     <variable id="Variable_bijstandsNorm" name="bijstandsNorm" typeRef="number" />
   </inputData>
-
   <inputData id="InputData_aanvragerUitkeringBaanbrekers" name="aanvragerUitkeringBaanbrekers">
     <variable id="Variable_aanvragerUitkeringBaanbrekers" name="aanvragerUitkeringBaanbrekers" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerVoedselbankpasDenBosch" name="aanvragerVoedselbankpasDenBosch">
     <variable id="Variable_aanvragerVoedselbankpasDenBosch" name="aanvragerVoedselbankpasDenBosch" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerKwijtscheldingGemeentelijkeBelastingen" name="aanvragerKwijtscheldingGemeentelijkeBelastingen">
     <variable id="Variable_aanvragerKwijtscheldingGemeentelijkeBelastingen" name="aanvragerKwijtscheldingGemeentelijkeBelastingen" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerSchuldhulptrajectKredietbankNederland" name="aanvragerSchuldhulptrajectKredietbankNederland">
     <variable id="Variable_aanvragerSchuldhulptrajectKredietbankNederland" name="aanvragerSchuldhulptrajectKredietbankNederland" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerDitKalenderjaarAlAangevraagd" name="aanvragerDitKalenderjaarAlAangevraagd">
     <variable id="Variable_aanvragerDitKalenderjaarAlAangevraagd" name="aanvragerDitKalenderjaarAlAangevraagd" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerAanmerkingStudieFinanciering" name="aanvragerAanmerkingStudieFinanciering">
     <variable id="Variable_aanvragerAanmerkingStudieFinanciering" name="aanvragerAanmerkingStudieFinanciering" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerIs181920" name="aanvragerIs181920">
     <variable id="Variable_aanvragerIs181920" name="aanvragerIs181920" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerIsTenminste21" name="aanvragerIsTenminste21">
     <variable id="Variable_aanvragerIsTenminste21" name="aanvragerIsTenminste21" typeRef="boolean" />
   </inputData>
-
   <inputData id="InputData_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd">
     <variable id="Variable_aanvragerHeeftAOWLeeftijd" name="aanvragerHeeftAOWLeeftijd" typeRef="boolean" />
   </inputData>

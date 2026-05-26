@@ -4,8 +4,8 @@
     "expected": "eligible=true, amountYear>0",
     "requestBody": {
       "variables": {
-        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
-        "geboortedatum": { "value": "2000-01-10T00:00:00.000+0100", "type": "Date" },
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "2000-01-10", "type": "String" },
 
         "leeftijdOpDatumBerekening": { "value": 26, "type": "Integer" },
         "leeftijdOpLaatsteDagVorigeMaand": { "value": 26, "type": "Integer" },
@@ -28,8 +28,8 @@
     "expected": "eligible=false, amountYear=0",
     "requestBody": {
       "variables": {
-        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
-        "geboortedatum": { "value": "1995-06-01T00:00:00.000+0100", "type": "Date" },
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1995-06-01", "type": "String" },
 
         "leeftijdOpDatumBerekening": { "value": 30, "type": "Integer" },
         "leeftijdOpLaatsteDagVorigeMaand": { "value": 30, "type": "Integer" },
@@ -52,10 +52,10 @@
     "expected": "eligible=false, amountYear=0",
     "requestBody": {
       "variables": {
-        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
-        "geboortedatum": { "value": "2008-02-20T00:00:00.000+0100", "type": "Date" },
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "2008-02-10", "type": "String" },
 
-        "leeftijdOpDatumBerekening": { "value": 17, "type": "Integer" },
+        "leeftijdOpDatumBerekening": { "value": 18, "type": "Integer" },
         "leeftijdOpLaatsteDagVorigeMaand": { "value": 17, "type": "Integer" },
         "leeftijdOpLaatsteDagHuidigeMaand": { "value": 18, "type": "Integer" },
 
@@ -76,8 +76,8 @@
     "expected": "eligible=true, amountYear=null",
     "requestBody": {
       "variables": {
-        "datumBerekening": { "value": "2026-02-17T00:00:00.000+0100", "type": "Date" },
-        "geboortedatum": { "value": "1990-11-12T00:00:00.000+0100", "type": "Date" },
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1990-11-12", "type": "String" },
 
         "leeftijdOpDatumBerekening": { "value": 35, "type": "Integer" },
         "leeftijdOpLaatsteDagVorigeMaand": { "value": 35, "type": "Integer" },
@@ -91,6 +91,126 @@
         "gedetineerd": { "value": false, "type": "Boolean" },
 
         "toetsingsinkomen": { "value": null, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 0.85, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC5_Not_eligible_deceased",
+    "expected": "eligible=false, amountYear=0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1980-03-15", "type": "String" },
+
+        "leeftijdOpDatumBerekening": { "value": 45, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 45, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 45, "type": "Integer" },
+
+        "overlijdensdatum": { "value": "2026-01-10", "type": "String" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 28000.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC6_Not_eligible_no_valid_insurance_route",
+    "expected": "eligible=false, amountYear=0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1985-07-22", "type": "String" },
+
+        "leeftijdOpDatumBerekening": { "value": 40, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 40, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 40, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": false, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Niet verzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 28000.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC7_Eligible_amount_capped_at_maximum",
+    "expected": "eligible=true, amountYear=1483",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "2005-09-01", "type": "String" },
+
+        "leeftijdOpDatumBerekening": { "value": 20, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 20, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 20, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 0.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC8_Eligible_amount_zeroed_by_doelmatigheidsgrens",
+    "expected": "eligible=true, amountYear=0",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1988-04-05", "type": "String" },
+
+        "leeftijdOpDatumBerekening": { "value": 37, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 37, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 37, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": true, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Binnenlands zorgverzekerd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 37594.0, "type": "Double" },
+        "woonlandfactorBuitenland": { "value": 1.0, "type": "Double" }
+      }
+    }
+  },
+  {
+    "name": "TC9_Eligible_treaty_abroad_with_income_reduced_woonlandfactor",
+    "expected": "eligible=true, amountYear=1185.02",
+    "requestBody": {
+      "variables": {
+        "datumBerekening": { "value": "2026-02-17", "type": "String" },
+        "geboortedatum": { "value": "1990-11-12", "type": "String" },
+
+        "leeftijdOpDatumBerekening": { "value": 35, "type": "Integer" },
+        "leeftijdOpLaatsteDagVorigeMaand": { "value": 35, "type": "Integer" },
+        "leeftijdOpLaatsteDagHuidigeMaand": { "value": 35, "type": "Integer" },
+
+        "overlijdensdatum": { "value": null, "type": "Date" },
+
+        "woonachtigNL": { "value": false, "type": "Boolean" },
+        "rechtmatigVerblijfNL": { "value": true, "type": "Boolean" },
+        "statusZorgverzekerd": { "value": "Buitenlands verdragsgerechtigd", "type": "String" },
+        "gedetineerd": { "value": false, "type": "Boolean" },
+
+        "toetsingsinkomen": { "value": 25000.0, "type": "Double" },
         "woonlandfactorBuitenland": { "value": 0.85, "type": "Double" }
       }
     }

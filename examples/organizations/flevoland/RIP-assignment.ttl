@@ -1,0 +1,179 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/rip-assignment> a cpsv:PublicService ;
+    dct:identifier "rip-assignment" ;
+    dct:title "RIP assignment"@nl ;
+    dct:description "Example DMN for BPMN matching"@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/REGIONAL> ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/14866/Provincie_Flevoland> ;
+    cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR696459/7> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/rip-assignment/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/14866/Provincie_Flevoland> a cv:PublicOrganisation ;
+    dct:identifier "Provincie_Flevoland" ;
+    skos:prefLabel "Provincie Flevoland"@nl ;
+    foaf:homepage <https://flevoland.nl/home> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Provincie_Flevoland_logo.png> ;
+    schema:image <./assets/Provincie_Flevoland_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://lokaleregelgeving.overheid.nl/CVDR696459/7> a eli:LegalResource ;
+    dct:identifier "CVDR696459" ;
+    dct:title "Omgevingsplan gemeente Lelystad"@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://lokaleregelgeving.overheid.nl/CVDR696459/7/2026-02-03>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/rip-assignment/dmn> a cprmv:DecisionModel ;
+    dct:identifier "RipProjectTypeAssignment" ;
+    dct:title "RipProjectTypeAssignment.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/rip-assignment> ;
+    dct:source <https://regels.overheid.nl/services/rip-assignment/dmn/file> ;
+    cprmv:deploymentId "b2edb370-1ef1-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-03-13T15:31:26.358Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/RipProjectTypeAssignment/evaluate> ;
+    cprmv:lastTested "2026-03-13T15:32:11.675Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/rip-assignment/dmn/input/1> a cpsv:Input ;
+    dct:identifier "projectType" ;
+    dct:title "projectType"@nl ;
+    dct:type "String" ;
+    schema:value "" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/rip-assignment/dmn> .
+
+<https://regels.overheid.nl/services/rip-assignment/dmn/input/2> a cpsv:Input ;
+    dct:identifier "department" ;
+    dct:title "department"@nl ;
+    dct:type "String" ;
+    schema:value "infrastructuur" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/rip-assignment/dmn> .
+
+<https://regels.overheid.nl/services/rip-assignment/dmn/output/1> a cpsv:Output ;
+    dct:identifier "assignedRoles" ;
+    dct:title "assignedRoles"@nl ;
+    dct:type "String" ;
+    schema:value "infra-medewerker" ;
+    cpsv:produces <https://regels.overheid.nl/services/rip-assignment/dmn> .
+
+<https://regels.overheid.nl/services/rip-assignment/dmn/output/2> a cpsv:Output ;
+    dct:identifier "candidateGroups" ;
+    dct:title "candidateGroups"@nl ;
+    dct:type "String" ;
+    schema:value "infra-projectteam" ;
+    cpsv:produces <https://regels.overheid.nl/services/rip-assignment/dmn> .
+
+<https://regels.overheid.nl/services/rip-assignment/rules/Rule_01> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_01" ;
+    cpsv:implements <https://regels.overheid.nl/services/rip-assignment> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_RipProjectTypeAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/rip-assignment/rules/Rule_02> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_02" ;
+    cpsv:implements <https://regels.overheid.nl/services/rip-assignment> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_RipProjectTypeAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/rip-assignment/rules/Rule_03> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_03" ;
+    cpsv:implements <https://regels.overheid.nl/services/rip-assignment> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_RipProjectTypeAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/rip-assignment/rules/Rule_04> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "Rule_04" ;
+    cpsv:implements <https://regels.overheid.nl/services/rip-assignment> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_RipProjectTypeAssignment" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-03-13"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/ripprojecttypeassignment/projectType> a skos:Concept ;
+    skos:prefLabel "Project Type"@nl ;
+    skos:definition "Project Type is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PT" ;
+    dct:subject <https://regels.overheid.nl/services/rip-assignment/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/projectType> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ripprojecttypeassignment/department> a skos:Concept ;
+    skos:prefLabel "Department"@nl ;
+    skos:definition "Department is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "DEPA" ;
+    dct:subject <https://regels.overheid.nl/services/rip-assignment/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/department> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/ripprojecttypeassignment/assignedRoles> a skos:Concept ;
+    skos:prefLabel "Assigned Roles"@nl ;
+    skos:definition "Assigned Roles is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AR" ;
+    dct:subject <https://regels.overheid.nl/services/rip-assignment/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/assignedRoles> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/ripprojecttypeassignment/candidateGroups> a skos:Concept ;
+    skos:prefLabel "Candidate Groups"@nl ;
+    skos:definition "Candidate Groups is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "CG" ;
+    dct:subject <https://regels.overheid.nl/services/rip-assignment/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/candidateGroups> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

@@ -1,4 +1,5 @@
 // triplydbHelper.js - TriplyDB API integration for publishing TTL files
+import { sanitizeServiceIdentifier } from './dmnHelpers';
 
 // Get backend URL from environment
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
@@ -33,22 +34,36 @@ const ensureTTLExtension = (filename) => {
 
 // Use proper IRI for graph name
 // TriplyDB requires a full URI, not just "default"
+export const buildGraphIRI = ({ organizationIdentifier, serviceIdentifier }) => {
+  const fallback = 'https://regels.overheid.nl/graphs/default';
+  if (!serviceIdentifier) return fallback;
+
+  const orgLocal = organizationIdentifier
+    ? organizationIdentifier.replace(/\/$/, '').split('/').pop()
+    : '';
+  const svc = sanitizeServiceIdentifier(serviceIdentifier);
+  if (!svc) return fallback;
+
+  return orgLocal
+    ? `https://regels.overheid.nl/graphs/${orgLocal}/${svc}`
+    : `https://regels.overheid.nl/graphs/${svc}`;
+};
 
 /**
  * Upload TTL content to TriplyDB with proper graph IRI
  * @param {string} ttlContent - The TTL content to upload
  * @param {Object} config - TriplyDB configuration
  * @param {string} filename - Optional filename
+ * @param {string} graphIRI - Target graph IRI (default: https://regels.overheid.nl/graphs/default)
  * @returns {Promise<Object>} Upload result
  */
-export const publishToTriplyDB = async (ttlContent, config, filename = 'service.ttl') => {
-  // ... validation code (same as before) ...
-
+export const publishToTriplyDB = async (
+  ttlContent,
+  config,
+  filename = 'service.ttl',
+  graphIRI = 'https://regels.overheid.nl/graphs/default'
+) => {
   const validFilename = ensureTTLExtension(filename);
-
-  // FIXED: Use proper graph IRI instead of just "default"
-  // Graph names must be full URIs in RDF
-  const graphIRI = 'graph:default';
 
   const uploadUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/jobs?defaultGraphName=${encodeURIComponent(graphIRI)}`;
 
@@ -152,20 +167,16 @@ export const publishToTriplyDB = async (ttlContent, config, filename = 'service.
   }
 };
 
-// ALTERNATIVE graph IRIs you could use:
-// const graphIRI = 'urn:graph:default';
-// const graphIRI = 'https://open-regels.nl/graphs/default';
-// const graphIRI = 'http://regels.overheid.nl/graphs/services';
-
 /**
  * Update TriplyDB service via backend proxy
  * Routes through Node.js backend package from Linked Data Explorer to avoid CORS issues
  *
  * @param {Object} config - TriplyDB configuration
  * @param {string} serviceName - Service name to update
+ * @param {string} graphName - Target graph IRI (optional; backend may use this to scope the re-index)
  * @returns {Promise<Object>} Update result
  */
-export const updateTriplyDBService = async (config, serviceName = null) => {
+export const updateTriplyDBService = async (config, serviceName = null, graphName = null) => {
   // Validate configuration
   const configValidation = validateTriplyDBConfig(config);
   if (!configValidation.valid) {
@@ -178,9 +189,9 @@ export const updateTriplyDBService = async (config, serviceName = null) => {
   console.log('Backend URL:', BACKEND_URL);
   console.log('API Version:', API_VERSION);
   console.log('Service name:', targetService);
+  console.log('Graph name:', graphName || '(not specified)');
 
   try {
-    // Call backend proxy: http://localhost:3001/v1/triplydb/update-service
     const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/update-service`, {
       method: 'POST',
       headers: {
@@ -189,6 +200,7 @@ export const updateTriplyDBService = async (config, serviceName = null) => {
       body: JSON.stringify({
         config: config,
         serviceName: targetService,
+        graphName: graphName, // ← new field; backend ignores it harmlessly if not yet handled
       }),
     });
 
@@ -231,9 +243,15 @@ export const updateTriplyDBService = async (config, serviceName = null) => {
  * @param {string} ttlContent - The TTL content to upload
  * @param {Object} config - TriplyDB configuration
  * @param {string} filename - Filename (for logging only)
+ * @param {string} graphIRI - Target graph IRI (default: https://regels.overheid.nl/graphs/default)
  * @returns {Promise<Object>} Upload result
  */
-export const publishToTriplyDB_SPARQL = async (ttlContent, config, filename = 'service.ttl') => {
+export const publishToTriplyDB_SPARQL = async (
+  ttlContent,
+  config,
+  filename = 'service.ttl',
+  graphIRI = 'https://regels.overheid.nl/graphs/default'
+) => {
   // Validate configuration
   const configValidation = validateTriplyDBConfig(config);
   if (!configValidation.valid) {
@@ -245,9 +263,6 @@ export const publishToTriplyDB_SPARQL = async (ttlContent, config, filename = 's
   if (!contentValidation.valid) {
     throw new Error(contentValidation.error);
   }
-
-  // Define the target graph IRI
-  const graphIRI = 'https://regels.overheid.nl/graphs/default';
 
   // Use SPARQL endpoint (not /update which is deprecated)
   const sparqlUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/sparql`;
