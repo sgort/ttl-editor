@@ -509,9 +509,13 @@ export const parseTTLEnhanced = (ttlContent) => {
       }
 
       if (currentSection === 'legalResource') {
-        // Save the full URI as identifier
+        // Save the canonical (un-versioned) URI as identifier.
+        // Subject URIs in TTL exports historically carried the version and an
+        // index segment (e.g. .../BWBR0015703/2026-01-01/0). The version is
+        // captured separately from eli:is_realized_by below; bwbId itself should
+        // stay un-versioned so downstream emitters can append version cleanly.
         if (!parsed.legalResource.bwbId && currentSubject) {
-          parsed.legalResource.bwbId = currentSubject;
+          parsed.legalResource.bwbId = currentSubject.replace(/\/\d{4}-\d{2}-\d{2}(?:\/\d+)?$/, '');
         }
 
         if (line.includes('dct:title')) {

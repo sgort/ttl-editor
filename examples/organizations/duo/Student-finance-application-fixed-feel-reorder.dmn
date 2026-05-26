@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="def_studiefinanciering_demo" name="Studiefinanciering demo (RuleSpeak -&#62; DMN)" namespace="https://example.org/dmn/studiefinanciering/demo">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dmndi_1="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:dmndi="http://www.omg.org/spec/DMN/20151101/dmndi.xsd" id="def_studiefinanciering_demo" name="Studiefinanciering demo (RuleSpeak -&#62; DMN)" namespace="https://example.org/dmn/studiefinanciering/demo" exporter="Camunda Modeler" exporterVersion="5.45.0">
   <inputData id="in_leeftijd" name="leeftijd">
     <variable id="var_leeftijd" name="leeftijd" typeRef="number" />
   </inputData>
@@ -72,7 +72,7 @@
   <inputData id="in_leefsituatie_ouder2" name="leefsituatie_ouder2">
     <variable id="var_leefsituatie_ouder2" name="leefsituatie_ouder2" typeRef="string" />
   </inputData>
-    <decision id="besluit_aanvraag" name="Besluit aanvraag studiefinanciering" camunda:historyTimeToLive="180">
+  <decision id="besluit_aanvraag" name="Besluit aanvraag studiefinanciering" camunda:historyTimeToLive="180">
     <variable id="var_besluit" name="toegekend" typeRef="boolean" />
     <informationRequirement id="InformationRequirement_09yz1us">
       <requiredDecision href="#totaal_bedrag" />
@@ -730,4 +730,89 @@
       <text>((maxMaanden - maandenGenoten) &gt;= 1) and (maandenGenoten &gt; 0) and (maandenSindsEersteMaandRecht &lt; 120)</text>
     </literalExpression>
   </decision>
+  <dmndi_1:DMNDI>
+    <dmndi_1:DMNDiagram id="DMNDiagram_1oxq40c">
+      <dmndi_1:DMNShape id="DMNShape_1ywhht9" dmnElementRef="besluit_aanvraag">
+        <dc:Bounds height="80" width="180" x="150" y="80" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_15a0urn" dmnElementRef="persoon_is_uitwonend">
+        <dc:Bounds height="80" width="180" x="180" y="110" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_160ozri" dmnElementRef="inschrijving_ononderbroken">
+        <dc:Bounds height="80" width="180" x="210" y="140" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0vao2cb" dmnElementRef="voldoet_leeftijdsvoorwaarden">
+        <dc:Bounds height="80" width="180" x="240" y="170" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_05nszd3" dmnElementRef="voldoet_nationaliteitseis">
+        <dc:Bounds height="80" width="180" x="270" y="200" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0oi71ea" dmnElementRef="correcte_opleiding">
+        <dc:Bounds height="80" width="180" x="300" y="230" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_034oj2i" dmnElementRef="geen_buitenlandse_financiering">
+        <dc:Bounds height="80" width="180" x="330" y="260" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0597yis" dmnElementRef="persoon_heeft_aanspraak">
+        <dc:Bounds height="80" width="180" x="360" y="290" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_16waj4x" dmnElementRef="bedrag_basisbeurs">
+        <dc:Bounds height="80" width="180" x="390" y="320" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0fd7jxa" dmnElementRef="maximale_aanvullende_beurs">
+        <dc:Bounds height="80" width="180" x="420" y="350" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0uma352" dmnElementRef="vrijgesteld_bedrag_ouder">
+        <dc:Bounds height="80" width="180" x="450" y="380" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0xlv08p" dmnElementRef="percentage_meetellend_inkomen">
+        <dc:Bounds height="80" width="180" x="480" y="410" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1eppms6" dmnElementRef="aftrekpost_andere_kinderen_ouder1">
+        <dc:Bounds height="80" width="180" x="510" y="440" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0wym9nu" dmnElementRef="aftrekpost_andere_kinderen_ouder2">
+        <dc:Bounds height="80" width="180" x="540" y="470" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_179ihyi" dmnElementRef="rekeninkomen_ouder1">
+        <dc:Bounds height="80" width="180" x="570" y="500" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0s29w4h" dmnElementRef="rekeninkomen_ouder2">
+        <dc:Bounds height="80" width="180" x="600" y="530" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1vctg7i" dmnElementRef="ouderbijdrage_per_jaar_ouder1">
+        <dc:Bounds height="80" width="180" x="630" y="560" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1bzqmp5" dmnElementRef="ouderbijdrage_per_jaar_ouder2">
+        <dc:Bounds height="80" width="180" x="660" y="590" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0gz6mbv" dmnElementRef="gezamenlijke_ouderbijdrage">
+        <dc:Bounds height="80" width="180" x="690" y="620" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1xf8sgu" dmnElementRef="inhouding_per_jaar">
+        <dc:Bounds height="80" width="180" x="720" y="650" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0v1kkuc" dmnElementRef="maandelijkse_ouderlijke_bijdrage">
+        <dc:Bounds height="80" width="180" x="750" y="680" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_1wmzfe2" dmnElementRef="aanvullende_beurs">
+        <dc:Bounds height="80" width="180" x="780" y="710" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0h3lte6" dmnElementRef="maximale_lening">
+        <dc:Bounds height="80" width="180" x="810" y="740" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_053kzu7" dmnElementRef="maximaal_leenbedrag">
+        <dc:Bounds height="80" width="180" x="840" y="770" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_154g0qq" dmnElementRef="bedrag_lening">
+        <dc:Bounds height="80" width="180" x="870" y="800" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0gwj54g" dmnElementRef="totaal_bedrag">
+        <dc:Bounds height="80" width="180" x="900" y="830" />
+      </dmndi_1:DMNShape>
+      <dmndi_1:DMNShape id="DMNShape_0p8tlj3" dmnElementRef="nog_recht_min_1_maand">
+        <dc:Bounds height="80" width="180" x="930" y="860" />
+      </dmndi_1:DMNShape>
+    </dmndi_1:DMNDiagram>
+  </dmndi_1:DMNDI>
 </definitions>

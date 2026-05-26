@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { fetchAllRonlConcepts } from '../../utils/ronlHelper';
 import IKnowMappingTab from './IKnowMappingTab';
 
 /**
@@ -35,19 +34,16 @@ const VendorTab = ({
     },
   },
   setVendorService,
+  vendorConcepts = [],
+  loadingVendors = false,
+  vendorsError = '',
   service = {},
   organization = {},
 }) => {
-  const [selectedVendor, setSelectedVendor] = useState('');
-  const [vendorConcepts, setVendorConcepts] = useState([]);
-  const [loadingVendors, setLoadingVendors] = useState(false);
-  const [vendorsError, setVendorsError] = useState('');
+  const selectedVendor = vendorService.selectedVendor || '';
+
   // Add modal state
   const [showCertificationModal, setShowCertificationModal] = useState(false);
-
-  // RONL endpoint
-  const RONL_ENDPOINT =
-    'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
 
   // Helper function to validate URLs
   const isValidUrl = (str) => {
@@ -60,13 +56,6 @@ const VendorTab = ({
     }
   };
 
-  // Sync local selectedVendor state with vendorService.selectedVendor from props
-  useEffect(() => {
-    if (vendorService.selectedVendor && vendorService.selectedVendor !== selectedVendor) {
-      setSelectedVendor(vendorService.selectedVendor);
-    }
-  }, [selectedVendor, vendorService.selectedVendor]);
-
   // Helper to update vendor service fields
   const updateVendorField = (section, field, value) => {
     setVendorService({
@@ -78,9 +67,7 @@ const VendorTab = ({
     });
   };
 
-  // Auto-populate certification fields from Service and Organization tabs
   useEffect(() => {
-    // Only auto-populate if status is not-certified AND certifiedBy is empty
     if (
       vendorService.certification.status === 'not-certified' &&
       !vendorService.certification.certifiedBy &&
@@ -98,7 +85,8 @@ const VendorTab = ({
         },
       });
     }
-  }, [organization.identifier, setVendorService, vendorService]); // Only trigger when organization changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [organization.identifier]);
 
   // Handle Request for Certification - Show modal instead of direct email
   const handleRequestCertification = () => {
@@ -116,27 +104,6 @@ const VendorTab = ({
       reader.readAsDataURL(file);
     }
   };
-
-  // Fetch vendor concepts on component mount
-  useEffect(() => {
-    const loadVendors = async () => {
-      setLoadingVendors(true);
-      setVendorsError('');
-
-      try {
-        const { methodConcepts } = await fetchAllRonlConcepts(RONL_ENDPOINT);
-        setVendorConcepts(methodConcepts);
-        console.log('Loaded vendor concepts successfully:', methodConcepts.length);
-      } catch (error) {
-        console.error('Failed to load vendor concepts:', error);
-        setVendorsError('Failed to load vendors from TriplyDB. Please check your connection.');
-      } finally {
-        setLoadingVendors(false);
-      }
-    };
-
-    loadVendors();
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -166,21 +133,12 @@ const VendorTab = ({
             <span className="text-red-500"> *</span>
           </label>
           <select
-            value={selectedVendor}
+            value={vendorService.selectedVendor || ''}
             onChange={(e) => {
-              const newVendor = e.target.value;
-              setSelectedVendor(newVendor);
-
-              const updatedVendorService = {
+              setVendorService({
                 ...vendorService,
-                selectedVendor: newVendor,
-              };
-
-              // ✅ DEBUG: Log what we're setting
-              console.log('🔍 Setting vendorService.selectedVendor to:', newVendor);
-              console.log('🔍 Full vendorService object:', updatedVendorService);
-
-              setVendorService(updatedVendorService);
+                selectedVendor: e.target.value,
+              });
             }}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             disabled={loadingVendors || vendorConcepts.length === 0}

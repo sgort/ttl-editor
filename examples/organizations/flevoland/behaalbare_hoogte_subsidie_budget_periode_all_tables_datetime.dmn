@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:cprmv="https://cprmv.open-regels.nl/0.3.0/" id="Definitions_BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0">
+  <decision id="BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" camunda:historyTimeToLive="0">
+    <variable name="hoogteSubsidie" typeRef="double" />
+    <informationRequirement id="InformationRequirement_Behaalbare_Basis">
+      <requiredDecision href="#BerekenBasisHoogteSubsidie" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Behaalbare_Platform">
+      <requiredDecision href="#BerekenBeschikbaarSubsidiePlafond" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_BehaalbareHoogteSubsidie">
+      <input id="Input_BasisHoogteSubsidie" label="Basis hoogte subsidie">
+        <inputExpression id="InputExpression_BasisHoogteSubsidie" typeRef="double" expressionLanguage="feel">
+          <text>basisHoogteSubsidie</text>
+        </inputExpression>
+      </input>
+      <output id="Output_HoogteSubsidie" label="Hoogte subsidie" name="hoogteSubsidie" typeRef="double" />
+      <rule id="Rule_Behaalbare_BasisPastBinnenResterendBudget">
+        <inputEntry id="UnaryTests_Behaalbare_BasisPastBinnenResterendBudget" expressionLanguage="feel">
+          <text>&lt;= beschikbaarSubsidiePlafond</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Behaalbare_BasisPastBinnenResterendBudget" expressionLanguage="feel">
+          <text>basisHoogteSubsidie</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Behaalbare_BeperktDoorResterendBudget">
+        <inputEntry id="UnaryTests_Behaalbare_BeperktDoorResterendBudget" expressionLanguage="feel">
+          <text>&gt; beschikbaarSubsidiePlafond</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Behaalbare_BeperktDoorResterendBudget" expressionLanguage="feel">
+          <text>beschikbaarSubsidiePlafond</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="BerekenBasisHoogteSubsidie" name="Bereken Basis Hoogte Subsidie" camunda:historyTimeToLive="0">
+    <variable name="basisHoogteSubsidie" typeRef="double" />
+    <informationRequirement id="InformationRequirement_Basis_Constanten">
+      <requiredDecision href="#SubsidieConstantenThuisbatterij" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Basis_GemaakteKosten">
+      <requiredInput href="#InputData_gemaakteKosten" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_BerekenBasisHoogteSubsidie">
+      <input id="Input_GemaakteKosten" label="Gemaakte kosten">
+        <inputExpression id="InputExpression_GemaakteKosten" typeRef="double" expressionLanguage="feel">
+          <text>gemaakteKosten</text>
+        </inputExpression>
+      </input>
+      <output id="Output_BasisHoogteSubsidie" label="Basis hoogte subsidie" name="basisHoogteSubsidie" typeRef="double" />
+      <rule id="Rule_Basis_BovenMinimum">
+        <inputEntry id="UnaryTests_Basis_BovenMinimum" expressionLanguage="feel">
+          <text>&gt;= minimaleNoodzakelijkeKosten / subsidiePercentage</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Basis_BovenMinimum" expressionLanguage="feel">
+          <text>if subsidiePercentage * gemaakteKosten &gt; subsidieMaximum then subsidieMaximum else if subsidiePercentage * gemaakteKosten &lt; subsidieMinimum then subsidieMinimum else subsidiePercentage * gemaakteKosten</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Basis_OnderMinimum">
+        <inputEntry id="UnaryTests_Basis_OnderMinimum" expressionLanguage="feel">
+          <text>&lt; minimaleNoodzakelijkeKosten / subsidiePercentage</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Basis_OnderMinimum" expressionLanguage="feel">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="BerekenBeschikbaarSubsidiePlafond" name="Bereken Beschikbaar Subsidie Plafond" camunda:historyTimeToLive="0">
+    <variable name="beschikbaarSubsidiePlafond" typeRef="double" />
+    <informationRequirement id="InformationRequirement_Platform_Constanten">
+      <requiredDecision href="#SubsidieConstantenThuisbatterij" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_AanvraagDatum">
+      <requiredInput href="#InputData_aanvraagDatum" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_AanvragerType">
+      <requiredInput href="#InputData_aanvragerType" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_ReedsEigenaren">
+      <requiredInput href="#InputData_reedsGesubsidieerdEigenaren" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Platform_ReedsHuurders">
+      <requiredInput href="#InputData_reedsGesubsidieerdHuurders" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_BerekenBeschikbaarSubsidiePlafond" hitPolicy="FIRST">
+      <input id="Input_AanvraagDatum" label="Aanvraagdatum">
+        <inputExpression id="InputExpression_AanvraagDatum" typeRef="date" expressionLanguage="feel">
+          <text>date and time(aanvraagDatum)</text>
+        </inputExpression>
+      </input>
+      <input id="Input_AanvragerType" label="Aanvrager type">
+        <inputExpression id="InputExpression_AanvragerType" typeRef="string" expressionLanguage="feel">
+          <text>aanvragerType</text>
+        </inputExpression>
+      </input>
+      <input id="Input_ReedsGesubsidieerdEigenaren" label="Reeds gesubsidieerd eigenaren">
+        <inputExpression id="InputExpression_ReedsGesubsidieerdEigenaren" typeRef="double" expressionLanguage="feel">
+          <text>reedsGesubsidieerdEigenaren</text>
+        </inputExpression>
+      </input>
+      <input id="Input_ReedsGesubsidieerdHuurders" label="Reeds gesubsidieerd huurders">
+        <inputExpression id="InputExpression_ReedsGesubsidieerdHuurders" typeRef="double" expressionLanguage="feel">
+          <text>reedsGesubsidieerdHuurders</text>
+        </inputExpression>
+      </input>
+      <output id="Output_BeschikbaarSubsidiePlafond" label="Beschikbaar subsidieplafond" name="beschikbaarSubsidiePlafond" typeRef="double" />
+      <rule id="Rule_Platform_2026_Eigenaar_Gescheiden">
+        <description>2026 tot en met 30 september: apart plafond voor eigenaren.</description>
+        <inputEntry id="UnaryTests_Platform_2026_Eigenaar_Gescheiden_Datum" expressionLanguage="feel">
+          <text>[date and time("2026-01-12T00:00:00")..date and time("2026-09-30T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Eigenaar_Gescheiden_Type" expressionLanguage="feel">
+          <text>"eigenaar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Eigenaar_Gescheiden_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Eigenaar_Gescheiden_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2026_Eigenaar_Gescheiden" expressionLanguage="feel">
+          <text>if plafondEigenaren - reedsGesubsidieerdEigenaren &gt; 0 then plafondEigenaren - reedsGesubsidieerdEigenaren else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_2026_Huurder_Gescheiden">
+        <description>2026 tot en met 30 september: apart plafond voor huurders.</description>
+        <inputEntry id="UnaryTests_Platform_2026_Huurder_Gescheiden_Datum" expressionLanguage="feel">
+          <text>[date and time("2026-01-12T00:00:00")..date and time("2026-09-30T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Huurder_Gescheiden_Type" expressionLanguage="feel">
+          <text>"huurder"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Huurder_Gescheiden_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Huurder_Gescheiden_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2026_Huurder_Gescheiden" expressionLanguage="feel">
+          <text>if plafondHuurders - reedsGesubsidieerdHuurders &gt; 0 then plafondHuurders - reedsGesubsidieerdHuurders else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_2026_Gebundeld">
+        <description>Vanaf 1 oktober 2026: wat over is van beide plafonds samen, geen onderscheid.</description>
+        <inputEntry id="UnaryTests_Platform_2026_Gebundeld_Datum" expressionLanguage="feel">
+          <text>[date and time("2026-10-01T00:00:00")..date and time("2026-12-31T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Gebundeld_Type" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Gebundeld_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2026_Gebundeld_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2026_Gebundeld" expressionLanguage="feel">
+          <text>if plafondEigenaren + plafondHuurders - reedsGesubsidieerdEigenaren - reedsGesubsidieerdHuurders &gt; 0 then plafondEigenaren + plafondHuurders - reedsGesubsidieerdEigenaren - reedsGesubsidieerdHuurders else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_2027_Eigenaar_Gescheiden">
+        <description>2027 tot en met 30 september: apart plafond voor eigenaren.</description>
+        <inputEntry id="UnaryTests_Platform_2027_Eigenaar_Gescheiden_Datum" expressionLanguage="feel">
+          <text>[date and time("2027-01-01T00:00:00")..date and time("2027-09-30T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Eigenaar_Gescheiden_Type" expressionLanguage="feel">
+          <text>"eigenaar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Eigenaar_Gescheiden_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Eigenaar_Gescheiden_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2027_Eigenaar_Gescheiden" expressionLanguage="feel">
+          <text>if plafondEigenaren - reedsGesubsidieerdEigenaren &gt; 0 then plafondEigenaren - reedsGesubsidieerdEigenaren else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_2027_Huurder_Gescheiden">
+        <description>2027 tot en met 30 september: apart plafond voor huurders.</description>
+        <inputEntry id="UnaryTests_Platform_2027_Huurder_Gescheiden_Datum" expressionLanguage="feel">
+          <text>[date and time("2027-01-01T00:00:00")..date and time("2027-09-30T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Huurder_Gescheiden_Type" expressionLanguage="feel">
+          <text>"huurder"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Huurder_Gescheiden_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Huurder_Gescheiden_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2027_Huurder_Gescheiden" expressionLanguage="feel">
+          <text>if plafondHuurders - reedsGesubsidieerdHuurders &gt; 0 then plafondHuurders - reedsGesubsidieerdHuurders else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_2027_Gebundeld">
+        <description>Vanaf 1 oktober 2027: wat over is van beide plafonds samen, geen onderscheid.</description>
+        <inputEntry id="UnaryTests_Platform_2027_Gebundeld_Datum" expressionLanguage="feel">
+          <text>[date and time("2027-10-01T00:00:00")..date and time("2027-12-31T23:59:59")]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Gebundeld_Type" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Gebundeld_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_2027_Gebundeld_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_2027_Gebundeld" expressionLanguage="feel">
+          <text>if plafondEigenaren + plafondHuurders - reedsGesubsidieerdEigenaren - reedsGesubsidieerdHuurders &gt; 0 then plafondEigenaren + plafondHuurders - reedsGesubsidieerdEigenaren - reedsGesubsidieerdHuurders else 0</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Platform_BuitenAanvraagperiodeOfOnbekendType">
+        <description>Buiten de gemodelleerde aanvraagperiodes of onbekend type: geen beschikbaar plafond.</description>
+        <inputEntry id="UnaryTests_Platform_BuitenAanvraagperiode_Datum" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_BuitenAanvraagperiode_Type" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_BuitenAanvraagperiode_ReedsEigenaren" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Platform_BuitenAanvraagperiode_ReedsHuurders" expressionLanguage="feel">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Platform_BuitenAanvraagperiode" expressionLanguage="feel">
+          <text>0</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="SubsidieConstantenThuisbatterij" name="Subsidie Constanten Thuisbatterij" camunda:historyTimeToLive="0">
+    <decisionTable id="DecisionTable_SubsidieConstantenThuisbatterij">
+      <input id="Input_Constanten_Altijd" label="Altijd">
+        <inputExpression id="InputExpression_Constanten_Altijd" typeRef="integer" expressionLanguage="feel">
+          <text>1</text>
+        </inputExpression>
+      </input>
+      <output id="Output_SubsidiePercentage" label="Subsidie percentage" name="subsidiePercentage" typeRef="double" />
+      <output id="Output_SubsidieMinimum" label="Subsidie minimum" name="subsidieMinimum" typeRef="double" />
+      <output id="Output_SubsidieMaximum" label="Subsidie maximum per aanvraag" name="subsidieMaximum" typeRef="double" />
+      <output id="Output_MinimaleNoodzakelijkeKosten" label="Minimale noodzakelijke kosten" name="minimaleNoodzakelijkeKosten" typeRef="double" />
+      <output id="Output_PlafondEigenaren" label="Jaarplafond eigenaren" name="plafondEigenaren" typeRef="double" />
+      <output id="Output_PlafondHuurders" label="Jaarplafond huurders" name="plafondHuurders" typeRef="double" />
+      <rule id="Rule_Constanten_Standaard">
+        <inputEntry id="UnaryTests_Constanten_Standaard" expressionLanguage="feel">
+          <text>1</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Constanten_SubsidiePercentage" expressionLanguage="feel">
+          <text>0.25</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Constanten_SubsidieMinimum" expressionLanguage="feel">
+          <text>750</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Constanten_SubsidieMaximum" expressionLanguage="feel">
+          <text>1250</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Constanten_MinimaleNoodzakelijkeKosten" expressionLanguage="feel">
+          <text>750</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Constanten_PlafondEigenaren" expressionLanguage="feel">
+          <text>437500</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Constanten_PlafondHuurders" expressionLanguage="feel">
+          <text>437500</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_gemaakteKosten" name="gemaakteKosten">
+    <variable id="Variable_gemaakteKosten" name="gemaakteKosten" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_aanvraagDatum" name="aanvraagDatum">
+    <variable id="Variable_aanvraagDatum" name="aanvraagDatum" typeRef="date" />
+  </inputData>
+  <inputData id="InputData_aanvragerType" name="aanvragerType">
+    <variable id="Variable_aanvragerType" name="aanvragerType" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_reedsGesubsidieerdEigenaren" name="reedsGesubsidieerdEigenaren">
+    <variable id="Variable_reedsGesubsidieerdEigenaren" name="reedsGesubsidieerdEigenaren" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_reedsGesubsidieerdHuurders" name="reedsGesubsidieerdHuurders">
+    <variable id="Variable_reedsGesubsidieerdHuurders" name="reedsGesubsidieerdHuurders" typeRef="double" />
+  </inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie">
+      <dmndi:DMNShape id="DMNShape_BehaalbareHoogteSubsidie" dmnElementRef="BehaalbareHoogteSubsidie">
+        <dc:Bounds height="80" width="220" x="340" y="60" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_BerekenBasisHoogteSubsidie" dmnElementRef="BerekenBasisHoogteSubsidie">
+        <dc:Bounds height="80" width="240" x="160" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_BerekenBeschikbaarSubsidiePlafond" dmnElementRef="BerekenBeschikbaarSubsidiePlafond">
+        <dc:Bounds height="80" width="300" x="520" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_SubsidieConstantenThuisbatterij" dmnElementRef="SubsidieConstantenThuisbatterij">
+        <dc:Bounds height="80" width="280" x="320" y="400" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_Behaalbare_Basis" dmnElementRef="InformationRequirement_Behaalbare_Basis">
+        <di:waypoint x="280" y="220" />
+        <di:waypoint x="420" y="140" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_Behaalbare_Platform" dmnElementRef="InformationRequirement_Behaalbare_Platform">
+        <di:waypoint x="670" y="220" />
+        <di:waypoint x="480" y="140" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_Basis_Constanten" dmnElementRef="InformationRequirement_Basis_Constanten">
+        <di:waypoint x="460" y="400" />
+        <di:waypoint x="280" y="320" />
+        <di:waypoint x="280" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_Platform_Constanten" dmnElementRef="InformationRequirement_Platform_Constanten">
+        <di:waypoint x="460" y="400" />
+        <di:waypoint x="670" y="320" />
+        <di:waypoint x="670" y="300" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

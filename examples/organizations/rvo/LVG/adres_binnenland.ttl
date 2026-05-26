@@ -1,0 +1,29 @@
+
+<http://opendata.stelselcatalogus.nl/brp/id/begrip/adres_binnenland> a <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#Begrip>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#attribuut> <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/aanduiding_bij_huisnummer-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/datum_aanvang_adreshouding-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/datum_inschrijving_gemeente-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/functie_adres-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/gemeente_van_inschrijving-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/gemeentedeel-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/huisletter-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/huisnummer-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/huisnummer_toevoeging-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/identificatiecode_nummeraanduiding-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/identificatiecode_verblijfplaats-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/naam_openbare_ruimte-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/postcode-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/straatnaam-adres_binnenland>,
+    <http://opendata.stelselcatalogus.nl/brp/id/gegevenselement/woonplaatsnaam-adres_binnenland>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#basisregistratie> <http://opendata.stelselcatalogus.nl/id/registratie/BRP>;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#eigenaar> "Nederlandse Gemeente"@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#populatie> "Personen die in Nederland verblijven of verbleven hebben."@nl-nl;
+  <http://opendata.stelselcatalogus.nl/def/stelselcatalogus#referentieWetgeving> <http://opendata.stelselcatalogus.nl/stelselcatalogus/id/regelgeving/wet_brp>;
+  <http://purl.org/dc/terms/isPartOf> <http://opendata.stelselcatalogus.nl/id/dataset/brp>,
+    <http://opendata.stelselcatalogus.nl/id/dataset/sc>;
+  <http://www.w3.org/2000/01/rdf-schema#label> "Adres binnenland"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#broadMatch> <http://opendata.stelselcatalogus.nl/id/clusterbegrip/Adres>;
+  <http://www.w3.org/2004/02/skos/core#definition> "Het adres in een Nederlandse gemeente waar de persoon woont of post ontvangt.  "@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#inScheme> <http://opendata.stelselcatalogus.nl/id/conceptscheme/brp>;
+  <http://www.w3.org/2004/02/skos/core#prefLabel> "Adres binnenland"@nl-nl;
+  <http://www.w3.org/2004/02/skos/core#scopeNote> "Het adres is een fysieke of administratieve locatie waar de persoon  gevestigd is of post kan ontvangen."@nl-nl .

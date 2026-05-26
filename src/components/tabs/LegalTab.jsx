@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
-import { fetchAllRonlConcepts } from '../../utils/ronlHelper';
+import React from 'react';
 
 /**
  * LegalTab - Form for editing legal resource metadata
@@ -18,42 +16,11 @@ export default function LegalTab({
   setRonlAnalysis,
   ronlMethod,
   setRonlMethod,
+  analysisConcepts,
+  methodConcepts,
+  loadingConcepts,
+  conceptsError,
 }) {
-  // State for dropdown options
-  const [analysisConcepts, setAnalysisConcepts] = useState([]);
-  const [methodConcepts, setMethodConcepts] = useState([]);
-  const [loadingConcepts, setLoadingConcepts] = useState(false);
-  const [conceptsError, setConceptsError] = useState('');
-
-  // RONL endpoint
-  const RONL_ENDPOINT =
-    'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
-
-  // Fetch concepts on component mount
-  useEffect(() => {
-    const loadConcepts = async () => {
-      setLoadingConcepts(true);
-      setConceptsError('');
-
-      try {
-        const { analysisConcepts: analysis, methodConcepts: methods } =
-          await fetchAllRonlConcepts(RONL_ENDPOINT);
-
-        setAnalysisConcepts(analysis);
-        setMethodConcepts(methods);
-
-        console.log('Loaded RONL concepts successfully');
-      } catch (error) {
-        console.error('Failed to load RONL concepts:', error);
-        setConceptsError('Failed to load concepts from TriplyDB. Please check your connection.');
-      } finally {
-        setLoadingConcepts(false);
-      }
-    };
-
-    loadConcepts();
-  }, []); // Empty dependency array = run once on mount
-
   // Helper to update a single field
   const updateField = (field, value) => {
     setLegalResource({ ...legalResource, [field]: value });

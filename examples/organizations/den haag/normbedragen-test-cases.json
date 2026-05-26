@@ -1,0 +1,322 @@
+[
+  {
+    "name": "TC01_R1_I_B1_2024H2",
+    "expected": "ab-normbedragen R1 fires (norm→I), BijstandsnormBedragen B1_2024H2 → bedrag=414.31",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC02_R2_II_B2_2025H1",
+    "expected": "ab-normbedragen R2 fires (norm→II), BijstandsnormBedragen B2_2025H1 → bedrag=662.69",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC03_R3_JK_B3_2025H2",
+    "expected": "ab-normbedragen R3 fires (norm→JK), BijstandsnormBedragen B3_2025H2 → bedrag=337.98",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-10-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC04_R4_JJK_B4_2026H1",
+    "expected": "ab-normbedragen R4 fires (norm→JJK), BijstandsnormBedragen B4_2026H1 → bedrag=1092.41",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC05_R5_MJK_B1_2024H2",
+    "expected": "ab-normbedragen R5 fires (norm→MJK), BijstandsnormBedragen B1_2024H2 → bedrag=1631.48",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC06_R6_J_B2_2025H1",
+    "expected": "ab-normbedragen R6 fires (norm→J), BijstandsnormBedragen B2_2025H1 → bedrag=332.17",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC07_R7_JJ_B3_2025H2",
+    "expected": "ab-normbedragen R7 fires (norm→JJ), BijstandsnormBedragen B3_2025H2 → bedrag=675.96",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-10-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC08_R8_MJ_B4_2026H1",
+    "expected": "ab-normbedragen R8 fires (norm→MJ), BijstandsnormBedragen B4_2026H1 → bedrag=1347.06",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC09_R9_M_B1_2024H2",
+    "expected": "ab-normbedragen R9 fires (norm→M), BijstandsnormBedragen B1_2024H2 → bedrag=1308.45",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC10_R10_MM_B2_2025H1",
+    "expected": "ab-normbedragen R10 fires (norm→MM), BijstandsnormBedragen B2_2025H1 → bedrag=1922.07",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC11_R11_O_B3_2025H2",
+    "expected": "ab-normbedragen R11 fires (norm→O), BijstandsnormBedragen B3_2025H2 → bedrag=1530.21",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-10-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC12_R12_OO_B4_2026H1",
+    "expected": "ab-normbedragen R12 fires (norm→OO), BijstandsnormBedragen B4_2026H1 → bedrag=2144.16",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC13_R13_MO_B1_2024H2",
+    "expected": "ab-normbedragen R13 fires (norm→MO), BijstandsnormBedragen B1_2024H2 → bedrag=1976.64",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC14_Edge_lower_bound_inclusive_2025_01_01",
+    "expected": "Boundary: peildatum exactly equals lower bound of B2 → R2 fires (inclusive <=) → bedrag=1345.45",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-01-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC15_Edge_upper_bound_exclusive_2025_07_01",
+    "expected": "Boundary: peildatum exactly equals upper bound of B2 (exclusive <), falls into B3 → bedrag=1369.06",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-07-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC16_Edge_peildatum_before_brackets",
+    "expected": "Boundary: peildatum before earliest bracket (2024-07-01) → BijstandsnormBedragen has no match, bedrag=null",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-06-30",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC17_Edge_peildatum_after_brackets",
+    "expected": "Boundary: peildatum at/after latest bracket end (2026-07-01) → BijstandsnormBedragen has no match, bedrag=null",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-07-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC18_Edge_unknown_norm",
+    "expected": "Unknown norm description (not in inputValues list) → ab-normbedragen has no match, bedrag=null",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Onbekende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC19_Edge_R8_now_MJ_path",
+    "expected": "ab-normbedragen R8 → MJ column (post-fix), BijstandsnormBedragen B4 (2026-H1) → bedrag=1347.06",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC20_Edge_MO_collision_R13_path",
+    "expected": "ab-normbedragen R13 → MO column, BijstandsnormBedragen B4 (2026-H1) → bedrag=2144.16",
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-05-22",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  }
+]
