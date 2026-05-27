@@ -63,7 +63,7 @@
     cprmv:rulesetId "BWBR0015703" ;
     cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01> ;
     dcat:version "2026-01-01" ;
-    dct:issued "2026-05-22T12:43:32Z"^^xsd:dateTime ;
+    dct:issued "2026-05-27T06:10:49Z"^^xsd:dateTime ;
     dcat:landingPage <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
 
 
@@ -347,202 +347,13 @@
 # ============================================================
 
 <https://regels.overheid.nl/services/pw-normbedragen/dmn> a cprmv:DecisionModel ;
-    dct:identifier "BijstandsnormBedragen" ;
-    dct:title "normbedragen.dmn"@nl ;
+    dct:identifier "pw-normbedragen" ;
+    dct:title "PW-normbedragen.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
     dct:source <https://regels.overheid.nl/services/pw-normbedragen/dmn/file> ;
-    cprmv:deploymentId "398c7142-55db-11f1-8761-8ae6f7653f6b" ;
-    cprmv:deployedAt "2026-05-22T12:39:07.731Z"^^xsd:dateTime ;
-    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/BijstandsnormBedragen/evaluate> ;
-    cprmv:lastTested "2026-05-22T12:39:10.360Z"^^xsd:dateTime ;
-    cprmv:testStatus "passed" ;
+    cprmv:deploymentId "a17f7c78-5992-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-05-27T06:09:33.502Z"^^xsd:dateTime ;
     dct:description "DMN decision model for service evaluation"@nl .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/input/1> a cpsv:Input ;
-    dct:identifier "peildatum" ;
-    dct:title "peildatum"@nl ;
-    dct:type "String" ;
-    schema:value "2026-05-22" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/input/2> a cpsv:Input ;
-    dct:identifier "norm" ;
-    dct:title "norm"@nl ;
-    dct:type "String" ;
-    schema:value "" ;
-    cpsv:isRequiredBy <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/1> a cpsv:Output ;
-    dct:identifier "MM" ;
-    dct:title "MM"@nl ;
-    dct:type "Double" ;
-    schema:value 2002.13 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/2> a cpsv:Output ;
-    dct:identifier "JJ" ;
-    dct:title "JJ"@nl ;
-    dct:type "Double" ;
-    schema:value 691.98 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/3> a cpsv:Output ;
-    dct:identifier "OO" ;
-    dct:title "OO"@nl ;
-    dct:type "Double" ;
-    schema:value 2144.16 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/4> a cpsv:Output ;
-    dct:identifier "II" ;
-    dct:title "II"@nl ;
-    dct:type "String" ;
-    schema:value "690.27" ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/5> a cpsv:Output ;
-    dct:identifier "JK" ;
-    dct:title "JK"@nl ;
-    dct:type "Double" ;
-    schema:value 345.99 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/6> a cpsv:Output ;
-    dct:identifier "MO" ;
-    dct:title "MO"@nl ;
-    dct:type "Double" ;
-    schema:value 2144.16 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/7> a cpsv:Output ;
-    dct:identifier "JO" ;
-    dct:title "JO"@nl ;
-    dct:type "Double" ;
-    schema:value 1747.49 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/8> a cpsv:Output ;
-    dct:identifier "JOK" ;
-    dct:title "JOK"@nl ;
-    dct:type "Double" ;
-    schema:value 1747.49 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/9> a cpsv:Output ;
-    dct:identifier "MOK" ;
-    dct:title "MOK"@nl ;
-    dct:type "Double" ;
-    schema:value 2144.16 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/10> a cpsv:Output ;
-    dct:identifier "I" ;
-    dct:title "I"@nl ;
-    dct:type "Double" ;
-    schema:value 443.76 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/11> a cpsv:Output ;
-    dct:identifier "MMK" ;
-    dct:title "MMK"@nl ;
-    dct:type "Double" ;
-    schema:value 2002.13 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/12> a cpsv:Output ;
-    dct:identifier "J" ;
-    dct:title "J"@nl ;
-    dct:type "Double" ;
-    schema:value 345.99 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/13> a cpsv:Output ;
-    dct:identifier "JJK" ;
-    dct:title "JJK"@nl ;
-    dct:type "Double" ;
-    schema:value 1092.41 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/14> a cpsv:Output ;
-    dct:identifier "OOK" ;
-    dct:title "OOK"@nl ;
-    dct:type "Double" ;
-    schema:value 2144.16 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/15> a cpsv:Output ;
-    dct:identifier "M" ;
-    dct:title "M"@nl ;
-    dct:type "Double" ;
-    schema:value 1401.5 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/16> a cpsv:Output ;
-    dct:identifier "MJK" ;
-    dct:title "MJK"@nl ;
-    dct:type "Double" ;
-    schema:value 1347.06 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/17> a cpsv:Output ;
-    dct:identifier "O" ;
-    dct:title "O"@nl ;
-    dct:type "Double" ;
-    schema:value 1564.69 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/18> a cpsv:Output ;
-    dct:identifier "OK" ;
-    dct:title "OK"@nl ;
-    dct:type "Double" ;
-    schema:value 1564.69 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/19> a cpsv:Output ;
-    dct:identifier "MJ" ;
-    dct:title "MJ"@nl ;
-    dct:type "Double" ;
-    schema:value 1347.06 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/dmn/output/20> a cpsv:Output ;
-    dct:identifier "MK" ;
-    dct:title "MK"@nl ;
-    dct:type "Double" ;
-    schema:value 1401.5 ;
-    cpsv:produces <https://regels.overheid.nl/services/pw-normbedragen/dmn> .
-
-<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_12kjlua> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_12kjlua" ;
-    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
-    cprmv:ruleType "decision-rule" ;
-    cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_05wib0m" ;
-    cprmv:rulesetType "decision-table" .
-
-<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0h1w7x0> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_0h1w7x0" ;
-    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
-    cprmv:ruleType "decision-rule" ;
-    cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_05wib0m" ;
-    cprmv:rulesetType "decision-table" .
-
-<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1gk1h0n> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_1gk1h0n" ;
-    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
-    cprmv:ruleType "decision-rule" ;
-    cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_05wib0m" ;
-    cprmv:rulesetType "decision-table" .
-
-<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1oxxdvb> a cpsv:Rule, cprmv:DecisionRule ;
-    dct:identifier "DecisionRule_1oxxdvb" ;
-    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
-    cprmv:ruleType "decision-rule" ;
-    cprmv:confidence "medium" ;
-    cprmv:decisionTable "DecisionTable_05wib0m" ;
-    cprmv:rulesetType "decision-table" .
 
 <https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0yar3xr> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "DecisionRule_0yar3xr" ;
@@ -648,6 +459,38 @@
     cprmv:decisionTable "DecisionTable_0zn46gi" ;
     cprmv:rulesetType "decision-table" .
 
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_12kjlua> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_12kjlua" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0h1w7x0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0h1w7x0" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1gk1h0n> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1gk1h0n" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1oxxdvb> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1oxxdvb" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
 # =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
@@ -656,11 +499,11 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-05-22"^^xsd:date .
+    dct:created "2026-05-27"^^xsd:date .
 
 # Input Variable Concepts
 
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/peildatum> a skos:Concept ;
+<https://regels.overheid.nl/concepts/pw-normbedragen/peildatum> a skos:Concept ;
     skos:prefLabel "Peildatum"@nl ;
     skos:definition "Peildatum is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "PEIL" ;
@@ -669,7 +512,7 @@
     skos:exactMatch <https://regels.overheid.nl/concepts/peildatum> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/norm> a skos:Concept ;
+<https://regels.overheid.nl/concepts/pw-normbedragen/norm> a skos:Concept ;
     skos:prefLabel "Norm"@nl ;
     skos:definition "Norm is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
     skos:notation "NORM" ;
@@ -680,183 +523,12 @@
 
 # Output Variable Concepts
 
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MM> a skos:Concept ;
-    skos:prefLabel "MM"@nl ;
-    skos:definition "MM is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MM" ;
+<https://regels.overheid.nl/concepts/pw-normbedragen/bedrag> a skos:Concept ;
+    skos:prefLabel "Bedrag"@nl ;
+    skos:definition "Bedrag is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BEDR" ;
     dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MM> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/JJ> a skos:Concept ;
-    skos:prefLabel "JJ"@nl ;
-    skos:definition "JJ is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "JJ" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/2> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/JJ> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/OO> a skos:Concept ;
-    skos:prefLabel "OO"@nl ;
-    skos:definition "OO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "OO" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/3> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/OO> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/II> a skos:Concept ;
-    skos:prefLabel "II"@nl ;
-    skos:definition "II is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "II" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/4> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/II> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/JK> a skos:Concept ;
-    skos:prefLabel "JK"@nl ;
-    skos:definition "JK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "JK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/5> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/JK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MO> a skos:Concept ;
-    skos:prefLabel "MO"@nl ;
-    skos:definition "MO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MO" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/6> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MO> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/JO> a skos:Concept ;
-    skos:prefLabel "JO"@nl ;
-    skos:definition "JO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "JO" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/7> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/JO> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/JOK> a skos:Concept ;
-    skos:prefLabel "JOK"@nl ;
-    skos:definition "JOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "JOK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/8> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/JOK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MOK> a skos:Concept ;
-    skos:prefLabel "MOK"@nl ;
-    skos:definition "MOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MOK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/9> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MOK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/I> a skos:Concept ;
-    skos:prefLabel "I"@nl ;
-    skos:definition "I is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "I" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/10> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/I> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MMK> a skos:Concept ;
-    skos:prefLabel "MMK"@nl ;
-    skos:definition "MMK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MMK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/11> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MMK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/J> a skos:Concept ;
-    skos:prefLabel "J"@nl ;
-    skos:definition "J is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "J" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/12> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/J> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/JJK> a skos:Concept ;
-    skos:prefLabel "JJK"@nl ;
-    skos:definition "JJK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "JJK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/13> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/JJK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/OOK> a skos:Concept ;
-    skos:prefLabel "OOK"@nl ;
-    skos:definition "OOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "OOK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/14> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/OOK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/M> a skos:Concept ;
-    skos:prefLabel "M"@nl ;
-    skos:definition "M is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "M" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/15> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/M> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MJK> a skos:Concept ;
-    skos:prefLabel "MJK"@nl ;
-    skos:definition "MJK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MJK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/16> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MJK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/O> a skos:Concept ;
-    skos:prefLabel "O"@nl ;
-    skos:definition "O is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "O" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/17> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/O> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/OK> a skos:Concept ;
-    skos:prefLabel "OK"@nl ;
-    skos:definition "OK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "OK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/18> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/OK> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MJ> a skos:Concept ;
-    skos:prefLabel "MJ"@nl ;
-    skos:definition "MJ is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MJ" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/19> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MJ> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bijstandsnormbedragen/MK> a skos:Concept ;
-    skos:prefLabel "MK"@nl ;
-    skos:definition "MK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "MK" ;
-    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/20> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/MK> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bedrag> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 

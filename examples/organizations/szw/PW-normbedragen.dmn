@@ -6,7 +6,7 @@
   <inputData id="InputData_norm" name="norm">
     <variable id="Variable_norm" name="norm" typeRef="string" />
   </inputData>
-  <decision id="ab-normbedragen" name="PW Normbedragen" camunda:versionTag="" camunda:historyTimeToLive="10">
+  <decision id="pw-normbedragen" name="PW Normbedragen" camunda:versionTag="" camunda:historyTimeToLive="10">
     <informationRequirement id="InformationRequirement_06igfm7">
       <requiredDecision href="#BijstandsnormBedragen" />
     </informationRequirement>
