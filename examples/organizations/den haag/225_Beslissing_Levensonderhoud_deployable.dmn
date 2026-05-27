@@ -1,0 +1,1650 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="dt225_drd" name="Beslissing Levensonderhoud" namespace="http://camunda.org/schema/1.0/dmn" exporter="RONL CPSV Editor" exporterVersion="1.9.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <!-- ============================================================
+       INPUT DATA — flat, executable variables.
+       Naming follows the Heusdenpas convention (camelCase Dutch).
+       ============================================================ -->
+  <!-- Request and household context -->
+  <inputData id="InputData_aanvraagtypeALO" name="aanvraagtypeALO">
+    <variable id="Variable_aanvraagtypeALO" name="aanvraagtypeALO" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_lopendeAanvraagOfUitkering" name="lopendeAanvraagOfUitkering">
+    <variable id="Variable_lopendeAanvraagOfUitkering" name="lopendeAanvraagOfUitkering" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_eersteAanvragerVastgesteld" name="eersteAanvragerVastgesteld">
+    <variable id="Variable_eersteAanvragerVastgesteld" name="eersteAanvragerVastgesteld" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_tweedeAanvragerVastgesteld" name="tweedeAanvragerVastgesteld">
+    <variable id="Variable_tweedeAanvragerVastgesteld" name="tweedeAanvragerVastgesteld" typeRef="boolean"/>
+  </inputData>
+  <!-- Substantive eligibility inputs (RechtOpALO) -->
+  <inputData id="InputData_ongeoorloofdOnbetaaldVerlof" name="ongeoorloofdOnbetaaldVerlof">
+    <variable id="Variable_ongeoorloofdOnbetaaldVerlof" name="ongeoorloofdOnbetaaldVerlof" typeRef="string"/>
+  </inputData>
+  <inputData id="InputData_maandelijksInkomen" name="maandelijksInkomen">
+    <variable id="Variable_maandelijksInkomen" name="maandelijksInkomen" typeRef="double"/>
+  </inputData>
+  <inputData id="InputData_bijstandsNorm" name="bijstandsNorm">
+    <variable id="Variable_bijstandsNorm" name="bijstandsNorm" typeRef="double"/>
+  </inputData>
+  <inputData id="InputData_geenInAanmerkingTeNemenVermogen" name="geenInAanmerkingTeNemenVermogen">
+    <variable id="Variable_geenInAanmerkingTeNemenVermogen" name="geenInAanmerkingTeNemenVermogen" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_voorliggendeVoorzieningenUitsluiting" name="voorliggendeVoorzieningenUitsluiting">
+    <variable id="Variable_voorliggendeVoorzieningenUitsluiting" name="voorliggendeVoorzieningenUitsluiting" typeRef="boolean"/>
+  </inputData>
+  <!-- BeslissingALO context -->
+  <inputData id="InputData_bijstandsVorm" name="bijstandsVorm">
+    <variable id="Variable_bijstandsVorm" name="bijstandsVorm" typeRef="string"/>
+  </inputData>
+  <!-- Per-person inputs: applicant -->
+  <inputData id="InputData_aanvragerWoonachtigInGemeente" name="aanvragerWoonachtigInGemeente">
+    <variable id="Variable_aanvragerWoonachtigInGemeente" name="aanvragerWoonachtigInGemeente" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerLeeftijdOK" name="aanvragerLeeftijdOK">
+    <variable id="Variable_aanvragerLeeftijdOK" name="aanvragerLeeftijdOK" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerVerblijfstitelOK" name="aanvragerVerblijfstitelOK">
+    <variable id="Variable_aanvragerVerblijfstitelOK" name="aanvragerVerblijfstitelOK" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerDetentie" name="aanvragerDetentie">
+    <variable id="Variable_aanvragerDetentie" name="aanvragerDetentie" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerMaatregel100" name="aanvragerMaatregel100">
+    <variable id="Variable_aanvragerMaatregel100" name="aanvragerMaatregel100" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerRechtOpStufi" name="aanvragerRechtOpStufi">
+    <variable id="Variable_aanvragerRechtOpStufi" name="aanvragerRechtOpStufi" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_aanvragerInformatieOnvolledig" name="aanvragerInformatieOnvolledig">
+    <variable id="Variable_aanvragerInformatieOnvolledig" name="aanvragerInformatieOnvolledig" typeRef="boolean"/>
+  </inputData>
+  <!-- Per-person inputs: partner -->
+  <inputData id="InputData_partnerWoonachtigInGemeente" name="partnerWoonachtigInGemeente">
+    <variable id="Variable_partnerWoonachtigInGemeente" name="partnerWoonachtigInGemeente" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerLeeftijdOK" name="partnerLeeftijdOK">
+    <variable id="Variable_partnerLeeftijdOK" name="partnerLeeftijdOK" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerVerblijfstitelOK" name="partnerVerblijfstitelOK">
+    <variable id="Variable_partnerVerblijfstitelOK" name="partnerVerblijfstitelOK" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerDetentie" name="partnerDetentie">
+    <variable id="Variable_partnerDetentie" name="partnerDetentie" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerMaatregel100" name="partnerMaatregel100">
+    <variable id="Variable_partnerMaatregel100" name="partnerMaatregel100" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerRechtOpStufi" name="partnerRechtOpStufi">
+    <variable id="Variable_partnerRechtOpStufi" name="partnerRechtOpStufi" typeRef="boolean"/>
+  </inputData>
+  <inputData id="InputData_partnerInformatieOnvolledig" name="partnerInformatieOnvolledig">
+    <variable id="Variable_partnerInformatieOnvolledig" name="partnerInformatieOnvolledig" typeRef="boolean"/>
+  </inputData>
+  <!-- Professional-judgement inputs (standalone decisions) -->
+  <inputData id="InputData_oordeelTekortSchieten" name="oordeelTekortSchieten">
+    <variable id="Variable_oordeelTekortSchieten" name="oordeelTekortSchieten" typeRef="string"/>
+  </inputData>
+  <inputData id="InputData_oordeelDringendeReden" name="oordeelDringendeReden">
+    <variable id="Variable_oordeelDringendeReden" name="oordeelDringendeReden" typeRef="string"/>
+  </inputData>
+  <inputData id="InputData_oordeelHardheidsclausule" name="oordeelHardheidsclausule">
+    <variable id="Variable_oordeelHardheidsclausule" name="oordeelHardheidsclausule" typeRef="string"/>
+  </inputData>
+  <!-- ============================================================
+       dt225_RechthebbendeAanvrager
+       Per-person eligibility verdict for the applicant.
+       ============================================================ -->
+  <decision id="dt225_BeslissingALO" name="Beslissing ALO" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_bes_recht">
+      <requiredDecision href="#dt225_RechtOpALO"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_bes_vorm">
+      <requiredInput href="#InputData_bijstandsVorm"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_BeslissingALO" hitPolicy="FIRST">
+      <input id="Input_bes_recht" label="Recht op ALO">
+        <inputExpression id="InputExpr_bes_recht" typeRef="string">
+          <text>rechtOpALO</text>
+        </inputExpression>
+        <inputValues id="InputValues_bes_recht">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="Input_bes_vorm" label="Bijstandsvorm">
+        <inputExpression id="InputExpr_bes_vorm" typeRef="string">
+          <text>bijstandsVorm</text>
+        </inputExpression>
+        <inputValues id="InputValues_bes_vorm">
+          <text>"Om niet","Krediethypotheek","Verhaalbare bijstand","Leenbijstand"</text>
+        </inputValues>
+      </input>
+      <output id="Output_bes_result" label="Beslissing ALO" name="beslissingALO" typeRef="string"/>
+      <output id="Output_bes_reden" label="Reden afwijzing (passthrough)" name="redenAfwijzing" typeRef="string"/>
+      <output id="Output_bes_info" label="Informatiebehoefte (passthrough)" name="informatiebehoefte" typeRef="string"/>
+      <rule id="Rule_Bes_GeenRecht">
+        <description>Geen recht — afwijzing ongeacht bijstandsvorm</description>
+        <inputEntry id="InE_bes_recht_01">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_01">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_01">
+          <text>"Geen recht"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_01">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_01">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_Informatie">
+        <description>Informatie nog onvolledig — beslissing aangehouden</description>
+        <inputEntry id="InE_bes_recht_02">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_02">
+          <text>"Informatie nodig"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_02">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_02">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_OmNiet">
+        <inputEntry id="InE_bes_recht_03">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_03">
+          <text>"Om niet"</text>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_03">
+          <text>"Om niet"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_03">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_03">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_Krediethypotheek">
+        <inputEntry id="InE_bes_recht_04">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_04">
+          <text>"Krediethypotheek"</text>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_04">
+          <text>"Krediethypotheek"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_04">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_04">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_Verhaalbaar">
+        <inputEntry id="InE_bes_recht_05">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_05">
+          <text>"Verhaalbare bijstand"</text>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_05">
+          <text>"Verhaalbare bijstand"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_05">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_05">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_Leenbijstand">
+        <inputEntry id="InE_bes_recht_06">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_06">
+          <text>"Leenbijstand"</text>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_06">
+          <text>"Leenbijstand"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_06">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_06">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Bes_Fallback">
+        <description>Recht vastgesteld maar bijstandsvorm niet bepaald</description>
+        <inputEntry id="InE_bes_recht_07">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_bes_vorm_07">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_bes_result_07">
+          <text>"Bijstandsvorm te bepalen"</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_reden_07">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="OutE_bes_info_07">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_RechthebbendeAanvrager" name="Rechthebbende aanvrager" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_aanv_01">
+      <requiredInput href="#InputData_aanvragerWoonachtigInGemeente"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_02">
+      <requiredInput href="#InputData_aanvragerLeeftijdOK"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_03">
+      <requiredInput href="#InputData_aanvragerVerblijfstitelOK"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_04">
+      <requiredInput href="#InputData_aanvragerDetentie"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_05">
+      <requiredInput href="#InputData_aanvragerMaatregel100"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_06">
+      <requiredInput href="#InputData_aanvragerRechtOpStufi"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_aanv_07">
+      <requiredInput href="#InputData_aanvragerInformatieOnvolledig"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_RechthebbendeAanvrager" hitPolicy="FIRST">
+      <input id="Input_aanv_inf" label="Informatie onvolledig">
+        <inputExpression id="InputExpr_aanv_inf" typeRef="boolean">
+          <text>aanvragerInformatieOnvolledig</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_woon" label="Woonachtig in gemeente">
+        <inputExpression id="InputExpr_aanv_woon" typeRef="boolean">
+          <text>aanvragerWoonachtigInGemeente</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_lftd" label="Leeftijd OK">
+        <inputExpression id="InputExpr_aanv_lftd" typeRef="boolean">
+          <text>aanvragerLeeftijdOK</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_verb" label="Verblijfstitel OK">
+        <inputExpression id="InputExpr_aanv_verb" typeRef="boolean">
+          <text>aanvragerVerblijfstitelOK</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_det" label="Detentie">
+        <inputExpression id="InputExpr_aanv_det" typeRef="boolean">
+          <text>aanvragerDetentie</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_maat" label="Opgelegde 100% maatregel">
+        <inputExpression id="InputExpr_aanv_maat" typeRef="boolean">
+          <text>aanvragerMaatregel100</text>
+        </inputExpression>
+      </input>
+      <input id="Input_aanv_stufi" label="Recht op studiefinanciering">
+        <inputExpression id="InputExpr_aanv_stufi" typeRef="boolean">
+          <text>aanvragerRechtOpStufi</text>
+        </inputExpression>
+      </input>
+      <output id="Output_aanv_status" label="Rechthebbende aanvrager" name="rechthebbendeAanvrager" typeRef="string">
+        <outputValues id="OutputValues_aanv_status">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Output_aanv_info" label="Informatiebehoefte aanvrager" name="informatiebehoefteAanvrager" typeRef="string"/>
+      <rule id="Rule_Aanv_InfoOnvolledig">
+        <description>Informatie onvolledig — kan nog niet beslissen</description>
+        <inputEntry id="InE_aanv_inf_01">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_01">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_01">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_01">
+          <text>"informatie onvolledig"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_NietWoonachtig">
+        <description>Niet woonachtig in gemeente — geen recht</description>
+        <inputEntry id="InE_aanv_inf_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_02">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_02">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_02">
+          <text>"woonplaats"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_LeeftijdNietOK">
+        <description>Leeftijd niet OK — geen recht</description>
+        <inputEntry id="InE_aanv_inf_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_03">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_03">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_03">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_03">
+          <text>"leeftijd"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_VerblijfstitelNietOK">
+        <description>Verblijfstitel niet OK — geen recht</description>
+        <inputEntry id="InE_aanv_inf_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_04">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_04">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_04">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_04">
+          <text>"verblijfstitel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_Detentie">
+        <description>Detentie — geen recht</description>
+        <inputEntry id="InE_aanv_inf_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_05">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_05">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_05">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_05">
+          <text>"detentie"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_Maatregel">
+        <description>Opgelegde 100% maatregel — geen recht</description>
+        <inputEntry id="InE_aanv_inf_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_06">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_06">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_06">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_06">
+          <text>"opgelegde maatregel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_Stufi">
+        <description>Recht op studiefinanciering — geen recht op ALO</description>
+        <inputEntry id="InE_aanv_inf_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_07">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_07">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_07">
+          <text>"stufi"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Aanv_Groen">
+        <description>Alle criteria positief — rechthebbend</description>
+        <inputEntry id="InE_aanv_inf_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_woon_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_lftd_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_verb_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_det_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_maat_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_aanv_stufi_08">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="OutE_aanv_status_08">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="OutE_aanv_info_08">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <!-- ============================================================
+       dt225_RechthebbendePartner
+       Per-person eligibility verdict for the partner — parallel
+       structure to dt225_RechthebbendeAanvrager.
+       ============================================================ -->
+  <decision id="dt225_RechthebbendePartner" name="Rechthebbende partner" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_part_01">
+      <requiredInput href="#InputData_partnerWoonachtigInGemeente"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_02">
+      <requiredInput href="#InputData_partnerLeeftijdOK"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_03">
+      <requiredInput href="#InputData_partnerVerblijfstitelOK"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_04">
+      <requiredInput href="#InputData_partnerDetentie"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_05">
+      <requiredInput href="#InputData_partnerMaatregel100"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_06">
+      <requiredInput href="#InputData_partnerRechtOpStufi"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_part_07">
+      <requiredInput href="#InputData_partnerInformatieOnvolledig"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_RechthebbendePartner" hitPolicy="FIRST">
+      <input id="Input_part_inf" label="Informatie onvolledig">
+        <inputExpression id="InputExpr_part_inf" typeRef="boolean">
+          <text>partnerInformatieOnvolledig</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_woon" label="Woonachtig in gemeente">
+        <inputExpression id="InputExpr_part_woon" typeRef="boolean">
+          <text>partnerWoonachtigInGemeente</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_lftd" label="Leeftijd OK">
+        <inputExpression id="InputExpr_part_lftd" typeRef="boolean">
+          <text>partnerLeeftijdOK</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_verb" label="Verblijfstitel OK">
+        <inputExpression id="InputExpr_part_verb" typeRef="boolean">
+          <text>partnerVerblijfstitelOK</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_det" label="Detentie">
+        <inputExpression id="InputExpr_part_det" typeRef="boolean">
+          <text>partnerDetentie</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_maat" label="Opgelegde 100% maatregel">
+        <inputExpression id="InputExpr_part_maat" typeRef="boolean">
+          <text>partnerMaatregel100</text>
+        </inputExpression>
+      </input>
+      <input id="Input_part_stufi" label="Recht op studiefinanciering">
+        <inputExpression id="InputExpr_part_stufi" typeRef="boolean">
+          <text>partnerRechtOpStufi</text>
+        </inputExpression>
+      </input>
+      <output id="Output_part_status" label="Rechthebbende partner" name="rechthebbendePartner" typeRef="string">
+        <outputValues id="OutputValues_part_status">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Output_part_info" label="Informatiebehoefte partner" name="informatiebehoeftePartner" typeRef="string"/>
+      <rule id="Rule_Part_InfoOnvolledig">
+        <description>Informatie onvolledig — kan nog niet beslissen</description>
+        <inputEntry id="InE_part_inf_01">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_01">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_01">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_01">
+          <text>"informatie onvolledig"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_NietWoonachtig">
+        <description>Niet woonachtig in gemeente — geen recht</description>
+        <inputEntry id="InE_part_inf_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_02">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_02">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_02">
+          <text>"woonplaats"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_LeeftijdNietOK">
+        <description>Leeftijd niet OK — geen recht</description>
+        <inputEntry id="InE_part_inf_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_03">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_03">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_03">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_03">
+          <text>"leeftijd"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_VerblijfstitelNietOK">
+        <description>Verblijfstitel niet OK — geen recht</description>
+        <inputEntry id="InE_part_inf_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_04">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_det_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_04">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_04">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_04">
+          <text>"verblijfstitel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_Detentie">
+        <description>Detentie — geen recht</description>
+        <inputEntry id="InE_part_inf_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_05">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_05">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_05">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_05">
+          <text>"detentie"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_Maatregel">
+        <description>Opgelegde 100% maatregel — geen recht</description>
+        <inputEntry id="InE_part_inf_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_06">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_06">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_06">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_06">
+          <text>"opgelegde maatregel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_Stufi">
+        <description>Recht op studiefinanciering — geen recht op ALO</description>
+        <inputEntry id="InE_part_inf_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_det_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_07">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_07">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_07">
+          <text>"stufi"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Part_Groen">
+        <description>Alle criteria positief — rechthebbend</description>
+        <inputEntry id="InE_part_inf_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_woon_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_lftd_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_verb_08">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_part_det_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_maat_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_part_stufi_08">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="OutE_part_status_08">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="OutE_part_info_08">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <!-- ============================================================
+       dt225_RechtOpALO
+       Top-level right-determination, combines all eligibility
+       criteria into a single rood/oranje/groen verdict.
+       ============================================================ -->
+  <decision id="dt225_RechtOpALO" name="Recht op ALO" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_rop_aanvraag">
+      <requiredInput href="#InputData_aanvraagtypeALO"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_lopend">
+      <requiredInput href="#InputData_lopendeAanvraagOfUitkering"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_eerste">
+      <requiredInput href="#InputData_eersteAanvragerVastgesteld"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_tweede">
+      <requiredInput href="#InputData_tweedeAanvragerVastgesteld"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_verlof">
+      <requiredInput href="#InputData_ongeoorloofdOnbetaaldVerlof"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_ink">
+      <requiredInput href="#InputData_maandelijksInkomen"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_norm">
+      <requiredInput href="#InputData_bijstandsNorm"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_verm">
+      <requiredInput href="#InputData_geenInAanmerkingTeNemenVermogen"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_voor">
+      <requiredInput href="#InputData_voorliggendeVoorzieningenUitsluiting"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_aanv">
+      <requiredDecision href="#dt225_RechthebbendeAanvrager"/>
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rop_part">
+      <requiredDecision href="#dt225_RechthebbendePartner"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_RechtOpALO" hitPolicy="FIRST">
+      <input id="Input_rop_aanvraag" label="Aanvraag is ALO">
+        <inputExpression id="InputExpr_rop_aanvraag" typeRef="boolean">
+          <text>aanvraagtypeALO</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_lopend" label="Lopende aanvraag of uitkering?">
+        <inputExpression id="InputExpr_rop_lopend" typeRef="boolean">
+          <text>lopendeAanvraagOfUitkering</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_eerste" label="Eerste aanvrager vastgesteld">
+        <inputExpression id="InputExpr_rop_eerste" typeRef="boolean">
+          <text>eersteAanvragerVastgesteld</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_tweede" label="Tweede aanvrager vastgesteld">
+        <inputExpression id="InputExpr_rop_tweede" typeRef="boolean">
+          <text>tweedeAanvragerVastgesteld</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_aanv" label="Rechthebbende aanvrager">
+        <inputExpression id="InputExpr_rop_aanv" typeRef="string">
+          <text>rechthebbendeAanvrager</text>
+        </inputExpression>
+        <inputValues id="InputValues_rop_aanv">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="Input_rop_part" label="Rechthebbende partner">
+        <inputExpression id="InputExpr_rop_part" typeRef="string">
+          <text>rechthebbendePartner</text>
+        </inputExpression>
+        <inputValues id="InputValues_rop_part">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="Input_rop_verlof" label="Ongeoorloofd onbetaald verlof">
+        <inputExpression id="InputExpr_rop_verlof" typeRef="string">
+          <text>ongeoorloofdOnbetaaldVerlof</text>
+        </inputExpression>
+        <inputValues id="InputValues_rop_verlof">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="Input_rop_lagink" label="Laag inkomen (inkomen &lt; bijstandsnorm)">
+        <inputExpression id="InputExpr_rop_lagink" typeRef="boolean">
+          <text>maandelijksInkomen &lt; bijstandsNorm</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_verm" label="Geen in aanmerking te nemen vermogen">
+        <inputExpression id="InputExpr_rop_verm" typeRef="boolean">
+          <text>geenInAanmerkingTeNemenVermogen</text>
+        </inputExpression>
+      </input>
+      <input id="Input_rop_voor" label="Voorliggende voorzieningen die uitsluiten">
+        <inputExpression id="InputExpr_rop_voor" typeRef="boolean">
+          <text>voorliggendeVoorzieningenUitsluiting</text>
+        </inputExpression>
+      </input>
+      <output id="Output_rop_status" label="Recht op ALO" name="rechtOpALO" typeRef="string">
+        <outputValues id="OutputValues_rop_status">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Output_rop_reden" label="Reden afwijzing" name="redenAfwijzing" typeRef="string"/>
+      <output id="Output_rop_info" label="Informatiebehoefte" name="informatiebehoefte" typeRef="string"/>
+      <rule id="Rule_ROP_GeenALO">
+        <description>00 — Aanvraag is geen ALO-aanvraag</description>
+        <inputEntry id="InE_rop_aanvraag_01">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_01">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_01">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_01">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_01">
+          <text>"00"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_01">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_LopendeAanvraag">
+        <description>99 — Reeds lopende aanvraag of uitkering</description>
+        <inputEntry id="InE_rop_aanvraag_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_02">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_02">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_02">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_02">
+          <text>"99"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_02">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_GeenAanvrager">
+        <description>Eerste aanvrager nog niet vastgesteld — informatie nodig</description>
+        <inputEntry id="InE_rop_aanvraag_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_03">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_03">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_03">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_03">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_03">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_03">
+          <text>"persoon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_GeenPartner">
+        <description>Tweede aanvrager nog niet vastgesteld — informatie nodig</description>
+        <inputEntry id="InE_rop_aanvraag_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_04">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_04">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_04">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_04">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_04">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_04">
+          <text>"partner"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_BeideRood">
+        <description>01 — Beide belanghebbenden niet rechthebbend</description>
+        <inputEntry id="InE_rop_aanvraag_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_05">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_05">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_05">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_05">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_05">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_05">
+          <text>"01"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_05">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_OnbetaaldVerlof">
+        <description>04 — Ongeoorloofd onbetaald verlof</description>
+        <inputEntry id="InE_rop_aanvraag_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_06">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_06">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_06">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_06">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_06">
+          <text>"04"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_06">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_GeenLaagInkomen">
+        <description>02 — Inkomen niet onder bijstandsnorm</description>
+        <inputEntry id="InE_rop_aanvraag_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_07">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_07">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_07">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_07">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_07">
+          <text>"02"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_07">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_Vermogen">
+        <description>03 — In aanmerking te nemen vermogen aanwezig</description>
+        <inputEntry id="InE_rop_aanvraag_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_08">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_08">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_08">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_08">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_08">
+          <text>"03"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_08">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_Voorliggend">
+        <description>06 — Voorliggende voorziening sluit recht uit</description>
+        <inputEntry id="InE_rop_aanvraag_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_09">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_09">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_09">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_09">
+          <text>"06"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_09">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_AanvragerOranje">
+        <description>Informatie over aanvrager onvolledig</description>
+        <inputEntry id="InE_rop_aanvraag_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_10">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_10">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_10">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_10">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_10">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_10">
+          <text>informatiebehoefteAanvrager</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_PartnerOranje">
+        <description>Informatie over partner onvolledig</description>
+        <inputEntry id="InE_rop_aanvraag_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_11">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_11">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_11">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_11">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_11">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_11">
+          <text>informatiebehoeftePartner</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_VerlofOnbekend">
+        <description>Status onbetaald verlof onbekend — informatie nodig</description>
+        <inputEntry id="InE_rop_aanvraag_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_12">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_12">
+          <text/>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_12">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_12">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_12">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_12">
+          <text>"onbetaald verlof"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_ROP_Groen">
+        <description>Alle criteria positief — recht op ALO</description>
+        <inputEntry id="InE_rop_aanvraag_13">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_lopend_13">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_eerste_13">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_tweede_13">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_aanv_13">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_part_13">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_verlof_13">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_lagink_13">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_verm_13">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="InE_rop_voor_13">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="OutE_rop_status_13">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_reden_13">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="OutE_rop_info_13">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <!-- ============================================================
+       dt225_BeslissingALO
+       Final decision: maps Recht op ALO + BijstandsVorm
+       into the concrete grant-type outcome.
+       ============================================================ -->
+  <!-- ============================================================
+       Standalone professional-judgement decisions.
+       Each consumes a single text-typed professional opinion and
+       yields a boolean. Not wired into RechtOpALO in the original
+       theoretical model, so they remain standalone.
+       ============================================================ -->
+  <decision id="dt225_TekortSchieten" name="Tekort schieten besef verantwoordelijkheden?" camunda:historyTimeToLive="0">
+    <variable id="Variable_tekort" name="tekortSchieten" typeRef="boolean"/>
+    <informationRequirement id="InformationRequirement_tekort_in">
+      <requiredInput href="#InputData_oordeelTekortSchieten"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_TekortSchieten" hitPolicy="FIRST">
+      <input id="Input_tekort" label="Oordeel professional">
+        <inputExpression id="InputExpr_tekort" typeRef="string">
+          <text>oordeelTekortSchieten</text>
+        </inputExpression>
+      </input>
+      <output id="Output_tekort" typeRef="boolean"/>
+      <rule id="Rule_Tekort_Schiet">
+        <inputEntry id="InE_tekort_01">
+          <text>"Belanghebbende schiet tekort"</text>
+        </inputEntry>
+        <outputEntry id="OutE_tekort_01">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Tekort_Default">
+        <inputEntry id="InE_tekort_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_tekort_02">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_DringendeReden" name="Dringende reden?" camunda:historyTimeToLive="0">
+    <variable id="Variable_dringend" name="dringendeReden" typeRef="boolean"/>
+    <informationRequirement id="InformationRequirement_dringend_in">
+      <requiredInput href="#InputData_oordeelDringendeReden"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_DringendeReden" hitPolicy="FIRST">
+      <input id="Input_dringend" label="Oordeel professional">
+        <inputExpression id="InputExpr_dringend" typeRef="string">
+          <text>oordeelDringendeReden</text>
+        </inputExpression>
+      </input>
+      <output id="Output_dringend" typeRef="boolean"/>
+      <rule id="Rule_Dringend_Ja">
+        <inputEntry id="InE_dringend_01">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="OutE_dringend_01">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Dringend_Default">
+        <inputEntry id="InE_dringend_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_dringend_02">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_HardheidsclausuleToepassen" name="Hardheidsclausule toepassen?" camunda:historyTimeToLive="0">
+    <variable id="Variable_hardheid" name="hardheidsclausuleToepassen" typeRef="boolean"/>
+    <informationRequirement id="InformationRequirement_hardheid_in">
+      <requiredInput href="#InputData_oordeelHardheidsclausule"/>
+    </informationRequirement>
+    <decisionTable id="DecisionTable_HardheidsclausuleToepassen" hitPolicy="FIRST">
+      <input id="Input_hardheid" label="Oordeel professional">
+        <inputExpression id="InputExpr_hardheid" typeRef="string">
+          <text>oordeelHardheidsclausule</text>
+        </inputExpression>
+      </input>
+      <output id="Output_hardheid" typeRef="boolean"/>
+      <rule id="Rule_Hardheid_Ja">
+        <inputEntry id="InE_hardheid_01">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="OutE_hardheid_01">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Hardheid_Default">
+        <inputEntry id="InE_hardheid_02">
+          <text/>
+        </inputEntry>
+        <outputEntry id="OutE_hardheid_02">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <!-- ============================================================
+       DMNDI — minimal graphical layout so the file opens cleanly
+       in Camunda Modeler and the CPSV Editor preview.
+       ============================================================ -->
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="DMNShape_BeslissingALO" dmnElementRef="dt225_BeslissingALO">
+        <dc:Bounds height="80" width="180" x="500" y="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_RechtOpALO" dmnElementRef="dt225_RechtOpALO">
+        <dc:Bounds height="80" width="180" x="500" y="220"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_RechthebbendeAanvrager" dmnElementRef="dt225_RechthebbendeAanvrager">
+        <dc:Bounds height="80" width="180" x="280" y="360"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_RechthebbendePartner" dmnElementRef="dt225_RechthebbendePartner">
+        <dc:Bounds height="80" width="180" x="720" y="360"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_TekortSchieten" dmnElementRef="dt225_TekortSchieten">
+        <dc:Bounds height="80" width="180" x="980" y="80"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_DringendeReden" dmnElementRef="dt225_DringendeReden">
+        <dc:Bounds height="80" width="180" x="980" y="220"/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_HardheidsclausuleToepassen" dmnElementRef="dt225_HardheidsclausuleToepassen">
+        <dc:Bounds height="80" width="180" x="980" y="360"/>
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
