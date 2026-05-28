@@ -302,6 +302,40 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   };
 
   const generateRequestBodyFromDMN = (dmnContent) => {
+    // Helper — parses a FEEL allowed-values list and returns the first item.
+    // String literals are unwrapped, numbers parsed, booleans coerced.
+    const parseFirstFeelListItem = (text) => {
+      const trimmed = (text || '').trim();
+      if (!trimmed) return null;
+      if (trimmed.startsWith('"')) {
+        const end = trimmed.indexOf('"', 1);
+        return end > 0 ? trimmed.slice(1, end) : null;
+      }
+      const commaIdx = trimmed.indexOf(',');
+      const raw = (commaIdx >= 0 ? trimmed.slice(0, commaIdx) : trimmed).trim();
+      if (raw === 'true') return true;
+      if (raw === 'false') return false;
+      const num = Number(raw);
+      if (raw !== '' && !Number.isNaN(num)) return num;
+      return raw;
+    };
+
+    // Helper — scans every decisionTable input column for an <inputValues>
+    // constraint whose inputExpression text matches the given inputData name.
+    // Returns the first allowed value, or null when no constraint exists.
+    const findInputValuesExample = (xmlDoc, inputDataName) => {
+      const inputs = xmlDoc.querySelectorAll('decisionTable > input');
+      for (const inp of inputs) {
+        const expr = inp.querySelector('inputExpression > text')?.textContent?.trim();
+        if (expr !== inputDataName) continue;
+        const ivText = inp.querySelector('inputValues > text')?.textContent;
+        if (!ivText) continue;
+        const first = parseFirstFeelListItem(ivText);
+        if (first !== null) return first;
+      }
+      return null;
+    };
+
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
@@ -327,6 +361,34 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
 
         let value = '';
         let type = 'String';
+
+        // Highest-priority source: an <inputValues> constraint on the
+        // decisionTable input column tied to this inputData. Wins over
+        // name-based heuristics. Safe for DMNs without inputValues — they
+        // fall through to the existing logic unchanged.
+        const inputValuesExample = findInputValuesExample(xmlDoc, name);
+        if (inputValuesExample !== null) {
+          value = inputValuesExample;
+          switch (typeRef) {
+            case 'boolean':
+              type = 'Boolean';
+              break;
+            case 'integer':
+            case 'long':
+              type = 'Integer';
+              break;
+            case 'number':
+            case 'double':
+            case 'decimal':
+              type = 'Double';
+              break;
+            case 'string':
+            default:
+              type = 'String';
+          }
+          variables[name] = { value, type };
+          return; // skip the heuristic block for this inputData
+        }
 
         if (typeRef) {
           switch (typeRef) {
@@ -531,8 +593,28 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         });
       }
     } catch (err) {
-      // Backend unreachable — fail silently, don't block the DMN workflow
+      // Backend unreachable — don't block the DMN workflow, but make the
+      // situation visible. We populate validationResult with a neutral
+      // "unavailable" shape so the UI can render a distinct, non-alarming
+      // banner (yellow/amber, not red) rather than silently appearing as if
+      // no validation was even attempted.
       console.warn('[DMNTab] Validation backend unavailable:', err.message);
+      setValidationResult({
+        valid: false,
+        unavailable: true,
+        parseError:
+          'Syntax validation result not available — the validation backend ' +
+          `could not be reached (${err.message}). DMN deployment and testing ` +
+          'still work; only syntax pre-checks are skipped.',
+        layers: {
+          base: { label: 'Base DMN', issues: [] },
+          business: { label: 'Business Rules', issues: [] },
+          execution: { label: 'Execution Rules', issues: [] },
+          interaction: { label: 'Interaction Rules', issues: [] },
+          content: { label: 'Content', issues: [] },
+        },
+        summary: { errors: 0, warnings: 0, infos: 0 },
+      });
     } finally {
       setIsValidating(false);
     }
@@ -1052,6 +1134,13 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                         <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent" />
                         <span className="text-sm font-medium text-gray-700">Validating…</span>
                       </>
+                    ) : validationResult?.unavailable ? (
+                      <>
+                        <AlertCircle size={16} className="text-amber-500" />
+                        <span className="text-sm font-medium text-amber-700">
+                          Syntax validation result not available
+                        </span>
+                      </>
                     ) : validationResult?.valid ? (
                       <>
                         <ShieldCheck size={16} className="text-green-600" />
@@ -1097,7 +1186,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 {validationExpanded && validationResult && !isValidating && (
                   <div className="mt-2 space-y-1.5">
                     {validationResult.parseError && (
-                      <div className="flex items-start gap-2 bg-red-50 border border-red-100 rounded px-2 py-1.5 text-xs text-red-700">
+                      <div
+                        className={
+                          'flex items-start gap-2 rounded px-2 py-1.5 text-xs border ' +
+                          (validationResult.unavailable
+                            ? 'bg-amber-50 border-amber-100 text-amber-800'
+                            : 'bg-red-50 border-red-100 text-red-700')
+                        }
+                      >
                         <AlertCircle size={12} className="flex-shrink-0 mt-0.5" />
                         <span>{validationResult.parseError}</span>
                       </div>

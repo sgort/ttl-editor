@@ -1,0 +1,534 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/pw-normbedragen> a cpsv:PublicService ;
+    dct:identifier "pw-normbedragen" ;
+    dct:title "Normenbrief - Informatie voor gemeenten"@nl ;
+    dct:description "Ieder half jaar veranderen de bedragen en percentages voor de uitvoering van de Participatiewet, IOAW, IOAZ en het Bbz 2004. Het gaat onder meer om de bijstandsnormen, de minimumbedragen studietoeslag en de grondslagen IOAW en IOAZ. De uitkeringen worden ieder halfjaar aangepast als gevolg van de indexering van het wettelijk minimumuurloon."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "allowance, social, income,"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/pw-normbedragen/dmn>  .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Zaken_en_Werkgelegenheid" ;
+    skos:prefLabel "Sociale Zaken en Werkgelegenheid (SZW)"@nl ;
+    foaf:homepage <https://szw.nl> ;
+    cv:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png> ;
+    schema:image <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png>  .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0015703> a eli:LegalResource ;
+    dct:identifier "BWBR0015703" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+
+# ============================================================
+#  CPRMV Dataset
+# ============================================================
+
+<https://cprmv.open-regels.nl/datasets/BWBR0015703_2026-01-01> a cprmv:Dataset, dcat:Dataset ;
+    dct:identifier "BWBR0015703_2026-01-01" ;
+    dct:title "Participatiewet"@nl ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01> ;
+    dcat:version "2026-01-01" ;
+    dct:issued "2026-05-27T06:10:49Z"^^xsd:dateTime ;
+    dcat:landingPage <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+
+# ============================================================
+#  CPRMV Rules
+# ============================================================
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande van 18, 19 of 20 jaar: € 345,99;"@nl ;
+    cprmv:situatie "een alleenstaande van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 691,98;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "691,98" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande ouder van 18, 19 of 20 jaar: € 345,99;"@nl ;
+    cprmv:situatie "een alleenstaande ouder van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.347,06."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.347,06" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 1, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.747,49."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.747,49" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.401,50;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.401,50" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners: € 2.002,13."@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.002,13" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 21, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 1.092,41;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "1.092,41" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 20, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.564,69;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.564,69" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners: € 2.144,16;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.144,16" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22a_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze geen ten laste komende kinderen hebben: € 345,99 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder."@nl ;
+    cprmv:situatie "indien ze geen ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "345,99" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22a_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze een of meer ten laste komende kinderen hebben: € 746,42 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder,"@nl ;
+    cprmv:situatie "indien ze een of meer ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "746,42" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 22a, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden: € 690,27."@nl ;
+    cprmv:situatie "gehuwden"@nl ;
+    cprmv:norm "690,27" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder: € 443,76;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "443,76" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor gehuwden € 106,00."@nl ;
+    cprmv:situatie "voor gehuwden"@nl ;
+    cprmv:norm "106,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande of een alleenstaande ouder € 47,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "47,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 23, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-19_lid-3> a cprmv:Rule ;
+    cprmv:id "lid 3" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van 4,8 procent per 1 januari 2009: 5 procent van die bijstand."@nl ;
+    cprmv:situatie "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van"@nl ;
+    cprmv:norm "5" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 19, lid 3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-j> a cprmv:Rule ;
+    cprmv:id "onderdeel j." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een een- of tweemalige premie van ten hoogste € 3.398,00 per kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "een een- of tweemalige premie van ten hoogste"@nl ;
+    cprmv:norm "3.398,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel j." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-n> a cprmv:Rule ;
+    cprmv:id "onderdeel n." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van"@nl ;
+    cprmv:norm "285,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel n." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-r> a cprmv:Rule ;
+    cprmv:id "onderdeel r." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van"@nl ;
+    cprmv:norm "177,66" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel r." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-y> a cprmv:Rule ;
+    cprmv:id "onderdeel y." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel y." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-z> a cprmv:Rule ;
+    cprmv:id "onderdeel z." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel z." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-31_lid-2_onderdeel-aa> a cprmv:Rule ;
+    cprmv:id "onderdeel aa." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht."@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "180,19" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 31, lid 2, onderdeel aa." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-33_lid-5_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande en een alleenstaande ouder: € 26,50 per kalendermaand;"@nl ;
+    cprmv:situatie "voor een alleenstaande en een alleenstaande ouder"@nl ;
+    cprmv:norm "26,50" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-33_lid-5_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 53,00 per kalendermaand."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "53,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 33, lid 5, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-2_onderdeel-d> a cprmv:Rule ;
+    cprmv:id "onderdeel d." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan € 67.500,00;"@nl ;
+    cprmv:situatie "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan"@nl ;
+    cprmv:norm "67.500,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 2, onderdeel d." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande: € 8.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande"@nl ;
+    cprmv:norm "8.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande ouder: € 16.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande ouder"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-34_lid-3_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 16.000,00."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 34, lid 3, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-35_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van € 176,00 niet te boven gaan."@nl ;
+    cprmv:situatie "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van"@nl ;
+    cprmv:norm "176,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-01-01_0, Artikel 35, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-01-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/pw-normbedragen/dmn> a cprmv:DecisionModel ;
+    dct:identifier "pw-normbedragen" ;
+    dct:title "PW-normbedragen.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    dct:source <https://regels.overheid.nl/services/pw-normbedragen/dmn/file> ;
+    cprmv:deploymentId "a17f7c78-5992-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-05-27T06:09:33.502Z"^^xsd:dateTime ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0yar3xr> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0yar3xr" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0zzeplm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0zzeplm" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_05p8y4i> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_05p8y4i" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0lycko6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0lycko6" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_02fzff8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_02fzff8" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0tv6bfi> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0tv6bfi" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1y6sceg> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1y6sceg" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_06gy25k> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_06gy25k" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0l3sva9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0l3sva9" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1sqe0dq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1sqe0dq" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0ksktvy> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0ksktvy" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_025n7b3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_025n7b3" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1n8r7qq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1n8r7qq" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_12kjlua> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_12kjlua" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_0h1w7x0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0h1w7x0" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1gk1h0n> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1gk1h0n" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/pw-normbedragen/rules/DecisionRule_1oxxdvb> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1oxxdvb" ;
+    cpsv:implements <https://regels.overheid.nl/services/pw-normbedragen> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-05-27"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/peildatum> a skos:Concept ;
+    skos:prefLabel "Peildatum"@nl ;
+    skos:definition "Peildatum is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PEIL" ;
+    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/peildatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/norm> a skos:Concept ;
+    skos:prefLabel "Norm"@nl ;
+    skos:definition "Norm is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NORM" ;
+    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/norm> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/bedrag> a skos:Concept ;
+    skos:prefLabel "Bedrag"@nl ;
+    skos:definition "Bedrag is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BEDR" ;
+    dct:subject <https://regels.overheid.nl/services/pw-normbedragen/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bedrag> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

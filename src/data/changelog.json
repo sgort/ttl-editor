@@ -1,6 +1,35 @@
 {
   "versions": [
     {
+      "version": "1.9.5",
+      "date": "May 26, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🧪",
+          "iconColor": "blue",
+          "title": "Request body generation reads <inputValues> constraints",
+          "items": [
+            "generateRequestBodyFromDMN in DMNTab.jsx now checks every decisionTable input column for an <inputValues> FEEL list whose inputExpression matches an inputData name, and uses the first allowed value as the starter — DMNs that constrain string inputs (e.g. norm descriptions, status codes) no longer produce empty values that would fail at Operaton evaluate time",
+            "Two helper closures added: parseFirstFeelListItem (unwraps quoted strings, coerces booleans, parses numbers from a FEEL comma-separated list) and findInputValuesExample (scans decisionTable inputs for a matching constraint)",
+            "Fallback path unchanged: inputData without a corresponding inputValues constraint continues to flow through the existing typeRef switch and name-based heuristics (datum/date → today, geboorte → random adult birth date, aantal/bedrag/inkomen → 0, etc.), so every existing project DMN keeps generating the same starter body as before"
+          ]
+        },
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Surface unreachable validation backend",
+          "items": [
+            "runBackendValidation in DMNTab.jsx no longer fails silently when the LDE backend at REACT_APP_BACKEND_URL is unreachable — the validation panel now renders a distinct amber 'Syntax validation result not available' state with an explanation that deployment and testing still work; only the syntactic pre-check is skipped",
+            "New validationResult.unavailable flag drives a third visual branch in the validation pill, kept separate from the existing red 'Syntax issues found' state so users can tell a network failure apart from an actual DMN problem",
+            "parseError bubble styling now adapts to the unavailable case — amber instead of red — matching the meaning of the message"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.4",
       "date": "May 15, 2026",
       "status": "Released",
