@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:ronl="http://ronl.nl/schema/1.0" id="Definitions_AWB" targetNamespace="http://example.com/awb" exporter="Camunda Modeler" exporterVersion="5.43.1">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:ronl="http://ronl.nl/schema/1.0" id="Definitions_AWB" targetNamespace="http://example.com/awb" exporter="Camunda Modeler" exporterVersion="5.46.1">
   <bpmn:process id="AwbShellProcess" name="AWB General Administrative Law Act - Generic Process" isExecutable="true" camunda:historyTimeToLive="365" ronl:ropaRef="49759ab0-2789-4acb-944e-2f1c2767f5d3">
     <bpmn:startEvent id="StartEvent_AWB" name="Application submitted" camunda:formRef="kapvergunning-start" camunda:formRefBinding="latest">
       <bpmn:outgoing>Flow_Start_Phase1</bpmn:outgoing>
@@ -180,6 +180,9 @@
     <bpmn:sequenceFlow id="Flow_ChainTask_Archives" sourceRef="Task_Phase8_Forward" targetRef="Task_ArchivesDMN" />
     <bpmn:sequenceFlow id="Flow_ArchivesDMN_Record" sourceRef="Task_ArchivesDMN" targetRef="Task_ArchiveRecord" />
     <bpmn:sequenceFlow id="Flow_Archive_End" sourceRef="Task_ArchiveRecord" targetRef="EndEvent_AWB" />
+    <bpmn:intermediateThrowEvent id="Event_117pbb7" />
+    <bpmn:intermediateThrowEvent id="Event_0h67o9z" />
+    <bpmn:intermediateThrowEvent id="Event_1847ifz" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_AWB">
     <bpmndi:BPMNPlane id="BPMNPlane_AWB" bpmnElement="AwbShellProcess">
@@ -251,6 +254,15 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="2120" y="342" width="73" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_117pbb7_di" bpmnElement="Event_117pbb7">
+        <dc:Bounds x="282" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0h67o9z_di" bpmnElement="Event_0h67o9z">
+        <dc:Bounds x="382" y="152" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1847ifz_di" bpmnElement="Event_1847ifz">
+        <dc:Bounds x="592" y="152" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_Start_Phase1_di" bpmnElement="Flow_Start_Phase1">
         <di:waypoint x="196" y="317" />
