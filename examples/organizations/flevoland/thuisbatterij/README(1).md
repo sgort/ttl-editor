@@ -43,23 +43,23 @@ Equivalent BPMN XML examples:
 
 ### Recht form
 
-| Variable | Form component | DMN type | DMN input |
-|---|---|---:|---|
-| `aanvragerFailliet` | Checkbox | `boolean` | Aanvrager is failliet |
-| `provincieWoning` | Select | `string` | Provincie woning |
-| `relatieTotWoning` | Select | `string` | Relatie tot woning |
-| `toestemmingEigenaar` | Checkbox | `boolean` | Toestemming eigenaar |
-| `rekeningNaamKomtOvereen` | Checkbox | `boolean` | Naam op energierekening komt overeen |
+| Variable                  | Form component |  DMN type | DMN input                            |
+| ------------------------- | -------------- | --------: | ------------------------------------ |
+| `aanvragerFailliet`       | Checkbox       | `boolean` | Aanvrager is failliet                |
+| `provincieWoning`         | Select         |  `string` | Provincie woning                     |
+| `relatieTotWoning`        | Select         |  `string` | Relatie tot woning                   |
+| `toestemmingEigenaar`     | Checkbox       | `boolean` | Toestemming eigenaar                 |
+| `rekeningNaamKomtOvereen` | Checkbox       | `boolean` | Naam op energierekening komt overeen |
 
 ### Hoogte form
 
-| Variable | Form component | DMN type | DMN input |
-|---|---|---:|---|
-| `gemaakteKosten` | Number | `double` | Gemaakte kosten |
-| `aanvraagDatum` | Date | `string` | Aanvraagdatum; expected format `yyyy-MM-dd` |
-| `aanvragerType` | Select | `string` | Aanvrager type |
-| `reedsGesubsidieerdEigenaren` | Number | `double` | Reeds gesubsidieerd eigenaren |
-| `reedsGesubsidieerdHuurders` | Number | `double` | Reeds gesubsidieerd huurders |
+| Variable                      | Form component | DMN type | DMN input                                   |
+| ----------------------------- | -------------- | -------: | ------------------------------------------- |
+| `gemaakteKosten`              | Number         | `double` | Gemaakte kosten                             |
+| `aanvraagDatum`               | Date           | `string` | Aanvraagdatum; expected format `yyyy-MM-dd` |
+| `aanvragerType`               | Select         | `string` | Aanvrager type                              |
+| `reedsGesubsidieerdEigenaren` | Number         | `double` | Reeds gesubsidieerd eigenaren               |
+| `reedsGesubsidieerdHuurders`  | Number         | `double` | Reeds gesubsidieerd huurders                |
 
 ## Notes
 
