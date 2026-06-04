@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:ronl="http://ronl.nl/schema/1.0" id="Definitions_AWB" targetNamespace="http://example.com/awb" exporter="Camunda Modeler" exporterVersion="5.46.1">
-  <bpmn:process id="AwbShellProcess" name="AWB General Administrative Law Act - Generic Process" isExecutable="true" camunda:historyTimeToLive="365" ronl:ropaRef="49759ab0-2789-4acb-944e-2f1c2767f5d3">
+  <bpmn:process id="AwbThuisbatterij" name="AWB Thuisbatterij" isExecutable="true" camunda:historyTimeToLive="365" ronl:ropaRef="49759ab0-2789-4acb-944e-2f1c2767f5d3" ronl:organization="flevoland">
     <bpmn:startEvent id="StartEvent_AWB" name="Application submitted" camunda:formRef="kapvergunning-start" camunda:formRefBinding="latest">
       <bpmn:outgoing>Flow_Start_Phase1</bpmn:outgoing>
     </bpmn:startEvent>
@@ -185,7 +185,7 @@
     <bpmn:intermediateThrowEvent id="Event_1847ifz" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_AWB">
-    <bpmndi:BPMNPlane id="BPMNPlane_AWB" bpmnElement="AwbShellProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_AWB" bpmnElement="AwbThuisbatterij">
       <bpmndi:BPMNShape id="StartEvent_AWB_di" bpmnElement="StartEvent_AWB">
         <dc:Bounds x="160" y="299" width="36" height="36" />
         <bpmndi:BPMNLabel>
