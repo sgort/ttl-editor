@@ -2,12 +2,6 @@
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" id="Definitions_CompleteMetRechtOpSubsidie" name="Complete subsidie thuisbatterij" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
   <decision id="BehaalbareHoogteSubsidie" name="Behaalbare Hoogte Subsidie" camunda:historyTimeToLive="0">
     <variable name="hoogteSubsidie" typeRef="double" />
-    <informationRequirement id="InformationRequirement_Behaalbare_Basis">
-      <requiredDecision href="#BerekenBasisHoogteSubsidie" />
-    </informationRequirement>
-    <informationRequirement id="InformationRequirement_Behaalbare_Platform">
-      <requiredDecision href="#BerekenBeschikbaarSubsidiePlafond" />
-    </informationRequirement>
     <informationRequirement id="InformationRequirement_Behaalbare_JaarGebondenBudget">
       <requiredDecision href="#jaarGebondenBudget" />
     </informationRequirement>
@@ -38,9 +32,6 @@
   </decision>
   <decision id="BerekenBasisHoogteSubsidie" name="Bereken Basis Hoogte Subsidie" camunda:historyTimeToLive="0">
     <variable name="basisHoogteSubsidie" typeRef="double" />
-    <informationRequirement id="InformationRequirement_Basis_Constanten">
-      <requiredDecision href="#SubsidieConstantenThuisbatterij" />
-    </informationRequirement>
     <informationRequirement id="InformationRequirement_1fephhr">
       <requiredInput href="#InputData_18dsvrq" />
     </informationRequirement>
@@ -71,9 +62,6 @@
   </decision>
   <decision id="BerekenBeschikbaarSubsidiePlafond" name="Bereken Beschikbaar Subsidie Plafond" camunda:historyTimeToLive="0">
     <variable name="beschikbaarSubsidiePlafond" typeRef="double" />
-    <informationRequirement id="InformationRequirement_181n0qk">
-      <requiredDecision href="#jaarGebondenBudget" />
-    </informationRequirement>
     <informationRequirement id="InformationRequirement_1t30h0t">
       <requiredInput href="#InputData_04cuqa0" />
     </informationRequirement>
@@ -85,6 +73,9 @@
     </informationRequirement>
     <informationRequirement id="InformationRequirement_12zgy8b">
       <requiredInput href="#InputData_1f43kne" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_181n0qk">
+      <requiredDecision href="#jaarGebondenBudget" />
     </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBeschikbaarSubsidiePlafond" hitPolicy="FIRST">
       <input id="Input_AanvraagDatum" label="Aanvraagdatum">
@@ -625,29 +616,9 @@
       <dmndi:DMNShape id="DMNShape_SubsidieConstantenThuisbatterij" dmnElementRef="SubsidieConstantenThuisbatterij">
         <dc:Bounds height="80" width="300" x="220" y="400" />
       </dmndi:DMNShape>
-      <dmndi:DMNEdge id="DMNEdge_Behaalbare_Basis" dmnElementRef="InformationRequirement_Behaalbare_Basis">
-        <di:waypoint x="370" y="220" />
-        <di:waypoint x="500" y="160" />
-        <di:waypoint x="500" y="140" />
-      </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="DMNEdge_Behaalbare_Platform" dmnElementRef="InformationRequirement_Behaalbare_Platform">
-        <di:waypoint x="780" y="220" />
-        <di:waypoint x="580" y="160" />
-        <di:waypoint x="580" y="140" />
-      </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="DMNEdge_Basis_Constanten" dmnElementRef="InformationRequirement_Basis_Constanten">
-        <di:waypoint x="370" y="400" />
-        <di:waypoint x="370" y="320" />
-        <di:waypoint x="370" y="300" />
-      </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_0djit7s" dmnElementRef="jaarGebondenBudget">
         <dc:Bounds height="80" width="180" x="610" y="430" />
       </dmndi:DMNShape>
-      <dmndi:DMNEdge id="DMNEdge_1pghh4a" dmnElementRef="InformationRequirement_181n0qk">
-        <di:waypoint x="700" y="430" />
-        <di:waypoint x="700" y="320" />
-        <di:waypoint x="700" y="300" />
-      </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_0tknppw" dmnElementRef="InputData_04cuqa0">
         <dc:Bounds height="45" width="125" x="1077" y="237" />
       </dmndi:DMNShape>
@@ -735,6 +706,11 @@
         <di:waypoint x="1520" y="363" />
         <di:waypoint x="1730" y="230" />
         <di:waypoint x="1730" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1pghh4a" dmnElementRef="InformationRequirement_181n0qk">
+        <di:waypoint x="700" y="430" />
+        <di:waypoint x="700" y="320" />
+        <di:waypoint x="700" y="300" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
