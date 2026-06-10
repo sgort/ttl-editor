@@ -58,7 +58,7 @@
 #  Temporal Rules
 # ============================================================
 
-<https://regels.overheid.nl/register/Flevoland/subsidie-kaal> a cpsv:Rule, cprmv:TemporalRule ;
+<https://regels.overheid.nl/register/Flevoland/subsidie-kaal-Kale-Hoogte> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/recht-hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:identifier "SubsidieThuisbatterij kale hoogte 001" ;
     dct:title "kale Subsidiehoogte Thuisbatterij bepaling, zonder rekening houdend met budget"@nl ;
@@ -67,7 +67,7 @@
     cprmv:confidenceLevel "high" ;
     dct:description "Provinciaal  \n-Algemene Subsidieverordening Flevoland 2023 \n-Nadere regels Subsidie Thuisbatterij Provincie Flevoland\n\nAanname van recht op subsidie, bepaling van hoogte mogelijk beperkt door lopend budget.\n\nArtikel 5 Regeling \n\nDe hoogte van de subsidie voor een thuisbatterij bedraagt 25% van de subsidiabele kosten, met een minimumbedrag van € 750 en een maximumbedrag van € 1.250. \n\nHoogte subsidie = 25% van subsidiabel bedrag (gegeven)  \nMinimum van 750 euro, max 1250 euro.\n\n"@nl  .
 
-<https://regels.overheid.nl/register/Flevoland/subsidie-hoogte> a cpsv:Rule, cprmv:TemporalRule ;
+<https://regels.overheid.nl/register/Flevoland/subsidie-hoogte-Budget> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/recht-hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:identifier "SubsidieThuisbatterijbudget ruimte 002" ;
     dct:title "Subsidiehoogte Thuisbatterij bepaling, met welk jaargebonden budget"@nl ;
@@ -76,7 +76,7 @@
     cprmv:confidenceLevel "high" ;
     dct:description "2026: 875.000 totaal \n\nAanvragen 12 januari 2026 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  \n\n2027: 1.000.000 + wat over was van het vorige jaar totaal \n\nAanvragen 1 januari 2027 – 30 september 2027 \n\nPlafond Eigenaren: 437.500 \nPlafond Huurder: 437.500 \n\nNa 1 oktober: wat nog over is, geen onderscheid.  "@nl  .
 
-<https://regels.overheid.nl/register/Flevoland/subsidie-recht> a cpsv:Rule, cprmv:TemporalRule ;
+<https://regels.overheid.nl/register/Flevoland/subsidie-recht-Recht> a cpsv:Rule, cprmv:TemporalRule ;
     cpsv:implements <https://regels.overheid.nl/services/recht-hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:identifier "Subsidie Thuisbatterij Recht 01" ;
     dct:title "Recht op subsidie thuisbatterij"@nl ;
@@ -388,7 +388,15 @@
     dct:created "2026-05-28"^^xsd:date .
 
 # Input Variable Concepts
-# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-05-28"^^xsd:date .
+
+# Input Variable Concepts
+# =====================================
 # NL-SBB Concept Definitions (DMN Variables)
 # =====================================
 
@@ -396,7 +404,7 @@
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
     dct:creator "RONL" ;
-    dct:created "2026-06-03"^^xsd:date .
+    dct:created "2026-06-04"^^xsd:date .
 
 # Input Variable Concepts
 
