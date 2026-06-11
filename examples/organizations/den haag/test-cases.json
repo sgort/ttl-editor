@@ -1,0 +1,1974 @@
+[
+  {
+    "name": "TC1_Groen_alleenstaande_Om_niet",
+    "expected": "rechtOpALO=groen, beslissingALO=\"Om niet\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC2_Groen_paar_Krediethypotheek",
+    "expected": "rechtOpALO=groen, beslissingALO=\"Krediethypotheek\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 1200.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Krediethypotheek",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC3_Rood_geen_aanvraag_ALO_reden_00",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"00\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC4_Rood_lopende_aanvraag_reden_99",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"99\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC5_Rood_beide_buiten_gemeente_reden_01",
+    "expected": "rechthebbendeAanvrager=rood, rechthebbendePartner=rood, rechtOpALO=rood, redenAfwijzing=\"01\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC6_Rood_ongeoorloofd_verlof_reden_04",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"04\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "ja",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 600.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC7_Rood_inkomen_boven_norm_reden_02",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"02\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 2400.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC8_Rood_vermogen_aanwezig_reden_03",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"03\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC9_Rood_voorliggende_voorziening_reden_06",
+    "expected": "rechtOpALO=rood, redenAfwijzing=\"06\", beslissingALO=\"Geen recht\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC10_Oranje_aanvrager_niet_vastgesteld",
+    "expected": "rechtOpALO=oranje, informatiebehoefte=\"persoon\", beslissingALO=\"Informatie nodig\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC11_Oranje_partner_niet_vastgesteld",
+    "expected": "rechtOpALO=oranje, informatiebehoefte=\"partner\", beslissingALO=\"Informatie nodig\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC12_Oranje_aanvrager_informatie_onvolledig",
+    "expected": "rechthebbendeAanvrager=oranje, rechtOpALO=oranje, informatiebehoefte=\"informatie onvolledig\", beslissingALO=\"Informatie nodig\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC13_Oranje_verlof_onbekend",
+    "expected": "rechtOpALO=oranje, informatiebehoefte=\"onbetaald verlof\", beslissingALO=\"Informatie nodig\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "onbekend",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC14_Edge_inkomen_exact_gelijk_aan_norm",
+    "expected": "Boundary: maandelijksInkomen == bijstandsNorm (strict less-than fails) → rechtOpALO=rood, redenAfwijzing=\"02\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC15_Edge_FIRST_hitpolicy_geen_aanvraag_dominates",
+    "expected": "FIRST: aanvraagtypeALO=false fires R1 (\"00\") despite multiple other rejection grounds also being true → redenAfwijzing=\"00\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "ja",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 3000.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC16_Edge_asymmetric_aanvrager_rood_partner_groen",
+    "expected": "Model gap: aanvrager=rood (detentie), partner=groen — R5 needs BOTH rood, R13 needs BOTH groen, no rule fires → rechtOpALO=null, beslissingALO=null. Surface for design review.",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1850.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC17_Edge_Groen_onbekende_bijstandsvorm_fallback",
+    "expected": "rechtOpALO=groen, bijstandsVorm unrecognized → R7 fallback fires → beslissingALO=\"Bijstandsvorm te bepalen\"",
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "bijstandsVorm": {
+          "value": "Nog niet bepaald",
+          "type": "String"
+        },
+        "aanvragerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "aanvragerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerInformatieOnvolledig": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerLeeftijdOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "partnerDetentie": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerMaatregel100": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "partnerRechtOpStufi": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "oordeelTekortSchieten": {
+          "value": "Belanghebbende schiet niet tekort",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  }
+]
