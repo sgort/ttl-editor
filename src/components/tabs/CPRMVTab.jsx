@@ -2,6 +2,7 @@ import { AlertCircle, Database, FileText, FileUp, Plus, Trash2 } from 'lucide-re
 import React from 'react';
 
 import exampleCPRMVData from '../../data/cprmv-example.json';
+import { flattenCprmvRules } from '../../utils/cprmvImport';
 
 const CPRMVTab = ({
   cprmvRules,
@@ -12,20 +13,9 @@ const CPRMVTab = ({
   setCprmvRules,
   legalResource,
 }) => {
-  // Function to load example data
+  // Function to load example data (CPRMV 0.4.1 API shape, flattened to the editor model)
   const loadExampleData = () => {
-    // Map all example rules and set them directly
-    const mappedRules = exampleCPRMVData.map((rule, index) => ({
-      id: Date.now() + index,
-      ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
-      rulesetId: rule.rulesetid || '',
-      definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
-      situatie: rule.situatie || '',
-      norm: rule.norm || '',
-      ruleIdPath: rule.rule_id_path || '',
-    }));
-
-    setCprmvRules(mappedRules);
+    setCprmvRules(flattenCprmvRules(exampleCPRMVData));
   };
 
   return (

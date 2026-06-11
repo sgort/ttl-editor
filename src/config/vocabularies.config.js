@@ -9,8 +9,8 @@
  */
 
 export const VOCABULARY_CONFIG = {
-  version: '2.0.0',
-  lastUpdated: '2026-02-15',
+  version: '2.1.0',
+  lastUpdated: '2026-06-11',
 
   // Namespace URI to prefix mappings
   namespaces: {
@@ -26,7 +26,8 @@ export const VOCABULARY_CONFIG = {
     // NEW: Legacy ronl namespace (backward compatibility - IMPORT ONLY)
     'https://regels.overheid.nl/termen/': ['ronl-legacy'],
 
-    'https://cprmv.open-regels.nl/0.3.0/': ['cprmv'],
+    'https://standaarden.open-regels.nl/standards/cprmv/0.4.1#': ['cprmv'],
+    'http://www.w3.org/ns/prov#': ['prov'],
     'http://purl.org/dc/terms/': ['dct'],
     'http://www.w3.org/ns/dcat#': ['dcat'],
     'http://www.w3.org/2004/02/skos/core#': ['skos'],
@@ -74,6 +75,14 @@ export const VOCABULARY_CONFIG = {
         'ronl:ParameterWaarde', // OLD (backward compat)
       ],
       canonicalType: 'cprmv:ParameterWaarde',
+    },
+    ruleSet: {
+      acceptedTypes: ['cprmv:RuleSet'],
+      canonicalType: 'cprmv:RuleSet',
+    },
+    ruleMethod: {
+      acceptedTypes: ['cprmv:RuleMethod'],
+      canonicalType: 'cprmv:RuleMethod',
     },
     cprmvRule: {
       acceptedTypes: ['cprmv:Rule'],
@@ -134,6 +143,15 @@ export const detectEntityType = (line) => {
   }
   if (line.includes('a cprmv:DecisionRule') || line.includes(', cprmv:DecisionRule')) {
     return 'dmnRule';
+  }
+
+  // RuleSet / RuleMethod checked BEFORE cprmv:Rule — "a cprmv:Rule" is a substring
+  // of "a cprmv:RuleSet"/"a cprmv:RuleMethod" and would otherwise win.
+  if (line.includes('a cprmv:RuleSet') || line.includes(', cprmv:RuleSet')) {
+    return 'ruleSet';
+  }
+  if (line.includes('a cprmv:RuleMethod') || line.includes(', cprmv:RuleMethod')) {
+    return 'ruleMethod';
   }
 
   // Concept detection - exclude ConceptScheme

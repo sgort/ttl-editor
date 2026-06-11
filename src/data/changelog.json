@@ -1,6 +1,56 @@
 {
   "versions": [
     {
+      "version": "1.10.0",
+      "date": "June 11, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🆙",
+          "iconColor": "purple",
+          "title": "CPRMV 0.4.1 conformance",
+          "items": [
+            "cprmv: namespace bumped from https://cprmv.open-regels.nl/0.3.0/ to the canonical https://standaarden.open-regels.nl/standards/cprmv/0.4.1# (constants.js TTL_NAMESPACES + vocabularies.config.js), and a prov: prefix added; vocabulary config gains cprmv:RuleSet / cprmv:RuleMethod entity types with detection ordered before cprmv:Rule (since 'a cprmv:Rule' is a substring of 'a cprmv:RuleSet')",
+            "ttlGenerator now emits a 0.4.1-conformant cprmv:RuleSet per rulesetId — replacing the old cprmv:Dataset section — carrying the RuleSetShape-required cprmv:id, cprmv:validFrom^^xsd:date (from the legal resource date, else today), cprmv:isOutputOf → the cpsv:PublicService, cprmv:hasMethod → a dual-typed cprmv:RuleMethod, cprmv:CodificationMethod node, an ordered cprmv:hasPart RDF list of its Rules, and a prov:wasDerivedFrom link to the legal source",
+            "Every cprmv:Rule now always emits cprmv:id (required by RuleShape); cprmv:extends renamed to cprmv:isBasedOn in the temporal/decision sections",
+            "Verified: an editor-generated TTL (example import → full generator) validates clean against the CPRMV 0.4.1 SHACL shapes (0 violations)"
+          ]
+        },
+        {
+          "icon": "📥",
+          "iconColor": "blue",
+          "title": "Import the CPRMV 0.4.1 API output",
+          "items": [
+            "New src/utils/cprmvImport.js flattenCprmvRules walks the CPRMV Rules API shape (array of cprmv:RuleSet objects with nested …#hasPart object-maps), recursing and flattening sub-rules into the editor's flat rule model, with nested rules inheriting their parent rulesetId",
+            "Reads the 0.4.1 standards keys plus the http://cprmv.open-regels.nl/ extension predicates (situatie/norm/rulesetid/rule_id_path), and tolerates legacy 0.4.1-slash and 0.3.0 keys and flat-array exports",
+            "handleImportJSON (App.js) and CPRMVTab 'Load Example' both use the shared flattener; the bundled cprmv-example.json is replaced with the conformant API output"
+          ]
+        },
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "CPSV-AP 3.2.0 conformance",
+          "items": [
+            "Service: dct:language and cv:sector (and cv:thematicArea) references are now typed in-graph (dct:LinguisticSystem / skos:Concept) so the file-local SHACL sh:class checks pass without entailment",
+            "Organisation: emits dct:spatial (was the non-conformant cv:spatial) pointing at a dct:Location-typed node, satisfying PublicOrganisationShape",
+            "cpsv:Rule nodes (Temporal Rules and DMN Decision Rules) now always emit the required dct:identifier, dct:title@nl and dct:description@nl, and cpsv:implements points at the eli:LegalResource (not the PublicService) — or is omitted when no legal resource is set",
+            "Verified: a full editor-generated TTL (service + organisation + temporal rule + DMN decision rules + CPRMV rules) validates clean against both the CPSV-AP 3.2.0 and CPRMV 0.4.1 SHACL shapes (0 violations on each)"
+          ]
+        },
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Pre-publish SHACL validation (advisory)",
+          "items": [
+            "New src/utils/shaclHelper.js validateTtl POSTs the generated Turtle to REACT_APP_BACKEND_URL/v1/shacl/validate and returns the layered result; it never throws — an unreachable backend yields a neutral { unavailable: true } shape (mirroring DMNTab.runBackendValidation)",
+            "PublishDialog runs validation when it opens (and via a 'Validate now' button) and renders a layered CPRMV / CPSV-AP / RONL result panel with per-layer issues; it is purely advisory and never blocks publishing, with a distinct amber state when the backend is unreachable"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.6",
       "date": "June 11, 2026",
       "status": "Released",

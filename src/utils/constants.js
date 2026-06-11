@@ -77,7 +77,8 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix schema: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix cprmv: <https://cprmv.open-regels.nl/0.3.0/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
 `;
 
 // Base URIs for generated resources

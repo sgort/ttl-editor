@@ -3,12 +3,15 @@
 import { AlertCircle, CheckCircle, Cloud, Eye, EyeOff, Loader, Upload, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+import { validateTtl } from '../utils/shaclHelper';
+
 const PublishDialog = ({
   isOpen,
   onClose,
   onPublish,
   currentConfig,
   publishingState, // ← Progress tracking support
+  ttlContent, // ← Turtle to SHACL-validate before publishing (advisory)
 }) => {
   // Initialize with default empty config if currentConfig is undefined
   const defaultConfig = {
@@ -23,6 +26,10 @@ const PublishDialog = ({
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
+  // Pre-publish SHACL validation (advisory — never blocks publishing).
+  const [shaclResult, setShaclResult] = useState(null);
+  const [shaclValidating, setShaclValidating] = useState(false);
+
   // Update local config when currentConfig changes
   useEffect(() => {
     if (currentConfig) {
@@ -30,12 +37,39 @@ const PublishDialog = ({
     }
   }, [currentConfig]);
 
-  // Reset test result when dialog opens/closes
+  // Reset test + SHACL result when dialog opens/closes
   useEffect(() => {
     if (!isOpen) {
       setTestResult(null);
+      setShaclResult(null);
     }
   }, [isOpen]);
+
+  // Run SHACL validation when the dialog opens (advisory; results are informational).
+  useEffect(() => {
+    if (!isOpen || !ttlContent || !ttlContent.trim()) return undefined;
+    let cancelled = false;
+    setShaclResult(null);
+    setShaclValidating(true);
+    validateTtl(ttlContent).then((result) => {
+      if (!cancelled) {
+        setShaclResult(result);
+        setShaclValidating(false);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isOpen, ttlContent]);
+
+  const handleRevalidate = async () => {
+    if (!ttlContent || !ttlContent.trim()) return;
+    setShaclResult(null);
+    setShaclValidating(true);
+    const result = await validateTtl(ttlContent);
+    setShaclResult(result);
+    setShaclValidating(false);
+  };
 
   if (!isOpen) return null;
 
@@ -255,6 +289,100 @@ const PublishDialog = ({
           {/* Configuration Form - Only show when not publishing or after completion */}
           {(!publishingState || !publishingState.isPublishing) && (
             <>
+              {/* Pre-publish SHACL validation (advisory — never blocks publishing) */}
+              {ttlContent && ttlContent.trim() && (
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-semibold text-gray-800">
+                      Pre-publish SHACL validation
+                    </h3>
+                    <button
+                      onClick={handleRevalidate}
+                      disabled={shaclValidating}
+                      className="text-xs px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 disabled:opacity-50 transition-colors"
+                    >
+                      {shaclValidating ? 'Validating…' : 'Validate now'}
+                    </button>
+                  </div>
+
+                  {shaclValidating && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Loader className="w-4 h-4 animate-spin" /> Validating against CPRMV 0.4.1
+                      shapes…
+                    </div>
+                  )}
+
+                  {!shaclValidating && shaclResult && shaclResult.unavailable && (
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded text-sm text-amber-800">
+                      {shaclResult.parseError}
+                    </div>
+                  )}
+
+                  {!shaclValidating &&
+                    shaclResult &&
+                    !shaclResult.unavailable &&
+                    shaclResult.parseError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+                        Turtle parse error: {shaclResult.parseError}
+                      </div>
+                    )}
+
+                  {!shaclValidating &&
+                    shaclResult &&
+                    !shaclResult.unavailable &&
+                    !shaclResult.parseError && (
+                      <div>
+                        <div
+                          className={`flex items-center gap-2 text-sm font-medium ${
+                            shaclResult.valid ? 'text-green-700' : 'text-red-700'
+                          }`}
+                        >
+                          {shaclResult.valid ? (
+                            <CheckCircle className="w-4 h-4" />
+                          ) : (
+                            <AlertCircle className="w-4 h-4" />
+                          )}
+                          {shaclResult.valid
+                            ? 'Conformant — 0 violations'
+                            : `${shaclResult.summary.errors} error(s), ${shaclResult.summary.warnings} warning(s)`}
+                          {!shaclResult.valid && (
+                            <span className="text-xs font-normal text-gray-500">
+                              (you can still publish)
+                            </span>
+                          )}
+                        </div>
+                        {Object.entries(shaclResult.layers).map(([key, layer]) =>
+                          layer.issues && layer.issues.length > 0 ? (
+                            <div key={key} className="mt-2">
+                              <p className="text-xs font-semibold text-gray-700">{layer.label}</p>
+                              <ul className="mt-1 space-y-1">
+                                {layer.issues.map((issue, i) => (
+                                  <li
+                                    key={i}
+                                    className={`text-xs ${
+                                      issue.severity === 'error'
+                                        ? 'text-red-700'
+                                        : issue.severity === 'warning'
+                                          ? 'text-amber-700'
+                                          : 'text-gray-600'
+                                    }`}
+                                  >
+                                    <span className="font-mono">[{issue.severity}]</span>{' '}
+                                    {issue.message}
+                                    {issue.location ? (
+                                      <span className="text-gray-400"> — {issue.location}</span>
+                                    ) : null}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : null
+                        )}
+                      </div>
+                    )}
+                </div>
+              )}
+
               {/* Info Banner */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-sm text-blue-800">
