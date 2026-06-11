@@ -26,6 +26,48 @@ export function buildServiceUri(identifier) {
 }
 
 /**
+ * Extract the primary decision key from DMN XML.
+ * Skips constant parameters (p_* prefix) to find the actual testable decision.
+ * Falls back to the first decision if every decision is a constant.
+ * @param {string} dmnContent - Raw DMN XML
+ * @returns {string} - Decision key (id attribute) or '' if none found
+ */
+export function extractPrimaryDecisionKey(dmnContent) {
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
+
+    // Find first non-constant decision (skip p_*)
+    const decisionElements = xmlDoc.querySelectorAll('decision');
+    const allDecisionIds = Array.from(decisionElements)
+      .map((d) => d.getAttribute('id'))
+      .filter(Boolean);
+
+    for (const decision of decisionElements) {
+      const id = decision.getAttribute('id');
+      if (id && !id.startsWith('p_')) {
+        console.log(
+          `[DMN] Extracted primary decision key: "${id}" (skipped ${allDecisionIds.filter((d) => d.startsWith('p_')).length} p_* constant(s))`
+        );
+        return id;
+      }
+    }
+
+    // Fallback: if all decisions are p_*, use the first one anyway
+    if (decisionElements.length > 0) {
+      const firstId = decisionElements[0].getAttribute('id');
+      if (firstId) {
+        console.warn(`[DMN] All decisions are constants (p_*), using first one: "${firstId}"`);
+        return firstId;
+      }
+    }
+  } catch (err) {
+    console.error('Error extracting decision key from DMN:', err);
+  }
+  return '';
+}
+
+/**
  * Extract input variables from test result data
  * @param {Object} dmnData - DMN metadata object with test results
  * @returns {Array} - Array of input objects {name, type, exampleValue}
@@ -317,6 +359,7 @@ export function generateConceptNotation(variableName, existingNotations = []) {
 
 // Default export object for convenience
 const dmnHelpers = {
+  extractPrimaryDecisionKey,
   extractRulesFromDMN,
   extractInputsFromTestResult,
   extractOutputsFromTestResult,

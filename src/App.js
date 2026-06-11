@@ -39,6 +39,7 @@ import {
   useParametersHandlers,
   useTemporalRulesHandlers,
 } from './hooks/useArrayHandlers';
+import { useDsoImport } from './hooks/useDsoImport';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
@@ -151,6 +152,20 @@ function App() {
 
   // state variables for Publish dialog
   const [showPublishDialog, setShowPublishDialog] = useState(false);
+
+  // Consume the DSO → DMN deep-link handoff from the Linked Data Explorer.
+  // Prefills DMN/Service/Organization tabs from ?dsoImport=dmn&… and reuses the
+  // existing message banner for status. Deploy + publish stay in the normal flow.
+  useDsoImport({
+    setDmnData,
+    setService,
+    setOrganization,
+    setActiveTab,
+    notify: ({ type, message: text }) => {
+      setMessage(text);
+      setMessageType(type);
+    },
+  });
 
   // Helper to get TTL content
   const getTTLContent = () => generateTTL(buildStateForTTL());

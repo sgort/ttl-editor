@@ -15,11 +15,12 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
+  extractPrimaryDecisionKey,
   generateConceptDefinition,
   generateConceptLabel,
   generateConceptNotation,
@@ -59,6 +60,38 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',
   });
+
+  // Hydrate internal tab state when DMN content arrives from outside this tab
+  // (e.g. a DSO deep-link import handled in App, which prefills dmnData.content
+  // but never goes through the upload handlers). Without this, deploy/test stay
+  // gated on `uploadedFile` and the imported DMN would appear unusable.
+  // The upload handlers manage `uploadedFile` themselves, so this only fires when
+  // there is content but no file loaded in the current session.
+  useEffect(() => {
+    if (dmnData.isImported) return; // preserved-mode renders its own UI
+    if (!dmnData.content || uploadedFile) return;
+
+    const content = dmnData.content;
+    setUploadedFile({
+      name: dmnData.fileName || 'imported.dmn',
+      content,
+      size: content.length,
+      uploadDate: new Date().toISOString(),
+    });
+
+    const key = dmnData.decisionKey || extractPrimaryDecisionKey(content);
+    if (key) setApiConfig((prev) => ({ ...prev, decisionKey: key }));
+
+    const generatedBody = generateRequestBodyFromDMN(content);
+    if (generatedBody) setTestBody(generatedBody);
+
+    setDecisions(parseDMNDecisionsFromXML(content));
+    setIntermediateResults([]);
+    setTestCaseResults([]);
+
+    runBackendValidation(content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dmnData.content, dmnData.isImported]);
 
   // Check if DMN was imported - show notice instead of normal UI
   if (dmnData.isImported) {
@@ -129,45 +162,6 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       </div>
     );
   }
-
-  /**
-   * Extract primary decision key from DMN XML.
-   * Skips constant parameters (p_* prefix) to find the actual testable decision.
-   */
-  const extractPrimaryDecisionKey = (dmnContent) => {
-    try {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
-
-      // Find first non-constant decision (skip p_*)
-      const decisionElements = xmlDoc.querySelectorAll('decision');
-      const allDecisionIds = Array.from(decisionElements)
-        .map((d) => d.getAttribute('id'))
-        .filter(Boolean);
-
-      for (const decision of decisionElements) {
-        const id = decision.getAttribute('id');
-        if (id && !id.startsWith('p_')) {
-          console.log(
-            `[DMN] Extracted primary decision key: "${id}" (skipped ${allDecisionIds.filter((d) => d.startsWith('p_')).length} p_* constant(s))`
-          );
-          return id;
-        }
-      }
-
-      // Fallback: if all decisions are p_*, use the first one anyway
-      if (decisionElements.length > 0) {
-        const firstId = decisionElements[0].getAttribute('id');
-        if (firstId) {
-          console.warn(`[DMN] All decisions are constants (p_*), using first one: "${firstId}"`);
-          return firstId;
-        }
-      }
-    } catch (err) {
-      console.error('Error extracting decision key from DMN:', err);
-    }
-    return '';
-  };
 
   /**
    * Parse all decision elements from DMN XML to support intermediate testing.

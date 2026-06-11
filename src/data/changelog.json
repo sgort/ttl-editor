@@ -1,6 +1,35 @@
 {
   "versions": [
     {
+      "version": "1.9.6",
+      "date": "June 11, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🔗",
+          "iconColor": "blue",
+          "title": "Consume the DSO → DMN handoff from the Linked Data Explorer",
+          "items": [
+            "New useDsoImport hook (src/hooks/useDsoImport.js) consumes the LDE deep-link contract /?dsoImport=dmn&dmnId=…&env=…&activityName=…&authority=…&activityUrn=…&fsRef=… — on mount it fetches the standalone DMN XML from the shared backend (GET REACT_APP_BACKEND_URL/v1/dso/toepasbare-regels/{dmnId}/dmn, with ?env=prod only when env=prod) and prefills the editor",
+            "DMN tab is prefilled with fileName decision-{dmnId}.dmn, the fetched XML, and the primary decision key, while staying fully interactive (isImported stays false, so deploy/test/publish run through the existing DMNTab + PublishDialog flow rather than the imported-preserved mode)",
+            "Service tab is prefilled from the DSO activity (dct:title from activityName, dct:identifier from activityUrn, and a Dutch provenance description carrying activityUrn + fsRef); Organization tab is prefilled from the resolved authority (skos:prefLabel + dct:identifier)",
+            "After consuming the link the import params are stripped via history.replaceState so a refresh can't re-import, and a consumedRef guard prevents StrictMode double-invoke; status is reported through the existing message banner"
+          ]
+        },
+        {
+          "icon": "♻️",
+          "iconColor": "green",
+          "title": "Shared decision-key extraction + external-content hydration",
+          "items": [
+            "extractPrimaryDecisionKey lifted out of DMNTab.jsx into src/utils/dmnHelpers.js and exported, so the import hook and the DMN tab share one implementation (skips p_* constants, falls back to the first decision) instead of duplicating the parser",
+            "DMNTab now hydrates its internal uploadedFile / decisionKey / test body / parsed decisions / syntactic validation from dmnData.content whenever content arrives from outside the tab (e.g. the DSO deep-link) and no file was uploaded locally — without this, deploy and test stayed gated on the internal uploadedFile state and an imported DMN appeared unusable"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.5",
       "date": "May 26, 2026",
       "status": "Released",
