@@ -304,6 +304,13 @@ const PublishDialog = ({
                       {shaclValidating ? 'Validating…' : 'Validate now'}
                     </button>
                   </div>
+                  <p className="text-xs text-gray-500 mb-2">
+                    Checks the Turtle that will actually be published — the editor&apos;s current
+                    output. If you imported an older file, this can differ from the original: the
+                    importer normalizes legacy CPRMV/CPSV-AP terms to the CPRMV 0.4.1 / CPSV-AP
+                    3.2.0 vocabulary, so an imported file that fails validation on its own may still
+                    publish as conformant here.
+                  </p>
 
                   {shaclValidating && (
                     <div className="flex items-center gap-2 text-sm text-gray-600">
