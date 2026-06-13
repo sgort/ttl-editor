@@ -74,9 +74,6 @@
     <informationRequirement id="InformationRequirement_12zgy8b">
       <requiredInput href="#InputData_1f43kne" />
     </informationRequirement>
-    <informationRequirement id="InformationRequirement_181n0qk">
-      <requiredDecision href="#jaarGebondenBudget" />
-    </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBeschikbaarSubsidiePlafond" hitPolicy="FIRST">
       <input id="Input_AanvraagDatum" label="Aanvraagdatum">
         <inputExpression id="InputExpression_AanvraagDatum" typeRef="string" expressionLanguage="feel">
@@ -632,8 +629,8 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="DMNEdge_0cdps8r" dmnElementRef="InformationRequirement_050d666">
         <di:waypoint x="1140" y="347" />
-        <di:waypoint x="860" y="320" />
-        <di:waypoint x="860" y="300" />
+        <di:waypoint x="833" y="320" />
+        <di:waypoint x="833" y="300" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_1aa30u5" dmnElementRef="InputData_0w9g4pp">
         <dc:Bounds height="45" width="125" x="887" y="447" />
@@ -645,8 +642,8 @@
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="DMNEdge_03atk16" dmnElementRef="InformationRequirement_1noo0v7">
         <di:waypoint x="950" y="447" />
-        <di:waypoint x="780" y="320" />
-        <di:waypoint x="780" y="300" />
+        <di:waypoint x="727" y="320" />
+        <di:waypoint x="727" y="300" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_0agmhqu" dmnElementRef="InputData_18dsvrq">
         <dc:Bounds height="45" width="125" x="158" y="78" />
@@ -706,11 +703,6 @@
         <di:waypoint x="1520" y="363" />
         <di:waypoint x="1730" y="230" />
         <di:waypoint x="1730" y="200" />
-      </dmndi:DMNEdge>
-      <dmndi:DMNEdge id="DMNEdge_1pghh4a" dmnElementRef="InformationRequirement_181n0qk">
-        <di:waypoint x="700" y="430" />
-        <di:waypoint x="700" y="320" />
-        <di:waypoint x="700" y="300" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
