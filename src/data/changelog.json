@@ -33,6 +33,14 @@
           "items": [
             "Running uploaded test cases now fills the Concepts tab even without a manual evaluate: input concepts are derived from the union of every uploaded case's request-body variables (so all inputs across all cases are covered, not just one case), which needs no successful evaluate; output concepts are still added from the last successful result when there is one."
           ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Round-trip dct:spatial on import",
+          "items": [
+            "Import now reads the organisation's spatial value from both dct:spatial (the current CPSV-AP output) and cv:spatial (legacy files). Previously the importer only read cv:spatial, so a downloaded file — which emits dct:spatial — lost the value on re-import and re-generated without it, causing a 'Less than 1 values … dct:spatial' CPSV-AP error on the second pass. Downloaded files now re-import and re-validate cleanly."
+          ]
         }
       ]
     },
