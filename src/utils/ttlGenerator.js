@@ -858,14 +858,78 @@ export class TTLGenerator {
   }
 
   /**
+   * Normalize preserved imported DMN Decision Rule blocks for CPSV-AP conformance.
+   *
+   * Imported DMN blocks are kept verbatim (Option 3 preservation), so Decision Rules
+   * authored by older exports / foreign tools may miss the CPSV-AP RuleShape essentials:
+   * a cpsv:Rule needs dct:title and dct:description, and cpsv:implements must resolve to
+   * an eli:LegalResource (older exports pointed it at the cpsv:PublicService). This makes
+   * only additive / repointing edits per cpsv:Rule block — no data is dropped — so a
+   * re-imported project validates clean without losing the preserved DMN triples.
+   *
+   * @param {string} ttl - preserved DMN TTL (after stripDmnHeaders)
+   * @returns {string} normalized DMN TTL
+   */
+  normalizeImportedDmnBlocks(ttl) {
+    const legalUri = this.legalResourceSubjectUri();
+
+    const injectAfterTypeLine = (block, predicate) => {
+      const nl = block.indexOf('\n');
+      if (nl === -1) return block;
+      return `${block.slice(0, nl + 1)}    ${predicate} ;\n${block.slice(nl + 1)}`;
+    };
+
+    return ttl
+      .split('\n\n')
+      .map((block) => {
+        // Only touch cpsv:Rule subjects (Decision Rules); leave DecisionModel / Input /
+        // Output / Concept blocks untouched.
+        if (!/\ba\s+[^.;]*\bcpsv:Rule\b/.test(block)) return block;
+
+        // Rule id: prefer dct:identifier, else the trailing URI path segment.
+        let id = (block.match(/dct:identifier\s+"([^"]*)"/) || [])[1];
+        if (!id) {
+          const m = block.match(/\/rules\/([^>\s]+)>/);
+          id = m ? decodeURIComponent(m[1]) : 'decision-rule';
+        }
+
+        // cpsv:implements must point at an eli:LegalResource. Only repoint the known-bad
+        // case (it points at a PublicService); leave any other existing target alone.
+        const implementsMatch = block.match(/cpsv:implements\s+<([^>]*)>/);
+        if (implementsMatch && implementsMatch[1].includes('/services/')) {
+          if (legalUri) {
+            block = block.replace(/cpsv:implements\s+<[^>]*>/, `cpsv:implements <${legalUri}>`);
+          } else {
+            // No legal resource to point at — drop the non-conformant predicate.
+            block = block
+              .replace(/\n[ \t]*cpsv:implements\s+<[^>]*>\s*;/, '')
+              .replace(/;\s*\n[ \t]*cpsv:implements\s+<[^>]*>\s*\./, ' .');
+          }
+        }
+
+        if (!/\bdct:title\b/.test(block)) {
+          block = injectAfterTypeLine(block, `dct:title "Decision rule ${escapeTTLString(id)}"@nl`);
+        }
+        if (!/\bdct:description\b/.test(block)) {
+          block = injectAfterTypeLine(
+            block,
+            `dct:description "${escapeTTLString(`Decision rule ${id} of the DMN decision model.`)}"@nl`
+          );
+        }
+        return block;
+      })
+      .join('\n\n');
+  }
+
+  /**
    * Generate DMN section
    * Handles both imported (preserved) and newly created DMN
    * @returns {string} DMN TTL
    */
   generateDmnSection() {
-    // Imported DMN (preserved blocks)
+    // Imported DMN (preserved blocks) — normalized for CPSV-AP conformance.
     if (this.dmnData.isImported && this.dmnData.importedDmnBlocks) {
-      return this.stripDmnHeaders(this.dmnData.importedDmnBlocks);
+      return this.normalizeImportedDmnBlocks(this.stripDmnHeaders(this.dmnData.importedDmnBlocks));
     }
 
     // Regular DMN (generate fresh TTL)
