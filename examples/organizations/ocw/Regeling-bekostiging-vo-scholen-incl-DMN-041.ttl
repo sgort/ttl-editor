@@ -1,0 +1,452 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/basisbekosting-vo> a cpsv:PublicService ;
+    dct:identifier "basisbekosting-vo" ;
+    dct:title "Regeling bekostiging vo-scholen"@nl ;
+    dct:description "De basisbekostiging bestaat uit een bedrag per leerling en uit een vast bedrag voor de hoofdvestiging en permanente nevenvestigingen."@nl ;
+    cv:thematicArea <http://standaarden.overheid.nl/owms/terms/strtpartschvomld> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "VO, BASVO, onderwijs, bekostiging"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/71852/Onderwijs__Cultuur_en_Wetenschap> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/basisbekosting-vo/dmn>  .
+
+<https://publications.europa.eu/resource/authority/language/NL> a dct:LinguisticSystem .
+
+<https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> a skos:Concept .
+
+<http://standaarden.overheid.nl/owms/terms/strtpartschvomld> a skos:Concept .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/71852/Onderwijs__Cultuur_en_Wetenschap> a cv:PublicOrganisation ;
+    dct:identifier "Onderwijs__Cultuur_en_Wetenschap" ;
+    skos:prefLabel "Onderwijs, Cultuur en Wetenschap (OCW)"@nl ;
+    foaf:homepage <https://www.rijksoverheid.nl/ministeries/ministerie-van-onderwijs-cultuur-en-wetenschap> ;
+    dct:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Onderwijs__Cultuur_en_Wetenschap_logo.png> ;
+    schema:image <./assets/Onderwijs__Cultuur_en_Wetenschap_logo.png>  .
+
+<https://publications.europa.eu/resource/authority/country/NLD> a dct:Location .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0044212> a eli:LegalResource ;
+    dct:identifier "BWBR0044212" ;
+    dct:title "Wet voortgezet onderwijs 2020"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/IAM4RM> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0044212/2026-01-01>  .
+
+
+# ============================================================
+#  Temporal Rules
+# ============================================================
+
+<https://regels.overheid.nl/register/ocw/BASVO001.01-aanmerking-basisbekostiging-vo> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO001.01" ;
+    dct:title "Onderwijsinstelling komt in aanmerking voor Basisbekostiging VO 2025"@nl ;
+    dct:description "Regel:\nEen Onderwijsinstelling komt in aanmerking voor een Basisbekostiging vo indien aan alle volgende voorwaarden is voldaan:\n- De Onderwijsinstelling valt onder standaarddoelgroep 1 voor bekostiging vo.\n- De Onderwijsinstelling valt niet onder Caribisch Nederland.\n- De datum in bedrijf van Onderwijsinstelling ligt voor of valt op 01-10-2024.\n- Onderwijsinstelling is actief in de bekostigingsperiode."@nl ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO003.02-eindbedrag-basisbekostiging-vo> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO003.02" ;
+    dct:title "Eindbedrag van Basisbekostiging VO"@nl ;
+    dct:description "Regel:\nHet eindbedrag van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging vestigingen van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen van de Basisbekostiging vo."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO001.01-aanmerking-basisbekostiging-vo> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO004.01-bekostiging-leerlingen> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO004.01" ;
+    dct:title "Bekostiging leerlingen Basisbekostiging"@nl ;
+    dct:description "Regel:\nDe bekostiging leerlingen van een Basisbekostiging vo moet worden berekend als A + B waarin geldt dat:\n- A is gelijk aan de bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo.\n- B is gelijk aan de bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van de Basisbekostiging vo."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO003.02-eindbedrag-basisbekostiging-vo> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO004.02-bekostiging-leerlingen-pro-vbo> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO004.02" ;
+    dct:title "Bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb"@nl ;
+    dct:description "Regel:\nDe bekostiging leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - B) * C waarin geldt dat:\n- A is gelijk aan het aantal leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb op 1/10/t-1 van de Onderwijsinstelling.\n- B is gelijk aan aantal nieuwkomers korter dan 1 jaar in NL bovenbouw vbo bb en kb op 1/10/t-1.\n- C is gelijk aan het bedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo bb en kb van de Regeling (€ 11185,30 per leerling, 2025)."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO004.01-bekostiging-leerlingen> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO004.03-bekostiging-leerlingen-vwo-havo-vbo> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO004.03" ;
+    dct:title "Bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb"@nl ;
+    dct:description "Regel:\nDe bekostiging leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van een Basisbekostiging vo moet worden berekend als (A - (B * E) - C) * D waarin geldt dat:\n- A is het aantal leerlingen onderbouw en bovenbouw vwo/havo/mavo/vmbo gl op 1/10/t-1.\n- B is het aantal leerlingen uitbesteed gedeeltelijk bekostigd op 1/10/t-1.\n- C is het aantal nieuwkomers korter dan 1 jaar in NL excl. bovenbouw vbo bb en kb op 1/10/t-1.\n- D is het bedrag leerlingen vwo/havo/mavo/vbo van de Regeling (€ 9507,49 per leerling, 2025).\n- E is gelijk aan 0,5."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO004.01-bekostiging-leerlingen> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO002.05-bedrag-leerlingen-vwo-havo-2025> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO002.05" ;
+    dct:title "Bedrag leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb 2025"@nl ;
+    dct:description "Regel:\nBedrag leerlingen vwo/havo/mavo/vbo, excl leerlingen bovenbouw vbo bb en kb van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 9507,49 euro. Bedrag conform Artikel 2 lid 1. Geldig voor kalenderjaar 2025."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO004.03-bekostiging-leerlingen-vwo-havo-vbo> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO002.06-bedrag-leerlingen-pro-vbo-2025> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO002.06" ;
+    dct:title "Bedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo exclusief vmbo gl 2025"@nl ;
+    dct:description "Regel:\nBedrag leerlingen praktijkonderwijs en leerlingen bovenbouw vbo exclusief vmbo gl van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 11185,30 euro. Bedrag conform Artikel 2 lid 2. Geldig voor kalenderjaar 2025."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO004.02-bekostiging-leerlingen-pro-vbo> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO005.03" ;
+    dct:title "Vast bedrag van toepassing op vestiging"@nl ;
+    dct:description "Regel (beslissingstabel, hitbeleid FIRST):\n\nVestiging is tijdelijk | Voldoet aan eis min. leerlingen | Onderdeel verticale scholengemeenschap | Is hoofdvestiging | Vast bedrag\nWaar | - | - | - | Onwaar (geen vast bedrag)\nOnwaar | Onwaar | - | - | Onwaar (geen vast bedrag)\nOnwaar | Waar | Onwaar | Waar | vast bedrag hoofdvestiging (€ 275.595,52)\nOnwaar | Waar | Onwaar | Onwaar | vast bedrag nevenvestiging (€ 137.797,76)\nOnwaar | Waar | Waar | Waar | vast bedrag hoofdvestiging (€ 275.595,52)\nOnwaar | Waar | Waar | Onwaar | vast bedrag nevenvestiging (€ 137.797,76)"@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO003.02-eindbedrag-basisbekostiging-vo> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO005.04" ;
+    dct:title "Vestiging voldoet aan minimumeis leerlingen voor vast bedrag Basisbekostiging"@nl ;
+    dct:description "Regel (beslissingstabel, hitbeleid FIRST):\nWijst toe naar de juiste drempeltoets op basis van vestigingstype.\n\nHeeftUitsluitendLicentiePRO | VoldoetAanMinimumUitsluitendPRO | VoldoetAanMinimumNietUitsluitendPRO | Uitkomst\nWaar | Waar | - | Waar\nWaar | Onwaar | - | Onwaar\nOnwaar | - | Waar | Waar\nOnwaar | - | Onwaar | Onwaar\n\nVerder uitgewerkt in:\nBASVO005.10 drempel uitsluitend PRO: 60 leerlingen\nBASVO005.09 drempel niet-uitsluitend PRO: 130 leerlingen"@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO005.09-vestiging-minimum-leerlingen-niet-pro> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO005.09" ;
+    dct:title "Vestiging voldoet aan minimum aantal leerlingen niet uitsluitend pro"@nl ;
+    dct:description "Regel:\nEen Vestiging voldoet aan minimum aantal leerlingen niet uitsluitend praktijkonderwijs indien aantal leerlingen niet uitsluitend praktijkonderwijs voor vast bedrag basisbekostiging van Vestiging groter dan of gelijk aan 130 (minimum aantal leerlingen per vestiging niet-uitsluitend praktijkonderwijs van Uitvoeringsbesluit WVO 2020, BASVO002.02)."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO005.10-vestiging-minimum-leerlingen-uitsluitend-pro> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO005.10" ;
+    dct:title "Vestiging voldoet aan minimum aantal leerlingen uitsluitend pro"@nl ;
+    dct:description "Regel:\nEen Vestiging voldoet aan minimum aantal leerlingen uitsluitend praktijkonderwijs indien het aantal leerlingen uitsluitend praktijkonderwijs voor vast bedrag basisbekostiging van Vestiging groter dan of gelijk aan 60 (minimum aantal leerlingen per vestiging uitsluitend praktijkonderwijs van Uitvoeringsbesluit WVO 2020, BASVO002.01)."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO005.04-vestiging-voldoet-minimum-leerlingen> ;
+    cprmv:validFrom "2021-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO002.03-vast-bedrag-hoofdvestiging-2025> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO002.03" ;
+    dct:title "Vast bedrag hoofdvestiging 2025"@nl ;
+    dct:description "Regel:\nVast bedrag hoofdvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 275595,52 euro. Bedrag conform Artikel 2 lid 3. Geldig voor kalenderjaar 2025."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+<https://regels.overheid.nl/register/ocw/BASVO002.04-vast-bedrag-nevenvestiging-2025> a cpsv:Rule, cprmv:TemporalRule ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    dct:identifier "BASVO002.04" ;
+    dct:title "Vast bedrag nevenvestiging 2025"@nl ;
+    dct:description "Regel:\nVast bedrag nevenvestiging van Regeling bekostiging vo-scholen en samenwerkingsverbanden vo is gelijk aan 137797,76 euro. Bedrag conform Artikel 2 lid 4. Geldig voor kalenderjaar 2025."@nl ;
+    cprmv:isBasedOn <https://regels.overheid.nl/register/ocw/BASVO005.03-vast-bedrag-toepassing-vestiging> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-01-01"^^xsd:date ;
+    cprmv:confidenceLevel "high"  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn> a cprmv:DecisionModel ;
+    dct:identifier "vast_bedrag_op_vestiging" ;
+    dct:title "basisbekostiging-vo.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/basisbekosting-vo> ;
+    dct:source <https://regels.overheid.nl/services/basisbekosting-vo/dmn/file> ;
+    cprmv:deploymentId "b4f254ef-670a-11f1-8761-8ae6f7653f6b" ;
+    cprmv:deployedAt "2026-06-13T09:31:50.878Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/vast_bedrag_op_vestiging/evaluate> ;
+    cprmv:lastTested "2026-06-13T09:32:37.312Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/1> a cpsv:Input ;
+    dct:identifier "heeftUitsluitendLicentieVoorPraktijkonderwijs" ;
+    dct:title "heeftUitsluitendLicentieVoorPraktijkonderwijs"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/2> a cpsv:Input ;
+    dct:identifier "aantalLeerlingenUitsluitendPRO" ;
+    dct:title "aantalLeerlingenUitsluitendPRO"@nl ;
+    dct:type "Integer" ;
+    schema:value 120 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/3> a cpsv:Input ;
+    dct:identifier "aantalLeerlingenNietUitsluitendPRO" ;
+    dct:title "aantalLeerlingenNietUitsluitendPRO"@nl ;
+    dct:type "Integer" ;
+    schema:value 230 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/4> a cpsv:Input ;
+    dct:identifier "vestigingIsTijdelijk" ;
+    dct:title "vestigingIsTijdelijk"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/5> a cpsv:Input ;
+    dct:identifier "vestigingIsVerticaleScholengemeenschap" ;
+    dct:title "vestigingIsVerticaleScholengemeenschap"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/6> a cpsv:Input ;
+    dct:identifier "vestigingIsHoofdvestiging" ;
+    dct:title "vestigingIsHoofdvestiging"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/output/1> a cpsv:Output ;
+    dct:identifier "vastBedragToelichting" ;
+    dct:title "vastBedragToelichting"@nl ;
+    dct:type "String" ;
+    schema:value "Vast bedrag nevenvestiging 2025 (BASVO002.04): 137797.76 euro" ;
+    cpsv:produces <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/dmn/output/2> a cpsv:Output ;
+    dct:identifier "vastBedrag" ;
+    dct:title "vastBedrag"@nl ;
+    dct:type "Double" ;
+    schema:value 137797.76 ;
+    cpsv:produces <https://regels.overheid.nl/services/basisbekosting-vo/dmn> .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_1" ;
+    dct:title "Decision rule rule_vb_1"@nl ;
+    dct:description "Decision rule rule_vb_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_2" ;
+    dct:title "Decision rule rule_vb_2"@nl ;
+    dct:description "Decision rule rule_vb_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_3" ;
+    dct:title "Decision rule rule_vb_3"@nl ;
+    dct:description "Decision rule rule_vb_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_4" ;
+    dct:title "Decision rule rule_vb_4"@nl ;
+    dct:description "Decision rule rule_vb_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_5" ;
+    dct:title "Decision rule rule_vb_5"@nl ;
+    dct:description "Decision rule rule_vb_5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_vb_6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_vb_6" ;
+    dct:title "Decision rule rule_vb_6"@nl ;
+    dct:description "Decision rule rule_vb_6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_vastBedrag" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_min_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_min_1" ;
+    dct:title "Decision rule rule_min_1"@nl ;
+    dct:description "Decision rule rule_min_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_minimumLeerlingen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_min_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_min_2" ;
+    dct:title "Decision rule rule_min_2"@nl ;
+    dct:description "Decision rule rule_min_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_minimumLeerlingen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_min_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_min_3" ;
+    dct:title "Decision rule rule_min_3"@nl ;
+    dct:description "Decision rule rule_min_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_minimumLeerlingen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/basisbekosting-vo/rules/rule_min_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "rule_min_4" ;
+    dct:title "Decision rule rule_min_4"@nl ;
+    dct:description "Decision rule rule_min_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0044212> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "dt_minimumLeerlingen" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-06-13"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/heeftUitsluitendLicentieVoorPraktijkonderwijs> a skos:Concept ;
+    skos:prefLabel "Heeft Uitsluitend Licentie Voor Praktijkonderwijs"@nl ;
+    skos:definition "Heeft Uitsluitend Licentie Voor Praktijkonderwijs is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "HULVP" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/heeftUitsluitendLicentieVoorPraktijkonderwijs> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/aantalLeerlingenUitsluitendPRO> a skos:Concept ;
+    skos:prefLabel "Aantal Leerlingen Uitsluitend PRO"@nl ;
+    skos:definition "Aantal Leerlingen Uitsluitend PRO is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ALUP" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalLeerlingenUitsluitendPRO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/aantalLeerlingenNietUitsluitendPRO> a skos:Concept ;
+    skos:prefLabel "Aantal Leerlingen Niet Uitsluitend PRO"@nl ;
+    skos:definition "Aantal Leerlingen Niet Uitsluitend PRO is een numerieke waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ALNUP" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aantalLeerlingenNietUitsluitendPRO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/vestigingIsTijdelijk> a skos:Concept ;
+    skos:prefLabel "Vestiging Is Tijdelijk"@nl ;
+    skos:definition "Vestiging Is Tijdelijk is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VIT" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vestigingIsTijdelijk> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/vestigingIsVerticaleScholengemeenschap> a skos:Concept ;
+    skos:prefLabel "Vestiging Is Verticale Scholengemeenschap"@nl ;
+    skos:definition "Vestiging Is Verticale Scholengemeenschap is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VIVS" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vestigingIsVerticaleScholengemeenschap> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/vestigingIsHoofdvestiging> a skos:Concept ;
+    skos:prefLabel "Vestiging Is Hoofdvestiging"@nl ;
+    skos:definition "Vestiging Is Hoofdvestiging is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VIH" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vestigingIsHoofdvestiging> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/vastBedragToelichting> a skos:Concept ;
+    skos:prefLabel "Vast Bedrag Toelichting"@nl ;
+    skos:definition "Vast Bedrag Toelichting is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VBT" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vastBedragToelichting> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/vastbedragopvestiging/vastBedrag> a skos:Concept ;
+    skos:prefLabel "Vast Bedrag"@nl ;
+    skos:definition "Vast Bedrag is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VB" ;
+    dct:subject <https://regels.overheid.nl/services/basisbekosting-vo/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vastBedrag> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

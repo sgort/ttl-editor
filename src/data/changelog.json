@@ -2,6 +2,23 @@
   "versions": [
     {
       "version": "1.10.1",
+      "date": "June 12, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "💬",
+          "iconColor": "amber",
+          "title": "Clarify pre-publish SHACL validation scope",
+          "items": [
+            "PublishDialog's pre-publish SHACL panel now explains it checks the Turtle that will actually be published — the editor's current (regenerated) output — which can differ from an originally-imported file, since import normalizes legacy CPRMV/CPSV-AP terms to the CPRMV 0.4.1 / CPSV-AP 3.2.0 vocabulary. An imported file that fails validation on its own may still publish as conformant"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.1",
       "date": "June 15, 2026",
       "status": "Released",
       "statusColor": "green",
