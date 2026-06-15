@@ -1,6 +1,8 @@
 import { BookOpen, ExternalLink, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
+import { sanitizeIri } from '../../utils';
+
 export default function ConceptsTab({ concepts, removeConcept, updateConcept, setConcepts }) {
   // Separate inputs and outputs from state
   const inputConcepts = concepts.filter((c) => c.linkedToType === 'input');
@@ -271,7 +273,8 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                       type="text"
                       value={concept.variableName}
                       onChange={(e) => {
-                        const newVariableName = e.target.value;
+                        // Enforce a URI-safe variable name (spaces → _, no IRI-illegal chars)
+                        const newVariableName = sanitizeIri(e.target.value);
                         const baseUri = concept.uri.substring(0, concept.uri.lastIndexOf('/') + 1);
                         const newUri = baseUri + newVariableName;
 
@@ -288,7 +291,7 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                       placeholder="e.g., geboortedatumAanvrager"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Technical variable name (camelCase, no spaces)
+                      Technical variable name used in the URI — spaces are converted to underscores
                     </p>
                   </div>
 
@@ -416,7 +419,8 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                       type="text"
                       value={concept.variableName}
                       onChange={(e) => {
-                        const newVariableName = e.target.value;
+                        // Enforce a URI-safe variable name (spaces → _, no IRI-illegal chars)
+                        const newVariableName = sanitizeIri(e.target.value);
                         const baseUri = concept.uri.substring(0, concept.uri.lastIndexOf('/') + 1);
                         const newUri = baseUri + newVariableName;
 
@@ -433,7 +437,7 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                       placeholder="e.g., leeftijdAanvrager"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Technical variable name (camelCase, no spaces)
+                      Technical variable name used in the URI — spaces are converted to underscores
                     </p>
                   </div>
 

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
+import { sanitizeIri } from '../../utils';
 import {
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
@@ -263,14 +264,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       usedNotations.push(notation);
       generatedConcepts.push({
         id: idCounter++,
-        uri: generateConceptUri(input.name, serviceIdentifier),
-        variableName: input.name,
+        uri: generateConceptUri(sanitizeIri(input.name), serviceIdentifier),
+        variableName: sanitizeIri(input.name),
         prefLabel: generateConceptLabel(input.name),
         definition: generateConceptDefinition(input.name, input.type, 'input'),
         notation: notation,
         linkedTo: `input/${index + 1}`,
         linkedToType: 'input',
-        exactMatch: `https://regels.overheid.nl/concepts/${input.name}`,
+        exactMatch: `https://regels.overheid.nl/concepts/${sanitizeIri(input.name)}`,
         type: 'dmn:InputVariable',
       });
     });
@@ -280,14 +281,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       usedNotations.push(notation);
       generatedConcepts.push({
         id: idCounter++,
-        uri: generateConceptUri(output.name, serviceIdentifier),
-        variableName: output.name,
+        uri: generateConceptUri(sanitizeIri(output.name), serviceIdentifier),
+        variableName: sanitizeIri(output.name),
         prefLabel: generateConceptLabel(output.name),
         definition: generateConceptDefinition(output.name, output.type, 'output'),
         notation: notation,
         linkedTo: `output/${index + 1}`,
         linkedToType: 'output',
-        exactMatch: `https://regels.overheid.nl/concepts/${output.name}`,
+        exactMatch: `https://regels.overheid.nl/concepts/${sanitizeIri(output.name)}`,
         type: 'dmn:OutputVariable',
       });
     });

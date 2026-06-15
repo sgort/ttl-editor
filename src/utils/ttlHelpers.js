@@ -64,6 +64,26 @@ export function sanitizeRuleIdPath(ruleIdPath) {
 }
 
 /**
+ * Make a string safe to use inside a Turtle IRI reference (`<...>`): replace runs
+ * of whitespace with a single underscore (readable, and round-trips cleanly through
+ * the lenient importer), and percent-encode the few remaining characters that are
+ * illegal in an IRI reference (`<>"{}|^\`\\`). Structural characters (scheme, `/`,
+ * `:`, `#`, `?`) are left intact, so it is safe for both full IRIs and single path
+ * segments. Idempotent: re-running on already-sanitized input is a no-op.
+ *
+ * @param {string} iri - URI or path segment
+ * @returns {string} - IRI-safe string
+ */
+export function sanitizeIri(iri) {
+  return String(iri ?? '')
+    .replace(/\s+/g, '_')
+    .replace(
+      /[<>"{}|^`\\]/g,
+      (c) => `%${c.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0')}`
+    );
+}
+
+/**
  * Format a date string for TTL xsd:date format
  * @param {string} dateStr - Date string (YYYY-MM-DD format expected)
  * @returns {string} - Formatted date with xsd:date type

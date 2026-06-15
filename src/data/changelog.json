@@ -15,6 +15,16 @@
             "Imported DMN blocks are preserved verbatim, so their Decision Rules bypassed the v1.10.0 CPSV-AP fixes and still failed validation (missing dct:title/dct:description, cpsv:implements pointing at the PublicService). generateDmnSection now runs a normalizeImportedDmnBlocks pass over the preserved blocks: each cpsv:Rule gets dct:title and dct:description injected when absent, and a cpsv:implements that points at a /services/ URI is repointed to the eli:LegalResource (or dropped when no legal resource exists).",
             "Edits are additive/repointing only — no preserved DMN triples are removed — and idempotent, so re-importing an already-conformant export is a no-op. Verified: a re-imported DMN with non-conformant decision rules validates clean against both CPSV-AP 3.2.0 and CPRMV 0.4.1."
           ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Valid, readable IRIs for NL-SBB concept URIs",
+          "items": [
+            "Generated concept URIs containing spaces (e.g. .../concepts/behaalbarehoogtesubsidie/Reeds gesubsidieerd eigenaren) produced invalid Turtle — the lenient importer round-tripped them but the strict (SHACL) parser failed with 'Unexpected <…> on line N'. A shared sanitizeIri helper now replaces whitespace with underscores (…/Reeds_gesubsidieerd_eigenaren) and percent-encodes the few remaining IRI-illegal characters, applied to the concept URI, dct:subject and skos:exactMatch. Underscores are valid and idempotent, so a downloaded .ttl re-imports cleanly.",
+            "Concept URIs and skos:exactMatch are now built URI-safe at the source: DMN-extracted concepts sanitize the variable name, and the Concepts tab 'Variable Name (used in URI)' input now enforces no spaces (converted to underscores) instead of only hinting at it.",
+            "Existing skos:exactMatch values under the .../concepts/ namespace also have hyphens converted to underscores so they match the underscore-style concept URIs (e.g. .../concepts/Reeds-gesubsidieerd-eigenaren → .../concepts/Reeds_gesubsidieerd_eigenaren); external exactMatch links on other domains are left untouched."
+          ]
         }
       ]
     },

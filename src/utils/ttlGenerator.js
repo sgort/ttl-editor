@@ -8,9 +8,29 @@ import {
   buildResourceUri,
   encodeURIComponentTTL,
   escapeTTLString,
+  sanitizeIri,
   sanitizeRuleIdPath,
   TTL_NAMESPACES,
 } from './index';
+
+// Base namespace for the editor's own NL-SBB concept URIs.
+const CONCEPT_NS = 'https://regels.overheid.nl/concepts/';
+
+/**
+ * Normalize a skos:exactMatch IRI. After the standard IRI sanitization, internal
+ * concept URIs (under CONCEPT_NS) also get hyphens converted to underscores in their
+ * local name, so they match the underscore-style concept subject URIs. External
+ * exactMatch links (other domains/paths) are left untouched so legitimate hyphenated
+ * URIs are not mangled.
+ *
+ * @param {string} uri
+ * @returns {string}
+ */
+const sanitizeExactMatchIri = (uri) => {
+  const s = sanitizeIri(uri);
+  if (!s.startsWith(CONCEPT_NS)) return s;
+  return CONCEPT_NS + s.slice(CONCEPT_NS.length).replace(/-/g, '_');
+};
 
 /**
  * TTL Generator Class
@@ -1100,15 +1120,15 @@ export class TTLGenerator {
       ttl += '# Input Variable Concepts\n\n';
 
       inputConcepts.forEach((concept) => {
-        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `<${sanitizeIri(concept.uri)}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
         ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
         ttl += `    skos:notation "${concept.notation}" ;\n`;
-        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:subject <${sanitizeIri(`${this.serviceUri}/dmn/${concept.linkedTo}`)}> ;\n`;
         ttl += `    dct:type "${concept.type}" ;\n`;
 
         if (concept.exactMatch && concept.exactMatch.trim() !== '') {
-          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+          ttl += `    skos:exactMatch <${sanitizeExactMatchIri(concept.exactMatch)}> ;\n`;
         }
 
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
@@ -1120,15 +1140,15 @@ export class TTLGenerator {
       ttl += '# Output Variable Concepts\n\n';
 
       outputConcepts.forEach((concept) => {
-        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `<${sanitizeIri(concept.uri)}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
         ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
         ttl += `    skos:notation "${concept.notation}" ;\n`;
-        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:subject <${sanitizeIri(`${this.serviceUri}/dmn/${concept.linkedTo}`)}> ;\n`;
         ttl += `    dct:type "${concept.type}" ;\n`;
 
         if (concept.exactMatch && concept.exactMatch.trim() !== '') {
-          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+          ttl += `    skos:exactMatch <${sanitizeExactMatchIri(concept.exactMatch)}> ;\n`;
         }
 
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
