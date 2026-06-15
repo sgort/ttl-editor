@@ -25,6 +25,14 @@
             "Concept URIs and skos:exactMatch are now built URI-safe at the source: DMN-extracted concepts sanitize the variable name, and the Concepts tab 'Variable Name (used in URI)' input now enforces no spaces (converted to underscores) instead of only hinting at it.",
             "Existing skos:exactMatch values under the .../concepts/ namespace also have hyphens converted to underscores so they match the underscore-style concept URIs (e.g. .../concepts/Reeds-gesubsidieerd-eigenaren → .../concepts/Reeds_gesubsidieerd_eigenaren); external exactMatch links on other domains are left untouched."
           ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Populate the Concepts tab from test cases too",
+          "items": [
+            "Running uploaded test cases now fills the Concepts tab even without a manual evaluate: input concepts are derived from the union of every uploaded case's request-body variables (so all inputs across all cases are covered, not just one case), which needs no successful evaluate; output concepts are still added from the last successful result when there is one."
+          ]
         }
       ]
     },

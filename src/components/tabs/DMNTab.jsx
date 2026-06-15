@@ -931,9 +931,24 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       setTestCaseResults([...results]);
     }
 
-    // Generate NL-SBB concepts from last successful result
-    if (lastSuccessResult && lastSuccessBody) {
-      generateConceptsFromTest(lastSuccessResult, lastSuccessBody);
+    // Populate NL-SBB concepts from the test cases. Input concepts are derived from the
+    // UNION of every uploaded case's request-body variables, so all inputs across all
+    // cases are covered (not just one case) and no successful evaluate is required;
+    // output concepts are added from the last successful result when there is one.
+    const mergedVariables = {};
+    for (const tc of testCases) {
+      const vars = tc.requestBody?.variables;
+      if (vars) {
+        for (const [name, value] of Object.entries(vars)) {
+          if (!(name in mergedVariables)) mergedVariables[name] = value;
+        }
+      }
+    }
+    const conceptBody = Object.keys(mergedVariables).length
+      ? JSON.stringify({ variables: mergedVariables })
+      : lastSuccessBody;
+    if (conceptBody) {
+      generateConceptsFromTest(lastSuccessResult, conceptBody);
     }
 
     setIsRunningTestCases(false);
