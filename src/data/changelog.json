@@ -1,6 +1,24 @@
 {
   "versions": [
     {
+      "version": "1.10.2",
+      "date": "June 15, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Imported DMNs now SHACL-conformant too",
+          "items": [
+            "Imported DMN blocks are preserved verbatim, so their Decision Rules bypassed the v1.10.0 CPSV-AP fixes and still failed validation (missing dct:title/dct:description, cpsv:implements pointing at the PublicService). generateDmnSection now runs a normalizeImportedDmnBlocks pass over the preserved blocks: each cpsv:Rule gets dct:title and dct:description injected when absent, and a cpsv:implements that points at a /services/ URI is repointed to the eli:LegalResource (or dropped when no legal resource exists).",
+            "Edits are additive/repointing only — no preserved DMN triples are removed — and idempotent, so re-importing an already-conformant export is a no-op. Verified: a re-imported DMN with non-conformant decision rules validates clean against both CPSV-AP 3.2.0 and CPRMV 0.4.1."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.1",
       "date": "June 12, 2026",
       "status": "Released",
@@ -13,24 +31,6 @@
           "title": "Clarify pre-publish SHACL validation scope",
           "items": [
             "PublishDialog's pre-publish SHACL panel now explains it checks the Turtle that will actually be published — the editor's current (regenerated) output — which can differ from an originally-imported file, since import normalizes legacy CPRMV/CPSV-AP terms to the CPRMV 0.4.1 / CPSV-AP 3.2.0 vocabulary. An imported file that fails validation on its own may still publish as conformant"
-          ]
-        }
-      ]
-    },
-    {
-      "version": "1.10.1",
-      "date": "June 15, 2026",
-      "status": "Released",
-      "statusColor": "green",
-      "borderColor": "green",
-      "sections": [
-        {
-          "icon": "🐛",
-          "iconColor": "red",
-          "title": "Imported DMNs now SHACL-conformant too",
-          "items": [
-            "Imported DMN blocks are preserved verbatim (Option 3), so their Decision Rules bypassed the v1.10.0 CPSV-AP fixes and still failed validation (missing dct:title/dct:description, cpsv:implements pointing at the PublicService). generateDmnSection now runs a normalizeImportedDmnBlocks pass over the preserved blocks: each cpsv:Rule gets dct:title and dct:description injected when absent, and a cpsv:implements that points at a /services/ URI is repointed to the eli:LegalResource (or dropped when no legal resource exists).",
-            "Edits are additive/repointing only — no preserved DMN triples are removed — and idempotent, so re-importing an already-conformant export is a no-op. Verified: a re-imported DMN with non-conformant decision rules validates clean against both CPSV-AP 3.2.0 and CPRMV 0.4.1."
           ]
         }
       ]
