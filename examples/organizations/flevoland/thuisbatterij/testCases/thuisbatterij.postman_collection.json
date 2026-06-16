@@ -39,11 +39,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -156,11 +152,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -206,11 +198,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -256,11 +244,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/SubsidieConstantenThuisbatterij/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -306,11 +290,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -359,15 +339,8 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition?tenantIdIn=46",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
-          "path": [
-            "engine-rest",
-            "decision-definition"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
+          "path": ["engine-rest", "decision-definition"],
           "query": [
             {
               "key": "tenantIdIn",
@@ -410,11 +383,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",
@@ -444,11 +413,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -482,11 +447,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -566,9 +527,7 @@
         {
           "listen": "prerequest",
           "script": {
-            "exec": [
-              ""
-            ],
+            "exec": [""],
             "type": "text/javascript",
             "packages": {},
             "requests": {}
@@ -605,11 +564,7 @@
         "url": {
           "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
           "protocol": "https",
-          "host": [
-            "operaton",
-            "open-regels",
-            "nl"
-          ],
+          "host": ["operaton", "open-regels", "nl"],
           "path": [
             "engine-rest",
             "decision-definition",

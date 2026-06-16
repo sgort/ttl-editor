@@ -105,9 +105,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BasisPastBinnenResterendBudget",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: basisHoogteSubsidie=1"
-      ]
+      "reasons": ["Boundary/domain value: basisHoogteSubsidie=1"]
     }
   },
   {
@@ -188,9 +186,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BeperktDoorResterendBudget",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: beschikbaarSubsidiePlafond=749"
-      ]
+      "reasons": ["Boundary/domain value: beschikbaarSubsidiePlafond=749"]
     }
   },
   {
@@ -215,9 +211,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BeperktDoorResterendBudget",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: beschikbaarSubsidiePlafond=750"
-      ]
+      "reasons": ["Boundary/domain value: beschikbaarSubsidiePlafond=750"]
     }
   },
   {
@@ -242,9 +236,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BeperktDoorResterendBudget",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: beschikbaarSubsidiePlafond=751"
-      ]
+      "reasons": ["Boundary/domain value: beschikbaarSubsidiePlafond=751"]
     }
   },
   {
@@ -381,9 +373,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BeperktDoorResterendBudget",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Representative selected rule 2: Rule_Behaalbare_BeperktDoorResterendBudget"
-      ]
+      "reasons": ["Representative selected rule 2: Rule_Behaalbare_BeperktDoorResterendBudget"]
     }
   },
   {
@@ -438,9 +428,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BasisPastBinnenResterendBudget",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: basisHoogteSubsidie=749"
-      ]
+      "reasons": ["Boundary/domain value: basisHoogteSubsidie=749"]
     }
   },
   {
@@ -492,9 +480,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BasisPastBinnenResterendBudget",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: basisHoogteSubsidie=750"
-      ]
+      "reasons": ["Boundary/domain value: basisHoogteSubsidie=750"]
     }
   },
   {
@@ -519,9 +505,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Behaalbare_BasisPastBinnenResterendBudget",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: basisHoogteSubsidie=751"
-      ]
+      "reasons": ["Boundary/domain value: basisHoogteSubsidie=751"]
     }
   },
   {
@@ -647,9 +631,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Basis_OnderMinimum",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: gemaakteKosten=2999"
-      ]
+      "reasons": ["Boundary/domain value: gemaakteKosten=2999"]
     }
   },
   {
@@ -727,9 +709,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Basis_BovenMinimum",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: gemaakteKosten=3001"
-      ]
+      "reasons": ["Boundary/domain value: gemaakteKosten=3001"]
     }
   },
   {
@@ -766,9 +746,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Basis_BovenMinimum",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: gemaakteKosten=4999"
-      ]
+      "reasons": ["Boundary/domain value: gemaakteKosten=4999"]
     }
   },
   {
@@ -805,9 +783,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Basis_BovenMinimum",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: gemaakteKosten=5000"
-      ]
+      "reasons": ["Boundary/domain value: gemaakteKosten=5000"]
     }
   },
   {
@@ -844,9 +820,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Basis_BovenMinimum",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: gemaakteKosten=5001"
-      ]
+      "reasons": ["Boundary/domain value: gemaakteKosten=5001"]
     }
   },
   {
@@ -1023,9 +997,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_BuitenAanvraagperiodeOfOnbekendType",
       "selectedRuleIndex": 7,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-01-11'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-01-11'"]
     }
   },
   {
@@ -1110,9 +1082,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Eigenaar_Gescheiden",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=1000000"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=1000000"]
     }
   },
   {
@@ -1153,9 +1123,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Eigenaar_Gescheiden",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=1000001"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=1000001"]
     }
   },
   {
@@ -1284,9 +1252,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Huurder_Gescheiden",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Representative selected rule 2: Rule_Platform_2026_Huurder_Gescheiden"
-      ]
+      "reasons": ["Representative selected rule 2: Rule_Platform_2026_Huurder_Gescheiden"]
     }
   },
   {
@@ -1327,9 +1293,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Huurder_Gescheiden",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=1000000"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=1000000"]
     }
   },
   {
@@ -1370,9 +1334,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Huurder_Gescheiden",
       "selectedRuleIndex": 2,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=1000001"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=1000001"]
     }
   },
   {
@@ -1501,9 +1463,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Eigenaar_Gescheiden",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-01-13'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-01-13'"]
     }
   },
   {
@@ -1544,9 +1504,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Eigenaar_Gescheiden",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-09-29'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-09-29'"]
     }
   },
   {
@@ -1587,9 +1545,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Eigenaar_Gescheiden",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-09-30'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-09-30'"]
     }
   },
   {
@@ -1679,9 +1635,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=1"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=1"]
     }
   },
   {
@@ -1722,9 +1676,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=437499"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=437499"]
     }
   },
   {
@@ -1765,9 +1717,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=437500"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=437500"]
     }
   },
   {
@@ -1808,9 +1758,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=437501"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=437501"]
     }
   },
   {
@@ -1851,9 +1799,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=874999"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=874999"]
     }
   },
   {
@@ -1894,9 +1840,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=875000"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=875000"]
     }
   },
   {
@@ -1937,9 +1881,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=875001"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=875001"]
     }
   },
   {
@@ -1980,9 +1922,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdHuurders=999999"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdHuurders=999999"]
     }
   },
   {
@@ -2023,9 +1963,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=1"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=1"]
     }
   },
   {
@@ -2066,9 +2004,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=437499"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=437499"]
     }
   },
   {
@@ -2109,9 +2045,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=437500"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=437500"]
     }
   },
   {
@@ -2152,9 +2086,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=437501"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=437501"]
     }
   },
   {
@@ -2195,9 +2127,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=874999"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=874999"]
     }
   },
   {
@@ -2238,9 +2168,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=875000"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=875000"]
     }
   },
   {
@@ -2281,9 +2209,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=875001"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=875001"]
     }
   },
   {
@@ -2324,9 +2250,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: reedsGesubsidieerdEigenaren=999999"
-      ]
+      "reasons": ["Boundary/domain value: reedsGesubsidieerdEigenaren=999999"]
     }
   },
   {
@@ -2367,9 +2291,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: plafondHuurders=437500"
-      ]
+      "reasons": ["Boundary/domain value: plafondHuurders=437500"]
     }
   },
   {
@@ -2410,9 +2332,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: plafondHuurders=875000"
-      ]
+      "reasons": ["Boundary/domain value: plafondHuurders=875000"]
     }
   },
   {
@@ -2453,9 +2373,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: plafondEigenaren=437500"
-      ]
+      "reasons": ["Boundary/domain value: plafondEigenaren=437500"]
     }
   },
   {
@@ -2541,9 +2459,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: plafondEigenaren=875000"
-      ]
+      "reasons": ["Boundary/domain value: plafondEigenaren=875000"]
     }
   },
   {
@@ -2584,9 +2500,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: aanvragerType='huurder'"
-      ]
+      "reasons": ["Boundary/domain value: aanvragerType='huurder'"]
     }
   },
   {
@@ -2670,9 +2584,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: aanvragerType='onbekend'"
-      ]
+      "reasons": ["Boundary/domain value: aanvragerType='onbekend'"]
     }
   },
   {
@@ -2713,9 +2625,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-10-02'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-10-02'"]
     }
   },
   {
@@ -2756,9 +2666,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-12-30'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-12-30'"]
     }
   },
   {
@@ -2799,9 +2707,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-12-31'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-12-31'"]
     }
   },
   {
@@ -2842,9 +2748,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2026_Gebundeld",
       "selectedRuleIndex": 3,
-      "reasons": [
-        "Output maximum: beschikbaarSubsidiePlafond=2000000"
-      ]
+      "reasons": ["Output maximum: beschikbaarSubsidiePlafond=2000000"]
     }
   },
   {
@@ -3018,9 +2922,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Huurder_Gescheiden",
       "selectedRuleIndex": 5,
-      "reasons": [
-        "Representative selected rule 5: Rule_Platform_2027_Huurder_Gescheiden"
-      ]
+      "reasons": ["Representative selected rule 5: Rule_Platform_2027_Huurder_Gescheiden"]
     }
   },
   {
@@ -3149,9 +3051,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Eigenaar_Gescheiden",
       "selectedRuleIndex": 4,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-01-02'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-01-02'"]
     }
   },
   {
@@ -3192,9 +3092,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Eigenaar_Gescheiden",
       "selectedRuleIndex": 4,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-09-29'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-09-29'"]
     }
   },
   {
@@ -3235,9 +3133,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Eigenaar_Gescheiden",
       "selectedRuleIndex": 4,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-09-30'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-09-30'"]
     }
   },
   {
@@ -3410,9 +3306,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Gebundeld",
       "selectedRuleIndex": 6,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-10-02'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-10-02'"]
     }
   },
   {
@@ -3453,9 +3347,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Gebundeld",
       "selectedRuleIndex": 6,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-12-30'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-12-30'"]
     }
   },
   {
@@ -3496,9 +3388,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_2027_Gebundeld",
       "selectedRuleIndex": 6,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2027-12-31'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2027-12-31'"]
     }
   },
   {
@@ -3539,9 +3429,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_BuitenAanvraagperiodeOfOnbekendType",
       "selectedRuleIndex": 7,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2028-01-01'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2028-01-01'"]
     }
   },
   {
@@ -3625,9 +3513,7 @@
     "coverage": {
       "selectedRuleId": "Rule_Platform_BuitenAanvraagperiodeOfOnbekendType",
       "selectedRuleIndex": 7,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2029-01-01'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2029-01-01'"]
     }
   },
   {
@@ -3732,9 +3618,7 @@
     "coverage": {
       "selectedRuleId": "DecisionRule_0nfr6kl",
       "selectedRuleIndex": 1,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2026-12-31'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2026-12-31'"]
     }
   },
   {
@@ -3805,9 +3689,7 @@
     "coverage": {
       "selectedRuleId": null,
       "selectedRuleIndex": null,
-      "reasons": [
-        "Boundary/domain value: aanvraagDatum='2028-01-01'"
-      ]
+      "reasons": ["Boundary/domain value: aanvraagDatum='2028-01-01'"]
     }
   }
 ]

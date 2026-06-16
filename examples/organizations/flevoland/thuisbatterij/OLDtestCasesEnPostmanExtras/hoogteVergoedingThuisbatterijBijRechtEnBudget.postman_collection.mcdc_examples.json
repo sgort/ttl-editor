@@ -13,9 +13,7 @@
         "header": [],
         "url": {
           "raw": "about:blank",
-          "host": [
-            "about:blank"
-          ]
+          "host": ["about:blank"]
         },
         "description": "{\n  \"summary\": \"Generated MC/DC examples grouped under the corresponding DMN decision-evaluate request.\",\n  \"totalTestCases\": 98,\n  \"testCasesPerDecision\": [\n    [\n      \"BehaalbareHoogteSubsidie\",\n      19\n    ],\n    [\n      \"BerekenBasisHoogteSubsidie\",\n      8\n    ],\n    [\n      \"BerekenBeschikbaarSubsidiePlafond\",\n      64\n    ],\n    [\n      \"SubsidieConstantenThuisbatterij\",\n      1\n    ],\n    [\n      \"jaarGebondenBudget\",\n      6\n    ]\n  ]\n}"
       },
@@ -42,11 +40,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -76,11 +70,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -122,11 +112,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -168,11 +154,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -214,11 +196,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -260,11 +238,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -306,11 +280,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -352,11 +322,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -398,11 +364,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -444,11 +406,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -490,11 +448,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -536,11 +490,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -582,11 +532,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -628,11 +574,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -674,11 +616,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -720,11 +658,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -766,11 +700,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -812,11 +742,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -858,11 +784,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -904,11 +826,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -953,11 +871,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -987,11 +901,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1033,11 +943,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1079,11 +985,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1125,11 +1027,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1171,11 +1069,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1217,11 +1111,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1263,11 +1153,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1309,11 +1195,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1358,11 +1240,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -1392,11 +1270,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1438,11 +1312,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1484,11 +1354,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1530,11 +1396,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1576,11 +1438,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1622,11 +1480,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1668,11 +1522,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1714,11 +1564,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1760,11 +1606,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1806,11 +1648,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1852,11 +1690,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1898,11 +1732,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1944,11 +1774,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -1990,11 +1816,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2036,11 +1858,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2082,11 +1900,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2128,11 +1942,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2174,11 +1984,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2220,11 +2026,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2266,11 +2068,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2312,11 +2110,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2358,11 +2152,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2404,11 +2194,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2450,11 +2236,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2496,11 +2278,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2542,11 +2320,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2588,11 +2362,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2634,11 +2404,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2680,11 +2446,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2726,11 +2488,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2772,11 +2530,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2818,11 +2572,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2864,11 +2614,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2910,11 +2656,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -2956,11 +2698,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3002,11 +2740,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3048,11 +2782,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3094,11 +2824,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3140,11 +2866,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3186,11 +2908,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3232,11 +2950,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3278,11 +2992,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3324,11 +3034,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3370,11 +3076,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3416,11 +3118,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3462,11 +3160,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3508,11 +3202,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3554,11 +3244,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3600,11 +3286,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3646,11 +3328,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3692,11 +3370,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3738,11 +3412,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3784,11 +3454,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3830,11 +3496,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3876,11 +3538,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3922,11 +3580,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -3968,11 +3622,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4014,11 +3664,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4060,11 +3706,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4106,11 +3748,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4152,11 +3790,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4198,11 +3832,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4244,11 +3874,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4290,11 +3916,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4339,11 +3961,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/SubsidieConstantenThuisbatterij/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -4373,11 +3991,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/SubsidieConstantenThuisbatterij/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4422,11 +4036,7 @@
             "url": {
               "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
               "protocol": "https",
-              "host": [
-                "operaton",
-                "open-regels",
-                "nl"
-              ],
+              "host": ["operaton", "open-regels", "nl"],
               "path": [
                 "engine-rest",
                 "decision-definition",
@@ -4456,11 +4066,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4502,11 +4108,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4548,11 +4150,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4594,11 +4192,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4640,11 +4234,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
@@ -4686,11 +4276,7 @@
                 "url": {
                   "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
                   "protocol": "https",
-                  "host": [
-                    "operaton",
-                    "open-regels",
-                    "nl"
-                  ],
+                  "host": ["operaton", "open-regels", "nl"],
                   "path": [
                     "engine-rest",
                     "decision-definition",
