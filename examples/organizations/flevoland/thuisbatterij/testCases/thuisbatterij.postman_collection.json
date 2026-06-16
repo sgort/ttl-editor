@@ -1,0 +1,627 @@
+{
+  "info": {
+    "_postman_id": "b630fa38-b5d0-4ec3-a9c6-692c015ab6d2",
+    "name": "thuisbatterij",
+    "description": "thuisbatterij testen voor hoogte",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4997648"
+  },
+  "item": [
+    {
+      "name": "BehaalbareHoogteSubsidie- netto hoogte",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"gemaakteKosten\": {\r\n      \"value\": 7000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2026-05-15\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"aanvragerType\": {\r\n      \"value\": \"eigenaar\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"reedsGesubsidieerdEigenaren\": {\r\n      \"value\": 50000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"reedsGesubsidieerdHuurders\": {\r\n      \"value\": 450000,\r\n      \"type\": \"Double\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "BehaalbareHoogteSubsidie",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BehaalbareHoogteSubsidie- netto hoogte test 1250",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let output;\r",
+              "\r",
+              "try {\r",
+              "  output = pm.response.json();\r",
+              "} catch (e) {\r",
+              "  output = null;\r",
+              "}\r",
+              "\r",
+              "const expectedHoogteSubsidie = 1250;\r",
+              "const actualHoogteSubsidie = output?.[0]?.hoogteSubsidie?.value;\r",
+              "\r",
+              "const passed = actualHoogteSubsidie === expectedHoogteSubsidie;\r",
+              "\r",
+              "console.log(\"Status code:\", pm.response.code);\r",
+              "console.log(\"Expected hoogteSubsidie:\", expectedHoogteSubsidie);\r",
+              "console.log(\"Actual hoogteSubsidie:\", actualHoogteSubsidie);\r",
+              "console.log(\"Passed:\", passed);\r",
+              "\r",
+              "pm.test(\"Request was successful\", function () {\r",
+              "  pm.expect(pm.response.code).to.eql(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"hoogteSubsidie is 1250\", function () {\r",
+              "  pm.expect(actualHoogteSubsidie).to.eql(expectedHoogteSubsidie);\r",
+              "});\r",
+              "\r",
+              "const template = `\r",
+              "  <h2>Decision Test Result</h2>\r",
+              "\r",
+              "  <p><strong>Status code:</strong> {{statusCode}}</p>\r",
+              "\r",
+              "  <p>\r",
+              "    <strong>Test result:</strong>\r",
+              "    {{#if passed}}\r",
+              "      <span style=\"color: green; font-weight: bold;\">PASS</span>\r",
+              "    {{else}}\r",
+              "      <span style=\"color: red; font-weight: bold;\">FAIL</span>\r",
+              "    {{/if}}\r",
+              "  </p>\r",
+              "\r",
+              "  <h3>hoogteSubsidie</h3>\r",
+              "  <p><strong>Expected:</strong> {{expected}}</p>\r",
+              "  <p><strong>Actual:</strong> {{actual}}</p>\r",
+              "\r",
+              "  <h3>Full response</h3>\r",
+              "  <pre>{{response}}</pre>\r",
+              "`;\r",
+              "\r",
+              "pm.visualizer.set(template, {\r",
+              "  statusCode: pm.response.code,\r",
+              "  passed: passed,\r",
+              "  expected: expectedHoogteSubsidie,\r",
+              "  actual: actualHoogteSubsidie,\r",
+              "  response: JSON.stringify(output, null, 2)\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"gemaakteKosten\": {\r\n      \"value\": 7000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2026-05-15\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"aanvragerType\": {\r\n      \"value\": \"eigenaar\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"reedsGesubsidieerdEigenaren\": {\r\n      \"value\": 50000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"reedsGesubsidieerdHuurders\": {\r\n      \"value\": 450000,\r\n      \"type\": \"Double\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "BehaalbareHoogteSubsidie",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BerekenBeschikbaarSubsidiePlafond",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2027-05-15\",\r\n      \"type\": \"string\"\r\n    },\r\n    \"aanvragerType\": {\r\n      \"value\": \"eigenaar\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"reedsGesubsidieerdEigenaren\": {\r\n      \"value\": 5000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"reedsGesubsidieerdHuurders\": {\r\n      \"value\": 450000,\r\n      \"type\": \"Double\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBeschikbaarSubsidiePlafond/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "BerekenBeschikbaarSubsidiePlafond",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "SubsidieConstantenThuisbatterij",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"gemaakteKosten\": {\r\n      \"value\": 7000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2026-05-15\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"aanvragerType\": {\r\n      \"value\": \"eigenaar\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"reedsGesubsidieerdEigenaren\": {\r\n      \"value\": 5000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"reedsGesubsidieerdHuurders\": {\r\n      \"value\": 450000,\r\n      \"type\": \"Double\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/SubsidieConstantenThuisbatterij/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "SubsidieConstantenThuisbatterij",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "BerekenBasisHoogteSubsidie - kale hoogte",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"gemaakteKosten\": {\r\n      \"value\": 7000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2026-05-15\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"aanvragerType\": {\r\n      \"value\": \"eigenaar\",\r\n      \"type\": \"String\"\r\n    },\r\n    \"reedsGesubsidieerdEigenaren\": {\r\n      \"value\": 5000,\r\n      \"type\": \"Double\"\r\n    },\r\n    \"reedsGesubsidieerdHuurders\": {\r\n      \"value\": 450000,\r\n      \"type\": \"Double\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/BerekenBasisHoogteSubsidie/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "BerekenBasisHoogteSubsidie",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get all tenants",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition?tenantIdIn=46",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition"
+          ],
+          "query": [
+            {
+              "key": "tenantIdIn",
+              "value": "46"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "jaargebonden Budget opnieuw",
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "demo",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2027-05-15\",\r\n      \"type\": \"String\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "jaarGebondenBudget",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "jaargebonden Budget 2026",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"variables\": {\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2026-05-15\",\r\n      \"type\": \"String\"\r\n    }\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
+              "protocol": "https",
+              "host": [
+                "operaton",
+                "open-regels",
+                "nl"
+              ],
+              "path": [
+                "engine-rest",
+                "decision-definition",
+                "key",
+                "jaarGebondenBudget",
+                "tenant-id",
+                "46",
+                "evaluate"
+              ]
+            }
+          },
+          "_postman_previewlanguage": null,
+          "header": null,
+          "cookie": [],
+          "body": null
+        },
+        {
+          "name": "jaargebonden Budget 2027",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"variables\": {\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2027-05-15\",\r\n      \"type\": \"String\"\r\n    }\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
+              "protocol": "https",
+              "host": [
+                "operaton",
+                "open-regels",
+                "nl"
+              ],
+              "path": [
+                "engine-rest",
+                "decision-definition",
+                "key",
+                "jaarGebondenBudget",
+                "tenant-id",
+                "46",
+                "evaluate"
+              ]
+            }
+          },
+          "_postman_previewlanguage": null,
+          "header": null,
+          "cookie": [],
+          "body": null
+        }
+      ]
+    },
+    {
+      "name": "jaargebonden Budget opnieuw test experiment",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is a JSON array\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "});",
+              "",
+              "pm.test(\"Response array has at least one item\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.length).to.be.greaterThan(0);",
+              "});",
+              "",
+              "pm.test(\"plafondEigenaren is present and has correct structure\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const item = jsonData[0];",
+              "    pm.expect(item).to.have.property('plafondEigenaren');",
+              "    pm.expect(item.plafondEigenaren).to.have.property('type', 'Double');",
+              "    pm.expect(item.plafondEigenaren).to.have.property('value');",
+              "    pm.expect(item.plafondEigenaren.value).to.be.a('number').and.greaterThan(0);",
+              "});",
+              "",
+              "pm.test(\"plafondHuurders is present and has correct structure\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const item = jsonData[0];",
+              "    pm.expect(item).to.have.property('plafondHuurders');",
+              "    pm.expect(item.plafondHuurders).to.have.property('type', 'Double');",
+              "    pm.expect(item.plafondHuurders).to.have.property('value');",
+              "    pm.expect(item.plafondHuurders.value).to.be.a('number').and.greaterThan(0);",
+              "});",
+              "",
+              "pm.test(\"plafondEigenaren and plafondHuurders both have value 437500.0\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const item = jsonData[0];",
+              "    pm.expect(item.plafondEigenaren.value).to.eql(437500.0);",
+              "    pm.expect(item.plafondHuurders.value).to.eql(437500.0);",
+              "});",
+              "",
+              "pm.test(\"aanvraagDatum 2026-03-18: plafondEigenaren and plafondHuurders both have value 437500.0\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    const item = jsonData[0];",
+              "    pm.expect(item.plafondEigenaren.value).to.eql(437500.0);",
+              "    pm.expect(item.plafondHuurders.value).to.eql(437500.0);",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "basic",
+          "basic": [
+            {
+              "key": "username",
+              "value": "demo",
+              "type": "string"
+            },
+            {
+              "key": "password",
+              "value": "cqa4fpd2jhz*tph5PVC",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"variables\": {\r\n    \"aanvraagDatum\": {\r\n      \"value\": \"2027-05-15\",\r\n      \"type\": \"String\"\r\n    }\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://operaton.open-regels.nl/engine-rest/decision-definition/key/jaarGebondenBudget/tenant-id/46/evaluate",
+          "protocol": "https",
+          "host": [
+            "operaton",
+            "open-regels",
+            "nl"
+          ],
+          "path": [
+            "engine-rest",
+            "decision-definition",
+            "key",
+            "jaarGebondenBudget",
+            "tenant-id",
+            "46",
+            "evaluate"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -8,8 +8,19 @@
     <bpmn:scriptTask id="Sub_PrepareDmnInput" name="Prepareer DMN-invoer" scriptFormat="javascript">
       <bpmn:incoming>Flow_Sub_Start_Prepare</bpmn:incoming>
       <bpmn:outgoing>Flow_Sub_Prepare_AssessRight</bpmn:outgoing>
-      <bpmn:script>// Prepare variables required by the thuisbatterij subsidy DMN.
-// Variables are stored using both Dutch labels and camelCase aliases.
+      <bpmn:script>// Prepare variables required by the thuisbatterij subsidy DMN decisions.
+//
+// Variable name map (process variable → DMN FEEL expression):
+//   datumVanAanvraag / "Datum van aanvraag"  →  aanvraagDatum        (RechtOpSubsidieThuisbatterij uses datumVanAanvraag directly via inputData; BerekenBeschikbaarSubsidiePlafond uses aanvraagDatum)
+//   relatieTotWoning / "Relatie tot woning"  →  relatieTotWoning     (RechtOpSubsidieThuisbatterij)
+//   aanvraagType / "Aanvraag type"           →  aanvragerType        (BerekenBeschikbaarSubsidiePlafond)
+//   aanvragerIsFailliet (boolean)            →  aanvragerFailliet    (RechtOpSubsidieThuisbatterij)
+//   toestemmingEigenaar (boolean)            →  toestemmingEigenaar  (RechtOpSubsidieThuisbatterij)
+//   naamOpEnergierekeningKomtOvereen (bool)  →  rekeningNaamKomtOvereen (RechtOpSubsidieThuisbatterij)
+//   reedsGesubsidieerdEigenaren (double)     →  reedsGesubsidieerdEigenaren
+//   reedsGesubsidieerdHuurders  (double)     →  reedsGesubsidieerdHuurders
+//   gemaakteKosten (double)                  →  gemaakteKosten
+
 function firstValue(keys, defaultValue) {
   for (var i = 0; i &lt; keys.length; i++) {
     var v = execution.getVariable(keys[i]);
@@ -17,27 +28,78 @@ function firstValue(keys, defaultValue) {
   }
   return defaultValue;
 }
-function setBoth(label, alias, value) {
-  execution.setVariable(label, value);
-  execution.setVariable(alias, value);
-}
-var applicationDate = firstValue(["datumVanAanvraag", "Datum van aanvraag", "receiptDate", "applicationDate"], new Date().toISOString()).substring(0, 10);
-var relatie = firstValue(["relatieTotWoning", "Relatie tot woning", "aanvraagType", "Aanvraag type"], "Eigenaar");
 
-setBoth("Reeds gesubsidieerd eigenaren", "reedsGesubsidieerdEigenaren", firstValue(["reedsGesubsidieerdEigenaren", "Reeds gesubsidieerd eigenaren"], "0"));
-setBoth("Reeds gesubsidieerd huurders", "reedsGesubsidieerdHuurders", firstValue(["reedsGesubsidieerdHuurders", "Reeds gesubsidieerd huurders"], "0"));
-setBoth("Datum van aanvraag", "datumVanAanvraag", applicationDate);
-setBoth("Gemaakte Kosten", "gemaakteKosten", firstValue(["gemaakteKosten", "Gemaakte Kosten", "subsidiableCosts", "subsidiabeleKosten"], "0"));
-setBoth("Aanvraag type", "aanvraagType", firstValue(["aanvraagType", "Aanvraag type"], relatie));
-setBoth("Aanvrager is failliet", "aanvragerIsFailliet", firstValue(["aanvragerIsFailliet", "Aanvrager is failliet"], "Nee"));
-setBoth("Provincie woning", "provincieWoning", firstValue(["provincieWoning", "Provincie woning"], "Flevoland"));
-setBoth("Relatie tot woning", "relatieTotWoning", relatie);
-setBoth("Toestemming eigenaar", "toestemmingEigenaar", firstValue(["toestemmingEigenaar", "Toestemming eigenaar"], "Ja"));
-setBoth("Naam op energierekening komt overeen", "naamOpEnergierekeningKomtOvereen", firstValue(["naamOpEnergierekeningKomtOvereen", "Naam op energierekening komt overeen"], "Ja"));
+function asBoolean(v) {
+  if (v === true || v === false) { return v; }
+  if (v === null || v === undefined || v === "") { return false; }
+  var s = ("" + v).toLowerCase();
+  return s === "true" || s === "ja" || s === "yes" || s === "waar";
+}
+
+function asDouble(v) {
+  if (v === null || v === undefined || v === "") { return 0.0; }
+  var n = parseFloat(("" + v).replace(",", "."));
+  return isNaN(n) ? 0.0 : n;
+}
+
+// --- Date ---
+var applicationDate = firstValue(["datumVanAanvraag", "Datum van aanvraag", "receiptDate", "applicationDate"], new Date().toISOString()).substring(0, 10);
+// Set under both the process-facing name and the exact FEEL variable name used
+// by BerekenBeschikbaarSubsidiePlafond and jaarGebondenBudget.
+execution.setVariable("datumVanAanvraag", applicationDate);
+execution.setVariable("Datum van aanvraag", applicationDate);
+execution.setVariable("aanvraagDatum", applicationDate);      // ← BerekenBeschikbaarSubsidiePlafond input
+
+// --- Relatie tot woning / aanvragerType ---
+var relatie = firstValue(["relatieTotWoning", "Relatie tot woning", "aanvraagType", "Aanvraag type"], "eigenaar");
+// Normalise to lowercase so DMN string comparisons ("eigenaar", "huurder") match.
+var relatieNorm = ("" + relatie).toLowerCase();
+execution.setVariable("relatieTotWoning", relatieNorm);
+execution.setVariable("Relatie tot woning", relatieNorm);
+// BerekenBeschikbaarSubsidiePlafond reads aanvragerType, not relatieTotWoning.
+var aanvraagTypeRaw = firstValue(["aanvraagType", "Aanvraag type"], relatieNorm);
+var aanvragerTypeNorm = ("" + aanvraagTypeRaw).toLowerCase();
+execution.setVariable("aanvraagType", aanvragerTypeNorm);
+execution.setVariable("Aanvraag type", aanvragerTypeNorm);
+execution.setVariable("aanvragerType", aanvragerTypeNorm);    // ← BerekenBeschikbaarSubsidiePlafond input
+
+// --- Numeric inputs (must be double, not string) ---
+var eigenaren = asDouble(firstValue(["reedsGesubsidieerdEigenaren", "Reeds gesubsidieerd eigenaren"], 0));
+execution.setVariable("reedsGesubsidieerdEigenaren", eigenaren);
+execution.setVariable("Reeds gesubsidieerd eigenaren", eigenaren);
+
+var huurders = asDouble(firstValue(["reedsGesubsidieerdHuurders", "Reeds gesubsidieerd huurders"], 0));
+execution.setVariable("reedsGesubsidieerdHuurders", huurders);
+execution.setVariable("Reeds gesubsidieerd huurders", huurders);
+
+var kosten = asDouble(firstValue(["gemaakteKosten", "Gemaakte Kosten", "subsidiableCosts", "subsidiabeleKosten"], 0));
+execution.setVariable("gemaakteKosten", kosten);
+execution.setVariable("Gemaakte Kosten", kosten);
+
+// --- Boolean inputs (must be boolean, not string) ---
+// RechtOpSubsidieThuisbatterij uses aanvragerFailliet (not aanvragerIsFailliet).
+var failliet = asBoolean(firstValue(["aanvragerIsFailliet", "aanvragerFailliet", "Aanvrager is failliet"], false));
+execution.setVariable("aanvragerIsFailliet", failliet);
+execution.setVariable("aanvragerFailliet", failliet);         // ← RechtOpSubsidieThuisbatterij input
+execution.setVariable("Aanvrager is failliet", failliet);
+
+var toestemming = asBoolean(firstValue(["toestemmingEigenaar", "Toestemming eigenaar"], true));
+execution.setVariable("toestemmingEigenaar", toestemming);
+execution.setVariable("Toestemming eigenaar", toestemming);
+
+var rekeningNaam = asBoolean(firstValue(["naamOpEnergierekeningKomtOvereen", "rekeningNaamKomtOvereen", "Naam op energierekening komt overeen"], true));
+execution.setVariable("naamOpEnergierekeningKomtOvereen", rekeningNaam);
+execution.setVariable("rekeningNaamKomtOvereen", rekeningNaam); // ← RechtOpSubsidieThuisbatterij input
+execution.setVariable("Naam op energierekening komt overeen", rekeningNaam);
+
+// --- String inputs ---
+var provincie = firstValue(["provincieWoning", "Provincie woning"], "Flevoland");
+execution.setVariable("provincieWoning", provincie);
+execution.setVariable("Provincie woning", provincie);
 
 execution.setVariable("dmnInputPrepared", true);</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:businessRuleTask id="Sub_AssessRight" name="DMN: Beoordeel recht op subsidie" camunda:resultVariable="rechtOpSubsidieDMNOutput" camunda:decisionRef="RechtOpSubsidieThuisbatterij" camunda:mapDecisionResult="singleResult">
+    <bpmn:businessRuleTask id="Sub_AssessRight" name="DMN: Beoordeel recht op subsidie" camunda:resultVariable="rechtOpSubsidieDMNOutput" camunda:decisionRef="RechtOpSubsidieThuisbatterij" camunda:mapDecisionResult="singleResult" camunda:decisionRefTenantId="46">
       <bpmn:incoming>Flow_Sub_Prepare_AssessRight</bpmn:incoming>
       <bpmn:outgoing>Flow_Sub_AssessRight_Interpret</bpmn:outgoing>
     </bpmn:businessRuleTask>
@@ -118,55 +180,82 @@ execution.setVariable("rechtOpSubsidie", java.lang.Boolean.valueOf(eligible));</
       <bpmn:outgoing>Flow_Sub_Eligible_No</bpmn:outgoing>
       <bpmn:outgoing>Flow_1ecxeub</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:businessRuleTask id="Sub_CalculateAmount" name="DMN: Bereken hoogte subsidie" camunda:resultVariable="hoogteResult" camunda:decisionRef="BehaalbareHoogteSubsidie" camunda:mapDecisionResult="singleResult">
+    <bpmn:businessRuleTask id="Sub_CalculateAmount" name="DMN: Bereken hoogte subsidie" camunda:resultVariable="behaalbareHoogteSubsidieResult" camunda:decisionRef="BehaalbareHoogteSubsidie" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="46">
       <bpmn:incoming>Flow_1ecxeub</bpmn:incoming>
       <bpmn:outgoing>Flow_Sub_Amount_Extract</bpmn:outgoing>
     </bpmn:businessRuleTask>
     <bpmn:scriptTask id="Sub_ExtractAmount" name="Interpreteer hoogte-uitkomst" scriptFormat="javascript">
       <bpmn:incoming>Flow_Sub_Amount_Extract</bpmn:incoming>
       <bpmn:outgoing>Flow_Sub_Amount_Review</bpmn:outgoing>
-      <bpmn:script>var hoogteResult = execution.getVariable("hoogteResult");
+      <bpmn:script>// hoogteResult is set by the Sub_CalculateAmount business rule task with
+// mapDecisionResult="singleResult". Camunda 7 stores the DMN output as a
+// DmnDecisionResultEntries (a Map&lt;String, Object&gt;) when using singleResult.
+// However, because BehaalbareHoogteSubsidie has exactly one output column
+// (hoogteSubsidie), the engine may also hand back a plain scalar or a
+// DmnDecisionResult list depending on the engine version and configuration.
+// This script handles all three shapes so hoogteSubsidie is always set
+// correctly before the review user task.
+var hoogteResultRaw = execution.getVariable("behaalbareHoogteSubsidieResult");
 
 function unwrap(v) {
   if (v === null || v === undefined) { return v; }
-  // Camunda/Operaton DMN output entries can be TypedValue objects.
+  // Camunda/Operaton TypedValue – unwrap to the Java primitive.
   if (typeof v.getValue === "function") { return v.getValue(); }
   return v;
-}
-
-function read(o, keys) {
-  if (o === null || o === undefined) { return null; }
-
-  for (var i = 0; i &lt; keys.length; i++) {
-    var k = keys[i];
-
-    if (typeof o.get === "function") {
-      var mv = unwrap(o.get(k));
-      if (mv !== null &amp;&amp; mv !== undefined) { return mv; }
-    }
-
-    if (o[k] !== undefined) { return unwrap(o[k]); }
-  }
-
-  return null;
-}
-
-function firstValueFromMap(o) {
-  if (o === null || o === undefined || typeof o.values !== "function") { return null; }
-  var iterator = o.values().iterator();
-  return iterator.hasNext() ? unwrap(iterator.next()) : null;
 }
 
 function asAmount(v) {
   v = unwrap(v);
   if (v === null || v === undefined || v === "") { return null; }
-  var s = ("" + v).replace(/[^0-9,.-]/g, "").replace(",", ".");
-  var n = parseFloat(s);
+  // Java Number types (Double, BigDecimal) convert reliably via doubleValue().
+  if (typeof v.doubleValue === "function") { return v.doubleValue(); }
+  var n = Number(v);
   return isNaN(n) ? null : n;
 }
 
-// The DMN task uses mapDecisionResult="singleResult", so hoogteResult is a Map&lt;outputName, outputValue&gt;.
-var hoogteValue = read(hoogteResult, [
+// Read a named key from a Java Map (DmnDecisionResultEntries).
+// Returns the unwrapped value, or null when the key is absent.
+function readFromMap(map, keys) {
+  if (map === null || map === undefined) { return null; }
+  for (var i = 0; i &lt; keys.length; i++) {
+    if (typeof map.containsKey === "function" &amp;&amp; map.containsKey(keys[i])) {
+      return unwrap(map.get(keys[i]));
+    }
+    // Nashorn JS-object fallback (plain JS object or Nashorn-wrapped Java map).
+    if (map[keys[i]] !== undefined) { return unwrap(map[keys[i]]); }
+  }
+  return null;
+}
+
+// Return the first value from a Java Map via its values() iterator.
+function firstMapValue(map) {
+  if (map === null || map === undefined) { return null; }
+  if (typeof map.values !== "function") { return null; }
+  var vals = map.values();
+  // Java Collection.iterator()
+  if (typeof vals.iterator === "function") {
+    var it = vals.iterator();
+    return it.hasNext() ? unwrap(it.next()) : null;
+  }
+  return null;
+}
+
+// Resolve the Map to use: when Camunda returns a DmnDecisionResult (List),
+// take its first entry (index 0); when it is already a Map, use it directly.
+function resolveMap(raw) {
+  if (raw === null || raw === undefined) { return null; }
+  // DmnDecisionResult is a List – it has a get(int) but no containsKey.
+  // Check for List-ness: has size() and get() but no entrySet().
+  if (typeof raw.size === "function" &amp;&amp; typeof raw.get === "function" &amp;&amp;
+      typeof raw.entrySet !== "function") {
+    // It is a List; take the first element (the single result row).
+    return raw.size() &gt; 0 ? raw.get(0) : null;
+  }
+  // Already a Map (DmnDecisionResultEntries or plain JS object).
+  return raw;
+}
+
+var knownAmountKeys = [
   "hoogteSubsidie",
   "Hoogte subsidie",
   "behaalbareHoogteSubsidie",
@@ -175,40 +264,83 @@ var hoogteValue = read(hoogteResult, [
   "Subsidiebedrag",
   "amount",
   "bedrag"
-]);
+];
 
-if (hoogteValue === null || hoogteValue === undefined) {
-  hoogteValue = firstValueFromMap(hoogteResult);
-}
-
-var calculatedAmount = asAmount(hoogteValue);
-var budget = read(hoogteResult, [
+var knownBudgetKeys = [
   "resterendBudget",
   "Resterend budget",
   "beschikbaarSubsidiePlafond",
   "Beschikbaar subsidieplafond"
-]);
-var hoogteReason = read(hoogteResult, [
+];
+
+var knownReasonKeys = [
   "motivering",
   "Motivering",
   "reden",
   "Reden",
   "legalBasis",
   "grondslag"
-]);
+];
 
-if (calculatedAmount !== null) {
-  execution.setVariable("subsidyAmount", calculatedAmount);
-  execution.setVariable("hoogteSubsidie", calculatedAmount);
-  execution.setVariable("calculatedSubsidyAmount", calculatedAmount);
+// --- Resolve the actual result map ---
+var resultMap = resolveMap(hoogteResultRaw);
+
+// --- Extract the subsidy amount ---
+// Priority 1: named key lookup in the map.
+var hoogteValue = readFromMap(resultMap, knownAmountKeys);
+
+// Priority 2: first value in the map (single-output DMN, key name unknown).
+if (hoogteValue === null || hoogteValue === undefined) {
+  hoogteValue = firstMapValue(resultMap);
 }
 
+// Priority 3: the raw result itself is a scalar (mapDecisionResult="singleEntry"
+// or engine returns the value directly).
+if (hoogteValue === null || hoogteValue === undefined) {
+  hoogteValue = unwrap(hoogteResultRaw);
+}
+
+var calculatedAmount = asAmount(hoogteValue);
+
+// Always set hoogteSubsidie before the review user task so Field_018_tb is
+// populated. Only fall back to 0 when no parseable value was found at all.
+var amountToStore = (calculatedAmount !== null) ? calculatedAmount : 0;
+execution.setVariable("hoogteSubsidie", amountToStore);
+execution.setVariable("subsidyAmount", amountToStore);
+execution.setVariable("calculatedSubsidyAmount", amountToStore);
+
+// Serialize the raw DMN result to a readable string for the hoogteResult
+// textarea (Field_017_tb). Done after amount extraction so the local
+// variable hoogteResultRaw is still the original Java object while we read
+// budget/reason below.
+function serializeForDisplay(raw) {
+  if (raw === null || raw === undefined) { return "null"; }
+  if (typeof raw.entrySet === "function") {
+    var parts = [];
+    var it = raw.entrySet().iterator();
+    while (it.hasNext()) {
+      var entry = it.next();
+      parts.push(entry.getKey() + ": " + unwrap(entry.getValue()));
+    }
+    return "{" + parts.join(", ") + "}";
+  }
+  if (typeof raw.size === "function" &amp;&amp; typeof raw.get === "function") {
+    // It was a list; serialize the first entry.
+    return raw.size() &gt; 0 ? serializeForDisplay(raw.get(0)) : "[]";
+  }
+  return "" + raw;
+}
+execution.setVariable("hoogteResult", serializeForDisplay(hoogteResultRaw));
+
+// --- Extract optional budget and reason from the same result map ---
+var budget = readFromMap(resultMap, knownBudgetKeys);
 if (budget !== null &amp;&amp; budget !== undefined) {
-  execution.setVariable("budgetResult", unwrap(budget));
+  execution.setVariable("budgetResult", budget);
 }
 
+var hoogteReason = readFromMap(resultMap, knownReasonKeys);
 if (hoogteReason !== null &amp;&amp; hoogteReason !== undefined) {
-  execution.setVariable("hoogteMotivering", unwrap(hoogteReason));
+  execution.setVariable("hoogteMotivering", hoogteReason);
 }
 
 execution.setVariable("hoogteCalculated", java.lang.Boolean.TRUE);</bpmn:script>
