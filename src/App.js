@@ -1024,9 +1024,11 @@ function App() {
                   legalResource={legalResource}
                 />
               )}
-              {activeTab === 'dmn' && (
+              {/* DMN tab stays mounted (hidden when inactive) so an uploaded file,
+                  deployment status and test-case run results survive tab switches. */}
+              <div className={activeTab === 'dmn' ? '' : 'hidden'}>
                 <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
-              )}
+              </div>
               {activeTab === 'concepts' && (
                 <ConceptsTab
                   concepts={concepts}

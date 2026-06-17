@@ -15,6 +15,24 @@
             "validateParameter previously only required skos:notation when schema:value was also present, and never validated skos:prefLabel at all. A new cprmv:ParameterWaardeShape (added in LDE v1.9.8) makes both properties mandatory [1,n], so the client-side check now mirrors the SHACL constraint: both fields are required regardless of whether a numeric value is set.",
             "Effect: the pre-publish validation panel in the Publish dialog and the inline form error for the Parameters tab will surface missing notation and missing label immediately, rather than letting the file through to the back-end SHACL check where the violation would only be caught on publish."
           ]
+        },
+        {
+          "icon": "✨",
+          "iconColor": "green",
+          "title": "Run test cases per decision, and gather concepts across the whole DMN",
+          "items": [
+            "Run All Test Cases now routes each case to its own decision: a case's optional 'decision' field is used as the evaluation key, falling back to the selected Decision Key when absent. One test file can therefore exercise every decision of a deployed DMN — e.g. cases for jaarGebondenBudget, BerekenBeschikbaarSubsidiePlafond and RechtOpSubsidieThuisbatterij all run correctly from a single upload instead of all hitting one fixed key. Each result shows the decision it ran against.",
+            "NL-SBB concept generation now unions both inputs and outputs across every case (deduped by name), where it previously took outputs from a single result. Each variable records the decision(s) it appears in, so the Concepts tab attributes every input and output to its decision(s)."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Per-decision concept badges and persistent DMN tab",
+          "items": [
+            "The Concepts tab shows a decision badge next to each variable, colour-matched to its kind: blue beside Input #x (inputs are DRD-level and may belong to several decisions) and green beside Output #x. Output concepts are clustered so variables from the same decision sit together, without separate group headers. The DMN tab's test-case decision badges match the blue Input styling.",
+            "The DMN tab now keeps its state when switching tabs: an uploaded DMN, deployment status and the full test-case run results survive a hop to the Concepts tab and back, instead of being reset each time the tab unmounted."
+          ]
         }
       ]
     },
