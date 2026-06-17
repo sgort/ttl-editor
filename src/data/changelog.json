@@ -1,6 +1,24 @@
 {
   "versions": [
     {
+      "version": "1.10.4",
+      "date": "June 17, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Parameter notation and label are now unconditionally required",
+          "items": [
+            "validateParameter previously only required skos:notation when schema:value was also present, and never validated skos:prefLabel at all. A new cprmv:ParameterWaardeShape (added in LDE v1.9.8) makes both properties mandatory [1,n], so the client-side check now mirrors the SHACL constraint: both fields are required regardless of whether a numeric value is set.",
+            "Effect: the pre-publish validation panel in the Publish dialog and the inline form error for the Parameters tab will surface missing notation and missing label immediately, rather than letting the file through to the back-end SHACL check where the violation would only be caught on publish."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.3",
       "date": "June 16, 2026",
       "status": "Released",
