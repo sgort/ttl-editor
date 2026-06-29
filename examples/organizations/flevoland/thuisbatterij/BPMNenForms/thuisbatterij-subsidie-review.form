@@ -296,6 +296,16 @@
       "validate": {
         "required": true
       }
+    },
+    {
+      "label": "Klaar",
+      "action": "submit",
+      "id": "Field_1uji6af",
+      "type": "button",
+      "layout": {
+        "row": "Row_1qkh0ha",
+        "columns": null
+      }
     }
   ],
   "id": "thuisbatterij-subsidie-review",

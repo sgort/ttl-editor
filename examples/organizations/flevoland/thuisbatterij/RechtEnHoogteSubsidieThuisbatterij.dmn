@@ -5,6 +5,18 @@
     <informationRequirement id="InformationRequirement_Behaalbare_JaarGebondenBudget">
       <requiredDecision href="#jaarGebondenBudget" />
     </informationRequirement>
+    <informationRequirement id="InformationRequirement_Behaalbare_BasisHoogte">
+      <requiredDecision href="#BerekenBasisHoogteSubsidie" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Behaalbare_Plafond">
+      <requiredDecision href="#BerekenBeschikbaarSubsidiePlafond" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1jpwlu5">
+      <requiredDecision href="#BerekenBasisHoogteSubsidie" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0843g4c">
+      <requiredDecision href="#BerekenBeschikbaarSubsidiePlafond" />
+    </informationRequirement>
     <decisionTable id="DecisionTable_BehaalbareHoogteSubsidie">
       <input id="Input_BasisHoogteSubsidie" label="Basis hoogte subsidie">
         <inputExpression id="InputExpression_BasisHoogteSubsidie" typeRef="double" expressionLanguage="feel">
@@ -34,6 +46,12 @@
     <variable name="basisHoogteSubsidie" typeRef="double" />
     <informationRequirement id="InformationRequirement_1fephhr">
       <requiredInput href="#InputData_18dsvrq" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_Basis_Constanten">
+      <requiredDecision href="#SubsidieConstantenThuisbatterij" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_153k8os">
+      <requiredDecision href="#SubsidieConstantenThuisbatterij" />
     </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBasisHoogteSubsidie">
       <input id="Input_GemaakteKosten" label="Gemaakte kosten">
@@ -73,6 +91,9 @@
     </informationRequirement>
     <informationRequirement id="InformationRequirement_12zgy8b">
       <requiredInput href="#InputData_1f43kne" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0rt9na8">
+      <requiredDecision href="#jaarGebondenBudget" />
     </informationRequirement>
     <decisionTable id="DecisionTable_BerekenBeschikbaarSubsidiePlafond" hitPolicy="FIRST">
       <input id="Input_AanvraagDatum" label="Aanvraagdatum">
@@ -629,8 +650,8 @@
       </dmndi:DMNShape>
       <dmndi:DMNEdge id="DMNEdge_0cdps8r" dmnElementRef="InformationRequirement_050d666">
         <di:waypoint x="1140" y="347" />
-        <di:waypoint x="833" y="320" />
-        <di:waypoint x="833" y="300" />
+        <di:waypoint x="860" y="320" />
+        <di:waypoint x="860" y="300" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_1aa30u5" dmnElementRef="InputData_0w9g4pp">
         <dc:Bounds height="45" width="125" x="887" y="447" />
@@ -642,8 +663,8 @@
       </dmndi:DMNEdge>
       <dmndi:DMNEdge id="DMNEdge_03atk16" dmnElementRef="InformationRequirement_1noo0v7">
         <di:waypoint x="950" y="447" />
-        <di:waypoint x="727" y="320" />
-        <di:waypoint x="727" y="300" />
+        <di:waypoint x="780" y="320" />
+        <di:waypoint x="780" y="300" />
       </dmndi:DMNEdge>
       <dmndi:DMNShape id="DMNShape_0agmhqu" dmnElementRef="InputData_18dsvrq">
         <dc:Bounds height="45" width="125" x="158" y="78" />
@@ -703,6 +724,26 @@
         <di:waypoint x="1520" y="363" />
         <di:waypoint x="1730" y="230" />
         <di:waypoint x="1730" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0rzgzfe" dmnElementRef="InformationRequirement_153k8os">
+        <di:waypoint x="370" y="400" />
+        <di:waypoint x="370" y="320" />
+        <di:waypoint x="370" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0awyk9w" dmnElementRef="InformationRequirement_1jpwlu5">
+        <di:waypoint x="370" y="220" />
+        <di:waypoint x="500" y="160" />
+        <di:waypoint x="500" y="140" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0gu253h" dmnElementRef="InformationRequirement_0rt9na8">
+        <di:waypoint x="700" y="430" />
+        <di:waypoint x="700" y="320" />
+        <di:waypoint x="700" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1tu6p1h" dmnElementRef="InformationRequirement_0843g4c">
+        <di:waypoint x="780" y="220" />
+        <di:waypoint x="580" y="160" />
+        <di:waypoint x="580" y="140" />
       </dmndi:DMNEdge>
     </dmndi:DMNDiagram>
   </dmndi:DMNDI>
