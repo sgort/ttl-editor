@@ -925,7 +925,14 @@ export class TTLGenerator {
       const datasetUri = `https://cprmv.open-regels.nl/datasets/${encodeURIComponentTTL(datasetId)}`;
       const legalUri = this.buildLegalUriForRulesetId(rulesetId, isIsoDate ? derivedDate : '');
 
-      ttl += `<${datasetUri}> a cprmv:Dataset, dcat:Dataset ;\n`;
+      // Typed only cprmv:Dataset, deliberately NOT co-typed dcat:Dataset: the
+      // CPSV-AP 3.2.0 DatasetShape (sh:targetClass dcat:Dataset) would then
+      // require dct:title/description/publisher and a typed dcat:landingPage,
+      // which we don't have for non-primary rulesets. Nothing targets
+      // cprmv:Dataset, and the LDE /v1/norms dataset_versions query reads
+      // cprmv:Dataset, so this keeps the data both valid and consumable. (Mirrors
+      // the RuleSet emitter's reason for not co-typing dcat:Dataset.)
+      ttl += `<${datasetUri}> a cprmv:Dataset ;\n`;
       ttl += `    dct:identifier "${escapeTTLString(datasetId)}" ;\n`;
       if (isPrimary && this.legalResource?.title) {
         ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;

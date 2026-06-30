@@ -37,6 +37,14 @@
           ]
         },
         {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "0.3.2 datasets pass CPSV-AP 3.2.0 validation",
+          "items": [
+            "The 0.3.2 cprmv:Dataset records were co-typed dcat:Dataset, which triggered the CPSV-AP 3.2.0 DatasetShape (sh:targetClass dcat:Dataset) and raised an error per dataset for missing dct:title, dct:description and dct:publisher plus an untyped dcat:landingPage. They are now typed only cprmv:Dataset — the class the Linked Data Explorer dataset_versions query reads, and one that no shape targets — so pre-publish validation passes while the data stays fully consumable. Verified against the live /v1/shacl/validate backend: 4 errors per dataset → 0. Mirrors the RuleSet emitter's existing reason for not co-typing dcat:Dataset."
+          ]
+        },
+        {
           "icon": "🎨",
           "iconColor": "purple",
           "title": "Toolbar polish and a runnable generator test suite",

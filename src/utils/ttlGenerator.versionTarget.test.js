@@ -47,9 +47,12 @@ describe('CPRMV target-version selector', () => {
 
   test('0.3.2 emits a cprmv:Dataset per ruleset with the rules-derived dcat:version', () => {
     const ds = gen('0.3.2').generateDatasetsSection();
+    // Typed only cprmv:Dataset (not co-typed dcat:Dataset, which would trip the
+    // CPSV-AP DatasetShape requiring title/description/publisher/landingPage).
+    expect(ds).not.toContain('dcat:Dataset');
     // Primary ruleset: dated from its rules (2026-04-03), titled, NOT the manual 2026-03-04.
     expect(ds).toContain(
-      '<https://cprmv.open-regels.nl/datasets/BWBR0015703_2026-04-03> a cprmv:Dataset, dcat:Dataset'
+      '<https://cprmv.open-regels.nl/datasets/BWBR0015703_2026-04-03> a cprmv:Dataset'
     );
     expect(ds).toContain('dcat:version "2026-04-03"');
     expect(ds).toContain('dct:title "Participatiewet"@nl');
@@ -131,7 +134,8 @@ describe('CPRMV target-version selector', () => {
 
     const ttl032 = fullState('0.3.2').generate();
     expect(ttl032).toContain('@prefix cprmv: <https://cprmv.open-regels.nl/0.3.2/> .');
-    expect(ttl032).toContain('a cprmv:Dataset, dcat:Dataset');
+    expect(ttl032).toContain('a cprmv:Dataset');
+    expect(ttl032).not.toContain('dcat:Dataset');
     expect(ttl032).toContain('a cprmv:Rule');
     expect(ttl032).not.toContain('a cprmv:RuleSet');
 
