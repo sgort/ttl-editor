@@ -76,6 +76,40 @@ describe('CPRMV target-version selector', () => {
     expect(rs).toContain('cprmv:hasPart (');
   });
 
+  test('rules sharing a ruleIdPath get distinct subject URIs so none are lost', () => {
+    // Two values for one legal path (a range's bounds) — same ruleIdPath.
+    const dupRules = [
+      {
+        ruleId: 'b1',
+        rulesetId: 'BWBR0015711',
+        definition: 'meer dan € 59.782',
+        norm: '59.782',
+        ruleIdPath: 'BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b.',
+      },
+      {
+        ruleId: 'b2',
+        rulesetId: 'BWBR0015711',
+        definition: 'doch minder dan € 251.233,00',
+        norm: '251.233,00',
+        ruleIdPath: 'BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b.',
+      },
+    ];
+    const flat = new TTLGenerator({
+      ...baseState,
+      cprmvRules: dupRules,
+    }).generateCprmvRulesSection();
+
+    const subjects =
+      flat.match(/<https:\/\/cprmv\.open-regels\.nl\/rules\/[^>]+> a cprmv:Rule/g) || [];
+    expect(subjects.length).toBe(2);
+    expect(new Set(subjects).size).toBe(2); // distinct subjects — no collision
+    // Both norm values survive
+    expect(flat).toContain('cprmv:norm "59.782"');
+    expect(flat).toContain('cprmv:norm "251.233,00"');
+    // The repeated path is disambiguated with an _2 suffix on the 2nd subject
+    expect(flat).toMatch(/rules\/[^>]+_2> a cprmv:Rule/);
+  });
+
   test('generate() picks the Dataset wrapper for 0.3.2 and RuleSet for 0.4.1', () => {
     const fullState = (version) =>
       new TTLGenerator({

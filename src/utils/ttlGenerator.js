@@ -757,6 +757,14 @@ export class TTLGenerator {
    * so the list members always resolve to real cprmv:Rule nodes.
    */
   cprmvRuleUri(rule) {
+    return this.cprmvRuleUriMap().get(rule) || this.cprmvRuleBaseUri(rule);
+  }
+
+  /**
+   * Path-derived subject URI for a rule, before duplicate disambiguation.
+   * Prefers the ruleIdPath; falls back to rulesetId_ruleId.
+   */
+  cprmvRuleBaseUri(rule) {
     let ruleUriIdentifier;
     if (rule.ruleIdPath) {
       ruleUriIdentifier = sanitizeRuleIdPath(rule.ruleIdPath);
@@ -766,6 +774,32 @@ export class TTLGenerator {
       ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
     }
     return `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
+  }
+
+  /**
+   * Unique subject URI per cprmv:Rule, even when several rules share a
+   * ruleIdPath — e.g. range bounds ("meer dan X, doch minder dan Y") or
+   * multiple maxima ("per maand" / "per kalenderjaar") for one legal path.
+   * Without this, such rules collapse onto a single RDF subject and norm values
+   * are silently lost on publish (the 66-vs-69 case). The first occurrence keeps
+   * the path-derived URI; each subsequent duplicate gets an _N suffix (_2, _3,…)
+   * in document order. Memoised because the RuleSet hasPart list and the flat
+   * Rule emitter must resolve every rule to the same URI.
+   *
+   * @returns {Map<object, string>} rule object → unique URI
+   */
+  cprmvRuleUriMap() {
+    if (this._cprmvRuleUriMap) return this._cprmvRuleUriMap;
+    const map = new Map();
+    const counts = new Map();
+    (this.cprmvRules || []).forEach((rule) => {
+      const base = this.cprmvRuleBaseUri(rule);
+      const n = (counts.get(base) || 0) + 1;
+      counts.set(base, n);
+      map.set(rule, n === 1 ? base : `${base}_${n}`);
+    });
+    this._cprmvRuleUriMap = map;
+    return map;
   }
 
   /**

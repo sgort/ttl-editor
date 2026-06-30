@@ -1,6 +1,25 @@
 {
   "versions": [
     {
+      "version": "1.10.7",
+      "date": "June 30, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🧩",
+          "iconColor": "blue",
+          "title": "Rules sharing a legal path no longer collapse on publish",
+          "items": [
+            "A cprmv:Rule's subject URI was built only from its ruleIdPath, so two rules on the same legal path — a range's bounds ('meer dan € 59.782, doch minder dan € 251.233') or multiple maxima ('per maand' / 'per kalenderjaar') — resolved to the same RDF subject and silently merged on publish. A 69-rule import surfaced as only 66 norms in the Linked Data Explorer.",
+            "Each rule now gets a unique subject URI: the first occurrence of a path keeps the path-derived URI, and each subsequent duplicate gets an _N suffix (_2, _3, …) in document order. Both the flat cprmv:Rule resources and the 0.4.1 cprmv:RuleSet hasPart list use the same assignment, so all values survive (69 in, 69 out). The duplicates still share a rule_id_path_key, which the LDE treats as the dedup key.",
+            "Adds a generator test for the duplicate-path case; run the suite with npm run test:generator."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.6",
       "date": "June 30, 2026",
       "status": "Released",
