@@ -756,19 +756,21 @@ function App() {
                   Import TTL File
                 </label>
 
-                {/* CPRMV target version — applies to preview, download and publish */}
+                {/* CPRMV target version — applies to preview, download and publish.
+                    Styled as a toolbar control matching the action buttons
+                    (px-4 py-2, rounded-lg, shadow-md, solid colour, white text). */}
                 <div
-                  className="flex items-center gap-2 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg shadow-md"
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md"
                   title="CPRMV vocabulary version for preview, export and publish"
                 >
-                  <label htmlFor="cprmv-version" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="cprmv-version" className="text-sm font-semibold">
                     CPRMV
                   </label>
                   <select
                     id="cprmv-version"
                     value={cprmvVersion}
                     onChange={(e) => setCprmvVersion(e.target.value)}
-                    className="text-sm bg-white border border-gray-300 rounded px-2 py-1 text-gray-800"
+                    className="text-sm font-medium bg-white text-gray-800 rounded px-2 py-1 border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/60"
                   >
                     <option value="0.4.1">0.4.1</option>
                     <option value="0.3.2">0.3.2</option>
