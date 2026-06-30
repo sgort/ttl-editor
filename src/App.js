@@ -750,7 +750,7 @@ function App() {
                 />
                 <label
                   htmlFor="ttl-import"
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors whitespace-nowrap"
                 >
                   <Upload size={20} />
                   Import TTL File
@@ -780,7 +780,7 @@ function App() {
                 {/* Toggle Preview Button */}
                 <button
                   onClick={() => setShowPreviewPanel(!showPreviewPanel)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors whitespace-nowrap ${
                     showPreviewPanel
                       ? 'bg-green-600 text-white hover:bg-green-700'
                       : 'bg-gray-600 text-white hover:bg-gray-700'
@@ -793,7 +793,7 @@ function App() {
 
                 <button
                   onClick={() => setShowClearDialog(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors whitespace-nowrap"
                   title="Clear all fields"
                 >
                   <Trash2 size={20} />

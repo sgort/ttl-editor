@@ -1,26 +1,7 @@
 {
   "versions": [
     {
-      "version": "1.10.7",
-      "date": "June 30, 2026",
-      "status": "Released",
-      "statusColor": "green",
-      "borderColor": "green",
-      "sections": [
-        {
-          "icon": "🧩",
-          "iconColor": "blue",
-          "title": "Rules sharing a legal path no longer collapse on publish",
-          "items": [
-            "A cprmv:Rule's subject URI was built only from its ruleIdPath, so two rules on the same legal path — a range's bounds ('meer dan € 59.782, doch minder dan € 251.233') or multiple maxima ('per maand' / 'per kalenderjaar') — resolved to the same RDF subject and silently merged on publish. A 69-rule import surfaced as only 66 norms in the Linked Data Explorer.",
-            "Each rule now gets a unique subject URI: the first occurrence of a path keeps the path-derived URI, and each subsequent duplicate gets an _N suffix (_2, _3, …) in document order. Both the flat cprmv:Rule resources and the 0.4.1 cprmv:RuleSet hasPart list use the same assignment, so all values survive (69 in, 69 out). The duplicates still share a rule_id_path_key, which the LDE treats as the dedup key.",
-            "Adds a generator test for the duplicate-path case; run the suite with npm run test:generator."
-          ]
-        }
-      ]
-    },
-    {
-      "version": "1.10.6",
+      "version": "1.10.5",
       "date": "June 30, 2026",
       "status": "Released",
       "statusColor": "green",
@@ -35,16 +16,7 @@
             "The two targets differ in shape, not just prefix. 0.4.1 wraps the rules in a cprmv:RuleSet (+ cprmv:hasPart); 0.3.2 instead emits a cprmv:Dataset / dcat:Dataset per ruleset — the unit /v1/norms reports under dataset_versions. The flat cprmv:Rule resources (cprmv:id, rulesetId, definition, situatie, norm, ruleIdPath) are emitted for both targets. Each cprmv:Dataset's dcat:version is the date that ruleset's own rules carry (from ruleIdPath), so the dataset version matches the rules' applicable_date by construction.",
             "The selection applies consistently to the live preview, the TTL download and the publish-to-TriplyDB action."
           ]
-        }
-      ]
-    },
-    {
-      "version": "1.10.5",
-      "date": "June 30, 2026",
-      "status": "Released",
-      "statusColor": "green",
-      "borderColor": "green",
-      "sections": [
+        },
         {
           "icon": "🗓️",
           "iconColor": "blue",
@@ -52,6 +24,25 @@
           "items": [
             "The published consolidation date — the eli:is_realized_by version on the LegalResource and every cprmv:RuleSet's cprmv:validFrom and versioned cprmv:id — is now derived per ruleset from the BWB in-force date the rules themselves carry in their ruleIdPath (e.g. BWBR0015703_2026-04-03_0 → 2026-04-03), rather than the manually-entered 'Version or consolidation date' (eli:is_realized_by) field. That field had let an operator pick a date that disagreed with the rules — e.g. a hand-typed 2026-03-04 against 2026-04-03 rules — producing a dataset whose version never matched its rules' applicable_date.",
             "Each ruleset is dated from its own rules, so non-primary rulesets (those entering via cprmv:Rule references, e.g. BWBR0044894 and BWBR0015711) are now versioned correctly too — previously they were emitted version-less because the editor didn't know their version, even though the rules did. The manual field remains a fallback when no rule carries a dated ruleIdPath, with today's date as a last resort."
+          ]
+        },
+        {
+          "icon": "🧩",
+          "iconColor": "blue",
+          "title": "Rules sharing a legal path no longer collapse on publish",
+          "items": [
+            "A cprmv:Rule's subject URI was built only from its ruleIdPath, so two rules on the same legal path — a range's bounds ('meer dan € 59.782, doch minder dan € 251.233') or multiple maxima ('per maand' / 'per kalenderjaar') — resolved to the same RDF subject and silently merged on publish. A 69-rule import surfaced as only 66 norms in the Linked Data Explorer.",
+            "Each rule now gets a unique subject URI: the first occurrence of a path keeps the path-derived URI, and each subsequent duplicate gets an _N suffix (_2, _3, …) in document order. Both the flat cprmv:Rule resources and the 0.4.1 cprmv:RuleSet hasPart list use the same assignment, so all values survive (69 in, 69 out). The duplicates still share a rule_id_path_key, which the LDE treats as the dedup key.",
+            "Adds a generator test for the duplicate-path case; run the suite with npm run test:generator."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Toolbar polish and a runnable generator test suite",
+          "items": [
+            "The CPRMV version selector is styled as a toolbar control matching the action buttons, and the Import / Show Preview / Clear All buttons no longer wrap to two lines — the header row is now a consistent height.",
+            "Generator tests are runnable with npm run test:generator (one-shot), test:generator:watch and test:ci. They cover the version selector (namespace + shape), the rules-derived dates and the duplicate-path URI handling, and live in src/utils/ttlGenerator.*.test.js so they stay in sync with the code."
           ]
         }
       ]
