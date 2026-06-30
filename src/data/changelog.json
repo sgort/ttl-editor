@@ -45,6 +45,14 @@
           ]
         },
         {
+          "icon": "🪆",
+          "iconColor": "blue",
+          "title": "Nested sub-clauses fold into their parent rule on import",
+          "items": [
+            "Importing a CPRMV Rules API payload no longer creates standalone, norm-less rules for nested enumeration sub-clauses (e.g. the 'onderdeel 1°./2°./3°.' under 'Artikel 31, lid 2, onderdeel r.'). Those hasPart members carry no rule_id_path, so they are now folded — in order, recursively — into the parent rule's cprmv:definition, which keeps the complete legal text (… ingeval: <clause> <clause> …). Nested members that are rules in their own right (carry a rule_id_path) are still imported separately. For the 1 juli 2026 0.4.1 normenbrief this turns 81 imported entries into 72 — exactly the norms /v1/norms returns."
+          ]
+        },
+        {
           "icon": "🎨",
           "iconColor": "purple",
           "title": "Toolbar polish and a runnable generator test suite",
