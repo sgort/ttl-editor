@@ -416,12 +416,16 @@ export class TTLGenerator {
     }
 
     // eli:is_realized_by: versioned manifestation URI.
+    // The version is derived from the date the rules actually carry (their BWB
+    // in-force date) so the manifestation matches the rules' applicable_date;
+    // it falls back to the manually-entered version when no dated rule exists.
     // Reuses buildLegalUriForRulesetId so the version always appears exactly
     // once, even if bwbId itself still carries a version from legacy state.
-    if (this.legalResource.version) {
+    const realizedVersion = this.primaryRulesetDate();
+    if (realizedVersion) {
       const versionedUri = this.buildLegalUriForRulesetId(
         this.legalResource.bwbId,
-        this.legalResource.version
+        realizedVersion
       );
       ttl += `    eli:is_realized_by <${versionedUri}> ;\n`;
     }
@@ -687,6 +691,40 @@ export class TTLGenerator {
   }
 
   /**
+   * Extract the BWB consolidation date carried by a RuleSet's rules in their
+   * cprmv:ruleIdPath — the `_YYYY-MM-DD_` segment, e.g.
+   * "BWBR0015703_2026-04-03_0, Artikel 20, ..." → "2026-04-03". This is the
+   * in-force date the CPRMV API actually resolved, so it is authoritative for
+   * the RuleSet/LegalResource version and keeps the published date aligned with
+   * the rules' applicable_date (rather than a hand-entered consolidation date).
+   * Returns the first dated path found in the group, or null when none carry one.
+   *
+   * @param {Array<{ruleIdPath?: string}>} rules
+   * @returns {string|null}
+   */
+  rulesetDateFromRules(rules) {
+    for (const rule of rules || []) {
+      const match = (rule.ruleIdPath || '').match(/_(\d{4}-\d{2}-\d{2})_/);
+      if (match) return match[1];
+    }
+    return null;
+  }
+
+  /**
+   * Effective consolidation date for the primary ruleset: derived from its
+   * rules when available, otherwise the manually-entered legalResource.version.
+   * Drives eli:is_realized_by so the LegalResource manifestation URI matches the
+   * date the rules came from.
+   *
+   * @returns {string} ISO date or '' when neither source yields one
+   */
+  primaryRulesetDate() {
+    const primary = this.primaryRulesetId();
+    const rules = (this.cprmvRules || []).filter((rule) => (rule.rulesetId || primary) === primary);
+    return this.rulesetDateFromRules(rules) || this.legalResource?.version || '';
+  }
+
+  /**
    * Deterministic subject URI for a CPRMV Rule. Shared by the RuleSet emitter
    * (to build the hasPart list) and the Rule emitter (to emit matching subjects),
    * so the list members always resolve to real cprmv:Rule nodes.
@@ -728,8 +766,7 @@ export class TTLGenerator {
     if (this.cprmvRules.length === 0) return '';
 
     const primaryRulesetId = this.primaryRulesetId();
-    const version = this.legalResource?.version || '';
-    const validFrom = this.cprmvValidFrom();
+    const manualVersion = this.legalResource?.version || '';
 
     // Group rules by rulesetId; rules without one attach to the primary RuleSet.
     const groups = new Map();
@@ -743,11 +780,16 @@ export class TTLGenerator {
 
     for (const [rulesetId, rules] of groups) {
       const isPrimary = rulesetId === primaryRulesetId;
-      const rulesetVersion = isPrimary ? version : '';
-      const idSuffix =
-        rulesetVersion && /^\d{4}-\d{2}-\d{2}$/.test(rulesetVersion)
-          ? `${rulesetId}_${rulesetVersion}`
-          : rulesetId;
+      // Date axis: derive each RuleSet's version from the BWB date its own rules
+      // carry (ruleIdPath) so cprmv:validFrom and the versioned id match the
+      // rules' applicable_date. This also dates non-primary rulesets correctly
+      // (previously they were version-less). Fall back to the manually-entered
+      // version (primary only), then to today via cprmvValidFrom().
+      const derivedDate = this.rulesetDateFromRules(rules);
+      const rulesetVersion = derivedDate || (isPrimary ? manualVersion : '');
+      const isIsoVersion = /^\d{4}-\d{2}-\d{2}$/.test(rulesetVersion);
+      const validFrom = isIsoVersion ? rulesetVersion : this.cprmvValidFrom();
+      const idSuffix = isIsoVersion ? `${rulesetId}_${rulesetVersion}` : rulesetId;
       const rulesetUri = `https://cprmv.open-regels.nl/rulesets/${encodeURIComponentTTL(idSuffix)}`;
       const methodUri = `${rulesetUri}/method`;
       const legalUri = this.buildLegalUriForRulesetId(rulesetId, rulesetVersion);
