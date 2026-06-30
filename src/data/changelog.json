@@ -1,6 +1,24 @@
 {
   "versions": [
     {
+      "version": "1.10.5",
+      "date": "June 30, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🗓️",
+          "iconColor": "blue",
+          "title": "Consolidation date is derived from the rules, not entered by hand",
+          "items": [
+            "The published consolidation date — the eli:is_realized_by version on the LegalResource and every cprmv:RuleSet's cprmv:validFrom and versioned cprmv:id — is now derived per ruleset from the BWB in-force date the rules themselves carry in their ruleIdPath (e.g. BWBR0015703_2026-04-03_0 → 2026-04-03), rather than the manually-entered 'Version or consolidation date' (eli:is_realized_by) field. That field had let an operator pick a date that disagreed with the rules — e.g. a hand-typed 2026-03-04 against 2026-04-03 rules — producing a dataset whose version never matched its rules' applicable_date.",
+            "Each ruleset is dated from its own rules, so non-primary rulesets (those entering via cprmv:Rule references, e.g. BWBR0044894 and BWBR0015711) are now versioned correctly too — previously they were emitted version-less because the editor didn't know their version, even though the rules did. The manual field remains a fallback when no rule carries a dated ruleIdPath, with today's date as a last resort."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.4",
       "date": "June 17, 2026",
       "status": "Released",
