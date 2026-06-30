@@ -1,6 +1,25 @@
 {
   "versions": [
     {
+      "version": "1.10.6",
+      "date": "June 30, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🔀",
+          "iconColor": "blue",
+          "title": "Choose which CPRMV vocabulary version to preview, export and publish",
+          "items": [
+            "A CPRMV version selector (0.4.1 / 0.3.2) next to the preview/export controls now drives the generated TTL. The editor previously always emitted the 0.4.1 namespace (https://standaarden.open-regels.nl/standards/cprmv/0.4.1#), so data published for a 0.3.x consumer was invisible to it. Selecting 0.3.2 binds cprmv: to https://cprmv.open-regels.nl/0.3.2/ — the versioned-path namespace the Linked Data Explorer /v1/norms?cprmv_version=0.3.2 query reads.",
+            "The two targets differ in shape, not just prefix. 0.4.1 wraps the rules in a cprmv:RuleSet (+ cprmv:hasPart); 0.3.2 instead emits a cprmv:Dataset / dcat:Dataset per ruleset — the unit /v1/norms reports under dataset_versions. The flat cprmv:Rule resources (cprmv:id, rulesetId, definition, situatie, norm, ruleIdPath) are emitted for both targets. Each cprmv:Dataset's dcat:version is the date that ruleset's own rules carry (from ruleIdPath), so the dataset version matches the rules' applicable_date by construction.",
+            "The selection applies consistently to the live preview, the TTL download and the publish-to-TriplyDB action."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.5",
       "date": "June 30, 2026",
       "status": "Released",

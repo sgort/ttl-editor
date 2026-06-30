@@ -99,6 +99,9 @@ function App() {
   // These are UI-specific, not moved to hook
   const [activeTab, setActiveTab] = useState('service');
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
+  // CPRMV vocabulary version that preview, download and publish target.
+  // '0.4.1' = RuleSet/hasPart model; '0.3.2' = flat cprmv:Rule + cprmv:Dataset.
+  const [cprmvVersion, setCprmvVersion] = useState('0.4.1');
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
@@ -145,6 +148,7 @@ function App() {
     dmnData,
     concepts,
     vendorService,
+    cprmvVersion,
   });
 
   const [message, setMessage] = useState('');
@@ -751,6 +755,25 @@ function App() {
                   <Upload size={20} />
                   Import TTL File
                 </label>
+
+                {/* CPRMV target version — applies to preview, download and publish */}
+                <div
+                  className="flex items-center gap-2 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg shadow-md"
+                  title="CPRMV vocabulary version for preview, export and publish"
+                >
+                  <label htmlFor="cprmv-version" className="text-sm font-medium text-gray-700">
+                    CPRMV
+                  </label>
+                  <select
+                    id="cprmv-version"
+                    value={cprmvVersion}
+                    onChange={(e) => setCprmvVersion(e.target.value)}
+                    className="text-sm bg-white border border-gray-300 rounded px-2 py-1 text-gray-800"
+                  >
+                    <option value="0.4.1">0.4.1</option>
+                    <option value="0.3.2">0.3.2</option>
+                  </select>
+                </div>
 
                 {/* Toggle Preview Button */}
                 <button

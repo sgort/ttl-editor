@@ -36,6 +36,17 @@ const sanitizeExactMatchIri = (uri) => {
  * TTL Generator Class
  * Generates complete TTL documents from editor state
  */
+// CPRMV vocabulary namespace per supported export target. 0.3.2 uses the
+// versioned-path form the LDE /v1/norms flat query expects (and matches the
+// hand-published 0.3.2 files); 0.4.1 uses the canonical standaarden.open-regels
+// term namespace. Selecting a version swaps the cprmv: prefix and the wrapper
+// section (Dataset for 0.3.2, RuleSet for 0.4.1).
+const CPRMV_TTL_NAMESPACE = {
+  '0.3.2': 'https://cprmv.open-regels.nl/0.3.2/',
+  '0.4.1': 'https://standaarden.open-regels.nl/standards/cprmv/0.4.1#',
+};
+const DEFAULT_CPRMV_VERSION = '0.4.1';
+
 export class TTLGenerator {
   constructor(state) {
     // Store all state we need
@@ -52,6 +63,12 @@ export class TTLGenerator {
     this.dmnData = state.dmnData;
     this.concepts = state.concepts || [];
     this.vendorService = state.vendorService || {};
+    // CPRMV target vocabulary version for this export: '0.4.1' (RuleSet/hasPart
+    // model) or '0.3.2' (flat cprmv:Rule + cprmv:Dataset model). Drives the
+    // cprmv: namespace and which wrapper section is emitted.
+    this.cprmvVersion = CPRMV_TTL_NAMESPACE[state.cprmvVersion]
+      ? state.cprmvVersion
+      : DEFAULT_CPRMV_VERSION;
 
     // Compute service URI once
     const sanitizedIdentifier =
@@ -112,13 +129,20 @@ export class TTLGenerator {
       ttl += this.generateParametersSection();
     }
 
-    // CPRMV RuleSet section (RuleSet + RuleMethod wrappers for the Rules below)
+    // CPRMV wrapper section for the Rules below. The 0.4.1 model wraps rules in
+    // a cprmv:RuleSet (+ RuleMethod); the 0.3.2 model groups them under a
+    // cprmv:Dataset instead (what the LDE /v1/norms dataset_versions query reads).
     if (this.hasCprmvRules()) {
-      ttl += this.generateSectionHeader('CPRMV RuleSet');
-      ttl += this.generateRuleSetsSection();
+      if (this.cprmvVersion === '0.3.2') {
+        ttl += this.generateSectionHeader('CPRMV Dataset');
+        ttl += this.generateDatasetsSection();
+      } else {
+        ttl += this.generateSectionHeader('CPRMV RuleSet');
+        ttl += this.generateRuleSetsSection();
+      }
     }
 
-    // CPRMV Rules section
+    // CPRMV Rules section — flat cprmv:Rule resources, emitted for both targets.
     if (this.hasCprmvRules()) {
       ttl += this.generateSectionHeader('CPRMV Rules');
       ttl += this.generateCprmvRulesSection();
@@ -149,7 +173,10 @@ export class TTLGenerator {
    * @returns {string} TTL namespace declarations
    */
   generateNamespaces() {
-    return TTL_NAMESPACES;
+    // Bind the cprmv: prefix to the selected target version's namespace; all
+    // other prefixes are stable.
+    const ns = CPRMV_TTL_NAMESPACE[this.cprmvVersion] || CPRMV_TTL_NAMESPACE[DEFAULT_CPRMV_VERSION];
+    return TTL_NAMESPACES.replace(/@prefix cprmv: <[^>]*> \./, `@prefix cprmv: <${ns}> .`);
   }
 
   /**
@@ -820,6 +847,67 @@ export class TTLGenerator {
 
       const memberUris = rules.map((rule) => `<${this.cprmvRuleUri(rule)}>`).join(' ');
       ttl += `    cprmv:hasPart (${memberUris}) .\n\n`;
+    }
+
+    return ttl;
+  }
+
+  /**
+   * Generate the CPRMV Dataset section (CPRMV 0.3.x publish shape). One
+   * cprmv:Dataset / dcat:Dataset per unique rulesetId, carrying the metadata the
+   * LDE /v1/norms dataset_versions query reads: cprmv:rulesetId and dct:issued
+   * (always), plus dcat:version and dct:title. The version is the date the
+   * ruleset's own rules carry (see rulesetDateFromRules), so each Dataset's
+   * dcat:version matches its rules' applicable_date by construction; dct:title is
+   * emitted for the primary ruleset only. Used for the 0.3.2 target in place of
+   * the 0.4.1 RuleSet section.
+   *
+   * @returns {string} CPRMV Dataset TTL
+   */
+  generateDatasetsSection() {
+    if (this.cprmvRules.length === 0) return '';
+
+    const primaryRulesetId = this.primaryRulesetId();
+    const manualVersion = this.legalResource?.version || '';
+    // xsd:dateTime publication timestamp without milliseconds.
+    const issued = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+
+    const groups = new Map();
+    this.cprmvRules.forEach((rule) => {
+      const key = rule.rulesetId || primaryRulesetId;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(rule);
+    });
+
+    let ttl = '';
+
+    for (const [rulesetId, rules] of groups) {
+      const isPrimary = rulesetId === primaryRulesetId;
+      // Date derived from the ruleset's own rules; manual version is a primary-
+      // only fallback. Drives both dcat:version and the dataset/legal URIs.
+      const derivedDate = this.rulesetDateFromRules(rules) || (isPrimary ? manualVersion : '');
+      const isIsoDate = /^\d{4}-\d{2}-\d{2}$/.test(derivedDate);
+      const datasetId = isIsoDate ? `${rulesetId}_${derivedDate}` : rulesetId;
+      const datasetUri = `https://cprmv.open-regels.nl/datasets/${encodeURIComponentTTL(datasetId)}`;
+      const legalUri = this.buildLegalUriForRulesetId(rulesetId, isIsoDate ? derivedDate : '');
+
+      ttl += `<${datasetUri}> a cprmv:Dataset, dcat:Dataset ;\n`;
+      ttl += `    dct:identifier "${escapeTTLString(datasetId)}" ;\n`;
+      if (isPrimary && this.legalResource?.title) {
+        ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;
+      }
+      ttl += `    cprmv:rulesetId "${escapeTTLString(rulesetId)}" ;\n`;
+      if (legalUri) {
+        ttl += `    cprmv:implements <${legalUri}> ;\n`;
+      }
+      if (isIsoDate) {
+        ttl += `    dcat:version "${derivedDate}" ;\n`;
+      }
+      ttl += `    dct:issued "${issued}"^^xsd:dateTime ;\n`;
+      if (legalUri) {
+        ttl += `    dcat:landingPage <${legalUri}> ;\n`;
+      }
+      ttl = ttl.slice(0, -2) + ' .\n\n';
     }
 
     return ttl;
