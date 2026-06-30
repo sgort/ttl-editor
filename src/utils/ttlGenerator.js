@@ -8,9 +8,29 @@ import {
   buildResourceUri,
   encodeURIComponentTTL,
   escapeTTLString,
+  sanitizeIri,
   sanitizeRuleIdPath,
   TTL_NAMESPACES,
 } from './index';
+
+// Base namespace for the editor's own NL-SBB concept URIs.
+const CONCEPT_NS = 'https://regels.overheid.nl/concepts/';
+
+/**
+ * Normalize a skos:exactMatch IRI. After the standard IRI sanitization, internal
+ * concept URIs (under CONCEPT_NS) also get hyphens converted to underscores in their
+ * local name, so they match the underscore-style concept subject URIs. External
+ * exactMatch links (other domains/paths) are left untouched so legitimate hyphenated
+ * URIs are not mangled.
+ *
+ * @param {string} uri
+ * @returns {string}
+ */
+const sanitizeExactMatchIri = (uri) => {
+  const s = sanitizeIri(uri);
+  if (!s.startsWith(CONCEPT_NS)) return s;
+  return CONCEPT_NS + s.slice(CONCEPT_NS.length).replace(/-/g, '_');
+};
 
 /**
  * TTL Generator Class
@@ -92,10 +112,10 @@ export class TTLGenerator {
       ttl += this.generateParametersSection();
     }
 
-    // CPRMV Dataset section (header for the Rules collection below)
+    // CPRMV RuleSet section (RuleSet + RuleMethod wrappers for the Rules below)
     if (this.hasCprmvRules()) {
-      ttl += this.generateSectionHeader('CPRMV Dataset');
-      ttl += this.generateDatasetsSection();
+      ttl += this.generateSectionHeader('CPRMV RuleSet');
+      ttl += this.generateRuleSetsSection();
     }
 
     // CPRMV Rules section
@@ -262,6 +282,26 @@ export class TTLGenerator {
     // Close statement
     ttl = ttl.slice(0, -2) + ' .\n\n';
 
+    // Type the controlled-vocabulary references the PublicService points at, so the
+    // file-local SHACL sh:class checks (no entailment) pass: language →
+    // dct:LinguisticSystem, sector / thematicArea → skos:Concept.
+    if (this.service.language) {
+      const languageUri = `https://publications.europa.eu/resource/authority/language/${this.service.language.toUpperCase()}`;
+      ttl += `<${languageUri}> a dct:LinguisticSystem .\n\n`;
+    }
+    const sectorUri =
+      this.service.sector && this.service.sector !== 'custom'
+        ? this.service.sector
+        : this.service.sector === 'custom' && this.service.customSector
+          ? this.service.customSector
+          : null;
+    if (sectorUri) {
+      ttl += `<${sectorUri}> a skos:Concept .\n\n`;
+    }
+    if (this.service.thematicArea) {
+      ttl += `<${this.service.thematicArea}> a skos:Concept .\n\n`;
+    }
+
     return ttl;
   }
 
@@ -298,7 +338,9 @@ export class TTLGenerator {
     }
 
     if (this.organization.spatial) {
-      ttl += `    cv:spatial <${this.organization.spatial}> ;\n`;
+      // dct:spatial (not cv:spatial) — PublicOrganisationShape requires dct:spatial
+      // with a dct:Location value (typed below).
+      ttl += `    dct:spatial <${this.organization.spatial}> ;\n`;
     }
 
     // Logo output
@@ -318,6 +360,12 @@ export class TTLGenerator {
     }
 
     ttl = ttl.slice(0, -2) + ' .\n\n';
+
+    // Type the spatial reference as dct:Location so PublicOrganisationShape's
+    // sh:class dct:Location check passes (file-local, no entailment).
+    if (this.organization.spatial) {
+      ttl += `<${this.organization.spatial}> a dct:Location .\n\n`;
+    }
 
     return ttl;
   }
@@ -406,21 +454,25 @@ export class TTLGenerator {
         const ruleUri = rule.uri || `https://regels.overheid.nl/rules/rule${index + 1}`;
 
         ttl += `<${ruleUri}> a cpsv:Rule, cprmv:TemporalRule ;\n`;
-        ttl += `    cpsv:implements <${this.serviceUri}> ;\n`;
 
-        if (rule.identifier) {
-          ttl += `    dct:identifier "${escapeTTLString(rule.identifier)}" ;\n`;
+        // cpsv:implements must resolve to an eli:LegalResource (CPSV-AP RuleShape);
+        // emit it only when a legal resource exists rather than pointing at the service.
+        const legalSubjectUri = this.legalResourceSubjectUri();
+        if (legalSubjectUri) {
+          ttl += `    cpsv:implements <${legalSubjectUri}> ;\n`;
         }
 
-        if (rule.title) {
-          ttl += `    dct:title "${escapeTTLString(rule.title)}"@nl ;\n`;
-        }
+        // dct:identifier / dct:title / dct:description are required (minCount 1).
+        const ruleIdentifier = rule.identifier || `temporal-rule-${index + 1}`;
+        ttl += `    dct:identifier "${escapeTTLString(ruleIdentifier)}" ;\n`;
+        ttl += `    dct:title "${escapeTTLString(rule.title || ruleIdentifier)}"@nl ;\n`;
+        ttl += `    dct:description "${escapeTTLString(rule.description || rule.title || ruleIdentifier)}"@nl ;\n`;
 
         if (rule.extends) {
           const extendsUri = rule.extends.startsWith('http')
             ? rule.extends
             : `https://regels.overheid.nl/rules/${encodeURIComponentTTL(rule.extends)}`;
-          ttl += `    cprmv:extends <${extendsUri}> ;\n`;
+          ttl += `    cprmv:isBasedOn <${extendsUri}> ;\n`;
         }
 
         if (rule.validFrom) {
@@ -433,10 +485,6 @@ export class TTLGenerator {
 
         if (rule.confidenceLevel) {
           ttl += `    cprmv:confidenceLevel "${escapeTTLString(rule.confidenceLevel)}" ;\n`;
-        }
-
-        if (rule.description) {
-          ttl += `    dct:description "${escapeTTLString(rule.description)}"@nl ;\n`;
         }
 
         ttl = ttl.slice(0, -2) + ' .\n\n';
@@ -616,77 +664,121 @@ export class TTLGenerator {
   }
 
   /**
-   * Generate CPRMV Dataset section.
-   *
-   * One Dataset per unique cprmv:rulesetId in the CPRMV Rules collection
-   * (in the typical case, that's exactly one). The Dataset acts as a
-   * DCAT-compliant catalogue entry anchoring all Rules from the same
-   * Legal Resource version.
-   *
-   * Joins to Rules:
-   *  - Loose (all versions): match on the cprmv:rulesetId literal
-   *  - Tight (version-exact): match on cprmv:implements pointing to the same
-   *    versioned legal URI; both Rule and Dataset emit this property
-   *
-   * No schema change to Rules required.
-   *
-   * @returns {string} CPRMV Dataset TTL
+   * The eli:LegalResource subject URI (un-versioned form, matching the subject of
+   * the Legal Resource section), or null when no legal resource is set. Used as the
+   * cpsv:implements target for cpsv:Rule nodes, whose CPSV-AP RuleShape requires
+   * that value to be an eli:LegalResource.
    */
-  generateDatasetsSection() {
-    const rulesetIds = [...new Set(this.cprmvRules.map((rule) => rule.rulesetId).filter(Boolean))];
+  legalResourceSubjectUri() {
+    return this.legalResource?.bwbId
+      ? this.buildLegalUriForRulesetId(this.legalResource.bwbId, '')
+      : null;
+  }
 
-    if (rulesetIds.length === 0) return '';
+  /**
+   * Resolve the validFrom date (xsd:date) for a RuleSet. Prefers the legal
+   * resource's version when it is an ISO date; otherwise falls back to today,
+   * since cprmv:validFrom is required by the 0.4.1 RuleSetShape.
+   */
+  cprmvValidFrom() {
+    const v = this.legalResource?.version || '';
+    if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+    return new Date().toISOString().slice(0, 10);
+  }
 
-    const version = this.legalResource?.version || '';
-    const issued = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+  /**
+   * Deterministic subject URI for a CPRMV Rule. Shared by the RuleSet emitter
+   * (to build the hasPart list) and the Rule emitter (to emit matching subjects),
+   * so the list members always resolve to real cprmv:Rule nodes.
+   */
+  cprmvRuleUri(rule) {
+    let ruleUriIdentifier;
+    if (rule.ruleIdPath) {
+      ruleUriIdentifier = sanitizeRuleIdPath(rule.ruleIdPath);
+    } else {
+      const ruleId = rule.ruleId || 'incomplete';
+      const rulesetId = rule.rulesetId || 'incomplete';
+      ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
+    }
+    return `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
+  }
 
-    // Normalize the service's primary identifier to a bare rulesetId for comparison
-    // (handles both "BWBR0015703" and "https://wetten.overheid.nl/BWBR0015703/..." inputs)
+  /**
+   * Bare primary rulesetId (BWB / CVDR) parsed from the service's legal resource.
+   * Rules that carry no rulesetId of their own are grouped under this RuleSet.
+   */
+  primaryRulesetId() {
     const primaryBwbId = this.legalResource?.bwbId || '';
     const primaryMatch = primaryBwbId.match(/(BWB[A-Z]?\d+|CVDR\d+)/i);
-    const primaryRulesetId = primaryMatch ? primaryMatch[0] : '';
+    return primaryMatch ? primaryMatch[0] : 'default';
+  }
+
+  /**
+   * Generate the CPRMV RuleSet section (CPRMV 0.4.1 conformant).
+   *
+   * One cprmv:RuleSet per unique rulesetId, each carrying the RuleSetShape-required
+   * properties: cprmv:id, cprmv:validFrom^^xsd:date, cprmv:isOutputOf → the
+   * cpsv:PublicService, cprmv:hasMethod → a typed cprmv:RuleMethod, and an ordered
+   * cprmv:hasPart list of its Rules, plus a prov:wasDerivedFrom link to the legal
+   * source for provenance continuity.
+   *
+   * @returns {string} CPRMV RuleSet TTL
+   */
+  generateRuleSetsSection() {
+    if (this.cprmvRules.length === 0) return '';
+
+    const primaryRulesetId = this.primaryRulesetId();
+    const version = this.legalResource?.version || '';
+    const validFrom = this.cprmvValidFrom();
+
+    // Group rules by rulesetId; rules without one attach to the primary RuleSet.
+    const groups = new Map();
+    this.cprmvRules.forEach((rule) => {
+      const key = rule.rulesetId || primaryRulesetId;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(rule);
+    });
 
     let ttl = '';
 
-    rulesetIds.forEach((rulesetId) => {
+    for (const [rulesetId, rules] of groups) {
       const isPrimary = rulesetId === primaryRulesetId;
-      const idSuffix = version ? `${rulesetId}_${version}` : rulesetId;
-      const datasetUri = `https://cprmv.open-regels.nl/datasets/${encodeURIComponentTTL(idSuffix)}`;
+      const rulesetVersion = isPrimary ? version : '';
+      const idSuffix =
+        rulesetVersion && /^\d{4}-\d{2}-\d{2}$/.test(rulesetVersion)
+          ? `${rulesetId}_${rulesetVersion}`
+          : rulesetId;
+      const rulesetUri = `https://cprmv.open-regels.nl/rulesets/${encodeURIComponentTTL(idSuffix)}`;
+      const methodUri = `${rulesetUri}/method`;
+      const legalUri = this.buildLegalUriForRulesetId(rulesetId, rulesetVersion);
 
-      // Each Dataset's legal URI is built from its own rulesetId.
-      // We only attach the service's version when this Dataset corresponds to the
-      // service's primary legalResource — for the other rulesets we have no
-      // confidence in the version, so the URI is left un-versioned.
-      const legalUri = this.buildLegalUriForRulesetId(rulesetId, isPrimary ? version : '');
+      // RuleMethod — dual-typed so `sh:class cprmv:RuleMethod` passes without
+      // subclass entailment (the SHACL validator performs none).
+      ttl += `<${methodUri}> a cprmv:RuleMethod, cprmv:CodificationMethod ;\n`;
+      ttl += `    cprmv:id "${escapeTTLString(rulesetId)}-method" .\n\n`;
 
-      ttl += `<${datasetUri}> a cprmv:Dataset, dcat:Dataset ;\n`;
-      ttl += `    dct:identifier "${escapeTTLString(idSuffix)}" ;\n`;
-
-      // Title only when this Dataset matches the service's primary legalResource —
-      // applying the Participatiewet title to a BWBR0044894 Dataset would be wrong.
+      // RuleSet — typed only cprmv:RuleSet. We deliberately do NOT co-type it as
+      // dcat:Dataset: the 0.4.1 ontology models a RuleSet as *part of* a dcat:Dataset
+      // (cprmv:is_part_of), not as one, and the dcat:Dataset shape would otherwise
+      // require dct:title/description/publisher we don't have.
+      ttl += `<${rulesetUri}> a cprmv:RuleSet ;\n`;
+      ttl += `    cprmv:id "${escapeTTLString(idSuffix)}" ;\n`;
+      ttl += `    cprmv:validFrom "${validFrom}"^^xsd:date ;\n`;
+      if (this.service?.identifier) {
+        ttl += `    cprmv:isOutputOf <${this.serviceUri}> ;\n`;
+      }
+      ttl += `    cprmv:hasMethod <${methodUri}> ;\n`;
+      if (legalUri) {
+        ttl += `    prov:wasDerivedFrom <${legalUri}> ;\n`;
+      }
       if (isPrimary && this.legalResource?.title) {
         ttl += `    dct:title "${escapeTTLString(this.legalResource.title)}"@nl ;\n`;
       }
-
       ttl += `    cprmv:rulesetId "${escapeTTLString(rulesetId)}" ;\n`;
 
-      if (legalUri) {
-        ttl += `    cprmv:implements <${legalUri}> ;\n`;
-      }
-
-      // dcat:version is only meaningful when we know the version of this specific ruleset
-      if (version && isPrimary) {
-        ttl += `    dcat:version "${escapeTTLString(version)}" ;\n`;
-      }
-
-      ttl += `    dct:issued "${issued}"^^xsd:dateTime ;\n`;
-
-      if (legalUri) {
-        ttl += `    dcat:landingPage <${legalUri}> ;\n`;
-      }
-
-      ttl = ttl.slice(0, -2) + ' .\n\n';
-    });
+      const memberUris = rules.map((rule) => `<${this.cprmvRuleUri(rule)}>`).join(' ');
+      ttl += `    cprmv:hasPart (${memberUris}) .\n\n`;
+    }
 
     return ttl;
   }
@@ -699,24 +791,15 @@ export class TTLGenerator {
       const hasMinimalData = rule.ruleId || rule.rulesetId || rule.definition;
 
       if (hasMinimalData) {
-        // Generate URI using ruleIdPath for uniqueness (FIXED!)
-        // Fallback to rulesetId_ruleId if ruleIdPath is not available
-        let ruleUriIdentifier;
-        if (rule.ruleIdPath) {
-          ruleUriIdentifier = sanitizeRuleIdPath(rule.ruleIdPath);
-        } else {
-          const ruleId = rule.ruleId || 'incomplete';
-          const rulesetId = rule.rulesetId || 'incomplete';
-          ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
-        }
-
-        const ruleUri = `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
+        // Deterministic subject URI shared with the RuleSet hasPart list emitter.
+        const ruleUri = this.cprmvRuleUri(rule);
 
         ttl += `<${ruleUri}> a cprmv:Rule ;\n`;
 
-        if (rule.ruleId) {
-          ttl += `    cprmv:id "${escapeTTLString(rule.ruleId)}" ;\n`;
-        }
+        // cprmv:id is required by RuleShape — always emit one, falling back to the
+        // rule id path (or a placeholder) when no explicit ruleId was provided.
+        const ruleIdValue = rule.ruleId || rule.ruleIdPath || 'rule';
+        ttl += `    cprmv:id "${escapeTTLString(ruleIdValue)}" ;\n`;
 
         if (rule.rulesetId) {
           ttl += `    cprmv:rulesetId "${escapeTTLString(rule.rulesetId)}" ;\n`;
@@ -795,14 +878,78 @@ export class TTLGenerator {
   }
 
   /**
+   * Normalize preserved imported DMN Decision Rule blocks for CPSV-AP conformance.
+   *
+   * Imported DMN blocks are kept verbatim (Option 3 preservation), so Decision Rules
+   * authored by older exports / foreign tools may miss the CPSV-AP RuleShape essentials:
+   * a cpsv:Rule needs dct:title and dct:description, and cpsv:implements must resolve to
+   * an eli:LegalResource (older exports pointed it at the cpsv:PublicService). This makes
+   * only additive / repointing edits per cpsv:Rule block — no data is dropped — so a
+   * re-imported project validates clean without losing the preserved DMN triples.
+   *
+   * @param {string} ttl - preserved DMN TTL (after stripDmnHeaders)
+   * @returns {string} normalized DMN TTL
+   */
+  normalizeImportedDmnBlocks(ttl) {
+    const legalUri = this.legalResourceSubjectUri();
+
+    const injectAfterTypeLine = (block, predicate) => {
+      const nl = block.indexOf('\n');
+      if (nl === -1) return block;
+      return `${block.slice(0, nl + 1)}    ${predicate} ;\n${block.slice(nl + 1)}`;
+    };
+
+    return ttl
+      .split('\n\n')
+      .map((block) => {
+        // Only touch cpsv:Rule subjects (Decision Rules); leave DecisionModel / Input /
+        // Output / Concept blocks untouched.
+        if (!/\ba\s+[^.;]*\bcpsv:Rule\b/.test(block)) return block;
+
+        // Rule id: prefer dct:identifier, else the trailing URI path segment.
+        let id = (block.match(/dct:identifier\s+"([^"]*)"/) || [])[1];
+        if (!id) {
+          const m = block.match(/\/rules\/([^>\s]+)>/);
+          id = m ? decodeURIComponent(m[1]) : 'decision-rule';
+        }
+
+        // cpsv:implements must point at an eli:LegalResource. Only repoint the known-bad
+        // case (it points at a PublicService); leave any other existing target alone.
+        const implementsMatch = block.match(/cpsv:implements\s+<([^>]*)>/);
+        if (implementsMatch && implementsMatch[1].includes('/services/')) {
+          if (legalUri) {
+            block = block.replace(/cpsv:implements\s+<[^>]*>/, `cpsv:implements <${legalUri}>`);
+          } else {
+            // No legal resource to point at — drop the non-conformant predicate.
+            block = block
+              .replace(/\n[ \t]*cpsv:implements\s+<[^>]*>\s*;/, '')
+              .replace(/;\s*\n[ \t]*cpsv:implements\s+<[^>]*>\s*\./, ' .');
+          }
+        }
+
+        if (!/\bdct:title\b/.test(block)) {
+          block = injectAfterTypeLine(block, `dct:title "Decision rule ${escapeTTLString(id)}"@nl`);
+        }
+        if (!/\bdct:description\b/.test(block)) {
+          block = injectAfterTypeLine(
+            block,
+            `dct:description "${escapeTTLString(`Decision rule ${id} of the DMN decision model.`)}"@nl`
+          );
+        }
+        return block;
+      })
+      .join('\n\n');
+  }
+
+  /**
    * Generate DMN section
    * Handles both imported (preserved) and newly created DMN
    * @returns {string} DMN TTL
    */
   generateDmnSection() {
-    // Imported DMN (preserved blocks)
+    // Imported DMN (preserved blocks) — normalized for CPSV-AP conformance.
     if (this.dmnData.isImported && this.dmnData.importedDmnBlocks) {
-      return this.stripDmnHeaders(this.dmnData.importedDmnBlocks);
+      return this.normalizeImportedDmnBlocks(this.stripDmnHeaders(this.dmnData.importedDmnBlocks));
     }
 
     // Regular DMN (generate fresh TTL)
@@ -899,13 +1046,20 @@ export class TTLGenerator {
         rules.forEach((rule) => {
           ttl += `<${rule.uri}> a cpsv:Rule, cprmv:DecisionRule ;\n`;
           ttl += `    dct:identifier "${rule.id}" ;\n`;
-          ttl += `    cpsv:implements <${this.serviceUri}> ;\n`;
+          // dct:title / dct:description are required by CPSV-AP RuleShape (minCount 1).
+          ttl += `    dct:title "Decision rule ${escapeTTLString(rule.id)}"@nl ;\n`;
+          ttl += `    dct:description "${escapeTTLString(rule.note || 'Decision rule ' + rule.id + ' of the DMN decision model.')}"@nl ;\n`;
+          // cpsv:implements must resolve to an eli:LegalResource; emit only when present.
+          const legalSubjectUri = this.legalResourceSubjectUri();
+          if (legalSubjectUri) {
+            ttl += `    cpsv:implements <${legalSubjectUri}> ;\n`;
+          }
 
           if (rule.extends) {
             const extendsUri = rule.extends.startsWith('http')
               ? rule.extends
               : `https://wetten.overheid.nl/${rule.extends}`;
-            ttl += `    cprmv:extends <${extendsUri}> ;\n`;
+            ttl += `    cprmv:isBasedOn <${extendsUri}> ;\n`;
           }
 
           if (rule.validFrom) {
@@ -966,15 +1120,15 @@ export class TTLGenerator {
       ttl += '# Input Variable Concepts\n\n';
 
       inputConcepts.forEach((concept) => {
-        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `<${sanitizeIri(concept.uri)}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
         ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
         ttl += `    skos:notation "${concept.notation}" ;\n`;
-        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:subject <${sanitizeIri(`${this.serviceUri}/dmn/${concept.linkedTo}`)}> ;\n`;
         ttl += `    dct:type "${concept.type}" ;\n`;
 
         if (concept.exactMatch && concept.exactMatch.trim() !== '') {
-          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+          ttl += `    skos:exactMatch <${sanitizeExactMatchIri(concept.exactMatch)}> ;\n`;
         }
 
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;
@@ -986,15 +1140,15 @@ export class TTLGenerator {
       ttl += '# Output Variable Concepts\n\n';
 
       outputConcepts.forEach((concept) => {
-        ttl += `<${concept.uri}> a skos:Concept ;\n`;
+        ttl += `<${sanitizeIri(concept.uri)}> a skos:Concept ;\n`;
         ttl += `    skos:prefLabel "${escapeTTLString(concept.prefLabel)}"@nl ;\n`;
         ttl += `    skos:definition "${escapeTTLString(concept.definition)}"@nl ;\n`;
         ttl += `    skos:notation "${concept.notation}" ;\n`;
-        ttl += `    dct:subject <${this.serviceUri}/dmn/${concept.linkedTo}> ;\n`;
+        ttl += `    dct:subject <${sanitizeIri(`${this.serviceUri}/dmn/${concept.linkedTo}`)}> ;\n`;
         ttl += `    dct:type "${concept.type}" ;\n`;
 
         if (concept.exactMatch && concept.exactMatch.trim() !== '') {
-          ttl += `    skos:exactMatch <${concept.exactMatch}> ;\n`;
+          ttl += `    skos:exactMatch <${sanitizeExactMatchIri(concept.exactMatch)}> ;\n`;
         }
 
         ttl += `    skos:inScheme <${schemeUri}> .\n\n`;

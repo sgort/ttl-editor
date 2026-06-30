@@ -1,6 +1,209 @@
 {
   "versions": [
     {
+      "version": "1.10.4",
+      "date": "June 17, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Parameter notation and label are now unconditionally required",
+          "items": [
+            "validateParameter previously only required skos:notation when schema:value was also present, and never validated skos:prefLabel at all. A new cprmv:ParameterWaardeShape (added in LDE v1.9.8) makes both properties mandatory [1,n], so the client-side check now mirrors the SHACL constraint: both fields are required regardless of whether a numeric value is set.",
+            "Effect: the pre-publish validation panel in the Publish dialog and the inline form error for the Parameters tab will surface missing notation and missing label immediately, rather than letting the file through to the back-end SHACL check where the violation would only be caught on publish."
+          ]
+        },
+        {
+          "icon": "✨",
+          "iconColor": "green",
+          "title": "Run test cases per decision, and gather concepts across the whole DMN",
+          "items": [
+            "Run All Test Cases now routes each case to its own decision: a case's optional 'decision' field is used as the evaluation key, falling back to the selected Decision Key when absent. One test file can therefore exercise every decision of a deployed DMN — e.g. cases for jaarGebondenBudget, BerekenBeschikbaarSubsidiePlafond and RechtOpSubsidieThuisbatterij all run correctly from a single upload instead of all hitting one fixed key. Each result shows the decision it ran against.",
+            "NL-SBB concept generation now unions both inputs and outputs across every case (deduped by name), where it previously took outputs from a single result. Each variable records the decision(s) it appears in, so the Concepts tab attributes every input and output to its decision(s)."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Per-decision concept badges and persistent DMN tab",
+          "items": [
+            "The Concepts tab shows a decision badge next to each variable, colour-matched to its kind: blue beside Input #x (inputs are DRD-level and may belong to several decisions) and green beside Output #x. Output concepts are clustered so variables from the same decision sit together, without separate group headers. The DMN tab's test-case decision badges match the blue Input styling.",
+            "The DMN tab now keeps its state when switching tabs: an uploaded DMN, deployment status and the full test-case run results survive a hop to the Concepts tab and back, instead of being reset each time the tab unmounted."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.3",
+      "date": "June 16, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "✨",
+          "iconColor": "green",
+          "title": "Pick which decision to evaluate in multi-decision DMNs",
+          "items": [
+            "extractPrimaryDecisionKey now prefers a *root* decision — one that no other decision requires via informationRequirement/requiredDecision — instead of blindly taking the first <decision> element in document order. This fixes models where the intended output decision is authored later in the file. When a DMN has several independent roots (e.g. a combined Recht-én-Hoogte model), document order still breaks the tie and a console warning points to the picker.",
+            "The DMN File card now shows a Decision Key dropdown whenever a file contains more than one testable decision, listing each as 'Name (id)'. Selecting one updates the Decision Key and the evaluation URL everywhere — so e.g. RechtOpSubsidieThuisbatterij can be chosen even though BehaalbareHoogteSubsidie appears first."
+          ]
+        },
+        {
+          "icon": "🧪",
+          "iconColor": "blue",
+          "title": "Test cases now verify functional correctness, not just a 200",
+          "items": [
+            "Previously a test case went green whenever the HTTP call succeeded, regardless of the returned values. A new evaluateTestCaseExpectation compares each case's expected outputs against the engine's actual outputs and returns PASS, FAIL, or unverified. It parses the readable 'key=value, reden=\"…\"' expected strings, accepts a structured expected object, and special-cases the 'empty result set' expectation.",
+            "Results render PASS (green), FAIL (red, with an Expected-vs-Actual mismatch table per output), ERROR (red, when the call itself fails) and OK-unchecked (amber, when no expectation could be parsed — never a silent green). The summary and header counts are now verdict-based, so 'N/N passed' means functionally correct results."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.2",
+      "date": "June 15, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Imported DMNs now SHACL-conformant too",
+          "items": [
+            "Imported DMN blocks are preserved verbatim, so their Decision Rules bypassed the v1.10.0 CPSV-AP fixes and still failed validation (missing dct:title/dct:description, cpsv:implements pointing at the PublicService). generateDmnSection now runs a normalizeImportedDmnBlocks pass over the preserved blocks: each cpsv:Rule gets dct:title and dct:description injected when absent, and a cpsv:implements that points at a /services/ URI is repointed to the eli:LegalResource (or dropped when no legal resource exists).",
+            "Edits are additive/repointing only — no preserved DMN triples are removed — and idempotent, so re-importing an already-conformant export is a no-op. Verified: a re-imported DMN with non-conformant decision rules validates clean against both CPSV-AP 3.2.0 and CPRMV 0.4.1."
+          ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Valid, readable IRIs for NL-SBB concept URIs",
+          "items": [
+            "Generated concept URIs containing spaces (e.g. .../concepts/behaalbarehoogtesubsidie/Reeds gesubsidieerd eigenaren) produced invalid Turtle — the lenient importer round-tripped them but the strict (SHACL) parser failed with 'Unexpected <…> on line N'. A shared sanitizeIri helper now replaces whitespace with underscores (…/Reeds_gesubsidieerd_eigenaren) and percent-encodes the few remaining IRI-illegal characters, applied to the concept URI, dct:subject and skos:exactMatch. Underscores are valid and idempotent, so a downloaded .ttl re-imports cleanly.",
+            "Concept URIs and skos:exactMatch are now built URI-safe at the source: DMN-extracted concepts sanitize the variable name, and the Concepts tab 'Variable Name (used in URI)' input now enforces no spaces (converted to underscores) instead of only hinting at it.",
+            "Existing skos:exactMatch values under the .../concepts/ namespace also have hyphens converted to underscores so they match the underscore-style concept URIs (e.g. .../concepts/Reeds-gesubsidieerd-eigenaren → .../concepts/Reeds_gesubsidieerd_eigenaren); external exactMatch links on other domains are left untouched."
+          ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Populate the Concepts tab from test cases too",
+          "items": [
+            "Running uploaded test cases now fills the Concepts tab even without a manual evaluate: input concepts are derived from the union of every uploaded case's request-body variables (so all inputs across all cases are covered, not just one case), which needs no successful evaluate; output concepts are still added from the last successful result when there is one."
+          ]
+        },
+        {
+          "icon": "🐛",
+          "iconColor": "red",
+          "title": "Round-trip dct:spatial on import",
+          "items": [
+            "Import now reads the organisation's spatial value from both dct:spatial (the current CPSV-AP output) and cv:spatial (legacy files). Previously the importer only read cv:spatial, so a downloaded file — which emits dct:spatial — lost the value on re-import and re-generated without it, causing a 'Less than 1 values … dct:spatial' CPSV-AP error on the second pass. Downloaded files now re-import and re-validate cleanly."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.1",
+      "date": "June 12, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "💬",
+          "iconColor": "amber",
+          "title": "Clarify pre-publish SHACL validation scope",
+          "items": [
+            "PublishDialog's pre-publish SHACL panel now explains it checks the Turtle that will actually be published — the editor's current (regenerated) output — which can differ from an originally-imported file, since import normalizes legacy CPRMV/CPSV-AP terms to the CPRMV 0.4.1 / CPSV-AP 3.2.0 vocabulary. An imported file that fails validation on its own may still publish as conformant"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.0",
+      "date": "June 11, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🆙",
+          "iconColor": "purple",
+          "title": "CPRMV 0.4.1 conformance",
+          "items": [
+            "cprmv: namespace bumped from https://cprmv.open-regels.nl/0.3.0/ to the canonical https://standaarden.open-regels.nl/standards/cprmv/0.4.1# (constants.js TTL_NAMESPACES + vocabularies.config.js), and a prov: prefix added; vocabulary config gains cprmv:RuleSet / cprmv:RuleMethod entity types with detection ordered before cprmv:Rule (since 'a cprmv:Rule' is a substring of 'a cprmv:RuleSet')",
+            "ttlGenerator now emits a 0.4.1-conformant cprmv:RuleSet per rulesetId — replacing the old cprmv:Dataset section — carrying the RuleSetShape-required cprmv:id, cprmv:validFrom^^xsd:date (from the legal resource date, else today), cprmv:isOutputOf → the cpsv:PublicService, cprmv:hasMethod → a dual-typed cprmv:RuleMethod, cprmv:CodificationMethod node, an ordered cprmv:hasPart RDF list of its Rules, and a prov:wasDerivedFrom link to the legal source",
+            "Every cprmv:Rule now always emits cprmv:id (required by RuleShape); cprmv:extends renamed to cprmv:isBasedOn in the temporal/decision sections",
+            "Verified: an editor-generated TTL (example import → full generator) validates clean against the CPRMV 0.4.1 SHACL shapes (0 violations)"
+          ]
+        },
+        {
+          "icon": "📥",
+          "iconColor": "blue",
+          "title": "Import the CPRMV 0.4.1 API output",
+          "items": [
+            "New src/utils/cprmvImport.js flattenCprmvRules walks the CPRMV Rules API shape (array of cprmv:RuleSet objects with nested …#hasPart object-maps), recursing and flattening sub-rules into the editor's flat rule model, with nested rules inheriting their parent rulesetId",
+            "Reads the 0.4.1 standards keys plus the http://cprmv.open-regels.nl/ extension predicates (situatie/norm/rulesetid/rule_id_path), and tolerates legacy 0.4.1-slash and 0.3.0 keys and flat-array exports",
+            "handleImportJSON (App.js) and CPRMVTab 'Load Example' both use the shared flattener; the bundled cprmv-example.json is replaced with the conformant API output"
+          ]
+        },
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "CPSV-AP 3.2.0 conformance",
+          "items": [
+            "Service: dct:language and cv:sector (and cv:thematicArea) references are now typed in-graph (dct:LinguisticSystem / skos:Concept) so the file-local SHACL sh:class checks pass without entailment",
+            "Organisation: emits dct:spatial (was the non-conformant cv:spatial) pointing at a dct:Location-typed node, satisfying PublicOrganisationShape",
+            "cpsv:Rule nodes (Temporal Rules and DMN Decision Rules) now always emit the required dct:identifier, dct:title@nl and dct:description@nl, and cpsv:implements points at the eli:LegalResource (not the PublicService) — or is omitted when no legal resource is set",
+            "Verified: a full editor-generated TTL (service + organisation + temporal rule + DMN decision rules + CPRMV rules) validates clean against both the CPSV-AP 3.2.0 and CPRMV 0.4.1 SHACL shapes (0 violations on each)"
+          ]
+        },
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Pre-publish SHACL validation (advisory)",
+          "items": [
+            "New src/utils/shaclHelper.js validateTtl POSTs the generated Turtle to REACT_APP_BACKEND_URL/v1/shacl/validate and returns the layered result; it never throws — an unreachable backend yields a neutral { unavailable: true } shape (mirroring DMNTab.runBackendValidation)",
+            "PublishDialog runs validation when it opens (and via a 'Validate now' button) and renders a layered CPRMV / CPSV-AP / RONL result panel with per-layer issues; it is purely advisory and never blocks publishing, with a distinct amber state when the backend is unreachable"
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.9.6",
+      "date": "June 11, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🔗",
+          "iconColor": "blue",
+          "title": "Consume the DSO → DMN handoff from the Linked Data Explorer",
+          "items": [
+            "New useDsoImport hook (src/hooks/useDsoImport.js) consumes the LDE deep-link contract /?dsoImport=dmn&dmnId=…&env=…&activityName=…&authority=…&activityUrn=…&fsRef=… — on mount it fetches the standalone DMN XML from the shared backend (GET REACT_APP_BACKEND_URL/v1/dso/toepasbare-regels/{dmnId}/dmn, with ?env=prod only when env=prod) and prefills the editor",
+            "DMN tab is prefilled with fileName decision-{dmnId}.dmn, the fetched XML, and the primary decision key, while staying fully interactive (isImported stays false, so deploy/test/publish run through the existing DMNTab + PublishDialog flow rather than the imported-preserved mode)",
+            "Service tab is prefilled from the DSO activity (dct:title from activityName, dct:identifier from activityUrn, and a Dutch provenance description carrying activityUrn + fsRef); Organization tab is prefilled from the resolved authority (skos:prefLabel + dct:identifier)",
+            "After consuming the link the import params are stripped via history.replaceState so a refresh can't re-import, and a consumedRef guard prevents StrictMode double-invoke; status is reported through the existing message banner"
+          ]
+        },
+        {
+          "icon": "♻️",
+          "iconColor": "green",
+          "title": "Shared decision-key extraction + external-content hydration",
+          "items": [
+            "extractPrimaryDecisionKey lifted out of DMNTab.jsx into src/utils/dmnHelpers.js and exported, so the import hook and the DMN tab share one implementation (skips p_* constants, falls back to the first decision) instead of duplicating the parser",
+            "DMNTab now hydrates its internal uploadedFile / decisionKey / test body / parsed decisions / syntactic validation from dmnData.content whenever content arrives from outside the tab (e.g. the DSO deep-link) and no file was uploaded locally — without this, deploy and test stayed gated on the internal uploadedFile state and an imported DMN appeared unusable"
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.9.5",
       "date": "May 26, 2026",
       "status": "Released",

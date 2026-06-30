@@ -26,6 +26,80 @@ export function buildServiceUri(identifier) {
 }
 
 /**
+ * Extract the primary decision key from DMN XML.
+ *
+ * Strategy:
+ *  1. Skip constant parameters (p_* prefix) — they aren't testable decisions.
+ *  2. Prefer a *root* decision: one that no other decision depends on via
+ *     informationRequirement -> requiredDecision. This is the output decision
+ *     of the DRD, not an intermediate one that just happens to appear first.
+ *  3. If a DMN has several independent roots (e.g. a combined "Recht én Hoogte"
+ *     model), document order breaks the tie — the user can override via the
+ *     decision picker / Decision Key field.
+ *  4. Fall back to the first decision if every decision is a constant.
+ *
+ * @param {string} dmnContent - Raw DMN XML
+ * @returns {string} - Decision key (id attribute) or '' if none found
+ */
+export function extractPrimaryDecisionKey(dmnContent) {
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
+
+    const decisionElements = Array.from(xmlDoc.querySelectorAll('decision'));
+    const skippedConstants = decisionElements.filter((d) =>
+      (d.getAttribute('id') || '').startsWith('p_')
+    ).length;
+
+    // Testable decisions = everything except p_* constants
+    const testable = decisionElements.filter((d) => {
+      const id = d.getAttribute('id');
+      return id && !id.startsWith('p_');
+    });
+
+    if (testable.length === 0) {
+      // Fallback: if all decisions are p_*, use the first one anyway
+      const firstId = decisionElements[0]?.getAttribute('id');
+      if (firstId) {
+        console.warn(`[DMN] All decisions are constants (p_*), using first one: "${firstId}"`);
+        return firstId;
+      }
+      return '';
+    }
+
+    // Ids that are required by another decision — these are NOT roots.
+    const requiredIds = new Set();
+    decisionElements.forEach((d) => {
+      d.querySelectorAll('requiredDecision').forEach((rd) => {
+        const ref = (rd.getAttribute('href') || '').replace(/^#/, '');
+        if (ref) requiredIds.add(ref);
+      });
+    });
+
+    const roots = testable.filter((d) => !requiredIds.has(d.getAttribute('id')));
+    const chosen = (roots.length > 0 ? roots : testable)[0];
+    const id = chosen.getAttribute('id');
+
+    if (roots.length > 1) {
+      console.warn(
+        `[DMN] Multiple root decisions found (${roots
+          .map((d) => d.getAttribute('id'))
+          .join(', ')}); defaulting to "${id}" by document order. ` +
+          `Use the decision picker to choose another.`
+      );
+    } else {
+      console.log(
+        `[DMN] Extracted primary decision key: "${id}" (skipped ${skippedConstants} p_* constant(s))`
+      );
+    }
+    return id;
+  } catch (err) {
+    console.error('Error extracting decision key from DMN:', err);
+  }
+  return '';
+}
+
+/**
  * Extract input variables from test result data
  * @param {Object} dmnData - DMN metadata object with test results
  * @returns {Array} - Array of input objects {name, type, exampleValue}
@@ -315,8 +389,113 @@ export function generateConceptNotation(variableName, existingNotations = []) {
   return finalNotation;
 }
 
+/**
+ * Coerce a raw token from an expected string into a JS scalar.
+ * '...'/"..." -> string, true/false -> boolean, null -> null, numerics -> number.
+ */
+function coerceExpectedScalar(token) {
+  const val = token.trim();
+  if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
+    return val.slice(1, -1);
+  }
+  if (val === 'true') return true;
+  if (val === 'false') return false;
+  if (val === 'null') return null;
+  if (val !== '' && !Number.isNaN(Number(val))) return Number(val);
+  return val;
+}
+
+/**
+ * Parse a human-readable expected string into an object of expected outputs.
+ * Example: "rechtOpSubsidie=false, reden='Aanvrager is failliet'"
+ *       -> { rechtOpSubsidie: false, reden: 'Aanvrager is failliet' }
+ * Quoted values may contain commas; bare values may not. Returns {} if nothing
+ * parseable is found.
+ */
+function parseExpectedString(expected) {
+  if (typeof expected !== 'string' || !expected.trim()) return {};
+  const out = {};
+  const pair = /([A-Za-z_]\w*)\s*=\s*('[^']*'|"[^"]*"|[^,]+)/g;
+  let m;
+  while ((m = pair.exec(expected)) !== null) {
+    out[m[1]] = coerceExpectedScalar(m[2]);
+  }
+  return out;
+}
+
+/**
+ * Flatten an Operaton evaluate response into a { outputName: value } map.
+ * The response is an array of result rows; each output is { type, value, valueInfo }.
+ */
+function flattenEngineOutputs(parsed) {
+  if (!parsed) return null;
+  const rows = Array.isArray(parsed) ? parsed : [parsed];
+  const flat = {};
+  for (const row of rows) {
+    if (row && typeof row === 'object') {
+      for (const [k, v] of Object.entries(row)) {
+        flat[k] = v && typeof v === 'object' && 'value' in v ? v.value : v;
+      }
+    }
+  }
+  return flat;
+}
+
+/** Compare two scalars tolerating string/number/boolean representation differences. */
+function looseValueEqual(exp, act) {
+  if (exp === act) return true;
+  if (exp == null || act == null) return false;
+  if (typeof exp === 'string' || typeof act === 'string') {
+    return String(exp).trim() === String(act).trim();
+  }
+  return exp === act;
+}
+
+/**
+ * Judge a test case by comparing its `expected` against the engine's actual output.
+ *
+ * @param {object|string} expected - structured outputs object, or a human-readable
+ *   string like "rechtOpSubsidie=false, reden='Aanvrager is failliet'".
+ * @param {*} parsed - the parsed Operaton evaluate response (array of result rows).
+ * @returns {{verdict: 'pass'|'fail'|'unverified', mismatches: Array, actual: object|null}}
+ *   - 'pass'       every expected output matches the actual value
+ *   - 'fail'       at least one differs; `mismatches` lists {key, expected, actual}
+ *   - 'unverified' no parseable expectation — only the HTTP call could be checked
+ */
+export function evaluateTestCaseExpectation(expected, parsed) {
+  const actual = flattenEngineOutputs(parsed);
+
+  // Cases that expect no matching rule (empty result set).
+  if (typeof expected === 'string' && /empty result|no matching rule/i.test(expected)) {
+    const isEmpty = !actual || Object.keys(actual).length === 0;
+    return {
+      verdict: isEmpty ? 'pass' : 'fail',
+      mismatches: isEmpty ? [] : [{ key: '(result set)', expected: 'empty', actual }],
+      actual,
+    };
+  }
+
+  const expectedObj =
+    expected && typeof expected === 'object' ? expected : parseExpectedString(expected);
+
+  if (!expectedObj || Object.keys(expectedObj).length === 0) {
+    return { verdict: 'unverified', mismatches: [], actual };
+  }
+
+  const mismatches = [];
+  for (const [key, exp] of Object.entries(expectedObj)) {
+    const act = actual ? actual[key] : undefined;
+    if (!looseValueEqual(exp, act)) {
+      mismatches.push({ key, expected: exp, actual: act });
+    }
+  }
+  return { verdict: mismatches.length === 0 ? 'pass' : 'fail', mismatches, actual };
+}
+
 // Default export object for convenience
 const dmnHelpers = {
+  evaluateTestCaseExpectation,
+  extractPrimaryDecisionKey,
   extractRulesFromDMN,
   extractInputsFromTestResult,
   extractOutputsFromTestResult,

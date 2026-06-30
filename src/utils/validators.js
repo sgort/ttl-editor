@@ -159,9 +159,12 @@ export function validateParameter(param, index) {
   const errors = [];
   const paramNum = index + 1;
 
-  // If parameter has a value, notation is required
-  if (param.value && !param.notation) {
-    errors.push(`Parameter ${paramNum}: Notation is required when value is provided`);
+  if (!param.notation) {
+    errors.push(`Parameter ${paramNum}: Notation (skos:notation) is required`);
+  }
+
+  if (!param.label) {
+    errors.push(`Parameter ${paramNum}: Label (skos:prefLabel) is required`);
   }
 
   // Validate value is a number

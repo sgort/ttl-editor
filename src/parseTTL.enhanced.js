@@ -491,7 +491,9 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.organization.homepage =
             extractValue(line.split('foaf:homepage')[1]) || parsed.organization.homepage;
         }
-        if (line.includes('cv:spatial')) {
+        // Accept dct:spatial (current CPSV-AP output) and cv:spatial (legacy files)
+        // so a downloaded file round-trips and keeps the organisation's spatial value.
+        if (line.includes('dct:spatial') || line.includes('cv:spatial')) {
           const spatialMatch = line.match(/<([^>]+)>/);
           if (spatialMatch) {
             parsed.organization.spatial = spatialMatch[1];

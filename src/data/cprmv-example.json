@@ -1,59 +1,830 @@
 [
   {
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel y.",
-    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;",
-    "situatie": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
-    "norm": "176,35",
-    "per": "maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is",
-    "rulesetid": "BWBR0015703",
-    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel y."
-  },
-  {
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel r.",
-    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 173,87 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:",
-    "https://cprmv.open-regels.nl/0.3.0/contains": {
-      "onderdeel 1°.": {
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 1°.",
-        "https://cprmv.open-regels.nl/0.3.0/definition": "hij de volledige zorg heeft voor een tot zijn last komend kind tot 12 jaar,"
-      },
-      "onderdeel 2°.": {
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 2°.",
-        "https://cprmv.open-regels.nl/0.3.0/definition": "de periode van zes maanden, bedoeld in onderdeel n, is verstreken, en"
-      },
-      "onderdeel 3°.": {
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-        "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel 3°.",
-        "https://cprmv.open-regels.nl/0.3.0/definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling;"
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "ndb7ccd4696a14dc9bb74c7eda36eb5a7b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel c.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.347,06.",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "1.347,06",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 1, onderdeel c."
       }
-    },
-    "situatie": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van",
-    "norm": "173,87",
-    "per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval",
-    "rulesetid": "BWBR0015703",
-    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel r."
+    }
   },
   {
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel z.",
-    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;",
-    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
-    "norm": "876,35",
-    "per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is",
-    "rulesetid": "BWBR0015703",
-    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel z."
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n663d79ed455540b8906b2773a8f31758b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een alleenstaande van 18, 19 of 20 jaar: € 345,99;",
+        "http://cprmv.open-regels.nl/situatie": "een alleenstaande van 18, 19 of 20 jaar",
+        "http://cprmv.open-regels.nl/norm": "345,99",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 1, onderdeel a."
+      }
+    }
   },
   {
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://cprmv.open-regels.nl/0.3.0/Rule",
-    "https://cprmv.open-regels.nl/0.3.0/id": "onderdeel aa.",
-    "https://cprmv.open-regels.nl/0.3.0/definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 176,35 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
-    "situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
-    "norm": "76",
-    "per": "maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
-    "rulesetid": "BWBR0015703",
-    "rule_id_path": "BWBR0015703_2025-07-01_0, Artikel 31, lid 2, onderdeel aa."
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n2c50820cd80a46a5950aa1a293710b63b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een alleenstaande ouder van 18, 19 of 20 jaar: € 345,99;",
+        "http://cprmv.open-regels.nl/situatie": "een alleenstaande ouder van 18, 19 of 20 jaar",
+        "http://cprmv.open-regels.nl/norm": "345,99",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 2, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n2a9298c3d86240da8e7f29afcc9810a8b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 691,98;",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn",
+        "http://cprmv.open-regels.nl/norm": "691,98",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 1, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n7dd905bb76a44330a0d93e6ceccb8a15b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 1.092,41;",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn",
+        "http://cprmv.open-regels.nl/norm": "1.092,41",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 2, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nfb831e00ffe34a3b803092bdd1163c15b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.401,50;",
+        "http://cprmv.open-regels.nl/situatie": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "1.401,50",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 21, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nad60c422e2ea4b2bb768d526185477d3b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel c.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.747,49.",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "1.747,49",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 20, lid 2, onderdeel c."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n50f93a0adc764a5089c5ea145d1dbf15b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners: € 2.002,13.",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "2.002,13",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 21, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n55dea10e34da4683b365c010f8cc38d6b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.564,69;",
+        "http://cprmv.open-regels.nl/situatie": "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "1.564,69",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 22, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n8e3c69907b7e4ec0855fdbc42971d389b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners: € 2.144,16;",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners",
+        "http://cprmv.open-regels.nl/norm": "2.144,16",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 22, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n34e186caab8940e0be94f282b5934aa3b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "indien ze een of meer ten laste komende kinderen hebben: € 746,42 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder,",
+        "http://cprmv.open-regels.nl/situatie": "indien ze een of meer ten laste komende kinderen hebben",
+        "http://cprmv.open-regels.nl/norm": "746,42",
+        "http://cprmv.open-regels.nl/plus": "de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 22a, lid 3, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n9bc76f2f1f15492a8ecef806b1b6b693b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "indien ze geen ten laste komende kinderen hebben: € 345,99 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder.",
+        "http://cprmv.open-regels.nl/situatie": "indien ze geen ten laste komende kinderen hebben",
+        "http://cprmv.open-regels.nl/norm": "345,99",
+        "http://cprmv.open-regels.nl/plus": "de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 22a, lid 3, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n436653d8a24a46d0b13bc20d83d1033ab1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een alleenstaande of een alleenstaande ouder: € 443,76;",
+        "http://cprmv.open-regels.nl/situatie": "een alleenstaande of een alleenstaande ouder",
+        "http://cprmv.open-regels.nl/norm": "443,76",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 23, lid 1, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n9fc0c304a6a04027a6251e1752d306f4b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "gehuwden: € 690,27.",
+        "http://cprmv.open-regels.nl/situatie": "gehuwden",
+        "http://cprmv.open-regels.nl/norm": "690,27",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 23, lid 1, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n565b894620f94b3eb7da8e7a930e594eb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor een alleenstaande of een alleenstaande ouder € 47,00;",
+        "http://cprmv.open-regels.nl/situatie": "voor een alleenstaande of een alleenstaande ouder",
+        "http://cprmv.open-regels.nl/norm": "47,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 23, lid 2, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "ncc8993a1160748ba9f17f7b17cc45769b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor gehuwden € 106,00.",
+        "http://cprmv.open-regels.nl/situatie": "voor gehuwden",
+        "http://cprmv.open-regels.nl/norm": "106,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 23, lid 2, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "ne259c399fb1f44f8b5f53756c9bd0347b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "lid 3": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "lid 3",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van 4,8 procent per 1 januari 2009: 5 procent van die bijstand.",
+        "http://cprmv.open-regels.nl/situatie": "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van",
+        "http://cprmv.open-regels.nl/origineel": "4,8",
+        "http://cprmv.open-regels.nl/laatsteupdate": "per 1 januari 2009",
+        "http://cprmv.open-regels.nl/norm": "5",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 19, lid 3"
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n97d4e36036fa476fbfa9bcaf21c56926b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel j.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel j.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "een een- of tweemalige premie van ten hoogste € 3.398,00 per kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling;",
+        "http://cprmv.open-regels.nl/situatie": "een een- of tweemalige premie van ten hoogste",
+        "http://cprmv.open-regels.nl/norm": "3.398,00",
+        "http://cprmv.open-regels.nl/per": "kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel j."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nb44386b288504d388f4a0dec7b08d53bb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel n.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel n.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling;",
+        "http://cprmv.open-regels.nl/situatie": "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van",
+        "http://cprmv.open-regels.nl/norm": "285,00",
+        "http://cprmv.open-regels.nl/per": "maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel n."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n92e6ba344c43484891c40d23e50cd4e7b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel r.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel r.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval:",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+          "onderdeel 1°.": {
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel 1°.",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "hij de volledige zorg heeft voor een tot zijn last komend kind tot 12 jaar,"
+          },
+          "onderdeel 2°.": {
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel 2°.",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "de periode van zes maanden, bedoeld in onderdeel n, is verstreken, en"
+          },
+          "onderdeel 3°.": {
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel 3°.",
+            "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "dit volgens het college bijdraagt aan zijn arbeidsinschakeling;"
+          }
+        },
+        "http://cprmv.open-regels.nl/situatie": "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van",
+        "http://cprmv.open-regels.nl/norm": "177,66",
+        "http://cprmv.open-regels.nl/per": "maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel r."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nebbfd7b04818497da5cadabe51f21c85b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel z.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel z.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;",
+        "http://cprmv.open-regels.nl/situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+        "http://cprmv.open-regels.nl/norm": "180,19",
+        "http://cprmv.open-regels.nl/per": "maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel z."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "ne09156d10dfc46c4a739b0c5fcd1fc09b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel y.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel y.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;",
+        "http://cprmv.open-regels.nl/situatie": "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+        "http://cprmv.open-regels.nl/norm": "180,19",
+        "http://cprmv.open-regels.nl/per": "maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel y."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n6623581a1bd344959b320ecce9540309b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel aa.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel aa.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht.",
+        "http://cprmv.open-regels.nl/situatie": "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van",
+        "http://cprmv.open-regels.nl/norm": "180,19",
+        "http://cprmv.open-regels.nl/per": "maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 31, lid 2, onderdeel aa."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n9ced02095a5f47bebe481e0db1db0303b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor een alleenstaande en een alleenstaande ouder: € 26,50 per kalendermaand;",
+        "http://cprmv.open-regels.nl/situatie": "voor een alleenstaande en een alleenstaande ouder",
+        "http://cprmv.open-regels.nl/norm": "26,50",
+        "http://cprmv.open-regels.nl/per": "kalendermaand",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 33, lid 5, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n154b986b1dfb45309da47cf0de90addcb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor de gehuwden tezamen: € 53,00 per kalendermaand.",
+        "http://cprmv.open-regels.nl/situatie": "voor de gehuwden tezamen",
+        "http://cprmv.open-regels.nl/norm": "53,00",
+        "http://cprmv.open-regels.nl/per": "kalendermaand",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 33, lid 5, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n00895482df6a4d99ad519efa1f00586bb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor een alleenstaande: € 8.000,00;",
+        "http://cprmv.open-regels.nl/situatie": "voor een alleenstaande",
+        "http://cprmv.open-regels.nl/norm": "8.000,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 34, lid 3, onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nc81c9ee3100e4a18a93b92d6c14e77a0b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel d.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel d.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan € 67.500,00;",
+        "http://cprmv.open-regels.nl/situatie": "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan",
+        "http://cprmv.open-regels.nl/norm": "67.500,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 34, lid 2, onderdeel d."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n7ee79bcb201e47629d0ff964946dd85fb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor een alleenstaande ouder: € 16.000,00;",
+        "http://cprmv.open-regels.nl/situatie": "voor een alleenstaande ouder",
+        "http://cprmv.open-regels.nl/norm": "16.000,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 34, lid 3, onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n6da59fff90504c169257eb652e203483b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel c.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "voor de gehuwden tezamen: € 16.000,00.",
+        "http://cprmv.open-regels.nl/situatie": "voor de gehuwden tezamen",
+        "http://cprmv.open-regels.nl/norm": "16.000,00",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 34, lid 3, onderdeel c."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nbca2f0c5c56b4c83b03b285ea7ac6ff3b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel a.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel a.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "21-jarigen en ouder: € 385,14;",
+        "http://cprmv.open-regels.nl/situatie": "21-jarigen en ouder",
+        "http://cprmv.open-regels.nl/norm": "385,14",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel a."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0015703/2026-04-03_0/xml/BWBR0015703_2026-04-03_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0015703_2026-04-03_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n3072b60556864352b3688ebd436049ecb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0015703",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-04-03",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "lid 2": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "lid 2",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van € 176,00 niet te boven gaan.",
+        "http://cprmv.open-regels.nl/situatie": "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van",
+        "http://cprmv.open-regels.nl/norm": "176,00",
+        "http://cprmv.open-regels.nl/niet": "te boven gaan",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0015703",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0015703_2026-04-03_0, Artikel 35, lid 2"
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nc47e9c62377e446da44df9e5f2743c09b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel b.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel b.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "20-jarigen: € 308,12;",
+        "http://cprmv.open-regels.nl/situatie": "20-jarigen",
+        "http://cprmv.open-regels.nl/norm": "308,12",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n1b3fe5b94eda47d39742957d63389bfdb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel d.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel d.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "18-jarigen: € 192,57;",
+        "http://cprmv.open-regels.nl/situatie": "18-jarigen",
+        "http://cprmv.open-regels.nl/norm": "192,57",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel d."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n50d3ea4558eb4672a5ecca730f2c5014b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel c.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel c.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "19-jarigen: € 231,09;",
+        "http://cprmv.open-regels.nl/situatie": "19-jarigen",
+        "http://cprmv.open-regels.nl/norm": "231,09",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel c."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "nce70b678eb8b4b70b5b9b1821c3bc20fb1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel g.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel g.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "15-jarigen: € 115,55.",
+        "http://cprmv.open-regels.nl/situatie": "15-jarigen",
+        "http://cprmv.open-regels.nl/norm": "115,55",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel g."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n1e637ba5118c4686a6116d5ca3dd8a64b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel f.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel f.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "16-jarigen: € 132,88;",
+        "http://cprmv.open-regels.nl/situatie": "16-jarigen",
+        "http://cprmv.open-regels.nl/norm": "132,88",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel f."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n1d19c839970b4dd4bca8394817e03238b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "Artikel 7b": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "Artikel 7b",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand € 231,09.",
+        "http://cprmv.open-regels.nl/situatie": "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand",
+        "http://cprmv.open-regels.nl/norm": "231,09",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7b."
+      }
+    }
+  },
+  {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#RuleSet",
+    "http://www.w3.org/ns/prov#wasDerivedFrom": "https://repository.officiele-overheidspublicaties.nl/bwb/BWBR0044894/2026-01-01_0/xml/BWBR0044894_2026-01-01_0.xml",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "BWBR0044894_2026-01-01_0",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#validFrom": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasMethod": "https://cprmv.open-regels.nl/0.4.1/methods/bwb",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#isOutputOf": "n4fa3f25bfae3431a8bc529bb84893d04b1",
+    "https://identifier.overheid.nl/tooi/thes/bwbid": "BWBR0044894",
+    "https://identifier.overheid.nl/tooi/thes/bwbinwerkingtreding": "2026-01-01",
+    "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#hasPart": {
+      "onderdeel e.": {
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#Rule",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#id": "onderdeel e.",
+        "https://standaarden.open-regels.nl/standards/cprmv/0.4.1#definition": "17-jarigen: € 152,14;",
+        "http://cprmv.open-regels.nl/situatie": "17-jarigen",
+        "http://cprmv.open-regels.nl/norm": "152,14",
+        "http://cprmv.open-regels.nl/rulesetid": "BWBR0044894",
+        "http://cprmv.open-regels.nl/rule_id_path": "BWBR0044894_2026-01-01_0, Artikel 7a., onderdeel e."
+      }
+    }
   }
 ]

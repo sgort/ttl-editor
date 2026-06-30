@@ -39,8 +39,10 @@ import {
   useParametersHandlers,
   useTemporalRulesHandlers,
 } from './hooks/useArrayHandlers';
+import { useDsoImport } from './hooks/useDsoImport';
 import { useEditorState } from './hooks/useEditorState';
 import { sanitizeFilename, validateForm } from './utils';
+import { flattenCprmvRules } from './utils/cprmvImport';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
 import {
@@ -151,6 +153,20 @@ function App() {
 
   // state variables for Publish dialog
   const [showPublishDialog, setShowPublishDialog] = useState(false);
+
+  // Consume the DSO → DMN deep-link handoff from the Linked Data Explorer.
+  // Prefills DMN/Service/Organization tabs from ?dsoImport=dmn&… and reuses the
+  // existing message banner for status. Deploy + publish stay in the normal flow.
+  useDsoImport({
+    setDmnData,
+    setService,
+    setOrganization,
+    setActiveTab,
+    notify: ({ type, message: text }) => {
+      setMessage(text);
+      setMessageType(type);
+    },
+  });
 
   // Helper to get TTL content
   const getTTLContent = () => generateTTL(buildStateForTTL());
@@ -312,20 +328,14 @@ function App() {
         const content = e.target.result;
         const jsonData = JSON.parse(content);
 
-        if (!Array.isArray(jsonData)) {
-          throw new Error('JSON must be an array of rules');
-        }
+        // Accepts the CPRMV 0.4.1 API shape (array of RuleSet objects with nested
+        // hasPart maps) as well as legacy flat-array exports. flattenCprmvRules
+        // walks and flattens both into the editor's flat rule model.
+        const mappedRules = flattenCprmvRules(jsonData);
 
-        // Map JSON structure from normenbrief format to CPRMV rule structure
-        const mappedRules = jsonData.map((rule, index) => ({
-          id: Date.now() + index,
-          ruleId: rule['https://cprmv.open-regels.nl/0.3.0/id'] || '',
-          rulesetId: rule.rulesetid || '',
-          definition: rule['https://cprmv.open-regels.nl/0.3.0/definition'] || '',
-          situatie: rule.situatie || '',
-          norm: rule.norm || '',
-          ruleIdPath: rule.rule_id_path || '',
-        }));
+        if (mappedRules.length === 0) {
+          throw new Error('No CPRMV rules found in the JSON file.');
+        }
 
         setCprmvRules(mappedRules);
 
@@ -1014,9 +1024,11 @@ function App() {
                   legalResource={legalResource}
                 />
               )}
-              {activeTab === 'dmn' && (
+              {/* DMN tab stays mounted (hidden when inactive) so an uploaded file,
+                  deployment status and test-case run results survive tab switches. */}
+              <div className={activeTab === 'dmn' ? '' : 'hidden'}>
                 <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
-              )}
+              </div>
               {activeTab === 'concepts' && (
                 <ConceptsTab
                   concepts={concepts}
@@ -1134,6 +1146,7 @@ function App() {
           }
         }
         publishingState={publishingState}
+        ttlContent={showPublishDialog ? getTTLContent() : ''}
       />
     </div>
   );
