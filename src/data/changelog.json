@@ -1,6 +1,24 @@
 {
   "versions": [
     {
+      "version": "1.10.6",
+      "date": "July 1, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "Test cases that expect an empty result set are now auto-verified",
+          "items": [
+            "A DMN test case whose expected value is the literal empty collection \"[]\" (or \"{}\") — meaning no rule matches and the engine returns an empty result — was reported as 'OK (unchecked)' with 'the expected value could not be parsed for an automatic check'. The empty-result branch in evaluateTestCaseExpectation only recognised the descriptive strings 'empty result' / 'no matching rule', so a literal \"[]\" fell through to the key=value parser, found no pairs, and was judged unverified even though the engine's empty response was exactly correct.",
+            "The empty-result check now also matches a literal empty array or object, so an expected value of \"[]\" is treated as 'expect an empty result set'. Boundary cases such as the Thuisbatterij jaarGebondenBudget years outside the modelled range (2025, 2028) now pass automatically. A non-empty response against an \"[]\" expectation still fails, and structured/descriptive expectations are unaffected."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.5",
       "date": "June 30, 2026",
       "status": "Released",

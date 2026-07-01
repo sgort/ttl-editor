@@ -465,8 +465,13 @@ function looseValueEqual(exp, act) {
 export function evaluateTestCaseExpectation(expected, parsed) {
   const actual = flattenEngineOutputs(parsed);
 
-  // Cases that expect no matching rule (empty result set).
-  if (typeof expected === 'string' && /empty result|no matching rule/i.test(expected)) {
+  // Cases that expect no matching rule (empty result set). This covers both a
+  // descriptive expectation ("empty result", "no matching rule") and a literal
+  // empty-collection value ("[]" or "{}") copied straight from the engine output.
+  if (
+    typeof expected === 'string' &&
+    (/empty result|no matching rule/i.test(expected) || /^\s*(\[\s*\]|\{\s*\})\s*$/.test(expected))
+  ) {
     const isEmpty = !actual || Object.keys(actual).length === 0;
     return {
       verdict: isEmpty ? 'pass' : 'fail',
