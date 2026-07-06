@@ -3,11 +3,43 @@ import React from 'react';
 
 import { sanitizeIri } from '../../utils';
 
+// Chips listing the decision(s) a concept appears in, rendered as siblings of the
+// Input #x / Output #x badge and colour-matched to it (blue for inputs, green for
+// outputs). Inputs are DRD-level and shared, so a concept may list several decisions.
+function DecisionChips({ decisions, variant = 'input' }) {
+  if (!decisions || decisions.length === 0) return null;
+  const cls =
+    variant === 'output'
+      ? 'text-xs bg-green-100 text-green-700 px-2 py-1 rounded'
+      : 'text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded';
+  return decisions.map((d) => (
+    <span key={d} className={cls}>
+      {d}
+    </span>
+  ));
+}
+
 export default function ConceptsTab({ concepts, removeConcept, updateConcept, setConcepts }) {
   // Separate inputs and outputs from state
   const inputConcepts = concepts.filter((c) => c.linkedToType === 'input');
   const outputConcepts = concepts.filter((c) => c.linkedToType === 'output');
   const totalConcepts = concepts.length;
+
+  // Cluster outputs so those of the same decision sit together (decisions in first-seen
+  // order), without rendering sub-headers — the green decision chip conveys the grouping.
+  const outputConceptsGrouped = (() => {
+    const order = [];
+    const buckets = new Map();
+    for (const c of outputConcepts) {
+      const key = (c.decisions && c.decisions[0]) || '';
+      if (!buckets.has(key)) {
+        buckets.set(key, []);
+        order.push(key);
+      }
+      buckets.get(key).push(c);
+    }
+    return order.flatMap((k) => buckets.get(k));
+  })();
 
   // Empty state - no concepts generated yet
   if (concepts.length === 0) {
@@ -177,16 +209,17 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                 className="border border-gray-200 rounded-lg p-4 bg-gray-50"
               >
                 {/* Concept Header */}
-                <div className="flex justify-between items-center mb-3">
-                  <div className="flex items-center gap-2">
+                <div className="flex justify-between items-start mb-3 gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h5 className="font-medium text-gray-900">{concept.variableName}</h5>
                     <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
                       Input #{concept.linkedTo.split('/')[1]}
                     </span>
+                    <DecisionChips decisions={concept.decisions} />
                   </div>
                   <button
                     onClick={() => removeConcept(concept.id)}
-                    className="text-red-600 hover:text-red-800 transition-colors"
+                    className="text-red-600 hover:text-red-800 transition-colors shrink-0"
                     aria-label={`Remove concept ${concept.variableName}`}
                   >
                     <Trash2 size={18} />
@@ -316,19 +349,20 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
             Output Concepts ({outputConcepts.length})
           </h4>
           <div className="space-y-4">
-            {outputConcepts.map((concept) => (
+            {outputConceptsGrouped.map((concept) => (
               <div
                 key={concept.id}
                 data-concept-id={concept.id}
                 className="border border-gray-200 rounded-lg p-4 bg-gray-50"
               >
                 {/* Concept Header */}
-                <div className="flex justify-between items-center mb-3">
-                  <div className="flex items-center gap-2">
+                <div className="flex justify-between items-start mb-3 gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h5 className="font-medium text-gray-900">{concept.variableName}</h5>
                     <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
                       Output #{concept.linkedTo.split('/')[1]}
                     </span>
+                    <DecisionChips decisions={concept.decisions} variant="output" />
                   </div>
                   <button
                     onClick={() => removeConcept(concept.id)}

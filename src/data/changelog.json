@@ -1,6 +1,150 @@
 {
   "versions": [
     {
+      "version": "1.10.6",
+      "date": "July 1, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "Test cases that expect an empty result set are now auto-verified",
+          "items": [
+            "A DMN test case whose expected value is the literal empty collection \"[]\" (or \"{}\") — meaning no rule matches and the engine returns an empty result — was reported as 'OK (unchecked)' with 'the expected value could not be parsed for an automatic check'. The empty-result branch in evaluateTestCaseExpectation only recognised the descriptive strings 'empty result' / 'no matching rule', so a literal \"[]\" fell through to the key=value parser, found no pairs, and was judged unverified even though the engine's empty response was exactly correct.",
+            "The empty-result check now also matches a literal empty array or object, so an expected value of \"[]\" is treated as 'expect an empty result set'. Boundary cases such as the Thuisbatterij jaarGebondenBudget years outside the modelled range (2025, 2028) now pass automatically. A non-empty response against an \"[]\" expectation still fails, and structured/descriptive expectations are unaffected."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.5",
+      "date": "June 30, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🔀",
+          "iconColor": "blue",
+          "title": "Choose which CPRMV vocabulary version to preview, export and publish",
+          "items": [
+            "A CPRMV version selector (0.4.1 / 0.3.2) next to the preview/export controls now drives the generated TTL. The editor previously always emitted the 0.4.1 namespace (https://standaarden.open-regels.nl/standards/cprmv/0.4.1#), so data published for a 0.3.x consumer was invisible to it. Selecting 0.3.2 binds cprmv: to https://cprmv.open-regels.nl/0.3.2/ — the versioned-path namespace the Linked Data Explorer /v1/norms?cprmv_version=0.3.2 query reads.",
+            "The two targets differ in shape, not just prefix. 0.4.1 wraps the rules in a cprmv:RuleSet (+ cprmv:hasPart); 0.3.2 instead emits a cprmv:Dataset / dcat:Dataset per ruleset — the unit /v1/norms reports under dataset_versions. The flat cprmv:Rule resources (cprmv:id, rulesetId, definition, situatie, norm, ruleIdPath) are emitted for both targets. Each cprmv:Dataset's dcat:version is the date that ruleset's own rules carry (from ruleIdPath), so the dataset version matches the rules' applicable_date by construction.",
+            "The selection applies consistently to the live preview, the TTL download and the publish-to-TriplyDB action."
+          ]
+        },
+        {
+          "icon": "🗓️",
+          "iconColor": "blue",
+          "title": "Consolidation date is derived from the rules, not entered by hand",
+          "items": [
+            "The published consolidation date — the eli:is_realized_by version on the LegalResource and every cprmv:RuleSet's cprmv:validFrom and versioned cprmv:id — is now derived per ruleset from the BWB in-force date the rules themselves carry in their ruleIdPath (e.g. BWBR0015703_2026-04-03_0 → 2026-04-03), rather than the manually-entered 'Version or consolidation date' (eli:is_realized_by) field. That field had let an operator pick a date that disagreed with the rules — e.g. a hand-typed 2026-03-04 against 2026-04-03 rules — producing a dataset whose version never matched its rules' applicable_date.",
+            "Each ruleset is dated from its own rules, so non-primary rulesets (those entering via cprmv:Rule references, e.g. BWBR0044894 and BWBR0015711) are now versioned correctly too — previously they were emitted version-less because the editor didn't know their version, even though the rules did. The manual field remains a fallback when no rule carries a dated ruleIdPath, with today's date as a last resort."
+          ]
+        },
+        {
+          "icon": "🧩",
+          "iconColor": "blue",
+          "title": "Rules sharing a legal path no longer collapse on publish",
+          "items": [
+            "A cprmv:Rule's subject URI was built only from its ruleIdPath, so two rules on the same legal path — a range's bounds ('meer dan € 59.782, doch minder dan € 251.233') or multiple maxima ('per maand' / 'per kalenderjaar') — resolved to the same RDF subject and silently merged on publish. A 69-rule import surfaced as only 66 norms in the Linked Data Explorer.",
+            "Each rule now gets a unique subject URI: the first occurrence of a path keeps the path-derived URI, and each subsequent duplicate gets an _N suffix (_2, _3, …) in document order. Both the flat cprmv:Rule resources and the 0.4.1 cprmv:RuleSet hasPart list use the same assignment, so all values survive (69 in, 69 out). The duplicates still share a rule_id_path_key, which the LDE treats as the dedup key.",
+            "Adds a generator test for the duplicate-path case; run the suite with npm run test:generator."
+          ]
+        },
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "0.3.2 datasets pass CPSV-AP 3.2.0 validation",
+          "items": [
+            "The 0.3.2 cprmv:Dataset records were co-typed dcat:Dataset, which triggered the CPSV-AP 3.2.0 DatasetShape (sh:targetClass dcat:Dataset) and raised an error per dataset for missing dct:title, dct:description and dct:publisher plus an untyped dcat:landingPage. They are now typed only cprmv:Dataset — the class the Linked Data Explorer dataset_versions query reads, and one that no shape targets — so pre-publish validation passes while the data stays fully consumable. Verified against the live /v1/shacl/validate backend: 4 errors per dataset → 0. Mirrors the RuleSet emitter's existing reason for not co-typing dcat:Dataset."
+          ]
+        },
+        {
+          "icon": "🪆",
+          "iconColor": "blue",
+          "title": "Nested sub-clauses fold into their parent rule on import",
+          "items": [
+            "Importing a CPRMV Rules API payload no longer creates standalone, norm-less rules for nested enumeration sub-clauses (e.g. the 'onderdeel 1°./2°./3°.' under 'Artikel 31, lid 2, onderdeel r.'). Those hasPart members carry no rule_id_path, so they are now folded — in order, recursively — into the parent rule's cprmv:definition, which keeps the complete legal text (… ingeval: <clause> <clause> …). Nested members that are rules in their own right (carry a rule_id_path) are still imported separately. For the 1 juli 2026 0.4.1 normenbrief this turns 81 imported entries into 72 — exactly the norms /v1/norms returns."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Toolbar polish and a runnable generator test suite",
+          "items": [
+            "The CPRMV version selector is styled as a toolbar control matching the action buttons, and the Import / Show Preview / Clear All buttons no longer wrap to two lines — the header row is now a consistent height.",
+            "Generator tests are runnable with npm run test:generator (one-shot), test:generator:watch and test:ci. They cover the version selector (namespace + shape), the rules-derived dates and the duplicate-path URI handling, and live in src/utils/ttlGenerator.*.test.js so they stay in sync with the code."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.4",
+      "date": "June 17, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🛡️",
+          "iconColor": "amber",
+          "title": "Parameter notation and label are now unconditionally required",
+          "items": [
+            "validateParameter previously only required skos:notation when schema:value was also present, and never validated skos:prefLabel at all. A new cprmv:ParameterWaardeShape (added in LDE v1.9.8) makes both properties mandatory [1,n], so the client-side check now mirrors the SHACL constraint: both fields are required regardless of whether a numeric value is set.",
+            "Effect: the pre-publish validation panel in the Publish dialog and the inline form error for the Parameters tab will surface missing notation and missing label immediately, rather than letting the file through to the back-end SHACL check where the violation would only be caught on publish."
+          ]
+        },
+        {
+          "icon": "✨",
+          "iconColor": "green",
+          "title": "Run test cases per decision, and gather concepts across the whole DMN",
+          "items": [
+            "Run All Test Cases now routes each case to its own decision: a case's optional 'decision' field is used as the evaluation key, falling back to the selected Decision Key when absent. One test file can therefore exercise every decision of a deployed DMN — e.g. cases for jaarGebondenBudget, BerekenBeschikbaarSubsidiePlafond and RechtOpSubsidieThuisbatterij all run correctly from a single upload instead of all hitting one fixed key. Each result shows the decision it ran against.",
+            "NL-SBB concept generation now unions both inputs and outputs across every case (deduped by name), where it previously took outputs from a single result. Each variable records the decision(s) it appears in, so the Concepts tab attributes every input and output to its decision(s)."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Per-decision concept badges and persistent DMN tab",
+          "items": [
+            "The Concepts tab shows a decision badge next to each variable, colour-matched to its kind: blue beside Input #x (inputs are DRD-level and may belong to several decisions) and green beside Output #x. Output concepts are clustered so variables from the same decision sit together, without separate group headers. The DMN tab's test-case decision badges match the blue Input styling.",
+            "The DMN tab now keeps its state when switching tabs: an uploaded DMN, deployment status and the full test-case run results survive a hop to the Concepts tab and back, instead of being reset each time the tab unmounted."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.3",
+      "date": "June 16, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "✨",
+          "iconColor": "green",
+          "title": "Pick which decision to evaluate in multi-decision DMNs",
+          "items": [
+            "extractPrimaryDecisionKey now prefers a *root* decision — one that no other decision requires via informationRequirement/requiredDecision — instead of blindly taking the first <decision> element in document order. This fixes models where the intended output decision is authored later in the file. When a DMN has several independent roots (e.g. a combined Recht-én-Hoogte model), document order still breaks the tie and a console warning points to the picker.",
+            "The DMN File card now shows a Decision Key dropdown whenever a file contains more than one testable decision, listing each as 'Name (id)'. Selecting one updates the Decision Key and the evaluation URL everywhere — so e.g. RechtOpSubsidieThuisbatterij can be chosen even though BehaalbareHoogteSubsidie appears first."
+          ]
+        },
+        {
+          "icon": "🧪",
+          "iconColor": "blue",
+          "title": "Test cases now verify functional correctness, not just a 200",
+          "items": [
+            "Previously a test case went green whenever the HTTP call succeeded, regardless of the returned values. A new evaluateTestCaseExpectation compares each case's expected outputs against the engine's actual outputs and returns PASS, FAIL, or unverified. It parses the readable 'key=value, reden=\"…\"' expected strings, accepts a structured expected object, and special-cases the 'empty result set' expectation.",
+            "Results render PASS (green), FAIL (red, with an Expected-vs-Actual mismatch table per output), ERROR (red, when the call itself fails) and OK-unchecked (amber, when no expectation could be parsed — never a silent green). The summary and header counts are now verdict-based, so 'N/N passed' means functionally correct results."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.2",
       "date": "June 15, 2026",
       "status": "Released",

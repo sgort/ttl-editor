@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react';
 
 import { sanitizeIri } from '../../utils';
 import {
+  evaluateTestCaseExpectation,
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
   extractPrimaryDecisionKey,
@@ -248,13 +249,12 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   };
 
   /**
-   * Generate concepts from DMN test results and store in state
+   * Build NL-SBB concepts from input/output variable lists and store in state.
+   * Each item is { name, type, decisions? } where `decisions` is the list of
+   * decision keys the variable appears in (used to group concepts per decision).
    */
-  const generateConceptsFromTest = (testResult, testBodyData) => {
+  const generateConceptsFromTest = (inputs, outputs) => {
     const serviceIdentifier = dmnData.decisionKey || 'unknown-service';
-    const inputs = extractInputsFromTestResult({ testBody: testBodyData });
-    const outputs = extractOutputsFromTestResult({ lastTestResult: testResult });
-
     const usedNotations = [];
     const generatedConcepts = [];
     let idCounter = 1;
@@ -271,6 +271,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         notation: notation,
         linkedTo: `input/${index + 1}`,
         linkedToType: 'input',
+        decisions: input.decisions || [],
         exactMatch: `https://regels.overheid.nl/concepts/${sanitizeIri(input.name)}`,
         type: 'dmn:InputVariable',
       });
@@ -288,6 +289,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         notation: notation,
         linkedTo: `output/${index + 1}`,
         linkedToType: 'output',
+        decisions: output.decisions || [],
         exactMatch: `https://regels.overheid.nl/concepts/${sanitizeIri(output.name)}`,
         type: 'dmn:OutputVariable',
       });
@@ -749,7 +751,16 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         apiEndpoint: evaluateUrl,
       });
 
-      generateConceptsFromTest(result, testBody);
+      const evalDecisions = apiConfig.decisionKey ? [apiConfig.decisionKey] : [];
+      const inputs = extractInputsFromTestResult({ testBody }).map((i) => ({
+        ...i,
+        decisions: evalDecisions,
+      }));
+      const outputs = extractOutputsFromTestResult({ lastTestResult: result }).map((o) => ({
+        ...o,
+        decisions: evalDecisions,
+      }));
+      generateConceptsFromTest(inputs, outputs);
     } catch (err) {
       setError(err.message);
       setTestResponse({ success: false, error: err.message });
@@ -840,10 +851,15 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         if (!Array.isArray(raw)) throw new Error('Test cases file must contain a JSON array');
 
         const normalised = raw.map((tc, i) => {
+          // Optional per-case routing: evaluate this case against its own decision
+          // instead of the single selected Decision Key. Falls back to the selected
+          // key at run time when absent.
+          const decision = tc.decision || '';
           // Toeslagen format: {name, expected, requestBody}
           if (tc.requestBody && tc.requestBody.variables) {
             return {
               name: tc.name || `TC${i + 1}`,
+              decision,
               expected: tc.expected || '',
               requestBody: tc.requestBody,
             };
@@ -852,6 +868,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
           if (tc.variables) {
             return {
               name: tc.testName || `TC${i + 1}`,
+              decision,
               expected: tc.testResult || '',
               requestBody: { variables: tc.variables },
             };
@@ -874,8 +891,11 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   };
 
   /**
-   * Run all loaded test cases against the primary decision key.
-   * On the last successful run, generates NL-SBB concepts.
+   * Run all loaded test cases. Each case is evaluated against its own `decision`
+   * when present in the uploaded JSON, otherwise against the selected Decision Key.
+   * This lets one test file cover multiple decisions of the same deployed DMN.
+   * NL-SBB concepts are generated from the UNION of inputs and outputs across
+   * every case, with each variable attributed to the decision(s) it appears in.
    */
   const handleRunTestCases = async () => {
     if (testCases.length === 0) return;
@@ -884,12 +904,30 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setTestCaseResults([]);
 
     const results = [];
-    let lastSuccessResult = null;
-    let lastSuccessBody = null;
+    // Union of outputs across all successful cases: name -> { value, type, decisions:Set }
+    const mergedOutputs = {};
 
     for (const tc of testCases) {
-      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}`;
+      // Per-case routing: prefer the case's own decision, fall back to the selected key.
+      const decisionKey = tc.decision || apiConfig.decisionKey;
       const bodyStr = JSON.stringify(tc.requestBody);
+
+      if (!decisionKey) {
+        results.push({
+          name: tc.name,
+          decision: '',
+          expected: tc.expected,
+          success: false,
+          raw: 'No decision to evaluate against: this case has no "decision" field and no Decision Key is selected.',
+          parsed: null,
+          verdict: 'error',
+          mismatches: [],
+        });
+        setTestCaseResults([...results]);
+        continue;
+      }
+
+      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', decisionKey)}`;
 
       try {
         const response = await fetch(url, {
@@ -913,42 +951,84 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         const success = !isRestException && response.ok;
 
         if (success) {
-          lastSuccessResult = parsed;
-          lastSuccessBody = bodyStr;
+          // Accumulate every output across cases (first occurrence wins for value/type),
+          // recording which decision(s) produced each so the Concepts tab can group them.
+          const rows = Array.isArray(parsed) ? parsed : [parsed];
+          for (const row of rows) {
+            if (!row || typeof row !== 'object') continue;
+            for (const [name, vd] of Object.entries(row)) {
+              if (!vd || typeof vd !== 'object' || !('value' in vd)) continue;
+              if (!mergedOutputs[name]) {
+                mergedOutputs[name] = { value: vd.value, type: vd.type, decisions: new Set() };
+              }
+              mergedOutputs[name].decisions.add(decisionKey);
+            }
+          }
         }
 
-        results.push({ name: tc.name, expected: tc.expected, success, raw, parsed });
+        // Functional check: compare the engine's actual outputs against `expected`.
+        // verdict is 'pass' | 'fail' | 'unverified' (no parseable expectation).
+        const { verdict, mismatches } = success
+          ? evaluateTestCaseExpectation(tc.expected, parsed)
+          : { verdict: 'error', mismatches: [] };
+
+        results.push({
+          name: tc.name,
+          decision: decisionKey,
+          expected: tc.expected,
+          success,
+          raw,
+          parsed,
+          verdict,
+          mismatches,
+        });
       } catch (err) {
         results.push({
           name: tc.name,
+          decision: decisionKey,
           expected: tc.expected,
           success: false,
           raw: err.message,
           parsed: null,
+          verdict: 'error',
+          mismatches: [],
         });
       }
 
       setTestCaseResults([...results]);
     }
 
-    // Populate NL-SBB concepts from the test cases. Input concepts are derived from the
-    // UNION of every uploaded case's request-body variables, so all inputs across all
-    // cases are covered (not just one case) and no successful evaluate is required;
-    // output concepts are added from the last successful result when there is one.
-    const mergedVariables = {};
+    // Populate NL-SBB concepts from the UNION across all cases:
+    //  - inputs from every case's request-body variables (no evaluate required)
+    //  - outputs accumulated from every successful evaluate (mergedOutputs)
+    // Each variable records the decision(s) it appears in for per-decision grouping.
+    const mergedInputs = {};
     for (const tc of testCases) {
       const vars = tc.requestBody?.variables;
-      if (vars) {
-        for (const [name, value] of Object.entries(vars)) {
-          if (!(name in mergedVariables)) mergedVariables[name] = value;
+      if (!vars) continue;
+      const dec = tc.decision || apiConfig.decisionKey;
+      for (const [name, vd] of Object.entries(vars)) {
+        if (!mergedInputs[name]) {
+          mergedInputs[name] = { type: vd?.type || 'String', decisions: new Set() };
         }
+        if (dec) mergedInputs[name].decisions.add(dec);
       }
     }
-    const conceptBody = Object.keys(mergedVariables).length
-      ? JSON.stringify({ variables: mergedVariables })
-      : lastSuccessBody;
-    if (conceptBody) {
-      generateConceptsFromTest(lastSuccessResult, conceptBody);
+
+    const inputs = Object.entries(mergedInputs).map(([name, info]) => ({
+      name,
+      type: info.type,
+      decisions: [...info.decisions],
+    }));
+    const outputs = Object.entries(mergedOutputs).map(([name, info]) => ({
+      name,
+      type: info.type,
+      decisions: [...info.decisions],
+    }));
+
+    // Don't wipe existing concepts when a run produced nothing usable.
+    if (inputs.length || outputs.length) {
+      generateConceptsFromTest(inputs, outputs);
     }
 
     setIsRunningTestCases(false);
@@ -1109,13 +1189,45 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                   {(uploadedFile.size / 1024).toFixed(2)} KB • Uploaded{' '}
                   {new Date(uploadedFile.uploadDate).toLocaleString()}
                 </p>
-                {apiConfig.decisionKey && (
-                  <p className="text-sm text-gray-600 mt-1">
-                    Decision Key:{' '}
-                    <code className="bg-white px-2 py-0.5 rounded text-xs">
-                      {apiConfig.decisionKey}
-                    </code>
-                  </p>
+                {decisions.length > 1 ? (
+                  <div className="mt-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Decision Key{' '}
+                      <span className="font-normal text-gray-500">
+                        — this file has {decisions.length} decisions, pick the one to evaluate
+                      </span>
+                    </label>
+                    <select
+                      value={
+                        decisions.some((d) => d.id === apiConfig.decisionKey)
+                          ? apiConfig.decisionKey
+                          : ''
+                      }
+                      onChange={(e) => {
+                        setApiConfig((prev) => ({ ...prev, decisionKey: e.target.value }));
+                        setDmnData({ ...dmnData, decisionKey: e.target.value });
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="" disabled>
+                        Select a decision…
+                      </option>
+                      {decisions.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name === d.id ? d.id : `${d.name} (${d.id})`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  apiConfig.decisionKey && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      Decision Key:{' '}
+                      <code className="bg-white px-2 py-0.5 rounded text-xs">
+                        {apiConfig.decisionKey}
+                      </code>
+                    </p>
+                  )
                 )}
                 {decisions.length > 0 && (
                   <p className="text-sm text-gray-600 mt-1">
@@ -1456,13 +1568,13 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
               <ClipboardList className="text-indigo-600" size={18} />
               <span className="font-semibold text-gray-800">Test Cases</span>
               <span className="text-xs text-gray-500">
-                — upload JSON, run all cases against the primary decision
+                — upload JSON, run each case against its own decision
               </span>
             </div>
             <div className="flex items-center gap-3">
               {testCases.length > 0 && (
                 <span className="text-xs text-gray-500">
-                  {testCaseResults.filter((r) => r.success).length}/
+                  {testCaseResults.filter((r) => r.verdict === 'pass').length}/
                   {testCaseResults.length || testCases.length} passed
                 </span>
               )}
@@ -1486,7 +1598,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 <code className="bg-gray-100 px-1 rounded text-xs">
                   [{'{'}testName, testResult, variables{'}'}]
                 </code>
-                .
+                . An optional <code className="bg-gray-100 px-1 rounded text-xs">decision</code> per
+                case routes it to that decision; cases without one use the selected Decision Key.
               </p>
 
               {/* File upload */}
@@ -1534,7 +1647,12 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                     >
                       <span className="text-gray-400 text-xs w-5">{i + 1}</span>
                       <span className="font-medium text-gray-700">{tc.name}</span>
-                      <span className="text-gray-500 text-xs">→ {tc.expected}</span>
+                      {tc.decision && (
+                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                          {tc.decision}
+                        </span>
+                      )}
+                      <span className="text-gray-500 text-xs truncate">→ {tc.expected}</span>
                     </div>
                   ))}
                 </div>
@@ -1545,38 +1663,104 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-gray-500 px-2">
                     <span>
-                      {testCaseResults.filter((r) => r.success).length} passed /{' '}
-                      {testCaseResults.filter((r) => !r.success).length} failed
+                      {testCaseResults.filter((r) => r.verdict === 'pass').length} passed /{' '}
+                      {
+                        testCaseResults.filter((r) => r.verdict === 'fail' || r.verdict === 'error')
+                          .length
+                      }{' '}
+                      failed
+                      {testCaseResults.some((r) => r.verdict === 'unverified') && (
+                        <span className="text-amber-600">
+                          {' '}
+                          / {testCaseResults.filter((r) => r.verdict === 'unverified').length}{' '}
+                          unverified
+                        </span>
+                      )}
                     </span>
                     {testCaseResults.length === testCases.length && !isRunningTestCases && (
-                      <span className="text-green-600 font-medium">Run complete</span>
+                      <span className="text-green-600 font-medium">
+                        Run complete
+                        {(() => {
+                          const n = new Set(testCaseResults.map((r) => r.decision).filter(Boolean))
+                            .size;
+                          return n > 1 ? (
+                            <span className="text-gray-500 font-normal"> · {n} decisions</span>
+                          ) : null;
+                        })()}
+                      </span>
                     )}
                   </div>
-                  {testCaseResults.map((r, i) => (
-                    <details key={i} className="border border-gray-200 rounded">
-                      <summary className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 text-sm gap-3">
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <span className="text-gray-400 text-xs w-5 shrink-0">{i + 1}</span>
-                          <span className="font-medium text-gray-700 truncate">{r.name}</span>
+                  {testCaseResults.map((r, i) => {
+                    const badge =
+                      r.verdict === 'pass'
+                        ? { cls: 'bg-green-100 text-green-800', label: '✅ PASS' }
+                        : r.verdict === 'fail'
+                          ? { cls: 'bg-red-100 text-red-800', label: '❌ FAIL' }
+                          : r.verdict === 'unverified'
+                            ? { cls: 'bg-amber-100 text-amber-800', label: '☑️ OK (unchecked)' }
+                            : { cls: 'bg-red-100 text-red-800', label: '⚠️ ERROR' };
+                    return (
+                      <details key={i} className="border border-gray-200 rounded">
+                        <summary className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-50 text-sm gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <span className="text-gray-400 text-xs w-5 shrink-0">{i + 1}</span>
+                            <span className="font-medium text-gray-700 truncate">{r.name}</span>
+                            {r.decision && (
+                              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded shrink-0 hidden sm:inline">
+                                {r.decision}
+                              </span>
+                            )}
+                          </div>
+                          <span
+                            className={`px-2 py-0.5 rounded text-xs font-medium shrink-0 ${badge.cls}`}
+                          >
+                            {badge.label}
+                          </span>
+                        </summary>
+                        <div className="border-t border-gray-100 bg-gray-50 p-3 space-y-2">
+                          <p className="text-xs text-gray-600">
+                            <span className="font-medium">Expected:</span> {r.expected}
+                          </p>
+                          {r.verdict === 'fail' && r.mismatches?.length > 0 && (
+                            <div className="text-xs">
+                              <p className="font-medium text-red-700 mb-1">Mismatches:</p>
+                              <table className="w-full text-left border-collapse">
+                                <thead>
+                                  <tr className="text-gray-500">
+                                    <th className="pr-3 font-medium">Output</th>
+                                    <th className="pr-3 font-medium">Expected</th>
+                                    <th className="font-medium">Actual</th>
+                                  </tr>
+                                </thead>
+                                <tbody className="font-mono">
+                                  {r.mismatches.map((mm) => (
+                                    <tr key={mm.key} className="text-gray-700">
+                                      <td className="pr-3 align-top">{mm.key}</td>
+                                      <td className="pr-3 align-top text-green-700">
+                                        {JSON.stringify(mm.expected)}
+                                      </td>
+                                      <td className="align-top text-red-700">
+                                        {JSON.stringify(mm.actual)}
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                          {r.verdict === 'unverified' && (
+                            <p className="text-xs text-amber-700">
+                              Call succeeded, but the expected value could not be parsed for an
+                              automatic check — verify the response manually.
+                            </p>
+                          )}
+                          <pre className="text-xs font-mono whitespace-pre-wrap text-gray-700 overflow-x-auto max-h-48">
+                            {r.success ? formatJSON(r.parsed) : r.raw}
+                          </pre>
                         </div>
-                        <span
-                          className={`px-2 py-0.5 rounded text-xs font-medium shrink-0 ${
-                            r.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                          }`}
-                        >
-                          {r.success ? '✅ OK' : '❌ FAIL'}
-                        </span>
-                      </summary>
-                      <div className="border-t border-gray-100 bg-gray-50 p-3 space-y-2">
-                        <p className="text-xs text-gray-600">
-                          <span className="font-medium">Expected:</span> {r.expected}
-                        </p>
-                        <pre className="text-xs font-mono whitespace-pre-wrap text-gray-700 overflow-x-auto max-h-48">
-                          {r.success ? formatJSON(r.parsed) : r.raw}
-                        </pre>
-                      </div>
-                    </details>
-                  ))}
+                      </details>
+                    );
+                  })}
                   {testCaseResults.some((r) => r.success) && (
                     <p className="text-xs text-indigo-600 mt-2">
                       💡 NL-SBB concepts updated from last successful test case result.
