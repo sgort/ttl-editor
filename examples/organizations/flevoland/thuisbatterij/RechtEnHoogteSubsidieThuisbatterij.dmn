@@ -581,7 +581,7 @@
           <text>true</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_Huurder_Reden" expressionLanguage="feel">
-          <text>"Aanvrager heeft recht op subsidie"</text>
+          <text>"Aanvrager heeft recht op subsidie; huurder met toestemming eigenaar"</text>
         </outputEntry>
       </rule>
       <rule id="Rule_Afwijzing_Standaard">

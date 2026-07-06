@@ -208,17 +208,6 @@
       "disabled": true
     },
     {
-      "label": "Motivering hoogte",
-      "id": "Field_020_tb",
-      "key": "hoogteMotivering",
-      "type": "textarea",
-      "layout": {
-        "row": "Row_020_tb",
-        "columns": null
-      },
-      "disabled": true
-    },
-    {
       "text": "## Review door behandelaar",
       "id": "Field_021_tb",
       "type": "text",

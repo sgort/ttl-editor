@@ -203,6 +203,15 @@
       "defaultValue": "eigenaar"
     },
     {
+      "text": "# Budget omwege proces variabelen",
+      "id": "Field_0c4rygr",
+      "type": "text",
+      "layout": {
+        "row": "Row_0h1ratk",
+        "columns": null
+      }
+    },
+    {
       "label": "Reeds gesubsidieerd bedrag eigenaren",
       "id": "Field_reedsGesubsidieerdEigenaren",
       "key": "reedsGesubsidieerdEigenaren",
