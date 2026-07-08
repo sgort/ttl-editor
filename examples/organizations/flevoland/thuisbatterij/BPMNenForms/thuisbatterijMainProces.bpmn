@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:ronl="http://ronl.nl/schema/1.0" id="Definitions_Thuisbatterij_Main" targetNamespace="https://regels.overheid.nl/services/recht-hoogte-subsidie-thuisbatterij-flevoland/bpmn/main" exporter="Camunda Modeler" exporterVersion="5.43.1">
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:ronl="http://ronl.nl/schema/1.0" id="Definitions_Thuisbatterij_Main" targetNamespace="https://regels.overheid.nl/services/recht-hoogte-subsidie-thuisbatterij-flevoland/bpmn/main" exporter="Camunda Modeler" exporterVersion="5.46.1">
   <bpmn:process id="ThuisbatterijSubsidieAanvraagProcess" name="Subsidie Thuisbatterij Flevoland - Main Process" isExecutable="true" camunda:historyTimeToLive="365" ronl:organization="flevoland">
     <bpmn:documentation>Main AWB-style process for applications for the Flevoland thuisbatterij subsidy. It preserves the phase structure of the provided example and delegates substantive Recht/Hoogte decisioning to the called process ThuisbatterijSubsidieDecisionSubProcess, which can be deployed separately or included in the combined BPMN file.</bpmn:documentation>
     <bpmn:startEvent id="StartEvent_AWB" name="Aanvraag subsidie thuisbatterij ingediend" camunda:formRef="recht-en-hoogte-subsidie-thuisbatterij" camunda:formRefBinding="latest">
@@ -181,6 +181,8 @@ execution.setVariable("archiveComplete", true);</bpmn:script>
     <bpmn:sequenceFlow id="Flow_ChainTask_Archives" sourceRef="Task_Phase8_Forward" targetRef="Task_ArchivesDMN" />
     <bpmn:sequenceFlow id="Flow_ArchivesDMN_Record" sourceRef="Task_ArchivesDMN" targetRef="Task_ArchiveRecord" />
     <bpmn:sequenceFlow id="Flow_Archive_End" sourceRef="Task_ArchiveRecord" targetRef="EndEvent_AWB" />
+    <bpmn:textAnnotation id="TextAnnotation_1vi8fv8" />
+    <bpmn:association id="Association_0ya7r6h" associationDirection="None" sourceRef="StartEvent_AWB" targetRef="TextAnnotation_1vi8fv8" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Thuisbatterij_Main">
     <bpmndi:BPMNPlane id="BPMNPlane_Thuisbatterij_Main" bpmnElement="ThuisbatterijSubsidieAanvraagProcess">
@@ -253,6 +255,10 @@ execution.setVariable("archiveComplete", true);</bpmn:script>
           <dc:Bounds x="2117" y="342" width="78" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0ya7r6h_di" bpmnElement="Association_0ya7r6h">
+        <di:waypoint x="189" y="303" />
+        <di:waypoint x="238" y="240" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_Start_Phase1_di" bpmnElement="Flow_Start_Phase1">
         <di:waypoint x="196" y="317" />
         <di:waypoint x="246" y="317" />
@@ -336,6 +342,9 @@ execution.setVariable("archiveComplete", true);</bpmn:script>
         <di:waypoint x="2076" y="317" />
         <di:waypoint x="2138" y="317" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1vi8fv8_di" bpmnElement="TextAnnotation_1vi8fv8">
+        <dc:Bounds x="200" y="210" width="100" height="30" />
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>

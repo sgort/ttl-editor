@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_048o8dy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="processAanvraagInfoBezwaar" name="simpele aanvraag met extra informatie en bezwaar" isExecutable="true" camunda:historyTimeToLive="0">
+    <bpmn:startEvent id="StartEvent_1" name="aanvraag subsidie">
+      <bpmn:outgoing>Flow_Start_Beoordeling</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_Beoordeling" name="Beoordeling" camunda:type="external" camunda:topic="beoordeling">
+      <bpmn:incoming>Flow_Start_Beoordeling</bpmn:incoming>
+      <bpmn:outgoing>Flow_Beoordeling_ExtraInfoGw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_ExtraInfo" name="extra informatie nodig?" default="Flow_ExtraInfoGw_Merge">
+      <bpmn:incoming>Flow_Beoordeling_ExtraInfoGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtraInfoGw_ExtraInfo</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ExtraInfoGw_Merge</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_ExtraInfo" name="Extra informatie aanvragen" camunda:type="external" camunda:topic="extra-informatie">
+      <bpmn:incoming>Flow_ExtraInfoGw_ExtraInfo</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtraInfo_Merge</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Merge" name="beoordeling afgerond">
+      <bpmn:incoming>Flow_ExtraInfoGw_Merge</bpmn:incoming>
+      <bpmn:incoming>Flow_ExtraInfo_Merge</bpmn:incoming>
+      <bpmn:outgoing>Flow_Merge_BezwaarGw</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_Bezwaar" name="bezwaar?" default="Flow_BezwaarGw_End">
+      <bpmn:incoming>Flow_Merge_BezwaarGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_BezwaarGw_Bezwaar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BezwaarGw_End</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_Bezwaar" name="Bezwaar behandelen" camunda:type="external" camunda:topic="bezwaar">
+      <bpmn:incoming>Flow_BezwaarGw_Bezwaar</bpmn:incoming>
+      <bpmn:outgoing>Flow_Bezwaar_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_Klaar" name="klaar">
+      <bpmn:incoming>Flow_BezwaarGw_End</bpmn:incoming>
+      <bpmn:incoming>Flow_Bezwaar_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_Beoordeling" sourceRef="StartEvent_1" targetRef="Task_Beoordeling" />
+    <bpmn:sequenceFlow id="Flow_Beoordeling_ExtraInfoGw" sourceRef="Task_Beoordeling" targetRef="Gateway_ExtraInfo" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfoGw_ExtraInfo" name="ja" sourceRef="Gateway_ExtraInfo" targetRef="Task_ExtraInfo">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${needsExtraInformation}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_ExtraInfoGw_Merge" name="nee" sourceRef="Gateway_ExtraInfo" targetRef="Gateway_Merge" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfo_Merge" sourceRef="Task_ExtraInfo" targetRef="Gateway_Merge" />
+    <bpmn:sequenceFlow id="Flow_Merge_BezwaarGw" sourceRef="Gateway_Merge" targetRef="Gateway_Bezwaar" />
+    <bpmn:sequenceFlow id="Flow_BezwaarGw_Bezwaar" name="ja" sourceRef="Gateway_Bezwaar" targetRef="Task_Bezwaar">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${willComplain}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_BezwaarGw_End" name="nee" sourceRef="Gateway_Bezwaar" targetRef="EndEvent_Klaar" />
+    <bpmn:sequenceFlow id="Flow_Bezwaar_End" sourceRef="Task_Bezwaar" targetRef="EndEvent_Klaar" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="processAanvraagInfoBezwaar">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="129" y="265" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Beoordeling_di" bpmnElement="Task_Beoordeling">
+        <dc:Bounds x="240" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExtraInfo_di" bpmnElement="Gateway_ExtraInfo" isMarkerVisible="true">
+        <dc:Bounds x="400" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="387" y="185" width="76" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExtraInfo_di" bpmnElement="Task_ExtraInfo">
+        <dc:Bounds x="375" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Merge_di" bpmnElement="Gateway_Merge" isMarkerVisible="true">
+        <dc:Bounds x="530" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="516" y="272" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Bezwaar_di" bpmnElement="Gateway_Bezwaar" isMarkerVisible="true">
+        <dc:Bounds x="650" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="659" y="272" width="43" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Bezwaar_di" bpmnElement="Task_Bezwaar">
+        <dc:Bounds x="625" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Klaar_di" bpmnElement="EndEvent_Klaar">
+        <dc:Bounds x="812" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="817" y="265" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Beoordeling_di" bpmnElement="Flow_Start_Beoordeling">
+        <di:waypoint x="188" y="240" />
+        <di:waypoint x="240" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Beoordeling_ExtraInfoGw_di" bpmnElement="Flow_Beoordeling_ExtraInfoGw">
+        <di:waypoint x="340" y="240" />
+        <di:waypoint x="400" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfoGw_ExtraInfo_di" bpmnElement="Flow_ExtraInfoGw_ExtraInfo">
+        <di:waypoint x="425" y="265" />
+        <di:waypoint x="425" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="431" y="291" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfoGw_Merge_di" bpmnElement="Flow_ExtraInfoGw_Merge">
+        <di:waypoint x="450" y="240" />
+        <di:waypoint x="530" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="483" y="222" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfo_Merge_di" bpmnElement="Flow_ExtraInfo_Merge">
+        <di:waypoint x="475" y="370" />
+        <di:waypoint x="555" y="370" />
+        <di:waypoint x="555" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Merge_BezwaarGw_di" bpmnElement="Flow_Merge_BezwaarGw">
+        <di:waypoint x="580" y="240" />
+        <di:waypoint x="650" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BezwaarGw_Bezwaar_di" bpmnElement="Flow_BezwaarGw_Bezwaar">
+        <di:waypoint x="675" y="215" />
+        <di:waypoint x="675" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="681" y="186" width="12" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BezwaarGw_End_di" bpmnElement="Flow_BezwaarGw_End">
+        <di:waypoint x="700" y="240" />
+        <di:waypoint x="812" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="749" y="222" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Bezwaar_End_di" bpmnElement="Flow_Bezwaar_End">
+        <di:waypoint x="725" y="130" />
+        <di:waypoint x="830" y="130" />
+        <di:waypoint x="830" y="222" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

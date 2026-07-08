@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_048o8dy" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.46.1" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.23.0">
+  <bpmn:process id="processAanvraagInfoBezwaar" name="simpele aanvraag met extra informatie en bezwaar" isExecutable="true" camunda:historyTimeToLive="0">
+    <bpmn:startEvent id="start" name="aanvraag subsidie">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start">
+          <camunda:script scriptFormat="javascript">// Default process variables for processAanvraagInfoBezwaar.
+// setDefault only writes when the variable is not already present, so anything
+// supplied in the REST start payload takes precedence; this fills in the rest
+// and guarantees all variables exist (and are visible in Cockpit) from the start.
+function setDefault(name, value) {
+  if (!execution.hasVariable(name)) {
+    execution.setVariable(name, value);
+  }
+}
+
+// booleans
+setDefault("needsExtraInformation", false);
+setDefault("willComplain", false);
+setDefault("eligibleInitial", true);
+setDefault("eligibleAfterComplaint", true);
+
+// integers (Long) - stored as numbers, not strings
+setDefault("subsidyAmount", java.lang.Long.valueOf(5000));
+setDefault("originalSubmissionStart", java.lang.Long.valueOf(10));
+setDefault("evaluationStart", java.lang.Long.valueOf(4));
+setDefault("extraInformationStart", java.lang.Long.valueOf(4));
+setDefault("complaintStart", java.lang.Long.valueOf(4));
+setDefault("submissionDuration", java.lang.Long.valueOf(3));
+setDefault("evaluationDuration", java.lang.Long.valueOf(3));
+setDefault("extraInformationDuration", java.lang.Long.valueOf(3));
+setDefault("complaintDuration", java.lang.Long.valueOf(3));</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_Start_Beoordeling</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="beoordeling" name="Beoordeling" camunda:type="external" camunda:topic="beoordeling">
+      <bpmn:incoming>Flow_1hrnw7y</bpmn:incoming>
+      <bpmn:incoming>Flow_ExtraInfo_Merge</bpmn:incoming>
+      <bpmn:outgoing>Flow_Beoordeling_ExtraInfoGw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_ExtraInfo" name="extra informatie nodig?" default="Flow_ExtraInfoGw_Merge">
+      <bpmn:incoming>Flow_Beoordeling_ExtraInfoGw</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtraInfoGw_ExtraInfo</bpmn:outgoing>
+      <bpmn:outgoing>Flow_ExtraInfoGw_Merge</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="informatie" name="Extra informatie aanvragen" camunda:type="external" camunda:topic="extra-informatie">
+      <bpmn:incoming>Flow_ExtraInfoGw_ExtraInfo</bpmn:incoming>
+      <bpmn:outgoing>Flow_ExtraInfo_Merge</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Bezwaar" name="bezwaar?" default="Flow_BezwaarGw_End">
+      <bpmn:incoming>Flow_0ej5v72</bpmn:incoming>
+      <bpmn:outgoing>Flow_BezwaarGw_Bezwaar</bpmn:outgoing>
+      <bpmn:outgoing>Flow_BezwaarGw_End</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="bezwaar" name="Bezwaar behandelen" camunda:type="external" camunda:topic="bezwaar">
+      <bpmn:incoming>Flow_BezwaarGw_Bezwaar</bpmn:incoming>
+      <bpmn:outgoing>Flow_Bezwaar_End</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="klaar" name="klaar">
+      <bpmn:incoming>Flow_BezwaarGw_End</bpmn:incoming>
+      <bpmn:incoming>Flow_Bezwaar_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_Beoordeling" sourceRef="start" targetRef="ingediend" />
+    <bpmn:sequenceFlow id="Flow_Beoordeling_ExtraInfoGw" sourceRef="beoordeling" targetRef="Gateway_ExtraInfo" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfoGw_ExtraInfo" name="ja" sourceRef="Gateway_ExtraInfo" targetRef="informatie">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${needsExtraInformation}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_ExtraInfoGw_Merge" name="nee" sourceRef="Gateway_ExtraInfo" targetRef="afronden" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfo_Merge" name="terug naar beoordeling" sourceRef="informatie" targetRef="beoordeling" />
+    <bpmn:sequenceFlow id="Flow_BezwaarGw_Bezwaar" name="ja" sourceRef="Gateway_Bezwaar" targetRef="bezwaar">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${willComplain}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_BezwaarGw_End" name="nee" sourceRef="Gateway_Bezwaar" targetRef="klaar" />
+    <bpmn:sequenceFlow id="Flow_Bezwaar_End" sourceRef="bezwaar" targetRef="klaar" />
+    <bpmn:serviceTask id="ingediend" name="ingediend" camunda:type="external" camunda:topic="ingediend">
+      <bpmn:incoming>Flow_Start_Beoordeling</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hrnw7y</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1hrnw7y" sourceRef="ingediend" targetRef="beoordeling" />
+    <bpmn:sequenceFlow id="Flow_0ej5v72" sourceRef="afronden" targetRef="Gateway_Bezwaar" />
+    <bpmn:serviceTask id="afronden" name="afronden beoordeling">
+      <bpmn:incoming>Flow_ExtraInfoGw_Merge</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ej5v72</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="processAanvraagInfoBezwaar">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="start">
+        <dc:Bounds x="182" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="155" y="265" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Beoordeling_di" bpmnElement="beoordeling">
+        <dc:Bounds x="540" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExtraInfo_di" bpmnElement="Gateway_ExtraInfo" isMarkerVisible="true">
+        <dc:Bounds x="700" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="687" y="185" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ExtraInfo_di" bpmnElement="informatie">
+        <dc:Bounds x="675" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o1hjbx_di" bpmnElement="ingediend">
+        <dc:Bounds x="320" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Bezwaar_di" bpmnElement="Gateway_Bezwaar" isMarkerVisible="true">
+        <dc:Bounds x="975" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="982" y="272" width="48" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_Klaar_di" bpmnElement="klaar">
+        <dc:Bounds x="1142" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1147" y="265" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Bezwaar_di" bpmnElement="bezwaar">
+        <dc:Bounds x="950" y="90" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1l34p36_di" bpmnElement="afronden">
+        <dc:Bounds x="800" y="200" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Start_Beoordeling_di" bpmnElement="Flow_Start_Beoordeling">
+        <di:waypoint x="218" y="240" />
+        <di:waypoint x="320" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Beoordeling_ExtraInfoGw_di" bpmnElement="Flow_Beoordeling_ExtraInfoGw">
+        <di:waypoint x="640" y="240" />
+        <di:waypoint x="700" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfoGw_ExtraInfo_di" bpmnElement="Flow_ExtraInfoGw_ExtraInfo">
+        <di:waypoint x="725" y="265" />
+        <di:waypoint x="725" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="733" y="291" width="8" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfoGw_Merge_di" bpmnElement="Flow_ExtraInfoGw_Merge">
+        <di:waypoint x="750" y="240" />
+        <di:waypoint x="800" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="753" y="222" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_ExtraInfo_Merge_di" bpmnElement="Flow_ExtraInfo_Merge">
+        <di:waypoint x="675" y="380" />
+        <di:waypoint x="590" y="380" />
+        <di:waypoint x="590" y="280" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="565" y="334" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BezwaarGw_Bezwaar_di" bpmnElement="Flow_BezwaarGw_Bezwaar">
+        <di:waypoint x="1000" y="215" />
+        <di:waypoint x="1000" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1008" y="186" width="8" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_BezwaarGw_End_di" bpmnElement="Flow_BezwaarGw_End">
+        <di:waypoint x="1025" y="240" />
+        <di:waypoint x="1142" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1074" y="222" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Bezwaar_End_di" bpmnElement="Flow_Bezwaar_End">
+        <di:waypoint x="1050" y="130" />
+        <di:waypoint x="1160" y="130" />
+        <di:waypoint x="1160" y="222" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hrnw7y_di" bpmnElement="Flow_1hrnw7y">
+        <di:waypoint x="420" y="240" />
+        <di:waypoint x="540" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ej5v72_di" bpmnElement="Flow_0ej5v72">
+        <di:waypoint x="900" y="240" />
+        <di:waypoint x="975" y="240" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

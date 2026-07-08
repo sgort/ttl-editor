@@ -1,0 +1,147 @@
+Subsidy Process BPMN Summary - Passive Camunda 7 Version
+
+Source BPMN summarized: subsidy_process_camunda7_passive_rest_variables_fixed_connections.bpmn
+
+1. Executive summary
+This BPMN is a passive, REST/API-driven Camunda 7 process for handling subsidy requests. It models the full lifecycle from request registration to budget reservation, possible extra information, acceptance or rejection, possible complaint handling, and final payout or final rejection. The model deliberately contains no DMN usage. All decisions and calculations are expected to happen outside Camunda through a REST/API client. The process pauses at message catch events, the external client reads current process variables, calculates or decides externally, updates variables, and then correlates the matching BPMN message to continue the process.
+
+The design keeps the subsidy and budget variables available throughout the process. It also preserves the budget-reservation logic: a request reserves its amount while it is being processed; a rejected request releases the reserve only after the complaint period expires or after a complaint is rejected; and a complaint moves the hold into a separate complaint reserve until the complaint has been resolved.
+
+2. Camunda 7 deployment details
+- The model is Camunda 7 compatible BPMN XML.
+- All three process definitions are executable.
+- Each executable process has camunda:historyTimeToLive="180" to satisfy Camunda history cleanup TTL enforcement.
+- The model contains zero bpmn:businessRuleTask elements.
+- The model contains zero camunda:decisionRef attributes.
+- Passive decision points are modeled with intermediate message catch events.
+- Operational actions are modeled as Camunda external service tasks. These still require external task workers unless you later decide to convert them into additional passive message waits.
+- Call activities pass all variables into and out of the called subprocesses using camunda:in variables="all" and camunda:out variables="all".
+
+3. Executable process definitions
+- SubsidyApplicationProcess: Main subsidy application process. Handles registration, regular reserve, extra information routing, eligibility/amount/payout wait states, rejection, complaint period, complaint reserve, and final payout outcome.
+- RequestAdditionalInformationSubprocess: Called subprocess for requesting missing information from the applicant. It waits either for additional information to be received or for the information deadline to expire.
+- HandleComplaintSubprocess: Called subprocess for processing a complaint. It registers the complaint, confirms the complaint reserve, lets a complaint officer review it, waits for the configured processing duration, and then waits for externally provided complaint outcome variables.
+
+4. Main process flow
+1. Subsidy request received.
+2. Register request via external task topic subsidy-register.
+3. Reserve requested amount as a regular hold via budget-reserve-regular.
+4. Wait for completeness variables through message CompletenessOutcomeProvided.
+5. Gateway Need extra information? checks needsExtraInformation.
+6. If extra information is needed, call RequestAdditionalInformationSubprocess.
+7. After the subprocess, gateway Extra information received? checks additionalInformationReceived.
+8. If extra information was not received, the request goes to rejection handling.
+9. If no extra information is needed or the extra information is received, the process waits for eligibility variables through message EligibilityOutcomeProvided.
+10. Gateway Eligible? checks eligible.
+11. If not eligible, the request goes to rejection handling.
+12. If eligible, the process waits for subsidy amount variables through message AmountOutcomeProvided.
+13. Set the payout queue position via external task topic payout-queue-position.
+14. Wait for payout outcome variables through message PayoutOutcomeProvided.
+15. Gateway Payout possible? checks payoutStatus.
+16. If payoutStatus is AVAILABLE, pay the subsidy through subsidy-pay and end as Accepted and paid.
+17. If payoutStatus is BLOCKED, wait for message BudgetOrComplaintChanged and then re-check payout.
+18. If payoutStatus is EXHAUSTED, record the case through subsidy-accepted-unpaid and end as Accepted, payment impossible.
+19. Rejection handling prepares and sends the rejection using subsidy-rejection-prepare and subsidy-rejection-send.
+20. After rejection, an event-based gateway waits for either ComplaintReceived or the complaint deadline timer.
+21. If the deadline expires, release the regular reserve through budget-release-regular and end as Rejected: no complaint.
+22. If a complaint is received, move the hold to complaint reserve through budget-reserve-complaint.
+23. Call HandleComplaintSubprocess.
+24. Gateway Complaint upheld? checks complaintUpheld.
+25. If complaintUpheld is true, restore the original payout queue position through payout-queue-restore-original and go back to payout checking.
+26. If complaintUpheld is false, release the complaint reserve through budget-release-complaint and end as Rejected after complaint.
+
+5. Passive REST/API message wait points
+- Wait for completeness variables: message CompletenessOutcomeProvided. Required variable: needsExtraInformation. Optional variables: completenessResult, missingInformationReason, requestedInformationList.
+- Wait for eligibility variables: message EligibilityOutcomeProvided. Required variable: eligible. Optional variables: eligibilityResult, rejectionReason, legalGrounds.
+- Wait for subsidy amount variables: message AmountOutcomeProvided. Required variable: subsidyAmount. Optional variables: amountResult, requestedAmount, calculatedBasisAmount, availableSubsidyCeiling.
+- Wait for payout outcome variables: message PayoutOutcomeProvided. Required variable: payoutStatus with value AVAILABLE, BLOCKED, or EXHAUSTED. Optional variables: payoutResult, payoutQueueDate, budgetShortfall, blockingRequestId.
+- Wait for earlier complaint / budget change: message BudgetOrComplaintChanged. Used to wake blocked accepted cases and make them re-check payout.
+- Additional information received: message AdditionalInformationReceived. Used inside the extra information subprocess.
+- Complaint received: message ComplaintReceived. Used during the complaint period after a rejection.
+- Wait for complaint outcome variables: message ComplaintOutcomeProvided. Required variable: complaintUpheld. Optional variables: complaintResult, complaintReason, revisedEligibility, revisedSubsidyAmount.
+
+6. Gateway logic and variables
+- Need extra information?: needsExtraInformation == true routes to the extra information subprocess. Otherwise the default path goes to eligibility.
+- Extra information received?: additionalInformationReceived == true routes to eligibility. Otherwise the default path goes to rejection.
+- Eligible?: eligible == true routes to amount calculation wait state. Otherwise the default path goes to rejection.
+- Payout possible?: payoutStatus == 'AVAILABLE' routes to payment; payoutStatus == 'EXHAUSTED' routes to accepted but unpaid; the default path is BLOCKED and waits for a budget or complaint change.
+- Complaint upheld?: complaintUpheld == true restores the original payout queue position and returns to payout checking. Otherwise the default path releases the complaint reserve and ends as rejected after complaint.
+
+7. Extra information subprocess
+This subprocess is called by the main process when needsExtraInformation is true. It sends the information request through external task topic additional-info-request-send, then waits at an event-based gateway. If message AdditionalInformationReceived arrives, a caseworker reviews the received information in user task Review received information. The task is assigned to ${caseworker}. Then external task topic additional-info-received sets additionalInformationReceived = true. If the timer ${extraInformationDeadlineDuration} expires, external task topic additional-info-missing sets additionalInformationReceived = false. The subprocess returns all variables to the main process.
+
+8. Complaint subprocess
+This subprocess is called when a rejected applicant files a complaint in time. It registers the complaint through complaint-register, confirms the budget remains reserved as a complaint hold through complaint-reserve-confirm, then creates a user task Review complaint assigned to ${complaintOfficer}. After that, the process waits for timer ${complaintProcessingDuration}. It then waits for message ComplaintOutcomeProvided, where the external REST/API client must set complaintUpheld and optional complaint result variables. The subprocess returns all variables to the main process.
+
+9. Timers
+- ${complaintDeadlineDuration}: used after rejection to determine how long the applicant has to file a complaint.
+- ${extraInformationDeadlineDuration}: used inside the extra information subprocess to determine how long the applicant has to provide missing information.
+- ${complaintProcessingDuration}: used inside the complaint subprocess to represent complaint processing time.
+
+10. External service task topics
+- subsidy-register: register the incoming request.
+- budget-reserve-regular: create the regular processing budget hold.
+- payout-queue-position: determine or record the payout queue date.
+- subsidy-pay: accept, deduct budget, and pay subsidy.
+- subsidy-accepted-unpaid: record an accepted subsidy that cannot be paid because the budget is exhausted.
+- subsidy-rejection-prepare: prepare the rejection decision.
+- subsidy-rejection-send: send rejection and complaint instructions.
+- budget-release-regular: release the regular reserve when no complaint is filed.
+- budget-reserve-complaint: move the hold to the separate complaint reserve.
+- payout-queue-restore-original: restore the original queue position after a complaint is upheld.
+- budget-release-complaint: release the complaint reserve when the complaint is rejected.
+- additional-info-request-send: send the request for additional information.
+- additional-info-received: set additionalInformationReceived = true.
+- additional-info-missing: set additionalInformationReceived = false.
+- complaint-register: register the complaint.
+- complaint-reserve-confirm: confirm the complaint reserve remains locked.
+
+11. Important variables
+- needsExtraInformation: Boolean used to decide whether the extra information subprocess is needed.
+- additionalInformationReceived: Boolean returned by the extra information subprocess.
+- eligible: Boolean used to decide whether the applicant is eligible.
+- subsidyAmount: calculated subsidy amount, supplied externally.
+- payoutStatus: string status used by the payout gateway. Expected values are AVAILABLE, BLOCKED, and EXHAUSTED.
+- payoutQueueDate: date or datetime used to determine the first-come-first-served payout order.
+- originalSubmissionDate: date or datetime used to preserve the original queue position, especially after a successful complaint.
+- complaintDeadlineDuration: ISO-8601 duration expression for the complaint filing deadline, for example P3D.
+- extraInformationDeadlineDuration: ISO-8601 duration expression for the missing-information deadline.
+- complaintProcessingDuration: ISO-8601 duration expression for complaint processing, for example P3D, P4D, or P5D.
+- complaintUpheld: Boolean used to decide whether the complaint reverses the rejection.
+- rejectionReason, legalGrounds, budgetShortfall, blockingRequestId, complaintReason, revisedEligibility, revisedSubsidyAmount: optional explanatory or audit variables.
+- caseworker: assignee expression for the extra information review user task.
+- complaintOfficer: assignee expression for the complaint review user task.
+
+12. End states
+- Accepted and paid: the subsidy was accepted, budget was deducted, and payment was made.
+- Accepted, payment impossible: the subsidy was accepted but could not be paid because the budget was exhausted.
+- Rejected: no complaint: the request was rejected and no complaint was filed before the deadline.
+- Rejected after complaint: a complaint was filed but was not upheld, and the complaint reserve was released.
+
+13. Suggested REST/API interaction pattern
+1. Start a process instance with a business key and initial variables such as request id, applicant details, requested amount, originalSubmissionDate, complaintDeadlineDuration, extraInformationDeadlineDuration, and complaintProcessingDuration.
+2. Let external task workers complete operational tasks such as registration and reserve creation.
+3. When the process waits at a message event, read the current variables.
+4. Decide or calculate outside Camunda.
+5. Correlate the required message with the updated variables.
+6. Repeat this pattern for completeness, eligibility, subsidy amount, payout, and complaint outcome.
+
+Example message correlation shape:
+POST /engine-rest/message
+{
+  "messageName": "EligibilityOutcomeProvided",
+  "businessKey": "SUB-12345",
+  "processVariables": {
+    "eligible": { "value": true, "type": "Boolean" },
+    "rejectionReason": { "value": null, "type": "String" }
+  }
+}
+
+14. Caveats and implementation notes
+- The process is passive only for decisions and calculations. External service tasks are still active wait states that require external task workers.
+- Message catch events require correct message correlation, usually by businessKey or processInstanceId.
+- If multiple instances can share the same business key or message name, include a correlation key or processInstanceId to avoid ambiguous correlation.
+- The timers expect ISO-8601 duration values stored in process variables.
+- The BPMN passes all variables into and out of called subprocesses, which is convenient for this prototype but may be too broad for production governance.
+- The payoutStatus BLOCKED loop is intended for accepted requests that cannot yet be paid because earlier requests or complaints may still affect the available budget.
+- After a complaint is upheld, the process restores the original payout queue position and re-enters the payout check.

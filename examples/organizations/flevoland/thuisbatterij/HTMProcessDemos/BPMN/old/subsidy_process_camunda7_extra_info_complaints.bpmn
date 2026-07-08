@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_SubsidyProcess" targetNamespace="http://open-regels.nl/bpmn/subsidy" exporter="Camunda Modeler" exporterVersion="5.46.1">
+  <bpmn:message id="Message_AdditionalInformationReceived" name="AdditionalInformationReceived" />
+  <bpmn:message id="Message_ComplaintReceived" name="ComplaintReceived" />
+  <bpmn:message id="Message_BudgetOrComplaintChanged" name="BudgetOrComplaintChanged" />
+  <bpmn:process id="SubsidyApplicationProcess" name="Subsidy application: request, extra information, rejection, complaint and payout" isExecutable="true" camunda:historyTimeToLive="0">
+    <bpmn:documentation>
+      Camunda 7 design for a subsidy process. A request is registered, budget is reserved, extra information can be requested, the case is accepted or rejected, rejected applicants may file a complaint, and complaint reserves are held separately until the complaint is resolved. Payout is checked in first-come-first-served order, using the original submission date except where an extra-information subprocess changes the payout queue position to the date the missing information was received.
+    </bpmn:documentation>
+    <bpmn:startEvent id="StartEvent_RequestReceived" name="Subsidy request received" />
+    <bpmn:serviceTask id="Task_RegisterRequest" name="Register request" camunda:type="external" camunda:topic="subsidy-register" />
+    <bpmn:serviceTask id="Task_CreateRegularReserve" name="Reserve requested amount as regular hold" camunda:type="external" camunda:topic="budget-reserve-regular" />
+    <bpmn:businessRuleTask id="Task_CheckCompleteness" name="Check completeness / need for extra information" camunda:resultVariable="completenessResult" camunda:decisionRef="CheckSubsidyCompleteness" camunda:mapDecisionResult="singleResult" />
+    <bpmn:exclusiveGateway id="Gateway_NeedsExtraInfo" name="Need extra information?" default="Flow_NoExtraInfoNeeded" />
+    <bpmn:callActivity id="CallActivity_RequestExtraInfo" name="Request extra information subprocess" calledElement="RequestAdditionalInformationSubprocess">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Gateway_ExtraInfoReceived" name="Extra information received?" default="Flow_InfoNotReceived" />
+    <bpmn:businessRuleTask id="Task_AssessEligibility" name="Assess right to subsidy" camunda:resultVariable="eligibilityResult" camunda:decisionRef="AssessSubsidyEligibility" camunda:mapDecisionResult="singleResult" />
+    <bpmn:exclusiveGateway id="Gateway_Eligible" name="Eligible?" default="Flow_NotEligible" />
+    <bpmn:businessRuleTask id="Task_CalculateAmount" name="Calculate subsidy amount" camunda:resultVariable="amountResult" camunda:decisionRef="CalculateSubsidyAmount" camunda:mapDecisionResult="singleResult" />
+    <bpmn:serviceTask id="Task_SetPayoutQueuePosition" name="Set payout queue position" camunda:type="external" camunda:topic="payout-queue-position" />
+    <bpmn:businessRuleTask id="Task_CheckPayoutQueue" name="Check budget and payout order" camunda:resultVariable="payoutResult" camunda:decisionRef="CheckSubsidyBudgetAndQueue" camunda:mapDecisionResult="singleResult" />
+    <bpmn:exclusiveGateway id="Gateway_PayoutOutcome" name="Payout possible?" default="Flow_PayoutBlocked" />
+    <bpmn:intermediateCatchEvent id="Event_WaitBudgetOrComplaintChange" name="Wait for earlier complaint / budget change">
+      <bpmn:messageEventDefinition messageRef="Message_BudgetOrComplaintChanged" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="Task_PaySubsidy" name="Accept, deduct budget and pay subsidy" camunda:type="external" camunda:topic="subsidy-pay" />
+    <bpmn:endEvent id="EndEvent_AcceptedPaid" name="Accepted and paid" />
+    <bpmn:serviceTask id="Task_RecordAcceptedUnpaid" name="Record accepted but not paid: budget exhausted" camunda:type="external" camunda:topic="subsidy-accepted-unpaid" />
+    <bpmn:endEvent id="EndEvent_AcceptedUnpaid" name="Accepted, payment impossible" />
+    <bpmn:serviceTask id="Task_PrepareRejection" name="Prepare rejection decision" camunda:type="external" camunda:topic="subsidy-rejection-prepare" />
+    <bpmn:serviceTask id="Task_SendRejection" name="Send rejection and complaint instructions" camunda:type="external" camunda:topic="subsidy-rejection-send" />
+    <bpmn:eventBasedGateway id="Gateway_WaitForComplaint" name="Complaint filed in time?" />
+    <bpmn:intermediateCatchEvent id="Event_ComplaintReceived" name="Complaint received">
+      <bpmn:messageEventDefinition messageRef="Message_ComplaintReceived" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="Event_ComplaintDeadlineExpired" name="Complaint period expired">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${complaintDeadlineDuration}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="Task_ReleaseRegularReserve" name="Release regular reserve" camunda:type="external" camunda:topic="budget-release-regular" />
+    <bpmn:endEvent id="EndEvent_RejectedFinal" name="Rejected: no complaint" />
+    <bpmn:serviceTask id="Task_MoveToComplaintReserve" name="Move hold to complaint reserve" camunda:type="external" camunda:topic="budget-reserve-complaint" />
+    <bpmn:callActivity id="CallActivity_HandleComplaint" name="Complaint handling subprocess" calledElement="HandleComplaintSubprocess">
+      <bpmn:extensionElements>
+        <camunda:in variables="all" />
+        <camunda:out variables="all" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Gateway_ComplaintUpheld" name="Complaint upheld?" default="Flow_ComplaintRefused" />
+    <bpmn:serviceTask id="Task_RestoreOriginalQueuePosition" name="Restore original payout queue position" camunda:type="external" camunda:topic="payout-queue-restore-original" />
+    <bpmn:serviceTask id="Task_ReleaseComplaintReserve" name="Release complaint reserve" camunda:type="external" camunda:topic="budget-release-complaint" />
+    <bpmn:endEvent id="EndEvent_RejectedAfterComplaint" name="Rejected after complaint" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_RequestReceived" targetRef="Task_RegisterRequest" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_RegisterRequest" targetRef="Task_CreateRegularReserve" />
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_CreateRegularReserve" targetRef="Task_CheckCompleteness" />
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_CheckCompleteness" targetRef="Gateway_NeedsExtraInfo" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfoNeeded" sourceRef="Gateway_NeedsExtraInfo" targetRef="CallActivity_RequestExtraInfo">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${needsExtraInformation == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_NoExtraInfoNeeded" sourceRef="Gateway_NeedsExtraInfo" targetRef="Task_AssessEligibility" />
+    <bpmn:sequenceFlow id="Flow_ExtraInfoDone" sourceRef="CallActivity_RequestExtraInfo" targetRef="Gateway_ExtraInfoReceived" />
+    <bpmn:sequenceFlow id="Flow_InfoReceived" sourceRef="Gateway_ExtraInfoReceived" targetRef="Task_AssessEligibility">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${additionalInformationReceived == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_InfoNotReceived" sourceRef="Gateway_ExtraInfoReceived" targetRef="Task_PrepareRejection" />
+    <bpmn:sequenceFlow id="Flow_EligibilityChecked" sourceRef="Task_AssessEligibility" targetRef="Gateway_Eligible" />
+    <bpmn:sequenceFlow id="Flow_Eligible" sourceRef="Gateway_Eligible" targetRef="Task_CalculateAmount">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${eligible == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_NotEligible" sourceRef="Gateway_Eligible" targetRef="Task_PrepareRejection" />
+    <bpmn:sequenceFlow id="Flow_AmountCalculated" sourceRef="Task_CalculateAmount" targetRef="Task_SetPayoutQueuePosition" />
+    <bpmn:sequenceFlow id="Flow_QueueSet" sourceRef="Task_SetPayoutQueuePosition" targetRef="Task_CheckPayoutQueue" />
+    <bpmn:sequenceFlow id="Flow_PayoutChecked" sourceRef="Task_CheckPayoutQueue" targetRef="Gateway_PayoutOutcome" />
+    <bpmn:sequenceFlow id="Flow_PayoutAvailable" sourceRef="Gateway_PayoutOutcome" targetRef="Task_PaySubsidy">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${payoutStatus == 'AVAILABLE'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_PayoutExhausted" sourceRef="Gateway_PayoutOutcome" targetRef="Task_RecordAcceptedUnpaid">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${payoutStatus == 'EXHAUSTED'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_PayoutBlocked" sourceRef="Gateway_PayoutOutcome" targetRef="Event_WaitBudgetOrComplaintChange" />
+    <bpmn:sequenceFlow id="Flow_RecheckPayout" sourceRef="Event_WaitBudgetOrComplaintChange" targetRef="Task_CheckPayoutQueue" />
+    <bpmn:sequenceFlow id="Flow_Paid" sourceRef="Task_PaySubsidy" targetRef="EndEvent_AcceptedPaid" />
+    <bpmn:sequenceFlow id="Flow_RecordUnpaid" sourceRef="Task_RecordAcceptedUnpaid" targetRef="EndEvent_AcceptedUnpaid" />
+    <bpmn:sequenceFlow id="Flow_PrepareToSendRejection" sourceRef="Task_PrepareRejection" targetRef="Task_SendRejection" />
+    <bpmn:sequenceFlow id="Flow_RejectionSent" sourceRef="Task_SendRejection" targetRef="Gateway_WaitForComplaint" />
+    <bpmn:sequenceFlow id="Flow_ComplaintReceived" sourceRef="Gateway_WaitForComplaint" targetRef="Event_ComplaintReceived" />
+    <bpmn:sequenceFlow id="Flow_ComplaintDeadline" sourceRef="Gateway_WaitForComplaint" targetRef="Event_ComplaintDeadlineExpired" />
+    <bpmn:sequenceFlow id="Flow_NoComplaintRelease" sourceRef="Event_ComplaintDeadlineExpired" targetRef="Task_ReleaseRegularReserve" />
+    <bpmn:sequenceFlow id="Flow_NoComplaintEnd" sourceRef="Task_ReleaseRegularReserve" targetRef="EndEvent_RejectedFinal" />
+    <bpmn:sequenceFlow id="Flow_MoveReserve" sourceRef="Event_ComplaintReceived" targetRef="Task_MoveToComplaintReserve" />
+    <bpmn:sequenceFlow id="Flow_ComplaintSubprocess" sourceRef="Task_MoveToComplaintReserve" targetRef="CallActivity_HandleComplaint" />
+    <bpmn:sequenceFlow id="Flow_ComplaintHandled" sourceRef="CallActivity_HandleComplaint" targetRef="Gateway_ComplaintUpheld" />
+    <bpmn:sequenceFlow id="Flow_ComplaintUpheld" sourceRef="Gateway_ComplaintUpheld" targetRef="Task_RestoreOriginalQueuePosition">
+      <bpmn:conditionExpression xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${complaintUpheld == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_AppealBackToPayout" sourceRef="Task_RestoreOriginalQueuePosition" targetRef="Task_CheckPayoutQueue" />
+    <bpmn:sequenceFlow id="Flow_ComplaintRefused" sourceRef="Gateway_ComplaintUpheld" targetRef="Task_ReleaseComplaintReserve" />
+    <bpmn:sequenceFlow id="Flow_ComplaintRefusedEnd" sourceRef="Task_ReleaseComplaintReserve" targetRef="EndEvent_RejectedAfterComplaint" />
+  </bpmn:process>
+  <bpmn:process id="RequestAdditionalInformationSubprocess" name="Request additional information" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_InfoRequest" name="Extra information needed" />
+    <bpmn:serviceTask id="Task_SendInfoRequest" name="Send request for additional information" camunda:type="external" camunda:topic="additional-info-request-send" />
+    <bpmn:eventBasedGateway id="Gateway_WaitAdditionalInfo" name="Wait for applicant" />
+    <bpmn:intermediateCatchEvent id="Event_AdditionalInfoReceived" name="Additional information received">
+      <bpmn:messageEventDefinition messageRef="Message_AdditionalInformationReceived" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="Event_InfoDeadlineExpired" name="Information deadline expired">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${extraInformationDeadlineDuration}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="UserTask_ReviewAdditionalInfo" name="Review received information" camunda:assignee="${caseworker}" />
+    <bpmn:serviceTask id="Task_SetInfoReceived" name="Set additionalInformationReceived = true" camunda:type="external" camunda:topic="additional-info-received" />
+    <bpmn:endEvent id="EndEvent_InfoCompleted" name="Information complete" />
+    <bpmn:serviceTask id="Task_SetInfoMissing" name="Set additionalInformationReceived = false" camunda:type="external" camunda:topic="additional-info-missing" />
+    <bpmn:endEvent id="EndEvent_InfoMissing" name="Information missing" />
+    <bpmn:sequenceFlow id="InfoFlow_1" sourceRef="StartEvent_InfoRequest" targetRef="Task_SendInfoRequest" />
+    <bpmn:sequenceFlow id="InfoFlow_2" sourceRef="Task_SendInfoRequest" targetRef="Gateway_WaitAdditionalInfo" />
+    <bpmn:sequenceFlow id="InfoFlow_Received" sourceRef="Gateway_WaitAdditionalInfo" targetRef="Event_AdditionalInfoReceived" />
+    <bpmn:sequenceFlow id="InfoFlow_Timeout" sourceRef="Gateway_WaitAdditionalInfo" targetRef="Event_InfoDeadlineExpired" />
+    <bpmn:sequenceFlow id="InfoFlow_Review" sourceRef="Event_AdditionalInfoReceived" targetRef="UserTask_ReviewAdditionalInfo" />
+    <bpmn:sequenceFlow id="InfoFlow_SetReceived" sourceRef="UserTask_ReviewAdditionalInfo" targetRef="Task_SetInfoReceived" />
+    <bpmn:sequenceFlow id="InfoFlow_EndReceived" sourceRef="Task_SetInfoReceived" targetRef="EndEvent_InfoCompleted" />
+    <bpmn:sequenceFlow id="InfoFlow_SetMissing" sourceRef="Event_InfoDeadlineExpired" targetRef="Task_SetInfoMissing" />
+    <bpmn:sequenceFlow id="InfoFlow_EndMissing" sourceRef="Task_SetInfoMissing" targetRef="EndEvent_InfoMissing" />
+  </bpmn:process>
+  <bpmn:process id="HandleComplaintSubprocess" name="Handle complaint" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_Complaint" name="Complaint filed" />
+    <bpmn:serviceTask id="Task_RegisterComplaint" name="Register complaint" camunda:type="external" camunda:topic="complaint-register" />
+    <bpmn:serviceTask id="Task_ConfirmComplaintReserve" name="Confirm budget remains reserved as complaint hold" camunda:type="external" camunda:topic="complaint-reserve-confirm" />
+    <bpmn:userTask id="UserTask_ReviewComplaint" name="Review complaint" camunda:assignee="${complaintOfficer}" />
+    <bpmn:intermediateCatchEvent id="Event_ComplaintProcessingTime" name="Complaint processing time">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="bpmn:tFormalExpression">${complaintProcessingDuration}</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:businessRuleTask id="Task_DecideComplaint" name="Decide complaint" camunda:resultVariable="complaintResult" camunda:decisionRef="DecideSubsidyComplaint" camunda:mapDecisionResult="singleResult" />
+    <bpmn:endEvent id="EndEvent_ComplaintResolved" name="Complaint resolved" />
+    <bpmn:sequenceFlow id="ComplaintFlow_1" sourceRef="StartEvent_Complaint" targetRef="Task_RegisterComplaint" />
+    <bpmn:sequenceFlow id="ComplaintFlow_2" sourceRef="Task_RegisterComplaint" targetRef="Task_ConfirmComplaintReserve" />
+    <bpmn:sequenceFlow id="ComplaintFlow_3" sourceRef="Task_ConfirmComplaintReserve" targetRef="UserTask_ReviewComplaint" />
+    <bpmn:sequenceFlow id="ComplaintFlow_4" sourceRef="UserTask_ReviewComplaint" targetRef="Event_ComplaintProcessingTime" />
+    <bpmn:sequenceFlow id="ComplaintFlow_5" sourceRef="Event_ComplaintProcessingTime" targetRef="Task_DecideComplaint" />
+    <bpmn:sequenceFlow id="ComplaintFlow_6" sourceRef="Task_DecideComplaint" targetRef="EndEvent_ComplaintResolved" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_SubsidyProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_SubsidyProcess" bpmnElement="SubsidyApplicationProcess">
+      <bpmndi:BPMNShape id="Shape_StartEvent_RequestReceived" bpmnElement="StartEvent_RequestReceived">
+        <dc:Bounds x="180" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="258" width="80" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RegisterRequest" bpmnElement="Task_RegisterRequest">
+        <dc:Bounds x="255" y="200" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CreateRegularReserve" bpmnElement="Task_CreateRegularReserve">
+        <dc:Bounds x="425" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CheckCompleteness" bpmnElement="Task_CheckCompleteness">
+        <dc:Bounds x="615" y="200" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_NeedsExtraInfo" bpmnElement="Gateway_NeedsExtraInfo" isMarkerVisible="true">
+        <dc:Bounds x="835" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="830" y="265" width="61" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CallActivity_RequestExtraInfo" bpmnElement="CallActivity_RequestExtraInfo">
+        <dc:Bounds x="815" y="330" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_ExtraInfoReceived" bpmnElement="Gateway_ExtraInfoReceived" isMarkerVisible="true">
+        <dc:Bounds x="1020" y="345" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1003" y="395" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_AssessEligibility" bpmnElement="Task_AssessEligibility">
+        <dc:Bounds x="1010" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_Eligible" bpmnElement="Gateway_Eligible" isMarkerVisible="true">
+        <dc:Bounds x="1205" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1209" y="265" width="42" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CalculateAmount" bpmnElement="Task_CalculateAmount">
+        <dc:Bounds x="1305" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SetPayoutQueuePosition" bpmnElement="Task_SetPayoutQueuePosition">
+        <dc:Bounds x="1505" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CheckPayoutQueue" bpmnElement="Task_CheckPayoutQueue">
+        <dc:Bounds x="1705" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_PayoutOutcome" bpmnElement="Gateway_PayoutOutcome" isMarkerVisible="true">
+        <dc:Bounds x="1905" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1888" y="265" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Event_WaitBudgetOrComplaintChange" bpmnElement="Event_WaitBudgetOrComplaintChange">
+        <dc:Bounds x="1912" y="95" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1893" y="131" width="74" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PaySubsidy" bpmnElement="Task_PaySubsidy">
+        <dc:Bounds x="2010" y="200" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent_AcceptedPaid" bpmnElement="EndEvent_AcceptedPaid">
+        <dc:Bounds x="2205" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2190" y="258" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RecordAcceptedUnpaid" bpmnElement="Task_RecordAcceptedUnpaid">
+        <dc:Bounds x="2010" y="320" width="165" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent_AcceptedUnpaid" bpmnElement="EndEvent_AcceptedUnpaid">
+        <dc:Bounds x="2220" y="342" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2212" y="378" width="53" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PrepareRejection" bpmnElement="Task_PrepareRejection">
+        <dc:Bounds x="1205" y="480" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SendRejection" bpmnElement="Task_SendRejection">
+        <dc:Bounds x="1405" y="480" width="165" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_WaitForComplaint" bpmnElement="Gateway_WaitForComplaint">
+        <dc:Bounds x="1625" y="495" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1608" y="545" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Event_ComplaintReceived" bpmnElement="Event_ComplaintReceived">
+        <dc:Bounds x="1742" y="430" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1735" y="466" width="50" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Event_ComplaintDeadlineExpired" bpmnElement="Event_ComplaintDeadlineExpired">
+        <dc:Bounds x="1742" y="585" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1718" y="621" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ReleaseRegularReserve" bpmnElement="Task_ReleaseRegularReserve">
+        <dc:Bounds x="1825" y="565" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent_RejectedFinal" bpmnElement="EndEvent_RejectedFinal">
+        <dc:Bounds x="2025" y="587" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2012" y="623" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_MoveToComplaintReserve" bpmnElement="Task_MoveToComplaintReserve">
+        <dc:Bounds x="1825" y="405" width="155" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CallActivity_HandleComplaint" bpmnElement="CallActivity_HandleComplaint">
+        <dc:Bounds x="2030" y="405" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_ComplaintUpheld" bpmnElement="Gateway_ComplaintUpheld" isMarkerVisible="true">
+        <dc:Bounds x="2230" y="420" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2230" y="470" width="50" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RestoreOriginalQueuePosition" bpmnElement="Task_RestoreOriginalQueuePosition">
+        <dc:Bounds x="2330" y="340" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ReleaseComplaintReserve" bpmnElement="Task_ReleaseComplaintReserve">
+        <dc:Bounds x="2330" y="500" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent_RejectedAfterComplaint" bpmnElement="EndEvent_RejectedAfterComplaint">
+        <dc:Bounds x="2535" y="522" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2518" y="558" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="216" y="240" />
+        <di:waypoint x="255" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="385" y="240" />
+        <di:waypoint x="425" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_3" bpmnElement="Flow_3">
+        <di:waypoint x="575" y="240" />
+        <di:waypoint x="615" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_4" bpmnElement="Flow_4">
+        <di:waypoint x="785" y="240" />
+        <di:waypoint x="835" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ExtraInfoNeeded" bpmnElement="Flow_ExtraInfoNeeded">
+        <di:waypoint x="860" y="265" />
+        <di:waypoint x="860" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_NoExtraInfoNeeded" bpmnElement="Flow_NoExtraInfoNeeded">
+        <di:waypoint x="885" y="240" />
+        <di:waypoint x="1010" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ExtraInfoDone" bpmnElement="Flow_ExtraInfoDone">
+        <di:waypoint x="965" y="370" />
+        <di:waypoint x="1020" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_InfoReceived" bpmnElement="Flow_InfoReceived">
+        <di:waypoint x="1045" y="345" />
+        <di:waypoint x="1045" y="300" />
+        <di:waypoint x="1085" y="300" />
+        <di:waypoint x="1085" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_InfoNotReceived" bpmnElement="Flow_InfoNotReceived">
+        <di:waypoint x="1045" y="395" />
+        <di:waypoint x="1045" y="520" />
+        <di:waypoint x="1205" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_EligibilityChecked" bpmnElement="Flow_EligibilityChecked">
+        <di:waypoint x="1160" y="240" />
+        <di:waypoint x="1205" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Eligible" bpmnElement="Flow_Eligible">
+        <di:waypoint x="1255" y="240" />
+        <di:waypoint x="1305" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_NotEligible" bpmnElement="Flow_NotEligible">
+        <di:waypoint x="1230" y="265" />
+        <di:waypoint x="1230" y="480" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_AmountCalculated" bpmnElement="Flow_AmountCalculated">
+        <di:waypoint x="1455" y="240" />
+        <di:waypoint x="1505" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QueueSet" bpmnElement="Flow_QueueSet">
+        <di:waypoint x="1655" y="240" />
+        <di:waypoint x="1705" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_RecheckPayout" bpmnElement="Flow_RecheckPayout">
+        <di:waypoint x="1912" y="113" />
+        <di:waypoint x="1780" y="113" />
+        <di:waypoint x="1780" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_AppealBackToPayout" bpmnElement="Flow_AppealBackToPayout">
+        <di:waypoint x="2500" y="380" />
+        <di:waypoint x="2555" y="380" />
+        <di:waypoint x="2555" y="165" />
+        <di:waypoint x="1780" y="165" />
+        <di:waypoint x="1780" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PayoutChecked" bpmnElement="Flow_PayoutChecked">
+        <di:waypoint x="1855" y="240" />
+        <di:waypoint x="1905" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PayoutAvailable" bpmnElement="Flow_PayoutAvailable">
+        <di:waypoint x="1955" y="240" />
+        <di:waypoint x="2010" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PayoutExhausted" bpmnElement="Flow_PayoutExhausted">
+        <di:waypoint x="1930" y="265" />
+        <di:waypoint x="1930" y="360" />
+        <di:waypoint x="2010" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PayoutBlocked" bpmnElement="Flow_PayoutBlocked">
+        <di:waypoint x="1930" y="215" />
+        <di:waypoint x="1930" y="131" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Paid" bpmnElement="Flow_Paid">
+        <di:waypoint x="2160" y="240" />
+        <di:waypoint x="2205" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_RecordUnpaid" bpmnElement="Flow_RecordUnpaid">
+        <di:waypoint x="2175" y="360" />
+        <di:waypoint x="2220" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PrepareToSendRejection" bpmnElement="Flow_PrepareToSendRejection">
+        <di:waypoint x="1355" y="520" />
+        <di:waypoint x="1405" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_RejectionSent" bpmnElement="Flow_RejectionSent">
+        <di:waypoint x="1570" y="520" />
+        <di:waypoint x="1625" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintReceived" bpmnElement="Flow_ComplaintReceived">
+        <di:waypoint x="1650" y="495" />
+        <di:waypoint x="1650" y="448" />
+        <di:waypoint x="1742" y="448" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintDeadline" bpmnElement="Flow_ComplaintDeadline">
+        <di:waypoint x="1650" y="545" />
+        <di:waypoint x="1650" y="603" />
+        <di:waypoint x="1742" y="603" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_MoveReserve" bpmnElement="Flow_MoveReserve">
+        <di:waypoint x="1778" y="448" />
+        <di:waypoint x="1825" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_NoComplaintRelease" bpmnElement="Flow_NoComplaintRelease">
+        <di:waypoint x="1778" y="603" />
+        <di:waypoint x="1825" y="605" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_NoComplaintEnd" bpmnElement="Flow_NoComplaintEnd">
+        <di:waypoint x="1975" y="605" />
+        <di:waypoint x="2025" y="605" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintSubprocess" bpmnElement="Flow_ComplaintSubprocess">
+        <di:waypoint x="1980" y="445" />
+        <di:waypoint x="2030" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintHandled" bpmnElement="Flow_ComplaintHandled">
+        <di:waypoint x="2180" y="445" />
+        <di:waypoint x="2230" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintUpheld" bpmnElement="Flow_ComplaintUpheld">
+        <di:waypoint x="2280" y="445" />
+        <di:waypoint x="2305" y="445" />
+        <di:waypoint x="2305" y="380" />
+        <di:waypoint x="2330" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintRefused" bpmnElement="Flow_ComplaintRefused">
+        <di:waypoint x="2280" y="445" />
+        <di:waypoint x="2305" y="445" />
+        <di:waypoint x="2305" y="540" />
+        <di:waypoint x="2330" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_ComplaintRefusedEnd" bpmnElement="Flow_ComplaintRefusedEnd">
+        <di:waypoint x="2490" y="540" />
+        <di:waypoint x="2535" y="540" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
