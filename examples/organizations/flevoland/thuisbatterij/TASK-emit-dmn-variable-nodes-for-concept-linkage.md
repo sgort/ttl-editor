@@ -10,7 +10,7 @@
 NL-SBB concepts emitted by the editor point at a DMN variable via
 `dct:subject <serviceUri/dmn/input/N>` (or `.../output/N`), but the matching
 variable node — `<serviceUri/dmn/input/N> a cpsv:Input ; … cpsv:isRequiredBy <dmn>`
-— is **not always emitted**. When it is missing, the variable URI is *terminal*
+— is **not always emitted**. When it is missing, the variable URI is _terminal_
 (no outgoing triples), so there is no path from the concept to its DMN/service in
 the graph. Consumers that traverse `concept → dct:subject → variable →
 cpsv:isRequiredBy/cpsv:produces → dmn → cprmv:implements → service` therefore see
@@ -52,7 +52,7 @@ availability. Options, roughly in order of preference:
    `<serviceUri/dmn/input/N> a cpsv:Input ; cpsv:isRequiredBy <dmnUri> .`
    (and `cpsv:Output` / `cpsv:produces` for outputs) — driven by the concept
    list, not by the test result. Enrich with `dct:identifier`/`schema:value`
-   when a test result *is* present.
+   when a test result _is_ present.
 2. Alternatively, point `dct:subject` straight at the DMN
    (`<serviceUri/dmn>`), or add a direct `cprmv`/`cpsv` edge from the concept to
    the DMN, so no intermediate variable node is required.
@@ -74,6 +74,7 @@ BIND(COALESCE(?dmnRequired, ?dmnProduced, ?dmnFromUri) AS ?dmn)
 ```
 
 Patched in:
+
 - `linked-data-explorer` → `packages/frontend/src/utils/constants.ts`
   ("NL-SBB Concepts and Services")
 - `ronl-business-api` → `packages/backend/src/services/regelcatalogus.service.ts`
