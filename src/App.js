@@ -981,7 +981,7 @@ function App() {
                     {tab === 'changelog' && (
                       <span className="flex items-center justify-center gap-1.5">
                         <History size={18} />
-                        Changelog
+                        Changelog!
                       </span>
                     )}
                   </button>
