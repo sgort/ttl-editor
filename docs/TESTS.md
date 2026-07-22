@@ -3,7 +3,7 @@
 Modeled on [`ronl-business-api`'s `docs/TESTS.md`](https://github.com/sgort/ronl-business-api/blob/acc/docs/TESTS.md).
 That file documents a mature, coverage-instrumented backend suite; this one
 documents a suite still being built out phase by phase. For the strategy,
-sequencing, and remaining backlog (P3 onward), see
+sequencing, and remaining backlog (P4 onward), see
 [`TESTING-GUIDE.md`](./TESTING-GUIDE.md).
 
 ## Running the tests
@@ -27,6 +27,9 @@ npm run test:roundtrip
 
 # Just the P2 pure-logic util tests
 npm run test:p2
+
+# Just the P3 hook tests
+npm run test:p3
 ```
 
 Each phase gets its own `test:<phase>` / `test:<phase>:watch` script pair as
@@ -157,6 +160,51 @@ helper (`getAvailableFields`), the dot-path/array-index value extractor
 (`extractValue`), and `applyMapping` — including filters, `prefix`/`uri`
 transforms, the `legal.url → legal.bwbId` field rename, and grouping
 `parameters.*` mappings into a single parameter object.
+
+---
+
+### `src/hooks/useArrayHandlers.test.js` — P3
+
+**13 tests · hook · `renderHook` + a `useState` test harness**
+
+`useArrayHandlers` only returns handlers, not the array itself, so a small
+harness hook wraps it in a real `useState` to make `handleAdd`/`handleUpdate`/
+etc.'s effect on state actually observable across re-renders — the way a
+real component uses it. Covers `handleAdd` (including that new ids continue
+from the highest existing id, not the array length), `handleUpdate`,
+`handleUpdateField`, `handleRemove`, `handleClear`, `handleReplace`, the four
+default-item factories, and the four pre-configured wrapper hooks
+(`useTemporalRulesHandlers`, `useParametersHandlers`, `useCprmvRulesHandlers`).
+
+---
+
+### `src/hooks/useDsoImport.test.js` — P3
+
+**8 tests · hook · `renderHook` + `global.fetch` mock + real `window.history`**
+
+Covers the DSO → DMN deep-link import hook: no-op when `dsoImport` is absent
+or not `"dmn"`; the import params are stripped from the URL immediately
+(before the fetch even resolves, so a refresh mid-import can't re-trigger
+it); missing `dmnId` reports an error without fetching; a full success path
+prefilling `dmnData`/`service`/`organization` and switching to the DMN tab;
+non-ok and empty-body backend responses each report their own error; and
+organization is left alone when no `authority` is present. Real
+`window.history.pushState` navigation drives the URL-based trigger rather
+than mocking `window.location`.
+
+---
+
+### `src/hooks/useEditorState.test.js` — P3
+
+**7 tests · hook · `renderHook` + mocked `ronlHelper`**
+
+Covers the central state hook: every state slot's documented initial default,
+the iKnow-mappings-loaded-on-mount effect, the RONL-concepts-loading effect
+(loading → success populating both concept lists, and loading → error setting
+a user-facing message — `fetchAllRonlConcepts` is mocked via
+`jest.mock('../utils/ronlHelper')`), and `clearAllData` — including the
+explicitly-tested exception called out in the source comment: TriplyDB config
+is **not** cleared by `clearAllData`.
 
 ---
 
