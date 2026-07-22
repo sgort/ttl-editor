@@ -3,7 +3,7 @@
 Modeled on [`ronl-business-api`'s `docs/TESTS.md`](https://github.com/sgort/ronl-business-api/blob/acc/docs/TESTS.md).
 That file documents a mature, coverage-instrumented backend suite; this one
 documents a suite still being built out phase by phase. For the strategy,
-sequencing, and remaining backlog (P4 onward), see
+sequencing, and remaining backlog (P5 onward), see
 [`TESTING-GUIDE.md`](./TESTING-GUIDE.md).
 
 ## Running the tests
@@ -30,6 +30,9 @@ npm run test:p2
 
 # Just the P3 hook tests
 npm run test:p3
+
+# Just the P4 network-touching util tests
+npm run test:p4
 ```
 
 Each phase gets its own `test:<phase>` / `test:<phase>:watch` script pair as
@@ -208,6 +211,48 @@ is **not** cleared by `clearAllData`.
 
 ---
 
+### `src/utils/shaclHelper.test.js` — P4
+
+**3 tests · unit · plain `global.fetch` mock**
+
+Covers `validateTtl` — the pre-publish SHACL check against the shared LDE
+backend. Success (returns the backend's `data.data`), a backend response
+that parses but reports `success: false` (neutral invalid shape, one error),
+and a network failure (the distinct `unavailable: true` shape — validation
+is advisory, so a backend outage must never block publishing).
+
+---
+
+### `src/utils/triplydbHelper.test.js` — P4
+
+**37 tests · unit · plain `global.fetch` mock + real `File`/`FormData`/`Blob`/`atob` (jsdom)**
+
+Covers all ten exported functions: `buildGraphIRI` (pure — default/org-scoped/
+bare graph construction), `validateTriplyDBConfig` (every missing-field and
+malformed-URL branch), `publishToTriplyDB` (multipart upload happy path,
+empty-content rejection before any fetch, JSON and non-JSON error-body
+parsing, the `TypeError: Failed to fetch` → friendly network-error
+translation), `updateTriplyDBService` (config-gated, backend-proxy POST),
+`publishToTriplyDB_SPARQL` (config- and content-length-gated; the
+`@prefix` → `PREFIX` conversion and `INSERT DATA { GRAPH <...> { ... } }`
+wrapping are asserted directly against the posted request body),
+`uploadLogoAsset` (base64 → Blob → multipart upload), `testTriplyDBConnection`
+(200 / 404 / 401 / 403 / other status / network failure, each mapped to its
+own message), and the three `localStorage`-backed config functions
+(`loadTriplyDBConfig`, `saveTriplyDBConfig`, `getDefaultTriplyDBConfig`,
+including recovery from invalid stored JSON).
+
+**Deviation from `TESTING-GUIDE.md`'s original P4 plan:** the guide's Tooling
+section anticipated `msw` for this phase's "larger surface." In practice,
+every function here is a single self-contained `fetch` call (not a
+multi-request flow or a shared server-side contract), so the plain
+`global.fetch` mock already established in P2's `ronlHelper.test.js` stayed
+proportionate — `msw` would be worth revisiting if a future phase needs to
+model a multi-endpoint flow or shared request/response fixtures across many
+tests.
+
+---
+
 ## Bugs found and fixed
 
 Both were found by writing the tests above, not known beforehand — the
@@ -265,7 +310,7 @@ line/branch percentages aren't tracked here. To generate one:
 npx react-scripts test --coverage --watchAll=false
 ```
 
-This is a reasonable thing to add once the P3–P6 phases in
+This is a reasonable thing to add once the P5–P6 phases in
 `TESTING-GUIDE.md` are further along — premature right now, since large
 parts of the app (most components, hooks, `App.js`'s orchestration) have no
 tests yet at all, and a coverage number this early would mostly measure how

@@ -26,6 +26,8 @@
     "test:p2:watch": "react-scripts test --testPathPattern=\"validators|ttlHelpers|ronlHelper|dmnHelpers|iknowParser|cprmvImport\"",
     "test:p3": "react-scripts test --watchAll=false --testPathPattern=\"useEditorState|useArrayHandlers|useDsoImport\"",
     "test:p3:watch": "react-scripts test --testPathPattern=\"useEditorState|useArrayHandlers|useDsoImport\"",
+    "test:p4": "react-scripts test --watchAll=false --testPathPattern=\"shaclHelper|triplydbHelper\"",
+    "test:p4:watch": "react-scripts test --testPathPattern=\"shaclHelper|triplydbHelper\"",
     "eject": "react-scripts eject",
     "prepare": "husky",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
