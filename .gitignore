@@ -12,7 +12,10 @@
 /build
 
 # misc
-.claude/
+# Claude Code local-only settings (shared commands like .claude/commands/
+# are tracked, matching ronl-business-api's convention)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
 .DS_Store
 .env.local
 .env.development.local
