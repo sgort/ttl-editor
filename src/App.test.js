@@ -2,8 +2,10 @@ import { render, screen } from '@testing-library/react';
 
 import App from './App';
 
-test('renders learn react link', () => {
+// Replaces CRA's stock "learn react link" stub, which asserted text this
+// app never rendered and had been silently failing test:ci ever since
+// (see docs/TESTING-GUIDE.md, phase P0).
+test('renders the editor shell without crashing', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText('Core Public Service Editor')).toBeInTheDocument();
 });
