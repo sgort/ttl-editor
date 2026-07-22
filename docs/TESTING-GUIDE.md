@@ -6,6 +6,11 @@ first flagged "No automated tests for TTL output" and "Create React App
 build up real test coverage, and how that coverage sequences with the
 CRA → Vite migration the due-diligence doc recommends.
 
+For what's actually been built so far — per-file test inventories, bugs
+found and fixed along the way, and documented (not silently patched)
+product-behavior findings — see [`TESTS.md`](./TESTS.md). This document is
+the strategy and backlog; that one is the running record.
+
 ## Analysis
 
 ### Current state
