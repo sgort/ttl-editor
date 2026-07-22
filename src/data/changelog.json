@@ -2,6 +2,98 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.07.0",
+      "status": "Released",
+      "date": "22 jul 2026",
+      "commits": [
+        {
+          "sha": "b47705c",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Adopt CalVer (YYYY.MM.patch) for release versions",
+          "details": [
+            "Matches the Norm Editor's release-tagging convention (2026.07.0, then 2026.07.1 for a same-month follow-up, 2026.08.0 the next month) — the version string only, nothing else about the workflow changes (no generate-changelog.mjs, no commit-message enforcement, no versions.json). Historical SemVer entries (1.10.6, 1.10.7) are left as-is; only new entries going forward use CalVer."
+          ]
+        },
+        {
+          "sha": "8d8a7eb",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Move --coverage from test to test:ci",
+          "details": [
+            "react-scripts test --coverage in interactive watch mode locks coverage collection to whichever files matched the very first run — which, on a clean watch-mode start, is \"no tests found related to files changed since last commit\" (0 files). Pressing 'a' to run everything afterward still reports 0% across the board, since the collection set was already pinned empty. --watchAll=false avoids this entirely (a single full run collects real numbers every time), so --coverage now lives on test:ci instead. npm run test stays plain, for day-to-day watch mode."
+          ]
+        },
+        {
+          "sha": "8562f09",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P4 network-touching util coverage (shaclHelper, triplydbHelper)",
+          "details": [
+            "Adds shaclHelper.test.js (3 tests: success, neutral-invalid backend response, and the distinct unavailable state on network failure — SHACL validation is advisory and must never block publishing) and triplydbHelper.test.js (37 tests across all ten exports: buildGraphIRI, config validation, the three publish paths including the SPARQL @prefix→PREFIX conversion and INSERT DATA/GRAPH wrapping, logo asset upload, connection testing across every HTTP status branch, and the three localStorage-backed config functions).",
+            "Both use a plain global.fetch mock rather than msw, deviating from TESTING-GUIDE.md's original P4 plan — every function here is a single self-contained fetch call, not a multi-request flow, so the same proportionate approach from P2's ronlHelper.test.js still fits. Noted in TESTS.md as a deliberate deviation, not an oversight."
+          ]
+        },
+        {
+          "sha": "4ed7b9e",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P3 hook coverage (useEditorState, useArrayHandlers, useDsoImport)",
+          "details": [
+            "Adds useArrayHandlers.test.js (renderHook + a useState harness, since the hook only returns handlers, not the array itself), useDsoImport.test.js (real window.history navigation + a global.fetch mock, covering the DSO deep-link import's no-op/error/success paths and the immediate URL-stripping behavior), and useEditorState.test.js (mocked ronlHelper, covering every default, the RONL-concepts-loading effect, and clearAllData — including that it intentionally does not reset the TriplyDB config)."
+          ]
+        },
+        {
+          "sha": "595124f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Add TESTS.md documenting P0-P2 test coverage so far",
+          "details": [
+            "New file modeled on ronl-business-api's docs/TESTS.md: per-file test inventories with counts, the two real bugs found and fixed along the way (isBasedOn/extends parser gap, cprmvImport id collision), the documented (not silently patched) concepts/DMN coupling, and an honest note that no coverage report has been generated yet."
+          ]
+        },
+        {
+          "sha": "9c53862",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P2 pure-logic util coverage (validators, ttlHelpers, ronlHelper, dmnHelpers, iknowParser, cprmvImport)",
+          "details": [
+            "Adds validators.test.js, ttlHelpers.test.js, dmnHelpers.test.js, and iknowParser.test.js, plus extends cprmvImport.test.js with namespace variants (0.4.1 slash, 0.3.0 contains), the legacy flat-array shape, and malformed-input handling. constants.js is deliberately skipped — pure static data, nothing to meaningfully test."
+          ]
+        },
+        {
+          "sha": "48c6642",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "cprmvImport id collision across calls in the same millisecond",
+          "details": [
+            "flattenCprmvRules minted ids as Date.now() + a per-call sequence counter that reset to 0 on every call. Two calls landing in the same millisecond would mint identical ids, colliding as React keys if both calls' results end up merged into the same cprmvRules list. The sequence counter is now module-level and never resets, so ids stay unique for the life of the page regardless of call timing."
+          ]
+        },
+        {
+          "sha": "61c6433",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "TTL round-trip regression tests + fix isBasedOn parser gap (P1)",
+          "details": [
+            "Adds parse → generate → parse round-trip tests against real fixtures, comparing every business field rather than a brittle byte-diff.",
+            "Fixes a real data-loss bug found by the new tests: a past commit renamed the generator's cprmv:extends predicate to cprmv:isBasedOn, but parseTTL.enhanced.js's read side was never updated to match, so every export-then-reimport of a temporal rule since that rename silently dropped its extends/isBasedOn relationship. The parser now recognizes both.",
+            "Also documents, rather than silently patches, that NL-SBB concepts only regenerate when a DMN model is actually attached in session state — confirmed correct when dmnData is derived the way importHandler.js really does it."
+          ]
+        },
+        {
+          "sha": "1764e07",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Fix stale CRA App.test.js stub (P0)",
+          "details": [
+            "Replaces the untouched CRA boilerplate assertion (getByText(/learn react/i), which this app never rendered) with a real smoke test against the actual header. test:ci was red for this reason alone; now 14/14 pass."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "1.10.7",
       "status": "Released",
       "date": "22 jul 2026",
