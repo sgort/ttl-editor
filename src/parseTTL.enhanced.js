@@ -562,8 +562,16 @@ export const parseTTLEnhanced = (ttlContent) => {
 
       // Temporal rule properties
       if (currentSection === 'temporalRule' && currentRule) {
-        if (line.includes('extends')) {
-          currentRule.extends = extractValue(line.split('extends')[1]) || currentRule.extends;
+        // ttlGenerator.js renamed cprmv:extends to cprmv:isBasedOn (see
+        // changelog v1.x: "cprmv:extends renamed to cprmv:isBasedOn in the
+        // temporal/decision sections"), but this read side was never updated
+        // to match — every export-then-reimport since that rename silently
+        // dropped the relationship. isBasedOn is checked first since it's
+        // what the generator actually emits today; extends is kept for
+        // historical exports predating the rename (e.g. examples/full-test.ttl).
+        if (line.includes('isBasedOn') || line.includes('extends')) {
+          const token = line.includes('isBasedOn') ? 'isBasedOn' : 'extends';
+          currentRule.extends = extractValue(line.split(token)[1]) || currentRule.extends;
         }
         if (line.includes('validFrom')) {
           currentRule.validFrom = extractValue(line.split('validFrom')[1]) || currentRule.validFrom;
