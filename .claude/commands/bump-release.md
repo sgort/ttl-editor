@@ -26,9 +26,9 @@ fresh — `ChangelogTab.jsx` renders both, branching on the `format` field.
       "author": "Steven Gort",
       "type": "feat", // feat | fix | test | docs | chore | refactor | other
       "subject": "Clean, readable release-note header",
-      "details": ["One or more body paragraphs, same technical depth as the commit message."]
-    }
-  ]
+      "details": ["One or more body paragraphs, same technical depth as the commit message."],
+    },
+  ],
 }
 ```
 

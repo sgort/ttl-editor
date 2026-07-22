@@ -1,6 +1,43 @@
 {
   "versions": [
     {
+      "format": "commits",
+      "version": "1.10.7",
+      "status": "Released",
+      "date": "22 jul 2026",
+      "commits": [
+        {
+          "sha": "8ad0bb1",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Adopt ronl-business-api's per-commit changelog format + repo-local bump-release",
+          "details": [
+            "ChangelogTab.jsx now renders \"format\": \"commits\" entries (icon+color header per commit, sha/author trailer, Upcoming/Released status badge) alongside the existing legacy \"sections\" shape, so new releases can use the same per-commit changelog convention as ronl-business-api and the Linked Data Explorer. Legacy entries are unaffected and keep rendering exactly as before.",
+            "package.json's version (0.1.0) is reconciled to match changelog.json's actual version (1.10.6), so the two stay in lockstep from here on instead of drifting independently.",
+            ".gitignore no longer blanket-ignores .claude/ — only settings.local.json and scheduled_tasks.lock stay machine-local, matching ronl-business-api's convention — so the new tailored .claude/commands/bump-release.md ships with the repo instead of being invisible to every other clone. That command adapts ronl-business-api's release-cutting skill for this single-package repo: no scope dimension, no endpoint-map reconciliation, targeting src/data/changelog.json directly."
+          ]
+        },
+        {
+          "sha": "f8c7623",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Changelog TESTING-GUIDE.md formatting fixed",
+          "details": [
+            "Prettier pass over the newly-added TESTING-GUIDE.md — this repo's check-format runs across the whole tree, so the guide's table formatting needed a --write pass before it would pass the pre-push hook."
+          ]
+        },
+        {
+          "sha": "43b8242",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Add TESTING-GUIDE.md covering analysis, plan, and phased approach",
+          "details": [
+            "Grounds a testing strategy in the app's current state (thin/undocumented coverage, a stale failing App.test.js stub, no RDF library, no local backend) and sequences it against the CRA-to-Vite migration flagged in the due-diligence doc: pure-logic tests first (cheap to port to Vitest), then the bundler swap, then DOM-heavy component/DMNTab/E2E work written once directly against Vite/Vitest."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.6",
       "date": "July 1, 2026",
       "status": "Released",
