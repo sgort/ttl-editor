@@ -55,6 +55,12 @@ const hasPartOf = (obj) => {
 
 const asString = (v) => (v == null ? '' : String(v));
 
+// Module-level, never reset — two flattenCprmvRules() calls landing in the
+// same millisecond (Date.now() alone isn't fine-grained enough) would
+// otherwise mint identical `base + seq` ids, colliding as React keys if both
+// calls' results end up merged into the same list.
+let globalSeq = 0;
+
 // Recursively collect the definitions of nested SUB-CLAUSES — hasPart members
 // that are not themselves rules (they carry no rule_id_path), e.g. the
 // "onderdeel 1°./2°./3°." enumeration nested under "Artikel 31, lid 2,
@@ -93,7 +99,6 @@ const subClauseText = (ruleObj) => {
  */
 export const flattenCprmvRules = (jsonData) => {
   const out = [];
-  let seq = 0;
   const base = Date.now();
 
   const visitRule = (key, ruleObj, inheritedRulesetId = '') => {
@@ -107,7 +112,7 @@ export const flattenCprmvRules = (jsonData) => {
     const extra = subClauseText(ruleObj);
     if (extra) definition = definition ? `${definition} ${extra}` : extra;
     out.push({
-      id: base + seq++,
+      id: base + globalSeq++,
       ruleId: asString(stdField(ruleObj, 'id') ?? key),
       rulesetId,
       definition,
