@@ -98,3 +98,112 @@ describe('flattenCprmvRules — sub-clause folding', () => {
     expect(rules[0].definition).toBe('plain definition');
   });
 });
+
+// Remaining P2 coverage (docs/TESTING-GUIDE.md): the older/alternate payload
+// shapes the module comment says are tolerated, plus edge/malformed input.
+describe('flattenCprmvRules — namespace variants and legacy shapes', () => {
+  const STD_041_SLASH = 'https://standaarden.open-regels.nl/standards/cprmv/0.4.1/#';
+  const STD_030 = 'https://cprmv.open-regels.nl/0.3.0/';
+
+  test('accepts the 0.4.1 "slash" namespace variant', () => {
+    const ruleset = {
+      [TYPE]: STD_041_SLASH + 'RuleSet',
+      [STD_041_SLASH + 'hasPart']: {
+        r1: {
+          [TYPE]: STD_041_SLASH + 'Rule',
+          [STD_041_SLASH + 'id']: 'r1',
+          [STD_041_SLASH + 'definition']: 'slash-namespace definition',
+          [EXT + 'norm']: '1',
+          [EXT + 'rulesetid']: 'BWBR0000001',
+          [EXT + 'rule_id_path']: 'BWBR0000001_2026-01-01_0, Artikel 1',
+        },
+      },
+    };
+    const rules = flattenCprmvRules([ruleset]);
+    expect(rules).toHaveLength(1);
+    expect(rules[0].definition).toBe('slash-namespace definition');
+  });
+
+  test('accepts the 0.3.0 namespace with "contains" instead of "hasPart"', () => {
+    const ruleset = {
+      [TYPE]: STD_030 + 'RuleSet',
+      [STD_030 + 'contains']: {
+        r1: {
+          [TYPE]: STD_030 + 'Rule',
+          [STD_030 + 'id']: 'r1',
+          [STD_030 + 'definition']: '0.3.0 contains-shaped definition',
+          [EXT + 'norm']: '2',
+          [EXT + 'rulesetid']: 'BWBR0000002',
+          [EXT + 'rule_id_path']: 'BWBR0000002_2026-01-01_0, Artikel 2',
+        },
+      },
+    };
+    const rules = flattenCprmvRules([ruleset]);
+    expect(rules).toHaveLength(1);
+    expect(rules[0].definition).toBe('0.3.0 contains-shaped definition');
+  });
+
+  test('accepts a legacy flat array of rule objects with no RuleSet wrapper', () => {
+    const flatArray = [
+      {
+        [TYPE]: STD + 'Rule',
+        [STD + 'id']: 'flat-1',
+        [STD + 'definition']: 'first flat rule',
+        [EXT + 'rulesetid']: 'BWBR0000003',
+        [EXT + 'rule_id_path']: 'BWBR0000003_2026-01-01_0, Artikel 1',
+      },
+      {
+        [TYPE]: STD + 'Rule',
+        [STD + 'id']: 'flat-2',
+        [STD + 'definition']: 'second flat rule',
+        [EXT + 'rulesetid']: 'BWBR0000003',
+        [EXT + 'rule_id_path']: 'BWBR0000003_2026-01-01_0, Artikel 2',
+      },
+    ];
+    const rules = flattenCprmvRules(flatArray);
+    expect(rules.map((r) => r.ruleId)).toEqual(['flat-1', 'flat-2']);
+  });
+
+  test('a single RuleSet object (not wrapped in an array) is accepted', () => {
+    const rules = flattenCprmvRules(makeRuleset());
+    expect(rules).toHaveLength(1);
+  });
+
+  test('multiple top-level RuleSets are all flattened together', () => {
+    const rs1 = makeRuleset();
+    const rs2 = {
+      [TYPE]: STD + 'RuleSet',
+      [STD + 'hasPart']: {
+        'onderdeel x.': {
+          [TYPE]: STD + 'Rule',
+          [STD + 'id']: 'onderdeel x.',
+          [STD + 'definition']: 'a rule from the second ruleset',
+          [EXT + 'rulesetid']: 'BWBR0009999',
+          [EXT + 'rule_id_path']: 'BWBR0009999_2026-01-01_0, Artikel 1, onderdeel x.',
+        },
+      },
+    };
+    const rules = flattenCprmvRules([rs1, rs2]);
+    expect(rules.map((r) => r.ruleId)).toEqual(['onderdeel r.', 'onderdeel x.']);
+  });
+
+  test.each([
+    [null, []],
+    [undefined, []],
+    [[], []],
+    [[null, undefined, 'not-an-object'], []],
+  ])('tolerates malformed input %p without throwing', (input, expected) => {
+    expect(flattenCprmvRules(input)).toEqual(expected);
+  });
+
+  test('each flattened rule gets a unique, monotonically increasing id', () => {
+    const rules = flattenCprmvRules([makeRuleset()]);
+    const rs2 = makeRuleset();
+    const moreRules = flattenCprmvRules([rs2]);
+    // ids are seeded from Date.now() + a per-call sequence — same-call entries
+    // must never collide, even if two separate calls land in the same tick.
+    expect(new Set([...rules, ...moreRules].map((r) => r.id)).size).toBe(
+      rules.length + moreRules.length
+    );
+  });
+});
