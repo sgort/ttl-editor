@@ -12,12 +12,32 @@ lives in `src/data/changelog.json` (plain JSON) rather than a typed
 pre-existing `"sections"`-based entries are legacy and are never authored
 fresh — `ChangelogTab.jsx` renders both, branching on the `format` field.
 
+## Versioning: CalVer `YYYY.MM.patch`
+
+Released versions use CalVer, not SemVer — matching the Norm Editor's
+convention (`scripts/generate-changelog.mjs`'s release-tagging scheme):
+
+- `2026.07.0` — first release cut in July 2026
+- `2026.07.1` — a same-month follow-up release
+- `2026.08.0` — the first release of the next month (patch resets to `0`)
+
+To pick the next version: take the current date's `YYYY.MM`. If the most
+recent **Released** entry in `changelog.json` already has that same
+`YYYY.MM` prefix, increment its patch number by 1. Otherwise (first release
+of a new month, or no prior release at all this month) use patch `0`.
+
+Note this is a CalVer _string_ only — no git tags are created, and nothing
+else about the release workflow changes (no `generate-changelog.mjs`, no
+commit-message enforcement, no `versions.json`). Historical entries already
+in `changelog.json` (SemVer strings like `1.10.6`, `1.10.7`) are left as-is;
+only new entries going forward use CalVer.
+
 ## Entry shape
 
 ```jsonc
 {
   "format": "commits",
-  "version": "1.10.7",
+  "version": "2026.07.0",
   "status": "Upcoming", // bump-release flips this to "Released"
   "date": "23 jul 2026",
   "commits": [
@@ -43,7 +63,9 @@ skip it here unless this repo grows an equivalent).
 - Read `src/data/changelog.json`.
 - The first entry in `versions` is the one being released — extract its
   `version` string. If an explicit version was passed as an argument, use
-  that instead and find it in the array.
+  that instead and find it in the array. If no version was passed and a new
+  entry needs authoring, compute the next CalVer string per "Versioning"
+  above.
 - **If the first entry's `status` is already `Released`, there is no
   pending entry** — stop and author a new one first (see "Authoring a new
   entry" below) before continuing. Do not fabricate changelog content
