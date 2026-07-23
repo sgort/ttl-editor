@@ -3,7 +3,7 @@
 **Context:** Municipality of Amsterdam DMN exports from iKnow (`individuele
 inkomenstoeslag-iknow.dmn`, cross-referenced against the accompanying annotation export
 `HvA_annotaties.xml`) surfaced a real, current need: Amsterdam already links legislation
-to individual decision-table *cells*, not just to decisions or rules. This doc proposes
+to individual decision-table _cells_, not just to decisions or rules. This doc proposes
 how to extend `cprmv:*` to support that, and flags a vocabulary inconsistency found while
 working out how, that needs a decision from whoever owns the spec.
 
@@ -70,10 +70,10 @@ The current `cprmv:extends` value format, as shipped
 (`BWBR0002221/Artikel_7a`, or with a version stamp,
 `BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1`), only expresses national wetgeving citations
 (a BWB number). Most of Amsterdam's own sources in `HvA_annotaties.xml`'s `<documents>`
-section are *not* national wetgeving — they're gemeentelijke verordeningen,
+section are _not_ national wetgeving — they're gemeentelijke verordeningen,
 beleidsregels, and un-typed internal `.docx` drafts with no BWB number at all (e.g.
-*"Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021"*,
-*"Beleidsregels bijzondere bijstand gemeente Amsterdam.docx"*).
+_"Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021"_,
+_"Beleidsregels bijzondere bijstand gemeente Amsterdam.docx"_).
 
 iKnow already solves this on its own annotations via **JuriConnect (JCI)**, the Dutch
 national standard also used by wetten.overheid.nl and lokaleregelgeving.overheid.nl —
@@ -101,11 +101,11 @@ Attach three attributes directly to `<inputEntry>` / `<outputEntry>` (the same
 foreign-namespace-attribute mechanism `cprmv:extends` etc. already use one level up —
 no DMN schema change, no impact on engines that ignore unknown namespaces):
 
-| Attribute | Value | Maps to |
-|---|---|---|
-| `cprmv:concept` | iKnow CPT or APT UUID | `<concept id>` / `<textannotation id>` in the annotation export |
-| `cprmv:sourceQuote` | verbatim quoted text | `<textannotation><text>` |
-| `cprmv:isBasedOn` | JCI citation string | `<textannotation juriconnect="...">` |
+| Attribute           | Value                 | Maps to                                                         |
+| ------------------- | --------------------- | --------------------------------------------------------------- |
+| `cprmv:concept`     | iKnow CPT or APT UUID | `<concept id>` / `<textannotation id>` in the annotation export |
+| `cprmv:sourceQuote` | verbatim quoted text  | `<textannotation><text>`                                        |
+| `cprmv:isBasedOn`   | JCI citation string   | `<textannotation juriconnect="...">`                            |
 
 Full worked example against one real rule (8 cells, showing the full range from
 "complete citation" down to "rightfully ungrounded wildcard") is in

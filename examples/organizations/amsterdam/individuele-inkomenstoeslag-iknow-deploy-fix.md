@@ -28,13 +28,13 @@ parses as valid DMN XML yet still fails at deploy time.
 
 Element counts missing `id` in the original file:
 
-| Element         | Missing `id` count |
-|-----------------|---------------------|
-| `dmn:input`       | 23 |
-| `dmn:output`      | 8  |
-| `dmn:rule`        | 25 |
-| `dmn:inputEntry`  | 84 |
-| `dmn:outputEntry` | 25 |
+| Element           | Missing `id` count |
+| ----------------- | ------------------ |
+| `dmn:input`       | 23                 |
+| `dmn:output`      | 8                  |
+| `dmn:rule`        | 25                 |
+| `dmn:inputEntry`  | 84                 |
+| `dmn:outputEntry` | 25                 |
 
 Deployment fails on the very first offending element, so this error message only ever
 reports one instance — the rest are latent until the first one is fixed.
@@ -76,18 +76,18 @@ conventions.
 
 ### New codes: BIZ-010–BIZ-014 — missing `id` on decision table clause elements
 
-| | |
-|---|---|
-| **Severity** | 🔴 error |
-| **Trigger** | A `<input>` (BIZ-010), `<output>` (BIZ-011), `<rule>` (BIZ-012), `<inputEntry>` (BIZ-013), or `<outputEntry>` (BIZ-014) element is missing the `id` attribute |
+|               |                                                                                                                                                                                                                                                                                                                  |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Severity**  | 🔴 error                                                                                                                                                                                                                                                                                                         |
+| **Trigger**   | A `<input>` (BIZ-010), `<output>` (BIZ-011), `<rule>` (BIZ-012), `<inputEntry>` (BIZ-013), or `<outputEntry>` (BIZ-014) element is missing the `id` attribute                                                                                                                                                    |
 | **Rationale** | This is the root cause documented above: the DMN 1.3 XSD marks `id` optional here, but Operaton's transformer requires it and throws `DMN-02011` at deploy time otherwise. Before this patch the validator reported files with this defect as fully valid — a deploy-time failure with zero design-time warning. |
-| **Fix** | Add a unique `id` attribute to every flagged element. |
+| **Fix**       | Add a unique `id` attribute to every flagged element.                                                                                                                                                                                                                                                            |
 
 ### Updated: INT-007 — whole-string match before word-tokenizing
 
 **Problem:** FEEL names are legally allowed to contain spaces, and this file's RONL/Dutch
 authoring convention leans on that heavily — e.g. `"natuurlijke persoon.woonachtig in de
-gemeente waar wordt aangevraagd"` is *one* declared `<inputData name="...">`, referenced
+gemeente waar wordt aangevraagd"` is _one_ declared `<inputData name="...">`, referenced
 verbatim as a bare `<inputExpression>` text. The old `extractFeelIdentifiers()` tokenizer
 had no way to recognise a multi-word string as a single name, so it shredded every bare
 multi-word reference into individual words (`"natuurlijke"`, `"persoon"`, `"de"`,
@@ -114,14 +114,15 @@ same category as the built-ins already excluded.
 
 ### Validation result, before and after
 
-| Stage | Business Rules | Interaction Rules | File valid? |
-|---|---|---|---|
-| Original validator (before this patch) | 0E | 83W | ✅ "Valid" — false negative on the original file |
-| After BIZ-010–014 added | **165E** (original) / 0E (patched) | 83W | ❌ original / ✅ patched |
-| After INT-007 whole-string fix | 165E / 0E | 16W | ❌ original / ✅ patched |
-| After `FEEL_RESERVED` fix (final) | 165E / 0E | **12W** | ❌ original / ✅ patched |
+| Stage                                  | Business Rules                     | Interaction Rules | File valid?                                      |
+| -------------------------------------- | ---------------------------------- | ----------------- | ------------------------------------------------ |
+| Original validator (before this patch) | 0E                                 | 83W               | ✅ "Valid" — false negative on the original file |
+| After BIZ-010–014 added                | **165E** (original) / 0E (patched) | 83W               | ❌ original / ✅ patched                         |
+| After INT-007 whole-string fix         | 165E / 0E                          | 16W               | ❌ original / ✅ patched                         |
+| After `FEEL_RESERVED` fix (final)      | 165E / 0E                          | **12W**           | ❌ original / ✅ patched                         |
 
 Final state, confirmed against the live backend (`POST /v1/dmns/validate`):
+
 - `individuele inkomenstoeslag-iknow.dmn` (original): `valid: false`, 165 errors, 12 warnings, 1 info.
 - `individuele inkomenstoeslag-iknow-patched.dmn`: `valid: true`, 0 errors, 12 warnings, 1 info.
 
@@ -137,7 +138,7 @@ problem at all. Both are left for a deliberate follow-up decision.
 
 The whole-string fix above only catches **bare** references — an `<inputExpression>` whose
 entire text is exactly one declared name. It does not help when a multi-word name is
-embedded as an *argument inside* a larger expression, e.g.:
+embedded as an _argument inside_ a larger expression, e.g.:
 
 ```
 years(years and months duration(natuurlijke persoon.geboortedatum, peildatum))
@@ -152,7 +153,7 @@ persoon.geboortedatum"`, `"natuurlijke persoon.langdurig laag inkomen"`, and
 one of the decision tables).
 
 The other 2 of the 12 (`"years"`, `"months"`) are the same underlying problem one level
-up: `years and months duration(...)` is itself a multi-word FEEL *built-in function name*
+up: `years and months duration(...)` is itself a multi-word FEEL _built-in function name_
 (per the DMN 1.3 spec), not a user-declared name. `FEEL_RESERVED` only excludes reserved
 words as single tokens (`"and"`, `"duration"` are both already in the set), so `"years"`
 and `"months"` — the two words that aren't otherwise reserved — leak through. Fixing this
@@ -174,15 +175,15 @@ implemented — flagging here so it's a deliberate decision, not a silent gap.
 
 This one is **not a validator bug** — it may be a genuine authoring issue in the DMN.
 
-The decision *"Bepalen van toepassing zijnde vermogensgrens"*
+The decision _"Bepalen van toepassing zijnde vermogensgrens"_
 (`_912d27e0-1b8f-47bd-98cf-1863354ef321`) has an input labelled `"vorig jaar"` whose
 `<inputExpression>` text is simply `berekeningsjaar-1` — it assumes `berekeningsjaar` is
 already bound as a variable in scope. But `berekeningsjaar` is never declared as an
 `<inputData>`, and no decision exposes it as an output (`<decision><variable>` or
 `<output name="berekeningsjaar">`) anywhere in the file.
 
-Every *other* place `berekeningsjaar` shows up (e.g. in *"Bepalen van toepassing zijnde
-loongrens vorig jaar voor volwassenen"* and *"Bepaal pensioengerechtigde leeftijd"`) it is
+Every _other_ place `berekeningsjaar` shows up (e.g. in _"Bepalen van toepassing zijnde
+loongrens vorig jaar voor volwassenen"_ and \*"Bepaal pensioengerechtigde leeftijd"`) it is
 a **local, per-table input column** computing `year(peildatum)` — a value private to that
 one decision table's own evaluation, never exposed for other decisions to consume by
 name. In DMN's evaluation model, one decision table's input-column expression is not a

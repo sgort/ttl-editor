@@ -8,7 +8,7 @@ the `<decision>` level. The CPRMV attributes already shipping in
 `examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn` (`cprmv:extends`,
 `cprmv:ruleType`, `cprmv:confidence`, `cprmv:note`) go one level deeper by attaching to
 `<rule>` — but no further. Neither standard DMN nor the CPRMV attributes in current use
-can say "this specific *cell* — one input or output entry inside one rule row — comes
+can say "this specific _cell_ — one input or output entry inside one rule row — comes
 from this specific legal source."
 
 The Municipality of Amsterdam already needs exactly that. This doc prototypes it against
@@ -24,8 +24,8 @@ here is invented placeholder content.
 cell-level legal grounding model — they just aren't connected to the DMN file's rule/cell
 structure today:
 
-- **`<concept>`** — an abstract legal fact/notion (e.g. *"natuurlijk persoon heeft
-  woonadres"*). Referenced from a DMN `knowledgeSource` as a **CPT** id.
+- **`<concept>`** — an abstract legal fact/notion (e.g. _"natuurlijk persoon heeft
+  woonadres"_). Referenced from a DMN `knowledgeSource` as a **CPT** id.
 - **`<textannotation>`** — a literal quoted span of source text, anchored to one
   `<concept>` and one `<document>`. Referenced from a DMN `knowledgeSource` as an **APT**
   id. This is the mechanism behind the DMN's own `<dmn:type>CPT</dmn:type>` /
@@ -44,17 +44,17 @@ Cross-referencing each cell's underlying condition against `HvA_annotaties.xml` 
 distinct groundedness levels — deliberately shown as-is, not cherry-picked, because a real
 annotation corpus is never uniformly complete:
 
-| Cell | Condition | Grounding found | Level |
-|---|---|---|---|
-| `_inputEntry_1` | woonachtig in de gemeente = `true` | APT `61d1181d-a7e6-4da1-a121-89ca30fcb7b0` → concept *"natuurlijk persoon heeft woonadres"*, quote `"Woonadres"`, document `Beleidsregels Stadpas.docx` — **no JCI citation on this particular annotation** | quote + concept, no pinpoint citation |
-| `_inputEntry_2` | leeftijd `>= 21 and < pensioengerechtigde leeftijd` | none — the `_adcd1d42` sub-decision that supplies "pensioengerechtigde leeftijd" has no `authorityRequirement`/`knowledgeSource` of its own anywhere in the DMN | **ungrounded today** (pre-existing gap, not introduced by this proposal) |
-| `_inputEntry_3` | uitzicht op inkomensverbetering = `false` | CPT `cf35d84d-bec6-42b7-8491-9208ef44d2c9` → concept *"rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"* — a CPT, so no literal quote exists | concept only, no quote, no citation |
-| `_inputEntry_4` | langdurig laag inkomen = `true` | APT `0f0d5140-0624-4aa3-a077-2a26087d1436` → concept *"natuurlijke persoon heeft langdurig laag inkomen"*, quote `"hij laag inkomen had"`, document **Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021**, **`juriconnect="jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"`** | full triple — concept + quote + pinpoint citation |
-| `_inputEntry_5` | vermogen `<= vermogensgrens` | APT `6fea33db-8454-4a6c-9e02-db6a1f3417db` → concept *"natuurlijk persoon beschikt over een vermogen"*, quote `"een vermogen"`, document `Beleidsregels Stadpas.docx` — no JCI citation | quote + concept, no pinpoint citation |
-| `_inputEntry_6` | een schuldregeling = `-` | n/a — wildcard, nothing is tested | **rightfully ungrounded** |
-| `_inputEntry_7` | gezinssituatie `not "met partner"` | CPT `8bf152a7-22a1-4624-b43b-aa9c9ff68b30` → concept *"natuurlijk persoon heeft gezinssituatie"* | concept only |
-| `_inputEntry_8` | partner uitzicht op inkomensverbetering = `-` | n/a — wildcard | **rightfully ungrounded** |
-| `_outputEntry_1` | aanspraak = `true` | CPT `4b7157ff-2bc6-4ada-ba36-8123e6038dfe` → concept *"aanspraak individuele inkomenstoeslag"* (the decision's own existing knowledge source, restated at the specific output value) | concept only |
+| Cell             | Condition                                           | Grounding found                                                                                                                                                                                                                                                                                                  | Level                                                                    |
+| ---------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `_inputEntry_1`  | woonachtig in de gemeente = `true`                  | APT `61d1181d-a7e6-4da1-a121-89ca30fcb7b0` → concept _"natuurlijk persoon heeft woonadres"_, quote `"Woonadres"`, document `Beleidsregels Stadpas.docx` — **no JCI citation on this particular annotation**                                                                                                      | quote + concept, no pinpoint citation                                    |
+| `_inputEntry_2`  | leeftijd `>= 21 and < pensioengerechtigde leeftijd` | none — the `_adcd1d42` sub-decision that supplies "pensioengerechtigde leeftijd" has no `authorityRequirement`/`knowledgeSource` of its own anywhere in the DMN                                                                                                                                                  | **ungrounded today** (pre-existing gap, not introduced by this proposal) |
+| `_inputEntry_3`  | uitzicht op inkomensverbetering = `false`           | CPT `cf35d84d-bec6-42b7-8491-9208ef44d2c9` → concept _"rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"_ — a CPT, so no literal quote exists                                                                                                                                  | concept only, no quote, no citation                                      |
+| `_inputEntry_4`  | langdurig laag inkomen = `true`                     | APT `0f0d5140-0624-4aa3-a077-2a26087d1436` → concept _"natuurlijke persoon heeft langdurig laag inkomen"_, quote `"hij laag inkomen had"`, document **Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021**, **`juriconnect="jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"`** | full triple — concept + quote + pinpoint citation                        |
+| `_inputEntry_5`  | vermogen `<= vermogensgrens`                        | APT `6fea33db-8454-4a6c-9e02-db6a1f3417db` → concept _"natuurlijk persoon beschikt over een vermogen"_, quote `"een vermogen"`, document `Beleidsregels Stadpas.docx` — no JCI citation                                                                                                                          | quote + concept, no pinpoint citation                                    |
+| `_inputEntry_6`  | een schuldregeling = `-`                            | n/a — wildcard, nothing is tested                                                                                                                                                                                                                                                                                | **rightfully ungrounded**                                                |
+| `_inputEntry_7`  | gezinssituatie `not "met partner"`                  | CPT `8bf152a7-22a1-4624-b43b-aa9c9ff68b30` → concept _"natuurlijk persoon heeft gezinssituatie"_                                                                                                                                                                                                                 | concept only                                                             |
+| `_inputEntry_8`  | partner uitzicht op inkomensverbetering = `-`       | n/a — wildcard                                                                                                                                                                                                                                                                                                   | **rightfully ungrounded**                                                |
+| `_outputEntry_1` | aanspraak = `true`                                  | CPT `4b7157ff-2bc6-4ada-ba36-8123e6038dfe` → concept _"aanspraak individuele inkomenstoeslag"_ (the decision's own existing knowledge source, restated at the specific output value)                                                                                                                             | concept only                                                             |
 
 This spread is the actual argument for the design below: it has to degrade gracefully
 when only partial annotation data exists, rather than force every cell to have a full
@@ -67,11 +67,11 @@ foreign-attribute extension mechanism `cprmv:extends`/`cprmv:ruleType`/etc. alre
 `<rule>` level, so nothing about DMN's schema or Operaton's tolerance for unknown
 namespaces changes:
 
-| Attribute | Value | Source |
-|---|---|---|
-| `cprmv:concept` | the iKnow CPT or APT id (not invented — this is the traceability pass-through back to `HvA_annotaties.xml`; see open question 4 in the companion spec-owner doc) | `<concept id>` / `<textannotation id>` |
-| `cprmv:sourceQuote` | the literal quoted text, verbatim | `<textannotation><text>` |
-| `cprmv:isBasedOn` | a JuriConnect (JCI) citation string | `<textannotation juriconnect="...">` |
+| Attribute           | Value                                                                                                                                                            | Source                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| `cprmv:concept`     | the iKnow CPT or APT id (not invented — this is the traceability pass-through back to `HvA_annotaties.xml`; see open question 4 in the companion spec-owner doc) | `<concept id>` / `<textannotation id>` |
+| `cprmv:sourceQuote` | the literal quoted text, verbatim                                                                                                                                | `<textannotation><text>`               |
+| `cprmv:isBasedOn`   | a JuriConnect (JCI) citation string                                                                                                                              | `<textannotation juriconnect="...">`   |
 
 `cprmv:sourceQuote` and `cprmv:isBasedOn` are named directly after the properties already
 defined in the abstract CPRMV vocabulary (`https://cprmv.open-regels.nl/respec/`) —
@@ -162,7 +162,7 @@ no ids changed):
 </dmn:rule>
 ```
 
-Note what's *not* added: `_inputEntry_2` (no concept exists to cite — forcing one would
+Note what's _not_ added: `_inputEntry_2` (no concept exists to cite — forcing one would
 be fabrication), `_inputEntry_6` and `_inputEntry_8` (wildcards — there's nothing to
 ground). The extension has to be optional per cell for this reason; making it mandatory
 would either block deployment of every real DMN in this corpus or force garbage
