@@ -57,7 +57,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
 
   // Default Operaton configuration
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: 'https://operaton.open-regels.nl',
+    baseUrl: process.env.REACT_APP_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
     deploymentEndpoint: '/engine-rest/deployment/create',
