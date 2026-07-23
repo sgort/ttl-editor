@@ -1,5 +1,12 @@
 # Proposal for the CPRMV spec owner: legislative linking below the rule level
 
+## Changelog
+
+| Date       | Change                                                                                         |
+| ---------- | ---------------------------------------------------------------------------------------------- |
+| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated |
+| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch        |
+
 **Context:** Municipality of Amsterdam DMN exports from iKnow (`individuele
 inkomenstoeslag-iknow.dmn`, cross-referenced against the accompanying annotation export
 `HvA_annotaties.xml`) surfaced a real, current need: Amsterdam already links legislation
@@ -152,6 +159,24 @@ Full worked example against one real rule (8 cells, showing the full range from
 "complete citation" down to "rightfully ungrounded wildcard") is in
 `cprmv-cell-level-linking-prototype.md`.
 
+### A cell can need more than one grounding
+
+A single cell is sometimes a **compound** FEEL expression — e.g.
+`>= 21 and < pensioengerechtigde leeftijd`, two conditions in one cell, each potentially
+citing a different provision. Plain attributes can't express that (an attribute holds one
+value), so this was tested directly against local Operaton before settling on an
+encoding:
+
+| Design tested                                                                       | Deploys on Operaton? | Notes                                                                                                                                                                                                                                                                                                       |
+| ----------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Single grounding via `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn`          | ✅ Deploys           | The baseline §4 design                                                                                                                                                                                                                                                                                      |
+| Multiple groundings via repeatable `<cprmv:grounding .../>` **child elements**      | ❌ **Rejected**      | `cvc-complex-type.2.4.d: Invalid content was found starting with element 'cprmv:grounding'. No child element is expected at this point.` — no extension point in `tUnaryTests`'s content model. Foreign attributes are tolerated everywhere in this DMN; foreign child elements are a hard schema rejection |
+| Multiple groundings via **numbered attribute families** (`concept1`/`concept2`/...) | ✅ **Deploys**       | Chosen encoding — see the full worked example in `cprmv-cell-level-linking-prototype.md`                                                                                                                                                                                                                    |
+
+So the design stays attribute-only: `cprmv:concept1`/`cprmv:sourceQuote1`/
+`cprmv:isBasedOn1`, `cprmv:concept2`/`cprmv:sourceQuote2`/`cprmv:isBasedOn2`, and so on,
+with the unnumbered form remaining valid shorthand for exactly one grounding.
+
 ## 5. Sketch: the third design — how this reaches a published `.ttl`
 
 This is the part the previous draft didn't cover: a DMN attribute alone doesn't get
@@ -201,6 +226,27 @@ The design deliberately reuses, rather than extends, the shape set:
 - Cells that only carry a bare concept pointer (no quote, no citation) are **not** minted
   as their own resource — a `cprmv:Rule` with nothing but `dct:source` doesn't tell a
   reader more than the decision's existing `knowledgeSource` already does.
+- **A cell with more than one grounding needs no new mechanism at this layer** —
+  `cprmv:hasPart` is already recursive (`cprmv:hasPartListShape` refers to itself), so a
+  cell resource with multiple groundings simply `hasPart`s its own further list of
+  grounding resources instead of carrying `sourceQuote`/`isBasedOn` directly:
+
+  ```turtle
+  <.../rules/_rule_1/cell/2> a cprmv:Rule ;
+      cprmv:hasPart ( <.../rules/_rule_1/cell/2/grounding/1>
+                       <.../rules/_rule_1/cell/2/grounding/2> ) .
+
+  <.../rules/_rule_1/cell/2/grounding/1> a cprmv:Rule ;
+      cprmv:sourceQuote "hij is meerderjarig" ;
+      cprmv:isBasedOn <https://wetten.overheid.nl/jci1.3:c:BWBR0000001&artikel=1> .
+
+  <.../rules/_rule_1/cell/2/grounding/2> a cprmv:Rule ;
+      cprmv:sourceQuote "tot de pensioengerechtigde leeftijd" ;
+      cprmv:isBasedOn <https://wetten.overheid.nl/BWBR0002221/Artikel_7a> .
+  ```
+
+  Same recursive `hasPart` pattern, one level deeper, only where a cell actually needs
+  it — still no new SHACL shape.
 
 ### What has to change, concretely, in our own code
 
@@ -242,7 +288,14 @@ The design deliberately reuses, rather than extends, the shape set:
    its own `hasPart` resource at all**, or is that noise? §5 currently says no — mint only
    when there's a quote or a citation — but that's a design choice, not a rule derived
    from the shapes.
-6. Once 1–5 are settled: the DMN-attribute names actually used in shipping files
+6. **Is the numbered-attribute convention for multiple groundings on one cell
+   (`cprmv:concept1`/`concept2`/...) an acceptable house convention**, or should the
+   CPRMV vocabulary define a standard way to encode a multi-valued relationship in an
+   XML-attribute serialization? This isn't specific to `cprmv:concept` — it would recur
+   for any future multi-valued CPRMV property attached to a DMN element, and repeatable
+   child elements (the more obvious encoding) are confirmed unavailable — Operaton's DMN
+   schema rejects them outright (§4).
+7. Once 1–6 are settled: the DMN-attribute names actually used in shipping files
    (`extends`, `implements`, `ruleType`, `confidence`, `rulesetType`, `ruleMethod`,
    `note`, `title`, `description`) should either be added to the ReSpec document as the
    documented DMN-serialization layer of the abstract vocabulary, or the ReSpec should

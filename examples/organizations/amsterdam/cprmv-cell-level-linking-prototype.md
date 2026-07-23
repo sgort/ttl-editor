@@ -1,5 +1,13 @@
 # Prototype: cell-level legislative linking via `cprmv:*`
 
+## Changelog
+
+| Date       | Change                                                                                               |
+| ---------- | ---------------------------------------------------------------------------------------------------- |
+| 2026-07-23 | Multi-grounding cells: numbered attributes confirmed on Operaton, repeatable child elements rejected |
+| 2026-07-23 | Added Layers 2–4: DMN-to-TTL pipeline gaps, `.ttl` sketch, validator follow-up                       |
+| 2026-07-23 | Initial prototype: DMN-attribute layer, Rule 1 cross-referenced against `HvA_annotaties.xml`         |
+
 ## The gap
 
 DMN's own extension points for tying a decision to its legal authority —
@@ -51,17 +59,17 @@ Cross-referencing each cell's underlying condition against `HvA_annotaties.xml` 
 distinct groundedness levels — deliberately shown as-is, not cherry-picked, because a real
 annotation corpus is never uniformly complete:
 
-| Cell             | Condition                                           | Grounding found                                                                                                                                                                                                                                                                                                  | Level                                                                    |
-| ---------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `_inputEntry_1`  | woonachtig in de gemeente = `true`                  | APT `61d1181d-a7e6-4da1-a121-89ca30fcb7b0` → concept _"natuurlijk persoon heeft woonadres"_, quote `"Woonadres"`, document `Beleidsregels Stadpas.docx` — **no JCI citation on this particular annotation**                                                                                                      | quote + concept, no pinpoint citation                                    |
-| `_inputEntry_2`  | leeftijd `>= 21 and < pensioengerechtigde leeftijd` | none — the `_adcd1d42` sub-decision that supplies "pensioengerechtigde leeftijd" has no `authorityRequirement`/`knowledgeSource` of its own anywhere in the DMN                                                                                                                                                  | **ungrounded today** (pre-existing gap, not introduced by this proposal) |
-| `_inputEntry_3`  | uitzicht op inkomensverbetering = `false`           | CPT `cf35d84d-bec6-42b7-8491-9208ef44d2c9` → concept _"rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"_ — a CPT, so no literal quote exists                                                                                                                                  | concept only, no quote, no citation                                      |
-| `_inputEntry_4`  | langdurig laag inkomen = `true`                     | APT `0f0d5140-0624-4aa3-a077-2a26087d1436` → concept _"natuurlijke persoon heeft langdurig laag inkomen"_, quote `"hij laag inkomen had"`, document **Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021**, **`juriconnect="jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"`** | full triple — concept + quote + pinpoint citation                        |
-| `_inputEntry_5`  | vermogen `<= vermogensgrens`                        | APT `6fea33db-8454-4a6c-9e02-db6a1f3417db` → concept _"natuurlijk persoon beschikt over een vermogen"_, quote `"een vermogen"`, document `Beleidsregels Stadpas.docx` — no JCI citation                                                                                                                          | quote + concept, no pinpoint citation                                    |
-| `_inputEntry_6`  | een schuldregeling = `-`                            | n/a — wildcard, nothing is tested                                                                                                                                                                                                                                                                                | **rightfully ungrounded**                                                |
-| `_inputEntry_7`  | gezinssituatie `not "met partner"`                  | CPT `8bf152a7-22a1-4624-b43b-aa9c9ff68b30` → concept _"natuurlijk persoon heeft gezinssituatie"_                                                                                                                                                                                                                 | concept only                                                             |
-| `_inputEntry_8`  | partner uitzicht op inkomensverbetering = `-`       | n/a — wildcard                                                                                                                                                                                                                                                                                                   | **rightfully ungrounded**                                                |
-| `_outputEntry_1` | aanspraak = `true`                                  | CPT `4b7157ff-2bc6-4ada-ba36-8123e6038dfe` → concept _"aanspraak individuele inkomenstoeslag"_ (the decision's own existing knowledge source, restated at the specific output value)                                                                                                                             | concept only                                                             |
+| Cell             | Condition                                           | Grounding found                                                                                                                                                                                                                                                                                                  | Level                                                                                                                                                                                                                                                                                                                    |
+| ---------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `_inputEntry_1`  | woonachtig in de gemeente = `true`                  | APT `61d1181d-a7e6-4da1-a121-89ca30fcb7b0` → concept _"natuurlijk persoon heeft woonadres"_, quote `"Woonadres"`, document `Beleidsregels Stadpas.docx` — **no JCI citation on this particular annotation**                                                                                                      | quote + concept, no pinpoint citation                                                                                                                                                                                                                                                                                    |
+| `_inputEntry_2`  | leeftijd `>= 21 and < pensioengerechtigde leeftijd` | none — the `_adcd1d42` sub-decision that supplies "pensioengerechtigde leeftijd" has no `authorityRequirement`/`knowledgeSource` of its own anywhere in the DMN                                                                                                                                                  | **ungrounded today** (pre-existing gap, not introduced by this proposal) — also the file's one real example of a **compound cell**: two conjuncts (`>= 21`, `< pensioengerechtigde leeftijd`) that could each need a different citation once grounding data exists for either — see "Multiple groundings per cell" below |
+| `_inputEntry_3`  | uitzicht op inkomensverbetering = `false`           | CPT `cf35d84d-bec6-42b7-8491-9208ef44d2c9` → concept _"rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"_ — a CPT, so no literal quote exists                                                                                                                                  | concept only, no quote, no citation                                                                                                                                                                                                                                                                                      |
+| `_inputEntry_4`  | langdurig laag inkomen = `true`                     | APT `0f0d5140-0624-4aa3-a077-2a26087d1436` → concept _"natuurlijke persoon heeft langdurig laag inkomen"_, quote `"hij laag inkomen had"`, document **Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021**, **`juriconnect="jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"`** | full triple — concept + quote + pinpoint citation                                                                                                                                                                                                                                                                        |
+| `_inputEntry_5`  | vermogen `<= vermogensgrens`                        | APT `6fea33db-8454-4a6c-9e02-db6a1f3417db` → concept _"natuurlijk persoon beschikt over een vermogen"_, quote `"een vermogen"`, document `Beleidsregels Stadpas.docx` — no JCI citation                                                                                                                          | quote + concept, no pinpoint citation                                                                                                                                                                                                                                                                                    |
+| `_inputEntry_6`  | een schuldregeling = `-`                            | n/a — wildcard, nothing is tested                                                                                                                                                                                                                                                                                | **rightfully ungrounded**                                                                                                                                                                                                                                                                                                |
+| `_inputEntry_7`  | gezinssituatie `not "met partner"`                  | CPT `8bf152a7-22a1-4624-b43b-aa9c9ff68b30` → concept _"natuurlijk persoon heeft gezinssituatie"_                                                                                                                                                                                                                 | concept only                                                                                                                                                                                                                                                                                                             |
+| `_inputEntry_8`  | partner uitzicht op inkomensverbetering = `-`       | n/a — wildcard                                                                                                                                                                                                                                                                                                   | **rightfully ungrounded**                                                                                                                                                                                                                                                                                                |
+| `_outputEntry_1` | aanspraak = `true`                                  | CPT `4b7157ff-2bc6-4ada-ba36-8123e6038dfe` → concept _"aanspraak individuele inkomenstoeslag"_ (the decision's own existing knowledge source, restated at the specific output value)                                                                                                                             | concept only                                                                                                                                                                                                                                                                                                             |
 
 This spread is the actual argument for the design below: it has to degrade gracefully
 when only partial annotation data exists, rather than force every cell to have a full
@@ -185,6 +193,46 @@ no ids changed):
 Note what's _not_ added: `_inputEntry_2` (no concept exists to cite — forcing one would
 be fabrication), `_inputEntry_6` and `_inputEntry_8` (wildcards — there's nothing to
 ground). The extension has to be optional per cell for this reason.
+
+### Multiple groundings per cell
+
+A single cell can be a **compound** FEEL expression — `_inputEntry_2` in this very rule is
+one: `>= 21 and < pensioengerechtigde leeftijd` is two distinct conditions in one cell,
+and in principle each could trace to a different legal provision (a general
+age-of-majority article for `>= 21`, a pensions-act article for the upper bound). Nothing
+in this file's current annotation data actually grounds either conjunct, so the example
+below uses clearly-marked placeholder values, not real `HvA_annotaties.xml` content — the
+point is the mechanism, not a specific citation.
+
+The single-grounding design above can't express this: `cprmv:concept`/`sourceQuote`/
+`isBasedOn` are plain XML attributes, and an attribute holds exactly one value. Two
+encodings for "more than one" were tested directly against local Operaton
+(`http://localhost:8081/engine-rest`) before picking one:
+
+| Design tested                                                                                                                                             | Deploys on Operaton? | Notes                                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Single grounding via `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn` on `<inputEntry>`                                                              | ✅ Deploys           | The baseline design above; unchanged                                                                                                                                                                                                                                                                                                                                                              |
+| Multiple groundings via repeatable `<cprmv:grounding concept="..." .../>` **child elements**                                                              | ❌ **Rejected**      | `cvc-complex-type.2.4.d: Invalid content was found starting with element 'cprmv:grounding'. No child element is expected at this point.` — Operaton's DMN XSD has no extension point in `tUnaryTests`'s content model after `<text>`. Foreign _attributes_ are tolerated everywhere in this DMN; foreign _child elements_ are not — this is a hard schema rejection, not a transform-time warning |
+| Multiple groundings via **numbered attribute families** (`cprmv:concept1`/`sourceQuote1`/`isBasedOn1`, `cprmv:concept2`/`sourceQuote2`/`isBasedOn2`, ...) | ✅ **Deploys**       | No upper bound on the count; each grounding is an independent, self-contained set of attributes — no delimiter, no escaping, no risk of three parallel lists drifting out of sync                                                                                                                                                                                                                 |
+
+So the design stays attribute-only, extended with numbering rather than any structural
+addition:
+
+```xml
+<dmn:inputEntry id="_inputEntry_2"
+                cprmv:concept1="PLACEHOLDER-concept-A"
+                cprmv:sourceQuote1="hij is meerderjarig"
+                cprmv:isBasedOn1="jci1.3:c:BWBR0000001&amp;artikel=1"
+                cprmv:concept2="PLACEHOLDER-concept-B"
+                cprmv:sourceQuote2="tot de pensioengerechtigde leeftijd"
+                cprmv:isBasedOn2="BWBR0002221/Artikel_7a">
+  <dmn:text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</dmn:text>
+</dmn:inputEntry>
+```
+
+The unnumbered `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn` form (used everywhere
+else in this doc) remains valid shorthand for the common case — exactly one grounding,
+equivalent to an implicit `1`.
 
 This layer alone is a documentation prototype only — the actual `.dmn` files are
 unchanged. Turning it into a real DMN-level change additionally needs
@@ -312,6 +360,37 @@ needs no new escaping logic — it's already proven to work as-is.
     cprmv:sourceQuote "een vermogen" .
 ```
 
+**A compound cell with multiple groundings** (illustrative — using the placeholder
+`_inputEntry_2` example above, not real annotation data) doesn't need a new pattern at the
+TTL layer at all. `cprmv:hasPart` is already recursive (`cprmv:hasPartListShape` refers to
+itself), so a cell resource that has more than one grounding simply `hasPart`s its own
+further list of grounding resources instead of carrying `sourceQuote`/`isBasedOn`
+directly — the same composition mechanism, one recursion deeper, only where needed:
+
+```turtle
+<.../rules/_rule_1> a cpsv:Rule, cprmv:DecisionRule ;
+    # ... same properties as above ...
+    cprmv:hasPart ( <.../rules/_rule_1/cell/1> <.../rules/_rule_1/cell/2>
+                     <.../rules/_rule_1/cell/4> <.../rules/_rule_1/cell/5> ) .
+
+<.../rules/_rule_1/cell/2> a cprmv:Rule ;
+    cprmv:hasPart ( <.../rules/_rule_1/cell/2/grounding/1>
+                     <.../rules/_rule_1/cell/2/grounding/2> ) .
+
+<.../rules/_rule_1/cell/2/grounding/1> a cprmv:Rule ;
+    cprmv:sourceQuote "hij is meerderjarig" ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/jci1.3:c:BWBR0000001&artikel=1> .
+
+<.../rules/_rule_1/cell/2/grounding/2> a cprmv:Rule ;
+    cprmv:sourceQuote "tot de pensioengerechtigde leeftijd" ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/BWBR0002221/Artikel_7a> .
+```
+
+Still **zero new SHACL shapes**, and the DMN-side numbered-attribute encoding maps onto
+this cleanly: `dmnHelpers.js` groups `conceptN`/`sourceQuoteN`/`isBasedOnN` by `N` into an
+array of groundings per cell; `ttlGenerator.js` emits a flat cell resource when the array
+has one entry, or a `hasPart`-composed one when it has more than one.
+
 Two choices worth calling out:
 
 - **`dct:source` instead of a new `cprmv:concept` property.** The DMN attribute layer
@@ -357,3 +436,8 @@ See the companion spec-owner doc for the full list. The most consequential:
    `cprmv:isBasedOn`, replacing the current ad hoc `BWBR0002221/Artikel_7a` string?
 3. Does `cprmv:concept` belong in the shared `cprmv:` namespace at all, given the TTL
    layer already gets by with plain `dct:source`?
+4. Is the numbered-attribute convention (`cprmv:concept1`/`concept2`/...) for multiple
+   groundings on one cell an acceptable house convention, or should the CPRMV vocabulary
+   define a standard way to encode a multi-valued relationship in an XML-attribute
+   serialization — this isn't specific to `cprmv:concept`, it would recur for any
+   future multi-valued CPRMV property attached to a DMN element.
