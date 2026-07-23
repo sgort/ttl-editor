@@ -11,8 +11,15 @@ the `<decision>` level. The CPRMV attributes already shipping in
 can say "this specific _cell_ — one input or output entry inside one rule row — comes
 from this specific legal source."
 
-The Municipality of Amsterdam already needs exactly that. This doc prototypes it against
-**Rule 1 of the main decision table** in
+The Municipality of Amsterdam already needs exactly that. But a DMN in this project is
+never published in isolation — it's imported into the CPSV Editor and becomes part of a
+`.ttl` file (a `cprmv:DecisionModel` linked to a `cpsv:PublicService`), which is what
+actually gets published and validated. **The CPSV Editor is our own code** (`ttl-editor`),
+so this doc covers the whole path: the DMN attribute, what our own DMN-import and
+TTL-generation code currently do with it, and what publishing a grounded cell actually
+looks like in the resulting `.ttl` — not just the `.dmn` file in isolation.
+
+Everything below is prototyped against **Rule 1 of the main decision table** in
 `individuele-inkomenstoeslag-iknow-patched.dmn` (decision
 `_bca439b7-fdb8-40e3-8a1d-3bb95571c65c`, "Beslistabel bepalen aanspraak op individuele
 inkomenstoeslag"), using real cross-references pulled from `HvA_annotaties.xml` — nothing
@@ -60,7 +67,7 @@ This spread is the actual argument for the design below: it has to degrade grace
 when only partial annotation data exists, rather than force every cell to have a full
 citation before any of this is usable.
 
-## Proposed attributes
+## Layer 1 — the DMN attributes
 
 Three attributes, attached directly to `<inputEntry>` / `<outputEntry>` — the same
 foreign-attribute extension mechanism `cprmv:extends`/`cprmv:ruleType`/etc. already use at
@@ -71,17 +78,30 @@ namespaces changes:
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | `cprmv:concept`     | the iKnow CPT or APT id (not invented — this is the traceability pass-through back to `HvA_annotaties.xml`; see open question 4 in the companion spec-owner doc) | `<concept id>` / `<textannotation id>` |
 | `cprmv:sourceQuote` | the literal quoted text, verbatim                                                                                                                                | `<textannotation><text>`               |
-| `cprmv:isBasedOn`   | a JuriConnect (JCI) citation string                                                                                                                              | `<textannotation juriconnect="...">`   |
+| `cprmv:isBasedOn`   | a JuriConnect (JCI) citation string, at the DMN-attribute layer                                                                                                  | `<textannotation juriconnect="...">`   |
 
 `cprmv:sourceQuote` and `cprmv:isBasedOn` are named directly after the properties already
-defined in the abstract CPRMV vocabulary (`https://cprmv.open-regels.nl/respec/`) —
-`sourceQuote` ("replicates (a part of) the definition of the cprmv:Rule that is being
-extended") and `isBasedOn` (the citation/derivation link) — rather than inventing new
-names. Whether that's actually the right call, or whether it collides with the
-already-shipping `cprmv:extends`, is exactly what the companion doc asks the spec owner
-to resolve.
+defined in the CPRMV vocabulary — and, importantly, both are **already real, shipping
+SHACL shape properties** on `cprmv:Rule` (`packages/backend/shapes/cprmv/0.4.1/cprmv.shacl.ttl`
+in `linked-data-explorer`, `cprmv:RuleShape`):
 
-## Before / after
+```turtle
+cprmv:RuleShape
+    a sh:NodeShape ;
+    sh:targetClass cprmv:Rule ;
+    sh:property [ sh:path cprmv:sourceQuote ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+    sh:property [ sh:path cprmv:isBasedOn ; sh:class cprmv:Rule ; sh:minCount 0 ] ;
+    sh:property [ sh:path cprmv:hasPart ; sh:node cprmv:hasPartListShape ; sh:maxCount 1 ] .
+```
+
+One correction from an earlier draft of this doc: **`cprmv:isBasedOn` is an object
+property** (`sh:class cprmv:Rule`) — its value must be a resource that is itself typed
+`cprmv:Rule`, not a bare citation string. At the DMN-attribute layer that distinction
+doesn't matter yet (an XML attribute is just a string either way); it matters once this
+reaches Layer 3 below, where the citation has to become its own addressable resource, not
+an inline literal.
+
+### Before / after (DMN XML)
 
 **Before** (current patched DMN, lines 100–128):
 
@@ -164,28 +184,176 @@ no ids changed):
 
 Note what's _not_ added: `_inputEntry_2` (no concept exists to cite — forcing one would
 be fabrication), `_inputEntry_6` and `_inputEntry_8` (wildcards — there's nothing to
-ground). The extension has to be optional per cell for this reason; making it mandatory
-would either block deployment of every real DMN in this corpus or force garbage
-citations onto ungrounded/wildcard cells.
+ground). The extension has to be optional per cell for this reason.
 
-This is a documentation prototype only — the actual `.dmn` files (patched or original)
-are unchanged by this doc. Turning it into a real change additionally needs:
+This layer alone is a documentation prototype only — the actual `.dmn` files are
+unchanged. Turning it into a real DMN-level change additionally needs
 `xmlns:cprmv="https://cprmv.open-regels.nl/0.3.0/"` on `<dmn:definitions>` (already
 present in `RONL_BerekenLeeftijden_CPRMV.dmn`, absent from this file), and new validator
-checks in `linked-data-explorer`'s `dmn-validation.service.ts` (an `EXEC-*` check that
-`cprmv:concept` values are well-formed UUIDs, and — once the JCI-format question below is
-settled — a check that `cprmv:isBasedOn` matches the JCI grammar rather than the current
-`BWB_ID_RE`, which only matches a bare BWB number and doesn't even validate the existing
-rule-level `cprmv:extends` value).
+checks in `linked-data-explorer`'s `dmn-validation.service.ts` — see Layer 4 below.
+
+## Layer 2 — what our own DMN import code does with it today
+
+`individuele inkomenstoeslag-iknow.dmn` isn't published on its own. It goes through the
+CPSV Editor's DMN tab, gets imported via `src/utils/dmnHelpers.js`, and turned into `.ttl`
+by `src/utils/ttlGenerator.js`. **Both files are ours** — this isn't a third-party
+constraint, it's the thing that needs to change.
+
+`extractRulesFromDMN()` in `dmnHelpers.js` (lines 205–247) already reads rule-level CPRMV
+attributes and the FEEL text of every cell — but nothing else about the cells:
+
+```js
+// dmnHelpers.js:216-229 (current)
+const cprmvExtends = rule.getAttribute('cprmv:extends');
+const cprmvValidFrom = rule.getAttribute('cprmv:validFrom');
+const cprmvValidUntil = rule.getAttribute('cprmv:validUntil');
+const cprmvRuleType = rule.getAttribute('cprmv:ruleType') || 'decision-rule';
+const cprmvConfidence = rule.getAttribute('cprmv:confidence') || 'medium';
+const cprmvNote = rule.getAttribute('cprmv:note');
+
+// Extract input and output entries
+const inputs = Array.from(rule.querySelectorAll('inputEntry text')).map((t) => t.textContent);
+const outputs = Array.from(rule.querySelectorAll('outputEntry text')).map((t) => t.textContent);
+```
+
+`inputEntry text` / `outputEntry text` only ever pulls the FEEL condition/value string —
+never the `<inputEntry>` element's own attributes. So `cprmv:concept` /
+`cprmv:sourceQuote` / `cprmv:isBasedOn` from Layer 1 are invisible to this code today,
+even once they exist in the XML.
+
+`ttlGenerator.js` (lines 1214–1254) then emits one flat `cprmv:DecisionRule` resource per
+DMN `<rule>`, with no composition at all — confirmed against a real published file,
+`examples/organizations/toeslagen/Zorgtoeslag-Levensgebeurtenissen.ttl`, line 304:
+
+```turtle
+<.../rules/DecisionRule_0btwm30> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0btwm30" ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_1jgvsw8" ;
+    cprmv:rulesetType "decision-table" .
+```
+
+So even with Layer 1 in place, a cell-level citation would currently be silently dropped
+on publish. Two files need extending, not one.
+
+## Layer 3 — what publishing a grounded cell should actually look like
+
+Two existing patterns in `ttlGenerator.js` already do exactly what a per-cell resource
+needs — neither has to be invented:
+
+**The recursive `hasPart` list.** `generateRuleSetSection()` (lines 817–884) already
+builds an ordered `cprmv:hasPart` list of `cprmv:Rule` URIs for a RuleSet:
+
+```js
+// ttlGenerator.js:882-883 (current, RuleSet -> Rule)
+const memberUris = rules.map((rule) => `<${this.cprmvRuleUri(rule)}>`).join(' ');
+ttl += `    cprmv:hasPart (${memberUris}) .\n\n`;
+```
+
+`cprmv:RuleShape` already permits `cprmv:hasPart` directly on a `cprmv:Rule` too (not just
+a `RuleSet`) — the exact same recursive `rdf:first`/`rdf:rest` list shape
+(`cprmv:hasPartListShape`) applies either way. So a `cprmv:DecisionRule` (which is also a
+`cprmv:Rule`) `hasPart`-ing an ordered list of small per-cell `cprmv:Rule` resources is
+already legal against the shipping shape set — **no new SHACL shape is required.**
+
+**The `isBasedOn` URI construction.** The rule-level emitter (lines 1229–1233) already
+turns a citation string into a resource reference:
+
+```js
+// ttlGenerator.js:1229-1233 (current, rule-level cprmv:extends)
+if (rule.extends) {
+  const extendsUri = rule.extends.startsWith('http')
+    ? rule.extends
+    : `https://wetten.overheid.nl/${rule.extends}`;
+  ttl += `    cprmv:isBasedOn <${extendsUri}> ;\n`;
+}
+```
+
+And the codebase already round-trips a **raw, unescaped JCI string** through this exact
+`https://wetten.overheid.nl/{value}` construction elsewhere in the same published example
+— `Zorgtoeslag-Levensgebeurtenissen.ttl` line 26:
+
+```turtle
+cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2> ;
+```
+
+So extending this one construction to also accept a JCI string (not just a bare BWB id)
+needs no new escaping logic — it's already proven to work as-is.
+
+### Concrete `.ttl` for Rule 1's grounded cells
+
+```turtle
+<.../rules/_rule_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_rule_1" ;
+    dct:title "Decision rule _rule_1"@nl ;
+    dct:description "Decision rule _rule_1 of the DMN decision model."@nl ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <.../rules/_rule_1/cell/1> <.../rules/_rule_1/cell/4>
+                     <.../rules/_rule_1/cell/5> ) .
+
+<.../rules/_rule_1/cell/1> a cprmv:Rule ;
+    dct:identifier "_rule_1-cell-1" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0> ;
+    cprmv:sourceQuote "Woonadres" .
+
+<.../rules/_rule_1/cell/4> a cprmv:Rule ;
+    dct:identifier "_rule_1-cell-4" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=0f0d5140-0624-4aa3-a077-2a26087d1436> ;
+    cprmv:sourceQuote "hij laag inkomen had" ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4> .
+
+<.../rules/_rule_1/cell/5> a cprmv:Rule ;
+    dct:identifier "_rule_1-cell-5" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=6fea33db-8454-4a6c-9e02-db6a1f3417db> ;
+    cprmv:sourceQuote "een vermogen" .
+```
+
+Two choices worth calling out:
+
+- **`dct:source` instead of a new `cprmv:concept` property.** The DMN attribute layer
+  (Layer 1) still uses `cprmv:concept` for the traceability pointer, because that's a
+  question for the spec owner (see the companion doc). But at the TTL layer, there's
+  already a well-known, zero-negotiation Dublin Core property that means exactly "the
+  resource this was derived from" — reusing it here means the published graph needs no
+  new property at all for this part, regardless of how the `cprmv:concept` question is
+  eventually settled.
+- **Cells that carry `cprmv:concept` but nothing else** (`_inputEntry_3`, `_inputEntry_7`,
+  `_outputEntry_1` — concept-only, no quote or citation) are deliberately **not** minted
+  as their own `hasPart` resource above. A `cprmv:Rule` with only a `dct:source` and
+  nothing else adds a resource to the graph without adding anything a reader couldn't
+  already get from the DMN's own decision-level `knowledgeSource`. Whether that's the
+  right cutoff — mint a cell resource only when there's a quote or a citation, not for a
+  bare concept pointer — is worth deciding explicitly rather than defaulting to "mint
+  one for everything."
+
+## Layer 4 — validator-side follow-up
+
+Both validators in `linked-data-explorer` are also ours to patch, the same way
+`dmn-validation.service.ts` was patched earlier for the missing-`id` and INT-007 issues:
+
+- **`dmn-validation.service.ts`** needs new `EXEC-*` checks once Layer 1 attributes are
+  real: that `cprmv:concept` is a well-formed UUID, and that `cprmv:isBasedOn` matches a
+  JCI grammar (this would also close a pre-existing gap — the current validator never
+  checks the format of the existing rule-level `cprmv:extends` value at all).
+- **`shacl-validation.service.ts`** needs **no changes** for the core structure — Layer 3
+  above only uses properties (`cprmv:sourceQuote`, `cprmv:isBasedOn`, `cprmv:hasPart`)
+  already present in `cprmv.shacl.ttl`'s `cprmv:RuleShape`. It would only need attention
+  if the "concept-only cells" question above lands on minting a distinct shape/class for
+  them, or if `dct:source`'s cardinality needs constraining (currently unconstrained by
+  any shape, which is fine for an optional single-valued property but worth confirming).
 
 ## Open questions before this should be built for real
 
-See the companion doc for the full list — the two that block writing validator code:
+See the companion spec-owner doc for the full list. The most consequential:
 
-1. Is `cprmv:isBasedOn` meant to replace `cprmv:extends`, or do they coexist at different
-   granularities (rule vs. cell)?
-2. Should JuriConnect (JCI) become the one citation format across all of `cprmv:extends`
-   / `cprmv:isBasedOn` / `cprmv:implements`, replacing the current ad hoc
-   `BWBR0002221/Artikel_7a` string — given it already uniformly covers both national
-   wetgeving and Amsterdam's un-BWB'd local verordeningen/beleidsregels, and iKnow already
-   emits it natively with zero mapping work required?
+1. Is `cprmv:isBasedOn` at cell level meant to be the same relation as the already-shipping
+   rule-level one, just one level deeper — or does composing it via `hasPart` change what
+   it should point at?
+2. Should JuriConnect (JCI) become the one citation format across `cprmv:extends` /
+   `cprmv:isBasedOn`, replacing the current ad hoc `BWBR0002221/Artikel_7a` string?
+3. Does `cprmv:concept` belong in the shared `cprmv:` namespace at all, given the TTL
+   layer already gets by with plain `dct:source`?
