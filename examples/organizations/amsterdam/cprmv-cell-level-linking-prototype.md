@@ -19,6 +19,21 @@ the `<decision>` level. The CPRMV attributes already shipping in
 can say "this specific _cell_ — one input or output entry inside one rule row — comes
 from this specific legal source."
 
+> VD: In a decision table annotations can be used to relate to knowledge sources. This is also used in de the STTR. An example:
+
+> <dmn:rule>
+<dmn:outputEntry id="_78595fe5-991a-44d4-87b5-e34c441cbf9f">
+<dmn:text>"Toestemmingsvrij"</dmn:text>
+</dmn:outputEntry>
+<dmn:annotationEntry>
+<dmn:text>"gm0513_v1_chp_1_art001"</dmn:text>
+</dmn:annotationEntry>
+</dmn:rule>
+
+<img width="478" height="243" alt="image" src="https://github.com/user-attachments/assets/a5e0eafb-936e-4223-85d4-da99b1d5e0ef" />
+
+> /VD
+
 The Municipality of Amsterdam already needs exactly that. But a DMN in this project is
 never published in isolation — it's imported into the CPSV Editor and becomes part of a
 `.ttl` file (a `cprmv:DecisionModel` linked to a `cpsv:PublicService`), which is what
