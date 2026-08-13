@@ -4,12 +4,13 @@
 				 xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
 				 xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
 				 xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+				 xmlns:camunda="http://camunda.org/schema/1.0/dmn"
 				 exporter="iKnow"
 				 exporterVersion="0.2"
 				 namespace="http://iknow.nl/schema/1.0/dmn"
 				 id="_ac79339c-89c4-11f1-970c-47c9509ab1c5"
 				 name="DRD aanspraken">	
-	<dmn:decision id="_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" name="Bepalen aanspraken">
+	<dmn:decision id="_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" name="Bepalen aanspraken" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ac8df2a0-89c4-11f1-971e-7f41a8deeed8">
 				<dmn:requiredDecision href="#_a92ecca0-d6bf-463b-809c-82aa3d0f95b0"/>
 			</dmn:informationRequirement>
@@ -633,7 +634,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4" name="Beslistabel bepalen aanspraak op kindtegoed">
+	<dmn:decision id="_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4" name="Beslistabel bepalen aanspraak op kindtegoed" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad0ee55e-89c4-11f1-9800-6f1608dc366f">
 				<dmn:requiredInput href="#_acff35f0-89c4-11f1-97cc-37c28e5fa553"/>
 			</dmn:informationRequirement>
@@ -717,7 +718,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_216b3e6c-c9eb-4def-bfe7-3b20b961de2d" name="Beslistabel bepalen aanspraak Stadspas van kind van natuurlijke persoon">
+	<dmn:decision id="_216b3e6c-c9eb-4def-bfe7-3b20b961de2d" name="Beslistabel bepalen aanspraak Stadspas van kind van natuurlijke persoon" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ace64630-89c4-11f1-9798-e750b3595469">
 				<dmn:requiredDecision href="#_e86e55be-0483-4f64-971d-bbae860e6709"/>
 			</dmn:informationRequirement>
@@ -1142,7 +1143,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_5d364321-409e-432f-83f2-f04cc26035fc" name="Beslistabel bepalen aanspraak op individuele inkomenstoeslag partner">
+	<dmn:decision id="_5d364321-409e-432f-83f2-f04cc26035fc" name="Beslistabel bepalen aanspraak op individuele inkomenstoeslag partner" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad11399e-89c4-11f1-9808-afdaa5963c57">
 				<dmn:requiredInput href="#_acffd3de-89c4-11f1-97ce-1bf017e4cf80"/>
 			</dmn:informationRequirement>
@@ -1309,7 +1310,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_5ff6a88e-fea3-4dc7-8863-e1bf542f2513" name="Beslistabel bepalen aanspraak op bijzondere bijstand">
+	<dmn:decision id="_5ff6a88e-fea3-4dc7-8863-e1bf542f2513" name="Beslistabel bepalen aanspraak op bijzondere bijstand" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad053cde-89c4-11f1-97e0-93dae283c9fd">
 				<dmn:requiredInput href="#_acf9746c-89c4-11f1-97b8-c35c1cf64798"/>
 			</dmn:informationRequirement>
@@ -1525,7 +1526,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_6041f4d4-35e8-4377-993d-5b2a879c31e4" name="Beslistabel bepalen aanspraak op een stadspas">
+	<dmn:decision id="_6041f4d4-35e8-4377-993d-5b2a879c31e4" name="Beslistabel bepalen aanspraak op een stadspas" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad0f6f56-89c4-11f1-9802-8b6cc7d8697e">
 				<dmn:requiredInput href="#_acff35f0-89c4-11f1-97cc-37c28e5fa553"/>
 			</dmn:informationRequirement>
@@ -1761,7 +1762,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0" name="Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon">
+	<dmn:decision id="_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0" name="Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad038e0c-89c4-11f1-97da-272c3bd476b7">
 				<dmn:requiredInput href="#_acf812ca-89c4-11f1-97b2-3f0ecb73b9af"/>
 			</dmn:informationRequirement>
@@ -1907,7 +1908,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc" name="Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart">
+	<dmn:decision id="_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc" name="Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ace6ea0e-89c4-11f1-979a-53b3755a95de">
 				<dmn:requiredDecision href="#_6041f4d4-35e8-4377-993d-5b2a879c31e4"/>
 			</dmn:informationRequirement>
@@ -2062,7 +2063,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_9439cfee-4abb-447e-9002-a1254b59442c" name="Beslistabel bepalen aanspraak op reiskostenvergoeding kind">
+	<dmn:decision id="_9439cfee-4abb-447e-9002-a1254b59442c" name="Beslistabel bepalen aanspraak op reiskostenvergoeding kind" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ace1f6b6-89c4-11f1-9789-6b58f7d59e49">
 				<dmn:requiredDecision href="#_8e0b94dc-e62c-45c7-b731-cc18bbf484cc"/>
 			</dmn:informationRequirement>
@@ -2132,7 +2133,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_a92ecca0-d6bf-463b-809c-82aa3d0f95b0" name="Beslistabel aanspaak op aanvullend kindtegoed">
+	<dmn:decision id="_a92ecca0-d6bf-463b-809c-82aa3d0f95b0" name="Beslistabel aanspaak op aanvullend kindtegoed" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ace476a2-89c4-11f1-9792-67a4b7347ec7">
 				<dmn:requiredDecision href="#_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4"/>
 			</dmn:informationRequirement>
@@ -2185,7 +2186,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27" name="Beslistabel bepalen aanspraak op PC-voorziening">
+	<dmn:decision id="_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27" name="Beslistabel bepalen aanspraak op PC-voorziening" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad0666d6-89c4-11f1-97e4-fff09d0b516f">
 				<dmn:requiredInput href="#_acf9c098-89c4-11f1-97b9-63c6ae442a69"/>
 			</dmn:informationRequirement>
@@ -2366,7 +2367,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_ae01d740-f954-4a84-8dd8-a28fc3660cc6" name="Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten">
+	<dmn:decision id="_ae01d740-f954-4a84-8dd8-a28fc3660cc6" name="Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad1004de-89c4-11f1-9804-4f378b3720b9">
 				<dmn:requiredInput href="#_acff35f0-89c4-11f1-97cc-37c28e5fa553"/>
 			</dmn:informationRequirement>
@@ -2507,7 +2508,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_bca439b7-fdb8-40e3-8a1d-3bb95571c65c" name="Beslistabel bepalen aanspraak op individuele inkomenstoeslag">
+	<dmn:decision id="_bca439b7-fdb8-40e3-8a1d-3bb95571c65c" name="Beslistabel bepalen aanspraak op individuele inkomenstoeslag" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad1052b8-89c4-11f1-9805-d7106b30fb91">
 				<dmn:requiredInput href="#_acff35f0-89c4-11f1-97cc-37c28e5fa553"/>
 			</dmn:informationRequirement>
@@ -2752,7 +2753,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_1fd5fa9b-4052-477d-9837-f18f59e0b1be" name="Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen">
+	<dmn:decision id="_1fd5fa9b-4052-477d-9837-f18f59e0b1be" name="Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_adb06942-89c4-11f1-9917-535d790b6aba">
 				<dmn:requiredInput href="#_acfad91a-89c4-11f1-97bd-6fec6fb8af30"/>
 			</dmn:informationRequirement>
@@ -2810,7 +2811,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_299e6c91-3fe5-49aa-88cc-efd03583ae87" name="Beslistabel bepalen langdurig laag inkomen">
+	<dmn:decision id="_299e6c91-3fe5-49aa-88cc-efd03583ae87" name="Beslistabel bepalen langdurig laag inkomen" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_adb01974-89c4-11f1-9916-b7fd4c6dd24f">
 				<dmn:requiredInput href="#_acfa92ca-89c4-11f1-97bc-9fbfb265b63e"/>
 			</dmn:informationRequirement>
@@ -2886,7 +2887,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_47e5f1bc-2557-44f3-9aa2-07e520126f33" name="Beslistabel bepalen schuldregeling">
+	<dmn:decision id="_47e5f1bc-2557-44f3-9aa2-07e520126f33" name="Beslistabel bepalen schuldregeling" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_adb266f2-89c4-11f1-991e-ef412db247b7">
 				<dmn:requiredInput href="#_adabbbd6-89c4-11f1-990a-07e43b6a16aa"/>
 			</dmn:informationRequirement>
@@ -2981,7 +2982,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_52e3eb1b-1561-431c-9e8b-e9314f20836f" name="Beslistabel bepalen of een kind een minimabeleid kind is">
+	<dmn:decision id="_52e3eb1b-1561-431c-9e8b-e9314f20836f" name="Beslistabel bepalen of een kind een minimabeleid kind is" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ada3177e-89c4-11f1-9906-f775139200a0">
 				<dmn:requiredDecision href="#_e86e55be-0483-4f64-971d-bbae860e6709"/>
 			</dmn:informationRequirement>
@@ -3496,7 +3497,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_70476381-08ed-4db9-8602-edcc50341607" name="Beslistabel bepalen natuurlijke persoon is meerderjarig">
+	<dmn:decision id="_70476381-08ed-4db9-8602-edcc50341607" name="Beslistabel bepalen natuurlijke persoon is meerderjarig" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ade43470-89c4-11f1-993f-efd32e7d47b1">
 				<dmn:requiredInput href="#_ad4e19ea-89c4-11f1-9823-4bb64cf76dfb"/>
 			</dmn:informationRequirement>
@@ -3529,7 +3530,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_8e0b94dc-e62c-45c7-b731-cc18bbf484cc" name="Beslistabel bepalen of een kind een scholier is">
+	<dmn:decision id="_8e0b94dc-e62c-45c7-b731-cc18bbf484cc" name="Beslistabel bepalen of een kind een scholier is" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ad9f440a-89c4-11f1-98f9-27e6820c689b">
 				<dmn:requiredDecision href="#_52e3eb1b-1561-431c-9e8b-e9314f20836f"/>
 			</dmn:informationRequirement>
@@ -3713,7 +3714,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_912d27e0-1b8f-47bd-98cf-1863354ef321" name="Bepalen van toepassing zijnde vermogensgrens">
+	<dmn:decision id="_912d27e0-1b8f-47bd-98cf-1863354ef321" name="Bepalen van toepassing zijnde vermogensgrens" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_adb0afec-89c4-11f1-9918-6f49d95b0545">
 				<dmn:requiredInput href="#_acfad91a-89c4-11f1-97bd-6fec6fb8af30"/>
 			</dmn:informationRequirement>
@@ -3768,7 +3769,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_adcd1d42-b570-4e57-854b-ce5444975185" name="Bepaal pensioengerechtigde leeftijd">
+	<dmn:decision id="_adcd1d42-b570-4e57-854b-ce5444975185" name="Bepaal pensioengerechtigde leeftijd" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ade4d29a-89c4-11f1-9941-4f9de285bae9">
 				<dmn:requiredInput href="#_ad4ed2b8-89c4-11f1-9825-8febbaebbc08"/>
 			</dmn:informationRequirement>
@@ -3798,7 +3799,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_d4786c58-c3ce-42c5-b8fa-d7deabd40823" name="Bepalen van toepassing zijnde loongrens vorig jaar voor kinderen">
+	<dmn:decision id="_d4786c58-c3ce-42c5-b8fa-d7deabd40823" name="Bepalen van toepassing zijnde loongrens vorig jaar voor kinderen" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_adb0fae2-89c4-11f1-9919-f77c9b6ac0a2">
 				<dmn:requiredInput href="#_acfad91a-89c4-11f1-97bd-6fec6fb8af30"/>
 			</dmn:informationRequirement>
@@ -3856,7 +3857,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_e86e55be-0483-4f64-971d-bbae860e6709" name="Beslistabel bepalen kind is minderjarig">
+	<dmn:decision id="_e86e55be-0483-4f64-971d-bbae860e6709" name="Beslistabel bepalen kind is minderjarig" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ade3a140-89c4-11f1-993d-1bba393c477a">
 				<dmn:requiredInput href="#_ad4db766-89c4-11f1-9822-337e3bd00749"/>
 			</dmn:informationRequirement>
@@ -3889,7 +3890,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f" name="Bepalen van toepassing zijnde loongrens drie jaar geleden">
+	<dmn:decision id="_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f" name="Bepalen van toepassing zijnde loongrens drie jaar geleden" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ae0849dc-89c4-11f1-9982-2bac2b7c8048">
 				<dmn:requiredInput href="#_acfad91a-89c4-11f1-97bd-6fec6fb8af30"/>
 			</dmn:informationRequirement>
@@ -3947,7 +3948,7 @@
 			</dmn:decisionTable>
 		</dmn:decision>
 	
-	<dmn:decision id="_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1" name="Bepalen van toepassing zijnde loongrens twee jaar geleden">
+	<dmn:decision id="_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1" name="Bepalen van toepassing zijnde loongrens twee jaar geleden" camunda:historyTimeToLive="0">
 			<dmn:informationRequirement id="_ae07e690-89c4-11f1-9981-83e76f4bc31a">
 				<dmn:requiredInput href="#_acfad91a-89c4-11f1-97bd-6fec6fb8af30"/>
 			</dmn:informationRequirement>
@@ -4160,54 +4161,54 @@
 		<dmn:inputData id="_ad4ed2b8-89c4-11f1-9825-8febbaebbc08" name="peildatum">
 			<dmn:variable id="_ae2e7d82-89c4-11f1-99c0-3b08e8719e49" name="peildatum" typeRef="date"/>
 		</dmn:inputData>
-	<dmn:knowledgeSource id="_acb7a618-89c4-11f1-9738-03f477d2d07e" name="aanspraak op regeling tegemoetkoming meerkosten" description="https://hva.pna-web.com/hva/?type=CPT&id=23654310-6d32-4f2b-88b0-1860d25e97d6" type="CPT" />
-	<dmn:knowledgeSource id="_acb7e506-89c4-11f1-9739-37f7a780e5d8" name="aanspraak individuele inkomenstoeslag" description="https://hva.pna-web.com/hva/?type=CPT&id=4b7157ff-2bc6-4ada-ba36-8123e6038dfe" type="CPT" />
-	<dmn:knowledgeSource id="_acb81bde-89c4-11f1-973a-bfe23c8ec70f" name="aanspraak PC-voorziening basisonderwijs" description="https://hva.pna-web.com/hva/?type=CPT&id=73a55739-84e4-48df-be1a-e27fc52eb4a1" type="CPT" />
-	<dmn:knowledgeSource id="_acb894ce-89c4-11f1-973c-87bfd316e823" name="aanspraak reiskostenvergoeding" description="https://hva.pna-web.com/hva/?type=CPT&id=96171a14-8f15-4ace-b12c-3c34c4a4dc27" type="CPT" />
-	<dmn:knowledgeSource id="_acb757c6-89c4-11f1-9737-d7731aa75e35" name="Aanspraak stadspas" description="https://hva.pna-web.com/hva/?type=APT&id=0522d3ff-d2b1-4690-9a54-6593c2828f6c" type="APT" />
-	<dmn:knowledgeSource id="_acb84e7e-89c4-11f1-973b-efbea46e7509" name="aanspraak kindtegoed Stadspas" description="https://hva.pna-web.com/hva/?type=APT&id=7e9a822c-6d9c-42d5-96a1-babeca5f928c" type="APT" />
-	<dmn:knowledgeSource id="_acb8c552-89c4-11f1-973d-4b51329c97c5" name="aanspraak bijzondere bijstand" description="https://hva.pna-web.com/hva/?type=APT&id=b1acee8f-66d0-4b38-9d74-cd4319e00346" type="APT" />
-	<dmn:knowledgeSource id="_acb8f6e4-89c4-11f1-973e-633551dcb6f4" name="Aanspraak tegemoetkoming identiteitskaart" description="https://hva.pna-web.com/hva/?type=APT&id=b287f363-5027-4769-a25f-5386bd525dbb" type="APT" />
-	<dmn:knowledgeSource id="_acb923da-89c4-11f1-973f-1f6f3f0a6598" name="aanspraak individuele inkomenstoeslag" description="https://hva.pna-web.com/hva/?type=APT&id=f1247db9-3f96-4fb4-8149-0654447e46f0" type="APT" />
-	<dmn:knowledgeSource id="_acb9501c-89c4-11f1-9740-43e820146f9c" name="aanspraak kindtegoed kosten Voorschool" description="https://hva.pna-web.com/hva/?type=APT&id=f5d84ccc-3339-4c76-96fd-006cf2783f27" type="APT" />
-	<dmn:knowledgeSource id="_ad55bc54-89c4-11f1-9834-232fb0b8b6e1" name="Natuurlijke persoon heeft Nederlandse nationaliteit " description="https://hva.pna-web.com/hva/?type=CPT&id=1722f608-fad8-42ec-9ac8-32d227e4b52c" type="CPT" />
-	<dmn:knowledgeSource id="_ad56462e-89c4-11f1-9836-9705df51d328" name="een PC-voorziening is verstrekt aan een broer of zus ( van 10,11 of 12 jaar ) in het basisonderwijs" description="https://hva.pna-web.com/hva/?type=CPT&id=1dec59f5-3a5a-49dd-89e6-5582bc9a6eba" type="CPT" />
-	<dmn:knowledgeSource id="_ad56f8f8-89c4-11f1-9839-bb14291ae713" name="natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar" description="https://hva.pna-web.com/hva/?type=CPT&id=4b0c647a-40a1-4c20-bb19-662b12d7ae52" type="CPT" />
-	<dmn:knowledgeSource id="_ad598e7e-89c4-11f1-9842-c3bcdd09b051" name="een PC-voorziening is al verstrekt in het voortgezet onderwijs in de voorgaande 4 jaren" description="https://hva.pna-web.com/hva/?type=CPT&id=73db40aa-bfa9-4b16-8195-f000ec74ad1a" type="CPT" />
-	<dmn:knowledgeSource id="_ad59d42e-89c4-11f1-9843-df83c26f2dc8" name="ingezetenen heeft aannemelijke meerkosten" description="https://hva.pna-web.com/hva/?type=CPT&id=74dc2de2-286a-419d-8811-dbffcd749db1" type="CPT" />
-	<dmn:knowledgeSource id="_ad5a6380-89c4-11f1-9845-83179926530c" name="Id-kaart of paspoort is korter dan 8 weken geldig" description="https://hva.pna-web.com/hva/?type=CPT&id=89e1f134-e723-420e-8a09-9d40459cdabc" type="CPT" />
-	<dmn:knowledgeSource id="_ad5ab10a-89c4-11f1-9846-f3c50a01bfa8" name="natuurlijk persoon heeft gezinssituatie" description="https://hva.pna-web.com/hva/?type=CPT&id=8bf152a7-22a1-4624-b43b-aa9c9ff68b30" type="CPT" />
-	<dmn:knowledgeSource id="_ad5b439a-89c4-11f1-9848-83912bce3e3f" name="natuurlijke persoon heeft een medische verklaring" description="https://hva.pna-web.com/hva/?type=CPT&id=a62c9559-f96c-4d79-8c4e-8b16667efc7d" type="CPT" />
-	<dmn:knowledgeSource id="_ad5b9052-89c4-11f1-9849-5726d7536173" name="PC-voorziening is verstrekt aan de scholier in het basisonderwijs in het jaar voorafgaand" description="https://hva.pna-web.com/hva/?type=CPT&id=a71d5bd0-9135-4df2-8787-bc2ec1145518" type="CPT" />
-	<dmn:knowledgeSource id="_ad5c98c6-89c4-11f1-984c-4f10e42d0871" name="Scholier maakt of kan aanspraak maken op een voorziening krachtens een gemeentelijke regeling" description="https://hva.pna-web.com/hva/?type=CPT&id=b3c78d94-42b7-406a-afd6-b71d2377cc6d" type="CPT" />
-	<dmn:knowledgeSource id="_ad5db08a-89c4-11f1-9850-4b629364052d" name="rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering" description="https://hva.pna-web.com/hva/?type=CPT&id=cf35d84d-bec6-42b7-8491-9208ef44d2c9" type="CPT" />
-	<dmn:knowledgeSource id="_ad556600-89c4-11f1-9833-6f2e45eaf1d3" name="natuurlijke persoon heeft langdurig laag inkomen" description="https://hva.pna-web.com/hva/?type=APT&id=0f0d5140-0624-4aa3-a077-2a26087d1436" type="APT" />
-	<dmn:knowledgeSource id="_ad56088a-89c4-11f1-9835-27abc4dc4a83" name="Aanvrager heeft bijzondere omstandigheden die leiden tot noodzakelijke kosten van bestaan" description="https://hva.pna-web.com/hva/?type=APT&id=1bc3b12e-56ae-47b1-b723-e08df6f64a01" type="APT" />
-	<dmn:knowledgeSource id="_ad568f62-89c4-11f1-9837-17b96e2f9376" name="Adres van kind" description="https://hva.pna-web.com/hva/?type=APT&id=32d7e9c8-8f7a-45e0-aae4-9cc01024c042" type="APT" />
-	<dmn:knowledgeSource id="_ad56c6c6-89c4-11f1-9838-d7af680ebc47" name="financiele draagkracht (bijz. bijstand)" description="https://hva.pna-web.com/hva/?type=APT&id=3e3b79d7-3382-49ec-aae0-98a204f56701" type="APT" />
-	<dmn:knowledgeSource id="_ad5740a6-89c4-11f1-983a-03b174dcc383" name="scholier reist vanaf het Woonadres zoveel km om het schoolgebouw te bereiken" description="https://hva.pna-web.com/hva/?type=APT&id=515f5956-4660-4926-80fb-e66614e9d419" type="APT" />
-	<dmn:knowledgeSource id="_ad578642-89c4-11f1-983b-8b3841afed78" name="natuurlijk persoon volgt onderwijs in de zin van hoofdstuk II van de Wet op de studiefinanciering" description="https://hva.pna-web.com/hva/?type=APT&id=549031d2-d7ef-4e77-b8ed-41d4f27c37a9" type="APT" />
-	<dmn:knowledgeSource id="_ad57ccba-89c4-11f1-983c-6b46be74a8dd" name="de betreffende kosten van de aanvrager worden in de voorliggende voorziening als niet noodzakelijk beschouwd" description="https://hva.pna-web.com/hva/?type=APT&id=5b09b5b2-2298-46e1-9da6-3ca4c700745c" type="APT" />
-	<dmn:knowledgeSource id="_ad581288-89c4-11f1-983d-770673b2493a" name="de aanvrager bijz. bijst. heeft een kosten die niet in aanmerking komt" description="https://hva.pna-web.com/hva/?type=APT&id=5bd882cc-8732-4f59-8001-b5681841dd6c" type="APT" />
-	<dmn:knowledgeSource id="_ad58566c-89c4-11f1-983e-cb12c5a6fc09" name="partner van rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering" description="https://hva.pna-web.com/hva/?type=APT&id=602be365-47f7-4546-9a0c-94915c2add57" type="APT" />
-	<dmn:knowledgeSource id="_ad589d70-89c4-11f1-983f-3b5e7ac51199" name="natuurlijk persoon heeft woonadres" description="https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0" type="APT" />
-	<dmn:knowledgeSource id="_ad58f202-89c4-11f1-9840-3f04f3b13d7e" name="Kind ingeschreven in een instelling voor Jeugdhulp met verblijf" description="https://hva.pna-web.com/hva/?type=APT&id=6d5917b8-190f-48ff-b19c-33aef7f08255" type="APT" />
-	<dmn:knowledgeSource id="_ad5944f0-89c4-11f1-9841-e3cdf074bf74" name="natuurlijk persoon beschikt over een vermogen" description="https://hva.pna-web.com/hva/?type=APT&id=6fea33db-8454-4a6c-9e02-db6a1f3417db" type="APT" />
-	<dmn:knowledgeSource id="_ad5a1aec-89c4-11f1-9844-d755c6cfce69" name="Kind ingeschreven op (voor)school" description="https://hva.pna-web.com/hva/?type=APT&id=80c170f6-ca72-43ef-bb8c-524832630b88" type="APT" />
-	<dmn:knowledgeSource id="_ad5af7fa-89c4-11f1-9847-83db201de744" name="inschrijfbewijs van kind voor betreffende voorschool" description="https://hva.pna-web.com/hva/?type=APT&id=97bb6554-1133-4520-8419-87a71b558d92" type="APT" />
-	<dmn:knowledgeSource id="_ad5c094c-89c4-11f1-984a-3fd1d681038e" name="Aanvrager bijz. bijst. kan beroep doen op een voorliggende voorziening" description="https://hva.pna-web.com/hva/?type=APT&id=a88f39bc-a586-45b5-8d31-456df35186cd" type="APT" />
-	<dmn:knowledgeSource id="_ad5c5384-89c4-11f1-984b-a368bdd8271e" name="Aanvrager kan geen lening aangaan" description="https://hva.pna-web.com/hva/?type=APT&id=adb452bc-222b-49c4-8062-5a15bf740ac8" type="APT" />
-	<dmn:knowledgeSource id="_ad5cdde0-89c4-11f1-984d-2749d8cb873b" name="Kind is een scholier " description="https://hva.pna-web.com/hva/?type=APT&id=bbcaa777-d365-4c81-8ff3-306e99914633" type="APT" />
-	<dmn:knowledgeSource id="_ad5d2462-89c4-11f1-984e-9b3bd11fda99" name="Aanvrager heeft BSN" description="https://hva.pna-web.com/hva/?type=APT&id=be680665-f245-4352-b033-0e85cc581e8f" type="APT" />
-	<dmn:knowledgeSource id="_ad5d6238-89c4-11f1-984f-b7fe839d7d4c" name="natuurlijk persoon volgt onderwijs in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten ." description="https://hva.pna-web.com/hva/?type=APT&id=cd84be42-41bb-4830-9b02-92e197bb4f1f" type="APT" />
-	<dmn:knowledgeSource id="_ad5df130-89c4-11f1-9851-9fcc857145ad" name="Aanvrager heeft geen spaargelden (bijz. bijstand)" description="https://hva.pna-web.com/hva/?type=APT&id=da30a720-8f63-4aee-9c69-266d57c092ec" type="APT" />
-	<dmn:knowledgeSource id="_ad5e383e-89c4-11f1-9852-ff4387de4559" name="scholier volgt Voortgezet onderwijs" description="https://hva.pna-web.com/hva/?type=APT&id=e5b9524c-d0b0-41c3-9304-2054216dc872" type="APT" />
-	<dmn:knowledgeSource id="_ad5e7f38-89c4-11f1-9853-93154281a8db" name="natuurlijk persoon krijgt voedselpakketten van de Voedselbank Amsterdam of Voedselbank Gooi en Omstreken" description="https://hva.pna-web.com/hva/?type=APT&id=f9ad913d-fef7-41f9-85bb-2fe7266f8887" type="APT" />
-	<dmn:knowledgeSource id="_ade7a650-89c4-11f1-9945-a746688cda41" name="bepalen langdurig laag inkomen" description="https://hva.pna-web.com/hva/?type=CPT&id=bc6e9ec5-719e-4abf-ac8f-9bfea17908c2" type="CPT" />
-	<dmn:knowledgeSource id="_ade820a8-89c4-11f1-9946-03bd45f5c2ed" name="Aanvrager heeft een opgelegde schuldregeling op grond van de WSNP" description="https://hva.pna-web.com/hva/?type=APT&id=099f9264-089e-4a68-b7e2-ded26f479c11" type="APT" />
-	<dmn:knowledgeSource id="_ade87300-89c4-11f1-9947-87541d899542" name="aanvrager heeft een minnelijke schuldregeling" description="https://hva.pna-web.com/hva/?type=APT&id=148afe2c-dc30-4512-a536-087f542b54e1" type="APT" />
-	<dmn:knowledgeSource id="_ade8b824-89c4-11f1-9948-bb9865a18c40" name="aanvrager heeft een schuldregeling van een door de gemeente aangewezen/gemandateerde instantie" description="https://hva.pna-web.com/hva/?type=APT&id=3f211a1c-450a-4029-b0aa-4be3d9d97966" type="APT" />
-	<dmn:knowledgeSource id="_ade8ff82-89c4-11f1-9949-8b7133511a92" name="scholier volgt het middelbaar beroepsonderwijs BBL met onbetaalde stage" description="https://hva.pna-web.com/hva/?type=APT&id=85d3de1b-0c96-4275-8659-37d29fccbd72" type="APT" />
+	<dmn:knowledgeSource id="_acb7a618-89c4-11f1-9738-03f477d2d07e" name="aanspraak op regeling tegemoetkoming meerkosten" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=23654310-6d32-4f2b-88b0-1860d25e97d6" type="CPT" />
+	<dmn:knowledgeSource id="_acb7e506-89c4-11f1-9739-37f7a780e5d8" name="aanspraak individuele inkomenstoeslag" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=4b7157ff-2bc6-4ada-ba36-8123e6038dfe" type="CPT" />
+	<dmn:knowledgeSource id="_acb81bde-89c4-11f1-973a-bfe23c8ec70f" name="aanspraak PC-voorziening basisonderwijs" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=73a55739-84e4-48df-be1a-e27fc52eb4a1" type="CPT" />
+	<dmn:knowledgeSource id="_acb894ce-89c4-11f1-973c-87bfd316e823" name="aanspraak reiskostenvergoeding" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=96171a14-8f15-4ace-b12c-3c34c4a4dc27" type="CPT" />
+	<dmn:knowledgeSource id="_acb757c6-89c4-11f1-9737-d7731aa75e35" name="Aanspraak stadspas" description="https://hva.pna-web.com/hva/?type=APT&amp;id=0522d3ff-d2b1-4690-9a54-6593c2828f6c" type="APT" />
+	<dmn:knowledgeSource id="_acb84e7e-89c4-11f1-973b-efbea46e7509" name="aanspraak kindtegoed Stadspas" description="https://hva.pna-web.com/hva/?type=APT&amp;id=7e9a822c-6d9c-42d5-96a1-babeca5f928c" type="APT" />
+	<dmn:knowledgeSource id="_acb8c552-89c4-11f1-973d-4b51329c97c5" name="aanspraak bijzondere bijstand" description="https://hva.pna-web.com/hva/?type=APT&amp;id=b1acee8f-66d0-4b38-9d74-cd4319e00346" type="APT" />
+	<dmn:knowledgeSource id="_acb8f6e4-89c4-11f1-973e-633551dcb6f4" name="Aanspraak tegemoetkoming identiteitskaart" description="https://hva.pna-web.com/hva/?type=APT&amp;id=b287f363-5027-4769-a25f-5386bd525dbb" type="APT" />
+	<dmn:knowledgeSource id="_acb923da-89c4-11f1-973f-1f6f3f0a6598" name="aanspraak individuele inkomenstoeslag" description="https://hva.pna-web.com/hva/?type=APT&amp;id=f1247db9-3f96-4fb4-8149-0654447e46f0" type="APT" />
+	<dmn:knowledgeSource id="_acb9501c-89c4-11f1-9740-43e820146f9c" name="aanspraak kindtegoed kosten Voorschool" description="https://hva.pna-web.com/hva/?type=APT&amp;id=f5d84ccc-3339-4c76-96fd-006cf2783f27" type="APT" />
+	<dmn:knowledgeSource id="_ad55bc54-89c4-11f1-9834-232fb0b8b6e1" name="Natuurlijke persoon heeft Nederlandse nationaliteit " description="https://hva.pna-web.com/hva/?type=CPT&amp;id=1722f608-fad8-42ec-9ac8-32d227e4b52c" type="CPT" />
+	<dmn:knowledgeSource id="_ad56462e-89c4-11f1-9836-9705df51d328" name="een PC-voorziening is verstrekt aan een broer of zus ( van 10,11 of 12 jaar ) in het basisonderwijs" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=1dec59f5-3a5a-49dd-89e6-5582bc9a6eba" type="CPT" />
+	<dmn:knowledgeSource id="_ad56f8f8-89c4-11f1-9839-bb14291ae713" name="natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=4b0c647a-40a1-4c20-bb19-662b12d7ae52" type="CPT" />
+	<dmn:knowledgeSource id="_ad598e7e-89c4-11f1-9842-c3bcdd09b051" name="een PC-voorziening is al verstrekt in het voortgezet onderwijs in de voorgaande 4 jaren" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=73db40aa-bfa9-4b16-8195-f000ec74ad1a" type="CPT" />
+	<dmn:knowledgeSource id="_ad59d42e-89c4-11f1-9843-df83c26f2dc8" name="ingezetenen heeft aannemelijke meerkosten" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=74dc2de2-286a-419d-8811-dbffcd749db1" type="CPT" />
+	<dmn:knowledgeSource id="_ad5a6380-89c4-11f1-9845-83179926530c" name="Id-kaart of paspoort is korter dan 8 weken geldig" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=89e1f134-e723-420e-8a09-9d40459cdabc" type="CPT" />
+	<dmn:knowledgeSource id="_ad5ab10a-89c4-11f1-9846-f3c50a01bfa8" name="natuurlijk persoon heeft gezinssituatie" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=8bf152a7-22a1-4624-b43b-aa9c9ff68b30" type="CPT" />
+	<dmn:knowledgeSource id="_ad5b439a-89c4-11f1-9848-83912bce3e3f" name="natuurlijke persoon heeft een medische verklaring" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=a62c9559-f96c-4d79-8c4e-8b16667efc7d" type="CPT" />
+	<dmn:knowledgeSource id="_ad5b9052-89c4-11f1-9849-5726d7536173" name="PC-voorziening is verstrekt aan de scholier in het basisonderwijs in het jaar voorafgaand" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=a71d5bd0-9135-4df2-8787-bc2ec1145518" type="CPT" />
+	<dmn:knowledgeSource id="_ad5c98c6-89c4-11f1-984c-4f10e42d0871" name="Scholier maakt of kan aanspraak maken op een voorziening krachtens een gemeentelijke regeling" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=b3c78d94-42b7-406a-afd6-b71d2377cc6d" type="CPT" />
+	<dmn:knowledgeSource id="_ad5db08a-89c4-11f1-9850-4b629364052d" name="rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=cf35d84d-bec6-42b7-8491-9208ef44d2c9" type="CPT" />
+	<dmn:knowledgeSource id="_ad556600-89c4-11f1-9833-6f2e45eaf1d3" name="natuurlijke persoon heeft langdurig laag inkomen" description="https://hva.pna-web.com/hva/?type=APT&amp;id=0f0d5140-0624-4aa3-a077-2a26087d1436" type="APT" />
+	<dmn:knowledgeSource id="_ad56088a-89c4-11f1-9835-27abc4dc4a83" name="Aanvrager heeft bijzondere omstandigheden die leiden tot noodzakelijke kosten van bestaan" description="https://hva.pna-web.com/hva/?type=APT&amp;id=1bc3b12e-56ae-47b1-b723-e08df6f64a01" type="APT" />
+	<dmn:knowledgeSource id="_ad568f62-89c4-11f1-9837-17b96e2f9376" name="Adres van kind" description="https://hva.pna-web.com/hva/?type=APT&amp;id=32d7e9c8-8f7a-45e0-aae4-9cc01024c042" type="APT" />
+	<dmn:knowledgeSource id="_ad56c6c6-89c4-11f1-9838-d7af680ebc47" name="financiele draagkracht (bijz. bijstand)" description="https://hva.pna-web.com/hva/?type=APT&amp;id=3e3b79d7-3382-49ec-aae0-98a204f56701" type="APT" />
+	<dmn:knowledgeSource id="_ad5740a6-89c4-11f1-983a-03b174dcc383" name="scholier reist vanaf het Woonadres zoveel km om het schoolgebouw te bereiken" description="https://hva.pna-web.com/hva/?type=APT&amp;id=515f5956-4660-4926-80fb-e66614e9d419" type="APT" />
+	<dmn:knowledgeSource id="_ad578642-89c4-11f1-983b-8b3841afed78" name="natuurlijk persoon volgt onderwijs in de zin van hoofdstuk II van de Wet op de studiefinanciering" description="https://hva.pna-web.com/hva/?type=APT&amp;id=549031d2-d7ef-4e77-b8ed-41d4f27c37a9" type="APT" />
+	<dmn:knowledgeSource id="_ad57ccba-89c4-11f1-983c-6b46be74a8dd" name="de betreffende kosten van de aanvrager worden in de voorliggende voorziening als niet noodzakelijk beschouwd" description="https://hva.pna-web.com/hva/?type=APT&amp;id=5b09b5b2-2298-46e1-9da6-3ca4c700745c" type="APT" />
+	<dmn:knowledgeSource id="_ad581288-89c4-11f1-983d-770673b2493a" name="de aanvrager bijz. bijst. heeft een kosten die niet in aanmerking komt" description="https://hva.pna-web.com/hva/?type=APT&amp;id=5bd882cc-8732-4f59-8001-b5681841dd6c" type="APT" />
+	<dmn:knowledgeSource id="_ad58566c-89c4-11f1-983e-cb12c5a6fc09" name="partner van rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering" description="https://hva.pna-web.com/hva/?type=APT&amp;id=602be365-47f7-4546-9a0c-94915c2add57" type="APT" />
+	<dmn:knowledgeSource id="_ad589d70-89c4-11f1-983f-3b5e7ac51199" name="natuurlijk persoon heeft woonadres" description="https://hva.pna-web.com/hva/?type=APT&amp;id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0" type="APT" />
+	<dmn:knowledgeSource id="_ad58f202-89c4-11f1-9840-3f04f3b13d7e" name="Kind ingeschreven in een instelling voor Jeugdhulp met verblijf" description="https://hva.pna-web.com/hva/?type=APT&amp;id=6d5917b8-190f-48ff-b19c-33aef7f08255" type="APT" />
+	<dmn:knowledgeSource id="_ad5944f0-89c4-11f1-9841-e3cdf074bf74" name="natuurlijk persoon beschikt over een vermogen" description="https://hva.pna-web.com/hva/?type=APT&amp;id=6fea33db-8454-4a6c-9e02-db6a1f3417db" type="APT" />
+	<dmn:knowledgeSource id="_ad5a1aec-89c4-11f1-9844-d755c6cfce69" name="Kind ingeschreven op (voor)school" description="https://hva.pna-web.com/hva/?type=APT&amp;id=80c170f6-ca72-43ef-bb8c-524832630b88" type="APT" />
+	<dmn:knowledgeSource id="_ad5af7fa-89c4-11f1-9847-83db201de744" name="inschrijfbewijs van kind voor betreffende voorschool" description="https://hva.pna-web.com/hva/?type=APT&amp;id=97bb6554-1133-4520-8419-87a71b558d92" type="APT" />
+	<dmn:knowledgeSource id="_ad5c094c-89c4-11f1-984a-3fd1d681038e" name="Aanvrager bijz. bijst. kan beroep doen op een voorliggende voorziening" description="https://hva.pna-web.com/hva/?type=APT&amp;id=a88f39bc-a586-45b5-8d31-456df35186cd" type="APT" />
+	<dmn:knowledgeSource id="_ad5c5384-89c4-11f1-984b-a368bdd8271e" name="Aanvrager kan geen lening aangaan" description="https://hva.pna-web.com/hva/?type=APT&amp;id=adb452bc-222b-49c4-8062-5a15bf740ac8" type="APT" />
+	<dmn:knowledgeSource id="_ad5cdde0-89c4-11f1-984d-2749d8cb873b" name="Kind is een scholier " description="https://hva.pna-web.com/hva/?type=APT&amp;id=bbcaa777-d365-4c81-8ff3-306e99914633" type="APT" />
+	<dmn:knowledgeSource id="_ad5d2462-89c4-11f1-984e-9b3bd11fda99" name="Aanvrager heeft BSN" description="https://hva.pna-web.com/hva/?type=APT&amp;id=be680665-f245-4352-b033-0e85cc581e8f" type="APT" />
+	<dmn:knowledgeSource id="_ad5d6238-89c4-11f1-984f-b7fe839d7d4c" name="natuurlijk persoon volgt onderwijs in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten ." description="https://hva.pna-web.com/hva/?type=APT&amp;id=cd84be42-41bb-4830-9b02-92e197bb4f1f" type="APT" />
+	<dmn:knowledgeSource id="_ad5df130-89c4-11f1-9851-9fcc857145ad" name="Aanvrager heeft geen spaargelden (bijz. bijstand)" description="https://hva.pna-web.com/hva/?type=APT&amp;id=da30a720-8f63-4aee-9c69-266d57c092ec" type="APT" />
+	<dmn:knowledgeSource id="_ad5e383e-89c4-11f1-9852-ff4387de4559" name="scholier volgt Voortgezet onderwijs" description="https://hva.pna-web.com/hva/?type=APT&amp;id=e5b9524c-d0b0-41c3-9304-2054216dc872" type="APT" />
+	<dmn:knowledgeSource id="_ad5e7f38-89c4-11f1-9853-93154281a8db" name="natuurlijk persoon krijgt voedselpakketten van de Voedselbank Amsterdam of Voedselbank Gooi en Omstreken" description="https://hva.pna-web.com/hva/?type=APT&amp;id=f9ad913d-fef7-41f9-85bb-2fe7266f8887" type="APT" />
+	<dmn:knowledgeSource id="_ade7a650-89c4-11f1-9945-a746688cda41" name="bepalen langdurig laag inkomen" description="https://hva.pna-web.com/hva/?type=CPT&amp;id=bc6e9ec5-719e-4abf-ac8f-9bfea17908c2" type="CPT" />
+	<dmn:knowledgeSource id="_ade820a8-89c4-11f1-9946-03bd45f5c2ed" name="Aanvrager heeft een opgelegde schuldregeling op grond van de WSNP" description="https://hva.pna-web.com/hva/?type=APT&amp;id=099f9264-089e-4a68-b7e2-ded26f479c11" type="APT" />
+	<dmn:knowledgeSource id="_ade87300-89c4-11f1-9947-87541d899542" name="aanvrager heeft een minnelijke schuldregeling" description="https://hva.pna-web.com/hva/?type=APT&amp;id=148afe2c-dc30-4512-a536-087f542b54e1" type="APT" />
+	<dmn:knowledgeSource id="_ade8b824-89c4-11f1-9948-bb9865a18c40" name="aanvrager heeft een schuldregeling van een door de gemeente aangewezen/gemandateerde instantie" description="https://hva.pna-web.com/hva/?type=APT&amp;id=3f211a1c-450a-4029-b0aa-4be3d9d97966" type="APT" />
+	<dmn:knowledgeSource id="_ade8ff82-89c4-11f1-9949-8b7133511a92" name="scholier volgt het middelbaar beroepsonderwijs BBL met onbetaalde stage" description="https://hva.pna-web.com/hva/?type=APT&amp;id=85d3de1b-0c96-4275-8659-37d29fccbd72" type="APT" />
    <dmndi:DMNDI>
       <dmndi:DMNDiagram>
          <dmndi:DMNShape id="_ae2f3e70-89c4-11f1-99c1-43b42c79481a" dmnElementRef="_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5">
