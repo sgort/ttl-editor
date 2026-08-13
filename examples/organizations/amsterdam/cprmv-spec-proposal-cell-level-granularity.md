@@ -4,6 +4,7 @@
 
 | Date       | Change                                                                                                                                                                                                          |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                    |
 | 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                   |
 | 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability |
 | 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                  |
@@ -237,21 +238,58 @@ isn't a regression — but it isn't solved by moving to id-based addressing eith
 raising with iKnow's maintainers if cross-version cell URI stability ever becomes a
 requirement (see open question 7, §6).
 
-Using Rule 1 of the worked example (three grounded cells: a woonadres check, a
-langdurig-laag-inkomen check with a full JCI citation, and a vermogen check — DMN rule
-id `_07f36f57-eece-49a5-a954-7f3b4aa4c1b8` in the current export, columns 1/4/5 of
-decision table `_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table`):
+### Concept resources: minted once, shared via `isBasedOn`
+
+> **Revised from the original draft**, per the spec owner's answers to open questions 4
+> and 5. Q4: _"a 'concept' in this context is a `cprmv:Rule`"_ — so referencing an iKnow
+> concept from a cell is not a special case needing its own property; it's the same
+> `cprmv:isBasedOn` relation used everywhere else in this design, just pointed at a
+> `cprmv:Rule` minted for the concept instead of a legislative resource. Q5 reframes the
+> original minting question ("skip cells with only a bare concept pointer") around
+> whether the same concept is reused: _"multiple cells might point to the same
+> concept... it might be most feasible to denote the concept as separate `cprmv:Rule`"_.
+
+That reuse case isn't hypothetical here — it's confirmed in the DMN itself. Decision
+`_bca439b7-fdb8-40e3-8a1d-3bb95571c65c` ("Beslistabel bepalen aanspraak op individuele
+inkomenstoeslag") has its own `<authorityRequirement>` pointing at `<knowledgeSource>`
+`_acb7e506-89c4-11f1-9739-37f7a780e5d8` — CPT `4b7157ff-2bc6-4ada-ba36-8123e6038dfe`,
+_"aanspraak individuele inkomenstoeslag"_. The same CPT id is, per the worked example in
+`cprmv-cell-level-linking-prototype.md`, exactly what Rule 1's own output cell
+(`_outputEntry_1`, boolean `true`) semantically asserts — every "true" row in this
+99-rule decision table is restating the same decision-level concept at output-cell
+granularity. Minting that concept once and having both the decision-level grounding and
+every output cell's grounding `isBasedOn`-point at it avoids re-asserting the same
+`dct:source`/quote/citation up to 99 times over.
+
+`HvA_annotaties.xml` also has more for this specific concept than a bare pointer: a
+`<textannotation>` (`2823e65b-832e-491d-99b2-813eb920abe8`) explicitly tied to it via
+`concept="4b7157ff-..."`, carrying both a quote and a JCI citation:
+
+```
+juriconnect = "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=3"
+<text>Een persoon kan op een daartoe strekkend verzoek in aanmerking komen
+voor een individuele inkomenstoeslag</text>
+```
+
+So the concept resource isn't a thin `dct:source`-only stub — it carries whatever
+grounding its own supporting annotation supplies, same as any other `cprmv:Rule`.
+
+Using Rule 1 of the worked example (four grounded cells now — the three input cells as
+before, plus the output cell demonstrating concept reuse — DMN rule id
+`_07f36f57-eece-49a5-a954-7f3b4aa4c1b8` in the current export, decision table
+`_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table`):
 
 ```turtle
 <.../rules/_rule_1> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "_rule_1" ;
-    cprmv:ruleType "decision-rule" ;
+    cprmv:ruleType "decision-rule" ;             # unresolved — see open question 8
     cprmv:confidence "medium" ;
     cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
-    cprmv:rulesetType "decision-table" ;
+    cprmv:rulesetType "decision-table" ;         # unresolved — see open question 8
     cprmv:hasPart ( <.../rules/_rule_1/cell/_inputentry_145>
                      <.../rules/_rule_1/cell/_inputentry_149>
-                     <.../rules/_rule_1/cell/_inputentry_150> ) .
+                     <.../rules/_rule_1/cell/_inputentry_150>
+                     <.../rules/_rule_1/cell/_outputentry_15> ) .
 
 <.../rules/_rule_1/cell/_inputentry_145> a cprmv:Rule ;
     dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0> ;
@@ -265,7 +303,26 @@ decision table `_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table`):
 <.../rules/_rule_1/cell/_inputentry_150> a cprmv:Rule ;
     dct:source <https://hva.pna-web.com/hva/?type=APT&id=6fea33db-8454-4a6c-9e02-db6a1f3417db> ;
     cprmv:sourceQuote "een vermogen" .
+
+<.../rules/_rule_1/cell/_outputentry_15> a cprmv:Rule ;
+    cprmv:isBasedOn <.../concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> .
+
+<.../concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> a cprmv:Rule ;
+    dct:source <https://hva.pna-web.com/hva/?type=CPT&id=4b7157ff-2bc6-4ada-ba36-8123e6038dfe> ;
+    cprmv:sourceQuote "Een persoon kan op een daartoe strekkend verzoek in aanmerking komen voor een individuele inkomenstoeslag" ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=3> .
 ```
+
+The decision's own pre-existing `authorityRequirement`/`knowledgeSource` grounding
+would, once emitted as TTL, point at this exact same
+`.../concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe` resource — one concept, minted once,
+referenced from both decision level and cell level. The three `_inputentry_*` cells
+above are unaffected by this pattern: each is grounded via its own APT
+(`<textannotation>`), which is already 1:1 with the cell and carries its own quote —
+there's no reuse to dedup there, so they keep `dct:source`/`sourceQuote` inline exactly
+as before. The dedup pattern is specifically for **bare CPT concept pointers** — cells
+(or decisions) that reference an abstract `<concept>` with no `<textannotation>` of
+their own.
 
 For a DMN source whose exporter doesn't emit per-cell ids at all, the design falls back
 to the original column-position key (`cell/1`, `cell/2`, ...) — a unique, if less
@@ -281,12 +338,18 @@ The design deliberately reuses, rather than extends, the shape set:
   `rdf:first`/`rdf:rest` pattern already populated at RuleSet level, just one level
   deeper.
 - The traceability pointer back to iKnow's own concept/textannotation registry uses
-  plain **`dct:source`**, not a new `cprmv:concept` property — sidestepping open question
-  4 below entirely at the TTL layer, regardless of how it's eventually resolved at the
-  DMN-attribute layer.
-- Cells that only carry a bare concept pointer (no quote, no citation) are **not** minted
-  as their own resource — a `cprmv:Rule` with nothing but `dct:source` doesn't tell a
-  reader more than the decision's existing `knowledgeSource` already does.
+  plain **`dct:source`** — still no new `cprmv:concept` property, now confirmed rather
+  than just sidestepped (open question 4's answer). A bare CPT concept, once minted, is
+  referenced the same way anything else is based on something: `cprmv:isBasedOn`.
+- **A concept referenced from more than one place — another cell, another rule, or the
+  decision's own `knowledgeSource` — is minted exactly once**, keyed by its iKnow
+  CPT/APT id, and reused by URI from every citing resource. This reverses the original
+  draft's rule ("don't mint a cell that only has a bare concept pointer"): the concept is
+  now always worth minting, precisely because it isn't cell-specific — a `cprmv:Rule`
+  that's only ever referenced from one place still tells a reader something the
+  decision's `knowledgeSource` alone doesn't (which specific cell, not just which
+  decision, asserts it), and if it turns out to be referenced from several places, the
+  dedup benefit was there from the start.
 - **A cell with more than one grounding needs no new mechanism at this layer** —
   `cprmv:hasPart` is already recursive (`cprmv:hasPartListShape` refers to itself), so a
   cell resource with multiple groundings simply `hasPart`s its own further list of
@@ -318,16 +381,22 @@ duration(...))` age check, `>= 21 and < pensioengerechtigde leeftijd` — the co
 
 - `dmnHelpers.js`'s `extractRulesFromDMN()` (currently reads `inputEntry text` /
   `outputEntry text` for FEEL content only) needs to also read each `<inputEntry>` /
-  `<outputEntry>`'s own `cprmv:concept` / `cprmv:sourceQuote` / `cprmv:isBasedOn`
-  attributes.
+  `<outputEntry>`'s own `cprmv:sourceQuote` / `cprmv:isBasedOn` attributes (no
+  `cprmv:concept` — dropped per §4).
 - `ttlGenerator.js`'s DMN-rule emitter (currently one flat `cprmv:DecisionRule` per
   `<rule>`, no composition — confirmed against the real published
   `Zorgtoeslag-Levensgebeurtenissen.ttl`) needs to emit the `hasPart` list and the
   per-cell resources shown above, reusing the existing `hasPart`-list-building code
   already written for `generateRuleSetSection()` and the existing `isBasedOn`
-  URI-construction already written for rule-level `extends`.
-- `linked-data-explorer`'s `dmn-validation.service.ts` needs new checks for the DMN-layer
-  attributes (well-formed UUID for `cprmv:concept`, JCI grammar for `cprmv:isBasedOn`).
+  URI-construction already written for rule-level `extends`. It also needs to
+  **deduplicate concept resources by iKnow CPT/APT id** across the whole generation
+  pass (not just within one rule) — a concept minted once for one cell's `isBasedOn`
+  must be reused by URI, not re-emitted, when a later cell or decision references the
+  same id.
+- `linked-data-explorer`'s `dmn-validation.service.ts` needs new checks for the
+  DMN-layer attributes: `isBasedOn`'s value is now one of a JCI string, a plain
+  citation URL, or a well-formed iKnow CPT/APT UUID — validation needs to accept all
+  three, not assume JCI grammar unconditionally.
 - `linked-data-explorer`'s `shacl-validation.service.ts` needs **no changes** — the shapes
   this design relies on already exist and are already loaded.
 
