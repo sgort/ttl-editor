@@ -4,6 +4,7 @@
 
 | Date       | Change                                                                                                                                                                                                          |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                   |
 | 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability |
 | 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                  |
 | 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                         |
@@ -146,15 +147,35 @@ express Amsterdam's local sources at all today.
 
 ## 4. Concrete DMN-layer proposal
 
-Attach three attributes directly to `<inputEntry>` / `<outputEntry>` (the same
+> **Revised from the original draft.** The spec owner's answer to open question 4
+> (§6) rejects the three-attribute version of this proposal: _"a 'concept' in this
+> context is a `cprmv:Rule`"_ — not a separate, tool-specific pointer property. There is
+> no `cprmv:concept`. What a cell "points at" — whether that's a piece of legislation or
+> an iKnow concept — is always the same relation, `cprmv:isBasedOn`, just resolved via a
+> different `ReferenceMethod` depending on what's available (see open question 3's
+> answer). §5 covers the consequence at the TTL layer: the concept itself gets minted as
+> its own `cprmv:Rule`, not carried as a bare identifier attribute.
+
+Attach two attributes directly to `<inputEntry>` / `<outputEntry>` (the same
 foreign-namespace-attribute mechanism `cprmv:extends` etc. already use one level up —
 no DMN schema change, no impact on engines that ignore unknown namespaces):
 
-| Attribute           | Value                 | Maps to                                                         |
-| ------------------- | --------------------- | --------------------------------------------------------------- |
-| `cprmv:concept`     | iKnow CPT or APT UUID | `<concept id>` / `<textannotation id>` in the annotation export |
-| `cprmv:sourceQuote` | verbatim quoted text  | `<textannotation><text>`                                        |
-| `cprmv:isBasedOn`   | JCI citation string   | `<textannotation juriconnect="...">`                            |
+| Attribute           | Value                                                                                                                                                                                                                                                                                                                                       | Maps to                                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `cprmv:sourceQuote` | verbatim quoted text                                                                                                                                                                                                                                                                                                                        | `<textannotation><text>`                                                                                                    |
+| `cprmv:isBasedOn`   | a legislative citation when the source `<textannotation>` supplies one — a JCI string, **or a plain citation URL** (Amsterdam's own annotation data uses both; see below); otherwise the iKnow concept's own reference (CPT/APT UUID, or its `pna-web.com` URL) when only a bare `<concept>`/`<textannotation>` pointer exists, no citation | `<textannotation juriconnect="...">`, or a citation URL in the annotation text; else `<concept id>` / `<textannotation id>` |
+
+A same-branch edit to `cprmv-cell-level-linking-prototype.md`'s worked-example table
+(by Mariette Lokin) supplies real values for what was previously the "no citation" case:
+`_inputEntry_1` and `_inputEntry_5` (previously "quote + concept, no pinpoint citation")
+now carry `https://lokaleregelgeving.overheid.nl/CVDR645454/12` — a **CVDR URL**, not a
+JCI string — and `_inputEntry_3` (previously "concept only, no quote, no citation") now
+carries a full `juriconnect="jci1.31:c:BWBR0015703&..."` string. So `isBasedOn`'s value
+grammar was already heterogeneous in practice before this proposal existed: JCI when
+iKnow emits it, a plain government citation URL when it doesn't, always falling back
+further to the bare concept reference only when neither is present. This is the same
+pattern `ttlGenerator.js` already implements at rule level for `extends`/`isBasedOn`
+(§2): pass a URL through as-is, otherwise construct one.
 
 Full worked example against one real rule (8 cells, showing the full range from
 "complete citation" down to "rightfully ungrounded wildcard") is in
@@ -170,13 +191,13 @@ encoding:
 
 | Design tested                                                                       | Deploys on Operaton? | Notes                                                                                                                                                                                                                                                                                                       |
 | ----------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Single grounding via `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn`          | ✅ Deploys           | The baseline §4 design                                                                                                                                                                                                                                                                                      |
+| Single grounding via `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn`          | ✅ Deploys           | The baseline design as originally tested. The empirical result (attributes deploy, child elements don't) is about the _mechanism_, not this specific attribute set — still holds after dropping `cprmv:concept` above                                                                                       |
 | Multiple groundings via repeatable `<cprmv:grounding .../>` **child elements**      | ❌ **Rejected**      | `cvc-complex-type.2.4.d: Invalid content was found starting with element 'cprmv:grounding'. No child element is expected at this point.` — no extension point in `tUnaryTests`'s content model. Foreign attributes are tolerated everywhere in this DMN; foreign child elements are a hard schema rejection |
-| Multiple groundings via **numbered attribute families** (`concept1`/`concept2`/...) | ✅ **Deploys**       | Chosen encoding — see the full worked example in `cprmv-cell-level-linking-prototype.md`                                                                                                                                                                                                                    |
+| Multiple groundings via **numbered attribute families** (`concept1`/`concept2`/...) | ✅ **Deploys**       | Mechanism chosen; attribute names now `sourceQuote1`/`isBasedOn1`, `sourceQuote2`/`isBasedOn2`, etc. — see below                                                                                                                                                                                            |
 
-So the design stays attribute-only: `cprmv:concept1`/`cprmv:sourceQuote1`/
-`cprmv:isBasedOn1`, `cprmv:concept2`/`cprmv:sourceQuote2`/`cprmv:isBasedOn2`, and so on,
-with the unnumbered form remaining valid shorthand for exactly one grounding.
+So the design stays attribute-only: `cprmv:sourceQuote1`/`cprmv:isBasedOn1`,
+`cprmv:sourceQuote2`/`cprmv:isBasedOn2`, and so on, with the unnumbered form remaining
+valid shorthand for exactly one grounding.
 
 ## 5. Sketch: the third design — how this reaches a published `.ttl`
 
