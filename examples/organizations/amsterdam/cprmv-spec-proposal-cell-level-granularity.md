@@ -4,6 +4,7 @@
 
 | Date       | Change                                                                                                                                                                                                             |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-08-13 | §6 open questions 1–6 marked resolved with the spec owner's actual answers; fixed the `cprmv:implements` factual error; new open question 8 on `ruleType`/`rulesetType`                                            |
 | 2026-08-13 | §3 revised per spec owner's answer: dropped the JCI-mandate proposal, replaced with `ReferenceMethod`/"rule id path" framing (JCI/ELI for external citations, an internal method for our own minted `cprmv:Rule`s) |
 | 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                       |
 | 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                      |
@@ -447,34 +448,46 @@ duration(...))` age check, `>= 21 and < pensioengerechtigde leeftijd` — the co
 
 ## 6. Open questions for the spec owner
 
-1. **Is `cprmv:isBasedOn` on a per-cell `cprmv:Rule` the same relation as the
-   already-shipping rule-level one** (just recursed one level deeper via `hasPart`), or
-   does composing it this way change what it should mean? The design in §5 assumes it's
-   the same relation at a smaller scope — worth an explicit confirmation given how much
-   of the design leans on that being true.
-2. **Is minting one `cprmv:Rule` per grounded cell, collected via `hasPart`, the intended
-   reading of the composition model** — or was `hasPart` designed for a coarser
-   granularity (combining whole `<rule>` rows, or whole `<decisionTable>`s) and a DMN
-   cell is a level too fine for it?
-3. **Should JuriConnect (JCI) become the mandated citation format** across
-   `cprmv:extends` / `cprmv:isBasedOn` / `cprmv:implements`, replacing the current ad hoc
-   `BWBR0002221/Artikel_7a` string? This affects existing shipping files, not just the
-   new cell-level attributes.
-4. **Does `cprmv:concept` (a tool-specific traceability id) belong in the `cprmv:`
-   namespace at all**, or should tool-provenance metadata like this live in a separate,
-   explicitly non-normative namespace? Note this only matters for the DMN-attribute
-   layer — the TTL layer sidesteps it entirely via plain `dct:source` (§5).
-5. **Should a cell that only has a concept pointer (no quote, no citation) get minted as
-   its own `hasPart` resource at all**, or is that noise? §5 currently says no — mint only
-   when there's a quote or a citation — but that's a design choice, not a rule derived
-   from the shapes.
-6. **Is the numbered-attribute convention for multiple groundings on one cell
-   (`cprmv:concept1`/`concept2`/...) an acceptable house convention**, or should the
-   CPRMV vocabulary define a standard way to encode a multi-valued relationship in an
-   XML-attribute serialization? This isn't specific to `cprmv:concept` — it would recur
-   for any future multi-valued CPRMV property attached to a DMN element, and repeatable
-   child elements (the more obvious encoding) are confirmed unavailable — Operaton's DMN
-   schema rejects them outright (§4).
+Items 1–6 have been answered by the spec owner; each note below records the resolution
+and what changed elsewhere in this doc as a result, not just the original question.
+Items 7–9 are still open.
+
+1. ~~Is `cprmv:isBasedOn` on a per-cell `cprmv:Rule` the same relation as the
+   already-shipping rule-level one?~~ **Resolved: yes** — the same relation, just a
+   smaller scope; CPRMV doesn't restrict what a `hasPart`-composed `cprmv:Rule`'s own
+   `isBasedOn` may relate through. One new fact the original question didn't anticipate:
+   `cprmv:isBasedOn` can point at more than one `cprmv:Rule`, which the spec owner notes
+   makes it awkward to serialize as a single XML attribute value — independent
+   confirmation of exactly why the numbered-attribute convention (§4) exists.
+2. ~~Is minting one `cprmv:Rule` per grounded cell, collected via `hasPart`, the intended
+   reading of the composition model?~~ **Resolved: it's a feasibility/tooling call, not
+   a spec rule.** CPRMV allows composition at whatever granularity is economically worth
+   the tooling cost. The spec owner also floats that DMN's own `<knowledgeSource>` could
+   in principle drive CPRMV metadata automatically via an XSLT (already sketched in the
+   CPRMV API), and names a longer-term "CPRMMN" extension living in a separate BPM+
+   package file as the "royal way" — explicitly not pursued now, since Operaton doesn't
+   support BPM+ packages.
+3. ~~Should JuriConnect (JCI) become the mandated citation format across
+   `cprmv:extends`/`cprmv:isBasedOn`/`cprmv:implements`?~~ **Resolved: no — "not at
+   all."** See §3's rewrite (`ReferenceMethod`/"rule id path" framing replaces the
+   mandate proposal). Correction to the original question itself: `cprmv:implements`
+   doesn't exist — the actual relation is `cpsv:implements` (`cpsv:Rule` →
+   `eli:LegalResource`), a CPSV property, not a CPRMV one.
+4. ~~Does `cprmv:concept` belong in the `cprmv:` namespace at all?~~ **Resolved: no** —
+   "a 'concept' in this context is a `cprmv:Rule`," not a separate property. See §4's
+   rewrite (dropped `cprmv:concept`) and §5's rewrite (concepts minted as their own
+   `cprmv:Rule`s).
+5. ~~Should a cell that only has a concept pointer get minted as its own `hasPart`
+   resource at all?~~ **Resolved, reframed** — not really a quote/citation question: a
+   concept referenced from more than one place should be minted once and shared. See
+   §5's worked example (the `4b7157ff-...` concept, shared between the decision-level
+   `knowledgeSource` and Rule 1's output cell).
+6. ~~Is the numbered-attribute convention for multiple groundings on one cell an
+   acceptable house convention?~~ **Resolved, informally: "anything that works is
+   fine."** No CPRMV-mandated multi-value encoding exists or is currently planned; the
+   spec owner floats space- or comma-separated single-attribute lists as an alternative,
+   but that's untested against Operaton, so the numbered-attribute convention
+   (empirically proven in §4) stands.
 7. **Are the DMN-attribute layer's own generated ids (`<inputEntry>`/`<outputEntry>`/
    `<rule>`/`<input>`/`<output>` `id`) meant to be stable across re-exports of the same
    source DMN**, or are they expected to be regenerated on every export run — as
@@ -485,10 +498,28 @@ duration(...))` age check, `>= 21 and < pensioengerechtigde leeftijd` — the co
    grounding minted today needs to be re-minted, and any external reference to it
    re-pointed, the next time the DMN is re-exported. This is a question for whoever
    maintains the iKnow exporter rather than for the CPRMV vocabulary itself, but it
-   directly bounds how durable the §5 design's URIs can be.
-8. Once 1–7 are settled: the DMN-attribute names actually used in shipping files
-   (`extends`, `implements`, `ruleType`, `confidence`, `rulesetType`, `ruleMethod`,
-   `note`, `title`, `description`) should either be added to the ReSpec document as the
-   documented DMN-serialization layer of the abstract vocabulary, or the ReSpec should
-   clarify that the DMN attribute convention is intentionally a separate, informally
-   agreed layer.
+   directly bounds how durable the §5 design's URIs can be. Still open.
+8. **Are `cprmv:ruleType` and `cprmv:rulesetType` — both used in this doc's own §5
+   worked example, and both already shipping in
+   `examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn` — actually defined
+   anywhere in CPRMV?** Raised directly by the spec owner, unprompted, while discussing
+   which DMN attribute names need defining (see open question 9 below): _"I am also not
+   familiar with the ruleType and rulesetType
+   properties. Either these should become defined in the CPRMV or they should not be
+   used altogether. Will look into this."_ Still open, and not hypothetical — this doc's
+   own worked example uses both, flagged inline (§5) pending this answer.
+9. Once 1–8 are settled: the DMN-attribute names actually used in shipping files
+   (`isBasedOn` — renamed from `extends`, `ruleType`, `confidence`, `rulesetType`,
+   `ruleMethod`, `note`, `title`, `description`) should either be added to the ReSpec
+   document as the documented DMN-serialization layer of the abstract vocabulary, or the
+   ReSpec should clarify that the DMN attribute convention is intentionally a separate,
+   informally agreed layer. Partially answered already: CPRMV 0.4.2 is introducing a
+   governed list of **"methods"** (DMN, Operaton, iKnow, etc.) as a first-class part of
+   the standard — this question has a real answer coming, just not shipped yet.
+
+**Context beyond this proposal's scope, noted for awareness:** the spec owner mentioned,
+while answering question 9, that the relationship between `cpsv:Rule` and
+`cprmv:RuleSet` is an active, unsettled EU-level debate — topic of a CPRMV/CPSV
+integration workshop at the SEMIC conference in Dublin, 30 November 2026. Nothing in
+this proposal depends on how that resolves, but it's worth knowing the ground could
+shift under `cprmv:RuleSet`'s own definition in a future CPRMV version.
