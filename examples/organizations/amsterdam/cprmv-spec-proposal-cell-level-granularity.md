@@ -2,10 +2,11 @@
 
 ## Changelog
 
-| Date       | Change                                                                                         |
-| ---------- | ---------------------------------------------------------------------------------------------- |
-| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated |
-| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch        |
+| Date       | Change                                                                                                                                                                                                          |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability |
+| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                  |
+| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                         |
 
 **Context:** Municipality of Amsterdam DMN exports from iKnow (`individuele
 inkomenstoeslag-iknow.dmn`, cross-referenced against the accompanying annotation export
@@ -182,9 +183,43 @@ with the unnumbered form remaining valid shorthand for exactly one grounding.
 This is the part the previous draft didn't cover: a DMN attribute alone doesn't get
 published — it has to survive import and generation in our own CPSV Editor code
 (`ttl-editor/src/utils/dmnHelpers.js` and `ttlGenerator.js`), which are ours to change,
-not a fixed constraint. Using Rule 1 of the worked example (three grounded cells: a
-woonadres check, a langdurig-laag-inkomen check with a full JCI citation, and a vermogen
-check):
+not a fixed constraint.
+
+### Cell addressing: `<inputEntry>`/`<outputEntry>` id, not column position
+
+The worked example below originally addressed a cell by its column position within the
+row (`cell/1`, `cell/4`, `cell/5`) because at the time `<inputEntry>`/`<outputEntry>`
+carried no `id` attribute at all — position was the only handle available. A subsequent
+iKnow re-export of `HvA_full_dmn_export.dmn` now gives every `<dmn:input>`,
+`<dmn:output>`, `<dmn:rule>`, `<dmn:inputEntry>`, and `<dmn:outputEntry>` its own `id`
+(663 `inputEntry` ids and 99 `outputEntry` ids across the file, all globally unique;
+`<dmn:decision>`/`<dmn:decisionTable>` ids — the anchor already used by shipped TTL —
+are unchanged). The design below now mints a cell URI from that id instead:
+`.../cell/{inputEntry or outputEntry id}` rather than `.../cell/{column index}`. This is
+more robust than position — it survives a column being reordered or a new condition
+inserted mid-row, something a positional key would get silently wrong.
+
+**Caveat, not yet resolved:** these ids are very likely not stable _across_ re-exports.
+The same iKnow re-export that added them also regenerated every pre-existing
+`<informationRequirement>`, `<authorityRequirement>`, `<inputData>`, and
+`<knowledgeSource>` id — same business content, same order, brand-new UUIDs each run.
+The new `inputEntry`/`outputEntry`/`rule`/`input`/`output` ids follow the same two
+minting styles already used elsewhere in the file (a per-export-run sequential counter
+for entries/inputs/outputs, a fresh UUID for rules — both consistent with how the
+pre-existing ids in this file are generated), which suggests they too are freshly minted
+per export rather than derived from cell content. So this solves _which cell, within one
+snapshot_ but not yet _does the same cell keep the same URI after the next re-export_ —
+a `hasPart`-composed cell resource minted today would need to be re-minted (and any
+external reference to it re-pointed) the next time Amsterdam re-exports this DMN from
+iKnow. Positional indexing had exactly the same weakness, just less visibly, so this
+isn't a regression — but it isn't solved by moving to id-based addressing either. Worth
+raising with iKnow's maintainers if cross-version cell URI stability ever becomes a
+requirement (see open question 7, §6).
+
+Using Rule 1 of the worked example (three grounded cells: a woonadres check, a
+langdurig-laag-inkomen check with a full JCI citation, and a vermogen check — DMN rule
+id `_07f36f57-eece-49a5-a954-7f3b4aa4c1b8` in the current export, columns 1/4/5 of
+decision table `_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table`):
 
 ```turtle
 <.../rules/_rule_1> a cpsv:Rule, cprmv:DecisionRule ;
@@ -193,22 +228,27 @@ check):
     cprmv:confidence "medium" ;
     cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
     cprmv:rulesetType "decision-table" ;
-    cprmv:hasPart ( <.../rules/_rule_1/cell/1> <.../rules/_rule_1/cell/4>
-                     <.../rules/_rule_1/cell/5> ) .
+    cprmv:hasPart ( <.../rules/_rule_1/cell/_inputentry_145>
+                     <.../rules/_rule_1/cell/_inputentry_149>
+                     <.../rules/_rule_1/cell/_inputentry_150> ) .
 
-<.../rules/_rule_1/cell/1> a cprmv:Rule ;
+<.../rules/_rule_1/cell/_inputentry_145> a cprmv:Rule ;
     dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0> ;
     cprmv:sourceQuote "Woonadres" .
 
-<.../rules/_rule_1/cell/4> a cprmv:Rule ;
+<.../rules/_rule_1/cell/_inputentry_149> a cprmv:Rule ;
     dct:source <https://hva.pna-web.com/hva/?type=APT&id=0f0d5140-0624-4aa3-a077-2a26087d1436> ;
     cprmv:sourceQuote "hij laag inkomen had" ;
     cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4> .
 
-<.../rules/_rule_1/cell/5> a cprmv:Rule ;
+<.../rules/_rule_1/cell/_inputentry_150> a cprmv:Rule ;
     dct:source <https://hva.pna-web.com/hva/?type=APT&id=6fea33db-8454-4a6c-9e02-db6a1f3417db> ;
     cprmv:sourceQuote "een vermogen" .
 ```
+
+For a DMN source whose exporter doesn't emit per-cell ids at all, the design falls back
+to the original column-position key (`cell/1`, `cell/2`, ...) — a unique, if less
+semantically meaningful, key is still better than none.
 
 The design deliberately reuses, rather than extends, the shape set:
 
@@ -232,21 +272,26 @@ The design deliberately reuses, rather than extends, the shape set:
   grounding resources instead of carrying `sourceQuote`/`isBasedOn` directly:
 
   ```turtle
-  <.../rules/_rule_1/cell/2> a cprmv:Rule ;
-      cprmv:hasPart ( <.../rules/_rule_1/cell/2/grounding/1>
-                       <.../rules/_rule_1/cell/2/grounding/2> ) .
+  <.../rules/_rule_1/cell/_inputentry_470> a cprmv:Rule ;
+      cprmv:hasPart ( <.../rules/_rule_1/cell/_inputentry_470/grounding/1>
+                       <.../rules/_rule_1/cell/_inputentry_470/grounding/2> ) .
 
-  <.../rules/_rule_1/cell/2/grounding/1> a cprmv:Rule ;
+  <.../rules/_rule_1/cell/_inputentry_470/grounding/1> a cprmv:Rule ;
       cprmv:sourceQuote "hij is meerderjarig" ;
       cprmv:isBasedOn <https://wetten.overheid.nl/jci1.3:c:BWBR0000001&artikel=1> .
 
-  <.../rules/_rule_1/cell/2/grounding/2> a cprmv:Rule ;
+  <.../rules/_rule_1/cell/_inputentry_470/grounding/2> a cprmv:Rule ;
       cprmv:sourceQuote "tot de pensioengerechtigde leeftijd" ;
       cprmv:isBasedOn <https://wetten.overheid.nl/BWBR0002221/Artikel_7a> .
   ```
 
-  Same recursive `hasPart` pattern, one level deeper, only where a cell actually needs
-  it — still no new SHACL shape.
+  `_inputentry_470` is the same rule's column-2 cell (`years(years and months
+duration(...))` age check, `>= 21 and < pensioengerechtigde leeftijd` — the compound
+  FEEL expression this section opened with). The sub-groundings within one compound cell
+  still get a positional sub-key (`grounding/1`, `grounding/2`) — there's no further DMN
+  element to key off _inside_ a single `<inputEntry>`, so position remains the natural
+  encoding at that level. Same recursive `hasPart` pattern, one level deeper, only where
+  a cell actually needs it — still no new SHACL shape.
 
 ### What has to change, concretely, in our own code
 
@@ -295,7 +340,18 @@ The design deliberately reuses, rather than extends, the shape set:
    for any future multi-valued CPRMV property attached to a DMN element, and repeatable
    child elements (the more obvious encoding) are confirmed unavailable — Operaton's DMN
    schema rejects them outright (§4).
-7. Once 1–6 are settled: the DMN-attribute names actually used in shipping files
+7. **Are the DMN-attribute layer's own generated ids (`<inputEntry>`/`<outputEntry>`/
+   `<rule>`/`<input>`/`<output>` `id`) meant to be stable across re-exports of the same
+   source DMN**, or are they expected to be regenerated on every export run — as
+   `<informationRequirement>`/`<authorityRequirement>`/`<inputData>`/`<knowledgeSource>`
+   ids already are, confirmed by diffing two iKnow exports of the same underlying model
+   (same content and order, entirely new UUIDs each run)? §5's cell-level `cprmv:Rule`
+   URIs are now keyed off these ids — if they don't survive re-export, every cell-level
+   grounding minted today needs to be re-minted, and any external reference to it
+   re-pointed, the next time the DMN is re-exported. This is a question for whoever
+   maintains the iKnow exporter rather than for the CPRMV vocabulary itself, but it
+   directly bounds how durable the §5 design's URIs can be.
+8. Once 1–7 are settled: the DMN-attribute names actually used in shipping files
    (`extends`, `implements`, `ruleType`, `confidence`, `rulesetType`, `ruleMethod`,
    `note`, `title`, `description`) should either be added to the ReSpec document as the
    documented DMN-serialization layer of the abstract vocabulary, or the ReSpec should
