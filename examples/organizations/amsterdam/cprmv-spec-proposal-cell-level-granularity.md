@@ -2,15 +2,16 @@
 
 ## Changelog
 
-| Date       | Change                                                                                                                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2026-08-13 | §6 open questions 1–6 marked resolved with the spec owner's actual answers; fixed the `cprmv:implements` factual error; new open question 8 on `ruleType`/`rulesetType`                                            |
-| 2026-08-13 | §3 revised per spec owner's answer: dropped the JCI-mandate proposal, replaced with `ReferenceMethod`/"rule id path" framing (JCI/ELI for external citations, an internal method for our own minted `cprmv:Rule`s) |
-| 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                       |
-| 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                      |
-| 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability    |
-| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                     |
-| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                            |
+| Date       | Change                                                                                                                                                                                                                        |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-08-13 | §4 fix: restored a third DMN attribute (`dct:source`) — dropping `cprmv:concept` had left no carrier for the raw CPT/APT id that §5's `dct:source`/concept-dedup design actually needs, found while syncing the prototype doc |
+| 2026-08-13 | §6 open questions 1–6 marked resolved with the spec owner's actual answers; fixed the `cprmv:implements` factual error; new open question 8 on `ruleType`/`rulesetType`                                                       |
+| 2026-08-13 | §3 revised per spec owner's answer: dropped the JCI-mandate proposal, replaced with `ReferenceMethod`/"rule id path" framing (JCI/ELI for external citations, an internal method for our own minted `cprmv:Rule`s)            |
+| 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                                  |
+| 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                                 |
+| 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability               |
+| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                                |
+| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                                       |
 
 **Context:** Municipality of Amsterdam DMN exports from iKnow (`individuele
 inkomenstoeslag-iknow.dmn`, cross-referenced against the accompanying annotation export
@@ -202,15 +203,31 @@ spec owner to confirm (open question 3, revised in §6) that:
 > different `ReferenceMethod` depending on what's available (see open question 3's
 > answer). §5 covers the consequence at the TTL layer: the concept itself gets minted as
 > its own `cprmv:Rule`, not carried as a bare identifier attribute.
+>
+> **Caught while syncing this against the worked example in
+> `cprmv-cell-level-linking-prototype.md`:** dropping `cprmv:concept` outright leaves no
+> DMN-attribute carrier for the raw CPT/APT id — but §5's `dct:source` (on both cell and
+> concept resources) and the whole concept-dedup mechanism are keyed by exactly that id.
+> Without it at the DMN-attribute layer, `ttlGenerator.js` has no way to construct
+> `dct:source`'s value or to recognize that two cells ground the same concept. Fixed
+> below by using `dct:source` as the DMN attribute too — still not a new `cprmv:`
+> property, consistent with how §5 already uses it at the TTL layer.
 
-Attach two attributes directly to `<inputEntry>` / `<outputEntry>` (the same
+Attach three attributes directly to `<inputEntry>` / `<outputEntry>` (the same
 foreign-namespace-attribute mechanism `cprmv:extends` etc. already use one level up —
 no DMN schema change, no impact on engines that ignore unknown namespaces):
 
-| Attribute           | Value                                                                                                                                                                                                                                                                                                                                       | Maps to                                                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `cprmv:sourceQuote` | verbatim quoted text                                                                                                                                                                                                                                                                                                                        | `<textannotation><text>`                                                                                                    |
-| `cprmv:isBasedOn`   | a legislative citation when the source `<textannotation>` supplies one — a JCI string, **or a plain citation URL** (Amsterdam's own annotation data uses both; see below); otherwise the iKnow concept's own reference (CPT/APT UUID, or its `pna-web.com` URL) when only a bare `<concept>`/`<textannotation>` pointer exists, no citation | `<textannotation juriconnect="...">`, or a citation URL in the annotation text; else `<concept id>` / `<textannotation id>` |
+| Attribute           | Value                                                                                                                                                                                                                                                       | Maps to                                                                        |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `dct:source`        | the iKnow CPT or APT id (or its full `pna-web.com` URL) — present whenever a `<concept>`/`<textannotation>` grounds the cell at all, independent of whether a quote or citation also exists; the traceability/dedup key §5's concept-sharing design keys on | `<concept id>` / `<textannotation id>`                                         |
+| `cprmv:sourceQuote` | verbatim quoted text                                                                                                                                                                                                                                        | `<textannotation><text>`                                                       |
+| `cprmv:isBasedOn`   | a legislative citation, when the source `<textannotation>` (the cell's own, or — per §5 — the concept's) supplies one: a JCI string, **or a plain citation URL** (Amsterdam's own annotation data uses both; see below)                                     | `<textannotation juriconnect="...">`, or a citation URL in the annotation text |
+
+Splitting the traceability pointer (`dct:source`, always present when there's any
+grounding at all) from the citation (`cprmv:isBasedOn`, only present when one exists) is
+cleaner than the single-attribute version this replaces: `isBasedOn` no longer has to
+mean two different things depending on what's available — it's always a citation, never
+a UUID standing in for one.
 
 A same-branch edit to `cprmv-cell-level-linking-prototype.md`'s worked-example table
 (by Mariette Lokin) supplies real values for what was previously the "no citation" case:
@@ -219,8 +236,7 @@ now carry `https://lokaleregelgeving.overheid.nl/CVDR645454/12` — a **CVDR URL
 JCI string — and `_inputEntry_3` (previously "concept only, no quote, no citation") now
 carries a full `juriconnect="jci1.31:c:BWBR0015703&..."` string. So `isBasedOn`'s value
 grammar was already heterogeneous in practice before this proposal existed: JCI when
-iKnow emits it, a plain government citation URL when it doesn't, always falling back
-further to the bare concept reference only when neither is present. This is the same
+iKnow emits it, a plain government citation URL when it doesn't. This is the same
 pattern `ttlGenerator.js` already implements at rule level for `extends`/`isBasedOn`
 (§2): pass a URL through as-is, otherwise construct one.
 
@@ -240,11 +256,15 @@ encoding:
 | ----------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Single grounding via `cprmv:concept`/`cprmv:sourceQuote`/`cprmv:isBasedOn`          | ✅ Deploys           | The baseline design as originally tested. The empirical result (attributes deploy, child elements don't) is about the _mechanism_, not this specific attribute set — still holds after dropping `cprmv:concept` above                                                                                       |
 | Multiple groundings via repeatable `<cprmv:grounding .../>` **child elements**      | ❌ **Rejected**      | `cvc-complex-type.2.4.d: Invalid content was found starting with element 'cprmv:grounding'. No child element is expected at this point.` — no extension point in `tUnaryTests`'s content model. Foreign attributes are tolerated everywhere in this DMN; foreign child elements are a hard schema rejection |
-| Multiple groundings via **numbered attribute families** (`concept1`/`concept2`/...) | ✅ **Deploys**       | Mechanism chosen; attribute names now `sourceQuote1`/`isBasedOn1`, `sourceQuote2`/`isBasedOn2`, etc. — see below                                                                                                                                                                                            |
+| Multiple groundings via **numbered attribute families** (`concept1`/`concept2`/...) | ✅ **Deploys**       | Mechanism chosen; attribute names now `source1`/`sourceQuote1`/`isBasedOn1`, `source2`/`sourceQuote2`/`isBasedOn2`, etc. — see below                                                                                                                                                                        |
 
-So the design stays attribute-only: `cprmv:sourceQuote1`/`cprmv:isBasedOn1`,
-`cprmv:sourceQuote2`/`cprmv:isBasedOn2`, and so on, with the unnumbered form remaining
-valid shorthand for exactly one grounding.
+So the design stays attribute-only: `dct:source1`/`cprmv:sourceQuote1`/
+`cprmv:isBasedOn1`, `dct:source2`/`cprmv:sourceQuote2`/`cprmv:isBasedOn2`, and so on,
+with the unnumbered form remaining valid shorthand for exactly one grounding. Numbering
+a `dct:`-namespaced attribute this way isn't an official Dublin Core convention — it's
+this project's own house convention for encoding "more than one" in a foreign DMN
+attribute, applied consistently regardless of which vocabulary the base attribute name
+belongs to.
 
 ## 5. Sketch: the third design — how this reaches a published `.ttl`
 
@@ -427,22 +447,22 @@ duration(...))` age check, `>= 21 and < pensioengerechtigde leeftijd` — the co
 
 - `dmnHelpers.js`'s `extractRulesFromDMN()` (currently reads `inputEntry text` /
   `outputEntry text` for FEEL content only) needs to also read each `<inputEntry>` /
-  `<outputEntry>`'s own `cprmv:sourceQuote` / `cprmv:isBasedOn` attributes (no
-  `cprmv:concept` — dropped per §4).
+  `<outputEntry>`'s own `dct:source` / `cprmv:sourceQuote` / `cprmv:isBasedOn`
+  attributes (no `cprmv:concept` — dropped per §4).
 - `ttlGenerator.js`'s DMN-rule emitter (currently one flat `cprmv:DecisionRule` per
   `<rule>`, no composition — confirmed against the real published
   `Zorgtoeslag-Levensgebeurtenissen.ttl`) needs to emit the `hasPart` list and the
   per-cell resources shown above, reusing the existing `hasPart`-list-building code
   already written for `generateRuleSetSection()` and the existing `isBasedOn`
   URI-construction already written for rule-level `extends`. It also needs to
-  **deduplicate concept resources by iKnow CPT/APT id** across the whole generation
-  pass (not just within one rule) — a concept minted once for one cell's `isBasedOn`
-  must be reused by URI, not re-emitted, when a later cell or decision references the
-  same id.
+  **deduplicate concept resources by `dct:source`'s iKnow CPT/APT id** across the whole
+  generation pass (not just within one rule) — a concept minted once for one cell's
+  `isBasedOn` must be reused by URI, not re-emitted, when a later cell or decision
+  references the same id.
 - `linked-data-explorer`'s `dmn-validation.service.ts` needs new checks for the
-  DMN-layer attributes: `isBasedOn`'s value is now one of a JCI string, a plain
-  citation URL, or a well-formed iKnow CPT/APT UUID — validation needs to accept all
-  three, not assume JCI grammar unconditionally.
+  DMN-layer attributes: a well-formed UUID or `pna-web.com` URL for `dct:source`, and
+  `isBasedOn`'s value as one of a JCI string or a plain citation URL — not JCI grammar
+  unconditionally.
 - `linked-data-explorer`'s `shacl-validation.service.ts` needs **no changes** — the shapes
   this design relies on already exist and are already loaded.
 
