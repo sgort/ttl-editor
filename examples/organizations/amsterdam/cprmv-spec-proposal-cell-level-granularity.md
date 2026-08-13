@@ -2,13 +2,14 @@
 
 ## Changelog
 
-| Date       | Change                                                                                                                                                                                                          |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                    |
-| 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                   |
-| 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability |
-| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                  |
-| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                         |
+| Date       | Change                                                                                                                                                                                                             |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-08-13 | §3 revised per spec owner's answer: dropped the JCI-mandate proposal, replaced with `ReferenceMethod`/"rule id path" framing (JCI/ELI for external citations, an internal method for our own minted `cprmv:Rule`s) |
+| 2026-08-13 | §5 revised per spec owner's answers to Q4/Q5: concepts minted once as their own `cprmv:Rule`, shared via `isBasedOn`, reversing the old "don't mint concept-only cells" rule                                       |
+| 2026-08-13 | §4 revised per spec owner's answer: dropped `cprmv:concept`, folded concept references into `cprmv:isBasedOn`                                                                                                      |
+| 2026-08-13 | §5 cell URIs reworked to key off `<inputEntry>`/`<outputEntry>` `id` instead of column position, following a re-export of the source DMN that added these ids; new open question 7 on cross-export id stability    |
+| 2026-07-23 | Added multiple-groundings-per-cell case, tested against Operaton, §4/§5/open questions updated                                                                                                                     |
+| 2026-07-23 | Initial proposal: granularity gap, confirmed SHACL properties, JCI argument, TTL sketch                                                                                                                            |
 
 **Context:** Municipality of Amsterdam DMN exports from iKnow (`individuele
 inkomenstoeslag-iknow.dmn`, cross-referenced against the accompanying annotation export
@@ -107,9 +108,21 @@ from the previous draft: `cprmv:extends` (the DMN attribute name) and `cprmv:isB
 possibly-conflicting conventions. What's still genuinely open is whether that same
 pairing is the right one to reuse one level deeper, at cell granularity (see §5).
 
-## 3. Amsterdam's citation format problem, and why JuriConnect solves it
+## 3. Amsterdam's citation format problem — and where JuriConnect actually fits
 
-The current `cprmv:extends` value format, as shipped
+> **Revised from the original draft.** The original proposal here — adopt JCI as the
+> _mandated_ citation grammar everywhere, replacing `BWBR0002221/Artikel_7a` outright —
+> is answered "No, not at all" by the spec owner (open question 3). Two things the
+> original draft didn't know: Logius/KOOP's own long-term direction is to replace
+> JuriConnect with **ELI**, so mandating JCI now would mandate a format the standard
+> itself expects to retire; and CPRMV 0.4.2 is introducing **`ReferenceMethod`** as a
+> first-class, pluggable concept — JCI and ELI both become _known_ methods, neither
+> canonical. Amsterdam's citation-format gap below is still real; what changes is the
+> fix — not a mandate, just confirming JCI (and, per §4, plain citation URLs) as
+> accepted value grammars alongside the existing BWBR string, which is what the
+> generator already does today in practice.
+
+The current `cprmv:extends`/`cprmv:isBasedOn` value format, as shipped
 (`BWBR0002221/Artikel_7a`, or with a version stamp,
 `BWBR0002221_2020-01-01_0/Artikel_7a/Lid_1`), only expresses national wetgeving citations
 (a BWB number). Most of Amsterdam's own sources in `HvA_annotaties.xml`'s `<documents>`
@@ -118,33 +131,65 @@ beleidsregels, and un-typed internal `.docx` drafts with no BWB number at all (e
 _"Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021"_,
 _"Beleidsregels bijzondere bijstand gemeente Amsterdam.docx"_).
 
-iKnow already solves this on its own annotations via **JuriConnect (JCI)**, the Dutch
-national standard also used by wetten.overheid.nl and lokaleregelgeving.overheid.nl —
-confirmed directly in the file, e.g.:
+iKnow already solves this on its own annotations in more than one way, not just one.
+**JuriConnect (JCI)**, the Dutch national standard also used by wetten.overheid.nl and
+lokaleregelgeving.overheid.nl, appears directly in the file:
 
 ```
 juriconnect = "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
 ```
 
-JCI has a defined convention (`NoBWBnumber`) for citing decentralized regulation that has
-no BWB identifier — meaning it already uniformly covers both of Amsterdam's cases
-(national law and local regulation) with one grammar, and iKnow is already emitting it
-natively. Better still: our own pipeline already round-trips a raw, unescaped JCI string
-through the exact `https://wetten.overheid.nl/{value}` URI construction shown above,
-elsewhere in the same published example
+JCI's `NoBWBnumber` convention already covers both of Amsterdam's cases (national law
+and local regulation) with one grammar. But a same-branch edit to
+`cprmv-cell-level-linking-prototype.md` (also folded into §4) surfaced Amsterdam citing
+other sources with a **plain `lokaleregelgeving.overheid.nl/CVDR.../N` URL** instead —
+no JCI string at all. So iKnow's own annotation data is already citing sources in more
+than one format today; whatever the design does, it has to accept both, not standardize
+on one.
+
+Fortunately, our own pipeline already does, without any change needed:
+`ttlGenerator.js` (§2) passes a value through as-is if it's already a URL, and otherwise
+prefixes it with `https://wetten.overheid.nl/` — which is exactly right for a bare JCI
+string, and a no-op for a CVDR URL that's already a full URL. Both formats already
+round-trip through the same code path, confirmed in the same published example
 (`Zorgtoeslag-Levensgebeurtenissen.ttl` line 26):
 
 ```turtle
 cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0018451&artikel=2> ;
 ```
 
-So adopting JCI costs nothing beyond a validator regex — the URI construction and its
-tolerance for JCI's `&`/`:` characters is already proven in production.
+### Two different things get cited here — and CPRMV is formalizing both
 
-**Proposal:** adopt JCI as the value grammar for the citation property across the board —
-not just for a new cell-level attribute, but as a replacement for the current
-`BWBR.../Artikel_N` string at `<rule>`/`<decision>` level too, since that string can't
-express Amsterdam's local sources at all today.
+The spec owner's answer draws a distinction the original draft didn't make:
+`cprmv:isBasedOn` always points at a `cprmv:Rule` (§2), and how you address one depends
+on where that Rule lives.
+
+- **An external legal resource** (a piece of national or local legislation) — addressed
+  via whatever `ReferenceMethod` its own publisher uses. JCI today; ELI eventually, per
+  Logius/KOOP's stated direction; CPRMV 0.4.2 formally lists both as known methods,
+  neither mandated over the other.
+- **An internal `cprmv:Rule`** — one we mint ourselves, like §5's per-cell and
+  per-concept resources — addressed via what the spec owner calls a **"rule id path"**:
+  an identifier, or a path of identifiers following `hasPart` from the RuleSet root,
+  using the CPRMV API's own internal reference method (the suggested default, still
+  unnamed as of this writing). The spec owner notes this "could exactly align with how
+  a DMN is structured internally" — which, concretely, is what §5's URI scheme already
+  is: `.../rules/_rule_1/cell/_inputentry_145` and `.../concepts/4b7157ff-...` are both
+  paths through our own `hasPart` tree, keyed by DMN-native ids. §5 wasn't designed
+  against this concept — it didn't exist yet when §5 was first drafted — it just turns
+  out to already be shaped like one.
+
+**Revised proposal:** don't mandate JCI as the one citation grammar. Instead, ask the
+spec owner to confirm (open question 3, revised in §6) that:
+
+1. At the DMN-attribute layer, `cprmv:isBasedOn`'s value is whatever citation format the
+   source `<textannotation>` actually supplies — JCI, a plain citation URL, or (once
+   0.4.2 ships) an explicit `ReferenceMethod` tag — normalized into a URI by the
+   generator exactly as it already does for JCI and CVDR today.
+2. Referencing one of our own minted `cprmv:Rule`s (a cell, a concept) should use the
+   internal "rule id path" method once it's named and specified in 0.4.2, and that §5's
+   existing `hasPart`-path URI scheme is a reasonable candidate to check against it,
+   rather than something invented independently that then has to be reconciled later.
 
 ## 4. Concrete DMN-layer proposal
 
