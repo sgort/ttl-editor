@@ -185,6 +185,9 @@ name="...">`) flattened to a single-token camelCase identifier**, generated
 8. **A `name="<token>"` attribute added to all 25 `<dmn:output>` elements**, alongside
    their existing `label`. See "Root cause 5" below — this was found while investigating
    why the patched file still couldn't be evaluated after everything above.
+9. **`not -` → `false`** (44 occurrences, always on `boolean` columns) and
+   **`not(null) -` → `not(null)`** (12 occurrences, always on `string` columns). See
+   "Root cause 6" below.
 
 No rule logic, rule ordering, hit policies, decision ids, or the DRD's
 `informationRequirement`/`authorityRequirement` wiring were changed. The original
@@ -261,28 +264,51 @@ stadspas`, evaluates without error through its full `requiredDecision` chain
   for root cause 2 actually resolve cross-decision references correctly, not just
   structurally.
 
-**New, not-yet-fixed defect surfaced by this verification pass:** `Beslistabel bepalen
-aanspraak op bijzondere bijstand` — one of the two decisions used to confirm root cause
-5 above — still fails, but now with a _different_, correctly-logged FEEL error:
+## Root cause 6: `not -` / `not(null) -` — two more malformed rule-cell patterns
+
+Surfaced immediately after root cause 5's fix, on `Beslistabel bepalen aanspraak op
+bijzondere bijstand` — the first decision whose evaluation ever got far enough to reach
+one of these cells:
 
 ```
 FeelException: FEEL/SCALA-01008 ... failed to parse expression 'not -': Expected ("("
 | binaryComparison | ... ): found "-"
 ```
 
-`not -` (44 occurrences file-wide, plus a related `not(null) -` variant seen in some
-rule cells) is not valid FEEL — `not` requires a parenthesized argument
-(`not(-)`/`not(null)`), and a bare `not -` doesn't parse. This is a genuine, separate,
-pre-existing defect in the source rule content, distinct from every root cause above —
-it was masked by root causes 1 and 5 for the entire time they were unfixed, the same way
-root cause 5 was masked by root cause 1. It did **not** reproduce on the `stadspas`
-composite-decision test above, because that rule matched (or failed to match) before
-evaluation reached its `not -` columns — hitPolicy `FIRST` evaluation appears to
-short-circuit per rule, so whether this defect actually triggers depends on the specific
-input combination. Left unfixed here: unlike the other root causes, the _correct_
-rewrite isn't mechanical — `not -` could plausibly mean "any value" (equivalent to a
-bare `-`) or something else entirely, and guessing wrong would silently change business
-logic. Needs a decision on interpretation before it's touched — flagged, not fixed.
+`not` requires a parenthesized argument (`not(-)`/`not(null)`) — a bare `not -` doesn't
+parse, full stop. It was masked by every earlier root cause for as long as they were
+unfixed (the same way root cause 5 was masked by root cause 1), and didn't reproduce on
+the `stadspas` composite-decision test above only because that particular input
+combination's matching rule happened to fail (or match) before evaluation reached one of
+these columns — `hitPolicy="FIRST"` evaluation appears to short-circuit per rule.
+
+There are two distinct malformed patterns, and they turn out to be fully
+**type-consistent** across all 56 occurrences file-wide, which resolves the ambiguity
+flagged when this was first found:
+
+| Pattern       | Occurrences | Column `typeRef` | Fix         |
+| ------------- | ----------- | ---------------- | ----------- |
+| `not -`       | 44          | always `boolean` | `false`     |
+| `not(null) -` | 12          | always `string`  | `not(null)` |
+
+- **`not(null) -`** (string columns, e.g. `burgerservicenummer`) reads as `not(null)`
+  ("must have a value") with a stray trailing `-` — an export artifact, not intended
+  content. Fix: drop the trailing `-`.
+- **`not -`** (boolean columns only) reads as the negation of `true` — i.e. the column
+  must be `false` — with the argument and trailing dash both mangled into a bare `-`.
+  Confirmed against business logic, not just syntax: e.g. `bijzondere bijstand`'s
+  `financiele draagkracht` ("financial capacity") column carries this pattern in every
+  qualifying rule, and being _without_ financial capacity is the actual eligibility
+  condition for that benefit — a real constraint, not a don't-care wildcard. Fix:
+  `false`.
+
+Both are now applied in `HvA_full_dmn_export-patched.dmn` (mechanical text replacement,
+no other change). **Confirmed live**, with a clean true/false discrimination on
+`bijzondere bijstand`: `financiele draagkracht=false` (alongside the rest of rule 1's
+conditions) → `true`; the identical inputs with `financiele draagkracht=true` → `false`
+— proving the column is now a real, enforced constraint rather than a parse failure or
+an unconditional wildcard. The `not(null)` rewrite was confirmed to parse and evaluate
+without error on both a `null` and a real string value.
 
 ## Appendix: full name mapping
 
