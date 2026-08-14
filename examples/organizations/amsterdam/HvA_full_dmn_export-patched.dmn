@@ -129,7 +129,7 @@
           <dmn:text>kindAanspraakTegemoetkomingIdentiteitskaart</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_1" label="aanspraken" typeRef="string" />
+      <dmn:output id="_output_1" label="aanspraken" name="aanspraken" typeRef="string" />
       <dmn:rule id="_677a120b-022d-4c77-af8a-df9abc3039af">
         <dmn:inputEntry id="_inputentry_109">
           <dmn:text>true</dmn:text>
@@ -671,7 +671,7 @@
           <dmn:text>kindAanspraakStadspas</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_2" label="aanspraak op kindtegoed" typeRef="boolean" />
+      <dmn:output id="_output_2" label="aanspraak op kindtegoed" name="npAanspraakKindtegoed" typeRef="boolean" />
       <dmn:rule id="_37a1cdc5-003c-4567-9bdf-3b85b3b8c6df">
         <dmn:inputEntry id="_inputentry_196">
           <dmn:text>true</dmn:text>
@@ -843,7 +843,7 @@
           <dmn:text>kindIngeschrevenInstellingJeugdhulpVerblijf</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_3" label="aanspraak op een Stadspas" typeRef="boolean" />
+      <dmn:output id="_output_3" label="aanspraak op een Stadspas" name="kindAanspraakStadspas" typeRef="boolean" />
       <dmn:rule id="_906b290c-e69f-4dde-beb4-23c81df8897a">
         <dmn:inputEntry id="_inputentry_343">
           <dmn:text>true</dmn:text>
@@ -1219,7 +1219,7 @@
           <dmn:text>partnerUitzichtInkomensverbetering</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_4" label="aanspraak op individuele inkomenstoeslag" typeRef="boolean" />
+      <dmn:output id="_output_4" label="aanspraak op individuele inkomenstoeslag" name="partnerAanspraakIndividueleInkomenstoeslag" typeRef="boolean" />
       <dmn:rule id="_812b6012-ebf5-4444-9668-a48aa7f585b2">
         <dmn:inputEntry id="_inputentry_308">
           <dmn:text>true</dmn:text>
@@ -1383,7 +1383,7 @@
           <dmn:text>npKostenBuitengeslotenKostenpost</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_5" label="aanspraak op bijzondere bijstand" typeRef="boolean" />
+      <dmn:output id="_output_5" label="aanspraak op bijzondere bijstand" name="npAanspraakBijzondereBijstand" typeRef="boolean" />
       <dmn:rule id="_3cc4888a-2fab-4ffe-a6bd-c4d88625778c">
         <dmn:inputEntry id="_inputentry_213">
           <dmn:text>true</dmn:text>
@@ -1621,7 +1621,7 @@
           <dmn:text>npVolgtOnderwijsZinHoofdstukIIWetStudiefinanciering</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_6" label="aanspraak op een Stadspas" typeRef="boolean" />
+      <dmn:output id="_output_6" label="aanspraak op een Stadspas" name="npAanspraakStadspas" typeRef="boolean" />
       <dmn:rule id="_a2469469-aa44-4c40-b0af-d3fb98ff3ce0">
         <dmn:inputEntry id="_inputentry_375">
           <dmn:text>true</dmn:text>
@@ -1817,7 +1817,7 @@
           <dmn:text>(kindEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart - peildatum).days / 7</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_7" label="aanspraak op tegemoetkoming identiteitskaart" typeRef="boolean" />
+      <dmn:output id="_output_7" label="aanspraak op tegemoetkoming identiteitskaart" name="kindAanspraakTegemoetkomingIdentiteitskaart" typeRef="boolean" />
       <dmn:rule id="_1179a7c6-f19e-4c5c-b74c-ef81478f0671">
         <dmn:inputEntry id="_inputentry_163">
           <dmn:text>true</dmn:text>
@@ -1972,7 +1972,7 @@
           <dmn:text>(npEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart - peildatum).days / 7</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_8" label="aanspraak op tegemoetkoming identiteitskaart" typeRef="boolean" />
+      <dmn:output id="_output_8" label="aanspraak op tegemoetkoming identiteitskaart" name="npAanspraakTegemoetkomingIdentiteitskaart" typeRef="boolean" />
       <dmn:rule id="_5d5c57f2-5cbc-40ef-98df-4a3d003d4d84">
         <dmn:inputEntry id="_inputentry_252">
           <dmn:text>true</dmn:text>
@@ -2092,7 +2092,7 @@
           <dmn:text>kindAfstandSchoolGroter9Kilometer</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_9" label="aanspraak op reiskostenvergoeding kind" typeRef="boolean" />
+      <dmn:output id="_output_9" label="aanspraak op reiskostenvergoeding kind" name="npAanspraakReiskostenvergoedingKind" typeRef="boolean" />
       <dmn:rule id="_e31cee21-05cf-4ded-bb3f-69fa123b7e42">
         <dmn:inputEntry id="_inputentry_432">
           <dmn:text>true</dmn:text>
@@ -2151,7 +2151,7 @@
           <dmn:text>npBewijsInschrijvingBetreffendeVoorschool</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_10" label="aanspraak op aanvullend kindtegoed" typeRef="boolean" />
+      <dmn:output id="_output_10" label="aanspraak op aanvullend kindtegoed" name="npAanspraakAanvullendKindtegoed" typeRef="boolean" />
       <dmn:rule id="_7352342e-0fe6-4418-ad0f-3ade6f76a05c">
         <dmn:inputEntry id="_inputentry_268">
           <dmn:text>true</dmn:text>
@@ -2267,7 +2267,7 @@
           <dmn:text>kindInVoorafgaande4JarenVoortgezetonderwijsPcVoorzieningGekregen</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_11" label="aanspraak op pc-voorziening" typeRef="boolean" />
+      <dmn:output id="_output_11" label="aanspraak op pc-voorziening" name="npAanspraakPcVoorziening" typeRef="boolean" />
       <dmn:rule id="_11454cef-bc05-45d5-bfa1-34040f898ee4">
         <dmn:inputEntry id="_inputentry_154">
           <dmn:text>not(null) -</dmn:text>
@@ -2426,7 +2426,7 @@
           <dmn:text>npEenSchuldregeling</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_12" label="aanspraak op regeling tegemoetkoming meerkosten" typeRef="boolean" />
+      <dmn:output id="_output_12" label="aanspraak op regeling tegemoetkoming meerkosten" name="npAanspraakRegelingTegemoetkomingMeerkosten" typeRef="boolean" />
       <dmn:rule id="_d838f303-ce22-411e-8e45-eaeef73eb813">
         <dmn:inputEntry id="_inputentry_426">
           <dmn:text>true</dmn:text>
@@ -2595,7 +2595,7 @@
           <dmn:text>partnerUitzichtInkomensverbetering</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_13" label="aanspraak op individuele inkomenstoeslag" typeRef="boolean" />
+      <dmn:output id="_output_13" label="aanspraak op individuele inkomenstoeslag" name="npAanspraakIndividueleInkomenstoeslag" typeRef="boolean" />
       <dmn:rule id="_07f36f57-eece-49a5-a954-7f3b4aa4c1b8">
         <dmn:inputEntry id="_inputentry_145">
           <dmn:text>true</dmn:text>
@@ -2765,7 +2765,7 @@
           <dmn:text>peildatum.year</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_14" label="van toepassing zijnde loongrens vorig jaar voor volwassenen" typeRef="number" />
+      <dmn:output id="_output_14" label="van toepassing zijnde loongrens vorig jaar voor volwassenen" name="vanToepassingZijndeLoongrensVorigJaarVolwassenen" typeRef="number" />
       <dmn:rule id="_df138651-1edc-4573-88a7-46b44a31bd2c">
         <dmn:inputEntry id="_inputentry_636">
           <dmn:text>"alleenstaand"</dmn:text>
@@ -2846,7 +2846,7 @@
           <dmn:text>npFiscaalGezinsinkomenDrieJaarGeleden</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_15" label="langdurig laag inkomen" typeRef="boolean" />
+      <dmn:output id="_output_15" label="langdurig laag inkomen" name="npLangdurigLaagInkomen" typeRef="boolean" />
       <dmn:rule id="_e656a9dd-ad8f-45de-b0dc-18fd3f2e4306">
         <dmn:inputEntry id="_inputentry_643">
           <dmn:text>&lt;= vanToepassingZijndeLoongrensVorigJaarVolwassenen</dmn:text>
@@ -2913,7 +2913,7 @@
           <dmn:text>npOpgelegdeSchuldregelingGrondWSNP</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_16" label="een schuldregeling" typeRef="boolean" />
+      <dmn:output id="_output_16" label="een schuldregeling" name="npEenSchuldregeling" typeRef="boolean" />
       <dmn:rule id="_e0731b1b-8b32-48e9-9f2f-18f414e94e0f">
         <dmn:inputEntry id="_inputentry_638">
           <dmn:text>true</dmn:text>
@@ -3068,7 +3068,7 @@
           <dmn:text>npOntvangtVoedselpakkettenVoedselbankAmsterdamVoedselbankGooiOmstreken</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_17" label="een beleidsregels minimakind" typeRef="boolean" />
+      <dmn:output id="_output_17" label="een beleidsregels minimakind" name="kindEenBeleidsregelsMinimakind" typeRef="boolean" />
       <dmn:rule id="_b9abc484-2f16-4764-aa42-5eddf3278dbc">
         <dmn:inputEntry id="_inputentry_604">
           <dmn:text>true</dmn:text>
@@ -3501,7 +3501,7 @@
           <dmn:text>(years and months duration(npGeboortedatum, peildatum)).years</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_18" label="meerderjarig" typeRef="boolean" />
+      <dmn:output id="_output_18" label="meerderjarig" name="npMeerderjarig" typeRef="boolean" />
       <dmn:rule id="_8701fbf3-d20f-42c9-bca4-8fd0eb40f50e">
         <dmn:inputEntry id="_inputentry_480">
           <dmn:text>&gt;= 18</dmn:text>
@@ -3586,7 +3586,7 @@
           <dmn:text>kindIngeschrevenBBLOnbetaaldeStage</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_19" label="een beleidsregel minimakind scholier" typeRef="boolean" />
+      <dmn:output id="_output_19" label="een beleidsregel minimakind scholier" name="kindEenBeleidsregelMinimakindScholier" typeRef="boolean" />
       <dmn:rule id="_33029a9e-943a-4c73-8400-d5f4393daed5">
         <dmn:inputEntry id="_inputentry_520">
           <dmn:text>true</dmn:text>
@@ -3723,7 +3723,7 @@
           <dmn:text>npGezinssituatie</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_20" label="van toepassing zijnde vermogensgrens" typeRef="number" />
+      <dmn:output id="_output_20" label="van toepassing zijnde vermogensgrens" name="vanToepassingZijndeVermogensgrens" typeRef="number" />
       <dmn:rule id="_22957cd7-de94-4ab5-a4db-78ac9ce888b4">
         <dmn:inputEntry id="_inputentry_492">
           <dmn:text>2024</dmn:text>
@@ -3770,7 +3770,7 @@
           <dmn:text>peildatum.year</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_21" label="pensioengerechtigde leeftijd" typeRef="number" />
+      <dmn:output id="_output_21" label="pensioengerechtigde leeftijd" name="pensioengerechtigdeLeeftijd" typeRef="number" />
       <dmn:rule id="_5e6ce6d3-a488-4c8a-924a-6e36b981e1ae">
         <dmn:inputEntry id="_inputentry_478">
           <dmn:text>2025</dmn:text>
@@ -3811,7 +3811,7 @@
           <dmn:text>peildatum.year</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_22" label="van toepassing zijnde loongrens vorig jaar voor kinderen" typeRef="number" />
+      <dmn:output id="_output_22" label="van toepassing zijnde loongrens vorig jaar voor kinderen" name="vanToepassingZijndeLoongrensVorigJaarKinderen" typeRef="number" />
       <dmn:rule id="_230af150-20af-4dbd-b6d2-3a41af23d8ee">
         <dmn:inputEntry id="_inputentry_503">
           <dmn:text>"alleenstaand"</dmn:text>
@@ -3861,7 +3861,7 @@
           <dmn:text>(years and months duration(kindGeboortedatum, peildatum)).years</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_23" label="minderjarig" typeRef="boolean" />
+      <dmn:output id="_output_23" label="minderjarig" name="kindMinderjarig" typeRef="boolean" />
       <dmn:rule id="_3adfa993-b541-4d73-abac-2e4191bf4d67">
         <dmn:inputEntry id="_inputentry_482">
           <dmn:text>&lt; 18</dmn:text>
@@ -3902,7 +3902,7 @@
           <dmn:text>peildatum.year</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_24" label="van toepassing zijnde loongrens drie jaar geleden voor volwassenen" typeRef="number" />
+      <dmn:output id="_output_24" label="van toepassing zijnde loongrens drie jaar geleden voor volwassenen" name="vanToepassingZijndeLoongrensDrieJaarGeledenVolwassenen" typeRef="number" />
       <dmn:rule id="_d1e66823-741f-41d3-be9f-5e21e5cbdacf">
         <dmn:inputEntry id="_inputentry_676">
           <dmn:text>"alleenstaand"</dmn:text>
@@ -3960,7 +3960,7 @@
           <dmn:text>peildatum.year</dmn:text>
         </dmn:inputExpression>
       </dmn:input>
-      <dmn:output id="_output_25" label="van toepassing zijnde loongrens twee jaar geleden voor volwassenen" typeRef="number" />
+      <dmn:output id="_output_25" label="van toepassing zijnde loongrens twee jaar geleden voor volwassenen" name="vanToepassingZijndeLoongrensTweeJaarGeledenVolwassenen" typeRef="number" />
       <dmn:rule id="_b9e8f0bc-6c0e-423b-a428-115083fdae3f">
         <dmn:inputEntry id="_inputentry_672">
           <dmn:text>"alleenstaand"</dmn:text>

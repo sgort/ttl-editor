@@ -182,47 +182,107 @@ name="...">`) flattened to a single-token camelCase identifier**, generated
 6. **`not supported timespan in weeks(peildatum, X)` → `(X - peildatum).days / 7`** — 2
    occurrences.
 7. **`berekeningsjaar-1` → `peildatum.year - 1`** — 1 occurrence.
+8. **A `name="<token>"` attribute added to all 25 `<dmn:output>` elements**, alongside
+   their existing `label`. See "Root cause 5" below — this was found while investigating
+   why the patched file still couldn't be evaluated after everything above.
 
 No rule logic, rule ordering, hit policies, decision ids, or the DRD's
 `informationRequirement`/`authorityRequirement` wiring were changed. The original
 `HvA_full_dmn_export.dmn` is left untouched — same precedent as
 `individuele inkomenstoeslag-iknow-patched.dmn`.
 
+## Root cause 5: `<dmn:output>` needs a `name`, not just a `label`
+
+Found immediately after the fix above landed: every one of this DMN's 25 decision
+tables declares its output with `label` only —
+
+```xml
+<dmn:output id="_output_16" label="een schuldregeling" typeRef="boolean" />
+```
+
+— and once root causes 1–4 were fixed, evaluating **any** decision whose input columns
+all successfully resolve (i.e. no `FEEL/SCALA-01008` anywhere in that table) failed with
+a second, independent, completely unlogged error:
+
+```
+HTTP 400 {"type":"InvalidRequestException","message":"","code":null}
+```
+
+No stack trace, no server-side log line at all — this is what made it hard to isolate.
+Root-caused by bisection against the local Operaton instance: built minimal, fully
+isolated single-decision reproductions (one had only `<dmn:output label="...">`, no
+`name`), confirmed the failure on two independent decisions (`schuldregeling`,
+`bijzondere bijstand`), then confirmed the known-good reference file
+(`resultaat_zorgtoeslag_operaton_compat.dmn`) declares its outputs with `name` (e.g.
+`<output id="o_eligible" name="eligible" typeRef="boolean" />`) — never `label` alone.
+Adding `name="<token>"` to the failing decision's `<dmn:output>` (keeping the existing
+`label` for readability) fixed it immediately, reproducibly, on both test decisions.
+
+Operaton's result-serialization code needs `<dmn:output name="...">` to know what key to
+publish the value under; without it, building the response throws — but only once a
+decision table actually reaches a completed evaluation. Every decision in this file was
+previously dying earlier, on `FEEL/SCALA-01008` (root cause 1), so this defect was never
+triggered and never visible until that fix was in place.
+
+## The correct REST variable typing for this DMN's date inputs
+
+While confirming the fix, evaluate calls that passed dates as
+`{"value": "2025-06-01", "type": "String"}` returned an empty result (no error, no
+match) rather than a real value — the `.year`/`.years` property access silently resolves
+to `null` against a string. The dates need to actually be passed as Operaton's `Date`
+type, in its default format:
+
+```json
+{ "value": "2025-06-01T00:00:00.000+0200", "type": "Date" }
+```
+
+This matters for the test-cases work: `peildatum`, `geboortedatum`, and every other date
+input in this DMN need `type: "Date"` in that exact format, not `type: "String"` as used
+in `toeslagen`/`flevoland`'s test files (those DMNs never call `.year`/`.years` on their
+date inputs directly, so the distinction never mattered there).
+
 ## Verification status
 
-**Confirmed:**
+**Confirmed, live, against the local Operaton instance:**
 
-- `HvA_full_dmn_export-patched.dmn` is well-formed XML (parses cleanly via
-  `xml.etree.ElementTree`) with all 1,706 element ids unique (1,681 original + 25 new
-  `<dmn:variable>` elements).
-- Static analysis of every `<dmn:text>` block in the patched file confirms **zero**
-  remaining bare multi-word name references — the specific pattern that produced
-  `FEEL/SCALA-01008` on the original file is completely eliminated.
-- The patched file deploys cleanly to the local Operaton instance (25 decision
-  definitions, no deploy-time errors).
-- The overall shape of the fix — flat single-token names, explicit `<dmn:variable>`
-  bindings positioned before `<dmn:informationRequirement>`, `requiredDecision`/
-  `requiredInput` wiring unchanged — was validated structurally against two other DMN
-  files in this repo that are confirmed to evaluate correctly on this same Operaton
-  instance right now: `resultaat_zorgtoeslag_operaton_compat.dmn` (re-verified live
-  during this investigation — a composite decision three levels deep,
-  `rechtgevendeLeeftijd`, evaluated correctly end-to-end through its full dependency
-  chain) and `RechtEnHoogteSubsidieThuisbatterij.dmn`.
+- `HvA_full_dmn_export-patched.dmn` is well-formed XML, deploys cleanly (25 decision
+  definitions), and every `<dmn:text>` block is free of the original multi-word-name
+  pattern.
+- Four independent leaf/near-leaf decisions evaluate to the **correct** value:
+  `schuldregeling` (boolean, true-trigger rule), `Beslistabel bepalen natuurlijke persoon
+is meerderjarig` (age 26 → `true`, exercising the `.years` fix), `Bepaal
+pensioengerechtigde leeftijd` (2025 → `67`, exercising the `.year` fix), and `Bepalen
+van toepassing zijnde vermogensgrens` (alleenstaand, 2025 → `7575`, exercising the
+  `berekeningsjaar-1` fix).
+- A composite decision three levels deep, `Beslistabel bepalen aanspraak op een
+stadspas`, evaluates without error through its full `requiredDecision` chain
+  (`vanToepassingZijndeLoongrensVorigJaarVolwassenen`,
+  `vanToepassingZijndeVermogensgrens`) — confirming the `<dmn:variable>` bindings added
+  for root cause 2 actually resolve cross-decision references correctly, not just
+  structurally.
 
-**Open — not yet confirmed:** live evaluate-time testing of the _patched Amsterdam file
-itself_ hit an unexplained blocker: every redeployed version of every decision in this
-DRD — including trivial leaf decisions evaluated with zero supplied variables — returns
-`{"type":"InvalidRequestException","message":"","code":null}` (HTTP 400, no server-side
-log entry at all). This reproduces even on a single-decision file built from the exact
-same real-file template that evaluates correctly in its original, unpatched form, and
-persists under a brand-new decision key that was never deployed before (ruling out
-version/cache collision with earlier deploy attempts during this investigation). The two
-reference files above, redeployed at the same time on the same container, evaluate
-correctly — so this isn't a container-health issue. The specific trigger within this
-file's patched content was not isolated before time was reallocated to writing this
-document; re-running the empirical verification (ideally against a clean Operaton
-restart, once it's not in active use) is the first task of the next phase, before test
-cases are authored against results that depend on it.
+**New, not-yet-fixed defect surfaced by this verification pass:** `Beslistabel bepalen
+aanspraak op bijzondere bijstand` — one of the two decisions used to confirm root cause
+5 above — still fails, but now with a _different_, correctly-logged FEEL error:
+
+```
+FeelException: FEEL/SCALA-01008 ... failed to parse expression 'not -': Expected ("("
+| binaryComparison | ... ): found "-"
+```
+
+`not -` (44 occurrences file-wide, plus a related `not(null) -` variant seen in some
+rule cells) is not valid FEEL — `not` requires a parenthesized argument
+(`not(-)`/`not(null)`), and a bare `not -` doesn't parse. This is a genuine, separate,
+pre-existing defect in the source rule content, distinct from every root cause above —
+it was masked by root causes 1 and 5 for the entire time they were unfixed, the same way
+root cause 5 was masked by root cause 1. It did **not** reproduce on the `stadspas`
+composite-decision test above, because that rule matched (or failed to match) before
+evaluation reached its `not -` columns — hitPolicy `FIRST` evaluation appears to
+short-circuit per rule, so whether this defect actually triggers depends on the specific
+input combination. Left unfixed here: unlike the other root causes, the _correct_
+rewrite isn't mechanical — `not -` could plausibly mean "any value" (equivalent to a
+bare `-`) or something else entirely, and guessing wrong would silently change business
+logic. Needs a decision on interpretation before it's touched — flagged, not fixed.
 
 ## Appendix: full name mapping
 
