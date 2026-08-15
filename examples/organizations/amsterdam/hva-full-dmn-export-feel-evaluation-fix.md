@@ -188,6 +188,13 @@ name="...">`) flattened to a single-token camelCase identifier**, generated
 9. **`not -` → `false`** (44 occurrences, always on `boolean` columns) and
    **`not(null) -` → `not(null)`** (12 occurrences, always on `string` columns). See
    "Root cause 6" below.
+10. **`>= 21 and < pensioengerechtigdeLeeftijd` → `[21..pensioengerechtigdeLeeftijd)`**
+    (6 occurrences) and **`>= 10 and <= 12` → `[10..12]`** (1 occurrence) — bare
+    `and`-joined comparisons aren't valid unary-test syntax; interval notation is.
+11. **`not "met partner"` → `not("met partner")`** (2 occurrences) — the same missing-
+    parentheses problem as item 9, on a string literal instead of `-`/`null`.
+
+See "Root cause 7" below for 10–11.
 
 No rule logic, rule ordering, hit policies, decision ids, or the DRD's
 `informationRequirement`/`authorityRequirement` wiring were changed. The original
@@ -263,6 +270,13 @@ stadspas`, evaluates without error through its full `requiredDecision` chain
   `vanToepassingZijndeVermogensgrens`) — confirming the `<dmn:variable>` bindings added
   for root cause 2 actually resolve cross-decision references correctly, not just
   structurally.
+- **Full test suite**: 40 cases across 14 decisions (10 leaf decisions with MC/DC-style
+  one-case-per-rule coverage, plus 4 composite/integration decisions including the DRD
+  root) — every case run live against the deployed patched DMN with **zero errors**.
+  See `testCases/test-cases-hva-full-dmn-export.json` and
+  `testCases/test-cases-validation-hva.md`. Building this suite is what surfaced root
+  cause 7 below — writing real test data for `individuele inkomenstoeslag` and
+  `PC-voorziening` was what first exercised their broken age-range cells.
 
 ## Root cause 6: `not -` / `not(null) -` — two more malformed rule-cell patterns
 
@@ -309,6 +323,43 @@ conditions) → `true`; the identical inputs with `financiele draagkracht=true` 
 — proving the column is now a real, enforced constraint rather than a parse failure or
 an unconditional wildcard. The `not(null)` rewrite was confirmed to parse and evaluate
 without error on both a `null` and a real string value.
+
+## Root cause 7: `>= X and < Y` isn't a valid unary-test range, and neither is a bare `not "string"`
+
+Found while writing the test suite: both `Beslistabel bepalen aanspraak op individuele
+inkomenstoeslag` (natuurlijke persoon and partner variants) and `Beslistabel bepalen
+aanspraak op PC-voorziening` have an age-range rule cell written as two comparisons
+joined by `and`:
+
+```
+>= 21 and < pensioengerechtigdeLeeftijd
+>= 10 and <= 12
+```
+
+Same failure shape as root cause 6 — this parses as a **unary test**, not a general FEEL
+expression, and the unary-tests grammar doesn't support combining two comparisons with a
+bare `and`:
+
+```
+failed to parse expression '>= 21 and < pensioengerechtigdeLeeftijd': Expected (path |
+filter | ... | ","): found "and < pens"
+```
+
+The correct FEEL unary test for a range is **interval notation**: `[21..pensioengerechtigdeLeeftijd)`
+(closed lower bound, open upper bound — exactly what `>= 21 and <
+pensioengerechtigdeLeeftijd` meant) and `[10..12]` (closed both ends, for `>= 10 and <=
+12`). 6 occurrences of the first pattern, 1 of the second — all rewritten to interval
+notation.
+
+The same investigation also turned up one more `not X` case root cause 6's fix missed —
+`individuele inkomenstoeslag`'s gezinssituatie column reads `not "met partner"` (a bare
+string literal after `not`, same problem as `not -`: `not` needs a parenthesized
+argument). Rewritten to `not("met partner")`. Confirmed there are no other `not X`
+variants left anywhere in the file (checked programmatically, not just by pattern-matching
+the two already found).
+
+Both fixes confirmed live: `individuele inkomenstoeslag` (both variants) and `PC-voorziening`
+now evaluate correctly instead of throwing `FEEL/SCALA-01008`.
 
 ## Appendix: full name mapping
 

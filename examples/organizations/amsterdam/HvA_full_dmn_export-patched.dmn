@@ -1225,7 +1225,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_474">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_311">
           <dmn:text>true</dmn:text>
@@ -1251,7 +1251,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_473">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_235">
           <dmn:text>-</dmn:text>
@@ -2279,7 +2279,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_471">
-          <dmn:text>&gt;= 10 and &lt;= 12</dmn:text>
+          <dmn:text>[10..12]</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_159">
           <dmn:text>false</dmn:text>
@@ -2601,7 +2601,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_470">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_148">
           <dmn:text>false</dmn:text>
@@ -2616,7 +2616,7 @@
           <dmn:text>-</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_152">
-          <dmn:text>not "met partner"</dmn:text>
+          <dmn:text>not("met partner")</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_153">
           <dmn:text>-</dmn:text>
@@ -2630,7 +2630,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_475">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_319">
           <dmn:text>false</dmn:text>
@@ -2645,7 +2645,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_323">
-          <dmn:text>not "met partner"</dmn:text>
+          <dmn:text>not("met partner")</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_324">
           <dmn:text>-</dmn:text>
@@ -2659,7 +2659,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_476">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_328">
           <dmn:text>false</dmn:text>
@@ -2688,7 +2688,7 @@
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_472">
-          <dmn:text>&gt;= 21 and &lt; pensioengerechtigdeLeeftijd</dmn:text>
+          <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_190">
           <dmn:text>false</dmn:text>
