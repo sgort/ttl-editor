@@ -16,6 +16,12 @@ cd examples/organizations/amsterdam/testCases
 
 The script deploys `HvA_full_dmn_export-patched.dmn` to a local Operaton instance (default `http://localhost:8081/engine-rest`, override with `OPERATON_URL`) and runs every case in `test-cases-hva-full-dmn-export.json` against it, printing a pass/fail summary — same idea as `examples/organizations/toeslagen/test-cases-zorgtoeslag.sh`, adapted for per-case decision routing: each case in this suite targets a different decision within the same DRD (via its own `decision` field), rather than one shared decision key. Requires `curl` and `jq`. You can also load the JSON file directly into the CPSV Editor's DMN tab ("Run All Test Cases") against any already-deployed instance, without the script.
 
+If you're only editing `test-cases-hva-full-dmn-export.json` (adding or tweaking cases) and the DMN itself hasn't changed, skip the redeploy on repeat runs:
+
+```bash
+SKIP_DEPLOY=1 ./test-cases-hva.sh
+```
+
 ## Scope
 
 Full coverage of all 25 decisions in the DRD: MC/DC-style one-case-per-rule for the 11 self-contained leaf decisions (tables whose inputs are all raw applicant facts or simple numeric lookups), plus representative true/false integration coverage — typically one case per qualifying "route" through the table's rules, plus one disqualifying case — for the 13 composite decisions that chain through those leaves via `requiredDecision`, plus the DRD root. Composite decisions with many overlapping rules (e.g. `minimabeleid kind`'s 13 rules) get 2-3 representative cases rather than one case per individual rule, to keep the suite reviewable; each case's description names which specific rule it exercises.

@@ -1,19 +1,23 @@
 #!/bin/bash
 
 # Run all test cases in test-cases-hva-full-dmn-export.json against a local
-# Operaton instance. Deploys the patched DMN first (so this is self-contained —
-# no need to deploy separately), then evaluates every case against its own
-# `decision` and checks the result against `expected`.
+# Operaton instance. Deploys the patched DMN first by default (so this is
+# self-contained — no need to deploy separately), then evaluates every case
+# against its own `decision` and checks the result against `expected`.
 #
 # Usage:
 #   ./test-cases-hva.sh
 #   OPERATON_URL=https://my-operaton/engine-rest ./test-cases-hva.sh
+#   SKIP_DEPLOY=1 ./test-cases-hva.sh   # reuse whatever's already deployed —
+#                                       # e.g. iterating on test-cases-hva-full-dmn-export.json
+#                                       # itself, where the DMN hasn't changed
 #
 # Requires: curl, jq
 
 set -u
 
 OPERATON_URL="${OPERATON_URL:-http://localhost:8081/engine-rest}"
+SKIP_DEPLOY="${SKIP_DEPLOY:-0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DMN_FILE="$SCRIPT_DIR/../HvA_full_dmn_export-patched.dmn"
 CASES_FILE="$SCRIPT_DIR/test-cases-hva-full-dmn-export.json"
@@ -25,20 +29,24 @@ echo "======================================================="
 echo "Operaton: $OPERATON_URL"
 echo ""
 
-echo "── Deploying $DMN_FILE ..."
-deploy_response=$(curl -s -X POST \
-  -F "deployment-name=HvA_full_dmn_export-patched" \
-  -F "deploy-changed-only=true" \
-  -F "HvA_full_dmn_export-patched.dmn=@${DMN_FILE};type=text/xml" \
-  "$OPERATON_URL/deployment/create")
-
-deployed_count=$(echo "$deploy_response" | jq '.deployedDecisionDefinitions | length' 2>/dev/null)
-if [ -z "$deployed_count" ] || [ "$deployed_count" = "null" ]; then
-    echo "❌ Deploy failed or returned no new decisions (deploy-changed-only may have skipped an"
-    echo "   unchanged resource — that's fine if you already deployed this exact file):"
-    echo "   $deploy_response"
+if [ "$SKIP_DEPLOY" = "1" ]; then
+    echo "── Skipping deploy (SKIP_DEPLOY=1) — using whatever's already live at $OPERATON_URL"
 else
-    echo "   Deployed $deployed_count decision(s)."
+    echo "── Deploying $DMN_FILE ..."
+    deploy_response=$(curl -s -X POST \
+      -F "deployment-name=HvA_full_dmn_export-patched" \
+      -F "deploy-changed-only=true" \
+      -F "HvA_full_dmn_export-patched.dmn=@${DMN_FILE};type=text/xml" \
+      "$OPERATON_URL/deployment/create")
+
+    deployed_count=$(echo "$deploy_response" | jq '.deployedDecisionDefinitions | length' 2>/dev/null)
+    if [ -z "$deployed_count" ] || [ "$deployed_count" = "null" ]; then
+        echo "❌ Deploy failed or returned no new decisions (deploy-changed-only may have skipped an"
+        echo "   unchanged resource — that's fine if you already deployed this exact file):"
+        echo "   $deploy_response"
+    else
+        echo "   Deployed $deployed_count decision(s)."
+    fi
 fi
 echo ""
 
