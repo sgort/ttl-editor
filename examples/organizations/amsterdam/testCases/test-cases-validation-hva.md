@@ -5,13 +5,22 @@
 **Deployed at:** `http://localhost:8081/engine-rest` (deployment `HvA_full_dmn_export-patched`)  
 **peildatum:** 2025-06-01 (all cases, unless noted otherwise)
 
-All 40 `expected` values below were captured by evaluating the corresponding case live against the deployed DMN, not hand-computed — the reasoning columns explain _why_ each result is correct (cross-checked against the decision table's own rule content), not a prediction that happened to match. See [`hva-full-dmn-export-feel-evaluation-fix.md`](../hva-full-dmn-export-feel-evaluation-fix.md) for why this required a patched copy of the DMN in the first place.
+All `expected` values below were captured by evaluating the corresponding case live against the deployed DMN, not hand-computed — the reasoning explains _why_ each result is correct (cross-checked against the decision table's own rule content), not a prediction that happened to match. See [`hva-full-dmn-export-feel-evaluation-fix.md`](../hva-full-dmn-export-feel-evaluation-fix.md) for why this required a patched copy of the DMN in the first place — including issues (interval-notation ranges, `not "string"`, and a `hitPolicy` gap on two decisions) that this test suite itself surfaced while it was being written.
+
+## Running these tests yourself
+
+```bash
+cd examples/organizations/amsterdam/testCases
+./test-cases-hva.sh
+```
+
+The script deploys `HvA_full_dmn_export-patched.dmn` to a local Operaton instance (default `http://localhost:8081/engine-rest`, override with `OPERATON_URL`) and runs every case in `test-cases-hva-full-dmn-export.json` against it, printing a pass/fail summary — same idea as `examples/organizations/toeslagen/test-cases-zorgtoeslag.sh`, adapted for per-case decision routing: each case in this suite targets a different decision within the same DRD (via its own `decision` field), rather than one shared decision key. Requires `curl` and `jq`. You can also load the JSON file directly into the CPSV Editor's DMN tab ("Run All Test Cases") against any already-deployed instance, without the script.
 
 ## Scope
 
-MC/DC-style coverage (one case per rule) for the 10 self-contained leaf decisions — tables whose inputs are all raw applicant facts, no dependency on another decision's result. Plus integration coverage for 4 composite decisions that chain through those leaves via `requiredDecision`, including the DRD root.
+Full coverage of all 25 decisions in the DRD: MC/DC-style one-case-per-rule for the 11 self-contained leaf decisions (tables whose inputs are all raw applicant facts or simple numeric lookups), plus representative true/false integration coverage — typically one case per qualifying "route" through the table's rules, plus one disqualifying case — for the 13 composite decisions that chain through those leaves via `requiredDecision`, plus the DRD root. Composite decisions with many overlapping rules (e.g. `minimabeleid kind`'s 13 rules) get 2-3 representative cases rather than one case per individual rule, to keep the suite reviewable; each case's description names which specific rule it exercises.
 
-Every `requestBody.variables` object is the **full 52-variable baseline** (every raw input the DRD can ever need, set to a neutral/disqualifying default) with only the fields relevant to that case overridden — see the "Baseline" section below. This means every case is self-contained and safe to run standalone or as part of the full suite, and composite-decision cases exercise the _real_ `requiredDecision` chain (Operaton auto-evaluates the sub-decisions), not a hand-substituted shortcut.
+Every `requestBody.variables` object is the **full 52-variable baseline** (every raw input the DRD can ever need, set to a neutral/disqualifying default) with only the fields relevant to that case overridden — see "Baseline" below. Every case is self-contained and safe to run standalone or as part of the full suite, and composite-decision cases exercise the _real_ `requiredDecision` chain (Operaton auto-evaluates the sub-decisions), not a hand-substituted shortcut.
 
 ## Baseline
 
@@ -28,7 +37,7 @@ Every case starts from this neutral set, overridden per case (see the JSON file 
 | `*EindeGeldigheidNederlandsPaspoort...*`  | `2030-01-01`     | Far enough in the future that the "expires within 8 weeks" check never accidentally fires |
 | `peildatum`                               | `2025-06-01`     | Matches the only year (2025) every loongrens/vermogensgrens lookup table has rows for     |
 
----
+## Several composite "kind" decisions share a common **kind-qualifies** override set (`kindGeboortedatum` young enough to be `minderjarig`, `kindIngeschrevenWoonadresOuderAanvraagt=true`, `npOntvangtKinderbijslagKind=true`, a schuldregeling flag `true`) that makes `kindEenBeleidsregelsMinimakind` ("minimabeleid kind") true via its rule 2 — reused across `kindtegoed`, `Stadspas van kind`, `PC-voorziening`, `reiskostenvergoeding kind`, `tegemoetkoming identiteitskaart kind`, `aanvullend kindtegoed`, `minimabeleid kind` itself, and `scholier`, since all of them require it as a precondition.
 
 ## `Beslistabel bepalen aanspraak op bijzondere bijstand`
 
@@ -270,6 +279,24 @@ Lookup for gezinssituatie='met partner', peildatum year 2025 -> 33700
 
 ---
 
+## `Beslistabel bepalen langdurig laag inkomen`
+
+`_299e6c91-3fe5-49aa-88cc-efd03583ae87`
+
+### TC_langdurigLaagInkomen_true
+
+**Expected:** `npLangdurigLaagInkomen` = true
+
+All 3 years' income comfortably under the respective loongrens thresholds (alleenstaand) -> true
+
+### TC_langdurigLaagInkomen_false
+
+**Expected:** `npLangdurigLaagInkomen` = false
+
+Baseline: all 3 incomes far above threshold -> false
+
+---
+
 ## `Beslistabel bepalen aanspraak op individuele inkomenstoeslag`
 
 `_bca439b7-fdb8-40e3-8a1d-3bb95571c65c`
@@ -336,6 +363,228 @@ Not woonachtig in de gemeente -> false
 
 ---
 
+## `Beslistabel bepalen aanspraak op kindtegoed`
+
+`_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4`
+
+### TC_kindtegoed_true
+
+**Expected:** `npAanspraakKindtegoed` = true
+
+Woonachtig true, bsn present (baseline), kind qualifies for minimabeleid AND for Stadspas (same overrides satisfy both sub-decisions' schuldregeling route) -> true
+
+### TC_kindtegoed_false
+
+**Expected:** `npAanspraakKindtegoed` = false
+
+Not woonachtig in de gemeente -> false
+
+---
+
+## `Beslistabel bepalen aanspraak Stadspas van kind van natuurlijke persoon`
+
+`_216b3e6c-c9eb-4def-bfe7-3b20b961de2d`
+
+### TC_stadspasKind_route_schuldregeling
+
+**Expected:** `kindAanspraakStadspas` = true
+
+Kind minderjarig, ouder meerderjarig+woonachtig, bsn present, schuldregeling route -> true
+
+### TC_stadspasKind_route_inkomen
+
+**Expected:** `kindAanspraakStadspas` = true
+
+Income route: gezinssituatie 'alleenstaand met kinderen' (loongrensKinderen=37750, vermogensgrens=15150), income/vermogen comfortably under both -> true
+
+### TC_stadspasKind_false
+
+**Expected:** `kindAanspraakStadspas` = false
+
+Not woonachtig in de gemeente -> false
+
+---
+
+## `Beslistabel bepalen aanspraak op PC-voorziening`
+
+`_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27`
+
+### TC_pc_route_basisschool
+
+**Expected:** `npAanspraakPcVoorziening` = true
+
+Kind qualifies for minimabeleid, ingeschreven op basisschool, age 10 (in [10,12]) -> true
+
+### TC_pc_route_voortgezet
+
+**Expected:** `npAanspraakPcVoorziening` = true
+
+Kind qualifies for minimabeleid, ingeschreven op voortgezet onderwijs, no prior pc-voorziening in the past 4 years -> true
+
+### TC_pc_false
+
+**Expected:** `npAanspraakPcVoorziening` = false
+
+Baseline: kind is an adult, minimabeleid false -> false
+
+---
+
+## `Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten`
+
+`_ae01d740-f954-4a84-8dd8-a28fc3660cc6`
+
+### TC_meerkosten_route_inkomen
+
+**Expected:** `npAanspraakRegelingTegemoetkomingMeerkosten` = true
+
+Woonachtig, medische verklaring, aannemelijke meerkosten, minimuminkomen, vermogen under threshold -> true
+
+### TC_meerkosten_route_schuldregeling
+
+**Expected:** `npAanspraakRegelingTegemoetkomingMeerkosten` = true
+
+Same base but schuldregeling route instead of minimuminkomen/vermogen -> true
+
+### TC_meerkosten_false
+
+**Expected:** `npAanspraakRegelingTegemoetkomingMeerkosten` = false
+
+Not woonachtig in de gemeente -> false
+
+---
+
+## `Beslistabel bepalen aanspraak op reiskostenvergoeding kind`
+
+`_9439cfee-4abb-447e-9002-a1254b59442c`
+
+### TC_reiskosten_true
+
+**Expected:** `npAanspraakReiskostenvergoedingKind` = true
+
+Kind qualifies as scholier (minimabeleid + basisschool + age>=2), afstand tot school groter dan 9 km, geen andere voorliggende voorziening -> true
+
+### TC_reiskosten_false
+
+**Expected:** `npAanspraakReiskostenvergoedingKind` = false
+
+Baseline: kind not a scholier -> false
+
+---
+
+## `Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart`
+
+`_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc`
+
+### TC_idkaartNp_route_expiryFuture
+
+**Expected:** `npAanspraakTegemoetkomingIdentiteitskaart` = true
+
+Has a Stadspas (schuldregeling route), Nederlandse nationaliteit, identiteitskaart still valid (expiry 2030, > peildatum), lost the previous one -> true
+
+### TC_idkaartNp_route_expiringSoon
+
+**Expected:** `npAanspraakTegemoetkomingIdentiteitskaart` = true
+
+Same Stadspas/nationaliteit base, but identiteitskaart expires 2025-07-01 (~4 weeks after peildatum, <= 8 weeks) -> true
+
+### TC_idkaartNp_false
+
+**Expected:** `npAanspraakTegemoetkomingIdentiteitskaart` = false
+
+Not woonachtig in de gemeente -> false
+
+---
+
+## `Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon`
+
+`_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0`
+
+### TC_idkaartKind_route_expiryFuture
+
+**Expected:** `kindAanspraakTegemoetkomingIdentiteitskaart` = true
+
+Kind has a Stadspas (schuldregeling route), Nederlandse nationaliteit, identiteitskaart still valid, lost the previous one -> true
+
+### TC_idkaartKind_route_expiringSoon
+
+**Expected:** `kindAanspraakTegemoetkomingIdentiteitskaart` = true
+
+Same base, identiteitskaart expires 2025-07-01 (<= 8 weeks away) -> true
+
+### TC_idkaartKind_false
+
+**Expected:** `kindAanspraakTegemoetkomingIdentiteitskaart` = false
+
+Baseline: kind has no Stadspas -> false
+
+---
+
+## `Beslistabel aanspaak op aanvullend kindtegoed`
+
+`_a92ecca0-d6bf-463b-809c-82aa3d0f95b0`
+
+### TC_aanvullendKindtegoed_true
+
+**Expected:** `npAanspraakAanvullendKindtegoed` = true
+
+Has aanspraak op kindtegoed (reusing that decision's true-case overrides) and bewijs inschrijving voorschool -> true
+
+### TC_aanvullendKindtegoed_false
+
+**Expected:** `npAanspraakAanvullendKindtegoed` = false
+
+Baseline: no aanspraak op kindtegoed -> false
+
+---
+
+## `Beslistabel bepalen of een kind een minimabeleid kind is`
+
+`_52e3eb1b-1561-431c-9e8b-e9314f20836f`
+
+### TC_minimakind_route_kinderbijslagSchuldregeling
+
+**Expected:** `kindEenBeleidsregelsMinimakind` = true
+
+Rule 2: minderjarig, ingeschreven op woonadres ouder, ontvangt kinderbijslag, schuldregeling -> true
+
+### TC_minimakind_route_jeugdhulpVoedselpakketten
+
+**Expected:** `kindEenBeleidsregelsMinimakind` = true
+
+Rule 9: minderjarig, ingeschreven in instelling voor jeugdhulp met verblijf, ontvangt kinderbijslag, ontvangt voedselpakketten -> true
+
+### TC_minimakind_false
+
+**Expected:** `kindEenBeleidsregelsMinimakind` = false
+
+Baseline: kind is an adult (not minderjarig) -> false
+
+---
+
+## `Beslistabel bepalen of een kind een scholier is`
+
+`_8e0b94dc-e62c-45c7-b731-cc18bbf484cc`
+
+### TC_scholier_route_basisschool
+
+**Expected:** `kindEenBeleidsregelMinimakindScholier` = true
+
+Kind qualifies for minimabeleid, age 10 (>= 2), ingeschreven op basisschool -> true
+
+### TC_scholier_route_voortgezet
+
+**Expected:** `kindEenBeleidsregelMinimakindScholier` = true
+
+Kind qualifies for minimabeleid, age 10 (>= 2), ingeschreven op voortgezet onderwijs -> true
+
+### TC_scholier_false
+
+**Expected:** `kindEenBeleidsregelMinimakindScholier` = false
+
+Baseline: kind is an adult, minimabeleid false -> false
+
+---
+
 ## `Bepalen aanspraken (DRD root)`
 
 `_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5`
@@ -356,23 +605,32 @@ Only bijzondere bijstand's own rule 1 triggers; all 11 other direct sub-decision
 
 ## Summary
 
-| Decision                                                               | Cases | Kind                    |
-| ---------------------------------------------------------------------- | ----- | ----------------------- |
-| `Beslistabel bepalen aanspraak op bijzondere bijstand`                 | 5     | leaf (MC/DC)            |
-| `Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen`  | 3     | leaf (MC/DC)            |
-| `Beslistabel bepalen schuldregeling`                                   | 4     | leaf (MC/DC)            |
-| `Beslistabel bepalen natuurlijke persoon is meerderjarig`              | 2     | leaf (MC/DC)            |
-| `Bepalen van toepassing zijnde vermogensgrens`                         | 3     | leaf (MC/DC)            |
-| `Bepaal pensioengerechtigde leeftijd`                                  | 2     | leaf (MC/DC)            |
-| `Bepalen van toepassing zijnde loongrens vorig jaar voor kinderen`     | 3     | leaf (MC/DC)            |
-| `Beslistabel bepalen kind is minderjarig`                              | 2     | leaf (MC/DC)            |
-| `Bepalen van toepassing zijnde loongrens drie jaar geleden`            | 3     | leaf (MC/DC)            |
-| `Bepalen van toepassing zijnde loongrens twee jaar geleden`            | 3     | leaf (MC/DC)            |
-| `Beslistabel bepalen aanspraak op individuele inkomenstoeslag`         | 3     | composite (integration) |
-| `Beslistabel bepalen aanspraak op individuele inkomenstoeslag partner` | 2     | composite (integration) |
-| `Beslistabel bepalen aanspraak op een stadspas`                        | 3     | composite (integration) |
-| `Bepalen aanspraken (DRD root)`                                        | 2     | composite (integration) |
+| Decision                                                                                            | Cases | Kind                    |
+| --------------------------------------------------------------------------------------------------- | ----- | ----------------------- |
+| `Beslistabel bepalen aanspraak op bijzondere bijstand`                                              | 5     | leaf (MC/DC)            |
+| `Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen`                               | 3     | leaf (MC/DC)            |
+| `Beslistabel bepalen schuldregeling`                                                                | 4     | leaf (MC/DC)            |
+| `Beslistabel bepalen natuurlijke persoon is meerderjarig`                                           | 2     | leaf (MC/DC)            |
+| `Bepalen van toepassing zijnde vermogensgrens`                                                      | 3     | leaf (MC/DC)            |
+| `Bepaal pensioengerechtigde leeftijd`                                                               | 2     | leaf (MC/DC)            |
+| `Bepalen van toepassing zijnde loongrens vorig jaar voor kinderen`                                  | 3     | leaf (MC/DC)            |
+| `Beslistabel bepalen kind is minderjarig`                                                           | 2     | leaf (MC/DC)            |
+| `Bepalen van toepassing zijnde loongrens drie jaar geleden`                                         | 3     | leaf (MC/DC)            |
+| `Bepalen van toepassing zijnde loongrens twee jaar geleden`                                         | 3     | leaf (MC/DC)            |
+| `Beslistabel bepalen langdurig laag inkomen`                                                        | 2     | leaf (MC/DC)            |
+| `Beslistabel bepalen aanspraak op individuele inkomenstoeslag`                                      | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op individuele inkomenstoeslag partner`                              | 2     | composite (integration) |
+| `Beslistabel bepalen aanspraak op een stadspas`                                                     | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op kindtegoed`                                                       | 2     | composite (integration) |
+| `Beslistabel bepalen aanspraak Stadspas van kind van natuurlijke persoon`                           | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op PC-voorziening`                                                   | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten`                               | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op reiskostenvergoeding kind`                                        | 2     | composite (integration) |
+| `Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart`                                  | 3     | composite (integration) |
+| `Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon` | 3     | composite (integration) |
+| `Beslistabel aanspaak op aanvullend kindtegoed`                                                     | 2     | composite (integration) |
+| `Beslistabel bepalen of een kind een minimabeleid kind is`                                          | 3     | composite (integration) |
+| `Beslistabel bepalen of een kind een scholier is`                                                   | 3     | composite (integration) |
+| `Bepalen aanspraken (DRD root)`                                                                     | 2     | composite (integration) |
 
-**Total: 40 cases across 14 decisions.**
-
-**Not covered by this suite:** the remaining 11 composite decisions (`aanspraak op kindtegoed`, `aanspraak Stadspas van kind`, `aanspraak op PC-voorziening`, `aanspraak op regeling tegemoetkoming meerkosten`, `aanspraak op reiskostenvergoeding kind`, `aanspraak op tegemoetkoming identiteitskaart` (both variants), `aanvullend kindtegoed`, `langdurig laag inkomen`, `minimabeleid kind`, `scholier`) — each follows the same MC/DC-over-its-own-rules pattern demonstrated above and can be added the same way; left out here to keep this pass to a reviewable size, per the leaves-plus-key-integration scope agreed before writing this suite.
+**Total: 69 cases across 25 of the DRD's 25 decisions — full coverage.**

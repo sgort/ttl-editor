@@ -1781,7 +1781,7 @@
     <dmn:authorityRequirement id="_ad6987f2-89c4-11f1-9876-7bf56f22d711">
       <dmn:requiredAuthority href="#_ad568f62-89c4-11f1-9837-17b96e2f9376" />
     </dmn:authorityRequirement>
-    <dmn:decisionTable id="_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0_table" typeRef="boolean" outputLabel="aanspraak op tegemoetkoming identiteitskaart">
+    <dmn:decisionTable id="_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0_table" typeRef="boolean" hitPolicy="FIRST" outputLabel="aanspraak op tegemoetkoming identiteitskaart">
       <dmn:input id="_input_52">
         <dmn:inputExpression typeRef="boolean">
           <dmn:text>kindIngeschrevenWoonadresOuderAanvraagt</dmn:text>
@@ -2395,7 +2395,7 @@
     <dmn:authorityRequirement id="_ad735750-89c4-11f1-9898-b7e879ba7636">
       <dmn:requiredAuthority href="#_acb7a618-89c4-11f1-9738-03f477d2d07e" />
     </dmn:authorityRequirement>
-    <dmn:decisionTable id="_ae01d740-f954-4a84-8dd8-a28fc3660cc6_table" typeRef="boolean" outputLabel="aanspraak op regeling tegemoetkoming meerkosten">
+    <dmn:decisionTable id="_ae01d740-f954-4a84-8dd8-a28fc3660cc6_table" typeRef="boolean" hitPolicy="FIRST" outputLabel="aanspraak op regeling tegemoetkoming meerkosten">
       <dmn:input id="_input_79">
         <dmn:inputExpression typeRef="boolean">
           <dmn:text>npWoonachtigGemeenteAangevraagd</dmn:text>

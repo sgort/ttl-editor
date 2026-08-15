@@ -2,12 +2,8 @@
 
 ## Changelog
 
-| Date       | Change                                                                                                                                                                                                                                                                      |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-08-13 | Synced against the companion spec-owner doc's resolved open questions: `cprmv:concept` dropped in favor of `dct:source` (both layers), concept-only cells now minted and deduped (`_outputEntry_1`/`4b7157ff-...`), cell URIs id-based, JCI-mandate question closed as "no" |
-| 2026-07-23 | Multi-grounding cells: numbered attributes confirmed on Operaton, repeatable child elements rejected                                                                                                                                                                        |
-| 2026-07-23 | Added Layers 2–4: DMN-to-TTL pipeline gaps, `.ttl` sketch, validator follow-up                                                                                                                                                                                              |
-| 2026-07-23 | Initial prototype: DMN-attribute layer, Rule 1 cross-referenced against `HvA_annotaties.xml`                                                                                                                                                                                |
+See [`CHANGELOG.md`](CHANGELOG.md) — consolidated across this doc, the companion
+spec-proposal doc, and the DMN evaluate-fix writeup.
 
 ## The gap
 

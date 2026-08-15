@@ -1,5 +1,9 @@
 # FEEL evaluation fix: `HvA_full_dmn_export.dmn`
 
+**Changelog:** see [`CHANGELOG.md`](CHANGELOG.md) — consolidated across this doc, the
+CPRMV spec-proposal doc, and the cell-level-linking prototype doc, so the full history
+since the first commit of this DMN is in one place.
+
 ## Symptom
 
 `HvA_full_dmn_export.dmn` deploys to Operaton cleanly (structurally valid DMN 1.3 XML,
@@ -193,12 +197,17 @@ name="...">`) flattened to a single-token camelCase identifier**, generated
     `and`-joined comparisons aren't valid unary-test syntax; interval notation is.
 11. **`not "met partner"` → `not("met partner")`** (2 occurrences) — the same missing-
     parentheses problem as item 9, on a string literal instead of `-`/`null`.
+12. **`hitPolicy="FIRST"` added to 2 decisions** whose `<dmn:decisionTable>` had no
+    `hitPolicy` attribute (defaulting to `UNIQUE`), despite having a wildcard default
+    rule — invalid under `UNIQUE`, matches every sibling decision's convention. See
+    "Root cause 8" below.
 
 See "Root cause 7" below for 10–11.
 
-No rule logic, rule ordering, hit policies, decision ids, or the DRD's
-`informationRequirement`/`authorityRequirement` wiring were changed. The original
-`HvA_full_dmn_export.dmn` is left untouched — same precedent as
+No rule _content_, rule ordering, decision ids, or the DRD's
+`informationRequirement`/`authorityRequirement` wiring were changed — item 12 is the one
+structural exception, adding a missing `hitPolicy` attribute (not editing any rule). The
+original `HvA_full_dmn_export.dmn` is left untouched — same precedent as
 `individuele inkomenstoeslag-iknow-patched.dmn`.
 
 ## Root cause 5: `<dmn:output>` needs a `name`, not just a `label`
@@ -270,13 +279,16 @@ stadspas`, evaluates without error through its full `requiredDecision` chain
   `vanToepassingZijndeVermogensgrens`) — confirming the `<dmn:variable>` bindings added
   for root cause 2 actually resolve cross-decision references correctly, not just
   structurally.
-- **Full test suite**: 40 cases across 14 decisions (10 leaf decisions with MC/DC-style
-  one-case-per-rule coverage, plus 4 composite/integration decisions including the DRD
-  root) — every case run live against the deployed patched DMN with **zero errors**.
-  See `testCases/test-cases-hva-full-dmn-export.json` and
-  `testCases/test-cases-validation-hva.md`. Building this suite is what surfaced root
-  cause 7 below — writing real test data for `individuele inkomenstoeslag` and
-  `PC-voorziening` was what first exercised their broken age-range cells.
+- **Full test suite**: 69 cases across all 25 decisions in the DRD — the 11 leaf
+  decisions with MC/DC-style one-case-per-rule coverage, plus representative true/false
+  integration coverage for the 13 composite decisions and the DRD root — every case run
+  live against the deployed patched DMN with **zero errors**. See
+  `testCases/test-cases-hva-full-dmn-export.json`, `testCases/test-cases-validation-hva.md`,
+  and `testCases/test-cases-hva.sh` (a self-contained runner: deploys the patched DMN and
+  evaluates every case). Building this suite is what surfaced root causes 7 and 8 below —
+  writing real test data for `individuele inkomenstoeslag`, `PC-voorziening`, `regeling
+tegemoetkoming meerkosten`, and `tegemoetkoming identiteitskaart voor kind` was what
+  first exercised their broken cells.
 
 ## Root cause 6: `not -` / `not(null) -` — two more malformed rule-cell patterns
 
@@ -360,6 +372,41 @@ the two already found).
 
 Both fixes confirmed live: `individuele inkomenstoeslag` (both variants) and `PC-voorziening`
 now evaluate correctly instead of throwing `FEEL/SCALA-01008`.
+
+## Root cause 8: two decisions have a default rule but `hitPolicy` defaults to `UNIQUE`
+
+Found while extending the test suite to cover the remaining 11 composite decisions.
+`Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten` and `Beslistabel
+bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon`
+both have no `hitPolicy` attribute on their `<dmn:decisionTable>` — which per the DMN
+spec defaults to `UNIQUE` (at most one rule may match; more than one is an error). Both
+tables have the same shape as their siblings that **do** have `hitPolicy="FIRST"`: two
+specific "qualifying route" rules followed by an all-wildcard `-,-,-,...` default rule
+that returns `false`.
+
+A wildcard default rule is fundamentally incompatible with `UNIQUE` — it matches
+_everything_, so it always fires alongside whichever specific rule also matches,
+violating "at most one." Operaton reports this clearly once it's reached:
+
+```
+DmnHitPolicyException: DMN-03001 Hit policy 'UNIQUE' only allows a single rule to
+match. Actually match rules: [... value='true' ..., ... value='false' ...]
+```
+
+This never surfaced earlier because reaching it requires input that actually satisfies
+one of the specific rules — every previous root cause was blocking evaluation before
+getting this far. This is very likely an iKnow export inconsistency rather than intended
+design: every other decision in this file with a default catch-all rule has explicit
+`hitPolicy="FIRST"` (e.g. the natuurlijke-persoon `tegemoetkoming identiteitskaart`
+sibling, structurally identical to the kind variant, already has `FIRST`). Fixed by
+adding `hitPolicy="FIRST"` to both `<dmn:decisionTable>` elements — no rule content
+changed. The remaining `hitPolicy`-less decisions in the file (all six loongrens/
+vermogensgrens/pensioengerechtigde-leeftijd lookup tables) have no default rule and are
+correctly mutually exclusive on their lookup key, so `UNIQUE` is the right policy for
+them and they were left untouched.
+
+Confirmed live: both decisions now return the correct `true`/`false` for inputs that
+satisfy a specific rule.
 
 ## Appendix: full name mapping
 
