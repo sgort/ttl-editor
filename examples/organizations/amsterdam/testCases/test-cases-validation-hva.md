@@ -5,6 +5,11 @@
 **Deployed at:** `http://localhost:8081/engine-rest` (deployment `HvA_full_dmn_export-patched`)  
 **peildatum:** 2025-06-01 (all cases, unless noted otherwise)
 
+For what legal source backs each decision's rules — as opposed to whether the rules
+evaluate correctly, which is what this document covers — see
+[`legal-sources-hva.md`](legal-sources-hva.md), generated from the original DMN and
+annotation export by [`extract-legal-sources.py`](extract-legal-sources.py).
+
 All `expected` values below were captured by evaluating the corresponding case live against the deployed DMN, not hand-computed — the reasoning explains _why_ each result is correct (cross-checked against the decision table's own rule content), not a prediction that happened to match. See [`hva-full-dmn-export-feel-evaluation-fix.md`](../hva-full-dmn-export-feel-evaluation-fix.md) for why this required a patched copy of the DMN in the first place — including issues (interval-notation ranges, `not "string"`, and a `hitPolicy` gap on two decisions) that this test suite itself surfaced while it was being written.
 
 ## Running these tests yourself
