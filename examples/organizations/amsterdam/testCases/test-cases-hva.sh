@@ -95,6 +95,49 @@ while IFS= read -r case_json; do
         continue
     fi
 
+    # Multi-row RULE ORDER results: "key: N matching rows -> 'v1' | 'v2' | ..."
+    # (root decision `aanspraken`, which can return >1 row per case). Parse the
+    # key, expected row count, and the pipe-separated expected values, then
+    # compare against every row's value for that key, in order.
+    if echo "$expected" | grep -qE '^[A-Za-z0-9_/]+: [0-9]+ matching rows? ->'; then
+        key=$(echo "$expected" | sed -E 's/^([A-Za-z0-9_/]+):.*/\1/')
+        # composite keys ("a/b") aren't emitted by any current case — only the
+        # single-key form is; fall back to the first component if one shows up.
+        key=$(echo "$key" | cut -d/ -f1)
+        exp_count=$(echo "$expected" | sed -E 's/^[A-Za-z0-9_/]+: ([0-9]+) matching rows?.*/\1/')
+        exp_values_raw=$(echo "$expected" | sed -E 's/^[A-Za-z0-9_/]+: [0-9]+ matching rows? -> //')
+        IFS='|' read -ra exp_values <<< "$exp_values_raw"
+
+        act_count=$(echo "$response" | jq 'length')
+        act_values_json=$(echo "$response" | jq -c --arg k "$key" '[.[] | (.[$k].value | tostring)]')
+
+        all_ok=true
+        mismatches=""
+        [ "$act_count" != "$exp_count" ] && all_ok=false && mismatches=" row-count(expected=$exp_count,actual=$act_count)"
+
+        idx=0
+        for raw in "${exp_values[@]}"; do
+            exp_val=$(echo "$raw" | sed -E "s/^\s+|\s+\$//g" | tr -d "'")
+            act_val=$(echo "$act_values_json" | jq -r --argjson i "$idx" '.[$i] // "null"')
+            if [ "$act_val" != "$exp_val" ]; then
+                all_ok=false
+                mismatches="$mismatches row$idx(expected=$exp_val,actual=$act_val)"
+            fi
+            idx=$((idx + 1))
+        done
+
+        if $all_ok; then
+            echo "✅ PASS ($act_count rows, $(echo "$response" | jq -c '[.[].'"$key"'.value]'))"
+            pass=$((pass + 1))
+        else
+            echo "❌ FAIL —$mismatches"
+            echo "   Raw: $response"
+            fail=$((fail + 1))
+        fi
+        echo ""
+        continue
+    fi
+
     # Parse "key = value, key2 = value2" (or "key=value, ...") out of `expected`
     # and check each key's actual value in response[0].
     all_ok=true

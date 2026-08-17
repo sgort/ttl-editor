@@ -279,16 +279,23 @@ stadspas`, evaluates without error through its full `requiredDecision` chain
   `vanToepassingZijndeVermogensgrens`) — confirming the `<dmn:variable>` bindings added
   for root cause 2 actually resolve cross-decision references correctly, not just
   structurally.
-- **Full test suite**: 69 cases across all 25 decisions in the DRD — the 11 leaf
-  decisions with MC/DC-style one-case-per-rule coverage, plus representative true/false
-  integration coverage for the 13 composite decisions and the DRD root — every case run
-  live against the deployed patched DMN with **zero errors**. See
-  `testCases/test-cases-hva-full-dmn-export.json`, `testCases/test-cases-validation-hva.md`,
-  and `testCases/test-cases-hva.sh` (a self-contained runner: deploys the patched DMN and
-  evaluates every case). Building this suite is what surfaced root causes 7 and 8 below —
-  writing real test data for `individuele inkomenstoeslag`, `PC-voorziening`, `regeling
-tegemoetkoming meerkosten`, and `tegemoetkoming identiteitskaart voor kind` was what
-  first exercised their broken cells.
+- **Full test suite**: 100 cases across all 25 decisions in the DRD, giving every one of
+  the DRD's 99 rules — across the 11 leaf decisions, the 13 composite decisions, and the
+  DRD root — at least one dedicated, empirically-verified test case (MC/DC-style
+  one-case-per-rule: not classic condition-level MC/DC, but rule/decision coverage for
+  every rule) — every case run live against the deployed patched DMN with **zero
+  errors**. See `testCases/test-cases-hva-full-dmn-export.json`,
+  `testCases/test-cases-validation-hva.md` (which also documents several real,
+  verified structural couplings among the root decision's output rows — e.g. a
+  `schuldregeling` flag qualifying multiple benefits at once — that make some root
+  rows untestable in full isolation), and `testCases/test-cases-hva.sh` (a
+  self-contained runner: deploys the patched DMN and evaluates every case, including
+  the root's multi-row `RULE ORDER` results). Building the initial 69-case pass is
+  what surfaced root causes 7 and 8 below — writing real test data for `individuele
+inkomenstoeslag`, `PC-voorziening`, `regeling tegemoetkoming meerkosten`, and
+  `tegemoetkoming identiteitskaart voor kind` was what first exercised their broken
+  cells; closing the remaining 30-rule coverage gap afterward surfaced no further DMN
+  defects, only the structural couplings noted above.
 
 ## Root cause 6: `not -` / `not(null) -` — two more malformed rule-cell patterns
 
