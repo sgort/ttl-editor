@@ -187,9 +187,21 @@ describe('cell-level legislative grounding against the real Amsterdam DMN', () =
   // Regression guard against the real DMN this feature was built for, not just
   // the synthetic fixture above — see cprmv-cell-level-linking-prototype.md's
   // worked "Rule 1, column by column" table and its Layer 1 before/after XML.
+  //
+  // Grounded against HvA_full_dmn_export-patched.dmn rather than the smaller
+  // individuele inkomenstoeslag-iknow-patched.dmn: both declare the identical
+  // "individuele inkomenstoeslag" decision (same key _bca439b7-..., same
+  // 8-column Rule 1 structure) since the full export includes it as one of
+  // its 25 decisions, but only the full export has the complete root-cause
+  // fix applied (single-word bound input names, interval-notation ranges,
+  // quoted-string fixes) — the standalone file still has 23 unfixed
+  // multi-word bare-name input expressions (FEEL/SCALA-01008) and fails to
+  // evaluate at all. This is also why the standalone file is not deployed:
+  // deploying it would make Operaton's "latest version by key" resolution
+  // shadow the full export's fixed decisions for every key they share.
   const dmnPath = path.join(
     __dirname,
-    '../../examples/organizations/amsterdam/individuele inkomenstoeslag-iknow-patched.dmn'
+    '../../examples/organizations/amsterdam/HvA_full_dmn_export-patched.dmn'
   );
   const realDmnContent = fs.readFileSync(dmnPath, 'utf-8');
 
@@ -209,23 +221,25 @@ describe('cell-level legislative grounding against the real Amsterdam DMN', () =
 
   test('Rule 1 hasPart lists exactly its 6 grounded cells (of 8 inputs + 1 output)', () => {
     const ttl = realTtl();
-    const ruleBlockMatch = ttl.match(/<[^>]*\/rules\/_rule_1> a cpsv:Rule[\s\S]*?\n\n/);
+    const ruleBlockMatch = ttl.match(
+      /<[^>]*\/rules\/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8> a cpsv:Rule[\s\S]*?\n\n/
+    );
     expect(ruleBlockMatch).not.toBeNull();
-    expect(ruleBlockMatch[0]).toContain('cell/_inputEntry_1>');
-    expect(ruleBlockMatch[0]).toContain('cell/_inputEntry_3>');
-    expect(ruleBlockMatch[0]).toContain('cell/_inputEntry_4>');
-    expect(ruleBlockMatch[0]).toContain('cell/_inputEntry_5>');
-    expect(ruleBlockMatch[0]).toContain('cell/_inputEntry_7>');
-    expect(ruleBlockMatch[0]).toContain('cell/_outputEntry_1>');
-    // rightfully ungrounded: _2 (no annotation for the sub-decision), _6/_8 (wildcards)
-    expect(ruleBlockMatch[0]).not.toContain('cell/_inputEntry_2>');
-    expect(ruleBlockMatch[0]).not.toContain('cell/_inputEntry_6>');
-    expect(ruleBlockMatch[0]).not.toContain('cell/_inputEntry_8>');
+    expect(ruleBlockMatch[0]).toContain('cell/_inputentry_145>');
+    expect(ruleBlockMatch[0]).toContain('cell/_inputentry_148>');
+    expect(ruleBlockMatch[0]).toContain('cell/_inputentry_149>');
+    expect(ruleBlockMatch[0]).toContain('cell/_inputentry_150>');
+    expect(ruleBlockMatch[0]).toContain('cell/_inputentry_152>');
+    expect(ruleBlockMatch[0]).toContain('cell/_outputentry_15>');
+    // rightfully ungrounded: _470 (no annotation for the sub-decision), _151/_153 (wildcards)
+    expect(ruleBlockMatch[0]).not.toContain('cell/_inputentry_470>');
+    expect(ruleBlockMatch[0]).not.toContain('cell/_inputentry_151>');
+    expect(ruleBlockMatch[0]).not.toContain('cell/_inputentry_153>');
   });
 
-  test('the three APT cells (_1, _4, _5) emit their quote + citation directly', () => {
+  test('the three APT cells (_145, _149, _150) emit their quote + citation directly', () => {
     const ttl = realTtl();
-    expect(ttl).toContain('cell/_inputEntry_1> a cprmv:Rule');
+    expect(ttl).toContain('cell/_inputentry_145> a cprmv:Rule');
     expect(ttl).toContain(
       'dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0>'
     );
@@ -241,7 +255,7 @@ describe('cell-level legislative grounding against the real Amsterdam DMN', () =
     );
   });
 
-  test('the CPT cells (_3, _7, output) reference minted concept resources, not inline groundings', () => {
+  test('the CPT cells (_148, _152, output) reference minted concept resources, not inline groundings', () => {
     const ttl = realTtl();
     expect(ttl).toContain('/concepts/cf35d84d-bec6-42b7-8491-9208ef44d2c9> a cprmv:Rule');
     expect(ttl).toContain(

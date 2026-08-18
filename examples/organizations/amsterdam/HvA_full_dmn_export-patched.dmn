@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="_ac79339c-89c4-11f1-970c-47c9509ab1c5" name="DRD aanspraken" namespace="http://iknow.nl/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0">
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:cprmv="https://standaarden.open-regels.nl/standards/cprmv/0.4.1#" xmlns:dct="http://purl.org/dc/terms/" id="_ac79339c-89c4-11f1-970c-47c9509ab1c5" name="DRD aanspraken" namespace="http://iknow.nl/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0">
   <dmn:decision id="_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" name="Bepalen aanspraken" camunda:historyTimeToLive="0">
     <dmn:variable id="_var_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" name="aanspraken" typeRef="string" />
     <dmn:informationRequirement id="_ac8df2a0-89c4-11f1-971e-7f41a8deeed8">
@@ -2597,31 +2597,44 @@
       </dmn:input>
       <dmn:output id="_output_13" label="aanspraak op individuele inkomenstoeslag" name="npAanspraakIndividueleInkomenstoeslag" typeRef="boolean" />
       <dmn:rule id="_07f36f57-eece-49a5-a954-7f3b4aa4c1b8">
-        <dmn:inputEntry id="_inputentry_145">
+        <dmn:inputEntry id="_inputentry_145"
+                        dct:source="61d1181d-a7e6-4da1-a121-89ca30fcb7b0"
+                        cprmv:sourceQuote="Woonadres"
+                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12">
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_470">
           <dmn:text>[21..pensioengerechtigdeLeeftijd)</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_inputentry_148">
+        <dmn:inputEntry id="_inputentry_148"
+                        dct:source="cf35d84d-bec6-42b7-8491-9208ef44d2c9"
+                        cprmv:isBasedOn="jci1.3:c:BWBR0015703&amp;hoofdstuk=4&amp;paragraaf=4.1&amp;artikel=36&amp;z=2026-07-01&amp;g=2026-07-01">
           <dmn:text>false</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_inputentry_149">
+        <dmn:inputEntry id="_inputentry_149"
+                        dct:source="0f0d5140-0624-4aa3-a077-2a26087d1436"
+                        cprmv:sourceQuote="hij laag inkomen had"
+                        cprmv:isBasedOn="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=4">
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_inputentry_150">
+        <dmn:inputEntry id="_inputentry_150"
+                        dct:source="6fea33db-8454-4a6c-9e02-db6a1f3417db"
+                        cprmv:sourceQuote="een vermogen"
+                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12">
           <dmn:text>&lt;= vanToepassingZijndeVermogensgrens</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_151">
           <dmn:text>-</dmn:text>
         </dmn:inputEntry>
-        <dmn:inputEntry id="_inputentry_152">
+        <dmn:inputEntry id="_inputentry_152"
+                        dct:source="8bf152a7-22a1-4624-b43b-aa9c9ff68b30">
           <dmn:text>not("met partner")</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_153">
           <dmn:text>-</dmn:text>
         </dmn:inputEntry>
-        <dmn:outputEntry id="_outputentry_15">
+        <dmn:outputEntry id="_outputentry_15"
+                         dct:source="4b7157ff-2bc6-4ada-ba36-8123e6038dfe">
           <dmn:text>true</dmn:text>
         </dmn:outputEntry>
       </dmn:rule>
