@@ -185,6 +185,97 @@ describe('extractRulesFromDMN', () => {
   test('returns [] rather than throwing on malformed content', () => {
     expect(extractRulesFromDMN('<not-valid', 'https://example.com')).toEqual([]);
   });
+
+  test('extracts per-cell id, text, and a single unnumbered grounding', () => {
+    const xml = `<?xml version="1.0"?>
+      <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+                   xmlns:cprmv="https://standaarden.open-regels.nl/standards/cprmv/0.4.1#"
+                   xmlns:dct="http://purl.org/dc/terms/">
+        <decision id="d1">
+          <decisionTable id="table1">
+            <rule id="rule1">
+              <inputEntry id="_inputEntry_1"
+                          dct:source="61d1181d-a7e6-4da1-a121-89ca30fcb7b0"
+                          cprmv:sourceQuote="Woonadres"
+                          cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12">
+                <text>true</text>
+              </inputEntry>
+              <inputEntry id="_inputEntry_6">
+                <text>-</text>
+              </inputEntry>
+              <outputEntry id="_outputEntry_1" dct:source="4b7157ff-2bc6-4ada-ba36-8123e6038dfe">
+                <text>true</text>
+              </outputEntry>
+            </rule>
+          </decisionTable>
+        </decision>
+      </definitions>`;
+    const rules = extractRulesFromDMN(xml, 'https://regels.overheid.nl/services/x');
+
+    expect(rules[0].inputEntries).toEqual([
+      {
+        id: '_inputEntry_1',
+        text: 'true',
+        groundings: [
+          {
+            source: '61d1181d-a7e6-4da1-a121-89ca30fcb7b0',
+            sourceQuote: 'Woonadres',
+            isBasedOn: 'https://lokaleregelgeving.overheid.nl/CVDR645454/12',
+          },
+        ],
+      },
+      { id: '_inputEntry_6', text: '-', groundings: [] },
+    ]);
+    expect(rules[0].outputEntries).toEqual([
+      {
+        id: '_outputEntry_1',
+        text: 'true',
+        groundings: [
+          { source: '4b7157ff-2bc6-4ada-ba36-8123e6038dfe', sourceQuote: null, isBasedOn: null },
+        ],
+      },
+    ]);
+    // backward-compatible plain-text arrays stay unaffected
+    expect(rules[0].inputs).toEqual(['true', '-']);
+    expect(rules[0].outputs).toEqual(['true']);
+  });
+
+  test('extracts multiple groundings from a numbered attribute family (compound cell)', () => {
+    const xml = `<?xml version="1.0"?>
+      <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+                   xmlns:cprmv="https://standaarden.open-regels.nl/standards/cprmv/0.4.1#"
+                   xmlns:dct="http://purl.org/dc/terms/">
+        <decision id="d1">
+          <decisionTable id="table1">
+            <rule id="rule1">
+              <inputEntry id="_inputEntry_2"
+                          dct:source1="concept-A"
+                          cprmv:sourceQuote1="hij is meerderjarig"
+                          cprmv:isBasedOn1="jci1.3:c:BWBR0000001&amp;artikel=1"
+                          dct:source2="concept-B"
+                          cprmv:sourceQuote2="tot de pensioengerechtigde leeftijd"
+                          cprmv:isBasedOn2="BWBR0002221/Artikel_7a">
+                <text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</text>
+              </inputEntry>
+            </rule>
+          </decisionTable>
+        </decision>
+      </definitions>`;
+    const rules = extractRulesFromDMN(xml, 'https://regels.overheid.nl/services/x');
+
+    expect(rules[0].inputEntries[0].groundings).toEqual([
+      {
+        source: 'concept-A',
+        sourceQuote: 'hij is meerderjarig',
+        isBasedOn: 'jci1.3:c:BWBR0000001&artikel=1',
+      },
+      {
+        source: 'concept-B',
+        sourceQuote: 'tot de pensioengerechtigde leeftijd',
+        isBasedOn: 'BWBR0002221/Artikel_7a',
+      },
+    ]);
+  });
 });
 
 describe('validateDMNData', () => {

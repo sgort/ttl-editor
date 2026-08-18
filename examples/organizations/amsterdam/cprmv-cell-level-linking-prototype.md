@@ -5,6 +5,53 @@
 See [`CHANGELOG.md`](CHANGELOG.md) — consolidated across this doc, the companion
 spec-proposal doc, and the DMN evaluate-fix writeup.
 
+## Implementation status
+
+**Layers 1–4 below are now implemented and tested, not just prototyped.**
+Everything the rest of this document describes as a design has a real,
+verified counterpart:
+
+- **Layer 1** — Rule 1 of
+  [`individuele inkomenstoeslag-iknow-patched.dmn`](../individuele%20inkomenstoeslag-iknow-patched.dmn)
+  carries the real `dct:source`/`cprmv:sourceQuote`/`cprmv:isBasedOn`
+  attributes shown in this doc's "Before/after (DMN XML)" example below,
+  verbatim — not a hypothetical. `xmlns:cprmv`/`xmlns:dct` are declared on
+  `<dmn:definitions>`. Confirmed to still deploy cleanly to Operaton.
+- **Layer 2** — `src/utils/dmnHelpers.js`'s `extractRulesFromDMN()` reads
+  every cell's `id`, FEEL text, and groundings (including the numbered
+  attribute family for compound cells) into `rule.inputEntries`/
+  `outputEntries`. Fixing this also fixed a separate, previously-undiscovered
+  defect: every selector-based DMN lookup in this file
+  (`querySelectorAll('decisionTable')`, `'rule'`, etc.) silently matched
+  nothing against a real, `dmn:`-prefixed DMN — CSS type selectors match by
+  namespace, and an unprefixed selector implies the _null_ namespace, not
+  "any namespace". `extractRulesFromDMN()` (and `extractPrimaryDecisionKey()`)
+  now use a namespace-agnostic `getElementsByTagNameNS('*', localName)` helper
+  instead. Without this fix, none of Layer 2/3 could ever produce output for
+  this DMN (or any other real, prefixed DMN file) at all.
+- **Layer 3** — `src/utils/ttlGenerator.js`'s `generateDmnSection()` emits
+  exactly the "Concrete `.ttl` for Rule 1's grounded cells" structure below:
+  APT-style cells (have `cprmv:sourceQuote`) directly; CPT-style cells
+  (`dct:source` only) via a deduplicated, once-minted concept resource;
+  compound cells via a nested `cprmv:hasPart` list. Verified against the real
+  DMN, not just synthetic fixtures — see
+  `src/utils/ttlGenerator.cellGrounding.test.js`'s
+  "against the real Amsterdam DMN" suite.
+- **Layer 4** — `linked-data-explorer`'s `dmn-validation.service.ts` gained
+  `EXEC-011`/`EXEC-012` (cell-level `dct:source`/`cprmv:isBasedOn` format) and
+  `EXEC-013` (closes the pre-existing gap: `cprmv:extends`' format was never
+  checked). Fixing this also surfaced a second, more serious pre-existing
+  defect: `cprmvAttr()`'s primary lookup called libxmljs2's **setter** form
+  by mistake, so it always threw internally and was silently caught —
+  `EXEC-002` through `EXEC-010` (every prior rule-/decision-level CPRMV
+  check) had never actually fired, for any DMN, since the file was written.
+  Both fixed; see `dmn-validation.service.cellGrounding.test.ts` and
+  `docs/TESTS.md`'s "P7.1" entry in that repo.
+
+The worked examples, citation table, and design rationale below are accurate
+and unchanged by the implementation — they describe what the real code now
+does, not a proposal for what it might do.
+
 ## The gap
 
 DMN's own extension points for tying a decision to its legal authority —
@@ -253,21 +300,31 @@ The unnumbered `dct:source`/`cprmv:sourceQuote`/`cprmv:isBasedOn` form (used eve
 else in this doc) remains valid shorthand for the common case — exactly one grounding,
 equivalent to an implicit `1`.
 
-This layer alone is a documentation prototype only — the actual `.dmn` files are
-unchanged. Turning it into a real DMN-level change additionally needs
-`xmlns:cprmv="https://cprmv.open-regels.nl/0.3.0/"` on `<dmn:definitions>` (already
-present in `RONL_BerekenLeeftijden_CPRMV.dmn`, absent from this file) **and**
-`xmlns:dct="http://purl.org/dc/terms/"` (the same prefix already used throughout every
-published `.ttl` in this repo — `src/utils/constants.js` — now needed on the DMN side
-too, for `dct:source`), plus new validator checks in `linked-data-explorer`'s
+**Implemented** — see "Implementation status" above. `xmlns:cprmv` on
+`<dmn:definitions>` uses the current
+`https://standaarden.open-regels.nl/standards/cprmv/0.4.1#` namespace (matching
+`src/utils/constants.js`'s TTL prefix, `ttlGenerator.js`'s `DEFAULT_CPRMV_VERSION`,
+and this doc's own Layer 3 `.ttl` output), not the legacy 0.3.0 namespace
+`RONL_BerekenLeeftijden_CPRMV.dmn` still uses — that file predates the 0.4.1
+migration and is out of scope here. `xmlns:dct="http://purl.org/dc/terms/"` is
+declared alongside it. Both real, on the actual DMN file, not just this
+document. New validator checks landed in `linked-data-explorer`'s
 `dmn-validation.service.ts` — see Layer 4 below.
 
 ## Layer 2 — what our own DMN import code does with it today
 
+> **Implemented** — see "Implementation status" above. This section is kept as-written
+> because it's what motivated the fix; `extractRulesFromDMN()` now also reads every
+> cell's groundings into `rule.inputEntries`/`outputEntries` (`dmnHelpers.js`), and
+> namespace-agnostically, fixing a second defect this section's code excerpt shares in:
+> `querySelectorAll('inputEntry text')` silently matches nothing against a real,
+> `dmn:`-prefixed DMN.
+
 `individuele inkomenstoeslag-iknow.dmn` isn't published on its own. It goes through the
 CPSV Editor's DMN tab, gets imported via `src/utils/dmnHelpers.js`, and turned into `.ttl`
 by `src/utils/ttlGenerator.js`. **Both files are ours** — this isn't a third-party
-constraint, it's the thing that needs to change.
+constraint, it's the thing that needed to change (below is the code as it stood before
+this fix).
 
 `extractRulesFromDMN()` in `dmnHelpers.js` (lines 205–247) already reads rule-level CPRMV
 attributes and the FEEL text of every cell — but nothing else about the cells:
@@ -304,10 +361,14 @@ DMN `<rule>`, with no composition at all — confirmed against a real published 
     cprmv:rulesetType "decision-table" .
 ```
 
-So even with Layer 1 in place, a cell-level citation would currently be silently dropped
-on publish. Two files need extending, not one.
+So even with Layer 1 in place, a cell-level citation would previously have been silently
+dropped on publish — both files needed extending, not just one. Both now are.
 
 ## Layer 3 — what publishing a grounded cell should actually look like
+
+> **Implemented** — see "Implementation status" above. The patterns below (recursive
+> `hasPart`, `isBasedOn` URI construction) are exactly what `ttlGenerator.js`'s
+> cell-grounding emission code reuses; no new SHACL shapes were needed, as predicted.
 
 Two existing patterns in `ttlGenerator.js` already do exactly what a per-cell resource
 needs — neither has to be invented:
@@ -485,22 +546,35 @@ Two choices worth calling out:
 
 ## Layer 4 — validator-side follow-up
 
+> **Implemented** — see "Implementation status" above. Both bullets below landed as
+> designed. Fixing the first one also surfaced a second, unrelated, more serious defect
+> in the same file: `cprmvAttr()`'s primary namespace-aware lookup called libxmljs2's
+> **setter** overload by mistake, throwing internally on every call and being silently
+> swallowed by its own `catch` — meaning `EXEC-002` through `EXEC-010` (every prior
+> rule-/decision-level CPRMV check this validator has ever shipped) had never actually
+> fired, for any DMN, since the file was written. Fixed alongside the new checks; see
+> `linked-data-explorer`'s `docs/TESTS.md`, "P7.1".
+
 Both validators in `linked-data-explorer` are also ours to patch, the same way
 `dmn-validation.service.ts` was patched earlier for the missing-`id` and INT-007 issues:
 
-- **`dmn-validation.service.ts`** needs new `EXEC-*` checks once Layer 1 attributes are
-  real: that `dct:source` is a well-formed UUID (or a `pna-web.com` URL), and that
-  `cprmv:isBasedOn` matches either JCI grammar or a plain citation URL — not JCI
-  unconditionally, since Amsterdam's own data already uses both (this would also close a
-  pre-existing gap — the current validator never checks the format of the existing
-  rule-level `cprmv:extends` value at all).
-- **`shacl-validation.service.ts`** needs **no changes** for the core structure — Layer 3
+- **`dmn-validation.service.ts`** gained new `EXEC-*` checks now that Layer 1 attributes
+  are real: `EXEC-011` — `dct:source` is a well-formed UUID (or a `pna-web.com` URL);
+  `EXEC-012` — `cprmv:isBasedOn` matches either JCI grammar or a plain citation URL — not
+  JCI unconditionally, since Amsterdam's own data already uses both; `EXEC-013` — closes
+  the pre-existing gap where the validator never checked the format of the existing
+  rule-level `cprmv:extends` value at all.
+- **`shacl-validation.service.ts`** needed **no changes** for the core structure — Layer 3
   above only uses properties (`cprmv:sourceQuote`, `cprmv:isBasedOn`, `cprmv:hasPart`)
-  already present in `cprmv.shacl.ttl`'s `cprmv:RuleShape`. It would only need attention
-  if `dct:source`'s cardinality needs constraining (currently unconstrained by any
-  shape, which is fine for an optional single-valued property but worth confirming).
+  already present in `cprmv.shacl.ttl`'s `cprmv:RuleShape`. `dct:source`'s cardinality
+  remains unconstrained by any shape — fine for an optional single-valued property, left
+  as a possible future refinement rather than a blocker.
 
 ## Open questions before this should be built for real
+
+> Kept as historical design record — all four questions below were resolved before
+> implementation started, and none were reopened by building the real thing. Two further
+> implementation-only decisions, not anticipated by this section, are noted at the end.
 
 See the companion spec-owner doc's §6 for the full list, including the actual answers.
 The questions raised directly by this prototype, now resolved:
@@ -524,3 +598,21 @@ Still open, relevant to this prototype specifically: whether `cprmv:ruleType` an
 `cprmv:rulesetType` (both used in the "Concrete `.ttl`" block above) are actually
 defined anywhere in CPRMV — raised unprompted by the spec owner, unresolved (companion
 doc's open question 8), flagged inline in the turtle above.
+
+**Two implementation-only decisions, made building the real code, not anticipated
+above:**
+
+- **APT vs. CPT is inferred from `cprmv:sourceQuote`'s presence, not carried
+  explicitly.** The DMN attribute layer never records which iKnow element kind grounds a
+  cell — only `HvA_annotaties.xml` distinguishes `<textannotation>` (APT) from
+  `<concept>` (CPT). `ttlGenerator.js` infers it from whether `cprmv:sourceQuote` is
+  present, using the source data's own invariant that a concept never carries a quote
+  (confirmed against all of Rule 1's real groundings). Correct for every case seen so
+  far; would need revisiting if a future annotation source ever puts a quote on a
+  concept-level grounding.
+- **The `hva.pna-web.com` id-resolution URL is hardcoded, not derived from the DMN.**
+  `dct:source`'s raw value is a bare iKnow id with no indication of which annotation tool
+  instance issued it. `ttlGenerator.js` passes an already-full URI straight through
+  (`isValidUri`), but falls back to Amsterdam's own `pna-web.com` domain for a bare id —
+  correct for this DMN, not yet general for a future DMN from a different organization's
+  annotation tool.
