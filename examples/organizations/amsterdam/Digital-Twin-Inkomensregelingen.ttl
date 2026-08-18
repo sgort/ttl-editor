@@ -1,0 +1,1828 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/digital-twin> a cpsv:PublicService ;
+    dct:identifier "digital-twin" ;
+    dct:title "Digital Twin Inkomensregelingen"@nl ;
+    dct:description "iKnow export patched voor verzameling regelingen ism HvA & PNA groep gespecificeerd; aka Digital Twin- Gemeente Amsterdam"@nl ;
+    cv:thematicArea <https://www.amsterdam.nl/werk-en-inkomen/regelingen-bij-laag-inkomen-pak-je-kans/regelingen-alfabet/extra-geld-als-u-al-lang-een-laag/> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> ;
+    dcat:keyword "digitalTwin"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/25698/Gemeente_Amsterdam> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/digital-twin/dmn>  .
+
+<https://publications.europa.eu/resource/authority/language/NL> a dct:LinguisticSystem .
+
+<https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> a skos:Concept .
+
+<https://www.amsterdam.nl/werk-en-inkomen/regelingen-bij-laag-inkomen-pak-je-kans/regelingen-alfabet/extra-geld-als-u-al-lang-een-laag/> a skos:Concept .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/25698/Gemeente_Amsterdam> a cv:PublicOrganisation ;
+    dct:identifier "Gemeente_Amsterdam" ;
+    skos:prefLabel "Gemeente Amsterdam"@nl ;
+    foaf:homepage <https://www.amsterdam.nl/> ;
+    dct:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Gemeente_Amsterdam_logo.png> ;
+    schema:image <./assets/Gemeente_Amsterdam_logo.png>  .
+
+<https://publications.europa.eu/resource/authority/country/NLD> a dct:Location .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> a eli:LegalResource ;
+    dct:identifier "jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01" ;
+    dct:title "Artikel 36. Individuele inkomenstoeslag"@nl ;
+    dct:description "Iedereen die kan werken maar het op de arbeidsmarkt zonder ondersteuning niet redt, valt onder de Participatiewet. De wet moet ervoor zorgen dat meer mensen werk vinden, ook mensen met een arbeidsbeperking."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/iKnow> ;
+    eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/digital-twin/dmn> a cprmv:DecisionModel ;
+    dct:identifier "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" ;
+    dct:title "HvA_full_dmn_export-patched.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/digital-twin> ;
+    dct:source <https://regels.overheid.nl/services/digital-twin/dmn/file> ;
+    cprmv:deploymentId "5daf9cde-9aee-11f1-a004-da7345014081" ;
+    cprmv:deployedAt "2026-08-18T10:19:59.556Z"^^xsd:dateTime ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_677a120b-022d-4c77-af8a-df9abc3039af> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_677a120b-022d-4c77-af8a-df9abc3039af" ;
+    dct:title "Decision rule _677a120b-022d-4c77-af8a-df9abc3039af"@nl ;
+    dct:description "Decision rule _677a120b-022d-4c77-af8a-df9abc3039af of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_0e97a184-702b-406d-87b6-b268471587e1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_0e97a184-702b-406d-87b6-b268471587e1" ;
+    dct:title "Decision rule _0e97a184-702b-406d-87b6-b268471587e1"@nl ;
+    dct:description "Decision rule _0e97a184-702b-406d-87b6-b268471587e1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_8e352d02-a993-4928-b565-bd275a44800d> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_8e352d02-a993-4928-b565-bd275a44800d" ;
+    dct:title "Decision rule _8e352d02-a993-4928-b565-bd275a44800d"@nl ;
+    dct:description "Decision rule _8e352d02-a993-4928-b565-bd275a44800d of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_a5b97756-0f7d-4c2e-aef5-2dd6ec9149bc> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_a5b97756-0f7d-4c2e-aef5-2dd6ec9149bc" ;
+    dct:title "Decision rule _a5b97756-0f7d-4c2e-aef5-2dd6ec9149bc"@nl ;
+    dct:description "Decision rule _a5b97756-0f7d-4c2e-aef5-2dd6ec9149bc of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2a0ee9b6-be5b-4d98-9c8c-790fae36d5b0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2a0ee9b6-be5b-4d98-9c8c-790fae36d5b0" ;
+    dct:title "Decision rule _2a0ee9b6-be5b-4d98-9c8c-790fae36d5b0"@nl ;
+    dct:description "Decision rule _2a0ee9b6-be5b-4d98-9c8c-790fae36d5b0 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2f86c313-1a49-49ec-a4f9-564eac3d2a94> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2f86c313-1a49-49ec-a4f9-564eac3d2a94" ;
+    dct:title "Decision rule _2f86c313-1a49-49ec-a4f9-564eac3d2a94"@nl ;
+    dct:description "Decision rule _2f86c313-1a49-49ec-a4f9-564eac3d2a94 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_20579e0e-c7cd-4344-9089-92349fc4a3f6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_20579e0e-c7cd-4344-9089-92349fc4a3f6" ;
+    dct:title "Decision rule _20579e0e-c7cd-4344-9089-92349fc4a3f6"@nl ;
+    dct:description "Decision rule _20579e0e-c7cd-4344-9089-92349fc4a3f6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_35e87902-9dfa-4279-9ceb-4a4cf74b8b81> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_35e87902-9dfa-4279-9ceb-4a4cf74b8b81" ;
+    dct:title "Decision rule _35e87902-9dfa-4279-9ceb-4a4cf74b8b81"@nl ;
+    dct:description "Decision rule _35e87902-9dfa-4279-9ceb-4a4cf74b8b81 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_33402962-f23a-4f59-8911-f5282ef55322> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_33402962-f23a-4f59-8911-f5282ef55322" ;
+    dct:title "Decision rule _33402962-f23a-4f59-8911-f5282ef55322"@nl ;
+    dct:description "Decision rule _33402962-f23a-4f59-8911-f5282ef55322 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_5d921a8f-2239-4716-b2fb-cb99e5fb6b54> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_5d921a8f-2239-4716-b2fb-cb99e5fb6b54" ;
+    dct:title "Decision rule _5d921a8f-2239-4716-b2fb-cb99e5fb6b54"@nl ;
+    dct:description "Decision rule _5d921a8f-2239-4716-b2fb-cb99e5fb6b54 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_270abdf1-9c15-42ea-aa1b-ea8ecee471ce> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_270abdf1-9c15-42ea-aa1b-ea8ecee471ce" ;
+    dct:title "Decision rule _270abdf1-9c15-42ea-aa1b-ea8ecee471ce"@nl ;
+    dct:description "Decision rule _270abdf1-9c15-42ea-aa1b-ea8ecee471ce of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2c45be4a-68cf-411c-803a-17b5655c260e> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2c45be4a-68cf-411c-803a-17b5655c260e" ;
+    dct:title "Decision rule _2c45be4a-68cf-411c-803a-17b5655c260e"@nl ;
+    dct:description "Decision rule _2c45be4a-68cf-411c-803a-17b5655c260e of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_37a1cdc5-003c-4567-9bdf-3b85b3b8c6df> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_37a1cdc5-003c-4567-9bdf-3b85b3b8c6df" ;
+    dct:title "Decision rule _37a1cdc5-003c-4567-9bdf-3b85b3b8c6df"@nl ;
+    dct:description "Decision rule _37a1cdc5-003c-4567-9bdf-3b85b3b8c6df of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_92df5da4-67a6-48ce-b9c2-452ea22fa450> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_92df5da4-67a6-48ce-b9c2-452ea22fa450" ;
+    dct:title "Decision rule _92df5da4-67a6-48ce-b9c2-452ea22fa450"@nl ;
+    dct:description "Decision rule _92df5da4-67a6-48ce-b9c2-452ea22fa450 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_906b290c-e69f-4dde-beb4-23c81df8897a> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_906b290c-e69f-4dde-beb4-23c81df8897a" ;
+    dct:title "Decision rule _906b290c-e69f-4dde-beb4-23c81df8897a"@nl ;
+    dct:description "Decision rule _906b290c-e69f-4dde-beb4-23c81df8897a of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_51e55b02-cef0-45ec-8058-8d31f4d0ba6d> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_51e55b02-cef0-45ec-8058-8d31f4d0ba6d" ;
+    dct:title "Decision rule _51e55b02-cef0-45ec-8058-8d31f4d0ba6d"@nl ;
+    dct:description "Decision rule _51e55b02-cef0-45ec-8058-8d31f4d0ba6d of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_434c7b55-c241-4598-9b24-8bc31f0fed5f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_434c7b55-c241-4598-9b24-8bc31f0fed5f" ;
+    dct:title "Decision rule _434c7b55-c241-4598-9b24-8bc31f0fed5f"@nl ;
+    dct:description "Decision rule _434c7b55-c241-4598-9b24-8bc31f0fed5f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_799326c1-84d7-469d-a107-f80a410fd35e> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_799326c1-84d7-469d-a107-f80a410fd35e" ;
+    dct:title "Decision rule _799326c1-84d7-469d-a107-f80a410fd35e"@nl ;
+    dct:description "Decision rule _799326c1-84d7-469d-a107-f80a410fd35e of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_799609ad-0dc4-44c9-979a-fa48919f9ae3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_799609ad-0dc4-44c9-979a-fa48919f9ae3" ;
+    dct:title "Decision rule _799609ad-0dc4-44c9-979a-fa48919f9ae3"@nl ;
+    dct:description "Decision rule _799609ad-0dc4-44c9-979a-fa48919f9ae3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f8f7e6fd-2c43-4a02-8a55-c78dd3d1af67> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f8f7e6fd-2c43-4a02-8a55-c78dd3d1af67" ;
+    dct:title "Decision rule _f8f7e6fd-2c43-4a02-8a55-c78dd3d1af67"@nl ;
+    dct:description "Decision rule _f8f7e6fd-2c43-4a02-8a55-c78dd3d1af67 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_b2641aad-30ec-465e-a1df-7895803f9098> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_b2641aad-30ec-465e-a1df-7895803f9098" ;
+    dct:title "Decision rule _b2641aad-30ec-465e-a1df-7895803f9098"@nl ;
+    dct:description "Decision rule _b2641aad-30ec-465e-a1df-7895803f9098 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_812b6012-ebf5-4444-9668-a48aa7f585b2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_812b6012-ebf5-4444-9668-a48aa7f585b2" ;
+    dct:title "Decision rule _812b6012-ebf5-4444-9668-a48aa7f585b2"@nl ;
+    dct:description "Decision rule _812b6012-ebf5-4444-9668-a48aa7f585b2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5d364321-409e-432f-83f2-f04cc26035fc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_4f6b5cbd-3759-48ae-9c91-8263feb2c275> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_4f6b5cbd-3759-48ae-9c91-8263feb2c275" ;
+    dct:title "Decision rule _4f6b5cbd-3759-48ae-9c91-8263feb2c275"@nl ;
+    dct:description "Decision rule _4f6b5cbd-3759-48ae-9c91-8263feb2c275 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5d364321-409e-432f-83f2-f04cc26035fc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f7e6f847-62ca-40c1-8b51-8ed6ab40ac58> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f7e6f847-62ca-40c1-8b51-8ed6ab40ac58" ;
+    dct:title "Decision rule _f7e6f847-62ca-40c1-8b51-8ed6ab40ac58"@nl ;
+    dct:description "Decision rule _f7e6f847-62ca-40c1-8b51-8ed6ab40ac58 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5d364321-409e-432f-83f2-f04cc26035fc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_3cc4888a-2fab-4ffe-a6bd-c4d88625778c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_3cc4888a-2fab-4ffe-a6bd-c4d88625778c" ;
+    dct:title "Decision rule _3cc4888a-2fab-4ffe-a6bd-c4d88625778c"@nl ;
+    dct:description "Decision rule _3cc4888a-2fab-4ffe-a6bd-c4d88625778c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_39e2b2d4-2d52-4120-9951-332a1759f8e7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_39e2b2d4-2d52-4120-9951-332a1759f8e7" ;
+    dct:title "Decision rule _39e2b2d4-2d52-4120-9951-332a1759f8e7"@nl ;
+    dct:description "Decision rule _39e2b2d4-2d52-4120-9951-332a1759f8e7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_7b4f09d0-0c52-4b2c-a964-a870eae117d9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_7b4f09d0-0c52-4b2c-a964-a870eae117d9" ;
+    dct:title "Decision rule _7b4f09d0-0c52-4b2c-a964-a870eae117d9"@nl ;
+    dct:description "Decision rule _7b4f09d0-0c52-4b2c-a964-a870eae117d9 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d24b1514-4a8b-422a-ae73-ff0276348f63> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d24b1514-4a8b-422a-ae73-ff0276348f63" ;
+    dct:title "Decision rule _d24b1514-4a8b-422a-ae73-ff0276348f63"@nl ;
+    dct:description "Decision rule _d24b1514-4a8b-422a-ae73-ff0276348f63 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_75be8f30-44d4-41d2-8756-6d02678dd186> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_75be8f30-44d4-41d2-8756-6d02678dd186" ;
+    dct:title "Decision rule _75be8f30-44d4-41d2-8756-6d02678dd186"@nl ;
+    dct:description "Decision rule _75be8f30-44d4-41d2-8756-6d02678dd186 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_a2469469-aa44-4c40-b0af-d3fb98ff3ce0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_a2469469-aa44-4c40-b0af-d3fb98ff3ce0" ;
+    dct:title "Decision rule _a2469469-aa44-4c40-b0af-d3fb98ff3ce0"@nl ;
+    dct:description "Decision rule _a2469469-aa44-4c40-b0af-d3fb98ff3ce0 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_6041f4d4-35e8-4377-993d-5b2a879c31e4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f5a507c7-9929-4ccd-a853-2acbb95ea709> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f5a507c7-9929-4ccd-a853-2acbb95ea709" ;
+    dct:title "Decision rule _f5a507c7-9929-4ccd-a853-2acbb95ea709"@nl ;
+    dct:description "Decision rule _f5a507c7-9929-4ccd-a853-2acbb95ea709 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_6041f4d4-35e8-4377-993d-5b2a879c31e4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_6f32117c-6edc-45d0-b494-8d5240cff290> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_6f32117c-6edc-45d0-b494-8d5240cff290" ;
+    dct:title "Decision rule _6f32117c-6edc-45d0-b494-8d5240cff290"@nl ;
+    dct:description "Decision rule _6f32117c-6edc-45d0-b494-8d5240cff290 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_6041f4d4-35e8-4377-993d-5b2a879c31e4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_b4510be6-0e12-40b5-b064-1b65a0100a5a> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_b4510be6-0e12-40b5-b064-1b65a0100a5a" ;
+    dct:title "Decision rule _b4510be6-0e12-40b5-b064-1b65a0100a5a"@nl ;
+    dct:description "Decision rule _b4510be6-0e12-40b5-b064-1b65a0100a5a of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_6041f4d4-35e8-4377-993d-5b2a879c31e4_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_1179a7c6-f19e-4c5c-b74c-ef81478f0671> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_1179a7c6-f19e-4c5c-b74c-ef81478f0671" ;
+    dct:title "Decision rule _1179a7c6-f19e-4c5c-b74c-ef81478f0671"@nl ;
+    dct:description "Decision rule _1179a7c6-f19e-4c5c-b74c-ef81478f0671 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_292b23b3-e8c4-4351-8be4-9273826fa19e> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_292b23b3-e8c4-4351-8be4-9273826fa19e" ;
+    dct:title "Decision rule _292b23b3-e8c4-4351-8be4-9273826fa19e"@nl ;
+    dct:description "Decision rule _292b23b3-e8c4-4351-8be4-9273826fa19e of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_879511e1-ccfe-49f9-b66a-3e1396c806a0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_879511e1-ccfe-49f9-b66a-3e1396c806a0" ;
+    dct:title "Decision rule _879511e1-ccfe-49f9-b66a-3e1396c806a0"@nl ;
+    dct:description "Decision rule _879511e1-ccfe-49f9-b66a-3e1396c806a0 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_5d5c57f2-5cbc-40ef-98df-4a3d003d4d84> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_5d5c57f2-5cbc-40ef-98df-4a3d003d4d84" ;
+    dct:title "Decision rule _5d5c57f2-5cbc-40ef-98df-4a3d003d4d84"@nl ;
+    dct:description "Decision rule _5d5c57f2-5cbc-40ef-98df-4a3d003d4d84 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_1d8e250a-09e0-4fcc-b3d5-03d908447382> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_1d8e250a-09e0-4fcc-b3d5-03d908447382" ;
+    dct:title "Decision rule _1d8e250a-09e0-4fcc-b3d5-03d908447382"@nl ;
+    dct:description "Decision rule _1d8e250a-09e0-4fcc-b3d5-03d908447382 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f75504d6-e885-4c9f-9cd3-5491dcfac18c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f75504d6-e885-4c9f-9cd3-5491dcfac18c" ;
+    dct:title "Decision rule _f75504d6-e885-4c9f-9cd3-5491dcfac18c"@nl ;
+    dct:description "Decision rule _f75504d6-e885-4c9f-9cd3-5491dcfac18c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_e31cee21-05cf-4ded-bb3f-69fa123b7e42> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_e31cee21-05cf-4ded-bb3f-69fa123b7e42" ;
+    dct:title "Decision rule _e31cee21-05cf-4ded-bb3f-69fa123b7e42"@nl ;
+    dct:description "Decision rule _e31cee21-05cf-4ded-bb3f-69fa123b7e42 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_9439cfee-4abb-447e-9002-a1254b59442c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2d520b5d-02ba-4d56-9b13-3c22c3dc8ff6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2d520b5d-02ba-4d56-9b13-3c22c3dc8ff6" ;
+    dct:title "Decision rule _2d520b5d-02ba-4d56-9b13-3c22c3dc8ff6"@nl ;
+    dct:description "Decision rule _2d520b5d-02ba-4d56-9b13-3c22c3dc8ff6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_9439cfee-4abb-447e-9002-a1254b59442c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_7352342e-0fe6-4418-ad0f-3ade6f76a05c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_7352342e-0fe6-4418-ad0f-3ade6f76a05c" ;
+    dct:title "Decision rule _7352342e-0fe6-4418-ad0f-3ade6f76a05c"@nl ;
+    dct:description "Decision rule _7352342e-0fe6-4418-ad0f-3ade6f76a05c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_a92ecca0-d6bf-463b-809c-82aa3d0f95b0_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_8d1c99f7-5f42-43ec-bcf8-99272d394421> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_8d1c99f7-5f42-43ec-bcf8-99272d394421" ;
+    dct:title "Decision rule _8d1c99f7-5f42-43ec-bcf8-99272d394421"@nl ;
+    dct:description "Decision rule _8d1c99f7-5f42-43ec-bcf8-99272d394421 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_a92ecca0-d6bf-463b-809c-82aa3d0f95b0_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_11454cef-bc05-45d5-bfa1-34040f898ee4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_11454cef-bc05-45d5-bfa1-34040f898ee4" ;
+    dct:title "Decision rule _11454cef-bc05-45d5-bfa1-34040f898ee4"@nl ;
+    dct:description "Decision rule _11454cef-bc05-45d5-bfa1-34040f898ee4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_929a8396-6d29-492a-b290-6db708cfa378> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_929a8396-6d29-492a-b290-6db708cfa378" ;
+    dct:title "Decision rule _929a8396-6d29-492a-b290-6db708cfa378"@nl ;
+    dct:description "Decision rule _929a8396-6d29-492a-b290-6db708cfa378 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_95b37bac-c4d1-4bd1-9596-f56ccbf42d7d> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_95b37bac-c4d1-4bd1-9596-f56ccbf42d7d" ;
+    dct:title "Decision rule _95b37bac-c4d1-4bd1-9596-f56ccbf42d7d"@nl ;
+    dct:description "Decision rule _95b37bac-c4d1-4bd1-9596-f56ccbf42d7d of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d838f303-ce22-411e-8e45-eaeef73eb813> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d838f303-ce22-411e-8e45-eaeef73eb813" ;
+    dct:title "Decision rule _d838f303-ce22-411e-8e45-eaeef73eb813"@nl ;
+    dct:description "Decision rule _d838f303-ce22-411e-8e45-eaeef73eb813 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ae01d740-f954-4a84-8dd8-a28fc3660cc6_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_b1ea1f72-b155-451d-9336-9bb524dfb010> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_b1ea1f72-b155-451d-9336-9bb524dfb010" ;
+    dct:title "Decision rule _b1ea1f72-b155-451d-9336-9bb524dfb010"@nl ;
+    dct:description "Decision rule _b1ea1f72-b155-451d-9336-9bb524dfb010 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ae01d740-f954-4a84-8dd8-a28fc3660cc6_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_3c16fff8-343a-474c-b9cb-c34f0131ca52> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_3c16fff8-343a-474c-b9cb-c34f0131ca52" ;
+    dct:title "Decision rule _3c16fff8-343a-474c-b9cb-c34f0131ca52"@nl ;
+    dct:description "Decision rule _3c16fff8-343a-474c-b9cb-c34f0131ca52 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ae01d740-f954-4a84-8dd8-a28fc3660cc6_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8" ;
+    dct:title "Decision rule _07f36f57-eece-49a5-a954-7f3b4aa4c1b8"@nl ;
+    dct:description "Decision rule _07f36f57-eece-49a5-a954-7f3b4aa4c1b8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_145> <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_148> <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_149> <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_150> <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_152> <https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_outputentry_15> ) .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_840c2427-15de-4ebb-918f-d46280c05ace> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_840c2427-15de-4ebb-918f-d46280c05ace" ;
+    dct:title "Decision rule _840c2427-15de-4ebb-918f-d46280c05ace"@nl ;
+    dct:description "Decision rule _840c2427-15de-4ebb-918f-d46280c05ace of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_86712641-15db-445d-849f-be567f65e825> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_86712641-15db-445d-849f-be567f65e825" ;
+    dct:title "Decision rule _86712641-15db-445d-849f-be567f65e825"@nl ;
+    dct:description "Decision rule _86712641-15db-445d-849f-be567f65e825 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2fa4ea93-bf8c-4a94-9d28-869dbdcd64ce> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2fa4ea93-bf8c-4a94-9d28-869dbdcd64ce" ;
+    dct:title "Decision rule _2fa4ea93-bf8c-4a94-9d28-869dbdcd64ce"@nl ;
+    dct:description "Decision rule _2fa4ea93-bf8c-4a94-9d28-869dbdcd64ce of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d7fded55-485d-44fc-9193-e274fc4ef377> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d7fded55-485d-44fc-9193-e274fc4ef377" ;
+    dct:title "Decision rule _d7fded55-485d-44fc-9193-e274fc4ef377"@nl ;
+    dct:description "Decision rule _d7fded55-485d-44fc-9193-e274fc4ef377 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_df138651-1edc-4573-88a7-46b44a31bd2c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_df138651-1edc-4573-88a7-46b44a31bd2c" ;
+    dct:title "Decision rule _df138651-1edc-4573-88a7-46b44a31bd2c"@nl ;
+    dct:description "Decision rule _df138651-1edc-4573-88a7-46b44a31bd2c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_1fd5fa9b-4052-477d-9837-f18f59e0b1be_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_42416bd4-0d69-4738-9675-7c3e68c80d48> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_42416bd4-0d69-4738-9675-7c3e68c80d48" ;
+    dct:title "Decision rule _42416bd4-0d69-4738-9675-7c3e68c80d48"@nl ;
+    dct:description "Decision rule _42416bd4-0d69-4738-9675-7c3e68c80d48 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_1fd5fa9b-4052-477d-9837-f18f59e0b1be_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_9eaeb37b-9a3d-4754-bd8e-0ccc74fa4e53> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_9eaeb37b-9a3d-4754-bd8e-0ccc74fa4e53" ;
+    dct:title "Decision rule _9eaeb37b-9a3d-4754-bd8e-0ccc74fa4e53"@nl ;
+    dct:description "Decision rule _9eaeb37b-9a3d-4754-bd8e-0ccc74fa4e53 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_1fd5fa9b-4052-477d-9837-f18f59e0b1be_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_e656a9dd-ad8f-45de-b0dc-18fd3f2e4306> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_e656a9dd-ad8f-45de-b0dc-18fd3f2e4306" ;
+    dct:title "Decision rule _e656a9dd-ad8f-45de-b0dc-18fd3f2e4306"@nl ;
+    dct:description "Decision rule _e656a9dd-ad8f-45de-b0dc-18fd3f2e4306 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_299e6c91-3fe5-49aa-88cc-efd03583ae87_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_628188d0-a94d-49de-98d0-2363614bee7d> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_628188d0-a94d-49de-98d0-2363614bee7d" ;
+    dct:title "Decision rule _628188d0-a94d-49de-98d0-2363614bee7d"@nl ;
+    dct:description "Decision rule _628188d0-a94d-49de-98d0-2363614bee7d of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_299e6c91-3fe5-49aa-88cc-efd03583ae87_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_e0731b1b-8b32-48e9-9f2f-18f414e94e0f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_e0731b1b-8b32-48e9-9f2f-18f414e94e0f" ;
+    dct:title "Decision rule _e0731b1b-8b32-48e9-9f2f-18f414e94e0f"@nl ;
+    dct:description "Decision rule _e0731b1b-8b32-48e9-9f2f-18f414e94e0f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_47e5f1bc-2557-44f3-9aa2-07e520126f33_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_9fad8063-bf00-4a4c-8896-b7de9033dd43> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_9fad8063-bf00-4a4c-8896-b7de9033dd43" ;
+    dct:title "Decision rule _9fad8063-bf00-4a4c-8896-b7de9033dd43"@nl ;
+    dct:description "Decision rule _9fad8063-bf00-4a4c-8896-b7de9033dd43 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_47e5f1bc-2557-44f3-9aa2-07e520126f33_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d7aa0a20-4e0c-4c6c-a576-e87ac911a38c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d7aa0a20-4e0c-4c6c-a576-e87ac911a38c" ;
+    dct:title "Decision rule _d7aa0a20-4e0c-4c6c-a576-e87ac911a38c"@nl ;
+    dct:description "Decision rule _d7aa0a20-4e0c-4c6c-a576-e87ac911a38c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_47e5f1bc-2557-44f3-9aa2-07e520126f33_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_6ad5d7f2-0841-4d80-97b3-e33ad479d52f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_6ad5d7f2-0841-4d80-97b3-e33ad479d52f" ;
+    dct:title "Decision rule _6ad5d7f2-0841-4d80-97b3-e33ad479d52f"@nl ;
+    dct:description "Decision rule _6ad5d7f2-0841-4d80-97b3-e33ad479d52f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_47e5f1bc-2557-44f3-9aa2-07e520126f33_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_b9abc484-2f16-4764-aa42-5eddf3278dbc> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_b9abc484-2f16-4764-aa42-5eddf3278dbc" ;
+    dct:title "Decision rule _b9abc484-2f16-4764-aa42-5eddf3278dbc"@nl ;
+    dct:description "Decision rule _b9abc484-2f16-4764-aa42-5eddf3278dbc of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_74f5ecbd-ce21-4245-8575-fbf4775f79d6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_74f5ecbd-ce21-4245-8575-fbf4775f79d6" ;
+    dct:title "Decision rule _74f5ecbd-ce21-4245-8575-fbf4775f79d6"@nl ;
+    dct:description "Decision rule _74f5ecbd-ce21-4245-8575-fbf4775f79d6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f7064f80-2710-412b-8a4e-e5c09d2a9518> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f7064f80-2710-412b-8a4e-e5c09d2a9518" ;
+    dct:title "Decision rule _f7064f80-2710-412b-8a4e-e5c09d2a9518"@nl ;
+    dct:description "Decision rule _f7064f80-2710-412b-8a4e-e5c09d2a9518 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_22bd0c3d-11ac-4e73-b395-590850f05ac2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_22bd0c3d-11ac-4e73-b395-590850f05ac2" ;
+    dct:title "Decision rule _22bd0c3d-11ac-4e73-b395-590850f05ac2"@nl ;
+    dct:description "Decision rule _22bd0c3d-11ac-4e73-b395-590850f05ac2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_359be1c8-b377-4a45-8c0b-167c04ad6370> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_359be1c8-b377-4a45-8c0b-167c04ad6370" ;
+    dct:title "Decision rule _359be1c8-b377-4a45-8c0b-167c04ad6370"@nl ;
+    dct:description "Decision rule _359be1c8-b377-4a45-8c0b-167c04ad6370 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_0b4b669d-27b9-44c9-85a1-fdc2a854d8c6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_0b4b669d-27b9-44c9-85a1-fdc2a854d8c6" ;
+    dct:title "Decision rule _0b4b669d-27b9-44c9-85a1-fdc2a854d8c6"@nl ;
+    dct:description "Decision rule _0b4b669d-27b9-44c9-85a1-fdc2a854d8c6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_6b21f887-2e56-4e42-91f7-6866c26faed7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_6b21f887-2e56-4e42-91f7-6866c26faed7" ;
+    dct:title "Decision rule _6b21f887-2e56-4e42-91f7-6866c26faed7"@nl ;
+    dct:description "Decision rule _6b21f887-2e56-4e42-91f7-6866c26faed7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_f679a19b-de16-4c71-ba0f-e3033f001bd8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_f679a19b-de16-4c71-ba0f-e3033f001bd8" ;
+    dct:title "Decision rule _f679a19b-de16-4c71-ba0f-e3033f001bd8"@nl ;
+    dct:description "Decision rule _f679a19b-de16-4c71-ba0f-e3033f001bd8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_75e5d5af-4e62-4d87-b978-0371d010b561> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_75e5d5af-4e62-4d87-b978-0371d010b561" ;
+    dct:title "Decision rule _75e5d5af-4e62-4d87-b978-0371d010b561"@nl ;
+    dct:description "Decision rule _75e5d5af-4e62-4d87-b978-0371d010b561 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_2c19aabb-c87b-48fe-9864-e1153a161ab1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_2c19aabb-c87b-48fe-9864-e1153a161ab1" ;
+    dct:title "Decision rule _2c19aabb-c87b-48fe-9864-e1153a161ab1"@nl ;
+    dct:description "Decision rule _2c19aabb-c87b-48fe-9864-e1153a161ab1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d625ce79-f574-43d4-b0c9-61c320d043a5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d625ce79-f574-43d4-b0c9-61c320d043a5" ;
+    dct:title "Decision rule _d625ce79-f574-43d4-b0c9-61c320d043a5"@nl ;
+    dct:description "Decision rule _d625ce79-f574-43d4-b0c9-61c320d043a5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_c1f9e1d9-5bf8-45ce-b124-83dbf1e23e92> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_c1f9e1d9-5bf8-45ce-b124-83dbf1e23e92" ;
+    dct:title "Decision rule _c1f9e1d9-5bf8-45ce-b124-83dbf1e23e92"@nl ;
+    dct:description "Decision rule _c1f9e1d9-5bf8-45ce-b124-83dbf1e23e92 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_3ac0151d-4fb0-4b50-af37-30c32d6314ad> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_3ac0151d-4fb0-4b50-af37-30c32d6314ad" ;
+    dct:title "Decision rule _3ac0151d-4fb0-4b50-af37-30c32d6314ad"@nl ;
+    dct:description "Decision rule _3ac0151d-4fb0-4b50-af37-30c32d6314ad of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_52e3eb1b-1561-431c-9e8b-e9314f20836f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_8701fbf3-d20f-42c9-bca4-8fd0eb40f50e> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_8701fbf3-d20f-42c9-bca4-8fd0eb40f50e" ;
+    dct:title "Decision rule _8701fbf3-d20f-42c9-bca4-8fd0eb40f50e"@nl ;
+    dct:description "Decision rule _8701fbf3-d20f-42c9-bca4-8fd0eb40f50e of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_70476381-08ed-4db9-8602-edcc50341607_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_1e3112cc-b3ed-4bc6-bca8-d474bc4b8aea> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_1e3112cc-b3ed-4bc6-bca8-d474bc4b8aea" ;
+    dct:title "Decision rule _1e3112cc-b3ed-4bc6-bca8-d474bc4b8aea"@nl ;
+    dct:description "Decision rule _1e3112cc-b3ed-4bc6-bca8-d474bc4b8aea of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_70476381-08ed-4db9-8602-edcc50341607_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_33029a9e-943a-4c73-8400-d5f4393daed5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_33029a9e-943a-4c73-8400-d5f4393daed5" ;
+    dct:title "Decision rule _33029a9e-943a-4c73-8400-d5f4393daed5"@nl ;
+    dct:description "Decision rule _33029a9e-943a-4c73-8400-d5f4393daed5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_648d0c42-baf4-4760-ba25-f2eb72e2f27a> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_648d0c42-baf4-4760-ba25-f2eb72e2f27a" ;
+    dct:title "Decision rule _648d0c42-baf4-4760-ba25-f2eb72e2f27a"@nl ;
+    dct:description "Decision rule _648d0c42-baf4-4760-ba25-f2eb72e2f27a of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_8e6726a9-4231-46f1-9ed3-3506f80ec6b2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_8e6726a9-4231-46f1-9ed3-3506f80ec6b2" ;
+    dct:title "Decision rule _8e6726a9-4231-46f1-9ed3-3506f80ec6b2"@nl ;
+    dct:description "Decision rule _8e6726a9-4231-46f1-9ed3-3506f80ec6b2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_6b8f8964-3e17-4a87-8239-29fc63740efc> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_6b8f8964-3e17-4a87-8239-29fc63740efc" ;
+    dct:title "Decision rule _6b8f8964-3e17-4a87-8239-29fc63740efc"@nl ;
+    dct:description "Decision rule _6b8f8964-3e17-4a87-8239-29fc63740efc of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_29f16dd8-cfe3-440b-af64-9be7129f27df> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_29f16dd8-cfe3-440b-af64-9be7129f27df" ;
+    dct:title "Decision rule _29f16dd8-cfe3-440b-af64-9be7129f27df"@nl ;
+    dct:description "Decision rule _29f16dd8-cfe3-440b-af64-9be7129f27df of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_22957cd7-de94-4ab5-a4db-78ac9ce888b4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_22957cd7-de94-4ab5-a4db-78ac9ce888b4" ;
+    dct:title "Decision rule _22957cd7-de94-4ab5-a4db-78ac9ce888b4"@nl ;
+    dct:description "Decision rule _22957cd7-de94-4ab5-a4db-78ac9ce888b4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_912d27e0-1b8f-47bd-98cf-1863354ef321_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d145449f-bfdf-430f-8d8e-99fc3acd088f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d145449f-bfdf-430f-8d8e-99fc3acd088f" ;
+    dct:title "Decision rule _d145449f-bfdf-430f-8d8e-99fc3acd088f"@nl ;
+    dct:description "Decision rule _d145449f-bfdf-430f-8d8e-99fc3acd088f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_912d27e0-1b8f-47bd-98cf-1863354ef321_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_ea52143a-62cd-404b-8063-a4f917c36a42> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_ea52143a-62cd-404b-8063-a4f917c36a42" ;
+    dct:title "Decision rule _ea52143a-62cd-404b-8063-a4f917c36a42"@nl ;
+    dct:description "Decision rule _ea52143a-62cd-404b-8063-a4f917c36a42 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_912d27e0-1b8f-47bd-98cf-1863354ef321_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_5e6ce6d3-a488-4c8a-924a-6e36b981e1ae> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_5e6ce6d3-a488-4c8a-924a-6e36b981e1ae" ;
+    dct:title "Decision rule _5e6ce6d3-a488-4c8a-924a-6e36b981e1ae"@nl ;
+    dct:description "Decision rule _5e6ce6d3-a488-4c8a-924a-6e36b981e1ae of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_adcd1d42-b570-4e57-854b-ce5444975185_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_fec0acb0-d3ee-4c6e-bab6-f8d5ffa7f23f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_fec0acb0-d3ee-4c6e-bab6-f8d5ffa7f23f" ;
+    dct:title "Decision rule _fec0acb0-d3ee-4c6e-bab6-f8d5ffa7f23f"@nl ;
+    dct:description "Decision rule _fec0acb0-d3ee-4c6e-bab6-f8d5ffa7f23f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_adcd1d42-b570-4e57-854b-ce5444975185_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_230af150-20af-4dbd-b6d2-3a41af23d8ee> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_230af150-20af-4dbd-b6d2-3a41af23d8ee" ;
+    dct:title "Decision rule _230af150-20af-4dbd-b6d2-3a41af23d8ee"@nl ;
+    dct:description "Decision rule _230af150-20af-4dbd-b6d2-3a41af23d8ee of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_d4786c58-c3ce-42c5-b8fa-d7deabd40823_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_e15d55d5-b2b4-4c2a-8a14-a33b2d4a63ea> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_e15d55d5-b2b4-4c2a-8a14-a33b2d4a63ea" ;
+    dct:title "Decision rule _e15d55d5-b2b4-4c2a-8a14-a33b2d4a63ea"@nl ;
+    dct:description "Decision rule _e15d55d5-b2b4-4c2a-8a14-a33b2d4a63ea of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_d4786c58-c3ce-42c5-b8fa-d7deabd40823_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_4502bb17-debe-4809-a94d-4b1702dc6cfe> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_4502bb17-debe-4809-a94d-4b1702dc6cfe" ;
+    dct:title "Decision rule _4502bb17-debe-4809-a94d-4b1702dc6cfe"@nl ;
+    dct:description "Decision rule _4502bb17-debe-4809-a94d-4b1702dc6cfe of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_d4786c58-c3ce-42c5-b8fa-d7deabd40823_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_3adfa993-b541-4d73-abac-2e4191bf4d67> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_3adfa993-b541-4d73-abac-2e4191bf4d67" ;
+    dct:title "Decision rule _3adfa993-b541-4d73-abac-2e4191bf4d67"@nl ;
+    dct:description "Decision rule _3adfa993-b541-4d73-abac-2e4191bf4d67 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_e86e55be-0483-4f64-971d-bbae860e6709_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_957f371f-ff93-4a20-8dea-fe67d4137b9c> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_957f371f-ff93-4a20-8dea-fe67d4137b9c" ;
+    dct:title "Decision rule _957f371f-ff93-4a20-8dea-fe67d4137b9c"@nl ;
+    dct:description "Decision rule _957f371f-ff93-4a20-8dea-fe67d4137b9c of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_e86e55be-0483-4f64-971d-bbae860e6709_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d1e66823-741f-41d3-be9f-5e21e5cbdacf> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d1e66823-741f-41d3-be9f-5e21e5cbdacf" ;
+    dct:title "Decision rule _d1e66823-741f-41d3-be9f-5e21e5cbdacf"@nl ;
+    dct:description "Decision rule _d1e66823-741f-41d3-be9f-5e21e5cbdacf of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_252624cf-b1b0-4bab-89f7-3a10fd20918b> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_252624cf-b1b0-4bab-89f7-3a10fd20918b" ;
+    dct:title "Decision rule _252624cf-b1b0-4bab-89f7-3a10fd20918b"@nl ;
+    dct:description "Decision rule _252624cf-b1b0-4bab-89f7-3a10fd20918b of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_d0c7d1a8-929a-4daa-aeca-4d884d1b85f5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_d0c7d1a8-929a-4daa-aeca-4d884d1b85f5" ;
+    dct:title "Decision rule _d0c7d1a8-929a-4daa-aeca-4d884d1b85f5"@nl ;
+    dct:description "Decision rule _d0c7d1a8-929a-4daa-aeca-4d884d1b85f5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_b9e8f0bc-6c0e-423b-a428-115083fdae3f> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_b9e8f0bc-6c0e-423b-a428-115083fdae3f" ;
+    dct:title "Decision rule _b9e8f0bc-6c0e-423b-a428-115083fdae3f"@nl ;
+    dct:description "Decision rule _b9e8f0bc-6c0e-423b-a428-115083fdae3f of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_3413f31a-a986-4a3d-8469-51f7c874d8ba> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_3413f31a-a986-4a3d-8469-51f7c874d8ba" ;
+    dct:title "Decision rule _3413f31a-a986-4a3d-8469-51f7c874d8ba"@nl ;
+    dct:description "Decision rule _3413f31a-a986-4a3d-8469-51f7c874d8ba of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_82ebe75f-3758-4538-ba88-4b97f67bc486> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "_82ebe75f-3758-4538-ba88-4b97f67bc486" ;
+    dct:title "Decision rule _82ebe75f-3758-4538-ba88-4b97f67bc486"@nl ;
+    dct:description "Decision rule _82ebe75f-3758-4538-ba88-4b97f67bc486 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1_table" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_145> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_145" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0> ;
+    cprmv:sourceQuote "Woonadres" ;
+    cprmv:isBasedOn <https://lokaleregelgeving.overheid.nl/CVDR645454/12> .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_148> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_148" ;
+    cprmv:isBasedOn <https://regels.overheid.nl/services/digital-twin/concepts/cf35d84d-bec6-42b7-8491-9208ef44d2c9> .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_149> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_149" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=0f0d5140-0624-4aa3-a077-2a26087d1436> ;
+    cprmv:sourceQuote "hij laag inkomen had" ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4> .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_150> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_150" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=6fea33db-8454-4a6c-9e02-db6a1f3417db> ;
+    cprmv:sourceQuote "een vermogen" ;
+    cprmv:isBasedOn <https://lokaleregelgeving.overheid.nl/CVDR645454/12> .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_inputentry_152> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_152" ;
+    cprmv:isBasedOn <https://regels.overheid.nl/services/digital-twin/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30> .
+
+<https://regels.overheid.nl/services/digital-twin/rules/_07f36f57-eece-49a5-a954-7f3b4aa4c1b8/cell/_outputentry_15> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_outputentry_15" ;
+    cprmv:isBasedOn <https://regels.overheid.nl/services/digital-twin/concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> .
+
+<https://regels.overheid.nl/services/digital-twin/concepts/cf35d84d-bec6-42b7-8491-9208ef44d2c9> a cprmv:Rule ;
+    cprmv:id "cf35d84d-bec6-42b7-8491-9208ef44d2c9" ;
+    dct:source <https://hva.pna-web.com/hva/?type=CPT&id=cf35d84d-bec6-42b7-8491-9208ef44d2c9> ;
+    cprmv:isBasedOn <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> .
+
+<https://regels.overheid.nl/services/digital-twin/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30> a cprmv:Rule ;
+    cprmv:id "8bf152a7-22a1-4624-b43b-aa9c9ff68b30" ;
+    dct:source <https://hva.pna-web.com/hva/?type=CPT&id=8bf152a7-22a1-4624-b43b-aa9c9ff68b30> .
+
+<https://regels.overheid.nl/services/digital-twin/concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> a cprmv:Rule ;
+    cprmv:id "4b7157ff-2bc6-4ada-ba36-8123e6038dfe" ;
+    dct:source <https://hva.pna-web.com/hva/?type=CPT&id=4b7157ff-2bc6-4ada-ba36-8123e6038dfe> .
+
+<https://lokaleregelgeving.overheid.nl/CVDR645454/12> a cprmv:Rule ;
+    cprmv:id "https://lokaleregelgeving.overheid.nl/CVDR645454/12" .
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> a cprmv:Rule ;
+    cprmv:id "https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01" .
+
+<https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4> a cprmv:Rule ;
+    cprmv:id "https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-08-18"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/amMinimuminkomenMeerkosten> a skos:Concept ;
+    skos:prefLabel "Am Minimuminkomen Meerkosten"@nl ;
+    skos:definition "Am Minimuminkomen Meerkosten is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AMM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/amMinimuminkomenMeerkosten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAanspraakAndereVoorliggendeVoorziening> a skos:Concept ;
+    skos:prefLabel "Kind Aanspraak Andere Voorliggende Voorziening"@nl ;
+    skos:definition "Kind Aanspraak Andere Voorliggende Voorziening is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KAAVV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindAanspraakAndereVoorliggendeVoorziening> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAfstandSchoolGroter9Kilometer> a skos:Concept ;
+    skos:prefLabel "Kind Afstand School Groter9 Kilometer"@nl ;
+    skos:definition "Kind Afstand School Groter9 Kilometer is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KASGK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindAfstandSchoolGroter9Kilometer> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEenBroerZusAfgelopen4JaarPcVoorzieningBasisonderwijsGekregen> a skos:Concept ;
+    skos:prefLabel "Kind Een Broer Zus Afgelopen4 Jaar Pc Voorziening Basisonderwijs Gekregen"@nl ;
+    skos:definition "Kind Een Broer Zus Afgelopen4 Jaar Pc Voorziening Basisonderwijs Gekregen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINEBZAJPVBG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindEenBroerZusAfgelopen4JaarPcVoorzieningBasisonderwijsGekregen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart> a skos:Concept ;
+    skos:prefLabel "Kind Einde Geldigheid Nederlands Paspoort Nederlandse Identiteitskaart"@nl ;
+    skos:definition "Kind Einde Geldigheid Nederlands Paspoort Nederlandse Identiteitskaart is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINEGNPNI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindGeboortedatum> a skos:Concept ;
+    skos:prefLabel "Kind Geboortedatum"@nl ;
+    skos:definition "Kind Geboortedatum is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindGeboortedatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindInVoorafgaande4JarenVoortgezetonderwijsPcVoorzieningGekregen> a skos:Concept ;
+    skos:prefLabel "Kind In Voorafgaande4 Jaren Voortgezetonderwijs Pc Voorziening Gekregen"@nl ;
+    skos:definition "Kind In Voorafgaande4 Jaren Voortgezetonderwijs Pc Voorziening Gekregen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINIVJVPVG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindInVoorafgaande4JarenVoortgezetonderwijsPcVoorzieningGekregen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindInVoorafgaandJaarBasisonderwijsPcVoorzieningGekregen> a skos:Concept ;
+    skos:prefLabel "Kind In Voorafgaand Jaar Basisonderwijs Pc Voorziening Gekregen"@nl ;
+    skos:definition "Kind In Voorafgaand Jaar Basisonderwijs Pc Voorziening Gekregen is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINIVJBPVG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindInVoorafgaandJaarBasisonderwijsPcVoorzieningGekregen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenInstellingJeugdhulpVerblijf> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven Instelling Jeugdhulp Verblijf"@nl ;
+    skos:definition "Kind Ingeschreven Instelling Jeugdhulp Verblijf is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIIJV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenInstellingJeugdhulpVerblijf> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenBasisschool> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven Basisschool"@nl ;
+    skos:definition "Kind Ingeschreven Basisschool is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/10> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenBasisschool> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenBBLOnbetaaldeStage> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven BBL Onbetaalde Stage"@nl ;
+    skos:definition "Kind Ingeschreven BBL Onbetaalde Stage is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIBOS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/11> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenBBLOnbetaaldeStage> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenVoorgezetOnderwijs> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven Voorgezet Onderwijs"@nl ;
+    skos:definition "Kind Ingeschreven Voorgezet Onderwijs is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIVO" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/12> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenVoorgezetOnderwijs> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenVoorschool> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven Voorschool"@nl ;
+    skos:definition "Kind Ingeschreven Voorschool is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/13> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenVoorschool> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindIngeschrevenWoonadresOuderAanvraagt> a skos:Concept ;
+    skos:prefLabel "Kind Ingeschreven Woonadres Ouder Aanvraagt"@nl ;
+    skos:definition "Kind Ingeschreven Woonadres Ouder Aanvraagt is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KIWOA" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/14> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindIngeschrevenWoonadresOuderAanvraagt> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindNederlandseNationaliteit> a skos:Concept ;
+    skos:prefLabel "Kind Nederlandse Nationaliteit"@nl ;
+    skos:definition "Kind Nederlandse Nationaliteit is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KNN" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/15> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindNederlandseNationaliteit> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging> a skos:Concept ;
+    skos:prefLabel "Kind Niet Meer Beschikking Over Eerder Verstrekte Identiteitskaart Door Diefstal Vermissing Beschadiging"@nl ;
+    skos:definition "Kind Niet Meer Beschikking Over Eerder Verstrekte Identiteitskaart Door Diefstal Vermissing Beschadiging is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINNMBOEVIDDVB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/16> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging> a skos:Concept ;
+    skos:prefLabel "Kind Nieuwe Identiteitskaart Gekregen Na Diefstal Vermissing Beschadiging"@nl ;
+    skos:definition "Kind Nieuwe Identiteitskaart Gekregen Na Diefstal Vermissing Beschadiging is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "KINNIGNDVB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/17> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAannemelijkeMeerkosten> a skos:Concept ;
+    skos:prefLabel "Np Aannemelijke Meerkosten"@nl ;
+    skos:definition "Np Aannemelijke Meerkosten is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NAM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/18> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAannemelijkeMeerkosten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npBewijsInschrijvingBetreffendeVoorschool> a skos:Concept ;
+    skos:prefLabel "Np Bewijs Inschrijving Betreffende Voorschool"@nl ;
+    skos:definition "Np Bewijs Inschrijving Betreffende Voorschool is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NBIBV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/19> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npBewijsInschrijvingBetreffendeVoorschool> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npBijzondereOmstandighedenLeidenNoodzakelijkeKostenBestaanNederlandGemaaktNederlandVerbonden> a skos:Concept ;
+    skos:prefLabel "Np Bijzondere Omstandigheden Leiden Noodzakelijke Kosten Bestaan Nederland Gemaakt Nederland Verbonden"@nl ;
+    skos:definition "Np Bijzondere Omstandigheden Leiden Noodzakelijke Kosten Bestaan Nederland Gemaakt Nederland Verbonden is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPBOLNKBNGNV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/20> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npBijzondereOmstandighedenLeidenNoodzakelijkeKostenBestaanNederlandGemaaktNederlandVerbonden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npBurgerservicenummer> a skos:Concept ;
+    skos:prefLabel "Np Burgerservicenummer"@nl ;
+    skos:definition "Np Burgerservicenummer is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/21> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npBurgerservicenummer> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npEenSchuldregelingDoorGemeenteAangewezenGemandateerde> a skos:Concept ;
+    skos:prefLabel "Np Een Schuldregeling Door Gemeente Aangewezen Gemandateerde"@nl ;
+    skos:definition "Np Een Schuldregeling Door Gemeente Aangewezen Gemandateerde is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPESDGAG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/22> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npEenSchuldregelingDoorGemeenteAangewezenGemandateerde> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart> a skos:Concept ;
+    skos:prefLabel "Np Einde Geldigheid Nederlands Paspoort Nederlandse Identiteitskaart"@nl ;
+    skos:definition "Np Einde Geldigheid Nederlands Paspoort Nederlandse Identiteitskaart is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPEGNPNI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/23> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npFinancieleDraagkracht> a skos:Concept ;
+    skos:prefLabel "Np Financiele Draagkracht"@nl ;
+    skos:definition "Np Financiele Draagkracht is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NFD" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/24> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npFinancieleDraagkracht> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npFiscaalGezinsinkomenDrieJaarGeleden> a skos:Concept ;
+    skos:prefLabel "Np Fiscaal Gezinsinkomen Drie Jaar Geleden"@nl ;
+    skos:definition "Np Fiscaal Gezinsinkomen Drie Jaar Geleden is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NFGDJG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/25> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npFiscaalGezinsinkomenDrieJaarGeleden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npFiscaalGezinsinkomenTweeJaarGeleden> a skos:Concept ;
+    skos:prefLabel "Np Fiscaal Gezinsinkomen Twee Jaar Geleden"@nl ;
+    skos:definition "Np Fiscaal Gezinsinkomen Twee Jaar Geleden is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NFGTJG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/26> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npFiscaalGezinsinkomenTweeJaarGeleden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npFiscaalGezinsinkomenVorigJaar> a skos:Concept ;
+    skos:prefLabel "Np Fiscaal Gezinsinkomen Vorig Jaar"@nl ;
+    skos:definition "Np Fiscaal Gezinsinkomen Vorig Jaar is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NFGVJ" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/27> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npFiscaalGezinsinkomenVorigJaar> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npGeboortedatum> a skos:Concept ;
+    skos:prefLabel "Np Geboortedatum"@nl ;
+    skos:definition "Np Geboortedatum is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/28> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npGeboortedatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npGezinssituatie> a skos:Concept ;
+    skos:prefLabel "Np Gezinssituatie"@nl ;
+    skos:definition "Np Gezinssituatie is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NG1" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/29> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npGezinssituatie> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npKanBeroepDoenVoorliggendeVoorzieningBijzBijstand> a skos:Concept ;
+    skos:prefLabel "Np Kan Beroep Doen Voorliggende Voorziening Bijz Bijstand"@nl ;
+    skos:definition "Np Kan Beroep Doen Voorliggende Voorziening Bijz Bijstand is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPKBDVVBB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/30> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npKanBeroepDoenVoorliggendeVoorzieningBijzBijstand> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npKostenBuitengeslotenKostenpost> a skos:Concept ;
+    skos:prefLabel "Np Kosten Buitengesloten Kostenpost"@nl ;
+    skos:definition "Np Kosten Buitengesloten Kostenpost is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NKBK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/31> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npKostenBuitengeslotenKostenpost> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npKostenNoodzakelijkBeschouwdDoorVoorliggendeVoorziening> a skos:Concept ;
+    skos:prefLabel "Np Kosten Noodzakelijk Beschouwd Door Voorliggende Voorziening"@nl ;
+    skos:definition "Np Kosten Noodzakelijk Beschouwd Door Voorliggende Voorziening is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPKNBDVV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/32> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npKostenNoodzakelijkBeschouwdDoorVoorliggendeVoorziening> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npMedischeVerklaringAangeeftMinstens12MaandenChronischZiekFysiekePsychischeBeperkingenOndervindt> a skos:Concept ;
+    skos:prefLabel "Np Medische Verklaring Aangeeft Minstens12 Maanden Chronisch Ziek Fysieke Psychische Beperkingen Ondervindt"@nl ;
+    skos:definition "Np Medische Verklaring Aangeeft Minstens12 Maanden Chronisch Ziek Fysieke Psychische Beperkingen Ondervindt is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPMVAMMCZFPBO" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/33> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npMedischeVerklaringAangeeftMinstens12MaandenChronischZiekFysiekePsychischeBeperkingenOndervindt> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npMinnelijkeSchuldregeling> a skos:Concept ;
+    skos:prefLabel "Np Minnelijke Schuldregeling"@nl ;
+    skos:definition "Np Minnelijke Schuldregeling is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NMS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/34> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npMinnelijkeSchuldregeling> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npNederlandseNationaliteit> a skos:Concept ;
+    skos:prefLabel "Np Nederlandse Nationaliteit"@nl ;
+    skos:definition "Np Nederlandse Nationaliteit is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NNN" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/35> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npNederlandseNationaliteit> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging> a skos:Concept ;
+    skos:prefLabel "Np Niet Meer Beschikking Over Eerder Verstrekte Identiteitskaart Door Diefstal Vermissing Beschadiging"@nl ;
+    skos:definition "Np Niet Meer Beschikking Over Eerder Verstrekte Identiteitskaart Door Diefstal Vermissing Beschadiging is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPNMBOEVIDDVB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/36> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging> a skos:Concept ;
+    skos:prefLabel "Np Nieuwe Identiteitskaart Gekregen Na Diefstal Vermissing Beschadiging"@nl ;
+    skos:definition "Np Nieuwe Identiteitskaart Gekregen Na Diefstal Vermissing Beschadiging is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPNIGNDVB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/37> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npOntvangtKinderbijslagKind> a skos:Concept ;
+    skos:prefLabel "Np Ontvangt Kinderbijslag Kind"@nl ;
+    skos:definition "Np Ontvangt Kinderbijslag Kind is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NOKK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/38> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npOntvangtKinderbijslagKind> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npOntvangtPleegkindvergoedingKind> a skos:Concept ;
+    skos:prefLabel "Np Ontvangt Pleegkindvergoeding Kind"@nl ;
+    skos:definition "Np Ontvangt Pleegkindvergoeding Kind is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NOPK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/39> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npOntvangtPleegkindvergoedingKind> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npOntvangtVoedselpakkettenVoedselbankAmsterdamVoedselbankGooiOmstreken> a skos:Concept ;
+    skos:prefLabel "Np Ontvangt Voedselpakketten Voedselbank Amsterdam Voedselbank Gooi Omstreken"@nl ;
+    skos:definition "Np Ontvangt Voedselpakketten Voedselbank Amsterdam Voedselbank Gooi Omstreken is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPOVVAVGO" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/40> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npOntvangtVoedselpakkettenVoedselbankAmsterdamVoedselbankGooiOmstreken> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npOpgelegdeSchuldregelingGrondWSNP> a skos:Concept ;
+    skos:prefLabel "Np Opgelegde Schuldregeling Grond WSNP"@nl ;
+    skos:definition "Np Opgelegde Schuldregeling Grond WSNP is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NOSGW" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/41> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npOpgelegdeSchuldregelingGrondWSNP> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npUitzichtInkomensverbetering> a skos:Concept ;
+    skos:prefLabel "Np Uitzicht Inkomensverbetering"@nl ;
+    skos:definition "Np Uitzicht Inkomensverbetering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NUI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/42> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npUitzichtInkomensverbetering> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npVermogen31DecemberVorigJaar> a skos:Concept ;
+    skos:prefLabel "Np Vermogen31 December Vorig Jaar"@nl ;
+    skos:definition "Np Vermogen31 December Vorig Jaar is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NVDVJ" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/43> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npVermogen31DecemberVorigJaar> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npVerwachtLeningAangaat> a skos:Concept ;
+    skos:prefLabel "Np Verwacht Lening Aangaat"@nl ;
+    skos:definition "Np Verwacht Lening Aangaat is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NVLA" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/44> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npVerwachtLeningAangaat> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npVerwachtNoodzakelijkeKostenHadGereserveerd> a skos:Concept ;
+    skos:prefLabel "Np Verwacht Noodzakelijke Kosten Had Gereserveerd"@nl ;
+    skos:definition "Np Verwacht Noodzakelijke Kosten Had Gereserveerd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NVNKHG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/45> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npVerwachtNoodzakelijkeKostenHadGereserveerd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npVolgtOnderwijsZinHoofdstuk4WetTegemoetkomingOnderwijsbijdrageSchoolkosten> a skos:Concept ;
+    skos:prefLabel "Np Volgt Onderwijs Zin Hoofdstuk4 Wet Tegemoetkoming Onderwijsbijdrage Schoolkosten"@nl ;
+    skos:definition "Np Volgt Onderwijs Zin Hoofdstuk4 Wet Tegemoetkoming Onderwijsbijdrage Schoolkosten is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPVOZHWTOS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/46> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npVolgtOnderwijsZinHoofdstuk4WetTegemoetkomingOnderwijsbijdrageSchoolkosten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npVolgtOnderwijsZinHoofdstukIIWetStudiefinanciering> a skos:Concept ;
+    skos:prefLabel "Np Volgt Onderwijs Zin Hoofdstuk II Wet Studiefinanciering"@nl ;
+    skos:definition "Np Volgt Onderwijs Zin Hoofdstuk II Wet Studiefinanciering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NPVOZHIWS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/47> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npVolgtOnderwijsZinHoofdstukIIWetStudiefinanciering> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npWoonachtigGemeenteAangevraagd> a skos:Concept ;
+    skos:prefLabel "Np Woonachtig Gemeente Aangevraagd"@nl ;
+    skos:definition "Np Woonachtig Gemeente Aangevraagd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NWGA" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/48> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npWoonachtigGemeenteAangevraagd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/partnerGeboortedatum> a skos:Concept ;
+    skos:prefLabel "Partner Geboortedatum"@nl ;
+    skos:definition "Partner Geboortedatum is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PG" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/49> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerGeboortedatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/partnerUitzichtInkomensverbetering> a skos:Concept ;
+    skos:prefLabel "Partner Uitzicht Inkomensverbetering"@nl ;
+    skos:definition "Partner Uitzicht Inkomensverbetering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PUI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/50> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerUitzichtInkomensverbetering> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/partnerWoonachtigGemeenteAangevraagd> a skos:Concept ;
+    skos:prefLabel "Partner Woonachtig Gemeente Aangevraagd"@nl ;
+    skos:definition "Partner Woonachtig Gemeente Aangevraagd is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PWGA" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/51> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerWoonachtigGemeenteAangevraagd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/peildatum> a skos:Concept ;
+    skos:prefLabel "Peildatum"@nl ;
+    skos:definition "Peildatum is een datumwaarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PEIL" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/input/52> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/peildatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakBijzondereBijstand> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Bijzondere Bijstand"@nl ;
+    skos:definition "Np Aanspraak Bijzondere Bijstand is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NABB" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakBijzondereBijstand> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensVorigJaarVolwassenen> a skos:Concept ;
+    skos:prefLabel "Van Toepassing Zijnde Loongrens Vorig Jaar Volwassenen"@nl ;
+    skos:definition "Van Toepassing Zijnde Loongrens Vorig Jaar Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VANTZLVJV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensVorigJaarVolwassenen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npEenSchuldregeling> a skos:Concept ;
+    skos:prefLabel "Np Een Schuldregeling"@nl ;
+    skos:definition "Np Een Schuldregeling is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NES" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npEenSchuldregeling> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npMeerderjarig> a skos:Concept ;
+    skos:prefLabel "Np Meerderjarig"@nl ;
+    skos:definition "Np Meerderjarig is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npMeerderjarig> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeVermogensgrens> a skos:Concept ;
+    skos:prefLabel "Van Toepassing Zijnde Vermogensgrens"@nl ;
+    skos:definition "Van Toepassing Zijnde Vermogensgrens is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VTZV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/5> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeVermogensgrens> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/pensioengerechtigdeLeeftijd> a skos:Concept ;
+    skos:prefLabel "Pensioengerechtigde Leeftijd"@nl ;
+    skos:definition "Pensioengerechtigde Leeftijd is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "PL" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/6> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/pensioengerechtigdeLeeftijd> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensVorigJaarKinderen> a skos:Concept ;
+    skos:prefLabel "Van Toepassing Zijnde Loongrens Vorig Jaar Kinderen"@nl ;
+    skos:definition "Van Toepassing Zijnde Loongrens Vorig Jaar Kinderen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VANTZLVJK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/7> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensVorigJaarKinderen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindMinderjarig> a skos:Concept ;
+    skos:prefLabel "Kind Minderjarig"@nl ;
+    skos:definition "Kind Minderjarig is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "KM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/8> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindMinderjarig> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensDrieJaarGeledenVolwassenen> a skos:Concept ;
+    skos:prefLabel "Van Toepassing Zijnde Loongrens Drie Jaar Geleden Volwassenen"@nl ;
+    skos:definition "Van Toepassing Zijnde Loongrens Drie Jaar Geleden Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VANTZLDJGV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/9> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensDrieJaarGeledenVolwassenen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensTweeJaarGeledenVolwassenen> a skos:Concept ;
+    skos:prefLabel "Van Toepassing Zijnde Loongrens Twee Jaar Geleden Volwassenen"@nl ;
+    skos:definition "Van Toepassing Zijnde Loongrens Twee Jaar Geleden Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "VANTZLTJGV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/10> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensTweeJaarGeledenVolwassenen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakIndividueleInkomenstoeslag> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Individuele Inkomenstoeslag"@nl ;
+    skos:definition "Np Aanspraak Individuele Inkomenstoeslag is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NAII" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/11> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakIndividueleInkomenstoeslag> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/partnerAanspraakIndividueleInkomenstoeslag> a skos:Concept ;
+    skos:prefLabel "Partner Aanspraak Individuele Inkomenstoeslag"@nl ;
+    skos:definition "Partner Aanspraak Individuele Inkomenstoeslag is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "PAII" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/12> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerAanspraakIndividueleInkomenstoeslag> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakStadspas> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Stadspas"@nl ;
+    skos:definition "Np Aanspraak Stadspas is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NAS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/13> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakStadspas> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakKindtegoed> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Kindtegoed"@nl ;
+    skos:definition "Np Aanspraak Kindtegoed is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NAK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/14> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakKindtegoed> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAanspraakStadspas> a skos:Concept ;
+    skos:prefLabel "Kind Aanspraak Stadspas"@nl ;
+    skos:definition "Kind Aanspraak Stadspas is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "KAS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/15> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindAanspraakStadspas> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakPcVoorziening> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Pc Voorziening"@nl ;
+    skos:definition "Np Aanspraak Pc Voorziening is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NAPV" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/16> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakPcVoorziening> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakRegelingTegemoetkomingMeerkosten> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Regeling Tegemoetkoming Meerkosten"@nl ;
+    skos:definition "Np Aanspraak Regeling Tegemoetkoming Meerkosten is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NARTM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/17> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakRegelingTegemoetkomingMeerkosten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakReiskostenvergoedingKind> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Reiskostenvergoeding Kind"@nl ;
+    skos:definition "Np Aanspraak Reiskostenvergoeding Kind is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NARK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/18> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakReiskostenvergoedingKind> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakTegemoetkomingIdentiteitskaart> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Tegemoetkoming Identiteitskaart"@nl ;
+    skos:definition "Np Aanspraak Tegemoetkoming Identiteitskaart is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NATI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/19> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakTegemoetkomingIdentiteitskaart> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAanspraakTegemoetkomingIdentiteitskaart> a skos:Concept ;
+    skos:prefLabel "Kind Aanspraak Tegemoetkoming Identiteitskaart"@nl ;
+    skos:definition "Kind Aanspraak Tegemoetkoming Identiteitskaart is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "KATI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/20> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindAanspraakTegemoetkomingIdentiteitskaart> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakAanvullendKindtegoed> a skos:Concept ;
+    skos:prefLabel "Np Aanspraak Aanvullend Kindtegoed"@nl ;
+    skos:definition "Np Aanspraak Aanvullend Kindtegoed is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NAAK" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/21> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakAanvullendKindtegoed> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npLangdurigLaagInkomen> a skos:Concept ;
+    skos:prefLabel "Np Langdurig Laag Inkomen"@nl ;
+    skos:definition "Np Langdurig Laag Inkomen is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "NLLI" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/22> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/npLangdurigLaagInkomen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEenBeleidsregelsMinimakind> a skos:Concept ;
+    skos:prefLabel "Kind Een Beleidsregels Minimakind"@nl ;
+    skos:definition "Kind Een Beleidsregels Minimakind is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "KEBM" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/23> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindEenBeleidsregelsMinimakind> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEenBeleidsregelMinimakindScholier> a skos:Concept ;
+    skos:prefLabel "Kind Een Beleidsregel Minimakind Scholier"@nl ;
+    skos:definition "Kind Een Beleidsregel Minimakind Scholier is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "KEBMS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/24> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/kindEenBeleidsregelMinimakindScholier> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/aanspraken> a skos:Concept ;
+    skos:prefLabel "Aanspraken"@nl ;
+    skos:definition "Aanspraken is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AANS" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/25> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanspraken> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
