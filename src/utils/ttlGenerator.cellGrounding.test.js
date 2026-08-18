@@ -79,7 +79,7 @@ describe('cell-level legislative grounding (Layer 3)', () => {
   test('an APT-style cell (has sourceQuote) emits its grounding directly, no concept resource', () => {
     const ttl = gen().generateDmnSection();
     expect(ttl).toContain(`<${SERVICE_URI}/rules/rule1/cell/ie1a> a cprmv:Rule`);
-    expect(ttl).toContain('dct:identifier "rule1-cell-ie1a"');
+    expect(ttl).toContain('cprmv:id "rule1-cell-ie1a"');
     expect(ttl).toContain('dct:source <https://hva.pna-web.com/hva/?type=APT&id=apt-1>');
     expect(ttl).toContain('cprmv:sourceQuote "Woonadres"');
     expect(ttl).toContain('cprmv:isBasedOn <https://lokaleregelgeving.overheid.nl/CVDR1/1>');
@@ -91,13 +91,24 @@ describe('cell-level legislative grounding (Layer 3)', () => {
     expect(ttl).toContain(`cprmv:isBasedOn <${SERVICE_URI}/concepts/cpt-shared>`);
     expect(ttl).toContain(`<${SERVICE_URI}/concepts/cpt-shared> a cprmv:Rule`);
     expect(ttl).toContain('dct:source <https://hva.pna-web.com/hva/?type=CPT&id=cpt-shared>');
+    // cprmv:id is required (RuleShape, minCount 1) on every cprmv:Rule -- concept
+    // resources need one just as much as cell resources do.
+    expect(ttl).toContain('cprmv:id "cpt-shared"');
+  });
+
+  test('a direct isBasedOn citation URI is minted as its own cprmv:Rule stub (sh:class RuleShape)', () => {
+    const ttl = gen().generateDmnSection();
+    // ie1a's citation, referenced directly (not via a concept)
+    expect(ttl).toContain(
+      '<https://lokaleregelgeving.overheid.nl/CVDR1/1> a cprmv:Rule ;\n    cprmv:id "https://lokaleregelgeving.overheid.nl/CVDR1/1"'
+    );
   });
 
   test('the same CPT source id referenced from two different cells mints the concept exactly once', () => {
     const ttl = gen().generateDmnSection();
     // oe1a references the same concept as ie1b
     expect(ttl).toContain(`<${SERVICE_URI}/rules/rule1/cell/oe1a> a cprmv:Rule`);
-    expect(ttl).toContain(`dct:identifier "rule1-cell-oe1a"`);
+    expect(ttl).toContain(`cprmv:id "rule1-cell-oe1a"`);
     const conceptOccurrences =
       ttl.split(`<${SERVICE_URI}/concepts/cpt-shared> a cprmv:Rule`).length - 1;
     expect(conceptOccurrences).toBe(1);
@@ -140,7 +151,7 @@ describe('cell-level legislative grounding (Layer 3)', () => {
   test('a compound cell (numbered attribute family) gets a nested hasPart list of per-grounding resources', () => {
     const ttl = gen().generateDmnSection();
     expect(ttl).toContain(
-      `<${SERVICE_URI}/rules/rule2/cell/ie2b> a cprmv:Rule ;\n    dct:identifier "rule2-cell-ie2b" ;\n    cprmv:hasPart ( <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/2> ) .`
+      `<${SERVICE_URI}/rules/rule2/cell/ie2b> a cprmv:Rule ;\n    cprmv:id "rule2-cell-ie2b" ;\n    cprmv:hasPart ( <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/2> ) .`
     );
     // grounding 1: APT-style, direct
     expect(ttl).toContain(`<${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> a cprmv:Rule`);

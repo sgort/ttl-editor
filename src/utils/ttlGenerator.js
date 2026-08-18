@@ -1228,6 +1228,12 @@ export class TTLGenerator {
         // same concept is referenced from two places without duplication.
         const cleanServiceUri = this.serviceUri.replace(/%20/g, '-').replace(/\s+/g, '-');
         const conceptResources = new Map(); // sourceId -> ttl block, emitted once at the end
+        // cprmv:isBasedOn has sh:class cprmv:Rule (RuleShape) -- its object must
+        // itself be typed cprmv:Rule. A concept-resource target already is; an
+        // external citation URI (CVDR, wetten.overheid.nl) is not, by default --
+        // this mints a minimal stub triple for every distinct one referenced, so
+        // the published .ttl stays SHACL-conformant.
+        const citationResources = new Map(); // uri -> ttl stub, emitted once at the end
         let cellResourcesTtl = '';
 
         // The iKnow annotation tool's own id-resolution URL is HvA-specific; pass
@@ -1248,12 +1254,30 @@ export class TTLGenerator {
         const citationUri = (value) =>
           value.startsWith('http') ? value : `https://wetten.overheid.nl/${value}`;
 
+        // Mints (once) the stub `<uri> a cprmv:Rule ; cprmv:id "<uri>" .` a
+        // citationUri()-resolved isBasedOn target needs to satisfy sh:class, and
+        // returns the sanitized URI to reference. cprmv:id falls back to the URI
+        // itself -- there's no other identifier available for an external
+        // resource this graph doesn't otherwise describe.
+        const citedUri = (rawValue) => {
+          const uri = sanitizeIri(citationUri(rawValue));
+          if (!citationResources.has(uri)) {
+            citationResources.set(
+              uri,
+              `<${uri}> a cprmv:Rule ;\n    cprmv:id "${escapeTTLString(uri)}" .\n\n`
+            );
+          }
+          return uri;
+        };
+
         const mintConcept = (sourceId, isBasedOn) => {
           const conceptUri = `${cleanServiceUri}/concepts/${sourceId}`;
           if (!conceptResources.has(sourceId)) {
-            const propLines = [`dct:source <${sanitizeIri(pnaWebUri(sourceId, 'CPT'))}>`];
-            if (isBasedOn)
-              propLines.push(`cprmv:isBasedOn <${sanitizeIri(citationUri(isBasedOn))}>`);
+            const propLines = [
+              `cprmv:id "${escapeTTLString(sourceId)}"`,
+              `dct:source <${sanitizeIri(pnaWebUri(sourceId, 'CPT'))}>`,
+            ];
+            if (isBasedOn) propLines.push(`cprmv:isBasedOn <${citedUri(isBasedOn)}>`);
             conceptResources.set(
               sourceId,
               `<${conceptUri}> a cprmv:Rule ;\n    ${propLines.join(' ;\n    ')} .\n\n`
@@ -1272,12 +1296,12 @@ export class TTLGenerator {
             }
             lines.push(`cprmv:sourceQuote "${escapeTTLString(grounding.sourceQuote)}"`);
             if (grounding.isBasedOn) {
-              lines.push(`cprmv:isBasedOn <${sanitizeIri(citationUri(grounding.isBasedOn))}>`);
+              lines.push(`cprmv:isBasedOn <${citedUri(grounding.isBasedOn)}>`);
             }
           } else if (grounding.source) {
             lines.push(`cprmv:isBasedOn <${mintConcept(grounding.source, grounding.isBasedOn)}>`);
           } else if (grounding.isBasedOn) {
-            lines.push(`cprmv:isBasedOn <${sanitizeIri(citationUri(grounding.isBasedOn))}>`);
+            lines.push(`cprmv:isBasedOn <${citedUri(grounding.isBasedOn)}>`);
           }
           return lines;
         };
@@ -1288,7 +1312,9 @@ export class TTLGenerator {
         const buildCellResource = (rule, cell) => {
           if (!cell.groundings || cell.groundings.length === 0) return null;
           const cellUri = `${rule.uri}/cell/${cell.id}`;
-          const identifierLine = `dct:identifier "${escapeTTLString(`${rule.id}-cell-${cell.id}`)}"`;
+          // cprmv:id is required by RuleShape (minCount 1) -- see the
+          // generateCprmvRulesSection() precedent above for the same rule.
+          const identifierLine = `cprmv:id "${escapeTTLString(`${rule.id}-cell-${cell.id}`)}"`;
 
           if (cell.groundings.length === 1) {
             const propLines = groundingPropLines(cell.groundings[0]);
@@ -1301,7 +1327,8 @@ export class TTLGenerator {
             cell.groundings.forEach((grounding, i) => {
               const propLines = groundingPropLines(grounding);
               if (propLines.length === 0) return;
-              cellResourcesTtl += `<${groundingUris[i]}> a cprmv:Rule ;\n    ${propLines.join(' ;\n    ')} .\n\n`;
+              const groundingIdLine = `cprmv:id "${escapeTTLString(`${rule.id}-cell-${cell.id}-grounding-${i + 1}`)}"`;
+              cellResourcesTtl += `<${groundingUris[i]}> a cprmv:Rule ;\n    ${groundingIdLine} ;\n    ${propLines.join(' ;\n    ')} .\n\n`;
             });
           }
           return cellUri;
@@ -1356,11 +1383,14 @@ export class TTLGenerator {
         });
 
         // Emit every grounded cell's resource(s), then every deduplicated concept
-        // resource once, after all rules -- keeps concept dedup document-wide
-        // rather than per-rule.
+        // resource, then every deduplicated citation stub, once each, after all
+        // rules -- keeps dedup document-wide rather than per-rule.
         ttl += cellResourcesTtl;
         for (const conceptTtl of conceptResources.values()) {
           ttl += conceptTtl;
+        }
+        for (const citationTtl of citationResources.values()) {
+          ttl += citationTtl;
         }
       }
 
