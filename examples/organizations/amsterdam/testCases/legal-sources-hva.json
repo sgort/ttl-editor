@@ -1,0 +1,2159 @@
+{
+  "stats": {
+    "total_decisions": 25,
+    "decisions_with_authority": 22,
+    "total_knowledge_sources": 48,
+    "knowledge_sources_by_type": {
+      "CPT": 16,
+      "APT": 32
+    },
+    "total_documents": 14,
+    "total_concepts": 360,
+    "total_textannotations": 358,
+    "total_distinct_jci_citations": 23,
+    "total_textannotations_with_jci": 72,
+    "knowledge_sources_resolved": 97,
+    "knowledge_sources_unresolved": 2
+  },
+  "decisions": [
+    {
+      "decision_id": "_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5",
+      "decision_name": "Bepalen aanspraken",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        },
+        {
+          "knowledge_source_name": "aanspraak op regeling tegemoetkoming meerkosten",
+          "knowledge_source_type": "CPT",
+          "ref_id": "23654310-6d32-4f2b-88b0-1860d25e97d6",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4a0af2d6-9b97-4294-90fb-617a2403abfe",
+              "name": "wmo_verordening_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=5aefc71c-8b58-41ae-bbd7-8280b00efae4",
+              "version": "4",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "H et college een financiële tegemoetkoming als bedoeld in artikel 2.1.7 van de wet verstrekken aannemelijke meerkosten"
+          ],
+          "concept_name": "aanspraak op regeling tegemoetkoming meerkosten",
+          "concept_type": "Rechtsbetrekking"
+        },
+        {
+          "knowledge_source_name": "aanspraak individuele inkomenstoeslag",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b7157ff-2bc6-4ada-ba36-8123e6038dfe",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=3"],
+          "quotes": [
+            "Een persoon kan op een daartoe strekkend verzoek in aanmerking komen voor een individuele inkomenstoeslag"
+          ],
+          "concept_name": "aanspraak individuele inkomenstoeslag",
+          "concept_type": "Rechtsbetrekking"
+        },
+        {
+          "knowledge_source_name": "aanspraak PC-voorziening basisonderwijs",
+          "knowledge_source_type": "CPT",
+          "ref_id": "73a55739-84e4-48df-be1a-e27fc52eb4a1",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["PC-voorziening aan aanvragers basisonderwijs"],
+          "concept_name": "aanspraak PC-voorziening basisonderwijs",
+          "concept_type": "Rechtsbetrekking"
+        },
+        {
+          "knowledge_source_name": "aanspraak kindtegoed Stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "7e9a822c-6d9c-42d5-96a1-babeca5f928c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "noodzakelijke extra kosten voor kinderen van 0 tot en met 17 jaar in de vorm van een tegoed op de Stadspas"
+          ]
+        },
+        {
+          "knowledge_source_name": "aanspraak reiskostenvergoeding",
+          "knowledge_source_type": "CPT",
+          "ref_id": "96171a14-8f15-4ace-b12c-3c34c4a4dc27",
+          "resolved": true,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": [],
+          "concept_name": "aanspraak reiskostenvergoeding",
+          "concept_type": "Rechtsbetrekking"
+        },
+        {
+          "knowledge_source_name": "aanspraak bijzondere bijstand",
+          "knowledge_source_type": "APT",
+          "ref_id": "b1acee8f-66d0-4b38-9d74-cd4319e00346",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Het college kent op grond van artikel 35 van de Participatiewet bijzondere bijstand toe"
+          ]
+        },
+        {
+          "knowledge_source_name": "Aanspraak tegemoetkoming identiteitskaart",
+          "knowledge_source_type": "APT",
+          "ref_id": "b287f363-5027-4769-a25f-5386bd525dbb",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "3d615731-ccb4-44ac-82e4-c6b9b668c748",
+              "name": "Beleidsregels Volledige tegemoetkoming leges Nederlandse identiteitskaart voor Stadspashouders.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=38d56757-7fc6-47cf-a5b3-722d470ecdbd",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["aan te vragen"]
+        },
+        {
+          "knowledge_source_name": "aanspraak individuele inkomenstoeslag",
+          "knowledge_source_type": "APT",
+          "ref_id": "f1247db9-3f96-4fb4-8149-0654447e46f0",
+          "resolved": false,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": []
+        },
+        {
+          "knowledge_source_name": "aanspraak kindtegoed kosten Voorschool",
+          "knowledge_source_type": "APT",
+          "ref_id": "f5d84ccc-3339-4c76-96fd-006cf2783f27",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Kindtegoed aanvragers kosten verbonden aan de Voorschool,"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_1934cfb6-91ef-4ef0-99ac-78a8ef0c5de4",
+      "decision_name": "Beslistabel bepalen aanspraak op kindtegoed",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager heeft BSN",
+          "knowledge_source_type": "APT",
+          "ref_id": "be680665-f245-4352-b033-0e85cc581e8f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["burgerservicenummer"]
+        },
+        {
+          "knowledge_source_name": "aanspraak kindtegoed Stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "7e9a822c-6d9c-42d5-96a1-babeca5f928c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "noodzakelijke extra kosten voor kinderen van 0 tot en met 17 jaar in de vorm van een tegoed op de Stadspas"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_216b3e6c-c9eb-4def-bfe7-3b20b961de2d",
+      "decision_name": "Beslistabel bepalen aanspraak Stadspas van kind van natuurlijke persoon",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Adres van kind",
+          "knowledge_source_type": "APT",
+          "ref_id": "32d7e9c8-8f7a-45e0-aae4-9cc01024c042",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["kind of stiefkind of pleegkind adres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b0c647a-40a1-4c20-bb19-662b12d7ae52",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4374339f-1541-4d2c-8345-44f13031a315",
+              "name": "wmo_nadere_regels_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=0d6531ef-545f-4bc0-9590-737685d409cb",
+              "version": "2",
+              "bwb": null
+            },
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1"],
+          "quotes": [
+            "fiscaal gezinsinkomen",
+            "een fiscaal gezinsinkomen",
+            "Een fiscaal gezinsinkomen"
+          ],
+          "concept_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon volgt onderwijs in de zin van hoofdstuk II van de Wet op de studiefinanciering",
+          "knowledge_source_type": "APT",
+          "ref_id": "549031d2-d7ef-4e77-b8ed-41d4f27c37a9",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Aanvrager onderwijs volgt in de zin van hoofdstuk II van de Wet op de studiefinanciering"
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "Kind ingeschreven in een instelling voor Jeugdhulp met verblijf",
+          "knowledge_source_type": "APT",
+          "ref_id": "6d5917b8-190f-48ff-b19c-33aef7f08255",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kind staat ingeschreven in een instelling voor Jeugdhulp met verblijf en op dat adres is ingeschreven in de Basisregistratie Personen"
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager heeft BSN",
+          "knowledge_source_type": "APT",
+          "ref_id": "be680665-f245-4352-b033-0e85cc581e8f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["burgerservicenummer"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon volgt onderwijs in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten .",
+          "knowledge_source_type": "APT",
+          "ref_id": "cd84be42-41bb-4830-9b02-92e197bb4f1f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Aanvrager onderwijs volgt in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten."
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon krijgt voedselpakketten van de Voedselbank Amsterdam of Voedselbank Gooi en Omstreken",
+          "knowledge_source_type": "APT",
+          "ref_id": "f9ad913d-fef7-41f9-85bb-2fe7266f8887",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Voedselbank Nederland voedselpakketten worden verstrekt door Voedselbank Amsterdam of Voedselbank Gooi en Omstreken"
+          ]
+        },
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_5d364321-409e-432f-83f2-f04cc26035fc",
+      "decision_name": "Beslistabel bepalen aanspraak op individuele inkomenstoeslag partner",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "aanspraak individuele inkomenstoeslag",
+          "knowledge_source_type": "APT",
+          "ref_id": "f1247db9-3f96-4fb4-8149-0654447e46f0",
+          "resolved": false,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": []
+        },
+        {
+          "knowledge_source_name": "natuurlijke persoon heeft langdurig laag inkomen",
+          "knowledge_source_type": "APT",
+          "ref_id": "0f0d5140-0624-4aa3-a077-2a26087d1436",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"],
+          "quotes": ["hij laag inkomen had"]
+        },
+        {
+          "knowledge_source_name": "partner van rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "knowledge_source_type": "APT",
+          "ref_id": "602be365-47f7-4546-9a0c-94915c2add57",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "ead21d22-f995-45b1-bfc8-12d36493d34d",
+              "name": "Beleidsregels Individuele Inkomenstoeslag Amsterdam 2021",
+              "type": "Beleidsregel",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=5e7ee410-20c6-4730-bfd5-e1e3790c55fa",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&artikel=2"],
+          "quotes": ["het uitzicht op inkomensverbetering van beide personen"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "knowledge_source_type": "CPT",
+          "ref_id": "cf35d84d-bec6-42b7-8491-9208ef44d2c9",
+          "resolved": true,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": [],
+          "concept_name": "rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_5ff6a88e-fea3-4dc7-8863-e1bf542f2513",
+      "decision_name": "Beslistabel bepalen aanspraak op bijzondere bijstand",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanvrager heeft bijzondere omstandigheden die leiden tot noodzakelijke kosten van bestaan",
+          "knowledge_source_type": "APT",
+          "ref_id": "1bc3b12e-56ae-47b1-b723-e08df6f64a01",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "bijzondere omstandigheden die leiden tot noodzakelijke kosten van het bestaan"
+          ]
+        },
+        {
+          "knowledge_source_name": "financiele draagkracht (bijz. bijstand)",
+          "knowledge_source_type": "APT",
+          "ref_id": "3e3b79d7-3382-49ec-aae0-98a204f56701",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "inkomen heeft boven de bijstandsnorm en / of in het bezit is van vermogen vaststellen welk gedeelte van dat inkomen en / of vermogen de aanvrager zelf kan gebruiken om de kosten te betalen"
+          ]
+        },
+        {
+          "knowledge_source_name": "de betreffende kosten van de aanvrager worden in de voorliggende voorziening als niet noodzakelijk beschouwd",
+          "knowledge_source_type": "APT",
+          "ref_id": "5b09b5b2-2298-46e1-9da6-3ca4c700745c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "de betreffende kosten in de voorliggende voorziening als niet noodzakelijk worden beschouwd."
+          ]
+        },
+        {
+          "knowledge_source_name": "de aanvrager bijz. bijst. heeft een kosten die niet in aanmerking komt",
+          "knowledge_source_type": "APT",
+          "ref_id": "5bd882cc-8732-4f59-8001-b5681841dd6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["De kosten komen niet voor bijzondere bijstand in aanmerking"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager bijz. bijst. kan beroep doen op een voorliggende voorziening",
+          "knowledge_source_type": "APT",
+          "ref_id": "a88f39bc-a586-45b5-8d31-456df35186cd",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["beroep kan worden gedaan op een voorliggende voorziening"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager kan geen lening aangaan",
+          "knowledge_source_type": "APT",
+          "ref_id": "adb452bc-222b-49c4-8062-5a15bf740ac8",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["niet van de aanvrager verwacht kan worden hiervoor een lening aangaat"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager heeft geen spaargelden (bijz. bijstand)",
+          "knowledge_source_type": "APT",
+          "ref_id": "da30a720-8f63-4aee-9c69-266d57c092ec",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "niet van de aanvrager verwacht kan worden dat hij of zij voor deze noodzakelijke kosten had gereserveerd"
+          ]
+        },
+        {
+          "knowledge_source_name": "aanspraak bijzondere bijstand",
+          "knowledge_source_type": "APT",
+          "ref_id": "b1acee8f-66d0-4b38-9d74-cd4319e00346",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "7952dbf8-5cda-408e-bf55-ebc818126b9b",
+              "name": "Beleidsregels bijzondere bijstand gemeente Amsterdam.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=aa47ca40-f1f5-4d7a-abac-691d7ea6106f",
+              "version": "3",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Het college kent op grond van artikel 35 van de Participatiewet bijzondere bijstand toe"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_6041f4d4-35e8-4377-993d-5b2a879c31e4",
+      "decision_name": "Beslistabel bepalen aanspraak op een stadspas",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b0c647a-40a1-4c20-bb19-662b12d7ae52",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4374339f-1541-4d2c-8345-44f13031a315",
+              "name": "wmo_nadere_regels_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=0d6531ef-545f-4bc0-9590-737685d409cb",
+              "version": "2",
+              "bwb": null
+            },
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1"],
+          "quotes": [
+            "fiscaal gezinsinkomen",
+            "een fiscaal gezinsinkomen",
+            "Een fiscaal gezinsinkomen"
+          ],
+          "concept_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon volgt onderwijs in de zin van hoofdstuk II van de Wet op de studiefinanciering",
+          "knowledge_source_type": "APT",
+          "ref_id": "549031d2-d7ef-4e77-b8ed-41d4f27c37a9",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Aanvrager onderwijs volgt in de zin van hoofdstuk II van de Wet op de studiefinanciering"
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "Aanvrager heeft BSN",
+          "knowledge_source_type": "APT",
+          "ref_id": "be680665-f245-4352-b033-0e85cc581e8f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["burgerservicenummer"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon volgt onderwijs in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten .",
+          "knowledge_source_type": "APT",
+          "ref_id": "cd84be42-41bb-4830-9b02-92e197bb4f1f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Aanvrager onderwijs volgt in de zin van hoofdstuk 4 van de Wet tegemoetkoming onderwijsbijdrage en schoolkosten."
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon krijgt voedselpakketten van de Voedselbank Amsterdam of Voedselbank Gooi en Omstreken",
+          "knowledge_source_type": "APT",
+          "ref_id": "f9ad913d-fef7-41f9-85bb-2fe7266f8887",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Voedselbank Nederland voedselpakketten worden verstrekt door Voedselbank Amsterdam of Voedselbank Gooi en Omstreken"
+          ]
+        },
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_86cf13d6-facf-42c2-9ed2-3bf2c8e3baf0",
+      "decision_name": "Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart voor kind van natuurlijk persoon",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        },
+        {
+          "knowledge_source_name": "Adres van kind",
+          "knowledge_source_type": "APT",
+          "ref_id": "32d7e9c8-8f7a-45e0-aae4-9cc01024c042",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["kind of stiefkind of pleegkind adres"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_8a0d9e20-95d2-4cff-ab6a-08dc1b17bfbc",
+      "decision_name": "Beslistabel bepalen aanspraak op tegemoetkoming identiteitskaart",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanspraak stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "0522d3ff-d2b1-4690-9a54-6593c2828f6c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kent het college de Stadspas en de Stadspasaanbiedingen toe aan de Aanvrager dan wel de bij de gemeente bekende rechthebbende"
+          ]
+        },
+        {
+          "knowledge_source_name": "Natuurlijke persoon heeft Nederlandse nationaliteit ",
+          "knowledge_source_type": "CPT",
+          "ref_id": "1722f608-fad8-42ec-9ac8-32d227e4b52c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "3d615731-ccb4-44ac-82e4-c6b9b668c748",
+              "name": "Beleidsregels Volledige tegemoetkoming leges Nederlandse identiteitskaart voor Stadspashouders.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=38d56757-7fc6-47cf-a5b3-722d470ecdbd",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Nederlander te zijn"],
+          "concept_name": "Natuurlijke persoon heeft Nederlandse nationaliteit",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "Id-kaart of paspoort is korter dan 8 weken geldig",
+          "knowledge_source_type": "CPT",
+          "ref_id": "89e1f134-e723-420e-8a09-9d40459cdabc",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "3d615731-ccb4-44ac-82e4-c6b9b668c748",
+              "name": "Beleidsregels Volledige tegemoetkoming leges Nederlandse identiteitskaart voor Stadspashouders.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=38d56757-7fc6-47cf-a5b3-722d470ecdbd",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["geldigheid acht weken vanaf de datum van aanvraag"],
+          "concept_name": "Id-kaart of paspoort is korter dan 8 weken geldig",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "Aanspraak tegemoetkoming identiteitskaart",
+          "knowledge_source_type": "APT",
+          "ref_id": "b287f363-5027-4769-a25f-5386bd525dbb",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "3d615731-ccb4-44ac-82e4-c6b9b668c748",
+              "name": "Beleidsregels Volledige tegemoetkoming leges Nederlandse identiteitskaart voor Stadspashouders.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=38d56757-7fc6-47cf-a5b3-722d470ecdbd",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["aan te vragen"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_9439cfee-4abb-447e-9002-a1254b59442c",
+      "decision_name": "Beslistabel bepalen aanspraak op reiskostenvergoeding kind",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "scholier reist vanaf het Woonadres zoveel km om het schoolgebouw te bereiken",
+          "knowledge_source_type": "APT",
+          "ref_id": "515f5956-4660-4926-80fb-e66614e9d419",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["scholier reizen vanaf het Woonadres om het schoolgebouw te bereiken"]
+        },
+        {
+          "knowledge_source_name": "Scholier maakt of kan aanspraak maken op een voorziening krachtens een gemeentelijke regeling",
+          "knowledge_source_type": "CPT",
+          "ref_id": "b3c78d94-42b7-406a-afd6-b71d2377cc6d",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Scholier aanspraak maakt of kan maken op een voorziening krachtens een gemeentelijke regeling"
+          ],
+          "concept_name": "Scholier maakt of kan aanspraak maken op een voorziening krachtens een gemeentelijke regeling",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "Kind is een scholier ",
+          "knowledge_source_type": "APT",
+          "ref_id": "bbcaa777-d365-4c81-8ff3-306e99914633",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Scholier:"]
+        },
+        {
+          "knowledge_source_name": "aanspraak reiskostenvergoeding",
+          "knowledge_source_type": "CPT",
+          "ref_id": "96171a14-8f15-4ace-b12c-3c34c4a4dc27",
+          "resolved": true,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": [],
+          "concept_name": "aanspraak reiskostenvergoeding",
+          "concept_type": "Rechtsbetrekking"
+        }
+      ]
+    },
+    {
+      "decision_id": "_a92ecca0-d6bf-463b-809c-82aa3d0f95b0",
+      "decision_name": "Beslistabel aanspaak op aanvullend kindtegoed",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "aanspraak kindtegoed Stadspas",
+          "knowledge_source_type": "APT",
+          "ref_id": "7e9a822c-6d9c-42d5-96a1-babeca5f928c",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "noodzakelijke extra kosten voor kinderen van 0 tot en met 17 jaar in de vorm van een tegoed op de Stadspas"
+          ]
+        },
+        {
+          "knowledge_source_name": "inschrijfbewijs van kind voor betreffende voorschool",
+          "knowledge_source_type": "APT",
+          "ref_id": "97bb6554-1133-4520-8419-87a71b558d92",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["inschrijfbewijs van deze betreffende voorschool nodig"]
+        },
+        {
+          "knowledge_source_name": "aanspraak kindtegoed kosten Voorschool",
+          "knowledge_source_type": "APT",
+          "ref_id": "f5d84ccc-3339-4c76-96fd-006cf2783f27",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Kindtegoed aanvragers kosten verbonden aan de Voorschool,"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_a95ae1d9-eb21-4ef0-8e97-550cba6d5b27",
+      "decision_name": "Beslistabel bepalen aanspraak op PC-voorziening",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "een PC-voorziening is verstrekt aan een broer of zus ( van 10,11 of 12 jaar ) in het basisonderwijs",
+          "knowledge_source_type": "CPT",
+          "ref_id": "1dec59f5-3a5a-49dd-89e6-5582bc9a6eba",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "afgelopen 4 schooljaren voorafgaand aan het schooljaar een PC-voorziening is verstrekt aan een broer of zus( van 10,11 of 12 jaar) in het basisonderwijs"
+          ],
+          "concept_name": "een PC-voorziening is verstrekt aan een broer of zus ( van 10,11 of 12 jaar ) in het basisonderwijs",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "een PC-voorziening is al verstrekt in het voortgezet onderwijs in de voorgaande 4 jaren",
+          "knowledge_source_type": "CPT",
+          "ref_id": "73db40aa-bfa9-4b16-8195-f000ec74ad1a",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "al een PC-voorziening is verstrekt in het voortgezet onderwijs in de 4 schooljaren voorafgaand aan het schooljaar waarop de aanvraag betrekking heeft"
+          ],
+          "concept_name": "een PC-voorziening is al verstrekt in het voortgezet onderwijs in de voorgaande 4 jaren",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "Kind ingeschreven op (voor)school",
+          "knowledge_source_type": "APT",
+          "ref_id": "80c170f6-ca72-43ef-bb8c-524832630b88",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "het schooljaar of een deel daarvan is ingeschreven, of naar verwachting zal zijn ingeschreven, op een( Voor) school"
+          ]
+        },
+        {
+          "knowledge_source_name": "PC-voorziening is verstrekt aan de scholier in het basisonderwijs in het jaar voorafgaand",
+          "knowledge_source_type": "CPT",
+          "ref_id": "a71d5bd0-9135-4df2-8787-bc2ec1145518",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "PC-voorziening is verstrekt aan de scholier in het basisonderwijs in het jaar voorafgaand"
+          ],
+          "concept_name": "PC-voorziening is verstrekt aan de scholier in het basisonderwijs in het jaar voorafgaand",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "Aanvrager heeft BSN",
+          "knowledge_source_type": "APT",
+          "ref_id": "be680665-f245-4352-b033-0e85cc581e8f",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["burgerservicenummer"]
+        },
+        {
+          "knowledge_source_name": "scholier volgt Voortgezet onderwijs",
+          "knowledge_source_type": "APT",
+          "ref_id": "e5b9524c-d0b0-41c3-9304-2054216dc872",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["de Scholier aan het Voortgezet onderwijs"]
+        },
+        {
+          "knowledge_source_name": "aanspraak PC-voorziening basisonderwijs",
+          "knowledge_source_type": "CPT",
+          "ref_id": "73a55739-84e4-48df-be1a-e27fc52eb4a1",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["PC-voorziening aan aanvragers basisonderwijs"],
+          "concept_name": "aanspraak PC-voorziening basisonderwijs",
+          "concept_type": "Rechtsbetrekking"
+        }
+      ]
+    },
+    {
+      "decision_id": "_ae01d740-f954-4a84-8dd8-a28fc3660cc6",
+      "decision_name": "Beslistabel bepalen aanspraak op regeling tegemoetkoming meerkosten",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "ingezetenen heeft aannemelijke meerkosten",
+          "knowledge_source_type": "CPT",
+          "ref_id": "74dc2de2-286a-419d-8811-dbffcd749db1",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4a0af2d6-9b97-4294-90fb-617a2403abfe",
+              "name": "wmo_verordening_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=5aefc71c-8b58-41ae-bbd7-8280b00efae4",
+              "version": "4",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["ingezetenen aannemelijke meerkosten"],
+          "concept_name": "ingezetenen heeft aannemelijke meerkosten",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "natuurlijke persoon heeft een medische verklaring",
+          "knowledge_source_type": "CPT",
+          "ref_id": "a62c9559-f96c-4d79-8c4e-8b16667efc7d",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4374339f-1541-4d2c-8345-44f13031a315",
+              "name": "wmo_nadere_regels_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=0d6531ef-545f-4bc0-9590-737685d409cb",
+              "version": "2",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een medische verklaring"],
+          "concept_name": "natuurlijke persoon heeft een medische verklaring",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "aanspraak op regeling tegemoetkoming meerkosten",
+          "knowledge_source_type": "CPT",
+          "ref_id": "23654310-6d32-4f2b-88b0-1860d25e97d6",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4a0af2d6-9b97-4294-90fb-617a2403abfe",
+              "name": "wmo_verordening_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=5aefc71c-8b58-41ae-bbd7-8280b00efae4",
+              "version": "4",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "H et college een financiële tegemoetkoming als bedoeld in artikel 2.1.7 van de wet verstrekken aannemelijke meerkosten"
+          ],
+          "concept_name": "aanspraak op regeling tegemoetkoming meerkosten",
+          "concept_type": "Rechtsbetrekking"
+        }
+      ]
+    },
+    {
+      "decision_id": "_bca439b7-fdb8-40e3-8a1d-3bb95571c65c",
+      "decision_name": "Beslistabel bepalen aanspraak op individuele inkomenstoeslag",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "aanspraak individuele inkomenstoeslag",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b7157ff-2bc6-4ada-ba36-8123e6038dfe",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=3"],
+          "quotes": [
+            "Een persoon kan op een daartoe strekkend verzoek in aanmerking komen voor een individuele inkomenstoeslag"
+          ],
+          "concept_name": "aanspraak individuele inkomenstoeslag",
+          "concept_type": "Rechtsbetrekking"
+        },
+        {
+          "knowledge_source_name": "natuurlijke persoon heeft langdurig laag inkomen",
+          "knowledge_source_type": "APT",
+          "ref_id": "0f0d5140-0624-4aa3-a077-2a26087d1436",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"],
+          "quotes": ["hij laag inkomen had"]
+        },
+        {
+          "knowledge_source_name": "partner van rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "knowledge_source_type": "APT",
+          "ref_id": "602be365-47f7-4546-9a0c-94915c2add57",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "ead21d22-f995-45b1-bfc8-12d36493d34d",
+              "name": "Beleidsregels Individuele Inkomenstoeslag Amsterdam 2021",
+              "type": "Beleidsregel",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=5e7ee410-20c6-4730-bfd5-e1e3790c55fa",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&artikel=2"],
+          "quotes": ["het uitzicht op inkomensverbetering van beide personen"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft woonadres",
+          "knowledge_source_type": "APT",
+          "ref_id": "61d1181d-a7e6-4da1-a121-89ca30fcb7b0",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Woonadres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "knowledge_source_type": "CPT",
+          "ref_id": "cf35d84d-bec6-42b7-8491-9208ef44d2c9",
+          "resolved": true,
+          "documents": [],
+          "jci_citations": [],
+          "quotes": [],
+          "concept_name": "rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_1fd5fa9b-4052-477d-9837-f18f59e0b1be",
+      "decision_name": "Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_299e6c91-3fe5-49aa-88cc-efd03583ae87",
+      "decision_name": "Beslistabel bepalen langdurig laag inkomen",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "bepalen langdurig laag inkomen",
+          "knowledge_source_type": "CPT",
+          "ref_id": "bc6e9ec5-719e-4abf-ac8f-9bfea17908c2",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"],
+          "quotes": [
+            "Een persoon komt in aanmerking als hij gedurende de gehele referteperiode een laag inkomen had"
+          ],
+          "concept_name": "bepalen langdurig laag inkomen",
+          "concept_type": "Afleidingsregel"
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b0c647a-40a1-4c20-bb19-662b12d7ae52",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4374339f-1541-4d2c-8345-44f13031a315",
+              "name": "wmo_nadere_regels_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=0d6531ef-545f-4bc0-9590-737685d409cb",
+              "version": "2",
+              "bwb": null
+            },
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1"],
+          "quotes": [
+            "fiscaal gezinsinkomen",
+            "een fiscaal gezinsinkomen",
+            "Een fiscaal gezinsinkomen"
+          ],
+          "concept_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "natuurlijke persoon heeft langdurig laag inkomen",
+          "knowledge_source_type": "APT",
+          "ref_id": "0f0d5140-0624-4aa3-a077-2a26087d1436",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"],
+          "quotes": ["hij laag inkomen had"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_47e5f1bc-2557-44f3-9aa2-07e520126f33",
+      "decision_name": "Beslistabel bepalen schuldregeling",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Aanvrager heeft een opgelegde schuldregeling op grond van de WSNP",
+          "knowledge_source_type": "APT",
+          "ref_id": "099f9264-089e-4a68-b7e2-ded26f479c11",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "een opgelegde schuldregeling op grond van de Wet Schuldsanering Natuurlijke Personen"
+          ]
+        },
+        {
+          "knowledge_source_name": "aanvrager heeft een minnelijke schuldregeling",
+          "knowledge_source_type": "APT",
+          "ref_id": "148afe2c-dc30-4512-a536-087f542b54e1",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een minnelijke schuldregeling bij de Kredietbank Amsterdam"]
+        },
+        {
+          "knowledge_source_name": "aanvrager heeft een schuldregeling van een door de gemeente aangewezen/gemandateerde instantie",
+          "knowledge_source_type": "APT",
+          "ref_id": "3f211a1c-450a-4029-b0aa-4be3d9d97966",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "een schuldregeling bij een door de gemeente aangewezen of gemandateerde instantie"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_52e3eb1b-1561-431c-9e8b-e9314f20836f",
+      "decision_name": "Beslistabel bepalen of een kind een minimabeleid kind is",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Adres van kind",
+          "knowledge_source_type": "APT",
+          "ref_id": "32d7e9c8-8f7a-45e0-aae4-9cc01024c042",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["kind of stiefkind of pleegkind adres"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "knowledge_source_type": "CPT",
+          "ref_id": "4b0c647a-40a1-4c20-bb19-662b12d7ae52",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "4374339f-1541-4d2c-8345-44f13031a315",
+              "name": "wmo_nadere_regels_2025.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=0d6531ef-545f-4bc0-9590-737685d409cb",
+              "version": "2",
+              "bwb": null
+            },
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            },
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": ["jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1"],
+          "quotes": [
+            "fiscaal gezinsinkomen",
+            "een fiscaal gezinsinkomen",
+            "Een fiscaal gezinsinkomen"
+          ],
+          "concept_name": "natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar",
+          "concept_type": "Juridisch relevant feit"
+        },
+        {
+          "knowledge_source_name": "Kind ingeschreven in een instelling voor Jeugdhulp met verblijf",
+          "knowledge_source_type": "APT",
+          "ref_id": "6d5917b8-190f-48ff-b19c-33aef7f08255",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "kind staat ingeschreven in een instelling voor Jeugdhulp met verblijf en op dat adres is ingeschreven in de Basisregistratie Personen"
+          ]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon beschikt over een vermogen",
+          "knowledge_source_type": "APT",
+          "ref_id": "6fea33db-8454-4a6c-9e02-db6a1f3417db",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["een vermogen"]
+        },
+        {
+          "knowledge_source_name": "natuurlijk persoon krijgt voedselpakketten van de Voedselbank Amsterdam of Voedselbank Gooi en Omstreken",
+          "knowledge_source_type": "APT",
+          "ref_id": "f9ad913d-fef7-41f9-85bb-2fe7266f8887",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "c037783e-83c9-4742-a133-d203b90be3ef",
+              "name": "Beleidsregels Stadpas.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=8e82818e-5d78-4b87-8910-9025707ce59c",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "Voedselbank Nederland voedselpakketten worden verstrekt door Voedselbank Amsterdam of Voedselbank Gooi en Omstreken"
+          ]
+        }
+      ]
+    },
+    {
+      "decision_id": "_70476381-08ed-4db9-8602-edcc50341607",
+      "decision_name": "Beslistabel bepalen natuurlijke persoon is meerderjarig",
+      "legal_basis": []
+    },
+    {
+      "decision_id": "_8e0b94dc-e62c-45c7-b731-cc18bbf484cc",
+      "decision_name": "Beslistabel bepalen of een kind een scholier is",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "Kind ingeschreven op (voor)school",
+          "knowledge_source_type": "APT",
+          "ref_id": "80c170f6-ca72-43ef-bb8c-524832630b88",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "het schooljaar of een deel daarvan is ingeschreven, of naar verwachting zal zijn ingeschreven, op een( Voor) school"
+          ]
+        },
+        {
+          "knowledge_source_name": "scholier volgt Voortgezet onderwijs",
+          "knowledge_source_type": "APT",
+          "ref_id": "e5b9524c-d0b0-41c3-9304-2054216dc872",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["de Scholier aan het Voortgezet onderwijs"]
+        },
+        {
+          "knowledge_source_name": "scholier volgt het middelbaar beroepsonderwijs BBL met onbetaalde stage",
+          "knowledge_source_type": "APT",
+          "ref_id": "85d3de1b-0c96-4275-8659-37d29fccbd72",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": [
+            "de Scholier aan het middelbaar beroepsonderwijs BBL( indien de scholier een onbetaalde stage volgt)"
+          ]
+        },
+        {
+          "knowledge_source_name": "Kind is een scholier ",
+          "knowledge_source_type": "APT",
+          "ref_id": "bbcaa777-d365-4c81-8ff3-306e99914633",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "dbdf9411-615b-413d-82c8-ce0b79cf8717",
+              "name": "Beleidsregels minimakinderen.docx",
+              "type": "No document type selected",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=32b9f14e-aa26-4036-b5a2-ef3e5c196536",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [],
+          "quotes": ["Scholier:"]
+        }
+      ]
+    },
+    {
+      "decision_id": "_912d27e0-1b8f-47bd-98cf-1863354ef321",
+      "decision_name": "Bepalen van toepassing zijnde vermogensgrens",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_adcd1d42-b570-4e57-854b-ce5444975185",
+      "decision_name": "Bepaal pensioengerechtigde leeftijd",
+      "legal_basis": []
+    },
+    {
+      "decision_id": "_d4786c58-c3ce-42c5-b8fa-d7deabd40823",
+      "decision_name": "Bepalen van toepassing zijnde loongrens vorig jaar voor kinderen",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_e86e55be-0483-4f64-971d-bbae860e6709",
+      "decision_name": "Beslistabel bepalen kind is minderjarig",
+      "legal_basis": []
+    },
+    {
+      "decision_id": "_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f",
+      "decision_name": "Bepalen van toepassing zijnde loongrens drie jaar geleden",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    },
+    {
+      "decision_id": "_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1",
+      "decision_name": "Bepalen van toepassing zijnde loongrens twee jaar geleden",
+      "legal_basis": [
+        {
+          "knowledge_source_name": "natuurlijk persoon heeft gezinssituatie",
+          "knowledge_source_type": "CPT",
+          "ref_id": "8bf152a7-22a1-4624-b43b-aa9c9ff68b30",
+          "resolved": true,
+          "documents": [
+            {
+              "id": "65037704-4142-40f7-a73f-9e68763b512f",
+              "name": "Verordening Individuele Inkomenstoeslag Participatiewet Amsterdam 2021",
+              "type": "Gemeentelijke verordening",
+              "url": "https://hva.pna-web.com/hva/?type=AND&id=68aca5e7-8cc4-4d15-9ac2-c9bebf8b13e6",
+              "version": "1",
+              "bwb": null
+            }
+          ],
+          "jci_citations": [
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=1",
+            "jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende nummer&artikel=4"
+          ],
+          "quotes": ["de gezinssituatie", "gezinssituaties"],
+          "concept_name": "natuurlijk persoon heeft gezinssituatie",
+          "concept_type": "Juridisch relevant feit"
+        }
+      ]
+    }
+  ]
+}

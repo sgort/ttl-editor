@@ -38,3 +38,7 @@ examples/**/.DS_Store
 cpsv-editor.zip
 
 /tooling
+
+# Python cache from ad hoc scripts (e.g. examples/organizations/amsterdam/testCases/*.py)
+__pycache__/
+*.pyc
