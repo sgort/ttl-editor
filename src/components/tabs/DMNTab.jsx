@@ -410,6 +410,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 nameLower.includes('geboorte') ||
                 nameLower.includes('birth') ||
                 nameLower.includes('dob');
+              let dateOnly;
               if (isBirthDate) {
                 const today = new Date();
                 const randomAge = Math.floor(Math.random() * (68 - 25 + 1)) + 25;
@@ -417,14 +418,20 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 const randomMonth = Math.floor(Math.random() * 12);
                 const randomDay = Math.floor(Math.random() * 28) + 1;
                 const birthDate = new Date(birthYear, randomMonth, randomDay);
-                // Use simple format with type String (Operaton handles conversion)
-                value = birthDate.toISOString().split('T')[0];
+                dateOnly = birthDate.toISOString().split('T')[0];
               } else {
-                // Use simple format with type String
-                value = new Date().toISOString().split('T')[0];
+                dateOnly = new Date().toISOString().split('T')[0];
               }
-              // CRITICAL: Use 'String' type, not 'Date' - Operaton converts internally
-              type = 'String';
+              // A DMN typeRef="date" column needs a full ISO timestamp + offset
+              // and type: 'Date', not a bare YYYY-MM-DD string typed as String --
+              // Operaton does NOT convert internally (confirmed empirically:
+              // "DMN-01005 Invalid value '...' for clause with type 'date'"
+              // otherwise, whenever the decision calls .year/.years on the input,
+              // as several Amsterdam DMNs do). See
+              // hva-full-dmn-export-feel-evaluation-fix.md's "correct REST
+              // variable typing" section.
+              value = `${dateOnly}T00:00:00.000+0200`;
+              type = 'Date';
               break;
             }
             case 'string':
