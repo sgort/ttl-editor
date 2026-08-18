@@ -2,6 +2,381 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.08.0",
+      "status": "Released",
+      "date": "18 aug 2026",
+      "commits": [
+        {
+          "sha": "cf170a7",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Prettier formatting for the Amsterdam CHANGELOG",
+          "details": [
+            "Whitespace-only fix so the pre-push hook's repo-wide `check-format` passes after the prior commit's edits."
+          ]
+        },
+        {
+          "sha": "500779b",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Amsterdam CHANGELOG executive summary + outputs-fallback entry",
+          "details": [
+            "Adds an executive summary at the top of the Amsterdam CPRMV/DMN changelog, walking the pipeline end to end: legal analysis in iKnow, the two `HvA_full_dmn_export.dmn` iterations (with the spec-owner Q&A round in between), the deploy-blocker/FEEL fixes that landed in `HvA_full_dmn_export-patched.dmn`, MC/DC verification, cell-level grounding, LDE validator fixes, and the CPSV Editor publish.",
+            "Also adds a changelog row documenting the DMN output-discovery gap found on republish (Concepts tab losing outputs when the live evaluate response came back empty) and its fix via `extractOutputsFromDMN`'s static XML fallback, reproduced live with a structurally-coupled input combination from the test suite."
+          ]
+        },
+        {
+          "sha": "71a3a40",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Concepts tab lost output variables when evaluate returns no match",
+          "details": [
+            "The DRD root (`hitPolicy=RULE ORDER`) has no catch-all rule, so evaluating it against the auto-generated baseline request body legitimately returns an empty result set. `extractOutputsFromTestResult()` could only discover an output's name/type from what the engine actually returned, so an empty result meant zero output concepts even though the DMN declares one. Inputs never had this problem — `generateRequestBodyFromDMN()` already reads `<dmn:inputData>` directly from the XML, independent of any evaluate result.",
+            "New `extractOutputsFromDMN()` closes the same gap for outputs: reads a decision's declared `<dmn:output>` name/type straight from the XML, namespace-agnostically, handling multiple output columns and the name-vs-label fallback. `handleEvaluateDMN` now falls back to it whenever the live evaluate result yields nothing. 7 new tests in `dmnHelpers.test.js`. Confirmed live: the Concepts tab shows the `aanspraken` output alongside the 52 inputs even when Evaluate Decision returns an empty result, and the republished TTL carries it through to TriplyDB."
+          ]
+        },
+        {
+          "sha": "40f42fc",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DOD met — publish Digital-Twin-Inkomensregelingen.ttl",
+          "details": [
+            "Cell-level legislative grounding (Layers 1-4 of `cprmv-cell-level-linking-prototype.md`) applied to `HvA_full_dmn_export-patched.dmn`'s Rule 1, deployed, evaluated, and published live via the CPSV Editor — zero DMN evaluation issues, zero SHACL validation issues.",
+            "Adds the published `.ttl` itself and the Gemeente Amsterdam organization logo referenced from it, plus a single consolidated CHANGELOG.md entry for the whole effort."
+          ]
+        },
+        {
+          "sha": "7c47c8e",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Cell-grounding resources weren't SHACL-conformant",
+          "details": [
+            "Live SHACL validation in the CPSV Editor against a real published `.ttl` surfaced two `RuleShape` violations: `cprmv:id` is required (`sh:minCount 1`) on every `cprmv:Rule` — cell resources used `dct:identifier` instead (not checked by this shape at all), and concept resources had no identifier property whatsoever. Both now emit `cprmv:id`, including compound-cell grounding sub-resources.",
+            "`cprmv:isBasedOn` has `sh:class cprmv:Rule` — its object must itself be typed `cprmv:Rule`. Concept-resource targets already were; a direct external citation URI (CVDR, wetten.overheid.nl) was not. Every distinct citation URI referenced via `isBasedOn` now gets a minted, deduplicated stub (`<uri> a cprmv:Rule ; cprmv:id \"<uri>\" .`). 3 new tests; full suite passes."
+          ]
+        },
+        {
+          "sha": "bde5627",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Date-typed DMN inputs need type: Date, not String",
+          "details": [
+            "`generateRequestBodyFromDMN()`'s `typeRef=\"date\"` branch typed every date input as `{value: \"YYYY-MM-DD\", type: \"String\"}` on the incorrect assumption that Operaton converts internally. Wrong for any DMN that calls `.year`/`.years` on the input directly, as several Amsterdam decisions do — confirmed via Operaton's own logs (`DMN-01005 Invalid value ... for clause with type 'date'`).",
+            "Now emits the full ISO timestamp + offset with `type: 'Date'`, matching the format already documented as required elsewhere in this project's own REST variable typing notes."
+          ]
+        },
+        {
+          "sha": "8c7db5b",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Consolidate cell-grounding changelog, move notice to dmn-fix doc",
+          "details": [
+            "Collapsed two same-day CHANGELOG rows into one, dropping process narrative (a CORS issue, a wrong-file mixup) already captured in the commits themselves, keeping the substance: Layers 1-4 implemented for real against `HvA_full_dmn_export-patched.dmn`, plus the two defects building them surfaced.",
+            "`cprmv-cell-level-linking-prototype.md` trimmed to state the file choice plainly; `hva-full-dmn-export-feel-evaluation-fix.md` gains the one \"Verification status\" note that this file's Rule 1 carries real cell-level grounding, pointing to the prototype doc for design detail."
+          ]
+        },
+        {
+          "sha": "8e3d590",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Ground Rule 1 in HvA_full_dmn_export-patched.dmn, not the standalone file",
+          "details": [
+            "Live-testing the deploy/evaluate CORS fix surfaced that cell-level grounding had been applied to the wrong file. `individuele inkomenstoeslag-iknow-patched.dmn` predates this project's FEEL-evaluation fix and still has 23 unfixed multi-word bare-name expressions; deploying it additionally shadowed the already-fixed decisions in `HvA_full_dmn_export-patched.dmn` on Operaton, since both files declare identical decision keys and \"latest version by key\" resolution doesn't care which file a deployment came from. The stray deployment was deleted.",
+            "`HvA_full_dmn_export-patched.dmn` includes the identical decision as one of its 25 (same key, already fixed) — grounded that copy instead, with the same real citations, using its own cell ids. Redeployed as the sole source of truth; the 100-case MC/DC suite still passes 100/100, confirming the grounding attributes remain inert to FEEL evaluation as already established empirically."
+          ]
+        },
+        {
+          "sha": "f69c76b",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Route DMN evaluate through the LDE backend too",
+          "details": [
+            "Same CORS problem as the deploy fix: Evaluate Decision, \"run all intermediate decisions\", and \"run test cases\" all POSTed straight to Operaton's own evaluate endpoint from the browser, which is blocked the same way deploy was.",
+            "All three call sites now go through a shared `evaluateViaBackend()` helper hitting the LDE backend's `POST /v1/dmns/evaluate/:decisionKey`, forwarding the same request body unchanged. The \"Evaluation URL\" preview in the API Configuration panel now shows the actual LDE-backend URL."
+          ]
+        },
+        {
+          "sha": "21775f8",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Route DMN deploy through the LDE backend, not Operaton directly",
+          "details": [
+            "Deploying straight from the browser to Operaton's `/engine-rest/deployment/create` hits CORS in local dev. `handleDeployDMN` now POSTs to the LDE backend's new `POST /v1/dmns/deploy`, mirroring the pattern `runBackendValidation()` already uses for `/v1/dmns/validate`: browser → LDE backend (CORS-allowed) → Operaton server-to-server. The now-unused `apiConfig.deploymentEndpoint` field is removed."
+          ]
+        },
+        {
+          "sha": "a70265b",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Implement cell-level legislative grounding (Layers 1-3)",
+          "details": [
+            "Layer 1: `xmlns:cprmv`/`xmlns:dct` declared on `<dmn:definitions>`; real `dct:source`/`cprmv:sourceQuote`/`cprmv:isBasedOn` attributes added to Rule 1's 6 grounded cells, using citations cross-referenced from `HvA_annotaties.xml`. Confirmed to still deploy cleanly to Operaton.",
+            "Layer 2: `dmnHelpers.js`'s `extractRulesFromDMN()` now reads every cell's id, FEEL text, and groundings into `rule.inputEntries`/`outputEntries`. Surfaced a pre-existing defect: every selector-based DMN lookup silently matched nothing against a real, `dmn:`-prefixed DMN, since CSS type selectors match by (namespace, local name) and an unprefixed selector implies the null namespace — meaning cell-level grounding, and even the existing rule-level export, never actually worked for real DMN files. Fixed via a namespace-agnostic `queryAllLocal`/`queryLocal` helper.",
+            "Layer 3: `ttlGenerator.js`'s `generateDmnSection()` now emits a `cprmv:hasPart` list of per-cell `cprmv:Rule` resources on each `DecisionRule`, with deduplicated concept minting and a nested `hasPart` for compound cells. Verified end-to-end against the real DMN (11 new tests in `ttlGenerator.cellGrounding.test.js`, 2 new in `dmnHelpers.test.js`); 249/249 tests pass repo-wide."
+          ]
+        },
+        {
+          "sha": "44d27ee",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Close MC/DC rule-coverage gap in HvA DMN test suite (69 → 100 cases)",
+          "details": [
+            "Every one of the DRD's 99 rules across all 25 decisions now has a dedicated, empirically-verified test case, up from representative coverage on the 13 composite decisions. 30 new cases added, all run live against the deployed patched DMN with zero errors.",
+            "Verifying the DRD root's remaining output rows surfaced a real, verified finding rather than a defect: several rows are structurally coupled under `hitPolicy=RULE ORDER` — a shared qualifying fact and direct `requiredDecision` chains mean triggering one row legitimately triggers others in the same evaluation. Documented in a new \"Structural couplings\" section of `test-cases-validation-hva.md`, with `test-cases-hva.sh` gaining a parser for the root's multi-row expected format."
+          ]
+        },
+        {
+          "sha": "303fc66",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Extract applicable legal sources for HvA_full_dmn_export.dmn",
+          "details": [
+            "New `extract-legal-sources.py` walks every decision's `authorityRequirement` → `knowledgeSource` link in the original export, resolves each concept/text-annotation id against `HvA_annotaties.xml`'s own registries, and reports per decision the named source document (+ BWB number where applicable), JuriConnect citation where present, and grounding quote. Read-only, unrelated to the FEEL-evaluation fix.",
+            "Confirms 97 of 99 `authorityRequirement` links resolve cleanly, spanning 14 named source documents and 23 distinct JCI citations across 72 citing text annotations. Outputs a markdown report and full JSON data, regenerable any time either export changes."
+          ]
+        },
+        {
+          "sha": "41b3f20",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Link test-cases-validation-hva.md from CHANGELOG.md",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "cb008a9",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Add project permission allowlist for common read-only npm scripts",
+          "details": [
+            "Allowlists `npm run lint`, `type-check`, `test`, `test:e2e`, `test:coverage`, `check-format`, `format:check`, `deps:check` — reduces permission prompts for the most frequently-run read-only dev commands."
+          ]
+        },
+        {
+          "sha": "3e9cac6",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Add SKIP_DEPLOY option to test-cases-hva.sh",
+          "details": [
+            "Lets the suite rerun against whatever's already deployed, without redeploying the DMN each time — useful when iterating on the test-case JSON itself and the DMN hasn't changed."
+          ]
+        },
+        {
+          "sha": "f1ec0c9",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Full 25-decision coverage; fix hitPolicy gap; consolidate changelog",
+          "details": [
+            "Brings the remaining 11 composite decisions into the test suite (69 cases total, full coverage of all 25 decisions). Adds `test-cases-hva.sh`, a self-contained runner that deploys the patched DMN and evaluates every case with a pass/fail summary.",
+            "Building the new cases surfaced one more real defect: two decisions had no `hitPolicy` (defaulting to `UNIQUE`) despite having a wildcard default rule — invalid under `UNIQUE`, since the default always matches alongside a specific rule. Fixed by adding `hitPolicy=\"FIRST\"`, matching every sibling decision's convention. Also consolidates three separate/inline changelogs into one new `CHANGELOG.md`."
+          ]
+        },
+        {
+          "sha": "603fb9f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Link the new test-suite files in the changelog row",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "d055dbb",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Add HvA DMN test suite; fix two more malformed FEEL patterns found while writing it",
+          "details": [
+            "Adds a 40-case, 14-decision test suite: MC/DC-style one-case-per-rule coverage for the 10 self-contained leaf decisions, plus integration coverage for 4 composite decisions. Every case's request body is the full 52-variable baseline merged with case-specific overrides, and every expected value was captured by running the case live.",
+            "Building the cases surfaced two more malformed rule-cell patterns in `HvA_full_dmn_export-patched.dmn`: bare `and`-joined comparisons aren't valid unary-test ranges (rewritten to interval notation), and `not \"met partner\"` has the same missing-parentheses problem as `not -` (rewritten to `not(\"met partner\")`). All 40 cases run live with zero errors against the redeployed patched DMN."
+          ]
+        },
+        {
+          "sha": "426e675",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Move changelog link to hva-full-dmn-export-feel-evaluation-fix.md to the latest row",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "38bbc14",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Resolve malformed 'not -' / 'not(null) -' rule cells in Amsterdam HvA DMN",
+          "details": [
+            "44 `not -` cells (always on boolean columns) and 12 `not(null) -` cells (always on string columns) are malformed FEEL — `not` requires a parenthesized argument. Both patterns are 100% type-consistent file-wide: `not(null) -` reads as a genuine \"must have a value\" check with a stray trailing dash export artifact (dash dropped); `not -` had both its argument and trailing dash mangled into a bare dash (resolved to `false`, confirmed against business logic, e.g. `bijzondere bijstand`'s \"financiele draagkracht\" really must be false to qualify).",
+            "Confirmed live against the local Operaton instance: `bijzondere bijstand` now gives a clean true/false discrimination, proving the column is a real enforced constraint, not a wildcard or parse failure."
+          ]
+        },
+        {
+          "sha": "9ca1af0",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Add missing dmn:output name attribute, unblocking DMN evaluation",
+          "details": [
+            "Root-caused the evaluate blocker left open by the multi-word FEEL fix: Operaton's result serialization requires `<dmn:output name=\"...\">` — this DMN only ever declared `label`. Without `name`, evaluating a decision whose inputs all resolve throws an unlogged, blank exception. Isolated via bisection against two independent decisions; added `name` (reusing the existing decision-result token) to all 25 `<dmn:output>` elements.",
+            "Confirmed live: 4 leaf decisions now evaluate to the correct value, and a 3-level-deep composite decision chains correctly through its full `requiredDecision` graph. Also nailed down the REST `Date` type/format this DMN's date inputs actually need. Surfaced one more genuine defect (`not -`, 44 occurrences), left unfixed pending a correct, non-guessed rewrite."
+          ]
+        },
+        {
+          "sha": "a2bbdd4",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Flatten multi-word FEEL names in Amsterdam HvA DMN export",
+          "details": [
+            "Operaton's feel-scala engine can't parse this DMN's multi-word bare-name input-expression convention — it consumes only the first word and throws `FEEL/SCALA-01008` on the rest, confirmed on 3 independent decisions. The file deploys (structurally valid DMN) but none of its 25 decisions can actually be evaluated.",
+            "Also found while scoping the fix: rule cells embed cross-decision references as literal output-label text needing an explicit `<dmn:variable>` binding; a genuine 3-way output-label naming collision across decisions; a placeholder expression that was never valid FEEL; and a previously-documented unbound-variable bug. Adds `HvA_full_dmn_export-patched.dmn` (52 inputData + 25 decision-result names flattened, 4 categories of broken FEEL fixed) alongside the untouched original. Live evaluate-time verification left open for the next commit."
+          ]
+        },
+        {
+          "sha": "12bcd47",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Normalize Amsterdam HvA DMN export via Camunda Modeler resave",
+          "details": [
+            "Purely mechanical resave through Camunda Modeler: indentation/attribute-order/self-closing-tag style normalized, `knowledgeSource` description/type moved from non-standard attributes to spec-correct child elements. Verified lossless — all element ids and rule cell text byte-identical before/after; the `historyTimeToLive` and ampersand-escaping fixes remain intact."
+          ]
+        },
+        {
+          "sha": "7e9e540",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Changelog entry for the Amsterdam DMN Operaton deploy fix",
+          "details": [
+            "Documents the `historyTimeToLive`/ampersand-escaping deploy fix in the spec-proposal doc's changelog for traceability."
+          ]
+        },
+        {
+          "sha": "e7de109",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Operaton deploy blockers in Amsterdam HvA DMN export",
+          "details": [
+            "Two issues prevented this DMN from deploying to Operaton: no `camunda:historyTimeToLive` set anywhere (added to all 25 decisions, matching the sibling file's convention), and 48 unescaped `&` characters in `<dmn:knowledgeSource description=...>` URLs (invalid XML, independent of the TTL issue — escaped all of them). Verified all 25 decisions carry the TTL attribute and the file parses cleanly with a standard XML parser."
+          ]
+        },
+        {
+          "sha": "baebd52",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Sync cell-level linking prototype with spec-proposal doc",
+          "details": [
+            "Brings the prototype doc in line with the revised spec-proposal doc: Layer 1 attribute set, before/after XML citations, the Rule 1 column-by-column table, the extended Layer 3 TTL sketch with concept dedup, and the Layer 4/open-questions sections all updated to match."
+          ]
+        },
+        {
+          "sha": "60fda3c",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §4 fix — restore dct:source as the DMN traceability attribute",
+          "details": [
+            "Found while syncing the prototype doc: dropping `cprmv:concept` per the spec owner's Q4 answer had silently dropped the only DMN-attribute carrier for the raw concept/text-annotation id that §5's `dct:source`/concept-dedup design needs. Restores `dct:source` as a DMN attribute, cleanly split from `isBasedOn` (always a citation, never a UUID standing in for one)."
+          ]
+        },
+        {
+          "sha": "8fe9807",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §6 — mark open questions 1-6 resolved, fix implements error",
+          "details": [
+            "Records the spec owner's actual answers for open questions 1-6, with pointers to where each resolution landed elsewhere in the doc. Fixes a factual error: `cprmv:implements` doesn't exist — the real relation is `cpsv:implements`. Splits an old catch-all item into a specific `ruleType`/`rulesetType` question (flagged unprompted by the spec owner as still under consideration) and the general ReSpec-documentation question."
+          ]
+        },
+        {
+          "sha": "1b40ae7",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §3 — drop JCI mandate, adopt ReferenceMethod framing",
+          "details": [
+            "Per the spec owner's answer, JCI isn't the format to mandate — CPRMV 0.4.2 introduces `ReferenceMethod` as a pluggable concept, with JCI/ELI as known methods rather than one canonical grammar. Reframes around two citation targets: external legal resources vs. our own minted `cprmv:Rule`s, addressed via the spec owner's internal \"rule id path\" method, which already matches §5's existing `hasPart`-path URI scheme."
+          ]
+        },
+        {
+          "sha": "24fcbe5",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §5 — mint shared concepts once, per spec owner's Q4/Q5 answers",
+          "details": [
+            "Per Q4, an iKnow concept a cell points at is itself a `cprmv:Rule`, referenced via the same `cprmv:isBasedOn` relation used everywhere else. Per Q5, the minting rule is reframed around reuse: a concept referenced from more than one place is minted exactly once and reused by URI. Grounded in a real, verified case — a decision's own `authorityRequirement` and Rule 1's output cell resolve to the same concept, confirmed directly in the DMN."
+          ]
+        },
+        {
+          "sha": "82fea96",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §4 — drop cprmv:concept, fold into isBasedOn",
+          "details": [
+            "Per the spec owner's answer to open question 4: a \"concept\" is itself a `cprmv:Rule`, not a separate tool-specific pointer property. Collapses the DMN-attribute set from three to two (`sourceQuote`/`isBasedOn`) — `isBasedOn` now carries either a legislative citation or the iKnow concept's own reference, supported by real evidence that Amsterdam's annotation data already produces `isBasedOn` values in more than one format."
+          ]
+        },
+        {
+          "sha": "37bee7f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §5 — key cell URIs off DMN inputEntry/outputEntry id",
+          "details": [
+            "The re-exported DMN now gives every `<inputEntry>`/`<outputEntry>` its own id, so cell-level `cprmv:Rule` URIs are minted from that id instead of column position — more robust against column reordering, with a positional fallback for sources without per-cell ids. Flags a new open question on cross-export id stability."
+          ]
+        },
+        {
+          "sha": "998fec1",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Re-export Amsterdam HvA DMN from iKnow",
+          "details": [
+            "Fresh export from iKnow: every `<dmn:input>`, `<dmn:output>`, `<dmn:rule>`, `<dmn:inputEntry>`, and `<dmn:outputEntry>` now carries its own id (previously none did). Decision/decision-table ids — the anchor already used by shipped TTL — are unchanged; no content changes."
+          ]
+        },
+        {
+          "sha": "6cde457",
+          "author": "Mariette Lokin",
+          "type": "docs",
+          "subject": "Edit cprmv-cell-level-linking-prototype.md",
+          "details": ["Collaborator edit to the prototype doc."]
+        },
+        {
+          "sha": "0568804",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Handle multi-grounding cells in cprmv cell-level linking proposal, add changelogs",
+          "details": [
+            "A single decision-table cell can be a compound FEEL expression where each conjunct may need its own citation. Two encodings were tested directly against local Operaton: repeatable child elements (rejected outright — no extension point in the DMN schema's unary-tests content model) and numbered attribute families (deploys fine, no upper bound). Design updated accordingly on both the DMN side (numbered attributes) and the TTL side (recursive `cprmv:hasPart`, no new SHACL shapes). Adds a changelog table to the top of both design docs."
+          ]
+        },
+        {
+          "sha": "3830fd2",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "DMN tab Base URL defaults to localhost Operaton in dev server",
+          "details": [
+            "`apiConfig.baseUrl` now reads `REACT_APP_OPERATON_URL`, falling back to the production instance, instead of hardcoding the shared Operaton URL. Without this, the DMN tab silently pointed local development at the shared ACC/PROD Operaton instance instead of the local Docker container."
+          ]
+        },
+        {
+          "sha": "c5c4b17",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Extend cprmv cell-level linking proposal with the DMN-to-TTL pipeline",
+          "details": [
+            "A DMN in this project is never published in isolation — it becomes part of a `.ttl` generated by the CPSV Editor's own code, so that pipeline is brought into scope. Adds Layer 2 (what `dmnHelpers.js` reads today), Layer 3 (the concrete TTL a grounded cell should produce, reusing existing `hasPart`/`isBasedOn` patterns), and Layer 4 (what does/doesn't need to change in the LDE validator services) to the prototype doc; corrects an earlier mistake in the spec-proposal doc (`cprmv:isBasedOn` is an object property, `sh:class cprmv:Rule`, not a literal citation string)."
+          ]
+        },
+        {
+          "sha": "03d2bbf",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Prettier formatting for Amsterdam docs",
+          "details": ["Whitespace-only formatting fix."]
+        },
+        {
+          "sha": "e4e4cd0",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Amsterdam DMN deploy fix, and cprmv proposal for cell-level legislative linking",
+          "details": [
+            "Adds the source materials for this whole batch of work (the two iKnow DMN exports, the annotation registry, a validation reference doc), a patched single-decision file fixing an Operaton deploy failure (missing element ids), and the initial cell-level legislative linking proposal: a design for linking legislation at decision-table cell granularity (finer than DMN's native decision-level `knowledgeSource`, or CPRMV's rule-level `extends`/`ruleType`/`confidence`), prototyped against one real rule and cross-referenced against the annotation data, plus a spec-owner-facing doc flagging where the abstract CPRMV vocabulary diverges from what's actually shipping."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.07.0",
       "status": "Released",
       "date": "22 jul 2026",
