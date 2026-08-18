@@ -64,6 +64,77 @@
 
 
 # ============================================================
+#  CPRMV RuleSet
+# ============================================================
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0015703-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0015703_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/digital-twin> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0015703/2026-07-01> ;
+    dct:title "Artikel 36. Individuele inkomenstoeslag"@nl ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_145> <https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_148> <https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_149> <https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_150> <https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_152> <https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_outputentry_15> <https://cprmv.open-regels.nl/rules/incomplete_cf35d84d-bec6-42b7-8491-9208ef44d2c9> <https://cprmv.open-regels.nl/rules/incomplete_8bf152a7-22a1-4624-b43b-aa9c9ff68b30> <https://cprmv.open-regels.nl/rules/incomplete_4b7157ff-2bc6-4ada-ba36-8123e6038dfe> <https://cprmv.open-regels.nl/rules/incomplete_https://lokaleregelgeving.overheid.nl/CVDR645454/12> <https://cprmv.open-regels.nl/rules/incomplete_https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> <https://cprmv.open-regels.nl/rules/incomplete_https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4>) .
+
+
+# ============================================================
+#  CPRMV Rules
+# ============================================================
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_145> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_145" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_148> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_148" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_149> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_149" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_150> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_150" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_152> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_inputentry_152" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete__07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_outputentry_15> a cprmv:Rule ;
+    cprmv:id "_07f36f57-eece-49a5-a954-7f3b4aa4c1b8-cell-_outputentry_15" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_cf35d84d-bec6-42b7-8491-9208ef44d2c9> a cprmv:Rule ;
+    cprmv:id "cf35d84d-bec6-42b7-8491-9208ef44d2c9" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_8bf152a7-22a1-4624-b43b-aa9c9ff68b30> a cprmv:Rule ;
+    cprmv:id "8bf152a7-22a1-4624-b43b-aa9c9ff68b30" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_4b7157ff-2bc6-4ada-ba36-8123e6038dfe> a cprmv:Rule ;
+    cprmv:id "4b7157ff-2bc6-4ada-ba36-8123e6038dfe" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://lokaleregelgeving.overheid.nl/CVDR645454/12> a cprmv:Rule ;
+    cprmv:id "https://lokaleregelgeving.overheid.nl/CVDR645454/12" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01> a cprmv:Rule ;
+    cprmv:id "https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4> a cprmv:Rule ;
+    cprmv:id "https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4" ;
+    cprmv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01/2026-07-01>  .
+
+
+# ============================================================
 #  DMN Decision Model
 # ============================================================
 
@@ -72,9 +143,390 @@
     dct:title "HvA_full_dmn_export-patched.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/digital-twin> ;
     dct:source <https://regels.overheid.nl/services/digital-twin/dmn/file> ;
-    cprmv:deploymentId "5daf9cde-9aee-11f1-a004-da7345014081" ;
-    cprmv:deployedAt "2026-08-18T10:19:59.556Z"^^xsd:dateTime ;
+    cprmv:deploymentId "56398442-9af9-11f1-a004-da7345014081" ;
+    cprmv:deployedAt "2026-08-18T11:38:31.046Z"^^xsd:dateTime ;
+    cprmv:implementedBy <http://localhost:8081/engine-rest/decision-definition/key/_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/evaluate> ;
+    cprmv:lastTested "2026-08-18T11:38:33.678Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/1> a cpsv:Input ;
+    dct:identifier "amMinimuminkomenMeerkosten" ;
+    dct:title "amMinimuminkomenMeerkosten"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/2> a cpsv:Input ;
+    dct:identifier "kindAanspraakAndereVoorliggendeVoorziening" ;
+    dct:title "kindAanspraakAndereVoorliggendeVoorziening"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/3> a cpsv:Input ;
+    dct:identifier "kindAfstandSchoolGroter9Kilometer" ;
+    dct:title "kindAfstandSchoolGroter9Kilometer"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/4> a cpsv:Input ;
+    dct:identifier "kindEenBroerZusAfgelopen4JaarPcVoorzieningBasisonderwijsGekregen" ;
+    dct:title "kindEenBroerZusAfgelopen4JaarPcVoorzieningBasisonderwijsGekregen"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/5> a cpsv:Input ;
+    dct:identifier "kindEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart" ;
+    dct:title "kindEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart"@nl ;
+    dct:type "Date" ;
+    schema:value "2026-08-18T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/6> a cpsv:Input ;
+    dct:identifier "kindGeboortedatum" ;
+    dct:title "kindGeboortedatum"@nl ;
+    dct:type "Date" ;
+    schema:value "1984-01-31T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/7> a cpsv:Input ;
+    dct:identifier "kindInVoorafgaande4JarenVoortgezetonderwijsPcVoorzieningGekregen" ;
+    dct:title "kindInVoorafgaande4JarenVoortgezetonderwijsPcVoorzieningGekregen"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/8> a cpsv:Input ;
+    dct:identifier "kindInVoorafgaandJaarBasisonderwijsPcVoorzieningGekregen" ;
+    dct:title "kindInVoorafgaandJaarBasisonderwijsPcVoorzieningGekregen"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/9> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenInstellingJeugdhulpVerblijf" ;
+    dct:title "kindIngeschrevenInstellingJeugdhulpVerblijf"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/10> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenBasisschool" ;
+    dct:title "kindIngeschrevenBasisschool"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/11> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenBBLOnbetaaldeStage" ;
+    dct:title "kindIngeschrevenBBLOnbetaaldeStage"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/12> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenVoorgezetOnderwijs" ;
+    dct:title "kindIngeschrevenVoorgezetOnderwijs"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/13> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenVoorschool" ;
+    dct:title "kindIngeschrevenVoorschool"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/14> a cpsv:Input ;
+    dct:identifier "kindIngeschrevenWoonadresOuderAanvraagt" ;
+    dct:title "kindIngeschrevenWoonadresOuderAanvraagt"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/15> a cpsv:Input ;
+    dct:identifier "kindNederlandseNationaliteit" ;
+    dct:title "kindNederlandseNationaliteit"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/16> a cpsv:Input ;
+    dct:identifier "kindNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging" ;
+    dct:title "kindNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/17> a cpsv:Input ;
+    dct:identifier "kindNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging" ;
+    dct:title "kindNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/18> a cpsv:Input ;
+    dct:identifier "npAannemelijkeMeerkosten" ;
+    dct:title "npAannemelijkeMeerkosten"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/19> a cpsv:Input ;
+    dct:identifier "npBewijsInschrijvingBetreffendeVoorschool" ;
+    dct:title "npBewijsInschrijvingBetreffendeVoorschool"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/20> a cpsv:Input ;
+    dct:identifier "npBijzondereOmstandighedenLeidenNoodzakelijkeKostenBestaanNederlandGemaaktNederlandVerbonden" ;
+    dct:title "npBijzondereOmstandighedenLeidenNoodzakelijkeKostenBestaanNederlandGemaaktNederlandVerbonden"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/21> a cpsv:Input ;
+    dct:identifier "npBurgerservicenummer" ;
+    dct:title "npBurgerservicenummer"@nl ;
+    dct:type "String" ;
+    schema:value "" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/22> a cpsv:Input ;
+    dct:identifier "npEenSchuldregelingDoorGemeenteAangewezenGemandateerde" ;
+    dct:title "npEenSchuldregelingDoorGemeenteAangewezenGemandateerde"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/23> a cpsv:Input ;
+    dct:identifier "npEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart" ;
+    dct:title "npEindeGeldigheidNederlandsPaspoortNederlandseIdentiteitskaart"@nl ;
+    dct:type "Date" ;
+    schema:value "2026-08-18T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/24> a cpsv:Input ;
+    dct:identifier "npFinancieleDraagkracht" ;
+    dct:title "npFinancieleDraagkracht"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/25> a cpsv:Input ;
+    dct:identifier "npFiscaalGezinsinkomenDrieJaarGeleden" ;
+    dct:title "npFiscaalGezinsinkomenDrieJaarGeleden"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/26> a cpsv:Input ;
+    dct:identifier "npFiscaalGezinsinkomenTweeJaarGeleden" ;
+    dct:title "npFiscaalGezinsinkomenTweeJaarGeleden"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/27> a cpsv:Input ;
+    dct:identifier "npFiscaalGezinsinkomenVorigJaar" ;
+    dct:title "npFiscaalGezinsinkomenVorigJaar"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/28> a cpsv:Input ;
+    dct:identifier "npGeboortedatum" ;
+    dct:title "npGeboortedatum"@nl ;
+    dct:type "Date" ;
+    schema:value "2000-03-20T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/29> a cpsv:Input ;
+    dct:identifier "npGezinssituatie" ;
+    dct:title "npGezinssituatie"@nl ;
+    dct:type "String" ;
+    schema:value "" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/30> a cpsv:Input ;
+    dct:identifier "npKanBeroepDoenVoorliggendeVoorzieningBijzBijstand" ;
+    dct:title "npKanBeroepDoenVoorliggendeVoorzieningBijzBijstand"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/31> a cpsv:Input ;
+    dct:identifier "npKostenBuitengeslotenKostenpost" ;
+    dct:title "npKostenBuitengeslotenKostenpost"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/32> a cpsv:Input ;
+    dct:identifier "npKostenNoodzakelijkBeschouwdDoorVoorliggendeVoorziening" ;
+    dct:title "npKostenNoodzakelijkBeschouwdDoorVoorliggendeVoorziening"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/33> a cpsv:Input ;
+    dct:identifier "npMedischeVerklaringAangeeftMinstens12MaandenChronischZiekFysiekePsychischeBeperkingenOndervindt" ;
+    dct:title "npMedischeVerklaringAangeeftMinstens12MaandenChronischZiekFysiekePsychischeBeperkingenOndervindt"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/34> a cpsv:Input ;
+    dct:identifier "npMinnelijkeSchuldregeling" ;
+    dct:title "npMinnelijkeSchuldregeling"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/35> a cpsv:Input ;
+    dct:identifier "npNederlandseNationaliteit" ;
+    dct:title "npNederlandseNationaliteit"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/36> a cpsv:Input ;
+    dct:identifier "npNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging" ;
+    dct:title "npNietMeerBeschikkingOverEerderVerstrekteIdentiteitskaartDoorDiefstalVermissingBeschadiging"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/37> a cpsv:Input ;
+    dct:identifier "npNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging" ;
+    dct:title "npNieuweIdentiteitskaartGekregenNaDiefstalVermissingBeschadiging"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/38> a cpsv:Input ;
+    dct:identifier "npOntvangtKinderbijslagKind" ;
+    dct:title "npOntvangtKinderbijslagKind"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/39> a cpsv:Input ;
+    dct:identifier "npOntvangtPleegkindvergoedingKind" ;
+    dct:title "npOntvangtPleegkindvergoedingKind"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/40> a cpsv:Input ;
+    dct:identifier "npOntvangtVoedselpakkettenVoedselbankAmsterdamVoedselbankGooiOmstreken" ;
+    dct:title "npOntvangtVoedselpakkettenVoedselbankAmsterdamVoedselbankGooiOmstreken"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/41> a cpsv:Input ;
+    dct:identifier "npOpgelegdeSchuldregelingGrondWSNP" ;
+    dct:title "npOpgelegdeSchuldregelingGrondWSNP"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/42> a cpsv:Input ;
+    dct:identifier "npUitzichtInkomensverbetering" ;
+    dct:title "npUitzichtInkomensverbetering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/43> a cpsv:Input ;
+    dct:identifier "npVermogen31DecemberVorigJaar" ;
+    dct:title "npVermogen31DecemberVorigJaar"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/44> a cpsv:Input ;
+    dct:identifier "npVerwachtLeningAangaat" ;
+    dct:title "npVerwachtLeningAangaat"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/45> a cpsv:Input ;
+    dct:identifier "npVerwachtNoodzakelijkeKostenHadGereserveerd" ;
+    dct:title "npVerwachtNoodzakelijkeKostenHadGereserveerd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/46> a cpsv:Input ;
+    dct:identifier "npVolgtOnderwijsZinHoofdstuk4WetTegemoetkomingOnderwijsbijdrageSchoolkosten" ;
+    dct:title "npVolgtOnderwijsZinHoofdstuk4WetTegemoetkomingOnderwijsbijdrageSchoolkosten"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/47> a cpsv:Input ;
+    dct:identifier "npVolgtOnderwijsZinHoofdstukIIWetStudiefinanciering" ;
+    dct:title "npVolgtOnderwijsZinHoofdstukIIWetStudiefinanciering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/48> a cpsv:Input ;
+    dct:identifier "npWoonachtigGemeenteAangevraagd" ;
+    dct:title "npWoonachtigGemeenteAangevraagd"@nl ;
+    dct:type "Boolean" ;
+    schema:value true ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/49> a cpsv:Input ;
+    dct:identifier "partnerGeboortedatum" ;
+    dct:title "partnerGeboortedatum"@nl ;
+    dct:type "Date" ;
+    schema:value "1971-11-25T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/50> a cpsv:Input ;
+    dct:identifier "partnerUitzichtInkomensverbetering" ;
+    dct:title "partnerUitzichtInkomensverbetering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/51> a cpsv:Input ;
+    dct:identifier "partnerWoonachtigGemeenteAangevraagd" ;
+    dct:title "partnerWoonachtigGemeenteAangevraagd"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/input/52> a cpsv:Input ;
+    dct:identifier "peildatum" ;
+    dct:title "peildatum"@nl ;
+    dct:type "Date" ;
+    schema:value "2026-08-18T00:00:00.000+0200" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/output/1> a cpsv:Output ;
+    dct:identifier "aanspraken" ;
+    dct:title "aanspraken"@nl ;
+    dct:type "String" ;
+    schema:value "Aanspraak op een stadspas" ;
+    cpsv:produces <https://regels.overheid.nl/services/digital-twin/dmn> .
+
+<https://regels.overheid.nl/services/digital-twin/dmn/output/2> a cpsv:Output ;
+    dct:identifier "aanspraken" ;
+    dct:title "aanspraken"@nl ;
+    dct:type "String" ;
+    schema:value "Aanspraak op individuele inkomenstoeslag" ;
+    cpsv:produces <https://regels.overheid.nl/services/digital-twin/dmn> .
 
 <https://regels.overheid.nl/services/digital-twin/rules/_677a120b-022d-4c77-af8a-df9abc3039af> a cpsv:Rule, cprmv:DecisionRule ;
     dct:identifier "_677a120b-022d-4c77-af8a-df9abc3039af" ;
@@ -1601,227 +2053,20 @@
 
 # Output Variable Concepts
 
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakBijzondereBijstand> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Bijzondere Bijstand"@nl ;
-    skos:definition "Np Aanspraak Bijzondere Bijstand is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NABB" ;
+<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/aanspraken> a skos:Concept ;
+    skos:prefLabel "Aanspraken"@nl ;
+    skos:definition "Aanspraken is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "AANS" ;
     dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/1> ;
     dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakBijzondereBijstand> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensVorigJaarVolwassenen> a skos:Concept ;
-    skos:prefLabel "Van Toepassing Zijnde Loongrens Vorig Jaar Volwassenen"@nl ;
-    skos:definition "Van Toepassing Zijnde Loongrens Vorig Jaar Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "VANTZLVJV" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/2> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensVorigJaarVolwassenen> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npEenSchuldregeling> a skos:Concept ;
-    skos:prefLabel "Np Een Schuldregeling"@nl ;
-    skos:definition "Np Een Schuldregeling is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NES" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/3> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npEenSchuldregeling> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npMeerderjarig> a skos:Concept ;
-    skos:prefLabel "Np Meerderjarig"@nl ;
-    skos:definition "Np Meerderjarig is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NM" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/4> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npMeerderjarig> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeVermogensgrens> a skos:Concept ;
-    skos:prefLabel "Van Toepassing Zijnde Vermogensgrens"@nl ;
-    skos:definition "Van Toepassing Zijnde Vermogensgrens is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "VTZV" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/5> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeVermogensgrens> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/pensioengerechtigdeLeeftijd> a skos:Concept ;
-    skos:prefLabel "Pensioengerechtigde Leeftijd"@nl ;
-    skos:definition "Pensioengerechtigde Leeftijd is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PL" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/6> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/pensioengerechtigdeLeeftijd> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensVorigJaarKinderen> a skos:Concept ;
-    skos:prefLabel "Van Toepassing Zijnde Loongrens Vorig Jaar Kinderen"@nl ;
-    skos:definition "Van Toepassing Zijnde Loongrens Vorig Jaar Kinderen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "VANTZLVJK" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/7> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensVorigJaarKinderen> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindMinderjarig> a skos:Concept ;
-    skos:prefLabel "Kind Minderjarig"@nl ;
-    skos:definition "Kind Minderjarig is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "KM" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/8> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/kindMinderjarig> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensDrieJaarGeledenVolwassenen> a skos:Concept ;
-    skos:prefLabel "Van Toepassing Zijnde Loongrens Drie Jaar Geleden Volwassenen"@nl ;
-    skos:definition "Van Toepassing Zijnde Loongrens Drie Jaar Geleden Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "VANTZLDJGV" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/9> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensDrieJaarGeledenVolwassenen> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/vanToepassingZijndeLoongrensTweeJaarGeledenVolwassenen> a skos:Concept ;
-    skos:prefLabel "Van Toepassing Zijnde Loongrens Twee Jaar Geleden Volwassenen"@nl ;
-    skos:definition "Van Toepassing Zijnde Loongrens Twee Jaar Geleden Volwassenen is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "VANTZLTJGV" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/10> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/vanToepassingZijndeLoongrensTweeJaarGeledenVolwassenen> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakIndividueleInkomenstoeslag> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Individuele Inkomenstoeslag"@nl ;
-    skos:definition "Np Aanspraak Individuele Inkomenstoeslag is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NAII" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/11> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakIndividueleInkomenstoeslag> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/partnerAanspraakIndividueleInkomenstoeslag> a skos:Concept ;
-    skos:prefLabel "Partner Aanspraak Individuele Inkomenstoeslag"@nl ;
-    skos:definition "Partner Aanspraak Individuele Inkomenstoeslag is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "PAII" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/12> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/partnerAanspraakIndividueleInkomenstoeslag> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakStadspas> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Stadspas"@nl ;
-    skos:definition "Np Aanspraak Stadspas is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NAS" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/13> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakStadspas> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakKindtegoed> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Kindtegoed"@nl ;
-    skos:definition "Np Aanspraak Kindtegoed is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NAK" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/14> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakKindtegoed> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAanspraakStadspas> a skos:Concept ;
-    skos:prefLabel "Kind Aanspraak Stadspas"@nl ;
-    skos:definition "Kind Aanspraak Stadspas is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "KAS" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/15> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/kindAanspraakStadspas> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakPcVoorziening> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Pc Voorziening"@nl ;
-    skos:definition "Np Aanspraak Pc Voorziening is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NAPV" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/16> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakPcVoorziening> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakRegelingTegemoetkomingMeerkosten> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Regeling Tegemoetkoming Meerkosten"@nl ;
-    skos:definition "Np Aanspraak Regeling Tegemoetkoming Meerkosten is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NARTM" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/17> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakRegelingTegemoetkomingMeerkosten> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakReiskostenvergoedingKind> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Reiskostenvergoeding Kind"@nl ;
-    skos:definition "Np Aanspraak Reiskostenvergoeding Kind is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NARK" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/18> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakReiskostenvergoedingKind> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakTegemoetkomingIdentiteitskaart> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Tegemoetkoming Identiteitskaart"@nl ;
-    skos:definition "Np Aanspraak Tegemoetkoming Identiteitskaart is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NATI" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/19> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakTegemoetkomingIdentiteitskaart> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindAanspraakTegemoetkomingIdentiteitskaart> a skos:Concept ;
-    skos:prefLabel "Kind Aanspraak Tegemoetkoming Identiteitskaart"@nl ;
-    skos:definition "Kind Aanspraak Tegemoetkoming Identiteitskaart is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "KATI" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/20> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/kindAanspraakTegemoetkomingIdentiteitskaart> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npAanspraakAanvullendKindtegoed> a skos:Concept ;
-    skos:prefLabel "Np Aanspraak Aanvullend Kindtegoed"@nl ;
-    skos:definition "Np Aanspraak Aanvullend Kindtegoed is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NAAK" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/21> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npAanspraakAanvullendKindtegoed> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/npLangdurigLaagInkomen> a skos:Concept ;
-    skos:prefLabel "Np Langdurig Laag Inkomen"@nl ;
-    skos:definition "Np Langdurig Laag Inkomen is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "NLLI" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/22> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/npLangdurigLaagInkomen> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEenBeleidsregelsMinimakind> a skos:Concept ;
-    skos:prefLabel "Kind Een Beleidsregels Minimakind"@nl ;
-    skos:definition "Kind Een Beleidsregels Minimakind is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "KEBM" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/23> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/kindEenBeleidsregelsMinimakind> ;
-    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
-
-<https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/kindEenBeleidsregelMinimakindScholier> a skos:Concept ;
-    skos:prefLabel "Kind Een Beleidsregel Minimakind Scholier"@nl ;
-    skos:definition "Kind Een Beleidsregel Minimakind Scholier is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "KEBMS" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/24> ;
-    dct:type "dmn:OutputVariable" ;
-    skos:exactMatch <https://regels.overheid.nl/concepts/kindEenBeleidsregelMinimakindScholier> ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanspraken> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
 
 <https://regels.overheid.nl/concepts/bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5/aanspraken> a skos:Concept ;
     skos:prefLabel "Aanspraken"@nl ;
     skos:definition "Aanspraken is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
-    skos:notation "AANS" ;
-    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/25> ;
+    skos:notation "AANS1" ;
+    dct:subject <https://regels.overheid.nl/services/digital-twin/dmn/output/2> ;
     dct:type "dmn:OutputVariable" ;
     skos:exactMatch <https://regels.overheid.nl/concepts/aanspraken> ;
     skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .

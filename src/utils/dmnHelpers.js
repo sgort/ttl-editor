@@ -206,6 +206,71 @@ export function extractOutputsFromTestResult(dmnData) {
 }
 
 /**
+ * Map a DMN typeRef to Operaton's REST variable type naming, matching the
+ * convention used elsewhere in this file/DMNTab.jsx (Boolean/Integer/Double/
+ * Date, default String).
+ */
+function operatonTypeForTypeRef(typeRef) {
+  switch ((typeRef || '').toLowerCase()) {
+    case 'boolean':
+      return 'Boolean';
+    case 'integer':
+    case 'long':
+      return 'Integer';
+    case 'number':
+    case 'double':
+    case 'decimal':
+      return 'Double';
+    case 'date':
+      return 'Date';
+    default:
+      return 'String';
+  }
+}
+
+/**
+ * Extract a decision's declared output variable(s) directly from the DMN XML
+ * (`<dmn:output name="..." typeRef="...">` inside its `<dmn:decisionTable>`),
+ * independent of any live evaluate result.
+ *
+ * `extractOutputsFromTestResult` above can only discover output names/types
+ * by inspecting what an evaluate call actually returned — which silently
+ * yields nothing whenever the decision legitimately produces no matching row
+ * (e.g. a `RULE ORDER` root with no catch-all rule, evaluated against a
+ * baseline/disqualifying auto-generated request body). Unlike inputs — which
+ * `generateRequestBodyFromDMN` already discovers by parsing `<dmn:inputData>`
+ * directly, so they're unaffected by whether the decision matched anything —
+ * outputs had no such XML-derived fallback. This closes that asymmetry.
+ *
+ * @param {string} dmnContent - Raw DMN XML content
+ * @param {string} decisionKey - The `<dmn:decision id="...">` to look up
+ * @returns {Array<{name: string, type: string}>}
+ */
+export function extractOutputsFromDMN(dmnContent, decisionKey) {
+  if (!dmnContent || !decisionKey) return [];
+
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
+
+    const decisions = queryAllLocal(xmlDoc, 'decision');
+    const decision = decisions.find((d) => d.getAttribute('id') === decisionKey);
+    if (!decision) return [];
+
+    const outputs = queryAllLocal(decision, 'output');
+    return outputs
+      .map((o) => ({
+        name: o.getAttribute('name') || o.getAttribute('label'),
+        type: operatonTypeForTypeRef(o.getAttribute('typeRef')),
+      }))
+      .filter((o) => Boolean(o.name));
+  } catch (err) {
+    console.error('Error extracting outputs from DMN:', err);
+    return [];
+  }
+}
+
+/**
  * Extract cell-level legislative groundings from a DMN <inputEntry>/<outputEntry>
  * element's `dct:source` / `cprmv:sourceQuote` / `cprmv:isBasedOn` attributes.
  *
@@ -596,6 +661,7 @@ const dmnHelpers = {
   extractRulesFromDMN,
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
+  extractOutputsFromDMN,
   validateDMNData,
   sanitizeServiceIdentifier,
   buildServiceUri,

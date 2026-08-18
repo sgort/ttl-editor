@@ -21,6 +21,7 @@ import { sanitizeIri } from '../../utils';
 import {
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
+  extractOutputsFromDMN,
   extractOutputsFromTestResult,
   extractPrimaryDecisionKey,
   generateConceptDefinition,
@@ -779,7 +780,18 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         ...i,
         decisions: evalDecisions,
       }));
-      const outputs = extractOutputsFromTestResult({ lastTestResult: result }).map((o) => ({
+      // extractOutputsFromTestResult only knows an output exists once the
+      // engine actually returns it — an empty result set (e.g. the DRD root's
+      // RULE ORDER table with no catch-all rule, evaluated against the
+      // auto-generated baseline/disqualifying request body) is a legitimate
+      // outcome, not an error, but leaves it with nothing to report. Falling
+      // back to the DMN's own declared <dmn:output> name/type keeps the
+      // Concepts tab populated either way.
+      const liveOutputs = extractOutputsFromTestResult({ lastTestResult: result });
+      const rawOutputs = liveOutputs.length
+        ? liveOutputs
+        : extractOutputsFromDMN(dmnData.content, apiConfig.decisionKey);
+      const outputs = rawOutputs.map((o) => ({
         ...o,
         decisions: evalDecisions,
       }));

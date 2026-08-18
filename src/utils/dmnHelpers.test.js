@@ -2,6 +2,7 @@ import {
   buildServiceUri,
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
+  extractOutputsFromDMN,
   extractOutputsFromTestResult,
   extractPrimaryDecisionKey,
   extractRulesFromDMN,
@@ -145,6 +146,75 @@ describe('extractOutputsFromTestResult', () => {
   test('ignores object-format entries without a value property', () => {
     const dmnData = { lastTestResult: { notAnOutput: 'plain string' } };
     expect(extractOutputsFromTestResult(dmnData)).toEqual([]);
+  });
+});
+
+describe('extractOutputsFromDMN', () => {
+  const xml = `<?xml version="1.0"?>
+    <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/">
+      <decision id="d1">
+        <decisionTable id="table1" hitPolicy="RULE ORDER">
+          <output id="_output_1" label="aanspraken" name="aanspraken" typeRef="string" />
+        </decisionTable>
+      </decision>
+      <decision id="d2">
+        <decisionTable id="table2">
+          <output id="_output_2" typeRef="boolean" label="rechtOpSubsidie" />
+        </decisionTable>
+      </decision>
+    </definitions>`;
+
+  test('reads the declared <output> name/type directly from the DMN, independent of any evaluate result', () => {
+    expect(extractOutputsFromDMN(xml, 'd1')).toEqual([{ name: 'aanspraken', type: 'String' }]);
+  });
+
+  test('falls back to label when name is absent', () => {
+    expect(extractOutputsFromDMN(xml, 'd2')).toEqual([
+      { name: 'rechtOpSubsidie', type: 'Boolean' },
+    ]);
+  });
+
+  test('returns [] for an unknown decision key', () => {
+    expect(extractOutputsFromDMN(xml, 'nope')).toEqual([]);
+  });
+
+  test('returns [] for empty/missing content or decisionKey', () => {
+    expect(extractOutputsFromDMN('', 'd1')).toEqual([]);
+    expect(extractOutputsFromDMN(xml, '')).toEqual([]);
+  });
+
+  test('returns [] rather than throwing on malformed content', () => {
+    expect(extractOutputsFromDMN('<not-valid', 'd1')).toEqual([]);
+  });
+
+  test('handles multiple output columns on the same decision table', () => {
+    const multi = `<?xml version="1.0"?>
+      <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/">
+        <decision id="d1">
+          <decisionTable id="table1">
+            <output id="o1" name="a" typeRef="double" />
+            <output id="o2" name="b" typeRef="date" />
+          </decisionTable>
+        </decision>
+      </definitions>`;
+    expect(extractOutputsFromDMN(multi, 'd1')).toEqual([
+      { name: 'a', type: 'Double' },
+      { name: 'b', type: 'Date' },
+    ]);
+  });
+
+  test('is namespace-agnostic — works against a real dmn:-prefixed DMN', () => {
+    const prefixed = `<?xml version="1.0"?>
+      <dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/">
+        <dmn:decision id="_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5" name="Bepalen aanspraken">
+          <dmn:decisionTable id="t1" hitPolicy="RULE ORDER">
+            <dmn:output id="_output_1" label="aanspraken" name="aanspraken" typeRef="string" />
+          </dmn:decisionTable>
+        </dmn:decision>
+      </dmn:definitions>`;
+    expect(extractOutputsFromDMN(prefixed, '_bad36e9e-ac9d-4d78-b0be-2f1c58cbf3c5')).toEqual([
+      { name: 'aanspraken', type: 'String' },
+    ]);
   });
 });
 
