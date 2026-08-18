@@ -296,6 +296,17 @@ inkomenstoeslag`, `PC-voorziening`, `regeling tegemoetkoming meerkosten`, and
   `tegemoetkoming identiteitskaart voor kind` was what first exercised their broken
   cells; closing the remaining 30-rule coverage gap afterward surfaced no further DMN
   defects, only the structural couplings noted above.
+- **Cell-level legislative grounding**: Rule 1 of `individuele inkomenstoeslag`
+  (`_bca439b7-fdb8-40e3-8a1d-3bb95571c65c`) carries real `dct:source`/
+  `cprmv:sourceQuote`/`cprmv:isBasedOn` attributes on its 6 grounded cells,
+  linking specific rule cells back to the legal sources that justify them —
+  the design work for how this reaches a published `.ttl` (per-cell
+  `cprmv:Rule` resources, deduplicated concept minting, compound-cell
+  composition) is documented in
+  [`cprmv-cell-level-linking-prototype.md`](cprmv-cell-level-linking-prototype.md),
+  now implemented for real against this file (Layers 1-4) rather than just
+  prototyped. Confirmed to still deploy cleanly and not regress the 100-case
+  test suite above.
 
 ## Root cause 6: `not -` / `not(null) -` — two more malformed rule-cell patterns
 

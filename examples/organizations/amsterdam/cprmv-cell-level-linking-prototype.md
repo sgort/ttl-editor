@@ -12,27 +12,18 @@ Everything the rest of this document describes as a design has a real,
 verified counterpart:
 
 - **Layer 1** — grounded against
-  [`HvA_full_dmn_export-patched.dmn`](../HvA_full_dmn_export-patched.dmn), not
-  the standalone `individuele inkomenstoeslag-iknow-patched.dmn` this doc's
-  worked examples were prototyped against. Both files declare the identical
-  "individuele inkomenstoeslag" decision (same key `_bca439b7-...`, same
-  8-column Rule 1) since the full export includes it as one of its 25
-  decisions — but only the full export has the complete root-cause fix
-  applied (see
-  [`hva-full-dmn-export-feel-evaluation-fix.md`](../hva-full-dmn-export-feel-evaluation-fix.md)):
-  the standalone file still has 23 unfixed multi-word bare-name input
-  expressions (`FEEL/SCALA-01008`) and cannot be evaluated at all, discovered
-  when live-testing this feature in the CPSV Editor surfaced it. Deploying the
-  standalone file also shadows the full export's fixed decisions on Operaton
-  for every key they share ("latest version by key" resolution doesn't care
-  which file a deployment came from) — cleaned up once discovered. The full
-  export's copy of Rule 1 carries the real `dct:source`/`cprmv:sourceQuote`/
-  `cprmv:isBasedOn` attributes this doc's "Before/after (DMN XML)" example
-  shows, with the full export's own cell ids (`_inputentry_145` etc., not
-  `_inputEntry_1` etc.) — same 8 conditions, same real citations, same
-  reasoning, different id scheme. `xmlns:cprmv`/`xmlns:dct` are declared on
-  `<dmn:definitions>`. Confirmed to still deploy cleanly to Operaton and to
-  not regress the DRD's 100-case MC/DC test suite (still 100/100).
+  [`HvA_full_dmn_export-patched.dmn`](../HvA_full_dmn_export-patched.dmn), the
+  DRD's already fully root-cause-fixed and tested single source of truth on
+  Operaton (see
+  [`hva-full-dmn-export-feel-evaluation-fix.md`](../hva-full-dmn-export-feel-evaluation-fix.md)),
+  not the standalone `individuele inkomenstoeslag-iknow-patched.dmn` this
+  doc's worked examples were originally prototyped against — both declare the
+  identical "individuele inkomenstoeslag" decision (same key `_bca439b7-...`,
+  same 8-column Rule 1), so the same real citations apply, with the full
+  export's own cell ids (`_inputentry_145` etc., not `_inputEntry_1` etc.).
+  `xmlns:cprmv`/`xmlns:dct` are declared on `<dmn:definitions>`. Confirmed to
+  still deploy cleanly to Operaton and to not regress the DRD's 100-case
+  MC/DC test suite (still 100/100).
 - **Layer 2** — `src/utils/dmnHelpers.js`'s `extractRulesFromDMN()` reads
   every cell's `id`, FEEL text, and groundings (including the numbered
   attribute family for compound cells) into `rule.inputEntries`/
@@ -63,22 +54,6 @@ verified counterpart:
   check) had never actually fired, for any DMN, since the file was written.
   Both fixed; see `dmn-validation.service.cellGrounding.test.ts` and
   `docs/TESTS.md`'s "P7.1" entry in that repo.
-- **CPSV Editor Deploy/Evaluate, routed through the LDE backend** — a
-  fifth fix, found live-testing this feature in the browser rather than
-  anticipated by the design above: the DMN tab's Deploy and Evaluate buttons
-  both called Operaton directly from the browser
-  (`http://localhost:8081/engine-rest/...`), which CORS blocks for a local
-  dev origin (Operaton sends no `Access-Control-Allow-Origin`). Both now
-  route through new `linked-data-explorer` endpoints instead —
-  `POST /v1/dmns/deploy` (raw XML, thin wrapper around the already-proven
-  `operatonService.deployDrd`) and `POST /v1/dmns/evaluate/:decisionKey`
-  (raw passthrough, forwarding Operaton's response byte-for-byte and
-  status-for-status rather than the usual `{success, data, error}` envelope,
-  since the DMN tab reads Operaton's raw JSON directly) — mirroring exactly
-  how `linked-data-explorer`'s own DRD deploy already avoids the same
-  problem: server-to-server calls are CORS-immune by construction. See
-  `DMNTab.jsx`'s `handleDeployDMN`/`evaluateViaBackend` and
-  `dmn.routes.ts`'s new routes.
 
 The worked examples, citation table, and design rationale below are accurate
 and unchanged by the implementation — they describe what the real code now
