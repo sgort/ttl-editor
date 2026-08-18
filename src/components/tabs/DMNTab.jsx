@@ -55,12 +55,13 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [isValidating, setIsValidating] = useState(false);
   const [validationExpanded, setValidationExpanded] = useState(true);
 
-  // Default Operaton configuration
+  // Default Operaton configuration. Deploy no longer uses baseUrl (routed
+  // through the LDE backend's /v1/dmns/deploy instead — see handleDeployDMN)
+  // but evaluate still calls Operaton directly.
   const [apiConfig, setApiConfig] = useState({
     baseUrl: process.env.REACT_APP_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
-    deploymentEndpoint: '/engine-rest/deployment/create',
   });
 
   // Hydrate internal tab state when DMN content arrives from outside this tab
@@ -681,29 +682,34 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setDeploymentStatus(null);
 
     try {
-      const formData = new FormData();
-      const blob = new Blob([uploadedFile.content], { type: 'application/xml' });
-      formData.append('upload', blob, uploadedFile.name);
-      formData.append('deployment-name', apiConfig.decisionKey || uploadedFile.name);
-
-      const deployUrl = `${apiConfig.baseUrl}${apiConfig.deploymentEndpoint}`;
-      const response = await fetch(deployUrl, {
+      // Routed through the LDE backend's POST /v1/dmns/deploy rather than
+      // Operaton's /deployment/create directly — a direct browser fetch hits
+      // CORS (Operaton doesn't send Access-Control-Allow-Origin for a local
+      // dev origin like http://localhost:3000), while this backend call is
+      // server-to-server on the LDE side and CORS-immune by construction.
+      // Same pattern runBackendValidation() above already uses for
+      // /v1/dmns/validate.
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/v1/dmns/deploy`, {
         method: 'POST',
-        headers: { Authorization: 'Basic ' + btoa('demo:demo') },
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          xml: uploadedFile.content,
+          deploymentName: apiConfig.decisionKey || uploadedFile.name,
+          filename: uploadedFile.name,
+        }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Deployment failed: ${response.statusText}\n${errorText}`);
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.error?.message || `Deployment failed: ${response.statusText}`);
       }
 
-      const result = await response.json();
-      setDeploymentStatus({ success: true, data: result });
+      setDeploymentStatus({ success: true, data: data.data });
       setDmnData({
         ...dmnData,
         deployed: true,
-        deploymentId: result.id,
+        deploymentId: data.data.deploymentId,
         deployedAt: new Date().toISOString(),
       });
     } catch (err) {
