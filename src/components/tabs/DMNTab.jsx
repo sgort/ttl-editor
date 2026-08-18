@@ -720,6 +720,23 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     }
   };
 
+  // Routed through the LDE backend's POST /v1/dmns/evaluate/:decisionKey
+  // instead of calling Operaton's own evaluate endpoint directly -- same CORS
+  // reasoning as handleDeployDMN's route through /v1/dmns/deploy above. The
+  // backend forwards Operaton's raw response (success array or exception
+  // object) byte-for-byte and status-for-status, so every caller below keeps
+  // reading/parsing the response exactly as it did calling Operaton directly
+  // -- bodyStr is already the `{variables: {...}}` shape Operaton itself
+  // expects, so it's forwarded unchanged.
+  const evaluateViaBackend = (decisionKey, bodyStr) => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    return fetch(`${backendUrl}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: bodyStr,
+    });
+  };
+
   const handleEvaluateDMN = async () => {
     if (!testBody) {
       setError('Please enter a request body');
@@ -732,14 +749,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     const evaluateUrl = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}`;
 
     try {
-      const response = await fetch(evaluateUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Basic ' + btoa('demo:demo'),
-        },
-        body: testBody,
-      });
+      const response = await evaluateViaBackend(apiConfig.decisionKey, testBody);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -789,16 +799,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     const results = [];
 
     for (const decision of decisions) {
-      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', decision.id)}`;
       try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Basic ' + btoa('demo:demo'),
-          },
-          body: testBody,
-        });
+        const response = await evaluateViaBackend(decision.id, testBody);
 
         const raw = await response.text();
         let parsed;
@@ -933,17 +935,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         continue;
       }
 
-      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', decisionKey)}`;
-
       try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Basic ' + btoa('demo:demo'),
-          },
-          body: bodyStr,
-        });
+        const response = await evaluateViaBackend(decisionKey, bodyStr);
 
         const raw = await response.text();
         let parsed;
@@ -1138,10 +1131,12 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
           </div>
           {apiConfig.decisionKey && (
             <div className="bg-gray-50 rounded p-2">
-              <p className="text-xs text-gray-500">Evaluation URL:</p>
+              <p className="text-xs text-gray-500">
+                Evaluated via the LDE backend (avoids Operaton CORS from the browser):
+              </p>
               <code className="text-xs text-gray-700 break-all">
-                {apiConfig.baseUrl}
-                {apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}
+                {process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'}
+                /v1/dmns/evaluate/{apiConfig.decisionKey}
               </code>
             </div>
           )}
