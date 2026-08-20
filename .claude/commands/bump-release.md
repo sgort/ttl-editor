@@ -103,11 +103,37 @@ badge and border color from the `status` string itself (`Released` →
 green, `Upcoming` → blue). Do not add color keys to a commit-format entry;
 they're ignored.
 
-### 3. Bump `package.json`
+### 3. Bump `package.json` and the lockfile
 
-Read the file before editing (required by the Edit tool). Set `"version"`
-to the released version. This is the only package.json in the repo — no
-scope decision, no other package to leave behind.
+Use `npm version` rather than hand-editing the file:
+
+```bash
+npm version <released-version> --no-git-tag-version
+```
+
+This writes the version into **both** `package.json` and
+`package-lock.json` in one step. This is the only package.json in the repo
+— no scope decision, no other package to leave behind — but there is still
+a lockfile, and it carries its own `version` field.
+
+`--no-git-tag-version` is required: without it `npm version` creates its
+own commit and tag, and this repo tags nothing. There are no
+`preversion` / `version` / `postversion` scripts to account for.
+
+**Why this is spelled out.** This step used to say "set `version` in
+`package.json`" and nothing more, so no release ever updated the lockfile.
+Through v2026.08.1 it still read `0.1.0` — the value from the initial
+commit — while `package.json` had moved on across 35 changelog entries.
+
+The drift is not fatal: `npm ci` validates dependency satisfiability, not
+the root `version` field, and exits 0 either way (verified against the
+drifted state). But the lockfile is what CI installs from and what SBOM,
+audit and provenance tooling reads, so all of it reported the wrong
+version — and the first plain `npm install` afterwards drops a spurious
+version diff into whatever unrelated commit follows.
+
+v2026.08.1's lockfile was deliberately left stale rather than corrected
+out of band; the next release picks it up via the command above.
 
 ### 4. Normalize formatting before committing
 
