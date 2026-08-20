@@ -1,6 +1,7 @@
 // Network-touching, but small enough (2 functions, 1 endpoint) that a plain
 // global.fetch mock is proportionate — msw is reserved for the larger
-// surfaces (shaclHelper.js, triplydbHelper.js) per docs/TESTING-GUIDE.md P4.
+// surfaces (shaclHelper.js, triplydbHelper.js) per phase P4, see
+// https://iou-architectuur.open-regels.nl/cpsv-editor/developer/testing/.
 import { fetchAllRonlConcepts, fetchRonlConcepts } from './ronlHelper';
 
 function mockFetchOnce(response, ok = true) {

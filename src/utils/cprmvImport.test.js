@@ -99,7 +99,8 @@ describe('flattenCprmvRules — sub-clause folding', () => {
   });
 });
 
-// Remaining P2 coverage (docs/TESTING-GUIDE.md): the older/alternate payload
+// Remaining P2 coverage (see
+// https://iou-architectuur.open-regels.nl/cpsv-editor/developer/testing/): the older/alternate payload
 // shapes the module comment says are tolerated, plus edge/malformed input.
 describe('flattenCprmvRules — namespace variants and legacy shapes', () => {
   const STD_041_SLASH = 'https://standaarden.open-regels.nl/standards/cprmv/0.4.1/#';

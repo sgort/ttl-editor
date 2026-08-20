@@ -1,4 +1,5 @@
-// Round-trip regression tests (docs/TESTING-GUIDE.md, phase P1): parse a real
+// Round-trip regression tests (phase P1, see
+// https://iou-architectuur.open-regels.nl/cpsv-editor/developer/testing/): parse a real
 // reference export, regenerate TTL from the parsed state, then parse the
 // regenerated TTL again. The two parses should agree on every business field
 // — proving parseTTLEnhanced -> generateTTL loses no data, without needing a
