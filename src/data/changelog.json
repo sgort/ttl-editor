@@ -2,6 +2,49 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.08.1",
+      "status": "Released",
+      "date": "20 aug 2026",
+      "commits": [
+        {
+          "sha": "db3a1dc",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Changelog tab label reverted to “Changelog”",
+          "details": [
+            "`c4f4c3b` changed the tab label from `Changelog` to `Changelog!`, with a commit message reading *“chore: changelog button to changelog!”*. Nothing else in that commit touched the label and no test asserts on it, so it reads as an accidental edit that shipped rather than deliberate copy. The two changes cancel out within this release, so there is no net change for users."
+          ]
+        },
+        {
+          "sha": "a38a28a",
+          "author": "Steven Gort",
+          "type": "other",
+          "subject": "Both deploys now gated on lint and the test suite",
+          "details": [
+            "Neither Azure Static Web Apps workflow ran anything of this repository's own. The deploy action builds inside its own container and invokes none of our scripts, so both went from checkout straight to build-and-deploy — and with `pre-push` gating only lint and formatting, nothing anywhere stopped a deploy that broke the suite.",
+            "Both workflows now set up Node 20 and run `npm ci`, `npm run lint` and `npm run test:ci` ahead of the deploy action, with a failure blocking the deploy — covering `acc` (orange-beach) and `main` (white-sky) alike. Measured before wiring: 16 suites, 257 tests, all passing, 6.6s."
+          ]
+        },
+        {
+          "sha": "a8d277d",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Repo-side test documentation retired in favour of the documentation site",
+          "details": [
+            "Deletes `docs/TESTS.md` (333 lines) and `docs/TESTING-GUIDE.md` (188 lines). The IOU Architecture documentation site is now the single source of truth for test documentation, at `cpsv-editor/developer/testing`; the repo-side copies had drifted from what the suite actually does and are not maintained."
+          ]
+        },
+        {
+          "sha": "99d1c69",
+          "author": "Pieter 't Hoen",
+          "type": "chore",
+          "subject": "VS Code settings formatting corrected",
+          "details": ["Two-line formatting fix in `.vscode/settings.json`."]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.08.0",
       "status": "Released",
       "date": "18 aug 2026",
