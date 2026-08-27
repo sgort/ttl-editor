@@ -38,8 +38,11 @@ jobs:
           advanced-security: false
           annotations: true
           online-audits: false
-          # Defaults to ${{ github.token }}, which action.sh passes into the
-          # container as GH_TOKEN unconditionally, even with online-audits:
-          # false. Exposure is negligible (contents: read, read-only mount),
-          # but zero it out to match this workflow's own least-privilege logic.
-          token: ''
+          # Leave `token` at its default. Setting it to '' looks like sound
+          # least-privilege hardening, but zizmor's --gh-token is env-backed
+          # and clap rejects a set-but-empty value before any audit runs,
+          # even with online-audits: false:
+          #   error: invalid value '' for '--gh-token <GH_TOKEN>'
+          # The default is ${{ github.token }}, scoped to contents: read and
+          # mounted read-only, so the exposure it would have removed is
+          # negligible anyway.
