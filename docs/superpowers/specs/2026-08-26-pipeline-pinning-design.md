@@ -1,7 +1,7 @@
 # Supply-chain pinning for IOU pipelines
 
 **Date:** 2026-08-26
-**Status:** accepted for implementation planning; one value pending (see Open decisions)
+**Status:** accepted for implementation planning; all values resolved
 **Pilot repo:** `ttl-editor`
 **Rollout:** `ttl-editor` → `linked-data-explorer` → `ronl-business-api`
 
@@ -83,7 +83,7 @@ keeps the diff legible to a human reviewer.
 | -------------------------------------- | ------------------------------------------ | ------- |
 | `actions/checkout@v3`                  | `a37ce9120846195fa4ece8f58b268e6043cb2f26` | v3.7.0  |
 | `actions/setup-node@v4`                | `49933ea5288caeca8642d1e84afbd3f7d6820020` | v4.4.0  |
-| `Azure/static-web-apps-deploy@v1` (×2) | _pending — see Open decisions_             | v1      |
+| `Azure/static-web-apps-deploy@v1` (×2) | `4d27395796ac319302594769cfe812bd207490b1` | v1      |
 
 Digests resolved live against the GitHub API on 2026-08-26.
 
@@ -210,18 +210,25 @@ run succeeds and the preview URL serves is a human step.
 
 Rollback is a single revert of the commit.
 
-## Open decisions
+## Resolved decisions
 
 **The `Azure/static-web-apps-deploy` digest.** Two candidate commits, 3.5
-years apart, on the step holding the deploy token. Resolvable exactly, not by
-inference: any recent Actions run log contains
+years apart, on the step holding the deploy token. Resolved as
+`4d27395796ac319302594769cfe812bd207490b1` — the branch head, not the 2021
+tag — on three grounds:
 
-```
-Download action repository 'Azure/static-web-apps-deploy@v1' (SHA:xxxxxxxx…)
-```
+- The executed surface is byte-identical at both candidate commits:
+  `action.yml`'s `runs:` block, the `Dockerfile`, and `entrypoint.sh` are
+  the same either way, so the choice changes nothing about what actually
+  runs.
+- GitHub's API resolves the ambiguous `v1` ref to the branch, not the tag —
+  confirmed independently by a real Actions run log, which contains
+  `Download action repository 'Azure/static-web-apps-deploy@v1' (SHA:xxxxxxxx…)`
+  naming the branch head.
+- The branch declares a strict superset of inputs over the tag; nothing the
+  tag offers is unavailable on the branch.
 
-That SHA is authoritative. The table entry above is left blank rather than
-filled speculatively.
+The table entry above reflects this.
 
 ## Rollout notes
 
