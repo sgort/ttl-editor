@@ -316,6 +316,12 @@ Then, in order:
 3. Install Renovate, scoped to that repository only.
 4. Enable Dependabot **alerts** only.
 5. Create the ruleset with both `required_status_checks` and `pull_request`.
+6. **Disable squash and rebase merging** (Settings → General → Pull Requests),
+   leaving merge commits only. Changelog entries name commits by SHA, and both
+   alternatives rewrite those hashes — rebase deceptively so, since it keeps the
+   commit count while replacing every hash. GitHub's default button is "Squash
+   and merge", so without this setting one click orphans a release's entire
+   entry.
 
 ### Two traps
 
