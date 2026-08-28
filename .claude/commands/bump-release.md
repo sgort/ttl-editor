@@ -44,7 +44,7 @@ only new entries going forward use CalVer.
     {
       "sha": "abc1234",
       "author": "Steven Gort",
-      "type": "feat", // feat | fix | test | docs | chore | refactor | other
+      "type": "feat", // feat | fix | test | docs | chore | refactor | ci | other
       "subject": "Clean, readable release-note header",
       "details": ["One or more body paragraphs, same technical depth as the commit message."],
     },
@@ -57,6 +57,32 @@ field (that's a `ronl-business-api`-specific external GitLab tracker link —
 skip it here unless this repo grows an equivalent).
 
 ## Steps
+
+### 0. Reconcile outstanding pull requests
+
+Run this **before touching any version**. A pull request merged outside a
+release entry ships silently and appears in no changelog, so the release
+history stops being a record of what is actually deployed.
+
+```bash
+gh pr list --state open --json number,title,author,files
+```
+
+Present the open PRs and ask which are in scope for this release: all, a
+subset, or none. Out-of-scope PRs stay open and are gathered by the next
+release. Then:
+
+1. **Merge the in-scope PRs before any version editing.** Dependency PRs
+   rewrite `package-lock.json` — the same file step 3 edits. Bump the version
+   first and the merge either conflicts or silently reverts it.
+2. **Re-check mergeability between merges** when several PRs touch the same
+   file. The `acc` ruleset does not require branches to be up to date, so
+   merging one leaves the next based on a stale tree.
+3. **Say that each merge to `acc` triggers an acceptance deploy** when
+   proposing to merge several.
+4. **Bring the working branch up to date with `acc` afterwards** — rebase if
+   the branch is unpushed, merge if it is not. Only then compute the commit
+   range in step 1.
 
 ### 1. Determine the released version
 
@@ -74,14 +100,26 @@ skip it here unless this repo grows an equivalent).
 #### Authoring a new entry (when there is no pending one)
 
 1. Find the commit range: `PREV=$(git log --grep='^chore: bump release' -n 1 --format=%H)`,
-   then `git log $PREV..HEAD --oneline` lists everything since. Drop any
-   commits already covered by an existing changelog entry (a release is
-   sometimes cut mid-stream, leaving a few already-documented commits still
+   then `git log $PREV..HEAD --no-merges --oneline` lists everything since.
+
+   **`--no-merges` is required.** Releases land through pull requests now, so
+   every range contains merge commits, and a merge commit carries no content
+   for a changelog.
+
+   **Compute the range only after step 0 has brought the branch up to date.**
+   Rebasing rewrites SHAs, so a range captured earlier records hashes that no
+   longer exist — and nothing downstream will catch it.
+
+   Drop any commits already covered by an existing changelog entry (a release
+   is sometimes cut mid-stream, leaving a few already-documented commits still
    in range).
+
 2. For each remaining commit, pull its real SHA (short form), author, and
    full subject + body: `git log -1 --format='%h|%an|%s%n%b' <sha>`. Derive
    `type` from the commit's conventional-commit prefix (`feat`, `fix`,
-   `test`, `docs`, `chore`, `refactor`), falling back to `other`.
+   `test`, `docs`, `chore`, `refactor`, `ci`), falling back to `other`.
+   `ci` covers pipeline and supply-chain work; `ChangelogTab.jsx` renders it
+   with its own icon.
 3. Write `subject` as a clean, readable release-note header — informed by
    the commit subject but not required to be verbatim. Write `details` as
    1–3 paragraphs adapted from the commit body at the same technical depth
@@ -94,6 +132,11 @@ skip it here unless this repo grows an equivalent).
 6. **Show the drafted entry to the user and get confirmation before adding
    it to `changelog.json`.** Do not silently commit authored changelog
    content.
+7. **If the entry needs a source change to render correctly** — a commit type
+   `ChangelogTab.jsx` does not know, for example — commit that change _before_
+   the bump and list it in the entry. The bump commit is the boundary marker
+   `git log --grep` searches for and is never listed in its own entry, so a
+   source change folded into it ships unlisted.
 
 ### 2. Flip the released entry to Released
 
@@ -157,29 +200,56 @@ Then ask whether to commit. Do not commit unless the user confirms.
 Commit message format: `chore: bump release to v<released-version>` — no
 Co-Authored-By line.
 
-### 6. Fast-forward onto `acc` and clean up the working branch
+### 6. Land the release through a pull request
 
-Once the bump commit exists, land it on `acc` by default — do not ask
-first, this is the standard flow. Skip this step only if the commit was
-already made directly on `acc`.
+`acc` is protected by the `acc supply-chain gate` ruleset, which requires a
+pull request and a passing `audit` check. A locally created bump commit has
+never been through CI, so **the old flow — `git checkout acc` followed by
+`git merge --ff-only` and a direct push — is rejected outright.** Do not work
+around it: the gate applies to releases like everything else, and bypassing a
+verification gate is never a step in this task.
 
 ```bash
-git checkout acc
-git merge --ff-only <working-branch>
+git push -u origin <working-branch>
+gh pr create --base acc --title "chore: bump release to v<version>" --body "..."
 ```
 
-- If this isn't a clean fast-forward (`acc` has diverged), **stop and
-  ask** how to proceed. Never force-merge, rebase, or `--no-ff` silently.
-- On success, delete the now-fully-merged working branch:
+- **Merge with a merge commit, never squash.** The changelog entry names each
+  commit by its SHA. Squashing collapses them into one new commit, leaving the
+  entry pointing at commits that do not exist on `acc`.
 
   ```bash
+  gh pr merge <n> --merge --delete-branch
+  ```
+
+  Renovate's dependency PRs are the opposite case — squash those. Each is a
+  single change, and no entry names its constituent commits.
+
+- Report the PR URL and let the human merge it. The release is audited before
+  it lands, which is the point of the change.
+- The PR runs `audit` and `Build and Deploy`; the latter produces a Static Web
+  Apps preview deployment.
+- **Merging the PR pushes `acc`, which triggers the acceptance deploy.** There
+  is no separate "ask whether to push" step any more — merging is the push.
+- Afterwards, clean up and sync local:
+
+  ```bash
+  git checkout acc && git pull --ff-only
   git branch -d <working-branch>
   ```
 
-  Use `-d`, not `-D` — it only succeeds when fully merged, which it will
-  be immediately after an `--ff-only` merge. If it refuses, stop and
-  investigate rather than forcing it.
+  Use `-d`, not `-D` — it only succeeds when the branch is fully merged. If it
+  refuses, stop and investigate rather than forcing it.
 
-- This is local-only: it does **not** push `acc` to `origin`. Report the
-  new local `acc` HEAD (short SHA) and ask separately whether to push —
-  pushing to a shared branch still needs explicit confirmation.
+### Why this changed
+
+Through v2026.08.2 this step fast-forwarded `acc` locally and asked separately
+about pushing. That stopped working when `acc` gained a ruleset requiring a PR
+and a passing `audit` check — enforcement introduced by the supply-chain
+pinning work, documented in `docs/the-gate-has-teeth.md`.
+
+The v2026.08.2 release was the first cut under the gate and is where each of
+these steps was corrected: the missing `--no-merges`, the missing `ci` type,
+the PR reconciliation in step 0, the range being computed before a rebase had
+rewritten its SHAs, this landing model, and the merge method — squashing a
+release PR would have orphaned every SHA the entry cites.

@@ -2,6 +2,54 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.08.3",
+      "status": "Released",
+      "date": "28 aug 2026",
+      "commits": [
+        {
+          "sha": "4b020ba",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Release PRs are merged, never squashed",
+          "details": [
+            "The changelog entry names each commit by its SHA. Squashing a release pull request collapses them into one new commit, leaving the entry pointing at commits that do not exist on the target branch.",
+            "Renovate's dependency PRs are the opposite case and should be squashed: each is a single change, and no entry names its constituent commits. So the rule is not \"never squash\" but \"never squash a pull request whose commits a changelog entry names\"."
+          ]
+        },
+        {
+          "sha": "7bff543",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Releases land through a pull request",
+          "details": [
+            "The acceptance branch now requires a pull request and a passing supply-chain audit, so the old flow — fast-forwarding acc locally and pushing directly — is rejected outright. Releases go through a pull request like everything else and are audited before they land.",
+            "Five further corrections came with it, all found by cutting v2026.08.2 under the new gate rather than by reasoning about it: --no-merges in the commit range, since pull-request landing puts a merge commit in every range; computing that range only after the branch is up to date, because rebasing rewrites the SHAs the entry records; a new first step reconciling open pull requests before any version editing, because dependency updates rewrite the same lockfile the version bump edits; ci added to the recognised commit types; and a rule that a source change the entry needs must be committed before the bump, or it ships unlisted."
+          ]
+        },
+        {
+          "sha": "82837d7",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "tailwindcss updated to 3.4.19",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate. It satisfied the 14-day minimum release age check and passed the supply-chain audit before merging."
+          ]
+        },
+        {
+          "sha": "06f641b",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "postcss updated to 8.5.23 — security advisory",
+          "details": [
+            "Resolves a published security advisory in postcss.",
+            "Raised through Renovate's vulnerability-alerts path, which overrides the 14-day cooldown: this pull request carried no minimum-release-age check at all, while the tailwindcss update in the same release went through it normally.",
+            "That is the first observed confirmation that the no-cooldown security lane works end to end — GitHub advisory alerts feed Renovate, the cooldown is bypassed for them alone, and the update is still gated by the supply-chain audit before it can merge."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.08.2",
       "status": "Released",
       "date": "28 aug 2026",
