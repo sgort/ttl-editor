@@ -2,6 +2,151 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.08.2",
+      "status": "Released",
+      "date": "28 aug 2026",
+      "commits": [
+        {
+          "sha": "2a9e809",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "CI commits get their own changelog type",
+          "details": [
+            "The changelog renderer had no ci type, so pipeline and supply-chain commits fell through to the generic other icon. This release alone carries four of them, and the repo now does enough CI work for the distinction to be worth drawing."
+          ]
+        },
+        {
+          "sha": "aa05de2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Supply-chain gate documented, README corrected",
+          "details": [
+            "Adds docs/the-gate-has-teeth.md: what the CI gate delivers, how each piece is built and why each setting is what it is, how it behaves day to day, and what it deliberately does not protect — the floating build container, npm integrity covering what is tested rather than what is shipped, and the fact that zizmor validates pin format but never pin truth.",
+            "Includes a replication guide for linked-data-explorer and ronl-business-api, and records the empty-token failure as evidence the gate works.",
+            "The README claimed the docs/ directory had been removed, which is no longer true. Product documentation still lives on the IOU Architecture site; docs/ now holds engineering records that belong beside the code."
+          ]
+        },
+        {
+          "sha": "fd565a2",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "eslint-plugin-prettier updated to 5.5.6",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate, the first to land under the new policy. It passed the 14-day minimum release age check and the blocking supply-chain audit before merging."
+          ]
+        },
+        {
+          "sha": "39d8425",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@testing-library/react updated to 16.3.2",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate, gated by the same 14-day cooldown and audit check. Renovate PRs are subject to the policy Renovate itself maintains."
+          ]
+        },
+        {
+          "sha": "8665a05",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Audit gate unblocked — the zizmor token must not be empty",
+          "details": [
+            "Setting token: '' looked like sound least-privilege hardening but broke the gate outright. zizmor's --gh-token is environment-backed, and an empty value is rejected at argument parsing, before any audit runs; online-audits: false does not avoid it.",
+            "Restores the default of the workflow token, which is scoped to contents: read and mounted read-only, so the exposure this would have removed was negligible. A comment records the failure so the same hardening is not retried."
+          ]
+        },
+        {
+          "sha": "5da74d2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Register and spec corrected after final review",
+          "details": [
+            "Renovate would have silently downgraded the deploy action. Its v1 is both a 2021 tag and a 2024 branch head; the workflows pin the branch, while Renovate resolves the tag — so a routine-looking digest update would have reverted the production deploy step to 3.5-year-old code, with the 14-day cooldown offering no protection against a years-old commit. Updates for that dependency are now disabled, with the reason recorded inline.",
+            "The register claimed blanket Renovate coverage. The zizmor version pin is an action input, which Renovate does not parse, so it never updates automatically. A Maintained-by column now separates automated pins from manual ones.",
+            "The container exception was also understated: because the build is not skipped, the production bundle is built inside the floating image, making it the build toolchain rather than merely an upload step."
+          ]
+        },
+        {
+          "sha": "7263969",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Blocking supply-chain audit, Renovate cooldown and exceptions register",
+          "details": [
+            "Runs zizmor on pull requests and pushes to acc and main, pinned to an exact version rather than the action default of latest — an unpinned tool inside the gate that forbids unpinned things would defeat itself. Introduced only after the tree reached zero findings, so it lands green.",
+            "Renovate maintains the digests under a 14-day cooldown, with an override so security advisories are not delayed by it.",
+            "The register records what cannot be pinned: the Static Web Apps action delegates to a container image on a floating tag, so pinning the action leaves the payload floating."
+          ]
+        },
+        {
+          "sha": "40a8187",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Actions pinned to digests, GITHUB_TOKEN scoped to least privilege",
+          "details": [
+            "Pins actions/checkout, actions/setup-node and the Azure Static Web Apps deploy action to commit digests — all at the then-current major, so the change is behaviour-preserving rather than an upgrade.",
+            "Adds persist-credentials: false. Previously a live workflow token was written into .git/config and mounted into a closed-source third-party container; the deploy action authenticates with explicitly passed tokens instead.",
+            "Workflows now default to contents: read. The deploy job adds pull-requests: write for its PR comments; the close job takes an empty permissions block."
+          ]
+        },
+        {
+          "sha": "4c88b13",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Hash-pin policy stated in the repository",
+          "details": [
+            "Every action reference must be a commit hash, with no exemption for first-party actions. The pinned zizmor version already enforces this by default, so the file changes no findings today; it is committed so enforcement does not depend on a tool default that a future release could relax."
+          ]
+        },
+        {
+          "sha": "78437bc",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Implementation plan with measured checkpoints",
+          "details": [
+            "Eight tasks driving the audit from 16 findings to zero, with every checkpoint count measured against the pinned zizmor version rather than estimated.",
+            "Resolves the ambiguous deploy-action reference by pinning the branch commit: the executed surface — the action manifest, its Dockerfile and its entrypoint — is byte-identical at both candidate commits, and the branch version declares a superset of inputs."
+          ]
+        },
+        {
+          "sha": "7a29a64",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Design for supply-chain pinning of IOU pipelines",
+          "details": [
+            "Records the decision to enforce hash pinning inside each repository rather than migrate to the ictu organisation, and the five-component pattern this repo pilots for linked-data-explorer and ronl-business-api.",
+            "Covers digest pins, least-privilege permissions, Renovate with a 14-day cooldown and a no-cooldown lane for advisories, a blocking audit gate, and an exceptions register."
+          ]
+        },
+        {
+          "sha": "4228e05",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Dangling docs/ references repointed at the documentation site",
+          "details": [
+            "Earlier commits deleted the repo-side testing and namespace documentation, but references to those paths survived in the source. The IOU Architecture documentation site is now the single source of truth, so the references point at it directly rather than at paths that no longer resolve."
+          ]
+        },
+        {
+          "sha": "ee1f087",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "bump-release no longer uses npm version, which mangles CalVer",
+          "details": [
+            "npm coerces its argument to strict SemVer, and a zero-padded CalVer month is not a valid numeric identifier, so a 2026.08.x argument is silently written as 2026.8.x. There is no flag to disable the coercion. The release step now spells out editing package.json and the lockfile by hand, naming the exact keys."
+          ]
+        },
+        {
+          "sha": "90599b0",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "bump-release now versions the lockfile too",
+          "details": [
+            "No release had ever touched package-lock.json, so it still read the value from the initial commit while package.json had moved on across 35 changelog entries. The drift was never fatal — npm ci validates dependency satisfiability rather than the root version field — but the lockfile is what CI installs from and what audit and provenance tooling reads."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.08.1",
       "status": "Released",
       "date": "20 aug 2026",
