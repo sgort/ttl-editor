@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "minimumReleaseAge": "14 days",
+  "internalChecksFilter": "strict",
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null,
+    "labels": ["security"]
+  },
+  "packageRules": [
+    {
+      "description": "Azure/static-web-apps-deploy publishes v1 as both a 2021 tag (1a947af9992250f3bc2e68ad0754c0b0c11566c9) and a 2024 branch head (4d27395796ac319302594769cfe812bd207490b1). Renovate's github-tags datasource resolves v1 to the tag, so an automated digest update would silently revert the pinned deploy step from the branch head back to 3.5-year-old code — see SECURITY-PIPELINE.md for the full analysis. This action has only ever published v1, so disabling updates here loses no legitimate version bump.",
+      "matchManagers": ["github-actions"],
+      "matchDepNames": ["Azure/static-web-apps-deploy"],
+      "enabled": false
+    }
+  ]
+}

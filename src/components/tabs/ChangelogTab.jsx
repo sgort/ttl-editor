@@ -147,7 +147,7 @@ export default function ChangelogTab() {
           <p className="mb-2">
             A RONL Initiative based on{' '}
             <a
-              href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/NAMESPACE-PROPERTIES.md"
+              href="https://iou-architectuur.open-regels.nl/cpsv-editor/reference/namespace-property-reference/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline font-medium"

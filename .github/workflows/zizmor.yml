@@ -1,0 +1,48 @@
+name: Supply-chain audit
+
+on:
+  pull_request:
+    branches:
+      - acc
+      - main
+  push:
+    branches:
+      - acc
+      - main
+
+# Read-only: the audit inspects the tree and needs nothing else.
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    name: audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+        with:
+          persist-credentials: false
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
+        with:
+          # The action's `version` input defaults to "latest". Pinning it is
+          # the whole point of this exercise — and it keeps CI's findings
+          # identical to the local baseline this plan was measured against.
+          # Not Renovate-maintained: the github-actions manager does not
+          # parse action inputs, so this must be bumped by hand.
+          version: '1.29.0'
+          # advanced-security uploads SARIF, which needs security-events:
+          # write. This job is contents: read only, so it must be false.
+          advanced-security: false
+          annotations: true
+          online-audits: false
+          # Leave `token` at its default. Setting it to '' looks like sound
+          # least-privilege hardening, but zizmor's --gh-token is env-backed
+          # and clap rejects a set-but-empty value before any audit runs,
+          # even with online-audits: false:
+          #   error: invalid value '' for '--gh-token <GH_TOKEN>'
+          # The default is ${{ github.token }}, scoped to contents: read and
+          # mounted read-only, so the exposure it would have removed is
+          # negligible anyway.
