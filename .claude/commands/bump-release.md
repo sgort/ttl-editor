@@ -214,6 +214,17 @@ git push -u origin <working-branch>
 gh pr create --base acc --title "chore: bump release to v<version>" --body "..."
 ```
 
+- **Merge with a merge commit, never squash.** The changelog entry names each
+  commit by its SHA. Squashing collapses them into one new commit, leaving the
+  entry pointing at commits that do not exist on `acc`.
+
+  ```bash
+  gh pr merge <n> --merge --delete-branch
+  ```
+
+  Renovate's dependency PRs are the opposite case — squash those. Each is a
+  single change, and no entry names its constituent commits.
+
 - Report the PR URL and let the human merge it. The release is audited before
   it lands, which is the point of the change.
 - The PR runs `audit` and `Build and Deploy`; the latter produces a Static Web
@@ -240,4 +251,5 @@ pinning work, documented in `docs/the-gate-has-teeth.md`.
 The v2026.08.2 release was the first cut under the gate and is where each of
 these steps was corrected: the missing `--no-merges`, the missing `ci` type,
 the PR reconciliation in step 0, the range being computed before a rebase had
-rewritten its SHAs, and this landing model.
+rewritten its SHAs, this landing model, and the merge method — squashing a
+release PR would have orphaned every SHA the entry cites.
