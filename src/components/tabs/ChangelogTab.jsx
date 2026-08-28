@@ -53,6 +53,7 @@ const COMMIT_TYPE_META = {
   test: { icon: '🧪', color: 'text-purple-700' },
   docs: { icon: '📘', color: 'text-blue-700' },
   chore: { icon: '🧹', color: 'text-gray-700' },
+  ci: { icon: '🔒', color: 'text-amber-700' },
   refactor: { icon: '♻️', color: 'text-orange-700' },
   other: { icon: '📄', color: 'text-gray-700' },
 };

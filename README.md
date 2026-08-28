@@ -14,7 +14,9 @@ As of February 21, 2026, all documentation for the CPSV Editor has moved to the 
 
 **[iou-architectuur.open-regels.nl/cpsv-editor](https://iou-architectuur.open-regels.nl/cpsv-editor)**
 
-This covers user guides, developer docs, reference material, and architecture documentation. The `docs/` directory has been removed from this repository.
+This covers user guides, developer docs, reference material, and architecture documentation — all product documentation lives there, not here.
+
+The `docs/` directory in this repository holds a different kind of material: engineering records that belong beside the code rather than on the product site — design specs, implementation plans, and pipeline reference such as [The gate now has teeth](docs/the-gate-has-teeth.md), which documents how CI enforces supply-chain pinning.
 
 ---
 
