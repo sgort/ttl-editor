@@ -214,16 +214,30 @@ git push -u origin <working-branch>
 gh pr create --base acc --title "chore: bump release to v<version>" --body "..."
 ```
 
-- **Merge with a merge commit, never squash.** The changelog entry names each
-  commit by its SHA. Squashing collapses them into one new commit, leaving the
-  entry pointing at commits that do not exist on `acc`.
+- **Merge with a merge commit. Squash and rebase are disabled repo-wide.**
+  The changelog entry names each commit by its SHA, and _both_ alternatives
+  rewrite those hashes: squashing collapses the commits into one new commit,
+  and rebasing replays them as new commits — deceptively, since it preserves
+  the commit count while replacing every hash. Either leaves the entry
+  pointing at commits that do not exist on `acc`.
 
   ```bash
   gh pr merge <n> --merge --delete-branch
   ```
 
-  Renovate's dependency PRs are the opposite case — squash those. Each is a
-  single change, and no entry names its constituent commits.
+  Rather than rely on anyone remembering that, this repository allows merge
+  commits only (Settings → General → Pull Requests). GitHub's default button
+  is otherwise "Squash and merge", so a single absent-minded click would
+  orphan every SHA the entry cites. The failure is now impossible by
+  construction.
+
+  A side effect: Renovate's dependency PRs land as merge commits too, rather
+  than being squashed. That costs nothing here — `--no-merges` in step 1
+  already excludes the merge commit, and the underlying update commit is what
+  the entry should name anyway.
+
+  **A repo adopting this template must apply the same setting.** The rule
+  without the setting is one click from failing.
 
 - Report the PR URL and let the human merge it. The release is audited before
   it lands, which is the point of the change.
@@ -241,6 +255,22 @@ gh pr create --base acc --title "chore: bump release to v<version>" --body "..."
   Use `-d`, not `-D` — it only succeeds when the branch is fully merged. If it
   refuses, stop and investigate rather than forcing it.
 
+- **Confirm the branch is gone from the remote too.** `gh pr merge --delete-branch`
+  removes both copies, and both repositories now have `delete_branch_on_merge`
+  enabled so a merge through the GitHub UI does the same. But a release merged some
+  other way leaves the remote branch behind — `chore/release-2026-08-33` survived
+  exactly that way, and was only noticed later:
+
+  ```bash
+  git fetch origin --prune
+  git ls-remote --heads origin '<working-branch>'   # expect no output
+  git push origin --delete <working-branch>          # only if it survived
+  ```
+
+  A stale merged branch is harmless on its own. They accumulate, and every one of
+  them makes it harder to see which branches are genuinely in flight — which is the
+  question step 0 has to answer at the next release.
+
 ### Why this changed
 
 Through v2026.08.2 this step fast-forwarded `acc` locally and asked separately
@@ -251,5 +281,9 @@ pinning work, documented in `docs/the-gate-has-teeth.md`.
 The v2026.08.2 release was the first cut under the gate and is where each of
 these steps was corrected: the missing `--no-merges`, the missing `ci` type,
 the PR reconciliation in step 0, the range being computed before a rebase had
-rewritten its SHAs, this landing model, and the merge method — squashing a
-release PR would have orphaned every SHA the entry cites.
+rewritten its SHAs, this landing model, and the merge method.
+
+The merge method took two passes to get right: the first correction said
+"never squash" and missed that rebase-and-merge rewrites hashes just as
+thoroughly. That gap surfaced only when someone looked at the actual merge
+dropdown. It is now settled in repository settings rather than in prose.
