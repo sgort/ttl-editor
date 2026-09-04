@@ -25,8 +25,8 @@ mechanisms above to actually run:
 
 | Dependency                     | Pin                                                 | Version           | Maintained by                                                           |
 | ------------------------------ | --------------------------------------------------- | ----------------- | ----------------------------------------------------------------------- |
-| `actions/checkout`             | `a37ce9120846195fa4ece8f58b268e6043cb2f26`          | v3.7.0            | Renovate                                                                |
-| `actions/setup-node`           | `49933ea5288caeca8642d1e84afbd3f7d6820020`          | v4.4.0            | Renovate                                                                |
+| `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                                |
+| `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                                |
 | `zizmorcore/zizmor-action`     | `3dc1ecc9bcb9e94e9b2c709687979e1298497054`          | v0.6.2            | Renovate                                                                |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below      |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | manual — Renovate's github-actions manager does not parse action inputs |
@@ -96,12 +96,12 @@ automated digest update would silently revert the deploy step to
 3.5-year-old code. The action has only ever published `v1`, so nothing
 is lost by maintaining this pin by hand instead.
 
-### `node-version: '20'` in the deploy workflows — floats across patch releases
+### `node-version: '24'` in the deploy workflows — floats across patch releases
 
 Both Azure Static Web Apps workflows pass `actions/setup-node`
-`node-version: '20'`, not an exact patch, and there is no `.nvmrc` and
+`node-version: '24'`, not an exact patch, and there is no `.nvmrc` and
 no `engines` field anywhere pinning a runtime version. `setup-node`
-therefore downloads whichever 20.x patch is current at run time.
+therefore downloads whichever 24.x patch is current at run time.
 
 **Reachable from our side:** yes, in principle — an exact patch or an
 `.nvmrc` `setup-node` can read would close this. **Not done here:**
