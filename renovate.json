@@ -14,6 +14,13 @@
       "matchManagers": ["github-actions"],
       "matchDepNames": ["Azure/static-web-apps-deploy"],
       "enabled": false
+    },
+    {
+      "description": "Tailwind CSS v4 is deferred until the Create React App to Vite migration lands. v4 moves the PostCSS plugin into a separate @tailwindcss/postcss package and requires the PostCSS configuration to be rewritten -- PR #56 failed to compile on exactly that. Doing the rewrite under CRA would be throwaway work, because the Vite setup replaces the PostCSS wiring with the @tailwindcss/vite plugin rather than porting it. Left enabled, Renovate re-opens the same PR every cycle, it fails the build every time, and it holds one of ten Static Web Apps staging slots while doing so. Minor and patch updates to tailwindcss are unaffected; only the major is held. Re-enable this rule as part of the Vite migration.",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["tailwindcss"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
