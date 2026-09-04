@@ -33,6 +33,19 @@ const rewriteJestMock = {
 
 export default defineConfig({
   plugins: [rewriteJestMock, react()],
+  // Vite's defaults are 5173 for the dev server and 4173 for preview.
+  // react-scripts served on 3000, and the LDE backend allowlists origins for
+  // CORS — so taking Vite's defaults would break local SHACL validation, DSO
+  // import and TriplyDB publishing for every developer, against a backend that
+  // is running and correct, with nothing in this repository to explain why.
+  // Observed for real during the phase 2 preview: "CORS blocked for origin:
+  // http://localhost:4173".
+  //
+  // Keeping 3000 preserves the existing contract and needs no change in the
+  // backend repository. strictPort so a silently-reassigned port cannot
+  // reintroduce the same failure.
+  server: { port: 3000, strictPort: true },
+  preview: { port: 3000, strictPort: true },
   build: {
     // Vite's default, stated explicitly because it is the single highest-risk
     // line in this migration: CI still says output_location: 'build', and phase

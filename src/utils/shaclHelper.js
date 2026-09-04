@@ -5,7 +5,7 @@
 // backend failure yields a neutral { unavailable: true } shape so the publish
 // flow is never blocked (validation is advisory).
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 const emptyLayers = () => ({
   cprmv: { label: 'CPRMV 0.4.1', issues: [] },
