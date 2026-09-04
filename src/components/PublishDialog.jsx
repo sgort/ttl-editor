@@ -400,10 +400,14 @@ const PublishDialog = ({
 
               {/* Base URL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-triply-db-base-url"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   TriplyDB Base URL <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-triply-db-base-url"
                   type="text"
                   value={config.baseUrl}
                   onChange={(e) => updateField('baseUrl', e.target.value)}
@@ -418,10 +422,14 @@ const PublishDialog = ({
 
               {/* Account */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-account-name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Account Name <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-account-name"
                   type="text"
                   value={config.account}
                   onChange={(e) => updateField('account', e.target.value)}
@@ -436,10 +444,14 @@ const PublishDialog = ({
 
               {/* Dataset */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-dataset-name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Dataset Name <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-dataset-name"
                   type="text"
                   value={config.dataset}
                   onChange={(e) => updateField('dataset', e.target.value)}
@@ -452,11 +464,15 @@ const PublishDialog = ({
 
               {/* API Token */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-api-token"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   API Token <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="publish-dialog-api-token"
                     type={showToken ? 'text' : 'password'}
                     value={config.apiToken}
                     onChange={(e) => updateField('apiToken', e.target.value)}

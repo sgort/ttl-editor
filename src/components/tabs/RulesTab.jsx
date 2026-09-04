@@ -64,11 +64,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
           <div className="space-y-3">
             {/* Rule URI */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-rule-uri-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Rule URI</span>
                 <span className="text-gray-500"> (rdf:about)</span>
               </label>
               <input
+                id={`rules-tab-rule-uri-${index}`}
                 type="text"
                 value={rule.uri}
                 onChange={(e) => updateTemporalRule(rule.id, 'uri', e.target.value)}
@@ -79,12 +83,16 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
 
             {/* Rule Identifier - MANDATORY for CPSV-AP */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-rule-identifier-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Rule Identifier</span>
                 <span className="text-gray-500"> (dct:identifier)</span>
                 <span className="text-red-500"> *</span>
               </label>
               <input
+                id={`rules-tab-rule-identifier-${index}`}
                 type="text"
                 value={rule.identifier}
                 onChange={(e) => updateTemporalRule(rule.id, 'identifier', e.target.value)}
@@ -96,12 +104,16 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
 
             {/* Rule Title - MANDATORY for CPSV-AP */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-rule-title-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Rule Title</span>
                 <span className="text-gray-500"> (dct:title)</span>
                 <span className="text-red-500"> *</span>
               </label>
               <input
+                id={`rules-tab-rule-title-${index}`}
                 type="text"
                 value={rule.title}
                 onChange={(e) => updateTemporalRule(rule.id, 'title', e.target.value)}
@@ -113,11 +125,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
 
             {/* Extends */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-extends-rule-uri-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Extends (Rule URI)</span>
                 <span className="text-gray-500"> (ronl:extends)</span>
               </label>
               <input
+                id={`rules-tab-extends-rule-uri-${index}`}
                 type="text"
                 value={rule.extends}
                 onChange={(e) => updateTemporalRule(rule.id, 'extends', e.target.value)}
@@ -132,11 +148,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
             {/* Valid From / Valid Until */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`rules-tab-valid-from-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Valid From</span>
                   <span className="text-gray-500"> (ronl:validFrom)</span>
                 </label>
                 <input
+                  id={`rules-tab-valid-from-${index}`}
                   type="date"
                   value={rule.validFrom}
                   onChange={(e) => updateTemporalRule(rule.id, 'validFrom', e.target.value)}
@@ -144,11 +164,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`rules-tab-valid-until-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Valid Until</span>
                   <span className="text-gray-500"> (ronl:validUntil)</span>
                 </label>
                 <input
+                  id={`rules-tab-valid-until-${index}`}
                   type="date"
                   value={rule.validUntil}
                   onChange={(e) => updateTemporalRule(rule.id, 'validUntil', e.target.value)}
@@ -159,11 +183,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
 
             {/* Confidence Level */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-confidence-level-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Confidence Level</span>
                 <span className="text-gray-500"> (ronl:confidenceLevel)</span>
               </label>
               <select
+                id={`rules-tab-confidence-level-${index}`}
                 value={rule.confidenceLevel}
                 onChange={(e) => updateTemporalRule(rule.id, 'confidenceLevel', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -178,11 +206,15 @@ const RulesTab = ({ temporalRules, addTemporalRule, removeTemporalRule, updateTe
 
             {/* Description */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`rules-tab-description-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Description</span>
                 <span className="text-gray-500"> (dct:description)</span>
               </label>
               <textarea
+                id={`rules-tab-description-${index}`}
                 value={rule.description}
                 onChange={(e) => updateTemporalRule(rule.id, 'description', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

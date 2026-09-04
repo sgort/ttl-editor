@@ -127,12 +127,13 @@ const VendorTab = ({
 
         {/* Vendor Dropdown */}
         <div className="max-w-2xl">
-          <label className="block text-sm text-gray-700 mb-1">
+          <label htmlFor="vendor-tab-vendor" className="block text-sm text-gray-700 mb-1">
             <span className="font-medium">Vendor</span>
             <span className="text-gray-500"> (ronl:MethodConcept)</span>
             <span className="text-red-500"> *</span>
           </label>
           <select
+            id="vendor-tab-vendor"
             value={vendorService.selectedVendor || ''}
             onChange={(e) => {
               setVendorService({
@@ -211,10 +212,14 @@ const VendorTab = ({
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-organization-name"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Organization Name
                       </label>
                       <input
+                        id="vendor-tab-organization-name"
                         type="text"
                         value={vendorService.contact.organizationName || ''}
                         onChange={(e) =>
@@ -226,10 +231,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-contact-person"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Contact Person
                       </label>
                       <input
+                        id="vendor-tab-contact-person"
                         type="text"
                         value={vendorService.contact.contactPerson || ''}
                         onChange={(e) =>
@@ -241,8 +250,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                      <label
+                        htmlFor="vendor-tab-email"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Email
+                      </label>
                       <input
+                        id="vendor-tab-email"
                         type="email"
                         value={vendorService.contact.email || ''}
                         onChange={(e) => updateVendorField('contact', 'email', e.target.value)}
@@ -252,8 +267,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                      <label
+                        htmlFor="vendor-tab-phone"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Phone
+                      </label>
                       <input
+                        id="vendor-tab-phone"
                         type="tel"
                         value={vendorService.contact.phone || ''}
                         onChange={(e) => updateVendorField('contact', 'phone', e.target.value)}
@@ -263,10 +284,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-website"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Website
                       </label>
                       <input
+                        id="vendor-tab-website"
                         type="url"
                         value={vendorService.contact.website || ''}
                         onChange={(e) => updateVendorField('contact', 'website', e.target.value)}
@@ -301,10 +326,14 @@ const VendorTab = ({
 
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-service-url"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Service URL
                       </label>
                       <input
+                        id="vendor-tab-service-url"
                         type="url"
                         value={vendorService.technical.serviceUrl || ''}
                         onChange={(e) =>
@@ -331,10 +360,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-license"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         License
                       </label>
                       <input
+                        id="vendor-tab-license"
                         type="text"
                         value={vendorService.technical.license || ''}
                         onChange={(e) => updateVendorField('technical', 'license', e.target.value)}
@@ -344,9 +377,9 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <span className="block text-sm font-medium text-gray-700 mb-2">
                         Access Type
-                      </label>
+                      </span>
                       <div className="space-y-2">
                         <label className="flex items-center gap-2">
                           <input
@@ -394,10 +427,14 @@ const VendorTab = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="vendor-tab-notes-about-vendor-specific-implementation"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Notes about vendor-specific implementation
                     </label>
                     <textarea
+                      id="vendor-tab-notes-about-vendor-specific-implementation"
                       value={vendorService.serviceNotes || ''}
                       onChange={(e) =>
                         setVendorService({ ...vendorService, serviceNotes: e.target.value })
@@ -496,10 +533,14 @@ const VendorTab = ({
                   {/* Read-only auto-populated fields */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-service-name-auto-populated"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Service Name (auto-populated)
                       </label>
                       <input
+                        id="vendor-tab-service-name-auto-populated"
                         type="text"
                         value={service.name || 'Not set in Service tab'}
                         disabled
@@ -508,10 +549,14 @@ const VendorTab = ({
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label
+                        htmlFor="vendor-tab-certifying-organization-auto-populated"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
                         Certifying Organization (auto-populated)
                       </label>
                       <input
+                        id="vendor-tab-certifying-organization-auto-populated"
                         type="text"
                         value={
                           organization.name ||
@@ -526,9 +571,9 @@ const VendorTab = ({
 
                   {/* Certification Status with Action Button */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <span className="block text-sm font-medium text-gray-700 mb-2">
                       Certification Status
-                    </label>
+                    </span>
                     <div className="flex items-center gap-4">
                       {/* Status Display (Left side) */}
                       <div className="flex-1">
@@ -580,10 +625,14 @@ const VendorTab = ({
                   {vendorService.certification.status !== 'not-certified' && (
                     <>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="vendor-tab-certification-date"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Certification Date
                         </label>
                         <input
+                          id="vendor-tab-certification-date"
                           type="date"
                           value={vendorService.certification.certifiedAt || ''}
                           onChange={(e) =>
@@ -594,10 +643,14 @@ const VendorTab = ({
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label
+                          htmlFor="vendor-tab-certification-note"
+                          className="block text-sm font-medium text-gray-700 mb-1"
+                        >
                           Certification Note
                         </label>
                         <textarea
+                          id="vendor-tab-certification-note"
                           value={vendorService.certification.certificationNote || ''}
                           onChange={(e) =>
                             updateVendorField('certification', 'certificationNote', e.target.value)

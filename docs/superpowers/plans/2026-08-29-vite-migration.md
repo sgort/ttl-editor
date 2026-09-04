@@ -221,9 +221,61 @@ Everything here lands in **one pull request**. The moment `npm run build` emits
 3. **CI, both workflows.** `output_location: 'build'` → `'dist'` in
    `azure-static-web-apps-orange-beach-*.yml` **and**
    `azure-static-web-apps-white-sky-*.yml`.
+
+   **[4 Sep, found in phase 3] That is not the only line in these workflows that has to
+   move.** Each one also passes the backend URL to the build step:
+
+   ```yaml
+   env:
+     REACT_APP_BACKEND_URL: https://acc.backend.linkeddata.open-regels.nl
+   ```
+
+   Vite only exposes variables prefixed `VITE_`, so renaming the nine call
+   sites without renaming this leaves both environments falling back to
+   `http://localhost:3001` for four of the five backend consumers. The deploy
+   is green, the site loads, and SHACL validation, DSO import and TriplyDB
+   publishing all fail against localhost. **This is the same failure shape as
+   `output_location` and it is easier to miss**, because nothing about it looks
+   like build configuration.
+
+   Note also that `vite build` loads `.env.production` — which points at the
+   **production** backend — for the ACC build too. The workflow's `env:` block
+   is what makes ACC point at ACC, exactly as it did under CRA, because real
+   environment variables outrank `.env` files in both toolchains. Removing it
+   in the belief that `.env.acceptance` covers ACC would silently ship ACC
+   against production: nothing loads that file without `--mode acceptance`.
+   Both workflows now carry a comment saying so.
+
 4. **Remove** `react-scripts` from dependencies; delete `public/index.html`,
    `src/reportWebVitals.js`, the `web-vitals` dependency, and the
-   `reportWebVitals` import and call in `src/index.js`.
+   `reportWebVitals` import and call in `src/index.jsx`.
+
+   **[4 Sep, found in phase 3] `react-scripts` is also where the linter comes from.** Neither
+   `eslint` nor `eslint-config-react-app` is a direct dependency — both arrive
+   transitively, and `.eslintrc.json` extends `react-app` and `react-app/jest`.
+   Delete `react-scripts` without declaring them and `npm run lint` breaks
+   outright, which CI runs **before** the suite: the failure surfaces as a red
+   deploy pointing at the linter, several steps away from the build-system
+   change that caused it.
+
+   Worse than breaking loudly, `eslint` would not simply vanish — the remaining
+   `eslint-plugin-*` packages declare it as a peer, so npm would install
+   whatever satisfies them. That is eslint 9, which requires flat config and
+   cannot read `.eslintrc.json` at all.
+
+   So phase 3 adds `eslint@^8.57.1` and `eslint-config-react-app@^7.0.1` as
+   explicit devDependencies. This preserves the existing rule set exactly and
+   keeps the cutover reviewable. It does make visible a debt that was previously
+   hidden behind `react-scripts`: eslint 8 is end-of-life, and
+   `eslint-config-react-app` is unmaintained. Migrating to eslint 9 flat config
+   with the Vite-idiomatic React plugins is the natural follow-up — the same
+   category as tailwind v4, and out of scope here for the same reason.
+
+   Also removed: the `eslintConfig` block in `package.json`. It is inert —
+   `.eslintrc.json` outranks it and already carries the same two `extends` — and
+   it is react-scripts template residue naming react-scripts' own config
+   package, so it goes with react-scripts. `browserslist` stays; postcss and
+   autoprefixer read it.
 
    **[4 Sep] Renovate has #62 open, bumping `web-vitals` to v6 — the dependency
    this step deletes.** Close it rather than merging it; merging spends a review,
@@ -239,27 +291,84 @@ preview deployment serves a working site.
 
 No behavioural change; the Vitest suite is now the net.
 
-1. `jest.fn` → `vi.fn` and friends across 43 call sites; add
-   `import { vi } from 'vitest'` where needed (or keep `globals: true`).
+1. `jest.fn` → `vi.fn` and friends across the suite. `globals: true` is
+   already set, so no imports are needed — but `.eslintrc.json` does need
+   `"globals": { "vi": "readonly" }`, because `react-app/jest` supplies the
+   `jest` global and nothing supplies Vitest's.
+
+   **[4 Sep, found in phase 4] There are 45 call sites, not 43.** Both counts — the plan's and
+   the first conversion pass — came from a pattern requiring `jest.` with no
+   whitespace, and Prettier had wrapped two of them across lines as
+   `jest\n  .fn()`. The suite caught it immediately (`ReferenceError: jest is
+not defined`, two tests), which is the regression net doing its job. Match
+   `\bjest\b(?=\s*\.)` instead. Coverage after conversion is identical to
+   before it — 55.03 / 41.23 / 38.64 / 55.87 — which is the check that the
+   rewrite changed no behaviour.
+
 2. Delete the `globalThis.jest = vi` shim and fold
    `src/setupTests.vitest.js` back into `src/setupTests.js`.
-3. Update `.claude/commands/bump-release.md` and `docs/testing.md` for the new
-   commands.
-4. **[4 Sep] Remove both Renovate deferral rules from `renovate.json`** — the
-   `tailwindcss` and `typescript` major holds added on 4 September. Both exist
-   only because `react-scripts` constrains the toolchain, and phase 3 deletes
-   `react-scripts`:
+3. **[4 Sep, found in phase 4] Neither file needs what this step assumed.** `docs/testing.md`
+   does not exist, and `.claude/commands/bump-release.md` names no test or build
+   command. The only stale reference in the repository was `README.md`, which
+   said `npm run build   # production build → build/`. Its
+   `npm start  # development server at http://localhost:3000` line is still
+   correct, because phase 3 pinned Vite to port 3000.
+4. **[4 Sep] Remove all three Renovate deferral rules from `renovate.json`** —
+   the `tailwindcss`, `typescript` and `@vitejs/plugin-react` major holds. All
+   three exist only because `react-scripts` constrains the toolchain, and phase 3
+   deletes `react-scripts`:
 
    - **tailwindcss v4** moves the PostCSS plugin to `@tailwindcss/postcss`; the
      build failed on it in #56.
    - **typescript v7** cannot resolve at all, because `react-scripts@5.0.1`
      peer-requires `^3.2.1 || ^4`. #58 shipped a manifest bump with no lockfile
      for that reason.
+   - **[4 Sep, added during phase 2] @vitejs/plugin-react v6** cannot resolve either: it pulls
+     `@rolldown/plugin-babel`, whose peers want Babel 8, while `react-scripts`
+     holds the tree on Babel 7. #71 died on `npm ci` with `ERESOLVE` within
+     minutes of phase 1 merging — the dependency had existed for about a quarter
+     of an hour. Phase 1 therefore pins `@vitejs/plugin-react` at v5, and this is
+     the rule that stops Renovate re-proposing v6 every cycle until phase 3.
 
    Each rule's `description` says to remove it here. **Nothing enforces that.**
    Left in place, two majors stay silently frozen with no signal that they are
    being held — which is exactly the failure mode the rules were written to
    avoid for a different reason.
+
+   **[4 Sep, found in phase 4] Only one of the three is actually removable, and this step is
+   wrong about the other two.** The shared premise — that all three exist only
+   because `react-scripts` constrains the toolchain — does not survive contact
+   with the cut-over tree. Tested with `npm install --dry-run` after phase 3
+   rather than reasoned about:
+
+   | rule                      | premise                             | what happened                                        |
+   | ------------------------- | ----------------------------------- | ---------------------------------------------------- |
+   | `typescript` v7           | unblocked by removing react-scripts | **correct** — resolves cleanly. Rule removed.        |
+   | `@vitejs/plugin-react` v6 | same                                | **wrong** — still `ERESOLVE`, same conflicting peer. |
+   | `tailwindcss` v4          | same                                | **wrong** — resolves, but the build still breaks.    |
+
+   The constraints did not disappear; they **changed owner**.
+
+   `@vitejs/plugin-react` v6 wants Babel 8 via `@rolldown/plugin-babel`. That was
+   blocked by `react-scripts` holding Babel 7 — but phase 3 had to add
+   `eslint-config-react-app` explicitly to keep `npm run lint` working, and it
+   depends on `babel-preset-react-app`, which depends on
+   `@babel/plugin-transform-runtime@^7`. Same anchor, new owner. What unblocks it
+   is migrating off `eslint-config-react-app` to eslint 9 flat config.
+
+   `tailwindcss` v4 was never a resolution problem — it is `postcss.config.js`,
+   which still declares `tailwindcss: {}` as a PostCSS plugin. v4 moved that into
+   `@tailwindcss/postcss`, which is what #56 failed to compile on, and nothing in
+   phase 3 touched it. (Verified as far as resolution; the compile failure is
+   inferred from #56 and the config, not re-run.) Removing this rule would
+   contradict this plan's own "explicitly out of scope" section, which says
+   tailwind v4 is a second migration deserving its own acceptance run.
+
+   So both rules stay, with rewritten descriptions naming the **real** blocker
+   and the **real** condition for removal. A deferral rule whose stated reason
+   has silently become false is worse than no rule: the next person reads it,
+   believes the cause is gone, removes it, and re-opens a pull request that
+   cannot go green.
 
 5. **[4 Sep] Remove `@testing-library/user-event`.** It is imported by **zero**
    files in `src/` — it arrived with the CRA template and was never used. That
@@ -318,6 +427,27 @@ phase.
 `--run` / `--no-file-parallelism`. After phase 3 this repository is a Vitest repo;
 anyone reaching for `--runInBand` will get a rejected flag. Worth a line in
 `docs/testing.md`.
+
+**[4 Sep, found in phase 2] The dev server's port changes, and the backend's CORS
+allowlist does not know the new one.** `react-scripts start` serves on 3000.
+`vite` serves on **5173**, and `vite preview` on **4173**. The LDE backend
+allowlists origins, so the moment phase 3 makes `npm start` mean `vite`, every
+local developer's SHACL validation, DSO import and TriplyDB publish starts
+failing with `CORS blocked for origin: http://localhost:5173` — against a
+backend that is running and correct.
+
+Observed during the phase 2 preview click-through: the publish modal's SHACL
+validation reached `localhost:3001` and was refused for origin
+`http://localhost:4173`. The request firing at the right URL is what phase 2
+needed to prove, so this is not a migration defect. But it is a real change in
+the local development contract, and it is invisible from this repository — the
+fix belongs in the **backend's** CORS configuration, not here.
+
+Either add 5173 and 4173 to the backend allowlist before phase 3 merges, or set
+`server.port: 3000` and `preview.port: 3000` in `vite.config` to keep the
+existing contract. The second is a one-line change here and needs no
+coordination with another repository; prefer it unless there is a reason to move
+to Vite's defaults.
 
 **Do not add tests during the migration.** The suite is the instrument. Changing
 the instrument and the thing it measures at the same time is how a migration

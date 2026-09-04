@@ -22,11 +22,12 @@ export default function CostSection({ cost, setCost }) {
 
       {/* Cost Identifier */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label htmlFor="cost-section-cost-identifier" className="block text-sm text-gray-700 mb-1">
           <span className="font-medium">Cost Identifier</span>
           <span className="text-gray-500"> (dct:identifier)</span>
         </label>
         <input
+          id="cost-section-cost-identifier"
           type="text"
           value={cost.identifier || ''}
           onChange={(e) => updateField('identifier', e.target.value)}
@@ -40,11 +41,12 @@ export default function CostSection({ cost, setCost }) {
         <>
           {/* Amount */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label htmlFor="cost-section-amount" className="block text-sm text-gray-700 mb-1">
               <span className="font-medium">Amount</span>
               <span className="text-gray-500"> (cv:value)</span>
             </label>
             <input
+              id="cost-section-amount"
               type="text"
               value={cost.value || ''}
               onChange={(e) => updateField('value', e.target.value)}
@@ -55,11 +57,12 @@ export default function CostSection({ cost, setCost }) {
 
           {/* Currency */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label htmlFor="cost-section-currency" className="block text-sm text-gray-700 mb-1">
               <span className="font-medium">Currency</span>
               <span className="text-gray-500"> (cv:currency)</span>
             </label>
             <select
+              id="cost-section-currency"
               value={cost.currency || 'EUR'}
               onChange={(e) => updateField('currency', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -72,11 +75,15 @@ export default function CostSection({ cost, setCost }) {
 
           {/* Description */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label
+              htmlFor="cost-section-cost-description"
+              className="block text-sm text-gray-700 mb-1"
+            >
               <span className="font-medium">Cost Description</span>
               <span className="text-gray-500"> (dct:description)</span>
             </label>
             <textarea
+              id="cost-section-cost-description"
               value={cost.description || ''}
               onChange={(e) => updateField('description', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"

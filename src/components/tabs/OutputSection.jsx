@@ -22,11 +22,15 @@ export default function OutputSection({ output, setOutput }) {
 
       {/* Output Identifier */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="output-section-output-identifier"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Output Identifier</span>
           <span className="text-gray-500"> (dct:identifier)</span>
         </label>
         <input
+          id="output-section-output-identifier"
           type="text"
           value={output.identifier}
           onChange={(e) => updateField('identifier', e.target.value)}
@@ -40,12 +44,16 @@ export default function OutputSection({ output, setOutput }) {
         <>
           {/* Output Name */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label
+              htmlFor="output-section-output-name"
+              className="block text-sm text-gray-700 mb-1"
+            >
               <span className="font-medium">Output Name</span>
               <span className="text-gray-500"> (dct:title)</span>
               <span className="text-red-500"> *</span>
             </label>
             <input
+              id="output-section-output-name"
               type="text"
               value={output.name}
               onChange={(e) => updateField('name', e.target.value)}
@@ -57,11 +65,15 @@ export default function OutputSection({ output, setOutput }) {
 
           {/* Output Description */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label
+              htmlFor="output-section-output-description"
+              className="block text-sm text-gray-700 mb-1"
+            >
               <span className="font-medium">Output Description</span>
               <span className="text-gray-500"> (dct:description)</span>
             </label>
             <textarea
+              id="output-section-output-description"
               value={output.description}
               onChange={(e) => updateField('description', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -72,11 +84,15 @@ export default function OutputSection({ output, setOutput }) {
 
           {/* Output Type */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label
+              htmlFor="output-section-output-type"
+              className="block text-sm text-gray-700 mb-1"
+            >
               <span className="font-medium">Output Type</span>
               <span className="text-gray-500"> (dct:type)</span>
             </label>
             <input
+              id="output-section-output-type"
               type="text"
               value={output.type}
               onChange={(e) => updateField('type', e.target.value)}

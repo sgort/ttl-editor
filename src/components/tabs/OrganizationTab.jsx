@@ -134,11 +134,15 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
       {/* Organization Identifier */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="organization-tab-organization-uri-or-identifier"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Organization URI or identifier</span>
           <span className="text-gray-500"> (cv:PublicOrganization)</span>
         </label>
         <input
+          id="organization-tab-organization-uri-or-identifier"
           type="text"
           value={organization.identifier}
           onChange={(e) => updateField('identifier', e.target.value)}
@@ -157,12 +161,16 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
       {/* Organization Name - MANDATORY */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="organization-tab-preferred-name-of-the-organization"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Preferred name of the organization</span>
           <span className="text-gray-500"> (skos:prefLabel)</span>
           <span className="text-red-500"> *</span>
         </label>
         <input
+          id="organization-tab-preferred-name-of-the-organization"
           type="text"
           value={organization.name}
           onChange={(e) => updateField('name', e.target.value)}
@@ -173,11 +181,15 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
       {/* Homepage URL */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="organization-tab-homepage-url-of-the-organization"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Homepage URL of the organization</span>
           <span className="text-gray-500"> (foaf:homepage)</span>
         </label>
         <input
+          id="organization-tab-homepage-url-of-the-organization"
           type="url"
           value={organization.homepage}
           onChange={(e) => updateField('homepage', e.target.value)}
@@ -396,11 +408,15 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
                 {/* Validation Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="organization-tab-validation-status-ronlvalidation-status"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Validation Status
                     <span className="text-gray-500 font-normal"> (ronl:validationStatus)</span>
                   </label>
                   <select
+                    id="organization-tab-validation-status-ronlvalidation-status"
                     value={dmnData.validationStatus}
                     onChange={(e) => updateDmnField('validationStatus', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -413,12 +429,16 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
                 {/* Validated By URI */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="organization-tab-validated-by-organization-uri-ronlvalidated-by"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Validated By Organization URI
                     <span className="text-gray-500 font-normal"> (ronl:validatedBy)</span>
                   </label>
                   <div className="flex gap-2">
                     <input
+                      id="organization-tab-validated-by-organization-uri-ronlvalidated-by"
                       type="text"
                       value={dmnData.validatedBy}
                       onChange={(e) => updateDmnField('validatedBy', e.target.value)}
@@ -441,11 +461,15 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
                 {/* Validation Date */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="organization-tab-validation-date-ronlvalidated-at"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Validation Date
                     <span className="text-gray-500 font-normal"> (ronl:validatedAt)</span>
                   </label>
                   <input
+                    id="organization-tab-validation-date-ronlvalidated-at"
                     type="date"
                     value={dmnData.validatedAt}
                     onChange={(e) => updateDmnField('validatedAt', e.target.value)}
@@ -455,11 +479,15 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
                 {/* Validation Note */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label
+                    htmlFor="organization-tab-validation-note-ronlvalidation-note"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
                     Validation Note
                     <span className="text-gray-500 font-normal"> (ronl:validationNote)</span>
                   </label>
                   <textarea
+                    id="organization-tab-validation-note-ronlvalidation-note"
                     value={dmnData.validationNote}
                     onChange={(e) => updateDmnField('validationNote', e.target.value)}
                     placeholder="e.g., Validated against AOW legislation Article 7a. Test suite: 127 cases passed."
@@ -475,12 +503,16 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
       {/* Geographic Jurisdiction - MANDATORY */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="organization-tab-geographic-jurisdiction"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Geographic Jurisdiction</span>
           <span className="text-gray-500"> (cv:spatial)</span>
           <span className="text-red-500"> *</span>
         </label>
         <select
+          id="organization-tab-geographic-jurisdiction"
           value={organization.spatial}
           onChange={(e) => updateField('spatial', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
@@ -509,10 +541,10 @@ export default function OrganizationTab({ organization, setOrganization, dmnData
 
       {/* Logo Upload - OPTIONAL */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <span className="block text-sm text-gray-700 mb-1">
           <span className="font-medium">Organization Logo</span>
           <span className="text-gray-500"> (foaf:logo)</span>
-        </label>
+        </span>
 
         <div className="space-y-3">
           {/* Logo Import Notice - Show when logo reference imported (not a data URL) */}

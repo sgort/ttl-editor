@@ -450,8 +450,14 @@ const IKnowMappingTab = ({
             <h3 className="text-xl font-bold">Configuration Details</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Configuration Name</label>
+                <label
+                  htmlFor="iknow-mapping-tab-configuration-name"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Configuration Name
+                </label>
                 <input
+                  id="iknow-mapping-tab-configuration-name"
                   type="text"
                   value={configName}
                   onChange={(e) => setConfigName(e.target.value)}
@@ -460,8 +466,14 @@ const IKnowMappingTab = ({
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label
+                  htmlFor="iknow-mapping-tab-description"
+                  className="block text-sm font-medium mb-1"
+                >
+                  Description
+                </label>
                 <input
+                  id="iknow-mapping-tab-description"
                   type="text"
                   value={configDescription}
                   onChange={(e) => setConfigDescription(e.target.value)}
@@ -476,11 +488,15 @@ const IKnowMappingTab = ({
           <div className="bg-white p-6 rounded-lg shadow space-y-4">
             <h3 className="text-xl font-bold">1. Upload iKnow XML Export</h3>
             <div className="space-y-3">
-              <label className="block text-sm font-medium">
+              <label
+                htmlFor="iknow-mapping-tab-upload-cognitatie-annotation-exportxml-or-semantics-exportxml"
+                className="block text-sm font-medium"
+              >
                 Upload CognitatieAnnotationExport.xml or SemanticsExport.xml
               </label>
               <div className="flex gap-3">
                 <input
+                  id="iknow-mapping-tab-upload-cognitatie-annotation-exportxml-or-semantics-exportxml"
                   type="file"
                   accept=".xml"
                   onChange={handleFileUpload}
@@ -654,10 +670,14 @@ const IKnowMappingTab = ({
                         <div className="space-y-3 bg-gray-50 p-3 rounded">
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-xs font-medium mb-1">
+                              <label
+                                htmlFor={`iknow-mapping-tab-source-collection-${field.id}`}
+                                className="block text-xs font-medium mb-1"
+                              >
                                 Source Collection
                               </label>
                               <select
+                                id={`iknow-mapping-tab-source-collection-${field.id}`}
                                 value={mapping.source}
                                 onChange={(e) =>
                                   updateMapping(field.key, { source: e.target.value })
@@ -674,8 +694,14 @@ const IKnowMappingTab = ({
                             </div>
 
                             <div>
-                              <label className="block text-xs font-medium mb-1">Field Path</label>
+                              <label
+                                htmlFor={`iknow-mapping-tab-field-path-${field.id}`}
+                                className="block text-xs font-medium mb-1"
+                              >
+                                Field Path
+                              </label>
                               <select
+                                id={`iknow-mapping-tab-field-path-${field.id}`}
                                 value={mapping.path}
                                 onChange={(e) => updateMapping(field.key, { path: e.target.value })}
                                 disabled={!mapping.source}
@@ -696,9 +722,9 @@ const IKnowMappingTab = ({
                           {mapping.source === 'concepts' && (
                             <div className="border-t pt-3">
                               <div className="flex items-center justify-between mb-2">
-                                <label className="block text-xs font-medium text-blue-700">
+                                <span className="block text-xs font-medium text-blue-700">
                                   🔍 Filter by Concept Type (Optional)
-                                </label>
+                                </span>
                                 <button
                                   onClick={() => {
                                     const hasFilter = mapping.filter && mapping.filter.type;
@@ -717,6 +743,9 @@ const IKnowMappingTab = ({
                               {mapping.filter?.type !== undefined && (
                                 <div className="bg-blue-50 p-2 rounded">
                                   <select
+                                    // One of these per mapped field, so the name
+                                    // has to say which field it filters.
+                                    aria-label={`Filter type for ${field.key}`}
                                     value={mapping.filter.type || ''}
                                     onChange={(e) =>
                                       updateMapping(field.key, {
@@ -826,6 +855,7 @@ const IKnowMappingTab = ({
             <h3 className="text-xl font-bold">1. Upload iKnow XML Data File</h3>
             <div className="flex gap-3">
               <input
+                aria-label="Upload iKnow XML data file"
                 type="file"
                 accept=".xml"
                 onChange={handleImportFileUpload}
@@ -867,6 +897,7 @@ const IKnowMappingTab = ({
           <div className="bg-white p-6 rounded-lg shadow space-y-4">
             <h3 className="text-xl font-bold">2. Select Mapping Configuration</h3>
             <select
+              aria-label="Select mapping configuration"
               value={selectedConfig}
               onChange={(e) => setSelectedConfig(e.target.value)}
               className="w-full border border-gray-300 rounded px-3 py-2"
