@@ -2,6 +2,262 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.0",
+      "status": "Released",
+      "date": "4 sep 2026",
+      "commits": [
+        {
+          "sha": "dc62384",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Vite migration baseline re-measured on the testing-library majors",
+          "details": [
+            "The migration plan asked for a re-measurement if more dependency work landed before phase 1, and the testing-library major did land. Still 16 suites and 257 tests, now measured on top of jest-dom 7.0.1 and user-event 14.6.5. The major was taken deliberately before phase 1 rather than during it, because it changes the instrument the migration is measured with.",
+            "Records how that measurement nearly went wrong. npm install reported \"up to date\" while node_modules still held the old versions -- npm had written the new ones into its hidden lockfile without replacing the package directories. A run against that tree would have reported a green 257 measured on the old testing-library and declared the majors safe on no evidence. CI is immune because it installs with npm ci on a clean runner; local runs are not.",
+            "Adds removing @testing-library/user-event to the cleanup phase. Zero files import it -- it arrived with the Create React App template and was never used, which is why a 13 to 14 major was a no-op here despite v14 being the release that made the API async."
+          ]
+        },
+        {
+          "sha": "ac87ae0",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Vite migration plan refreshed against a moved acc",
+          "details": [
+            "The plan was written on 29 August and reviewed 34 commits later. Its phases are unchanged; what changed is the ground it described. The acceptance baseline was re-measured rather than trusted -- still 16 suites and 257 tests -- which mattered because the tree had since taken React 19.2.8 and lucide-react v1, a major on a UI dependency.",
+            "Corrects the staging ceiling from three to ten. Ten staging environments coexisted and the eleventh was refused, which puts these apps on Standard rather than Free. The conclusion was right for the wrong number, so only the number changed.",
+            "Records that the plan's own precondition -- resolve the staging-slot issue or thin the Renovate queue before starting -- is now met, and flags two Renovate pull requests that interact with the migration: one bumping a dependency the migration deletes, one changing the test instrument."
+          ]
+        },
+        {
+          "sha": "e28f325",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Documentation-only changes no longer claim a staging slot",
+          "details": [
+            "Both Static Web Apps workflows deployed on every pull request regardless of what changed, so a two-file documentation change claimed a staging environment and returned nothing for it.",
+            "Filtered with paths-ignore rather than paths. An allowlist would mean enumerating every path that affects the build, and this is a single package rather than a monorepo, so there is no natural boundary to enumerate -- and anything forgotten from such a list silently skips a deploy, a considerably worse failure than one unnecessary preview. The default stays deploy; only docs, .claude and markdown are excluded."
+          ]
+        },
+        {
+          "sha": "3cdf974",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "TypeScript majors deferred until the Vite migration",
+          "details": [
+            "The TypeScript v7 pull request failed every build on an out-of-sync lockfile, but that was the symptom. It shipped a package.json bump with no lockfile at all because react-scripts@5.0.1 peer-requires typescript ^3.2.1 || ^4, so npm could not resolve v7 and Renovate's lockfile generation failed.",
+            "Nothing inside the pull request could fix that: regenerating the lockfile fails the same way, and --legacy-peer-deps would force through a real incompatibility rather than resolve it. Only the major is held; minor and patch updates continue to flow. The rule is written to be removed as part of the Vite migration, which deletes react-scripts."
+          ]
+        },
+        {
+          "sha": "ddc3eb2",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "testing-library updated to jest-dom 7 and user-event 14",
+          "details": [
+            "Taken deliberately before the Vite migration's first phase rather than during it, because these packages are the instrument the migration is measured with. The baseline was re-measured on top of them and still reports 16 suites and 257 tests.",
+            "The user-event 13 to 14 bump is normally the breaking one -- v14 made the API async and introduced setup() -- but no file in src imports it, so the only real risk was jest-dom 6 to 7."
+          ]
+        },
+        {
+          "sha": "dce3293",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Stored line endings normalised with .gitattributes",
+          "details": [
+            "The repository stored 263 text files with LF and two without: one workflow with CRLF throughout and one XML example with mixed endings. Nothing declared which was intended, so a file's form depended on which tool last wrote it. Editing the CRLF workflow with a tool that writes LF turned a three-line change into a seventy-four-line diff, which is how it was noticed.",
+            "text=auto normalises the stored form. Checkout is deliberately left alone -- no eol=lf -- so core.autocrlf still decides what lands in the working tree and nobody's editor changes. Binary extensions are declared explicitly rather than left to content sniffing. The renormalisation changes no content: with carriage returns ignored, only .gitattributes itself differs."
+          ]
+        },
+        {
+          "sha": "7155813",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Deploy workflows named after the environments they deploy",
+          "details": [
+            "Both Static Web Apps workflows were called \"Azure Static Web Apps CI/CD\" and both their jobs \"Build and Deploy Job\". In the Actions list, in a pull request's checks, and in gh run list, a run against the production app looked identical to one against acceptance; telling them apart meant opening the run and reading which API token it used.",
+            "They now say which environment they are -- Deploy ACC and Deploy PROD, with the Azure resource name kept in parentheses. Names only: triggers, permissions, action pins and every step are untouched. Renaming a job renames the check it reports, so this was worth doing before any deploy check is ever made required."
+          ]
+        },
+        {
+          "sha": "6303bdf",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "lucide-react updated to 1.33.0",
+          "details": [
+            "A major on a UI dependency, taken in the same pass as the other majors so the Vite migration starts from a settled tree. The full suite was re-measured afterwards and still reports 16 suites and 257 tests."
+          ]
+        },
+        {
+          "sha": "7c78fee",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Tailwind majors deferred until the Vite migration",
+          "details": [
+            "Tailwind v4 fails to compile here: the PostCSS plugin moved to a separate @tailwindcss/postcss package and the configuration has to be rewritten. That is a hand migration, and it is throwaway work under Create React App, because the Vite setup replaces the PostCSS wiring with the @tailwindcss/vite plugin rather than porting it.",
+            "Left enabled, Renovate re-opens the same failing pull request every cycle and it holds a staging slot while doing so. Only the major is held. The rule is written to be removed as part of the Vite migration."
+          ]
+        },
+        {
+          "sha": "74b1254",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Renovate capped at five concurrent pull requests",
+          "details": [
+            "Renovate's default prConcurrentLimit is ten and this configuration never overrode it. The Static Web Apps staging ceiling is also ten. The two numbers being equal meant a full Renovate queue consumed every staging environment and the next pull request opened by a human was refused outright.",
+            "That is not hypothetical: ten open dependency pull requests held all ten slots, and two unrelated pull requests had their deploy fail on arrival. It also self-perpetuated -- merging two freed two slots, and Renovate opened two new pull requests into them within the minute.",
+            "Capping at five leaves five slots permanently available for human work. Deliberately not solved by raising the tier: a higher ceiling moves the number at which the same collision happens rather than removing it."
+          ]
+        },
+        {
+          "sha": "f39d229",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Node updated to v24 in the deploy workflows",
+          "details": [
+            "Workflow-only change with no lockfile involvement, so nothing could invalidate it and it needed no rebase."
+          ]
+        },
+        {
+          "sha": "73f1e1a",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The supply-chain audit runs on every pull request, not only those targeting acc or main",
+          "details": [
+            "The audit triggered on pull_request only for acc and main. Combined with the ruleset that makes audit a required check on acc, that produced a pull request which could never merge: one based on a feature branch matched no trigger, so it accumulated no audit at all, and because the ruleset only applies while the base is acc, GitHub reported it as CLEAN with zero checks. It read as ready and was not.",
+            "The moment its parent merged, GitHub auto-retargeted the child to acc, the ruleset began applying, the required check was missing, and the pull request blocked permanently -- a retarget emits no pull_request event, so nothing ever backfilled it.",
+            "The file already carried the argument one dimension over, in its reasoning for having no paths filter: a filter lets a pull request skip the gate by touching nothing watched, and a branches filter lets it skip by targeting a base that is not watched. push stays filtered. The deploy workflows deliberately keep their narrow filters, because an absent filter there exhausts a bounded pool of staging environments instead."
+          ]
+        },
+        {
+          "sha": "0d64d54",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "The Semgrep plugin's local cache is ignored",
+          "details": [
+            "Machine-local state written into the repository root by the Semgrep MCP plugin, showing up as untracked noise in every git status."
+          ]
+        },
+        {
+          "sha": "3daa049",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "actions/setup-node updated to v7",
+          "details": [
+            "Pinned by commit digest, as the supply-chain policy requires. Workflow-only, so it carried no lockfile conflict."
+          ]
+        },
+        {
+          "sha": "77d92eb",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "actions/checkout updated to v7",
+          "details": [
+            "Pinned by commit digest, as the supply-chain policy requires. Workflow-only, so it carried no lockfile conflict."
+          ]
+        },
+        {
+          "sha": "9b9a711",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "autoprefixer updated to 10.5.4",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "fb155e9",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lint-staged updated to v17",
+          "details": [
+            "A major on the tool that runs the pre-commit gate, so it was verified rather than assumed: a deliberately misformatted file was staged and lint-staged run directly, confirming prettier and eslint both still execute and re-stage their output."
+          ]
+        },
+        {
+          "sha": "9854331",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "eslint-plugin-simple-import-sort updated to v14",
+          "details": [
+            "Major update to the import-ordering lint rule; the suite and lint both stayed green."
+          ]
+        },
+        {
+          "sha": "613aba6",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "prettier updated to 3.9.6",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "8bb0d9c",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "React updated to 19.2.8",
+          "details": [
+            "Lockfile-only update across the React monorepo, react and react-dom together."
+          ]
+        },
+        {
+          "sha": "2ef7e1c",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "postcss updated to 8.5.26",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "197b7d2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The Create React App to Vite migration is planned",
+          "details": [
+            "Create React App was deprecated on 14 February 2025. It still builds, but receives no new features, no performance work and no active security updates, which sits badly in a repository that spent August enforcing that nothing a pipeline downloads may float. linked-data-explorer already builds with Vite, so this aligns the tooling rather than introducing a third way of doing things.",
+            "Written against measurements rather than assumptions. The baseline is the existing suite, and the migration is correct when those same tests pass under Vitest and the built site behaves identically -- not \"does it build\", because a Vite build pointed at the wrong output directory succeeds and publishes nothing.",
+            "Scope was counted, not estimated: the env-var uses, process.env references, %PUBLIC_URL% occurrences, jest.* call sites and test scripts were each enumerated. Four phases, ordered so a working test suite exists at every point, because react-scripts provides both the build and the test runner and removing it takes away the regression net and the thing being tested at the same moment."
+          ]
+        },
+        {
+          "sha": "a4859e6",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The release process verifies the working branch is gone from the remote",
+          "details": [
+            "Merging with --delete-branch removes both copies, and the repository now deletes branches on merge, so there is normally nothing to do. But a release merged some other way leaves the remote branch behind, and one survived exactly that way and was noticed only later. Written as a check rather than an action."
+          ]
+        },
+        {
+          "sha": "64c63f9",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The merge method is enforced by repository settings, not by remembering",
+          "details": [
+            "The rule said never squash and missed that rebase-and-merge rewrites hashes just as thoroughly -- deceptively so, since it preserves the commit count while replacing every hash. Either one orphans the commit SHAs a changelog entry names.",
+            "Squash and rebase are now disabled repository-wide, leaving merge commits only, so the failure is impossible by construction rather than forbidden by a rule. GitHub's default button is \"Squash and merge\", so without the setting a single absent-minded click would orphan a release's entire entry."
+          ]
+        },
+        {
+          "sha": "a3fd0b5",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The config validator runs on the Node version Renovate requires",
+          "details": [
+            "Renovate declares engines.node ^24.11.0 and the runner defaults to Node 22. npm accepts that mismatch with a warning rather than refusing, so the validator ran unsupported and reported green -- the kind of mismatch that keeps working right up until it abruptly does not, at which point the gate fails for a reason unrelated to anything anyone changed.",
+            "The step is placed before the audit rather than beside the validator it serves: a step following a failed one is skipped, so putting it after would mean the validator's always() condition ran on whatever Node the runner happened to default to."
+          ]
+        },
+        {
+          "sha": "89518fd",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "renovate.json is validated in the audit gate",
+          "details": [
+            "The gate enforced that every action reference is a commit hash but had nothing to say about renovate.json, the other half of the same policy. Pinning without automated updates decays into an unpatched tree, so a Renovate that has silently stopped running is a supply-chain failure the audit is supposed to catch.",
+            "Not hypothetical: in linked-data-explorer, five keys used as JSON comments were rejected as invalid configuration and Renovate stopped opening pull requests as a precaution. Nothing in CI noticed; the repository looked green while half its policy was inert.",
+            "The validator runs as a second step in the existing audit job, so it is covered by the current required status check and needs no ruleset change. It runs with --strict, which also fails on configuration Renovate would silently auto-migrate."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.08.3",
       "status": "Released",
       "date": "28 aug 2026",
