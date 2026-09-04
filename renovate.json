@@ -28,6 +28,13 @@
       "matchPackageNames": ["typescript"],
       "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "description": "@vitejs/plugin-react v6 is deferred until the Create React App to Vite migration lands. v6 pulls @rolldown/plugin-babel, whose peers require Babel 8 (@babel/core and @babel/plugin-transform-runtime at \"^7.29.0 || ^8.0.0-rc.1\"), while react-scripts@5.0.1 holds the tree on Babel 7 -- so npm cannot resolve it at all and `npm ci` dies with ERESOLVE before a single test runs. PR #71 failed on exactly that, within minutes of the phase 1 pull request that introduced the dependency. Nothing in such a pull request can fix it; react-scripts is the cause, and forcing it through with --legacy-peer-deps would paper over a real incompatibility rather than resolve it. This is the same shape as the tailwindcss and typescript rules above, and it unblocks itself the same way: phase 3 deletes react-scripts, and with it the Babel 7 constraint. Minor and patch updates to @vitejs/plugin-react are unaffected; only the major is held. Re-enable this rule as part of the Vite migration, alongside the two rules above.",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["@vitejs/plugin-react"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }

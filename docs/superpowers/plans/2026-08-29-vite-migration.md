@@ -245,16 +245,22 @@ No behavioural change; the Vitest suite is now the net.
    `src/setupTests.vitest.js` back into `src/setupTests.js`.
 3. Update `.claude/commands/bump-release.md` and `docs/testing.md` for the new
    commands.
-4. **[4 Sep] Remove both Renovate deferral rules from `renovate.json`** — the
-   `tailwindcss` and `typescript` major holds added on 4 September. Both exist
-   only because `react-scripts` constrains the toolchain, and phase 3 deletes
-   `react-scripts`:
+4. **[4 Sep] Remove all three Renovate deferral rules from `renovate.json`** —
+   the `tailwindcss`, `typescript` and `@vitejs/plugin-react` major holds. All
+   three exist only because `react-scripts` constrains the toolchain, and phase 3
+   deletes `react-scripts`:
 
    - **tailwindcss v4** moves the PostCSS plugin to `@tailwindcss/postcss`; the
      build failed on it in #56.
    - **typescript v7** cannot resolve at all, because `react-scripts@5.0.1`
      peer-requires `^3.2.1 || ^4`. #58 shipped a manifest bump with no lockfile
      for that reason.
+   - **[4 Sep, added during phase 2] @vitejs/plugin-react v6** cannot resolve either: it pulls
+     `@rolldown/plugin-babel`, whose peers want Babel 8, while `react-scripts`
+     holds the tree on Babel 7. #71 died on `npm ci` with `ERESOLVE` within
+     minutes of phase 1 merging — the dependency had existed for about a quarter
+     of an hour. Phase 1 therefore pins `@vitejs/plugin-react` at v5, and this is
+     the rule that stops Renovate re-proposing v6 every cycle until phase 3.
 
    Each rule's `description` says to remove it here. **Nothing enforces that.**
    Left in place, two majors stay silently frozen with no signal that they are
