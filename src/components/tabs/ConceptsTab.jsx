@@ -230,12 +230,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                 <div className="space-y-3">
                   {/* Preferred Label */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-preferred-label-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Preferred Label</span>
                       <span className="text-gray-500"> (skos:prefLabel)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <input
+                      id={`concepts-tab-preferred-label-${concept.id}`}
                       type="text"
                       value={concept.prefLabel}
                       onChange={(e) => updateConcept(concept.id, 'prefLabel', e.target.value)}
@@ -246,12 +250,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Notation */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-notation-machine-code-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Notation (Machine Code)</span>
                       <span className="text-gray-500"> (skos:notation)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <input
+                      id={`concepts-tab-notation-machine-code-${concept.id}`}
                       type="text"
                       value={concept.notation}
                       onChange={(e) => updateConcept(concept.id, 'notation', e.target.value)}
@@ -262,12 +270,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Definition */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-definition-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Definition</span>
                       <span className="text-gray-500"> (skos:definition)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <textarea
+                      id={`concepts-tab-definition-${concept.id}`}
                       value={concept.definition}
                       onChange={(e) => updateConcept(concept.id, 'definition', e.target.value)}
                       rows="3"
@@ -278,12 +290,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Exact Match (Optional) */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-exact-match-uri-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Exact Match URI</span>
                       <span className="text-gray-500"> (skos:exactMatch)</span>
                       <span className="text-gray-400"> - Optional</span>
                     </label>
                     <input
+                      id={`concepts-tab-exact-match-uri-${concept.id}`}
                       type="text"
                       value={concept.exactMatch || ''}
                       onChange={(e) => updateConcept(concept.id, 'exactMatch', e.target.value)}
@@ -298,11 +314,15 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Variable Name (Editable) */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-variable-name-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Variable Name</span>
                       <span className="text-gray-500"> (used in URI)</span>
                     </label>
                     <input
+                      id={`concepts-tab-variable-name-${concept.id}`}
                       type="text"
                       value={concept.variableName}
                       onChange={(e) => {
@@ -377,12 +397,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
                 <div className="space-y-3">
                   {/* Preferred Label */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-preferred-label-2-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Preferred Label</span>
                       <span className="text-gray-500"> (skos:prefLabel)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <input
+                      id={`concepts-tab-preferred-label-2-${concept.id}`}
                       type="text"
                       value={concept.prefLabel}
                       onChange={(e) => updateConcept(concept.id, 'prefLabel', e.target.value)}
@@ -393,12 +417,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Notation */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-notation-machine-code-2-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Notation (Machine Code)</span>
                       <span className="text-gray-500"> (skos:notation)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <input
+                      id={`concepts-tab-notation-machine-code-2-${concept.id}`}
                       type="text"
                       value={concept.notation}
                       onChange={(e) => updateConcept(concept.id, 'notation', e.target.value)}
@@ -409,12 +437,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Definition */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-definition-2-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Definition</span>
                       <span className="text-gray-500"> (skos:definition)</span>
                       <span className="text-red-500"> *</span>
                     </label>
                     <textarea
+                      id={`concepts-tab-definition-2-${concept.id}`}
                       value={concept.definition}
                       onChange={(e) => updateConcept(concept.id, 'definition', e.target.value)}
                       rows="3"
@@ -425,12 +457,16 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Exact Match (Optional) */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-exact-match-uri-2-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Exact Match URI</span>
                       <span className="text-gray-500"> (skos:exactMatch)</span>
                       <span className="text-gray-400"> - Optional</span>
                     </label>
                     <input
+                      id={`concepts-tab-exact-match-uri-2-${concept.id}`}
                       type="text"
                       value={concept.exactMatch || ''}
                       onChange={(e) => updateConcept(concept.id, 'exactMatch', e.target.value)}
@@ -445,11 +481,15 @@ export default function ConceptsTab({ concepts, removeConcept, updateConcept, se
 
                   {/* Variable Name (Editable) */}
                   <div>
-                    <label className="block text-sm text-gray-700 mb-1">
+                    <label
+                      htmlFor={`concepts-tab-variable-name-2-${concept.id}`}
+                      className="block text-sm text-gray-700 mb-1"
+                    >
                       <span className="font-medium">Variable Name</span>
                       <span className="text-gray-500"> (used in URI)</span>
                     </label>
                     <input
+                      id={`concepts-tab-variable-name-2-${concept.id}`}
                       type="text"
                       value={concept.variableName}
                       onChange={(e) => {

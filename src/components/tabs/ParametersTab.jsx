@@ -66,12 +66,16 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
             {/* Notation and Label */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-notation-machine-readable-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Notation (Machine-readable)</span>
                   <span className="text-gray-500"> (skos:notation)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`parameters-tab-notation-machine-readable-${index}`}
                   type="text"
                   value={param.notation}
                   onChange={(e) => updateParameter(param.id, 'notation', e.target.value)}
@@ -82,12 +86,16 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-label-human-readable-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Label (Human-readable)</span>
                   <span className="text-gray-500"> (skos:prefLabel)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`parameters-tab-label-human-readable-${index}`}
                   type="text"
                   value={param.label}
                   onChange={(e) => updateParameter(param.id, 'label', e.target.value)}
@@ -100,12 +108,16 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
             {/* Value and Unit */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-value-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Value</span>
                   <span className="text-gray-500"> (schema:value)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`parameters-tab-value-${index}`}
                   type="number"
                   step="0.01"
                   value={param.value}
@@ -116,11 +128,15 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-unit-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Unit</span>
                   <span className="text-gray-500"> (schema:unitCode)</span>
                 </label>
                 <select
+                  id={`parameters-tab-unit-${index}`}
                   value={param.unit}
                   onChange={(e) => updateParameter(param.id, 'unit', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -136,11 +152,15 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
 
             {/* Description */}
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`parameters-tab-description-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Description</span>
                 <span className="text-gray-500"> (dct:description)</span>
               </label>
               <textarea
+                id={`parameters-tab-description-${index}`}
                 value={param.description}
                 onChange={(e) => updateParameter(param.id, 'description', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -152,11 +172,15 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
             {/* Valid From / Valid Until */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-valid-from-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Valid From</span>
                   <span className="text-gray-500"> (ronl:validFrom)</span>
                 </label>
                 <input
+                  id={`parameters-tab-valid-from-${index}`}
                   type="date"
                   value={param.validFrom}
                   onChange={(e) => updateParameter(param.id, 'validFrom', e.target.value)}
@@ -165,11 +189,15 @@ const ParametersTab = ({ parameters, addParameter, removeParameter, updateParame
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`parameters-tab-valid-until-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Valid Until</span>
                   <span className="text-gray-500"> (ronl:validUntil)</span>
                 </label>
                 <input
+                  id={`parameters-tab-valid-until-${index}`}
                   type="date"
                   value={param.validUntil}
                   onChange={(e) => updateParameter(param.id, 'validUntil', e.target.value)}

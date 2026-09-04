@@ -194,12 +194,16 @@ const CPRMVTab = ({
 
           <div className="space-y-3">
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`cprmvtab-rule-id-path-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Rule ID Path</span>
                 <span className="text-gray-500"> (cprmv:ruleIdPath)</span>
                 <span className="text-red-500"> *</span>
               </label>
               <input
+                id={`cprmvtab-rule-id-path-${index}`}
                 type="text"
                 value={rule.ruleIdPath}
                 onChange={(e) => updateCPRMVRule(rule.id, 'ruleIdPath', e.target.value)}
@@ -210,12 +214,16 @@ const CPRMVTab = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`cprmvtab-rule-id-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Rule ID</span>
                   <span className="text-gray-500"> (cprmv:id)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`cprmvtab-rule-id-${index}`}
                   type="text"
                   value={rule.ruleId}
                   onChange={(e) => updateCPRMVRule(rule.id, 'ruleId', e.target.value)}
@@ -225,12 +233,16 @@ const CPRMVTab = ({
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`cprmvtab-ruleset-id-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Ruleset ID</span>
                   <span className="text-gray-500"> (cprmv:rulesetId)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`cprmvtab-ruleset-id-${index}`}
                   type="text"
                   value={rule.rulesetId}
                   onChange={(e) => updateCPRMVRule(rule.id, 'rulesetId', e.target.value)}
@@ -241,12 +253,16 @@ const CPRMVTab = ({
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label
+                htmlFor={`cprmvtab-definition-${index}`}
+                className="block text-sm text-gray-700 mb-1"
+              >
                 <span className="font-medium">Definition</span>
                 <span className="text-gray-500"> (cprmv:definition)</span>
                 <span className="text-red-500"> *</span>
               </label>
               <textarea
+                id={`cprmvtab-definition-${index}`}
                 value={rule.definition}
                 onChange={(e) => updateCPRMVRule(rule.id, 'definition', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -257,12 +273,16 @@ const CPRMVTab = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`cprmvtab-situation-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Situation</span>
                   <span className="text-gray-500"> (cprmv:situatie)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`cprmvtab-situation-${index}`}
                   type="text"
                   value={rule.situatie}
                   onChange={(e) => updateCPRMVRule(rule.id, 'situatie', e.target.value)}
@@ -272,12 +292,16 @@ const CPRMVTab = ({
               </div>
 
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label
+                  htmlFor={`cprmvtab-norm-${index}`}
+                  className="block text-sm text-gray-700 mb-1"
+                >
                   <span className="font-medium">Norm</span>
                   <span className="text-gray-500"> (cprmv:norm)</span>
                   <span className="text-red-500"> *</span>
                 </label>
                 <input
+                  id={`cprmvtab-norm-${index}`}
                   type="text"
                   value={rule.norm}
                   onChange={(e) => updateCPRMVRule(rule.id, 'norm', e.target.value)}
