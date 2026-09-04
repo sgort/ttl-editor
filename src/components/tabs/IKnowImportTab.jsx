@@ -134,6 +134,7 @@ const IKnowImportTab = ({ onImportComplete, availableMappings = [] }) => {
         <div className="bg-white p-6 rounded-lg shadow space-y-4">
           <h3 className="text-xl font-bold">Upload TTL File</h3>
           <input
+            aria-label="Upload TTL file"
             type="file"
             accept=".ttl"
             onChange={handleTTLFileUpload}
@@ -161,6 +162,7 @@ const IKnowImportTab = ({ onImportComplete, availableMappings = [] }) => {
           <div className="bg-white p-6 rounded-lg shadow space-y-4">
             <h3 className="text-xl font-bold">Step 1: Upload iKnow XML Export</h3>
             <input
+              aria-label="Upload iKnow XML export"
               type="file"
               accept=".xml"
               onChange={handleIKnowFileUpload}
@@ -196,10 +198,14 @@ const IKnowImportTab = ({ onImportComplete, availableMappings = [] }) => {
                 </div>
               ) : (
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label
+                    htmlFor="iknow-import-tab-select-a-mapping-configuration"
+                    className="block text-sm font-medium mb-2"
+                  >
                     Select a mapping configuration:
                   </label>
                   <select
+                    id="iknow-import-tab-select-a-mapping-configuration"
                     value={selectedMapping}
                     onChange={(e) => setSelectedMapping(e.target.value)}
                     className="w-full border border-gray-300 rounded px-3 py-2"

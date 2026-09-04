@@ -18,12 +18,16 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
     <div className="space-y-4">
       {/* Service Identifier - MANDATORY */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-unique-identifier-for-this-service"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Unique identifier for this service</span>
           <span className="text-gray-500"> (dct:identifier)</span>
           <span className="text-red-500"> *</span>
         </label>
         <input
+          id="service-tab-unique-identifier-for-this-service"
           type="text"
           value={service.identifier}
           onChange={(e) => updateField('identifier', e.target.value)}
@@ -34,12 +38,16 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Service Name - MANDATORY */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-official-name-of-the-service"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Official name of the service</span>
           <span className="text-gray-500"> (dct:title)</span>
           <span className="text-red-500"> *</span>
         </label>
         <input
+          id="service-tab-official-name-of-the-service"
           type="text"
           value={service.name}
           onChange={(e) => updateField('name', e.target.value)}
@@ -50,11 +58,15 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Description */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-detailed-description-of-the-service"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Detailed description of the service</span>
           <span className="text-gray-500"> (dct:description)</span>
         </label>
         <textarea
+          id="service-tab-detailed-description-of-the-service"
           value={service.description}
           onChange={(e) => updateField('description', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -65,11 +77,15 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Thematic Area */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-uri-for-thematic-classification"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">URI for thematic classification</span>
           <span className="text-gray-500"> (cv:thematicArea)</span>
         </label>
         <input
+          id="service-tab-uri-for-thematic-classification"
           type="text"
           value={service.thematicArea}
           onChange={(e) => updateField('thematicArea', e.target.value)}
@@ -80,11 +96,15 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Sector */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-government-level-providing-this-service"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Government level providing this service</span>
           <span className="text-gray-500"> (cv:sector)</span>
         </label>
         <select
+          id="service-tab-government-level-providing-this-service"
           value={service.sector || ''}
           onChange={(e) => {
             const selectedValue = e.target.value;
@@ -107,6 +127,9 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
         {/* Custom URI input */}
         {service.sector === 'custom' && (
           <input
+            // Appears below the Sector select only when "custom" is chosen, so
+            // the Sector label above does not name it.
+            aria-label="Custom sector URI"
             type="text"
             value={service.customSector || ''}
             onChange={(e) => updateField('customSector', e.target.value)}
@@ -122,11 +145,15 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Keywords */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-comma-separated-keywords"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Comma-separated keywords</span>
           <span className="text-gray-500"> (dcat:keyword)</span>
         </label>
         <input
+          id="service-tab-comma-separated-keywords"
           type="text"
           value={service.keywords}
           onChange={(e) => updateField('keywords', e.target.value)}
@@ -137,11 +164,15 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
 
       {/* Language */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="service-tab-language-of-the-service"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Language of the service</span>
           <span className="text-gray-500"> (dct:language)</span>
         </label>
         <select
+          id="service-tab-language-of-the-service"
           value={service.language}
           onChange={(e) => updateField('language', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md"

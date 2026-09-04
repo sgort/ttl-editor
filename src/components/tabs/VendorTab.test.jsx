@@ -198,6 +198,40 @@ describe('VendorTab', () => {
     });
   });
 
+  describe('access type radios', () => {
+    test('each radio is labelled with its own option, not its neighbour', () => {
+      // A regression test for a real defect introduced while associating labels
+      // across the tree. These radios are written with the input NESTED inside
+      // its label, and a codemod that paired "the first control after the label"
+      // walked past the label's own radio to the NEXT one — leaving the "Fair
+      // Use" label pointing at the "IAM Required" radio, so clicking that label
+      // selected the wrong option.
+      //
+      // It passed jsx-a11y/label-has-associated-control, because a htmlFor did
+      // exist. Asserting that each radio is reachable BY ITS OWN NAME is what
+      // catches it: with the labels crossed, this query returns the other radio.
+      renderTab(withVendor(BLUERIQ));
+
+      expect(screen.getByRole('radio', { name: /Fair Use/ })).toHaveAttribute('value', 'fair-use');
+      expect(screen.getByRole('radio', { name: /IAM Required/ })).toHaveAttribute(
+        'value',
+        'iam-required'
+      );
+    });
+
+    test('selecting a radio reaches the setter with that access type', () => {
+      const { props } = renderTab(withVendor(BLUERIQ));
+
+      fireEvent.click(screen.getByRole('radio', { name: /IAM Required/ }));
+
+      expect(props.setVendorService).toHaveBeenCalledWith(
+        expect.objectContaining({
+          technical: expect.objectContaining({ accessType: 'iam-required' }),
+        })
+      );
+    });
+  });
+
   describe('inline URL validation', () => {
     test('flags a malformed website', () => {
       renderTab(
