@@ -37,12 +37,12 @@ Time:        40.503 s
 built site behaves identically.** Not "does it build" — a Vite build that emits
 the wrong directory succeeds happily and publishes nothing.
 
-**[4 Sep] The baseline was re-measured and still holds**, on `acc` at `10c92d3`:
+**[4 Sep] The baseline was re-measured and still holds**, on `acc` at `0346687`:
 
 ```
 Test Suites: 16 passed, 16 total
 Tests:       257 passed, 257 total
-Time:        26.498 s
+Time:        27.267 s
 ```
 
 This is not a formality. Between the two measurements `acc` took React 19.2.8,
@@ -51,6 +51,21 @@ v14, lint-staged v17, prettier 3.9.6, postcss and autoprefixer. Any of those
 could have moved the number, and a migration measured against a stale baseline
 cannot distinguish its own defects from drift it inherited. Re-measure again if
 more dependency work lands before phase 1 starts.
+
+The testing-library major (#63) has since landed and the baseline was measured
+again on top of it: `@testing-library/jest-dom` 6.9.1 → 7.0.1 and
+`@testing-library/user-event` 13.5.0 → 14.6.5, still 16 suites and 257 tests.
+It was taken deliberately **before** phase 1 rather than during, because it
+changes the instrument the migration is measured with.
+
+**A warning about how that measurement was taken.** `npm install` reported
+`up to date` while `node_modules` still held the old 6.9.1 and 13.5.0 — npm had
+written the new versions into its hidden lockfile
+(`node_modules/.package-lock.json`) without replacing the package directories.
+A run against that tree would have reported a green 257 measured on the _old_
+testing-library and declared the majors safe on no evidence. Check what is
+actually on disk after a dependency merge, not what npm says it did. CI is
+immune to this because it runs `npm ci` on a clean runner; local runs are not.
 
 This net exists because the P0–P4 test phases were deliberately written first.
 The UI layer is still thin — `App.js` 14%, `DMNTab.jsx` 8%, `importHandler.js`
@@ -225,6 +240,14 @@ No behavioural change; the Vitest suite is now the net.
    Left in place, two majors stay silently frozen with no signal that they are
    being held — which is exactly the failure mode the rules were written to
    avoid for a different reason.
+
+5. **[4 Sep] Remove `@testing-library/user-event`.** It is imported by **zero**
+   files in `src/` — it arrived with the CRA template and was never used. That
+   is why #63's `user-event` 13 → 14 bump was a no-op here, despite v14 being
+   the release that made the API async and introduced `setup()`; the only real
+   risk in that pull request was `jest-dom` 6 → 7. It belongs with
+   `reportWebVitals` and `web-vitals` in the same category: dead weight carried
+   in from the template, removable once the template is gone.
 
 ---
 
