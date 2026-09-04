@@ -291,12 +291,28 @@ preview deployment serves a working site.
 
 No behavioural change; the Vitest suite is now the net.
 
-1. `jest.fn` → `vi.fn` and friends across 43 call sites; add
-   `import { vi } from 'vitest'` where needed (or keep `globals: true`).
+1. `jest.fn` → `vi.fn` and friends across the suite. `globals: true` is
+   already set, so no imports are needed — but `.eslintrc.json` does need
+   `"globals": { "vi": "readonly" }`, because `react-app/jest` supplies the
+   `jest` global and nothing supplies Vitest's.
+
+   **[4 Sep, found in phase 4] There are 45 call sites, not 43.** Both counts — the plan's and
+   the first conversion pass — came from a pattern requiring `jest.` with no
+   whitespace, and Prettier had wrapped two of them across lines as
+   `jest\n  .fn()`. The suite caught it immediately (`ReferenceError: jest is
+not defined`, two tests), which is the regression net doing its job. Match
+   `\bjest\b(?=\s*\.)` instead. Coverage after conversion is identical to
+   before it — 55.03 / 41.23 / 38.64 / 55.87 — which is the check that the
+   rewrite changed no behaviour.
+
 2. Delete the `globalThis.jest = vi` shim and fold
    `src/setupTests.vitest.js` back into `src/setupTests.js`.
-3. Update `.claude/commands/bump-release.md` and `docs/testing.md` for the new
-   commands.
+3. **[4 Sep, found in phase 4] Neither file needs what this step assumed.** `docs/testing.md`
+   does not exist, and `.claude/commands/bump-release.md` names no test or build
+   command. The only stale reference in the repository was `README.md`, which
+   said `npm run build   # production build → build/`. Its
+   `npm start  # development server at http://localhost:3000` line is still
+   correct, because phase 3 pinned Vite to port 3000.
 4. **[4 Sep] Remove all three Renovate deferral rules from `renovate.json`** —
    the `tailwindcss`, `typescript` and `@vitejs/plugin-react` major holds. All
    three exist only because `react-scripts` constrains the toolchain, and phase 3
@@ -318,6 +334,41 @@ No behavioural change; the Vitest suite is now the net.
    Left in place, two majors stay silently frozen with no signal that they are
    being held — which is exactly the failure mode the rules were written to
    avoid for a different reason.
+
+   **[4 Sep, found in phase 4] Only one of the three is actually removable, and this step is
+   wrong about the other two.** The shared premise — that all three exist only
+   because `react-scripts` constrains the toolchain — does not survive contact
+   with the cut-over tree. Tested with `npm install --dry-run` after phase 3
+   rather than reasoned about:
+
+   | rule                      | premise                             | what happened                                        |
+   | ------------------------- | ----------------------------------- | ---------------------------------------------------- |
+   | `typescript` v7           | unblocked by removing react-scripts | **correct** — resolves cleanly. Rule removed.        |
+   | `@vitejs/plugin-react` v6 | same                                | **wrong** — still `ERESOLVE`, same conflicting peer. |
+   | `tailwindcss` v4          | same                                | **wrong** — resolves, but the build still breaks.    |
+
+   The constraints did not disappear; they **changed owner**.
+
+   `@vitejs/plugin-react` v6 wants Babel 8 via `@rolldown/plugin-babel`. That was
+   blocked by `react-scripts` holding Babel 7 — but phase 3 had to add
+   `eslint-config-react-app` explicitly to keep `npm run lint` working, and it
+   depends on `babel-preset-react-app`, which depends on
+   `@babel/plugin-transform-runtime@^7`. Same anchor, new owner. What unblocks it
+   is migrating off `eslint-config-react-app` to eslint 9 flat config.
+
+   `tailwindcss` v4 was never a resolution problem — it is `postcss.config.js`,
+   which still declares `tailwindcss: {}` as a PostCSS plugin. v4 moved that into
+   `@tailwindcss/postcss`, which is what #56 failed to compile on, and nothing in
+   phase 3 touched it. (Verified as far as resolution; the compile failure is
+   inferred from #56 and the config, not re-run.) Removing this rule would
+   contradict this plan's own "explicitly out of scope" section, which says
+   tailwind v4 is a second migration deserving its own acceptance run.
+
+   So both rules stay, with rewritten descriptions naming the **real** blocker
+   and the **real** condition for removal. A deferral rule whose stated reason
+   has silently become false is worse than no rule: the next person reads it,
+   believes the cause is gone, removes it, and re-opens a pull request that
+   cannot go green.
 
 5. **[4 Sep] Remove `@testing-library/user-event`.** It is imported by **zero**
    files in `src/` — it arrived with the CRA template and was never used. That

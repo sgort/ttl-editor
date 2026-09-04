@@ -5,7 +5,7 @@
 import { fetchAllRonlConcepts, fetchRonlConcepts } from './ronlHelper';
 
 function mockFetchOnce(response, ok = true) {
-  global.fetch = jest.fn().mockResolvedValue({
+  global.fetch = vi.fn().mockResolvedValue({
     ok,
     status: ok ? 200 : 500,
     statusText: ok ? 'OK' : 'Internal Server Error',
@@ -14,7 +14,7 @@ function mockFetchOnce(response, ok = true) {
 }
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('fetchRonlConcepts', () => {
@@ -75,7 +75,7 @@ describe('fetchRonlConcepts', () => {
 describe('fetchAllRonlConcepts', () => {
   test('fetches analysis and method concepts in parallel', async () => {
     let call = 0;
-    global.fetch = jest.fn().mockImplementation(async () => {
+    global.fetch = vi.fn().mockImplementation(async () => {
       call += 1;
       return {
         ok: true,

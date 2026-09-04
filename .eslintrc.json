@@ -1,6 +1,9 @@
 {
   "extends": ["react-app", "react-app/jest", "plugin:prettier/recommended"],
   "plugins": ["simple-import-sort", "import"],
+  "globals": {
+    "vi": "readonly"
+  },
   "settings": {
     "import/resolver": {
       "node": {
@@ -10,7 +13,12 @@
   },
   "rules": {
     "react/prop-types": "off",
-    "import/no-unresolved": ["error", { "caseSensitive": true }],
+    "import/no-unresolved": [
+      "error",
+      {
+        "caseSensitive": true
+      }
+    ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "import/no-named-as-default": "off",
