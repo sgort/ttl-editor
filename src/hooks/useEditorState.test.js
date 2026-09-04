@@ -4,7 +4,7 @@ import { iknowMappings } from '../config/iknow-mappings';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
 import { useEditorState } from './useEditorState';
 
-jest.mock('../utils/ronlHelper');
+vi.mock('../utils/ronlHelper');
 
 beforeEach(() => {
   localStorage.clear();
@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe('useEditorState — initial defaults', () => {
