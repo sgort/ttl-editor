@@ -93,6 +93,19 @@ jobs:
           # loads -- do not remove it expecting .env.acceptance to take over,
           # because nothing loads that file without --mode acceptance.
           VITE_BACKEND_URL: https://backend.linkeddata.open-regels.nl
+          # Build provenance, surfaced in the Changelog tab. The version
+          # there is bumped by hand and identifies a release, not a build of
+          # it: ACC and PROD can serve different builds of the same version,
+          # and a redeploy of unchanged code produces a new artifact carrying
+          # the same version string. The SHA says what was built; the run
+          # number distinguishes two builds of identical code.
+          #
+          # Passed in rather than derived from git at build time: the Static
+          # Web Apps action does not build on this runner, it hands the
+          # directory to Oryx, which builds in its own container. A build id
+          # that silently failed to resolve would be worse than none.
+          VITE_BUILD_SHA: ${{ github.sha }}
+          VITE_BUILD_RUN: ${{ github.run_number }}
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:
