@@ -1,13 +1,41 @@
 name: Deploy PROD (white-sky)
 
+# Deploys are filtered by paths-ignore, not paths.
+#
+# An allowlist (`paths:`) would mean enumerating every path that affects the
+# build. ttl-editor is a single package, not a monorepo, so there is no natural
+# boundary to enumerate, and anything forgotten SILENTLY SKIPS A DEPLOY -- a far
+# worse failure than one unnecessary preview. RBA and LDE can use `paths:`
+# because `packages/frontend/**` is a real boundary there; copying that pattern
+# into this repository would be the obvious move and the wrong one.
+#
+# So the default stays "deploy", and only what demonstrably cannot affect the
+# built app is excluded. A documentation-only pull request now gets no preview
+# environment at all, which is the point -- it was claiming a staging slot from
+# a ceiling of ten and returning nothing for it. See #52.
+#
+# GitHub Actions does not support YAML anchors, so the list is repeated rather
+# than shared. Keep the two copies identical.
+#
+# The branches filter below stays narrow deliberately -- see the comment above
+# `on:` in zizmor.yml. The audit must run on every pull request; a deploy must
+# not, because each one claims a staging environment on a bounded pool.
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
+      - '.claude/**'
+      - '**/*.md'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
+      - '.claude/**'
+      - '**/*.md'
 
 # Default to read-only; jobs opt into more only where required.
 permissions:
