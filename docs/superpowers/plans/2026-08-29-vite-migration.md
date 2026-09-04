@@ -221,9 +221,61 @@ Everything here lands in **one pull request**. The moment `npm run build` emits
 3. **CI, both workflows.** `output_location: 'build'` → `'dist'` in
    `azure-static-web-apps-orange-beach-*.yml` **and**
    `azure-static-web-apps-white-sky-*.yml`.
+
+   **[4 Sep, found in phase 3] That is not the only line in these workflows that has to
+   move.** Each one also passes the backend URL to the build step:
+
+   ```yaml
+   env:
+     REACT_APP_BACKEND_URL: https://acc.backend.linkeddata.open-regels.nl
+   ```
+
+   Vite only exposes variables prefixed `VITE_`, so renaming the nine call
+   sites without renaming this leaves both environments falling back to
+   `http://localhost:3001` for four of the five backend consumers. The deploy
+   is green, the site loads, and SHACL validation, DSO import and TriplyDB
+   publishing all fail against localhost. **This is the same failure shape as
+   `output_location` and it is easier to miss**, because nothing about it looks
+   like build configuration.
+
+   Note also that `vite build` loads `.env.production` — which points at the
+   **production** backend — for the ACC build too. The workflow's `env:` block
+   is what makes ACC point at ACC, exactly as it did under CRA, because real
+   environment variables outrank `.env` files in both toolchains. Removing it
+   in the belief that `.env.acceptance` covers ACC would silently ship ACC
+   against production: nothing loads that file without `--mode acceptance`.
+   Both workflows now carry a comment saying so.
+
 4. **Remove** `react-scripts` from dependencies; delete `public/index.html`,
    `src/reportWebVitals.js`, the `web-vitals` dependency, and the
-   `reportWebVitals` import and call in `src/index.js`.
+   `reportWebVitals` import and call in `src/index.jsx`.
+
+   **[4 Sep, found in phase 3] `react-scripts` is also where the linter comes from.** Neither
+   `eslint` nor `eslint-config-react-app` is a direct dependency — both arrive
+   transitively, and `.eslintrc.json` extends `react-app` and `react-app/jest`.
+   Delete `react-scripts` without declaring them and `npm run lint` breaks
+   outright, which CI runs **before** the suite: the failure surfaces as a red
+   deploy pointing at the linter, several steps away from the build-system
+   change that caused it.
+
+   Worse than breaking loudly, `eslint` would not simply vanish — the remaining
+   `eslint-plugin-*` packages declare it as a peer, so npm would install
+   whatever satisfies them. That is eslint 9, which requires flat config and
+   cannot read `.eslintrc.json` at all.
+
+   So phase 3 adds `eslint@^8.57.1` and `eslint-config-react-app@^7.0.1` as
+   explicit devDependencies. This preserves the existing rule set exactly and
+   keeps the cutover reviewable. It does make visible a debt that was previously
+   hidden behind `react-scripts`: eslint 8 is end-of-life, and
+   `eslint-config-react-app` is unmaintained. Migrating to eslint 9 flat config
+   with the Vite-idiomatic React plugins is the natural follow-up — the same
+   category as tailwind v4, and out of scope here for the same reason.
+
+   Also removed: the `eslintConfig` block in `package.json`. It is inert —
+   `.eslintrc.json` outranks it and already carries the same two `extends` — and
+   it is react-scripts template residue naming react-scripts' own config
+   package, so it goes with react-scripts. `browserslist` stays; postcss and
+   autoprefixer read it.
 
    **[4 Sep] Renovate has #62 open, bumping `web-vitals` to v6 — the dependency
    this step deletes.** Close it rather than merging it; merging spends a review,

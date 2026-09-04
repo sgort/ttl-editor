@@ -60,7 +60,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // through the LDE backend's /v1/dmns/deploy instead — see handleDeployDMN)
   // but evaluate still calls Operaton directly.
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: process.env.REACT_APP_OPERATON_URL || 'https://operaton.open-regels.nl',
+    baseUrl: import.meta.env.VITE_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
   });
@@ -571,7 +571,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   };
 
   const runBackendValidation = async (content) => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
     setIsValidating(true);
     setValidationResult(null);
     try {
@@ -697,7 +697,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       // server-to-server on the LDE side and CORS-immune by construction.
       // Same pattern runBackendValidation() above already uses for
       // /v1/dmns/validate.
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
       const response = await fetch(`${backendUrl}/v1/dmns/deploy`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -737,7 +737,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // -- bodyStr is already the `{variables: {...}}` shape Operaton itself
   // expects, so it's forwarded unchanged.
   const evaluateViaBackend = (decisionKey, bodyStr) => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
     return fetch(`${backendUrl}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1154,7 +1154,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 Evaluated via the LDE backend (avoids Operaton CORS from the browser):
               </p>
               <code className="text-xs text-gray-700 break-all">
-                {process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'}
+                {import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}
                 /v1/dmns/evaluate/{apiConfig.decisionKey}
               </code>
             </div>
