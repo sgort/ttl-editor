@@ -1,0 +1,29 @@
+# Line-ending normalisation.
+#
+# Text files are stored in the repository with LF, whatever the contributor's
+# platform writes locally. Checkout is deliberately NOT pinned: there is no
+# `eol=lf` here, so `core.autocrlf` still decides what lands in the working
+# tree -- CRLF on Windows, LF elsewhere. That keeps working copies exactly as
+# they are today while making the stored form consistent.
+#
+# Prettier is configured with `endOfLine: "auto"`, so it accepts either form in
+# the working tree and does not fight this.
+#
+# Before this file, the repository stored 263 text files with LF and two
+# without: the orange-beach workflow (CRLF throughout) and one XML example
+# (mixed). The cost of that inconsistency is not cosmetic -- editing the CRLF
+# file with a tool that writes LF turns a three-line change into a
+# seventy-four-line diff, which is how it was noticed.
+* text=auto
+
+# Binary formats, declared explicitly rather than left to content sniffing.
+# Git's heuristic reads NUL bytes and is reliable for these, but a file that
+# happened to look textual would be corrupted by normalisation, and that is not
+# a risk worth carrying for a one-line declaration.
+*.ico binary
+*.jpg binary
+*.ods binary
+*.pdf binary
+*.png binary
+*.xlsm binary
+*.xlsx binary

@@ -35,6 +35,63 @@ const iconColorMap = {
   gray: 'text-gray-600',
 };
 
+// ── Per-commit format (v2) ───────────────────────────────────────────
+// A version entry with "format": "commits" is the new shape bump-release
+// authors going forward — one bold, icon+color-coded header per commit
+// (sha, author, type, subject, details), with status "Upcoming" | "Released"
+// instead of a raw color key. Legacy entries (no "format" field, the
+// "sections" shape rendered above) keep rendering exactly as before —
+// this is forward-only, matching the pattern already used by
+// ronl-business-api and the Linked Data Explorer.
+function isCommitFormat(version) {
+  return version.format === 'commits';
+}
+
+const COMMIT_TYPE_META = {
+  feat: { icon: '✨', color: 'text-green-700' },
+  fix: { icon: '🐛', color: 'text-red-700' },
+  test: { icon: '🧪', color: 'text-purple-700' },
+  docs: { icon: '📘', color: 'text-blue-700' },
+  chore: { icon: '🧹', color: 'text-gray-700' },
+  ci: { icon: '🔒', color: 'text-amber-700' },
+  refactor: { icon: '♻️', color: 'text-orange-700' },
+  other: { icon: '📄', color: 'text-gray-700' },
+};
+
+const NEW_FORMAT_STATUS_BADGE = {
+  Released: 'bg-green-100 text-green-800',
+  Upcoming: 'bg-blue-100 text-blue-800',
+};
+
+const NEW_FORMAT_BORDER = {
+  Released: 'border-green-500',
+  Upcoming: 'border-blue-500',
+};
+
+function CommitBlock({ commit }) {
+  const meta = COMMIT_TYPE_META[commit.type] || COMMIT_TYPE_META.other;
+  return (
+    <div className="flex items-start gap-2">
+      <span className="text-xl leading-none flex-shrink-0">{meta.icon}</span>
+      <div className="flex-1 min-w-0">
+        <h4 className={`text-base font-bold ${meta.color}`}>{commit.subject}</h4>
+        <p className="text-xs text-gray-400 font-mono mt-0.5">
+          {commit.sha} — {commit.author}
+        </p>
+        {commit.details && commit.details.length > 0 && (
+          <div className="mt-2 space-y-2">
+            {commit.details.map((paragraph, i) => (
+              <p key={i} className="text-sm text-gray-700 leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Main ChangelogTab component with collapsible versions
 export default function ChangelogTab() {
   // Track which versions are expanded (only first one by default)
@@ -91,7 +148,7 @@ export default function ChangelogTab() {
           <p className="mb-2">
             A RONL Initiative based on{' '}
             <a
-              href="https://git.open-regels.nl/showcases/ttl-editor/-/blob/main/docs/NAMESPACE-PROPERTIES.md"
+              href="https://iou-architectuur.open-regels.nl/cpsv-editor/reference/namespace-property-reference/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline font-medium"
@@ -117,11 +174,18 @@ export default function ChangelogTab() {
       <div className="space-y-4">
         {changelogData.versions.map((version, versionIndex) => {
           const isExpanded = expandedVersions.has(versionIndex);
+          const commitFormat = isCommitFormat(version);
+          const borderClass = commitFormat
+            ? NEW_FORMAT_BORDER[version.status] || borderColorMap.blue
+            : borderColorMap[version.borderColor] || borderColorMap.blue;
+          const badgeClass = commitFormat
+            ? NEW_FORMAT_STATUS_BADGE[version.status] || statusBgColorMap.gray
+            : statusBgColorMap[version.statusColor] || statusBgColorMap.blue;
 
           return (
             <div
               key={versionIndex}
-              className={`border-l-4 ${borderColorMap[version.borderColor] || borderColorMap.blue} bg-white rounded-lg shadow-md overflow-hidden transition-all`}
+              className={`border-l-4 ${borderClass} bg-white rounded-lg shadow-md overflow-hidden transition-all`}
             >
               {/* Clickable Header */}
               <button
@@ -132,13 +196,15 @@ export default function ChangelogTab() {
                   {/* Version Info */}
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-gray-800">Version {version.version}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{version.date}</p>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {version.date}
+                      {commitFormat &&
+                        ` · ${version.commits.length} commit${version.commits.length === 1 ? '' : 's'}`}
+                    </p>
                   </div>
 
                   {/* Status Badge */}
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${statusBgColorMap[version.statusColor] || statusBgColorMap.blue}`}
-                  >
+                  <span className={`px-3 py-1 rounded-full text-sm font-semibold ${badgeClass}`}>
                     {version.status}
                   </span>
                 </div>
@@ -152,25 +218,33 @@ export default function ChangelogTab() {
               {/* Expandable Content */}
               {isExpanded && (
                 <div className="px-6 pb-6">
-                  {/* Version Sections */}
-                  {version.sections?.map((section, sectionIndex) => (
-                    <div key={sectionIndex} className="mb-6 last:mb-0">
-                      <h4
-                        className={`text-lg font-semibold mb-3 flex items-center gap-2 ${iconColorMap[section.iconColor] || iconColorMap.blue}`}
-                      >
-                        <span>{section.icon}</span>
-                        {section.title}
-                      </h4>
-                      <ul className="space-y-2 ml-8">
-                        {section.items?.map((item, itemIndex) => (
-                          <li key={itemIndex} className="text-gray-700 flex items-start gap-2">
-                            <span className="text-gray-400 mt-1">•</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+                  {commitFormat ? (
+                    <div className="space-y-5">
+                      {version.commits.map((commit) => (
+                        <CommitBlock key={commit.sha} commit={commit} />
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    /* Version Sections (legacy format) */
+                    version.sections?.map((section, sectionIndex) => (
+                      <div key={sectionIndex} className="mb-6 last:mb-0">
+                        <h4
+                          className={`text-lg font-semibold mb-3 flex items-center gap-2 ${iconColorMap[section.iconColor] || iconColorMap.blue}`}
+                        >
+                          <span>{section.icon}</span>
+                          {section.title}
+                        </h4>
+                        <ul className="space-y-2 ml-8">
+                          {section.items?.map((item, itemIndex) => (
+                            <li key={itemIndex} className="text-gray-700 flex items-start gap-2">
+                              <span className="text-gray-400 mt-1">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))
+                  )}
                 </div>
               )}
             </div>

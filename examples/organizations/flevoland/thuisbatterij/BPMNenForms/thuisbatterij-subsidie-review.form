@@ -208,17 +208,6 @@
       "disabled": true
     },
     {
-      "label": "Motivering hoogte",
-      "id": "Field_020_tb",
-      "key": "hoogteMotivering",
-      "type": "textarea",
-      "layout": {
-        "row": "Row_020_tb",
-        "columns": null
-      },
-      "disabled": true
-    },
-    {
       "text": "## Review door behandelaar",
       "id": "Field_021_tb",
       "type": "text",
@@ -295,6 +284,16 @@
       },
       "validate": {
         "required": true
+      }
+    },
+    {
+      "label": "Klaar",
+      "action": "submit",
+      "id": "Field_1uji6af",
+      "type": "button",
+      "layout": {
+        "row": "Row_1qkh0ha",
+        "columns": null
       }
     }
   ],

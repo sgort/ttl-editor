@@ -12,7 +12,10 @@
 /build
 
 # misc
-.claude/
+# Claude Code local-only settings (shared commands like .claude/commands/
+# are tracked, matching ronl-business-api's convention)
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
 .DS_Store
 .env.local
 .env.development.local
@@ -35,3 +38,10 @@ examples/**/.DS_Store
 cpsv-editor.zip
 
 /tooling
+
+# Python cache from ad hoc scripts (e.g. examples/organizations/amsterdam/testCases/*.py)
+__pycache__/
+*.pyc
+
+# Semgrep local cache/config from the MCP plugin
+.semgrep/

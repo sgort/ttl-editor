@@ -21,6 +21,7 @@ import { sanitizeIri } from '../../utils';
 import {
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
+  extractOutputsFromDMN,
   extractOutputsFromTestResult,
   extractPrimaryDecisionKey,
   generateConceptDefinition,
@@ -55,12 +56,13 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [isValidating, setIsValidating] = useState(false);
   const [validationExpanded, setValidationExpanded] = useState(true);
 
-  // Default Operaton configuration
+  // Default Operaton configuration. Deploy no longer uses baseUrl (routed
+  // through the LDE backend's /v1/dmns/deploy instead — see handleDeployDMN)
+  // but evaluate still calls Operaton directly.
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: 'https://operaton.open-regels.nl',
+    baseUrl: process.env.REACT_APP_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
-    deploymentEndpoint: '/engine-rest/deployment/create',
   });
 
   // Hydrate internal tab state when DMN content arrives from outside this tab
@@ -409,6 +411,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 nameLower.includes('geboorte') ||
                 nameLower.includes('birth') ||
                 nameLower.includes('dob');
+              let dateOnly;
               if (isBirthDate) {
                 const today = new Date();
                 const randomAge = Math.floor(Math.random() * (68 - 25 + 1)) + 25;
@@ -416,14 +419,20 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 const randomMonth = Math.floor(Math.random() * 12);
                 const randomDay = Math.floor(Math.random() * 28) + 1;
                 const birthDate = new Date(birthYear, randomMonth, randomDay);
-                // Use simple format with type String (Operaton handles conversion)
-                value = birthDate.toISOString().split('T')[0];
+                dateOnly = birthDate.toISOString().split('T')[0];
               } else {
-                // Use simple format with type String
-                value = new Date().toISOString().split('T')[0];
+                dateOnly = new Date().toISOString().split('T')[0];
               }
-              // CRITICAL: Use 'String' type, not 'Date' - Operaton converts internally
-              type = 'String';
+              // A DMN typeRef="date" column needs a full ISO timestamp + offset
+              // and type: 'Date', not a bare YYYY-MM-DD string typed as String --
+              // Operaton does NOT convert internally (confirmed empirically:
+              // "DMN-01005 Invalid value '...' for clause with type 'date'"
+              // otherwise, whenever the decision calls .year/.years on the input,
+              // as several Amsterdam DMNs do). See
+              // hva-full-dmn-export-feel-evaluation-fix.md's "correct REST
+              // variable typing" section.
+              value = `${dateOnly}T00:00:00.000+0200`;
+              type = 'Date';
               break;
             }
             case 'string':
@@ -681,29 +690,34 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setDeploymentStatus(null);
 
     try {
-      const formData = new FormData();
-      const blob = new Blob([uploadedFile.content], { type: 'application/xml' });
-      formData.append('upload', blob, uploadedFile.name);
-      formData.append('deployment-name', apiConfig.decisionKey || uploadedFile.name);
-
-      const deployUrl = `${apiConfig.baseUrl}${apiConfig.deploymentEndpoint}`;
-      const response = await fetch(deployUrl, {
+      // Routed through the LDE backend's POST /v1/dmns/deploy rather than
+      // Operaton's /deployment/create directly — a direct browser fetch hits
+      // CORS (Operaton doesn't send Access-Control-Allow-Origin for a local
+      // dev origin like http://localhost:3000), while this backend call is
+      // server-to-server on the LDE side and CORS-immune by construction.
+      // Same pattern runBackendValidation() above already uses for
+      // /v1/dmns/validate.
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+      const response = await fetch(`${backendUrl}/v1/dmns/deploy`, {
         method: 'POST',
-        headers: { Authorization: 'Basic ' + btoa('demo:demo') },
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          xml: uploadedFile.content,
+          deploymentName: apiConfig.decisionKey || uploadedFile.name,
+          filename: uploadedFile.name,
+        }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Deployment failed: ${response.statusText}\n${errorText}`);
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.error?.message || `Deployment failed: ${response.statusText}`);
       }
 
-      const result = await response.json();
-      setDeploymentStatus({ success: true, data: result });
+      setDeploymentStatus({ success: true, data: data.data });
       setDmnData({
         ...dmnData,
         deployed: true,
-        deploymentId: result.id,
+        deploymentId: data.data.deploymentId,
         deployedAt: new Date().toISOString(),
       });
     } catch (err) {
@@ -712,6 +726,23 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Routed through the LDE backend's POST /v1/dmns/evaluate/:decisionKey
+  // instead of calling Operaton's own evaluate endpoint directly -- same CORS
+  // reasoning as handleDeployDMN's route through /v1/dmns/deploy above. The
+  // backend forwards Operaton's raw response (success array or exception
+  // object) byte-for-byte and status-for-status, so every caller below keeps
+  // reading/parsing the response exactly as it did calling Operaton directly
+  // -- bodyStr is already the `{variables: {...}}` shape Operaton itself
+  // expects, so it's forwarded unchanged.
+  const evaluateViaBackend = (decisionKey, bodyStr) => {
+    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    return fetch(`${backendUrl}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: bodyStr,
+    });
   };
 
   const handleEvaluateDMN = async () => {
@@ -726,14 +757,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     const evaluateUrl = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}`;
 
     try {
-      const response = await fetch(evaluateUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Basic ' + btoa('demo:demo'),
-        },
-        body: testBody,
-      });
+      const response = await evaluateViaBackend(apiConfig.decisionKey, testBody);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -756,7 +780,18 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         ...i,
         decisions: evalDecisions,
       }));
-      const outputs = extractOutputsFromTestResult({ lastTestResult: result }).map((o) => ({
+      // extractOutputsFromTestResult only knows an output exists once the
+      // engine actually returns it — an empty result set (e.g. the DRD root's
+      // RULE ORDER table with no catch-all rule, evaluated against the
+      // auto-generated baseline/disqualifying request body) is a legitimate
+      // outcome, not an error, but leaves it with nothing to report. Falling
+      // back to the DMN's own declared <dmn:output> name/type keeps the
+      // Concepts tab populated either way.
+      const liveOutputs = extractOutputsFromTestResult({ lastTestResult: result });
+      const rawOutputs = liveOutputs.length
+        ? liveOutputs
+        : extractOutputsFromDMN(dmnData.content, apiConfig.decisionKey);
+      const outputs = rawOutputs.map((o) => ({
         ...o,
         decisions: evalDecisions,
       }));
@@ -783,16 +818,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     const results = [];
 
     for (const decision of decisions) {
-      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', decision.id)}`;
       try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Basic ' + btoa('demo:demo'),
-          },
-          body: testBody,
-        });
+        const response = await evaluateViaBackend(decision.id, testBody);
 
         const raw = await response.text();
         let parsed;
@@ -927,17 +954,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         continue;
       }
 
-      const url = `${apiConfig.baseUrl}${apiConfig.evaluateEndpoint.replace('{key}', decisionKey)}`;
-
       try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Basic ' + btoa('demo:demo'),
-          },
-          body: bodyStr,
-        });
+        const response = await evaluateViaBackend(decisionKey, bodyStr);
 
         const raw = await response.text();
         let parsed;
@@ -1132,10 +1150,12 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
           </div>
           {apiConfig.decisionKey && (
             <div className="bg-gray-50 rounded p-2">
-              <p className="text-xs text-gray-500">Evaluation URL:</p>
+              <p className="text-xs text-gray-500">
+                Evaluated via the LDE backend (avoids Operaton CORS from the browser):
+              </p>
               <code className="text-xs text-gray-700 break-all">
-                {apiConfig.baseUrl}
-                {apiConfig.evaluateEndpoint.replace('{key}', apiConfig.decisionKey)}
+                {process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'}
+                /v1/dmns/evaluate/{apiConfig.decisionKey}
               </code>
             </div>
           )}

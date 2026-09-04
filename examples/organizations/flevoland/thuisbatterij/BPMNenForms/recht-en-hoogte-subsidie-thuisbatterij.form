@@ -122,10 +122,7 @@
         "row": "Row_recht_04",
         "columns": null
       },
-      "conditional": {
-        "hide": "== if relatieTotWoning = \"eigenaar\" then true else false"
-      },
-      "description": "Aangevinkt = ja; niet aangevinkt = nee. Bij een eigenaar wordt deze waarde door de DMN-regels genegeerd.",
+      "description": "Aangevinkt = ja; niet aangevinkt = nee. B",
       "defaultValue": false
     },
     {
@@ -206,6 +203,15 @@
       "defaultValue": "eigenaar"
     },
     {
+      "text": "# Budget omwege proces variabelen",
+      "id": "Field_0c4rygr",
+      "type": "text",
+      "layout": {
+        "row": "Row_0h1ratk",
+        "columns": null
+      }
+    },
+    {
       "label": "Reeds gesubsidieerd bedrag eigenaren",
       "id": "Field_reedsGesubsidieerdEigenaren",
       "key": "reedsGesubsidieerdEigenaren",
@@ -238,6 +244,16 @@
       "description": "Tot nu toe toegekend bedrag uit het huurdersplafond, in euro's.",
       "defaultValue": 300000,
       "decimalDigits": 2
+    },
+    {
+      "label": "Vraag aan",
+      "action": "submit",
+      "id": "Field_0wz515i",
+      "type": "button",
+      "layout": {
+        "row": "Row_1wpm2kz",
+        "columns": null
+      }
     }
   ],
   "id": "recht-en-hoogte-subsidie-thuisbatterij",

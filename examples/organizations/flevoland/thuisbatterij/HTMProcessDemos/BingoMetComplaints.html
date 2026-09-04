@@ -1,0 +1,2887 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///C:/Users/pit/Downloads/BingoComplaints_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subsidy Processing — Budget Reservations</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: rgba(255,255,255,.08);
+      --panel-strong: rgba(255,255,255,.13);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --green: #22c55e;
+      --blue: #38bdf8;
+      --amber: #f59e0b;
+      --red: #fb7185;
+      --purple: #a78bfa;
+      --indigo: #818cf8;
+      --indigo-strong: #6366f1;
+      --shadow: 0 20px 45px rgba(0,0,0,.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 0%, rgba(56,189,248,.22), transparent 32%),
+        radial-gradient(circle at 78% 8%, rgba(167,139,250,.24), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(251,113,133,.13), transparent 32%),
+        var(--bg);
+    }
+
+    .wrap { max-width: 1380px; margin: 0 auto; }
+
+    header { display: grid; gap: 10px; margin-bottom: 22px; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -0.045em;
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      max-width: 1040px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 980px) {
+      body { padding: 18px; }
+      .dashboard { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: linear-gradient(180deg, var(--panel-strong), var(--panel));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: var(--shadow);
+      border-radius: 24px;
+      padding: 22px;
+      backdrop-filter: blur(18px);
+    }
+
+    .budget-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .budget-card::after {
+      content: "";
+      position: absolute;
+      width: 290px;
+      height: 290px;
+      border-radius: 50%;
+      background: rgba(56,189,248,.14);
+      top: -120px;
+      right: -90px;
+      pointer-events: none;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      min-width: 0;
+    }
+
+    .metric.danger {
+      background: rgba(251,113,133,.13);
+      border-color: rgba(251,113,133,.35);
+    }
+
+    .metric.pay {
+      background: rgba(34,197,94,.12);
+      border-color: rgba(34,197,94,.26);
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bar-labels {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .budget-bar {
+      height: 46px;
+      width: 100%;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+      overflow: hidden;
+      display: flex;
+      position: relative;
+      z-index: 1;
+    }
+
+    .bar-segment {
+      height: 100%;
+      transition: width 450ms ease;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .awarded { background: linear-gradient(90deg, #7c3aed, #a78bfa); }
+    .reserved { background: linear-gradient(90deg, #d97706, #f59e0b); color: #451a03; }
+    .complaint-reserved {
+      background: repeating-linear-gradient(
+        135deg,
+        #4f46e5 0px, #4f46e5 8px,
+        #6366f1 8px, #6366f1 16px
+      );
+      color: #e0e7ff;
+    }
+    .available { background: linear-gradient(90deg, #16a34a, #22c55e); color: #052e16; }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .dot.awarded { background: #a78bfa; }
+    .dot.reserved { background: #f59e0b; }
+    .dot.complaint-reserved { background: #6366f1; }
+    .dot.available { background: #22c55e; }
+    .dot.rejected { background: #fb7185; }
+    .dot.decision { background: #67e8f9; }
+    .dot.subprocess { background: #f472b6; }
+    .dot.complaint { background: #818cf8; }
+    .dot.unpaid {
+      background: #22c55e;
+      box-shadow: 0 0 0 2px #ef4444;
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .button-row, .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    .speed-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .speed-row-label {
+      white-space: nowrap;
+    }
+
+    .speed-row input[type="range"] {
+      max-width: 220px;
+    }
+
+    .speed-row strong {
+      color: var(--text);
+      min-width: 38px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      background: #e5e7eb;
+      color: #0f172a;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: 850;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,.18);
+    }
+
+    button.secondary {
+      background: rgba(255,255,255,.12);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    input[type="range"] {
+      flex: 1;
+      min-width: 220px;
+      accent-color: #38bdf8;
+    }
+
+    .scenario-controls input[type="range"] {
+      min-width: 0;
+      width: 100%;
+    }
+
+    .date-pill {
+      padding: 9px 12px;
+      background: rgba(56,189,248,.14);
+      color: #bae6fd;
+      border: 1px solid rgba(56,189,248,.25);
+      border-radius: 999px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .date-pill.wrap {
+      white-space: normal;
+      line-height: 1.35;
+      border-radius: 14px;
+      width: 100%;
+    }
+
+    .date-pill.unpaid-pill {
+      background: rgba(239,68,68,.14);
+      color: #fecaca;
+      border-color: rgba(239,68,68,.32);
+    }
+
+    .scenario-controls {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) { .scenario-controls { grid-template-columns: 1fr; } }
+
+    label.control {
+      display: grid;
+      gap: 7px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      min-width: 0;
+    }
+
+    label.control strong {
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: -.02em;
+      font-size: 15px;
+    }
+
+    .status-panel {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(15,23,42,.52);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .status-panel strong { color: var(--text); }
+    .status-panel .reject { color: #fecdd3; font-weight: 850; }
+    .status-panel .decision { color: #a7f3d0; font-weight: 850; }
+    .status-panel .complaint-note { color: #c7d2fe; font-weight: 850; }
+
+    .metric.complaint {
+      background: rgba(99,102,241,.14);
+      border-color: rgba(129,140,248,.4);
+    }
+
+    .events h2, .timeline h2, .ledger h2 { margin: 0 0 16px; letter-spacing: -0.03em; }
+
+    .day-scrubber {
+      display: grid;
+      gap: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      border-radius: 16px;
+      background: rgba(56,189,248,.08);
+      border: 1px solid rgba(56,189,248,.22);
+      transition: opacity 200ms ease, max-height 200ms ease;
+    }
+
+    .day-scrubber-label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+    }
+
+    .day-scrubber-label strong {
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: -.02em;
+      font-size: 15px;
+    }
+
+    .day-scrubber.is-playing {
+      display: none;
+    }
+
+    .event-list {
+      display: grid;
+      gap: 10px;
+      max-height: 705px;
+      overflow: auto;
+      padding-right: 5px;
+    }
+
+    .event {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      transition: transform 250ms ease, border-color 250ms ease, background 250ms ease, opacity 250ms ease;
+    }
+
+    .event.active {
+      transform: translateX(4px);
+      border-color: rgba(56,189,248,.55);
+      background: rgba(56,189,248,.12);
+    }
+
+    .event.rejected {
+      border-color: rgba(251,113,133,.38);
+      background: rgba(251,113,133,.12);
+    }
+
+    .event.unpaid {
+      border-color: rgba(239,68,68,.55);
+      background: rgba(239,68,68,.12);
+    }
+
+    .event.pending-payout {
+      border-color: rgba(148,163,184,.4);
+      background: rgba(148,163,184,.08);
+    }
+
+    .event.complaint {
+      border-color: rgba(129,140,248,.5);
+      background: rgba(99,102,241,.12);
+    }
+
+    .event.future { opacity: .64; }
+
+    .event.current-attempt {
+      border-color: rgba(103,232,249,.55);
+      background: rgba(103,232,249,.12);
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.1);
+      font-size: 20px;
+    }
+
+    .event-title { font-weight: 850; margin-bottom: 3px; }
+
+    .event-sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .badge.future { color: #cbd5e1; background: rgba(148,163,184,.12); }
+    .badge.submitted { color: #bae6fd; background: rgba(56,189,248,.16); }
+    .badge.processing { color: #fde68a; background: rgba(245,158,11,.16); }
+    .badge.subprocess { color: #fbcfe8; background: rgba(244,114,182,.18); }
+    .badge.complaint { color: #c7d2fe; background: rgba(99,102,241,.22); }
+    .badge.accepted { color: #bbf7d0; background: rgba(34,197,94,.16); }
+    .badge.accepted-unpaid { color: #fecaca; background: rgba(239,68,68,.2); }
+    .badge.accepted-pending { color: #e2e8f0; background: rgba(148,163,184,.18); }
+    .badge.rejected { color: #fecdd3; background: rgba(251,113,133,.18); }
+
+    .timeline { margin-top: 18px; }
+
+    .timeline-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .timeline-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      max-width: 760px;
+    }
+
+    .timeline-grid {
+      position: relative;
+      display: grid;
+      gap: 13px;
+      padding-top: 34px;
+    }
+
+    .axis {
+      position: absolute;
+      top: 0;
+      left: 178px;
+      right: 0;
+      height: 24px;
+      display: grid;
+      color: var(--muted);
+      font-size: 10.5px;
+    }
+
+    .axis span {
+      border-left: 1px solid rgba(255,255,255,.12);
+      padding-left: 4px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .today-line {
+      position: absolute;
+      top: 25px;
+      bottom: 0;
+      width: 2px;
+      background: #38bdf8;
+      z-index: 4;
+      transition: left 450ms ease;
+      box-shadow: 0 0 16px rgba(56,189,248,.7);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 164px 1fr;
+      gap: 14px;
+      align-items: center;
+      position: relative;
+    }
+
+    .subrow {
+      display: grid;
+      grid-template-columns: 164px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-top: -7px;
+      margin-bottom: -4px;
+    }
+
+    .subrow-label {
+      color: #f9a8d4;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-align: right;
+      padding-right: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: .85;
+    }
+
+    .subtrack {
+      position: relative;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(244,114,182,.05);
+      border: 1px dashed rgba(244,114,182,.22);
+      overflow: hidden;
+    }
+
+    /* Complaint runs as a process ABOVE the main request row. It needs a clear
+       gap from whatever request sits above it, and a tight gap to its OWN row
+       directly below — the mirror image of the "more info needed" subrow, which
+       hugs the row above it. */
+    .subrow.complaint-subrow {
+      margin-top: 2px;
+      margin-bottom: -8px;
+    }
+
+    .subrow-label.complaint-label {
+      color: #a5b4fc;
+    }
+
+    .subtrack.complaint-subtrack {
+      background: rgba(99,102,241,.06);
+      border: 1px dashed rgba(129,140,248,.32);
+    }
+
+    .subtrack.complaint-subtrack.disabled .complaint-row {
+      opacity: .45;
+      filter: grayscale(.35);
+    }
+
+    .subsidy-name { color: var(--text); font-weight: 850; font-size: 14px; }
+
+    .subsidy-amount { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+    .track {
+      position: relative;
+      height: 38px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      overflow: hidden;
+    }
+
+    .track.decision-track { background: rgba(103,232,249,.08); border-color: rgba(103,232,249,.18); }
+
+    .segment {
+      position: absolute;
+      top: 5px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .01em;
+      min-width: 18px;
+      transition: opacity 250ms ease, filter 250ms ease;
+    }
+
+    .segment.submitted { background: rgba(56,189,248,.9); color: #082f49; }
+    .segment.processing { background: rgba(245,158,11,.82); color: #451a03; }
+
+    .segment.subprocess-row {
+      position: absolute;
+      top: 1px;
+      height: 16px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: .01em;
+      min-width: 14px;
+      transition: opacity 250ms ease, filter 250ms ease;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(244,114,182,.92) 0px,
+        rgba(244,114,182,.92) 7px,
+        rgba(219,39,119,.92) 7px,
+        rgba(219,39,119,.92) 14px
+      );
+      color: #500724;
+    }
+
+    .segment.complaint-row {
+      position: absolute;
+      top: 1px;
+      height: 16px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: .01em;
+      min-width: 14px;
+      transition: opacity 250ms ease, filter 250ms ease;
+      background: repeating-linear-gradient(
+        135deg,
+        rgba(129,140,248,.95) 0px,
+        rgba(129,140,248,.95) 7px,
+        rgba(79,70,229,.95) 7px,
+        rgba(79,70,229,.95) 14px
+      );
+      color: #eef2ff;
+    }
+
+    .segment.accepted {
+      width: 16px !important;
+      min-width: 16px;
+      background: #22c55e;
+      color: #052e16;
+      border-radius: 50%;
+      box-shadow: 0 0 14px rgba(34,197,94,.7);
+    }
+
+    /* A decision dot that came from a complaint outcome carries a thin
+       indigo ring so it reads as "granted / refused on appeal" rather
+       than a first-pass decision. */
+    .segment.via-complaint {
+      box-shadow: 0 0 0 2px #1e1b2e, 0 0 0 4px #818cf8, 0 0 14px rgba(129,140,248,.6);
+    }
+
+    .error-overlay {
+      position: absolute;
+      bottom: -6px;
+      right: -6px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: #fff7ed;
+      display: grid;
+      place-items: center;
+      font-size: 9px;
+      font-weight: 900;
+      line-height: 1;
+      border: 2px solid #1e1b2e;
+      box-shadow: 0 0 8px rgba(239,68,68,.85);
+      z-index: 5;
+    }
+
+    @keyframes jumpOutPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.82);
+      }
+      30% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+      45% {
+        transform: scale(1);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes jumpOutBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.18; }
+    }
+
+    .jump-out-callout {
+      grid-column: 2;
+      position: absolute;
+      top: 50%;
+      height: 42px;
+      margin-top: -21px;
+      border-radius: 999px;
+      border: 2.5px solid var(--callout-color, #fbbf24);
+      box-shadow: 0 0 14px var(--callout-glow, rgba(251,191,36,.55)), inset 0 0 10px var(--callout-glow, rgba(251,191,36,.22));
+      pointer-events: none;
+      z-index: 6;
+      opacity: 1;
+      transform-origin: center;
+    }
+
+    .jump-out-callout.is-fresh {
+      animation:
+        jumpOutPopIn 0.5s ease-out forwards,
+        jumpOutBlink 0.4s ease-in-out 0.5s 4;
+    }
+
+    .jump-out-callout-label {
+      position: absolute;
+      top: -27px;
+      left: 8px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--callout-color, #fbbf24);
+      color: #1c1206;
+      font-size: 10.5px;
+      font-weight: 900;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,.35);
+    }
+
+    .segment.rejected {
+      width: 16px !important;
+      min-width: 16px;
+      background: #fb7185;
+      color: #450a0a;
+      border-radius: 50%;
+      box-shadow: 0 0 14px rgba(251,113,133,.72);
+    }
+
+    .segment.decision {
+      width: 18px !important;
+      min-width: 18px;
+      background: #67e8f9;
+      color: #083344;
+      border-radius: 50%;
+      box-shadow: 0 0 14px rgba(103,232,249,.72);
+    }
+
+    .track.disabled .submitted,
+    .track.disabled .processing {
+      opacity: .45;
+      filter: grayscale(.35);
+    }
+
+    .subtrack.disabled .subprocess-row {
+      opacity: .45;
+      filter: grayscale(.35);
+    }
+
+    .empty-window {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      border: 1px dashed rgba(255,255,255,.16);
+      color: var(--muted);
+    }
+
+    .ledger { margin-top: 18px; }
+
+    .ledger-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .ledger-box {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      min-height: 120px;
+    }
+
+    .ledger-box h3 { margin: 0 0 8px; font-size: 14px; letter-spacing: -.02em; }
+
+    .ledger-box p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    .footer-note { margin-top: 18px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Subsidy processing with budget reservations</h1>
+      <div class="subtitle">
+        Subsidy requests keep being submitted over the same day-based timeline. A request starts as submitted, then gets a random-looking processing duration between 1 and 3 days before it is accepted or rejected.
+        For 1 out of every 4 requests, the caseworker needs more information after 1 to 2 days of initial processing. That subprocess takes 2 to 3 days plus 1 extra day to resolve, and is followed by 1 to 2 more days of processing before a decision is made.
+        A rejected applicant can contest the decision: 1 in 10 rejections files a complaint within 2 to 3 days, and that complaint then takes 3 to 5 days to process, with 1 in 5 complaints upheld. While a complaint runs its money is not released — it stays reserved as a separate <em>complaint hold</em>, because it may yet have to be paid — so accepted requests behind it in the queue can be forced to wait, and one may miss out entirely if the complaint succeeds. A request whose complaint is upheld keeps its original place in the payout order.
+        From submission until a rejection, the full amount is always counted as reserved — just like a hotel reservation hold. Payout follows strict first-come-first-served order, but for the 1-in-4 requests that needed a "more information" subprocess, their place in that queue is based on the day the extra information was received, not their original submission day — the reservation itself still starts at the real submission day and runs the whole time. An accepted request cannot be paid or marked unpaid until everyone ahead of it in that order has itself been resolved, even if its own decision already happened. Until then it sits as accepted with payout pending. Once the budget runs out for one request, it stays locked for everyone after it in the queue too — a later, smaller request can never back-fill into space an earlier request couldn't claim. Shown with a red error mark over the green decision dot.
+      </div>
+    </header>
+
+    <section class="dashboard">
+      <div class="card budget-card">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">Programme budget</div>
+            <div class="metric-value" id="budgetLimitValue">€4,000</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Processing reserve</div>
+            <div class="metric-value" id="reservedAmount">€6,120</div>
+          </div>
+          <div class="metric complaint">
+            <div class="metric-label">Complaint reserve</div>
+            <div class="metric-value" id="complaintReserveAmount">€1,250</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Accepted &amp; paid</div>
+            <div class="metric-value" id="awardedAmount">€720</div>
+          </div>
+          <div class="metric pay">
+            <div class="metric-label">Released reserves</div>
+            <div class="metric-value" id="releasedAmount">€980</div>
+          </div>
+          <div class="metric danger">
+            <div class="metric-label">Rejected subsidies</div>
+            <div class="metric-value" id="rejectedCount">1</div>
+          </div>
+          <div class="metric complaint">
+            <div class="metric-label">Open complaints</div>
+            <div class="metric-value" id="complaintCount">1</div>
+          </div>
+          <div class="metric danger">
+            <div class="metric-label">Accepted, unpaid</div>
+            <div class="metric-value" id="unpaidCount">0</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Payout pending</div>
+            <div class="metric-value" id="pendingCount">1</div>
+          </div>
+        </div>
+
+        <div class="bar-labels">
+          <span>Used budget: accepted deductions + active processing reserves</span>
+          <span id="availableText">Available: €0</span>
+        </div>
+        <div class="budget-bar" aria-label="Subsidy budget usage">
+          <div class="bar-segment awarded" id="awardedBar" style="width: 18%;">€720</div>
+          <div class="bar-segment reserved" id="reservedBar" style="width: 100%;">€6,120</div>
+          <div class="bar-segment complaint-reserved" id="complaintReservedBar" style="width: 31.25%;">€1,250</div>
+          <div class="bar-segment available" id="availableBar" style="width: 0%;"></div>
+        </div>
+
+        <div class="legend">
+          <span><i class="dot awarded"></i>Accepted &amp; paid deductions</span>
+          <span><i class="dot reserved"></i>Regular processing reserve</span>
+          <span><i class="dot complaint-reserved"></i>Complaint reserve (contested)</span>
+          <span><i class="dot available"></i>Available budget</span>
+          <span><i class="dot decision"></i>Decision day</span>
+          <span><i class="dot rejected"></i>Rejected subsidy</span>
+          <span><i class="dot subprocess"></i>Extra-info subprocess</span>
+          <span><i class="dot complaint"></i>Complaint under review</span>
+          <span><i class="dot unpaid"></i>Accepted, but funds ran out</span>
+        </div>
+        <div class="timeline-note" style="margin-top: 6px;">
+          A plain green dot with no red mark can also mean payout is still pending an earlier-submitted request's decision — it isn't necessarily paid yet.
+        </div>
+
+        <div class="controls">
+          <div class="button-row">
+            <button id="playBtn">Play simulation</button>
+            <button class="secondary" id="resetBtn">Reset</button>
+            <div class="date-pill" id="dateLabel">11 Jul · Day 10</div>
+            <div class="date-pill unpaid-pill" id="unpaidAmountLabel">€0 accepted, unpaid</div>
+          </div>
+
+          <div class="speed-row">
+            <span class="speed-row-label">Slow down playback</span>
+            <input id="speedSlider" type="range" min="0" max="30" step="1" value="0">
+            <strong id="speedLabel">0%</strong>
+          </div>
+
+          <div class="slider-row">
+            <input id="daySlider" type="range" min="0" max="90" step="1" value="0">
+          </div>
+
+          <div class="scenario-controls">
+            <label class="control">
+              Timeline window
+              <strong id="windowLabel">14 visible days</strong>
+              <input id="windowSlider" type="range" min="7" max="28" step="1" value="14">
+            </label>
+
+            <label class="control">
+              Submission pressure
+              <strong id="pressureLabel">34 requests</strong>
+              <input id="pressureSlider" type="range" min="8" max="36" step="1" value="34">
+            </label>
+
+            <label class="control">
+              Programme budget
+              <strong id="limitLabel">€4,000</strong>
+              <input id="limitSlider" type="range" min="2500" max="15000" step="250" value="4000">
+            </label>
+
+            <label class="control">
+              Acceptance rate
+              <strong id="acceptanceLabel">60% accepted</strong>
+              <input id="acceptanceSlider" type="range" min="40" max="100" step="5" value="60">
+            </label>
+
+            <label class="control">
+              Processing time
+              <strong id="processingLabel">Random 1–3 days</strong>
+              <span class="date-pill wrap">1 in 4 needs info after 1–2d, +2–4d to resolve, +1–2d to finish</span>
+            </label>
+
+            <label class="control">
+              Complaints
+              <strong>10% of rejections appeal</strong>
+              <span class="date-pill wrap">Filed 2–3d after rejection, processed 3–5d, 20% upheld · budget stays reserved throughout</span>
+            </label>
+
+            <label class="control">
+              Day
+              <strong id="dayControlLabel">10 / 90</strong>
+              <input id="dayFineSlider" type="range" min="0" max="90" step="1" value="0">
+            </label>
+          </div>
+        </div>
+
+        <div class="status-panel" id="statusText">
+        <strong>11 Jul · Day 10:</strong>
+        3 requests are currently submitted or processing.
+        Regular processing reserves are <strong>€6,120</strong>. A further <strong>€1,250</strong> is locked as a complaint hold.
+        Accepted and paid deductions are <strong>€720</strong>, with <strong>€980</strong> released from rejected reserves so far.
+        Available budget is <strong>€0</strong>.
+        <span class="decision">Decision today:</span> 1 request processed, €0 accepted and paid, 0 accepted but unpaid, 1 accepted with payout still pending, and 0 rejected.
+        <span class="reject">Latest rejection:</span> <strong>Solar panel subsidy</strong> was rejected on 5 Jul. Rejected during eligibility review
+        <span class="complaint-note">Complaints under review:</span> 1 contested rejection holding <strong>€1,250</strong> reserved — this budget can't be released or given to anyone else until each complaint resolves.
+        No accepted subsidy has run out of funds under the current sliders.
+      </div>
+      </div>
+
+      <div class="card events">
+        <h2>Subsidy requests</h2>
+        <div class="event-list" id="eventList"><div class="event" data-index="0" data-request-id="1">
+          <div class="icon">✅</div>
+          <div>
+            <div class="event-title">Home insulation grant</div>
+            <div class="event-sub">
+              Household A · Submitted 1 Jul · Request €720 ·
+              Processing 3 days · Accepted and paid on 5 Jul
+              · Reserved after submission with €3,280 available
+            </div>
+          </div>
+          <div class="badge accepted">Accepted</div>
+        </div><div class="event rejected" data-index="1" data-request-id="2">
+          <div class="icon">⛔</div>
+          <div>
+            <div class="event-title">Solar panel subsidy</div>
+            <div class="event-sub">
+              Household B · Submitted 2 Jul · Request €980 ·
+              Processing 2 days · Rejected on 5 Jul · Rejected during eligibility review
+              · Reserved after submission with €2,300 available
+            </div>
+          </div>
+          <div class="badge rejected">Rejected</div>
+        </div><div class="event complaint" data-index="2" data-request-id="3">
+          <div class="icon">⚖️</div>
+          <div>
+            <div class="event-title">Heat pump voucher</div>
+            <div class="event-sub">
+              Household C · Submitted 3 Jul · Request €1,250 ·
+              Processing 3 days · Accepted on appeal and paid on 14 Jul · Rejected first on 7 Jul, complaint filed 10 Jul and processed over 4 days (upheld) · budget held as a complaint reserve the whole time, keeping the original 3 Jul payout queue position
+              · Reserved after submission with €1,050 available
+            </div>
+          </div>
+          <div class="badge complaint">Complaint</div>
+        </div><div class="event active" data-index="3" data-request-id="4">
+          <div class="icon">📨</div>
+          <div>
+            <div class="event-title">Window retrofit support</div>
+            <div class="event-sub">
+              Housing co-op · Submitted 5 Jul · Request €4,050 ·
+              Processing 2 days · Needs more info from 8 Jul, adding 4 days, then 1 more processing day · Payout queue position based on 12 Jul (when info was received), not the original submission day · Accepted on 13 Jul but funds had run out — short €3,570
+              · Reserved after submission with -€2,020 available
+            </div>
+          </div>
+          <div class="badge subprocess">Needs more info</div>
+        </div><div class="event pending-payout current-attempt" data-index="4" data-request-id="5">
+          <div class="icon">⏳</div>
+          <div>
+            <div class="event-title">Community garden grant</div>
+            <div class="event-sub">
+              Neighbourhood group · Submitted 7 Jul · Request €430 ·
+              Processing 3 days · Accepted and paid on 11 Jul
+              · Reserved after submission with -€2,450 available
+            </div>
+          </div>
+          <div class="badge accepted-pending">Payout pending</div>
+        </div><div class="event active" data-index="5" data-request-id="6">
+          <div class="icon">🔎</div>
+          <div>
+            <div class="event-title">Small business energy aid</div>
+            <div class="event-sub">
+              Bakery · Submitted 9 Jul · Request €1,120 ·
+              Processing 3 days · Accepted on appeal and paid on 19 Jul · Rejected first on 13 Jul, complaint filed 16 Jul and processed over 3 days (upheld) · budget held as a complaint reserve the whole time, keeping the original 9 Jul payout queue position
+              · Reserved after submission with -€3,570 available
+            </div>
+          </div>
+          <div class="badge processing">Processing</div>
+        </div><div class="event active" data-index="6" data-request-id="7">
+          <div class="icon">📝</div>
+          <div>
+            <div class="event-title">E-bike mobility subsidy</div>
+            <div class="event-sub">
+              Commuter pool · Submitted 11 Jul · Request €520 ·
+              Processing 3 days · Accepted on 15 Jul but funds had run out — short €40
+              · Reserved after submission with -€4,090 available
+            </div>
+          </div>
+          <div class="badge submitted">Submitted</div>
+        </div><div class="event future" data-index="7" data-request-id="8">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">School sustainability fund</div>
+            <div class="event-sub">
+              Primary school · Submitted 13 Jul · Request €870 ·
+              Processing 1 day · Needs more info from 15 Jul, adding 3 days, then 1 more processing day · Payout queue position based on 18 Jul (when info was received), not the original submission day · Accepted on 19 Jul but funds had run out — short €390
+              · Reserved after submission with -€4,960 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="8" data-request-id="9">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Rainwater capture rebate</div>
+            <div class="event-sub">
+              Household D · Submitted 15 Jul · Request €360 ·
+              Processing 3 days · Rejected on 19 Jul · Rejected during eligibility review
+              · Reserved after submission with -€5,320 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="9" data-request-id="10">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Cultural venue support</div>
+            <div class="event-sub">
+              Arts hall · Submitted 17 Jul · Request €940 ·
+              Processing 1 day · Accepted on 19 Jul but funds had run out — short €460
+              · Reserved after submission with -€6,260 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="10" data-request-id="11">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Farm efficiency grant</div>
+            <div class="event-sub">
+              Farm co-op · Submitted 19 Jul · Request €1,180 ·
+              Processing 1 day · Accepted on 21 Jul but funds had run out — short €700
+              · Reserved after submission with -€700 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="11" data-request-id="12">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Low-income heating aid</div>
+            <div class="event-sub">
+              Family support office · Submitted 21 Jul · Request €610 ·
+              Processing 1 day · Needs more info from 23 Jul, adding 4 days, then 1 more processing day · Payout queue position based on 27 Jul (when info was received), not the original submission day · Rejected on 5 Aug · Complaint refused — rejection upheld · Rejected first on 28 Jul, complaint filed 31 Jul and processed over 5 days (refused) · budget held as a complaint reserve the whole time, keeping the original 27 Jul payout queue position
+              · Reserved after submission with -€130 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="12" data-request-id="13">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Roof greening subsidy</div>
+            <div class="event-sub">
+              Apartment block · Submitted 23 Jul · Request €760 ·
+              Processing 1 day · Rejected on 25 Jul · Rejected during eligibility review
+              · Reserved after submission with -€890 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="13" data-request-id="14">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Clinic equipment subsidy</div>
+            <div class="event-sub">
+              Local clinic · Submitted 25 Jul · Request €1,320 ·
+              Processing 2 days · Accepted on 28 Jul but funds had run out — short €840
+              · Reserved after submission with -€1,450 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="14" data-request-id="15">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Library access grant</div>
+            <div class="event-sub">
+              Public library · Submitted 27 Jul · Request €480 ·
+              Processing 1 day · Accepted on 29 Jul but funds had run out — short €0
+              · Reserved after submission with -€1,930 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="15" data-request-id="16">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Youth sports subsidy</div>
+            <div class="event-sub">
+              Sports club · Submitted 29 Jul · Request €690 ·
+              Processing 1 day · Needs more info from 31 Jul, adding 4 days, then 2 more processing days · Payout queue position based on 4 Aug (when info was received), not the original submission day · Rejected on 6 Aug · Rejected during eligibility review
+              · Reserved after submission with -€1,300 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="16" data-request-id="17">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">District cooling pilot</div>
+            <div class="event-sub">
+              Municipality · Submitted 31 Jul · Request €1,450 ·
+              Processing 2 days · Rejected on 3 Aug · Rejected during eligibility review
+              · Reserved after submission with -€2,750 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="17" data-request-id="18">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Food bank logistics fund</div>
+            <div class="event-sub">
+              Food bank · Submitted 2 Aug · Request €830 ·
+              Processing 2 days · Accepted on 5 Aug but funds had run out — short €350
+              · Reserved after submission with -€3,580 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="18" data-request-id="19">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Shared workshop grant</div>
+            <div class="event-sub">
+              Makerspace · Submitted 4 Aug · Request €1,080 ·
+              Processing 2 days · Accepted on 7 Aug but funds had run out — short €600
+              · Reserved after submission with -€3,210 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="19" data-request-id="20">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Accessibility upgrade</div>
+            <div class="event-sub">
+              Theatre · Submitted 6 Aug · Request €920 ·
+              Processing 2 days · Needs more info from 9 Aug, adding 4 days, then 1 more processing day · Payout queue position based on 13 Aug (when info was received), not the original submission day · Accepted on 14 Aug but funds had run out — short €440
+              · Reserved after submission with -€1,520 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="20" data-request-id="21">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Childcare fee subsidy</div>
+            <div class="event-sub">
+              Family E · Submitted 8 Aug · Request €540 ·
+              Processing 1 day · Rejected on 17 Aug · Complaint refused — rejection upheld · Rejected first on 10 Aug, complaint filed 13 Aug and processed over 4 days (refused) · budget held as a complaint reserve the whole time, keeping the original 8 Aug payout queue position
+              · Reserved after submission with -€980 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="21" data-request-id="22">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Circular repair bonus</div>
+            <div class="event-sub">
+              Repair shop · Submitted 10 Aug · Request €710 ·
+              Processing 2 days · Accepted on 13 Aug but funds had run out — short €230
+              · Reserved after submission with -€1,690 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="22" data-request-id="23">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Water-saving equipment</div>
+            <div class="event-sub">
+              Restaurant · Submitted 12 Aug · Request €650 ·
+              Processing 2 days · Rejected on 15 Aug · Rejected during eligibility review
+              · Reserved after submission with -€2,340 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="23" data-request-id="24">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Flood resilience fund</div>
+            <div class="event-sub">
+              Residents group · Submitted 14 Aug · Request €990 ·
+              Processing 2 days · Needs more info from 17 Aug, adding 3 days, then 1 more processing day · Payout queue position based on 20 Aug (when info was received), not the original submission day · Rejected on 21 Aug · Rejected during eligibility review
+              · Reserved after submission with -€3,330 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="24" data-request-id="25">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Micro-enterprise launch aid</div>
+            <div class="event-sub">
+              Startup · Submitted 16 Aug · Request €1,240 ·
+              Processing 2 days · Rejected on 24 Aug · Complaint refused — rejection upheld · Rejected first on 19 Aug, complaint filed 21 Aug and processed over 3 days (refused) · budget held as a complaint reserve the whole time, keeping the original 16 Aug payout queue position
+              · Reserved after submission with -€3,920 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="25" data-request-id="26">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Public art microgrant</div>
+            <div class="event-sub">
+              Artist collective · Submitted 18 Aug · Request €390 ·
+              Processing 1 day · Rejected on 20 Aug · Rejected during eligibility review
+              · Reserved after submission with -€2,140 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="26" data-request-id="27">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">EV charging support</div>
+            <div class="event-sub">
+              Housing association · Submitted 20 Aug · Request €1,380 ·
+              Processing 3 days · Accepted on 24 Aug but funds had run out — short €900
+              · Reserved after submission with -€3,130 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="27" data-request-id="28">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Apprenticeship subsidy</div>
+            <div class="event-sub">
+              Training centre · Submitted 22 Aug · Request €860 ·
+              Processing 1 day · Needs more info from 24 Aug, adding 4 days, then 2 more processing days · Payout queue position based on 28 Aug (when info was received), not the original submission day · Rejected on 30 Aug · Rejected during eligibility review
+              · Reserved after submission with -€3,000 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="28" data-request-id="29">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Digital inclusion grant</div>
+            <div class="event-sub">
+              Community centre · Submitted 24 Aug · Request €570 ·
+              Processing 3 days · Accepted on 28 Aug but funds had run out — short €90
+              · Reserved after submission with -€950 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="29" data-request-id="30">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Urban tree planting</div>
+            <div class="event-sub">
+              Street committee · Submitted 26 Aug · Request €740 ·
+              Processing 3 days · Accepted on 30 Aug but funds had run out — short €260
+              · Reserved after submission with -€1,690 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="30" data-request-id="31">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Caregiver respite fund</div>
+            <div class="event-sub">
+              Care network · Submitted 27 Aug · Request €690 ·
+              Processing 2 days · Accepted on 30 Aug but funds had run out — short €210
+              · Reserved after submission with -€2,380 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="31" data-request-id="32">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Rural broadband voucher</div>
+            <div class="event-sub">
+              Village council · Submitted 28 Aug · Request €1,210 ·
+              Processing 1 day · Needs more info from 30 Aug, adding 4 days, then 2 more processing days · Payout queue position based on 3 Sept (when info was received), not the original submission day · Accepted on 5 Sept but funds had run out — short €730
+              · Reserved after submission with -€3,020 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="32" data-request-id="33">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Museum energy upgrade</div>
+            <div class="event-sub">
+              Museum · Submitted 29 Aug · Request €1,160 ·
+              Processing 1 day · Rejected on 7 Sept · Complaint refused — rejection upheld · Rejected first on 31 Aug, complaint filed 2 Sept and processed over 5 days (refused) · budget held as a complaint reserve the whole time, keeping the original 29 Aug payout queue position
+              · Reserved after submission with -€4,180 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div><div class="event future" data-index="33" data-request-id="34">
+          <div class="icon">🧾</div>
+          <div>
+            <div class="event-title">Senior mobility grant</div>
+            <div class="event-sub">
+              Senior centre · Submitted 30 Aug · Request €440 ·
+              Processing 3 days · Accepted on 3 Sept but funds had run out — short -€40
+              · Reserved after submission with -€2,330 available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        </div></div>
+        <div class="footer-note">
+          The list is recalculated when you move the pressure, budget, or acceptance-rate sliders.
+          Each request gets a random-looking processing duration from 1 to 3 days. 1 out of every 4 requests instead processes for 1–2 days, then needs a "more information" subprocess (2–3 days plus 1 extra day), followed by 1–2 more processing days before a decision is reached.
+          Every request reserves its full amount from submission until its decision. Payout follows first-come-first-served order, but a request that needed a "more information" subprocess queues for payout as if it had been submitted when the extra information was received, not at its real submission day. Once the budget is exhausted by one request, it stays locked for everyone after it in that order too, with no back-filling into freed-up gaps.
+        </div>
+      </div>
+    </section>
+
+    <section class="card timeline">
+      <div class="timeline-head">
+        <div>
+          <h2>Sliding timeline window</h2>
+          <div class="timeline-note" id="windowNote">
+            The top row shows subsidy decision days. Each subsidy row shows the submitted phase, processing reserve, and the decision dot — green for accepted (paid, or payout still pending an earlier request), green with a red error mark for accepted but unpaid, and red for rejected. When more than one decision lands on the same day, the dots fan out left to right in the same order the matching rows appear below.
+            For 1 in 4 requests, a pink "more info needed" subrow appears directly below the main row after 1–2 days of processing, spanning 2–3 days plus 1 extra day. Processing then resumes on the main row for 1–2 more days before a decision can be made.
+            When a rejected request is contested, an indigo "complaint" subrow appears directly <em>above</em> the main row, spanning from the day the complaint is filed to the day it resolves. A second, indigo-ringed decision dot then marks the complaint outcome — green if upheld, red if refused.
+            Bars only fill in up to the furthest day the simulation has reached — nothing is shown ahead of that, so each row gradually builds up as the simulation plays forward. Dragging the day slider backward while paused lets you look at an earlier moment without hiding anything already revealed; only moving forward past that point reveals more.
+            When a request is accepted but loses out on payout to the very next request ahead of it in the queue, a tight amber ring pops up and blinks around its row, then stays in place. When a request loses its payout specifically because an upheld complaint reclaimed the budget ahead of it, the same ring appears in indigo with its own label.
+            Use the timeline-window slider to zoom while keeping the labels readable.
+          </div>
+        </div>
+        <div class="date-pill" id="windowRangeLabel">Visible: Day 3–17</div>
+      </div>
+      <div class="day-scrubber" id="timelineDayScrubber">
+        <div class="day-scrubber-label">
+          <span>Day</span>
+          <strong id="timelineDayLabel">10 / 90</strong>
+        </div>
+        <input id="daySliderTimeline" type="range" min="0" max="90" step="1" value="0">
+      </div>
+      <div class="timeline-grid" id="timeline">
+        <div class="axis" id="axis" style="grid-template-columns: repeat(15, 1fr);"><span>4 Jul</span><span>5 Jul</span><span>6 Jul</span><span>7 Jul</span><span>8 Jul</span><span>9 Jul</span><span>10 Jul</span><span>11 Jul</span><span>12 Jul</span><span>13 Jul</span><span>14 Jul</span><span>15 Jul</span><span>16 Jul</span><span>17 Jul</span><span>18 Jul</span></div>
+        <div class="today-line" id="todayLine" style="left: calc(50% + 89px);"></div>
+      <div class="row">
+        <div>
+          <div class="subsidy-name">Decision days</div>
+          <div class="subsidy-amount">After processing, plus a subprocess and extra processing for 1 in 4 requests</div>
+        </div>
+        <div class="track decision-track"><div class="segment accepted" title="Accepted Home insulation grant: €720" style="left:calc(6.076190476190476% - 8px);"></div><div class="segment rejected" title="Rejected Solar panel subsidy: Rejected during eligibility review" style="left:calc(8.209523809523809% - 8px);"></div><div class="segment rejected" title="Rejected Heat pump voucher: Rejected during eligibility review" style="left:calc(21.428571428571427% - 8px);"></div><div class="segment accepted" title="Accepted Window retrofit support, but funds had run out — short €3,570" style="left:calc(63.21904761904762% - 8px);"><span class="error-overlay" aria-hidden="true">!</span></div><div class="segment rejected" title="Rejected Small business energy aid: Rejected during eligibility review" style="left:calc(65.35238095238095% - 8px);"></div><div class="segment accepted" title="Accepted Community garden grant: €430" style="left:calc(50% - 8px);"></div><div class="segment accepted" title="Accepted E-bike mobility subsidy, but funds had run out — short €40" style="left:calc(78.57142857142857% - 8px);"><span class="error-overlay" aria-hidden="true">!</span></div><div class="segment accepted via-complaint" title="Accepted Heat pump voucher on appeal: €1,250" style="left:calc(71.42857142857143% - 8px);"></div></div>
+      </div><div class="row">
+          <div>
+            <div class="subsidy-name">Home insulation grant</div>
+            <div class="subsidy-amount">
+              €720 accepted and paid
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted">
+            <div class="segment processing" style="left:0%; width:7.142857142857142%">processing</div><div class="segment accepted" title="Accepted; subsidy deducted from budget" style="left:calc(7.142857142857142% - 8px);"></div>
+          </div>
+          
+        </div><div class="row">
+          <div>
+            <div class="subsidy-name">Solar panel subsidy</div>
+            <div class="subsidy-amount">
+              €980 rejected
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="rejected">
+            <div class="segment processing" style="left:0%; width:7.142857142857142%">processing</div><div class="segment rejected" title="Rejected; Rejected during eligibility review" style="left:calc(7.142857142857142% - 8px);"></div>
+          </div>
+          
+        </div><div class="subrow complaint-subrow">
+            <div class="subrow-label complaint-label">⚖ complaint ↴</div>
+            <div class="subtrack complaint-subtrack">
+              <div class="segment complaint-row" title="Complaint under review: filed 10 Jul, 4 days to process — budget stays reserved as a complaint hold" style="left:42.857142857142854%; width:28.571428571428577%">complaint</div>
+            </div>
+          </div><div class="row">
+          <div>
+            <div class="subsidy-name">Heat pump voucher</div>
+            <div class="subsidy-amount">
+              €1,250 accepted and paid
+              
+               · complaint
+            </div>
+          </div>
+          <div class="track" data-status="accepted">
+            <div class="segment processing" style="left:0%; width:21.428571428571427%">processing</div><div class="segment rejected" title="Rejected at first pass; complaint filed" style="left:calc(21.428571428571427% - 8px);"></div><div class="segment accepted via-complaint" title="Complaint upheld; subsidy granted at its original queue position" style="left:calc(71.42857142857143% - 8px);"></div>
+          </div>
+          
+        </div><div class="row">
+          <div>
+            <div class="subsidy-name">Window retrofit support</div>
+            <div class="subsidy-amount">
+              €4,050 accepted, unpaid — funds ran out
+               · needs more info
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted-unpaid">
+            <div class="segment submitted" style="left:7.142857142857142%; width:7.142857142857142%">submitted</div><div class="segment processing" style="left:14.285714285714285%; width:50.00000000000001%">processing</div><div class="segment accepted" title="Accepted, but funds had run out by payout — short €3,570" style="left:calc(64.28571428571429% - 8px);"><span class="error-overlay" aria-hidden="true">!</span></div>
+          </div>
+          
+        </div><div class="subrow">
+            <div class="subrow-label">↳ more info needed</div>
+            <div class="subtrack">
+              <div class="segment subprocess-row" title="Needs more information: +4 days (incl. 1 extra day) before processing can resume" style="left:28.57142857142857%; width:28.57142857142857%">needs more info</div>
+            </div>
+          </div><div class="row">
+          <div>
+            <div class="subsidy-name">Community garden grant</div>
+            <div class="subsidy-amount">
+              €430 accepted and paid
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted">
+            <div class="segment submitted" style="left:21.428571428571427%; width:7.142857142857142%">submitted</div><div class="segment processing" style="left:28.57142857142857%; width:21.42857142857143%">processing</div><div class="segment accepted" title="Accepted; subsidy deducted from budget" style="left:calc(50% - 8px);"></div>
+          </div>
+          
+        </div><div class="subrow complaint-subrow">
+            <div class="subrow-label complaint-label">⚖ complaint ↴</div>
+            <div class="subtrack complaint-subtrack">
+              <div class="segment complaint-row" title="Complaint under review: filed 16 Jul, 3 days to process — budget stays reserved as a complaint hold" style="left:85.71428571428571%; width:14.285714285714292%">complaint</div>
+            </div>
+          </div><div class="row">
+          <div>
+            <div class="subsidy-name">Small business energy aid</div>
+            <div class="subsidy-amount">
+              €1,120 accepted and paid
+              
+               · complaint
+            </div>
+          </div>
+          <div class="track" data-status="accepted">
+            <div class="segment submitted" style="left:35.714285714285715%; width:7.142857142857139%">submitted</div><div class="segment processing" style="left:42.857142857142854%; width:21.428571428571438%">processing</div><div class="segment rejected" title="Rejected at first pass; complaint filed" style="left:calc(64.28571428571429% - 8px);"></div>
+          </div>
+          
+        </div><div class="row">
+          <div>
+            <div class="subsidy-name">E-bike mobility subsidy</div>
+            <div class="subsidy-amount">
+              €520 accepted, unpaid — funds ran out
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted-unpaid">
+            <div class="segment submitted" style="left:50%; width:7.142857142857139%">submitted</div><div class="segment processing" style="left:57.14285714285714%; width:21.42857142857143%">processing</div><div class="segment accepted" title="Accepted, but funds had run out by payout — short €40" style="left:calc(78.57142857142857% - 8px);"><span class="error-overlay" aria-hidden="true">!</span></div>
+          </div>
+          
+              <div class="jump-out-callout" style="left:calc(50% - 14px); width:calc(28.57142857142857% + 36px); --callout-color:#818cf8; --callout-glow:rgba(129,140,248,.5);">
+                <div class="jump-out-callout-label">Missed out — an upheld complaint took the budget</div>
+              </div>
+        </div><div class="row">
+          <div>
+            <div class="subsidy-name">School sustainability fund</div>
+            <div class="subsidy-amount">
+              €870 accepted, unpaid — funds ran out
+               · needs more info
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted-unpaid">
+            <div class="segment submitted" style="left:64.28571428571429%; width:7.142857142857139%">submitted</div><div class="segment processing" style="left:71.42857142857143%; width:28.57142857142857%">processing</div>
+          </div>
+          
+        </div><div class="subrow">
+            <div class="subrow-label">↳ more info needed</div>
+            <div class="subtrack">
+              <div class="segment subprocess-row" title="Needs more information: +3 days (incl. 1 extra day) before processing can resume" style="left:78.57142857142857%; width:21.42857142857143%">needs more info</div>
+            </div>
+          </div><div class="row">
+          <div>
+            <div class="subsidy-name">Rainwater capture rebate</div>
+            <div class="subsidy-amount">
+              €360 rejected
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="rejected">
+            <div class="segment submitted" style="left:78.57142857142857%; width:7.142857142857139%">submitted</div><div class="segment processing" style="left:85.71428571428571%; width:14.285714285714292%">processing</div>
+          </div>
+          
+        </div><div class="row">
+          <div>
+            <div class="subsidy-name">Cultural venue support</div>
+            <div class="subsidy-amount">
+              €940 accepted, unpaid — funds ran out
+              
+              
+            </div>
+          </div>
+          <div class="track" data-status="accepted-unpaid">
+            <div class="segment submitted" style="left:92.85714285714286%; width:7.142857142857139%">submitted</div>
+          </div>
+          
+        </div></div>
+    </section>
+
+    <section class="card ledger">
+      <h2>Subsidy-budget logic in this version</h2>
+      <div class="ledger-grid">
+        <div class="ledger-box">
+          <h3>1. Submitted</h3>
+          <p>Every new subsidy request enters the timeline on its submission day. The first day is shown as the submitted state.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>2. Processing reserve</h3>
+          <p>From submission until a decision, the full requested amount is always counted as reserved, reducing what shows as available for other requests — regardless of whether the budget can actually cover it.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>3. Needs more info (1 in 4)</h3>
+          <p>Every 4th request processes for 1–2 days before triggering a subprocess that requests more information, adding 2 to 3 days plus 1 extra day. Processing then resumes for 1–2 more days before a decision, shown as a pink hatched segment on the timeline. The budget stays reserved throughout — but for payout queue order, this request is treated as if newly submitted the moment the extra information arrives.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>4. Payout pending</h3>
+          <p>An accepted request can't be paid or marked unpaid until every earlier-submitted request has itself resolved — even if its own decision already happened. Until then it shows as accepted with payout pending.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>5. Accepted &amp; paid</h3>
+          <p>Once a request's turn comes up in submission order, it's paid out if the budget still has the funds — whoever submitted earliest is always checked first, regardless of whose decision lands first.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>6. Accepted, unpaid</h3>
+          <p>If, when its turn comes up, the budget has already run out, it stays accepted but unpaid — shown as a green decision dot with a red error mark. Once locked, the budget stays locked for every later-submitted request too, even smaller ones that would otherwise fit.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>7. Rejected release</h3>
+          <p>Requests that fail eligibility review are rejected and, if no complaint follows, release their reserve back to the available budget.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>8. Complaint filed (1 in 10)</h3>
+          <p>A rejected applicant may contest the decision within 2–3 days. 1 in 10 rejections does. This shows as an indigo "complaint" subrow drawn above the main request, running until the complaint is decided.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>9. Complaint hold</h3>
+          <p>While a complaint runs, its money is <em>not</em> released — it stays reserved as a separate complaint hold, because it might still have to be paid. That hold reduces available budget, so accepted requests behind it in the payout order may have to wait.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>10. Complaint decided</h3>
+          <p>Complaints take 3–5 days; 1 in 5 is upheld. If refused, the rejection stands and the hold releases. If upheld, the subsidy is granted at its <em>original</em> queue position — so it can claim budget ahead of requests accepted while it was pending.</p>
+        </div>
+        <div class="ledger-box">
+          <h3>11. Missed out to a complaint</h3>
+          <p>Because an upheld complaint keeps its original priority, a later request that was on track to be paid can be pushed out of the budget. That request's row is flagged with an indigo ring — the complaint counterpart of the "missed by one request" near-miss.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const totalDays = 90;
+    const programmeStart = new Date("2026-07-01T00:00:00");
+
+    const allRequests = [
+      { name: "Home insulation grant", applicant: "Household A", amount: 720, submitDay: 0 },
+      { name: "Solar panel subsidy", applicant: "Household B", amount: 980, submitDay: 1 },
+      { name: "Heat pump voucher", applicant: "Household C", amount: 1250, submitDay: 2 },
+      { name: "Window retrofit support", applicant: "Housing co-op", amount: 4050, submitDay: 4 },
+      { name: "Community garden grant", applicant: "Neighbourhood group", amount: 430, submitDay: 6 },
+      { name: "Small business energy aid", applicant: "Bakery", amount: 1120, submitDay: 8 },
+      { name: "E-bike mobility subsidy", applicant: "Commuter pool", amount: 520, submitDay: 10 },
+      { name: "School sustainability fund", applicant: "Primary school", amount: 870, submitDay: 12 },
+      { name: "Rainwater capture rebate", applicant: "Household D", amount: 360, submitDay: 14 },
+      { name: "Cultural venue support", applicant: "Arts hall", amount: 940, submitDay: 16 },
+      { name: "Farm efficiency grant", applicant: "Farm co-op", amount: 1180, submitDay: 18 },
+      { name: "Low-income heating aid", applicant: "Family support office", amount: 610, submitDay: 20 },
+      { name: "Roof greening subsidy", applicant: "Apartment block", amount: 760, submitDay: 22 },
+      { name: "Clinic equipment subsidy", applicant: "Local clinic", amount: 1320, submitDay: 24 },
+      { name: "Library access grant", applicant: "Public library", amount: 480, submitDay: 26 },
+      { name: "Youth sports subsidy", applicant: "Sports club", amount: 690, submitDay: 28 },
+      { name: "District cooling pilot", applicant: "Municipality", amount: 1450, submitDay: 30 },
+      { name: "Food bank logistics fund", applicant: "Food bank", amount: 830, submitDay: 32 },
+      { name: "Shared workshop grant", applicant: "Makerspace", amount: 1080, submitDay: 34 },
+      { name: "Accessibility upgrade", applicant: "Theatre", amount: 920, submitDay: 36 },
+      { name: "Childcare fee subsidy", applicant: "Family E", amount: 540, submitDay: 38 },
+      { name: "Circular repair bonus", applicant: "Repair shop", amount: 710, submitDay: 40 },
+      { name: "Water-saving equipment", applicant: "Restaurant", amount: 650, submitDay: 42 },
+      { name: "Flood resilience fund", applicant: "Residents group", amount: 990, submitDay: 44 },
+      { name: "Micro-enterprise launch aid", applicant: "Startup", amount: 1240, submitDay: 46 },
+      { name: "Public art microgrant", applicant: "Artist collective", amount: 390, submitDay: 48 },
+      { name: "EV charging support", applicant: "Housing association", amount: 1380, submitDay: 50 },
+      { name: "Apprenticeship subsidy", applicant: "Training centre", amount: 860, submitDay: 52 },
+      { name: "Digital inclusion grant", applicant: "Community centre", amount: 570, submitDay: 54 },
+      { name: "Urban tree planting", applicant: "Street committee", amount: 740, submitDay: 56 },
+      { name: "Caregiver respite fund", applicant: "Care network", amount: 690, submitDay: 57 },
+      { name: "Rural broadband voucher", applicant: "Village council", amount: 1210, submitDay: 58 },
+      { name: "Museum energy upgrade", applicant: "Museum", amount: 1160, submitDay: 59 },
+      { name: "Senior mobility grant", applicant: "Senior centre", amount: 440, submitDay: 60 },
+      { name: "Neighbourhood safety lights", applicant: "Residents board", amount: 780, submitDay: 60 },
+      { name: "Coastal habitat support", applicant: "Conservation group", amount: 1340, submitDay: 60 }
+    ];
+
+    const state = {
+      day: 0,
+      windowDays: 14,
+      pressure: 34,
+      budgetLimit: 4000,
+      acceptanceRate: 60,
+      processingMinDays: 1,
+      processingMaxDays: 3,
+      subprocessMinDays: 2,
+      subprocessMaxDays: 3,
+      subprocessExtraDays: 1,
+      preSubprocessMinDays: 1,
+      preSubprocessMaxDays: 2,
+      postSubprocessMinDays: 1,
+      postSubprocessMaxDays: 2,
+      complaintChance: 10,          // % of rejected requests that file a complaint
+      complaintSuccessChance: 20,   // % of complaints that are upheld (subsidy granted)
+      complaintFileMinDays: 2,      // complaint filed 2–3 days after the rejection
+      complaintFileMaxDays: 3,
+      complaintProcessMinDays: 3,   // complaint then takes 3–5 days to process
+      complaintProcessMaxDays: 5,
+      // Fixed starting seed chosen so the opening scenario clearly shows two
+      // upheld complaints and one request that misses its payout because of
+      // one of them. Reset re-rolls this to a random seed for exploration.
+      processingSeed: 2390,
+      playbackSlowdown: 0,
+      furthestDayReached: 0,
+      requests: []
+    };
+
+    const euro = value => new Intl.NumberFormat("en-IE", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0
+    }).format(value);
+
+    const dateForDay = day => {
+      const d = new Date(programmeStart);
+      d.setDate(d.getDate() + day);
+      return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    };
+
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+    function reviewScore(request) {
+      return ((request.id * 37 + request.amount * 11 + request.submitDay * 7) % 100) + 1;
+    }
+
+    function seededFraction(value) {
+      const x = Math.sin(value) * 10000;
+      return x - Math.floor(x);
+    }
+
+    function randomProcessingDays(request, index) {
+      const span = state.processingMaxDays - state.processingMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 92821 + request.amount * 37 + request.submitDay * 113;
+      return state.processingMinDays + Math.floor(seededFraction(seedValue) * span);
+    }
+
+    function needsSubprocess(index) {
+      // Exactly 1 out of every 4 requests goes through the "more information" subprocess.
+      return (index % 4) === 3;
+    }
+
+    function randomSubprocessDays(request, index) {
+      const span = state.subprocessMaxDays - state.subprocessMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 50923 + request.amount * 19 + request.submitDay * 71;
+      const baseDays = state.subprocessMinDays + Math.floor(seededFraction(seedValue) * span);
+      return baseDays + state.subprocessExtraDays;
+    }
+
+    function randomPreSubprocessDays(request, index) {
+      const span = state.preSubprocessMaxDays - state.preSubprocessMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 30187 + request.amount * 23 + request.submitDay * 53;
+      return state.preSubprocessMinDays + Math.floor(seededFraction(seedValue) * span);
+    }
+
+    function randomPostSubprocessDays(request, index) {
+      const span = state.postSubprocessMaxDays - state.postSubprocessMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 70451 + request.amount * 29 + request.submitDay * 89;
+      return state.postSubprocessMinDays + Math.floor(seededFraction(seedValue) * span);
+    }
+
+    // --- Complaint process helpers -------------------------------------
+    // A rejected applicant may file a complaint. Only a fraction do so, and
+    // only a fraction of those complaints are upheld. All of this is drawn
+    // from the same deterministic seed as everything else, so the scenario
+    // is reproducible and scrubbable.
+    function raisesComplaint(request, index) {
+      const seedValue = state.processingSeed + (index + 1) * 61129 + request.amount * 41 + request.submitDay * 137;
+      return seededFraction(seedValue) < state.complaintChance / 100;
+    }
+
+    function complaintSucceeds(request, index) {
+      const seedValue = state.processingSeed + (index + 1) * 83987 + request.amount * 43 + request.submitDay * 151;
+      return seededFraction(seedValue) < state.complaintSuccessChance / 100;
+    }
+
+    function randomComplaintFileDays(request, index) {
+      const span = state.complaintFileMaxDays - state.complaintFileMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 45197 + request.amount * 17 + request.submitDay * 97;
+      return state.complaintFileMinDays + Math.floor(seededFraction(seedValue) * span);
+    }
+
+    function randomComplaintProcessDays(request, index) {
+      const span = state.complaintProcessMaxDays - state.complaintProcessMinDays + 1;
+      const seedValue = state.processingSeed + (index + 1) * 99529 + request.amount * 31 + request.submitDay * 173;
+      return state.complaintProcessMinDays + Math.floor(seededFraction(seedValue) * span);
+    }
+
+    // Splits the amount currently held on hold into two buckets: the reserve
+    // caused by a request's own regular running process (submission →
+    // decision, plus any accepted-but-payout-pending wait) versus the reserve
+    // held specifically because a rejected request is now contesting its
+    // decision through a complaint. During a complaint the money cannot be
+    // released — it might yet have to be paid out — so it stays locked, but
+    // it is booked separately so the budget bar can show *why* it is locked.
+    function reserveSplitAt(processed, day) {
+      let regular = 0;
+      let complaint = 0;
+      processed.forEach(r => {
+        if (day < r.submitDay) return;
+        if (day < r.decisionDay) { regular += r.amount; return; }
+        // Past the first-pass decision day.
+        if (r.hasComplaint && day < r.complaintResolveDay) { complaint += r.amount; return; }
+        if (r.finalAccepted === true) {
+          const resolved = r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && day >= r.payoutResolvedDay;
+          if (!resolved) regular += r.amount; // accepted, still queued for payout
+        }
+        // finalAccepted === false past its resolution day → released, no hold.
+      });
+      return { regular, complaint };
+    }
+
+    function activeReserveFor(processed, day) {
+      const split = reserveSplitAt(processed, day);
+      return split.regular + split.complaint;
+    }
+
+    function awardedFor(processed, day) {
+      return processed
+        .filter(r => r.finalAccepted === true && r.paid === true &&
+          r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && day >= r.payoutResolvedDay)
+        .reduce((sum, r) => sum + r.amount, 0);
+    }
+
+    function simulate() {
+      const selected = allRequests.slice(0, state.pressure).map((r, index) => {
+        const hasSubprocess = needsSubprocess(index);
+        const processingDays = hasSubprocess
+          ? randomPreSubprocessDays(r, index)
+          : randomProcessingDays(r, index);
+        const subprocessDays = hasSubprocess ? randomSubprocessDays(r, index) : 0;
+        const postSubprocessDays = hasSubprocess ? randomPostSubprocessDays(r, index) : 0;
+        // Processing starts the day after submission, the same rule that
+        // applies to every other request type.
+        const subprocessStartDay = r.submitDay + 1 + processingDays;
+        const postSubprocessStartDay = subprocessStartDay + subprocessDays;
+        const decisionDay = postSubprocessStartDay + postSubprocessDays;
+        // For payout priority (first-come-first-served), a request that
+        // needed a "more information" subprocess is treated as if it had
+        // been submitted at the moment the extra information was received
+        // (postSubprocessStartDay), not at its real submission day. The
+        // budget reservation itself still starts at the real submitDay and
+        // covers the whole wait, including the subprocess — only queue
+        // priority shifts.
+        const effectivePayoutDay = hasSubprocess ? postSubprocessStartDay : r.submitDay;
+
+        // Complaint process. Its outcome only matters when the first-pass
+        // decision is a rejection, so we resolve the first-pass outcome here
+        // deterministically (the day-by-day loop below re-derives the exact
+        // same value) and only arm a complaint when the request is rejected.
+        const id = index + 1;
+        const willBeRejected = reviewScore({ id, amount: r.amount, submitDay: r.submitDay }) > state.acceptanceRate;
+        const hasComplaint = willBeRejected && raisesComplaint(r, index);
+        const complaintFileDelay = hasComplaint ? randomComplaintFileDays(r, index) : 0;
+        const complaintProcessDays = hasComplaint ? randomComplaintProcessDays(r, index) : 0;
+        const complaintFileDay = hasComplaint ? decisionDay + complaintFileDelay : null;
+        const complaintResolveDay = hasComplaint ? complaintFileDay + complaintProcessDays : null;
+        const complaintUpheld = hasComplaint ? complaintSucceeds(r, index) : false;
+
+        return {
+          ...r,
+          id,
+          processingDays,
+          hasSubprocess,
+          subprocessDays,
+          subprocessStartDay,
+          postSubprocessDays,
+          postSubprocessStartDay,
+          decisionDay,
+          effectivePayoutDay,
+          hasComplaint,
+          complaintFileDelay,
+          complaintProcessDays,
+          complaintFileDay,
+          complaintResolveDay,
+          complaintUpheld
+        };
+      });
+
+      const processed = [];
+
+      // Create one mutable "entry" object per request up front, keyed by id,
+      // so the day-by-day processed array and the payout priority queue
+      // below operate on the exact same objects rather than disconnected
+      // copies.
+      const entriesById = new Map();
+      selected.forEach(r => {
+        entriesById.set(r.id, {
+          ...r,
+          reserved: true,
+          acceptedOriginal: null,  // first-pass eligibility outcome
+          finalAccepted: null,     // outcome after any complaint resolves
+          finalDecisionDay: null,  // day the final outcome is known
+          paid: null,
+          payoutResolvedDay: null,
+          payoutShortage: 0,
+          availableBefore: 0,
+          awardedAtSubmission: 0,
+          activeReserveAtSubmission: 0,
+          shortage: 0,
+          rejectionReason: "",
+          blockedByRequestId: null,
+          justMissedByOne: false,
+          missedDueToComplaint: false
+        });
+      });
+
+      // Payout priority queue, ordered by *effective* payout day rather than
+      // literal submission day. For most requests these are the same thing.
+      // But a request that needed a "more information" subprocess is treated,
+      // for first-come-first-served payout purposes only, as if it had been
+      // submitted at the moment the extra information was received (i.e. when
+      // its subprocess ends and normal processing resumes) — not at its real
+      // submission day. The budget reservation itself is unaffected: it still
+      // starts at the real submitDay and covers the entire wait, subprocess
+      // included. Only the payout queue's priority ordering shifts.
+      //
+      // A request's payout can only be decided once every request *ahead of
+      // it in this effective-day order* has reached a final outcome (rejected,
+      // or accepted-and-resolved paid/unpaid) — even if its own decision
+      // already happened. payoutResolvedDay records the calendar day this
+      // happened, so the timeline can correctly show "pending" while
+      // scrubbing earlier days even though the request's own decisionDay (or
+      // effective day) has already passed. On an exact effectivePayoutDay
+      // tie, standard id (real submission) order decides.
+      const payoutQueue = selected
+        .slice()
+        .sort((a, b) => a.effectivePayoutDay - b.effectivePayoutDay || a.id - b.id)
+        .map(r => entriesById.get(r.id));
+
+      let resolvePointer = 0;
+      let awardedBudget = 0;
+      let budgetExhausted = false;
+      let blockingEntry = null;
+      let previousAcceptedEntry = null;
+
+      function tryResolvePayouts(asOfDay) {
+        while (resolvePointer < payoutQueue.length) {
+          const r = payoutQueue[resolvePointer];
+
+          // The day this entry's payout-relevant outcome becomes final. For a
+          // straightforward request that's its decision day. For a rejected
+          // request that filed a complaint, nothing behind it in the queue can
+          // be settled until the complaint resolves — the money it holds might
+          // still have to be paid out, so it keeps its priority claim and its
+          // reserve the whole time the complaint runs.
+          const readyDay = r.hasComplaint ? r.complaintResolveDay : r.decisionDay;
+
+          if (r.acceptedOriginal === null && !r.hasComplaint) {
+            // First-pass decision not made yet; nobody behind can resolve.
+            break;
+          }
+          if (asOfDay < readyDay) {
+            // Decision (or complaint) not yet reached: still blocks the queue.
+            break;
+          }
+
+          // The outcome that actually governs payout: for a complaint it is
+          // whether the complaint was upheld; otherwise the first-pass result.
+          // Crucially, an upheld complaint keeps the request's ORIGINAL queue
+          // position (effectivePayoutDay is unchanged), so it can still claim
+          // budget ahead of requests that were accepted while it was pending.
+          const payoutAccepted = r.hasComplaint ? r.complaintUpheld : (r.acceptedOriginal === true);
+
+          if (!payoutAccepted) {
+            // Rejected outright, or complaint refused: releases its
+            // reservation, consumes no budget.
+            resolvePointer++;
+            continue;
+          }
+          // Accepted: decide payout now, in effective-priority order. Once
+          // the budget has been exhausted by an earlier-priority request,
+          // it stays exhausted for everyone after it — a later, smaller
+          // request can never "back-fill" into space an earlier request
+          // couldn't claim.
+          if (budgetExhausted) {
+            r.paid = false;
+            r.payoutShortage = (awardedBudget + r.amount) - state.budgetLimit;
+            r.blockedByRequestId = blockingEntry ? blockingEntry.id : null;
+            // "Just missed out" callout: flag the case where the very
+            // next-in-line accepted request ahead of this one is the one
+            // that exhausted the budget — a true "missed by one" near-miss.
+            r.justMissedByOne = !!(previousAcceptedEntry && previousAcceptedEntry.id === r.blockedByRequestId);
+          } else {
+            const fundsAvailable = awardedBudget + r.amount <= state.budgetLimit;
+            if (fundsAvailable) {
+              r.paid = true;
+              awardedBudget += r.amount;
+            } else {
+              r.paid = false;
+              r.payoutShortage = (awardedBudget + r.amount) - state.budgetLimit;
+              budgetExhausted = true;
+              blockingEntry = previousAcceptedEntry;
+              r.blockedByRequestId = blockingEntry ? blockingEntry.id : null;
+              r.justMissedByOne = !!blockingEntry;
+            }
+          }
+          r.payoutResolvedDay = asOfDay;
+          previousAcceptedEntry = r;
+          resolvePointer++;
+        }
+      }
+
+      // Day-by-day eligibility review (accepted vs rejected), with payout
+      // resolution attempted after each day's decisions so that any request
+      // whose priority queue position has just become fully resolved gets
+      // paid (or marked unpaid) immediately, in effective-priority order.
+      for (let day = 0; day <= totalDays; day++) {
+        // First-pass eligibility decision.
+        processed
+          .filter(r => r.acceptedOriginal === null && r.decisionDay === day)
+          .forEach(r => {
+            if (reviewScore(r) <= state.acceptanceRate) {
+              r.acceptedOriginal = true;
+              r.finalAccepted = true;
+              r.finalDecisionDay = day;
+              r.rejectionReason = "";
+            } else {
+              r.acceptedOriginal = false;
+              r.rejectionReason = "Rejected during eligibility review";
+              if (!r.hasComplaint) {
+                // No complaint: this is the final word — release now.
+                r.finalAccepted = false;
+                r.finalDecisionDay = day;
+                r.paid = false;
+                r.payoutResolvedDay = day;
+              }
+              // With a complaint: outcome stays open until the complaint
+              // resolves; the reserve is deliberately NOT released.
+            }
+          });
+
+        // Complaint resolutions land on their own day.
+        processed
+          .filter(r => r.hasComplaint && r.complaintResolveDay === day && r.finalAccepted === null)
+          .forEach(r => {
+            r.finalAccepted = r.complaintUpheld;
+            r.finalDecisionDay = day;
+            if (!r.complaintUpheld) {
+              // Complaint refused: rejection stands, reserve releases now.
+              r.paid = false;
+              r.payoutResolvedDay = day;
+              r.rejectionReason = "Complaint refused — rejection upheld";
+            } else {
+              r.rejectionReason = "";
+              // Complaint upheld: it now claims payout at its ORIGINAL queue
+              // position, handled by tryResolvePayouts below.
+            }
+          });
+
+        selected
+          .filter(r => r.submitDay === day)
+          .forEach(r => {
+            processed.push(entriesById.get(r.id));
+          });
+
+        tryResolvePayouts(day);
+      }
+
+      // Final sweep: anyone still waiting once the simulation horizon ends
+      // (e.g. the request ahead of them never reaches a decision within
+      // totalDays) is left as accepted-pending; this should not normally
+      // happen within the simulated window but is handled defensively.
+      tryResolvePayouts(totalDays);
+
+      // Who missed out *because of* a complaint? We settle the payout queue a
+      // second time in a counterfactual world where no complaint is ever
+      // upheld (every contested rejection simply stays rejected). Any request
+      // that is paid in that world but unpaid in reality lost its payout
+      // specifically because an upheld complaint reclaimed budget ahead of it
+      // in the queue — exactly the near-miss the timeline should call out.
+      function resolvePaidSet(orderedQueue, budgetLimit, isAccepted) {
+        let awarded = 0;
+        let exhausted = false;
+        const paid = new Map();
+        orderedQueue.forEach(r => {
+          if (!isAccepted(r)) return;
+          if (exhausted) { paid.set(r.id, false); return; }
+          if (awarded + r.amount <= budgetLimit) { paid.set(r.id, true); awarded += r.amount; }
+          else { paid.set(r.id, false); exhausted = true; }
+        });
+        return paid;
+      }
+
+      const paidWithoutComplaints = resolvePaidSet(
+        payoutQueue,
+        state.budgetLimit,
+        r => r.hasComplaint ? false : (r.acceptedOriginal === true)
+      );
+
+      processed.forEach(r => {
+        const lostPayout = r.finalAccepted === true && r.paid === false;
+        r.missedDueToComplaint = lostPayout && paidWithoutComplaints.get(r.id) === true;
+      });
+
+      // Reservation snapshot pass: now that payout is finalised, replay
+      // submission order to record the reservation snapshot (active reserve
+      // and awarded-so-far at the moment each request was submitted) for
+      // display purposes in the event list.
+      for (let day = 0; day <= totalDays; day++) {
+        processed
+          .filter(r => r.submitDay === day)
+          .forEach(r => {
+            const activeReserve = activeReserveFor(processed, day);
+            const awardedSoFar = awardedFor(processed, day);
+            r.availableBefore = state.budgetLimit - awardedSoFar - activeReserve;
+            r.awardedAtSubmission = awardedSoFar;
+            r.activeReserveAtSubmission = activeReserve;
+          });
+      }
+
+      state.requests = processed;
+    }
+
+    function budgetStateAt(day) {
+      const split = reserveSplitAt(state.requests, day);
+      const activeReserve = split.regular + split.complaint;
+      const awarded = awardedFor(state.requests, day);
+
+      // Derive the visible request groupings straight from the display status,
+      // so a request under complaint is neither "rejected" nor "accepted" yet.
+      const byStatus = state.requests.map(r => ({ r, status: statusForRequest(r, day) }));
+      const rejected = byStatus.filter(x => x.status === "rejected").map(x => x.r);
+      const accepted = byStatus.filter(x => x.status === "accepted" || x.status === "accepted-unpaid").map(x => x.r);
+      const unpaid = byStatus.filter(x => x.status === "accepted-unpaid").map(x => x.r);
+      const pending = byStatus.filter(x => x.status === "accepted-pending").map(x => x.r);
+      const complaints = byStatus.filter(x => x.status === "complaint").map(x => x.r);
+
+      // Released reserves = anything whose final outcome is a rejection and
+      // whose hold has been let go (plain rejections and refused complaints).
+      const released = state.requests
+        .filter(r => r.finalAccepted === false && r.finalDecisionDay !== null && day >= r.finalDecisionDay)
+        .reduce((sum, r) => sum + r.amount, 0);
+
+      return {
+        activeReserve,
+        regularReserve: split.regular,
+        complaintReserve: split.complaint,
+        awarded,
+        released,
+        rejected,
+        accepted,
+        unpaid,
+        pending,
+        complaints,
+        available: Math.max(state.budgetLimit - activeReserve - awarded, 0)
+      };
+    }
+
+    function statusForRequest(r, day) {
+      if (day < r.submitDay) return "future";
+      if (day === r.submitDay && day < r.decisionDay) return "submitted";
+      if (r.hasSubprocess && day >= r.subprocessStartDay && day < r.postSubprocessStartDay) return "subprocess";
+      if (day > r.submitDay && day < r.decisionDay) return "processing";
+
+      // Past the first-pass decision day.
+      const acceptedNow = r => {
+        const resolved = r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && day >= r.payoutResolvedDay;
+        if (!resolved) return "accepted-pending";
+        if (r.paid === true) return "accepted";
+        if (r.paid === false) return "accepted-unpaid";
+        return "accepted-pending";
+      };
+
+      if (r.acceptedOriginal === false) {
+        // A rejection that is being contested shows as a running complaint
+        // until the complaint resolves, then flips to its final outcome.
+        if (r.hasComplaint && day < r.complaintResolveDay) return "complaint";
+        if (r.finalAccepted === true) return acceptedNow(r);
+        return "rejected";
+      }
+      if (r.acceptedOriginal === true) return acceptedNow(r);
+      return "processing";
+    }
+
+    function windowBounds() {
+      const half = Math.floor(state.windowDays / 2);
+      let start = clamp(state.day - half, 0, Math.max(0, totalDays - state.windowDays));
+      let end = start + state.windowDays;
+      return { start, end };
+    }
+
+    function pctInWindow(day, start, end) {
+      return ((day - start) / (end - start)) * 100;
+    }
+
+    function intersectsWindow(r, start, end) {
+      const lastDay = r.hasComplaint ? r.complaintResolveDay : r.decisionDay;
+      return lastDay >= start && r.submitDay <= end;
+    }
+
+    function buildEvents() {
+      const list = document.getElementById("eventList");
+      list.innerHTML = "";
+
+      state.requests.forEach((r, index) => {
+        const el = document.createElement("div");
+        el.className = "event";
+        el.dataset.index = index;
+        el.dataset.requestId = r.id;
+        const finalDayLabel = dateForDay(r.finalDecisionDay !== null && r.finalDecisionDay !== undefined ? r.finalDecisionDay : r.decisionDay);
+        const viaComplaint = r.hasComplaint ? " on appeal" : "";
+        const decisionText = r.finalAccepted === true
+          ? (r.paid === true
+              ? `Accepted${viaComplaint} and paid on ${finalDayLabel}`
+              : r.paid === false
+                ? `Accepted${viaComplaint} on ${finalDayLabel} but funds had run out — short ${euro(r.payoutShortage)}`
+                : `Accepted${viaComplaint} on ${finalDayLabel}, payout pending an earlier request's decision`)
+          : r.finalAccepted === false
+            ? `Rejected on ${finalDayLabel} · ${r.rejectionReason}`
+            : `Decision ${dateForDay(r.decisionDay)}`;
+
+        const subprocessText = r.hasSubprocess
+          ? ` · Needs more info from ${dateForDay(r.subprocessStartDay)}, adding ${r.subprocessDays} days, then ${r.postSubprocessDays} more processing day${r.postSubprocessDays === 1 ? "" : "s"} · Payout queue position based on ${dateForDay(r.effectivePayoutDay)} (when info was received), not the original submission day`
+          : "";
+
+        const complaintText = r.hasComplaint
+          ? ` · Rejected first on ${dateForDay(r.decisionDay)}, complaint filed ${dateForDay(r.complaintFileDay)} and processed over ${r.complaintProcessDays} days (${r.complaintUpheld ? "upheld" : "refused"}) · budget held as a complaint reserve the whole time, keeping the original ${dateForDay(r.effectivePayoutDay)} payout queue position`
+          : "";
+
+        el.innerHTML = `
+          <div class="icon">📝</div>
+          <div>
+            <div class="event-title">${r.name}</div>
+            <div class="event-sub">
+              ${r.applicant} · Submitted ${dateForDay(r.submitDay)} · Request ${euro(r.amount)} ·
+              Processing ${r.processingDays} day${r.processingDays === 1 ? "" : "s"}${subprocessText} · ${decisionText}${complaintText}
+              · Reserved after submission with ${euro(r.availableBefore)} available
+            </div>
+          </div>
+          <div class="badge future">Upcoming</div>
+        `;
+        list.appendChild(el);
+      });
+    }
+
+    function buildTimeline() {
+      const timeline = document.getElementById("timeline");
+      const axis = document.getElementById("axis");
+      const todayLine = document.getElementById("todayLine");
+      const existingRows = timeline.querySelectorAll(".row, .subrow, .empty-window");
+      existingRows.forEach(r => r.remove());
+
+      // The timeline reveals content up to the furthest day the simulation
+      // has reached (the "high-water mark"), not necessarily state.day
+      // itself. This means dragging the day slider backward while paused
+      // lets you inspect an earlier moment without the timeline hiding rows
+      // it had already shown; only advancing past the watermark reveals
+      // anything new. The "today" line below still tracks state.day exactly,
+      // so it's clear where within the already-revealed timeline you're
+      // currently looking.
+      const revealDay = Math.max(state.day, state.furthestDayReached);
+
+      const { start, end } = windowBounds();
+      const slots = end - start + 1;
+      axis.style.gridTemplateColumns = `repeat(${slots}, 1fr)`;
+      axis.innerHTML = Array.from({ length: slots }, (_, i) => {
+        const day = start + i;
+        return `<span>${dateForDay(day)}</span>`;
+      }).join("");
+
+      const todayPct = pctInWindow(state.day, start, end);
+      todayLine.style.left = `calc(178px + (100% - 178px) * ${todayPct / 100})`;
+
+      // Requests sharing the same decisionDay would otherwise stack exactly
+      // on top of each other at the same horizontal position. Group them by
+      // day, then fan each group out into a small left-to-right cluster so
+      // every distinct outcome that day is visible. Within a group, order
+      // matches the natural submission order used for the per-request rows
+      // below, so "left to right" in this summary row corresponds to "top
+      // to bottom" in the rows beneath it.
+      const dayWidthPct = 100 / slots;
+      const clusterStep = clamp(dayWidthPct * 0.32, 0.9, 3.2);
+
+      const resolvedBy = r => r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && revealDay >= r.payoutResolvedDay;
+
+      // Renders one decision dot. `viaComplaint` draws the indigo ring that
+      // marks an outcome reached on appeal rather than at first pass.
+      const decisionDot = (r, left, accepted, viaComplaint) => {
+        const resolved = resolvedBy(r);
+        const unpaid = accepted && resolved && r.paid === false;
+        const pending = accepted && !resolved;
+        const cls = accepted ? "accepted" : "rejected";
+        const ring = viaComplaint ? " via-complaint" : "";
+        const title = accepted
+          ? (unpaid
+              ? `Accepted ${r.name}${viaComplaint ? " on appeal" : ""}, but funds had run out — short ${euro(r.payoutShortage)}`
+              : pending
+                ? `Accepted ${r.name}${viaComplaint ? " on appeal" : ""}: ${euro(r.amount)} — payout pending`
+                : `Accepted ${r.name}${viaComplaint ? " on appeal" : ""}: ${euro(r.amount)}`)
+          : `${viaComplaint ? "Complaint refused for" : "Rejected"} ${r.name}${viaComplaint ? "" : ": " + (r.rejectionReason || "Rejected during eligibility review")}`;
+        return `<div class="segment ${cls}${ring}" title="${title}" style="left:calc(${left}% - 8px);">${unpaid ? `<span class="error-overlay" aria-hidden="true">!</span>` : ""}</div>`;
+      };
+
+      const renderGroups = (groups, dayGetter, acceptedGetter, viaComplaint) => {
+        let out = "";
+        groups.forEach(group => {
+          const basePct = clamp(pctInWindow(dayGetter(group[0]), start, end), 0, 100);
+          const clusterWidth = (group.length - 1) * clusterStep;
+          group.forEach((r, i) => {
+            const offset = group.length > 1 ? (i * clusterStep) - clusterWidth / 2 : 0;
+            const left = clamp(basePct + offset, 0, 100);
+            out += decisionDot(r, left, acceptedGetter(r), viaComplaint);
+          });
+        });
+        return out;
+      };
+
+      // First-pass decisions, grouped by decision day.
+      const decisionGroups = new Map();
+      state.requests
+        .filter(r => r.decisionDay >= start && r.decisionDay <= end && r.decisionDay <= revealDay)
+        .forEach(r => {
+          if (!decisionGroups.has(r.decisionDay)) decisionGroups.set(r.decisionDay, []);
+          decisionGroups.get(r.decisionDay).push(r);
+        });
+
+      // Complaint resolutions, grouped by the day the complaint is decided.
+      const complaintGroups = new Map();
+      state.requests
+        .filter(r => r.hasComplaint && r.complaintResolveDay >= start && r.complaintResolveDay <= end && r.complaintResolveDay <= revealDay)
+        .forEach(r => {
+          if (!complaintGroups.has(r.complaintResolveDay)) complaintGroups.set(r.complaintResolveDay, []);
+          complaintGroups.get(r.complaintResolveDay).push(r);
+        });
+
+      let decisionMarkers = "";
+      decisionMarkers += renderGroups(decisionGroups, r => r.decisionDay, r => r.acceptedOriginal === true, false);
+      decisionMarkers += renderGroups(complaintGroups, r => r.complaintResolveDay, r => r.complaintUpheld === true, true);
+
+      const decisionRow = document.createElement("div");
+      decisionRow.className = "row";
+      decisionRow.innerHTML = `
+        <div>
+          <div class="subsidy-name">Decision days</div>
+          <div class="subsidy-amount">After processing, plus a subprocess and extra processing for 1 in 4 requests</div>
+        </div>
+        <div class="track decision-track">${decisionMarkers}</div>
+      `;
+      timeline.appendChild(decisionRow);
+
+      const visible = state.requests.filter(r => intersectsWindow(r, start, end));
+
+      if (!visible.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-window";
+        empty.textContent = "No subsidy requests intersect this visible window. Move the day slider or zoom out.";
+        timeline.appendChild(empty);
+        return;
+      }
+
+      visible.forEach(r => {
+        const row = document.createElement("div");
+        row.className = "row";
+
+        const status = statusForRequest(r, revealDay);
+        let segments = "";
+
+        // Nothing for this request renders at all until its submission day
+        // has actually been reached by the watermark, so the timeline starts
+        // empty for a row and gradually fills in as the simulation advances.
+        // Scrubbing the day slider backward while paused does not re-hide
+        // anything already revealed — only the watermark controls this.
+        if (r.submitDay > revealDay) {
+          row.innerHTML = `
+            <div>
+              <div class="subsidy-name">${r.name}</div>
+              <div class="subsidy-amount">Not yet submitted</div>
+            </div>
+            <div class="track" data-status="future"></div>
+          `;
+          timeline.appendChild(row);
+          return;
+        }
+
+        const submitStart = clamp(pctInWindow(r.submitDay, start, end), 0, 100);
+        const processingStartDay = r.submitDay + 1;
+        const processingStart = clamp(pctInWindow(processingStartDay, start, end), 0, 100);
+
+        // Clip every span to the watermark: days beyond it haven't been
+        // revealed yet, so the bar simply doesn't reach that far, regardless
+        // of what the final outcome will eventually be.
+        const visibleProcessingStartDay = Math.min(processingStartDay, revealDay);
+        const visibleDecisionDay = Math.min(r.decisionDay, revealDay);
+        const decision = clamp(pctInWindow(visibleDecisionDay, start, end), 0, 100);
+
+        // Processing always takes at least 1 real day. If the decision lands
+        // on or before the day processing would normally start (i.e. there's
+        // no day left over once the "submitted" segment claims its usual
+        // day-wide slot), the submitted marker shrinks to a small fixed-width
+        // badge instead, so the full submitDay→decisionDay span is freed up
+        // for the "processing" bar — otherwise a 1-day processing duration
+        // would visually disappear entirely, even though it genuinely
+        // happened.
+        const processingNeedsFullSpan = r.decisionDay <= processingStartDay;
+
+        if (processingNeedsFullSpan) {
+          if (r.submitDay >= start && r.submitDay <= end) {
+            segments += `<div class="segment submitted" style="left:calc(${submitStart}% - 9px); width:18px;">S</div>`;
+          }
+        } else if (r.submitDay <= end && visibleProcessingStartDay >= start) {
+          const submitEndPct = clamp(pctInWindow(visibleProcessingStartDay, start, end), 0, 100);
+          const submitEnd = Math.max(submitStart, submitEndPct);
+          if (submitEnd > submitStart) {
+            segments += `<div class="segment submitted" style="left:${submitStart}%; width:${submitEnd - submitStart}%">submitted</div>`;
+          } else if (r.submitDay >= start && r.submitDay <= end) {
+            segments += `<div class="segment submitted" style="left:calc(${submitStart}% - 9px); width:18px;">S</div>`;
+          }
+        }
+
+        if (processingNeedsFullSpan) {
+          if (revealDay > r.submitDay && r.decisionDay > r.submitDay) {
+            const holdStart = clamp(pctInWindow(r.submitDay, start, end), 0, 100);
+            const holdEnd = clamp(pctInWindow(visibleDecisionDay, start, end), 0, 100);
+            if (holdEnd > holdStart) {
+              segments += `<div class="segment processing" style="left:${holdStart}%; width:${holdEnd - holdStart}%">processing</div>`;
+            }
+          }
+        } else if (revealDay > processingStartDay && r.decisionDay > processingStartDay) {
+          const holdStart = clamp(pctInWindow(processingStartDay, start, end), 0, 100);
+          const holdEnd = clamp(pctInWindow(visibleDecisionDay, start, end), 0, 100);
+          if (holdEnd > holdStart) {
+            segments += `<div class="segment processing" style="left:${holdStart}%; width:${holdEnd - holdStart}%">processing</div>`;
+          }
+        }
+
+        const resolvedByReveal = r => r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && revealDay >= r.payoutResolvedDay;
+
+        // First-pass decision dot: always the ORIGINAL outcome. For a request
+        // that later complains, this stays a red rejection dot; the complaint
+        // outcome shows as a second, ringed dot further along.
+        if (r.decisionDay >= start && r.decisionDay <= end && r.decisionDay <= revealDay) {
+          const acc = r.acceptedOriginal === true;
+          const resolved = resolvedByReveal(r);
+          const unpaid = acc && resolved && r.paid === false;
+          const pending = acc && !resolved;
+          const cls = acc ? "accepted" : "rejected";
+          const title = acc
+            ? (unpaid
+                ? `Accepted, but funds had run out by payout — short ${euro(r.payoutShortage)}`
+                : pending
+                  ? "Accepted; payout pending an earlier request's decision"
+                  : "Accepted; subsidy deducted from budget")
+            : r.hasComplaint
+              ? "Rejected at first pass; complaint filed"
+              : `Rejected; ${r.rejectionReason}`;
+          segments += `<div class="segment ${cls}" title="${title}" style="left:calc(${decision}% - 8px);">${unpaid ? `<span class="error-overlay" aria-hidden="true">!</span>` : ""}</div>`;
+        }
+
+        // Complaint outcome dot at the complaint resolution day (ringed).
+        if (r.hasComplaint && r.complaintResolveDay >= start && r.complaintResolveDay <= end && r.complaintResolveDay <= revealDay) {
+          const cPct = clamp(pctInWindow(r.complaintResolveDay, start, end), 0, 100);
+          const acc = r.complaintUpheld === true;
+          const resolved = resolvedByReveal(r);
+          const unpaid = acc && resolved && r.paid === false;
+          const pending = acc && !resolved;
+          const cls = acc ? "accepted" : "rejected";
+          const title = acc
+            ? (unpaid
+                ? `Complaint upheld, but funds had run out — short ${euro(r.payoutShortage)}`
+                : pending
+                  ? "Complaint upheld; payout pending an earlier request"
+                  : "Complaint upheld; subsidy granted at its original queue position")
+            : "Complaint refused; rejection stands";
+          segments += `<div class="segment ${cls} via-complaint" title="${title}" style="left:calc(${cPct}% - 8px);">${unpaid ? `<span class="error-overlay" aria-hidden="true">!</span>` : ""}</div>`;
+        }
+
+        const liveStatusForCaption = statusForRequest(r, revealDay);
+        const amountCaption =
+          liveStatusForCaption === "accepted"
+            ? `${euro(r.amount)} accepted and paid`
+            : liveStatusForCaption === "accepted-unpaid"
+              ? `${euro(r.amount)} accepted, unpaid — funds ran out`
+              : liveStatusForCaption === "accepted-pending"
+                ? `${euro(r.amount)} accepted, payout pending`
+                : liveStatusForCaption === "rejected"
+                  ? `${euro(r.amount)} rejected`
+                  : liveStatusForCaption === "complaint"
+                    ? `${euro(r.amount)} rejected — complaint under review`
+                    : `${euro(r.amount)} reserved`;
+
+        // "Jumped the queue" callout: a brief animated oval that highlights
+        // a request right when it becomes clear it was accepted but missed
+        // "Jumped the queue" callout: a tight oval that hugs the row right
+        // when it becomes clear a request was accepted but missed out on
+        // payout because of who was just ahead of it in the queue. It pops
+        // in and blinks on the exact day this is revealed, then settles
+        // into a steady, permanently visible ring afterwards — it does not
+        // fade away, so the row stays visibly flagged from that point on.
+        let calloutHtml = "";
+        if (
+          r.finalAccepted === true && r.paid === false &&
+          r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined &&
+          revealDay >= r.payoutResolvedDay
+        ) {
+          const isFresh = revealDay === r.payoutResolvedDay;
+          const freshClass = isFresh ? " is-fresh" : "";
+          // Hug just the visible content (from the start of the "submitted"
+          // pill through to the decision dot) rather than the full track
+          // width, so the ring wraps tightly around the actual bar instead
+          // of the empty space around it.
+          const calloutLeft = clamp(submitStart, 0, 100);
+          const calloutRight = clamp(decision, 0, 100);
+          const calloutStyle = `left:calc(${calloutLeft}% - 14px); width:calc(${Math.max(calloutRight - calloutLeft, 0)}% + 36px);`;
+          if (r.missedDueToComplaint) {
+            // A request that would have been paid, but an upheld complaint
+            // reclaimed the budget ahead of it in the queue. Accentuated the
+            // same way as a queue-order near-miss, but in the complaint colour.
+            const complaintStyle = `${calloutStyle} --callout-color:#818cf8; --callout-glow:rgba(129,140,248,.5);`;
+            calloutHtml = `
+              <div class="jump-out-callout${freshClass}" style="${complaintStyle}">
+                <div class="jump-out-callout-label">Missed out — an upheld complaint took the budget</div>
+              </div>`;
+          } else if (r.justMissedByOne) {
+            calloutHtml = `
+              <div class="jump-out-callout${freshClass}" style="${calloutStyle}">
+                <div class="jump-out-callout-label">Accepted, but missed out by one request</div>
+              </div>`;
+          }
+        }
+
+        row.innerHTML = `
+          <div>
+            <div class="subsidy-name">${r.name}</div>
+            <div class="subsidy-amount">
+              ${amountCaption}
+              ${r.hasSubprocess ? " · needs more info" : ""}
+              ${r.hasComplaint ? " · complaint" : ""}
+            </div>
+          </div>
+          <div class="track" data-status="${status}">
+            ${segments}
+          </div>
+          ${calloutHtml}
+        `;
+
+        // The complaint process is drawn as a track ABOVE the request it
+        // belongs to (the mirror of the "more info needed" subrow below),
+        // spanning from the day the complaint is filed to the day it resolves.
+        // It is appended before the main row so it sits directly above it.
+        if (r.hasComplaint && r.complaintFileDay <= revealDay && r.complaintFileDay <= end && r.complaintResolveDay >= start) {
+          const visibleCEndDay = Math.min(r.complaintResolveDay, revealDay);
+          const cStart = clamp(pctInWindow(r.complaintFileDay, start, end), 0, 100);
+          const cEnd = clamp(pctInWindow(visibleCEndDay, start, end), 0, 100);
+          let cSegment = "";
+          if (cEnd > cStart) {
+            const title = `Complaint under review: filed ${dateForDay(r.complaintFileDay)}, ${r.complaintProcessDays} days to process — budget stays reserved as a complaint hold`;
+            cSegment = `<div class="segment complaint-row" title="${title}" style="left:${cStart}%; width:${cEnd - cStart}%">complaint</div>`;
+          }
+          const complaintResolvedVisually = r.complaintResolveDay <= revealDay;
+          const disabledClass = (complaintResolvedVisually && !r.complaintUpheld) ? " disabled" : "";
+          const csub = document.createElement("div");
+          csub.className = "subrow complaint-subrow";
+          csub.innerHTML = `
+            <div class="subrow-label complaint-label">⚖ complaint ↴</div>
+            <div class="subtrack complaint-subtrack${disabledClass}">
+              ${cSegment}
+            </div>
+          `;
+          timeline.appendChild(csub);
+        }
+
+        timeline.appendChild(row);
+
+        if (r.hasSubprocess && r.subprocessStartDay <= revealDay && r.postSubprocessStartDay > r.subprocessStartDay && r.subprocessStartDay <= end && r.postSubprocessStartDay >= start) {
+          const visibleSubEndDay = Math.min(r.postSubprocessStartDay, revealDay);
+          const subStart = clamp(pctInWindow(r.subprocessStartDay, start, end), 0, 100);
+          const subEnd = clamp(pctInWindow(visibleSubEndDay, start, end), 0, 100);
+          let subSegment = "";
+          if (subEnd > subStart) {
+            const title = `Needs more information: +${r.subprocessDays} days (incl. 1 extra day) before processing can resume`;
+            subSegment = `<div class="segment subprocess-row" title="${title}" style="left:${subStart}%; width:${subEnd - subStart}%">needs more info</div>`;
+          }
+
+          const subrow = document.createElement("div");
+          subrow.className = "subrow";
+          subrow.innerHTML = `
+            <div class="subrow-label">↳ more info needed</div>
+            <div class="subtrack">
+              ${subSegment}
+            </div>
+          `;
+          timeline.appendChild(subrow);
+        }
+      });
+    }
+
+    function currentRequestIndex() {
+      const exact = state.requests.findIndex(r => r.submitDay === state.day || r.decisionDay === state.day);
+      if (exact >= 0) return exact;
+
+      const active = state.requests.findIndex(r => {
+        const status = statusForRequest(r, state.day);
+        return status === "submitted" || status === "processing" || status === "subprocess" || status === "complaint";
+      });
+      if (active >= 0) return active;
+
+      const next = state.requests.findIndex(r => r.submitDay > state.day);
+      if (next >= 0) return next;
+
+      return Math.max(0, state.requests.length - 1);
+    }
+
+    function updateEvents({ follow = false } = {}) {
+      const focusIndex = currentRequestIndex();
+
+      document.querySelectorAll(".event").forEach((el, i) => {
+        const r = state.requests[i];
+        const status = statusForRequest(r, state.day);
+        const isCurrentRequest = i === focusIndex;
+
+        el.classList.toggle("active", status === "submitted" || status === "processing" || status === "subprocess");
+        el.classList.toggle("rejected", status === "rejected");
+        el.classList.toggle("unpaid", status === "accepted-unpaid");
+        el.classList.toggle("pending-payout", status === "accepted-pending");
+        el.classList.toggle("complaint", status === "complaint");
+        el.classList.toggle("future", status === "future");
+        el.classList.toggle("current-attempt", isCurrentRequest);
+
+        const icon = el.querySelector(".icon");
+        icon.textContent = {
+          future: "🧾",
+          submitted: "📝",
+          processing: "🔎",
+          subprocess: "📨",
+          complaint: "⚖️",
+          accepted: "✅",
+          "accepted-unpaid": "⚠️",
+          "accepted-pending": "⏳",
+          rejected: "⛔"
+        }[status];
+
+        const badge = el.querySelector(".badge");
+        badge.className = `badge ${status}`;
+        badge.textContent = {
+          future: "Upcoming",
+          submitted: "Submitted",
+          processing: "Processing",
+          subprocess: "Needs more info",
+          complaint: "Complaint",
+          accepted: "Accepted",
+          "accepted-unpaid": "Accepted, unpaid",
+          "accepted-pending": "Payout pending",
+          rejected: "Rejected"
+        }[status];
+      });
+
+      if (follow) {
+        const focusRow = document.querySelector(`.event[data-index="${focusIndex}"]`);
+        const list = document.getElementById("eventList");
+        if (focusRow && list) {
+          // Scroll only the inner event-list container, never the page.
+          // scrollIntoView can bubble to ancestor scroll containers (including
+          // the page itself), which is what caused the page to jump back to
+          // the top whenever the simulation advanced. Computing scrollTop
+          // directly keeps the auto-follow behavior local to this panel.
+          const rowTop = focusRow.offsetTop;
+          const rowBottom = rowTop + focusRow.offsetHeight;
+          const viewTop = list.scrollTop;
+          const viewBottom = viewTop + list.clientHeight;
+
+          if (rowTop < viewTop) {
+            list.scrollTop = rowTop;
+          } else if (rowBottom > viewBottom) {
+            list.scrollTop = rowBottom - list.clientHeight;
+          }
+        }
+      }
+    }
+
+    function updateMetrics() {
+      const current = budgetStateAt(state.day);
+      const currentReviews = state.requests.filter(r => {
+        const status = statusForRequest(r, state.day);
+        return status === "submitted" || status === "processing" || status === "subprocess";
+      });
+      const decisionToday = state.requests.filter(r => r.decisionDay === state.day);
+      const nextDecision = state.requests.find(r => r.decisionDay > state.day);
+      const lastRejected = [...current.rejected].pop();
+      const nextRejected = state.requests.find(r => r.finalAccepted === false && r.decisionDay >= state.day);
+      const lastUnpaid = [...current.unpaid].pop();
+      const nextUnpaid = state.requests.find(r => {
+        if (r.finalAccepted !== true || r.decisionDay < state.day) return false;
+        const resolved = r.payoutResolvedDay !== null && r.payoutResolvedDay !== undefined && state.day >= r.payoutResolvedDay;
+        return resolved && r.paid === false;
+      });
+
+      document.getElementById("budgetLimitValue").textContent = euro(state.budgetLimit);
+      document.getElementById("reservedAmount").textContent = euro(current.regularReserve);
+      document.getElementById("complaintReserveAmount").textContent = euro(current.complaintReserve);
+      document.getElementById("awardedAmount").textContent = euro(current.awarded);
+      document.getElementById("releasedAmount").textContent = euro(current.released);
+      document.getElementById("rejectedCount").textContent = String(current.rejected.length);
+      document.getElementById("complaintCount").textContent = String(current.complaints.length);
+      document.getElementById("unpaidCount").textContent = String(current.unpaid.length);
+      document.getElementById("pendingCount").textContent = String(current.pending.length);
+      document.getElementById("availableText").textContent = `Available: ${euro(current.available)}`;
+
+      const unpaidTotal = current.unpaid.reduce((sum, r) => sum + r.amount, 0);
+      document.getElementById("unpaidAmountLabel").textContent = current.unpaid.length
+        ? `${euro(unpaidTotal)} accepted, unpaid (${current.unpaid.length})`
+        : `€0 accepted, unpaid`;
+
+      const awardedPct = clamp((current.awarded / state.budgetLimit) * 100, 0, 100);
+      const reservedPct = clamp((current.regularReserve / state.budgetLimit) * 100, 0, 100);
+      const complaintPct = clamp((current.complaintReserve / state.budgetLimit) * 100, 0, 100);
+      const availablePct = clamp((current.available / state.budgetLimit) * 100, 0, 100);
+
+      document.getElementById("awardedBar").style.width = `${awardedPct}%`;
+      document.getElementById("reservedBar").style.width = `${reservedPct}%`;
+      document.getElementById("complaintReservedBar").style.width = `${complaintPct}%`;
+      document.getElementById("availableBar").style.width = `${availablePct}%`;
+      document.getElementById("awardedBar").textContent = awardedPct > 8 ? euro(current.awarded) : "";
+      document.getElementById("reservedBar").textContent = reservedPct > 8 ? euro(current.regularReserve) : "";
+      document.getElementById("complaintReservedBar").textContent = complaintPct > 10 ? euro(current.complaintReserve) : "";
+      document.getElementById("availableBar").textContent = availablePct > 12 ? `${euro(current.available)} available` : "";
+
+      let decisionText = "";
+      if (decisionToday.length) {
+        const statusToday = decisionToday.map(r => ({ r, status: statusForRequest(r, state.day) }));
+        const paidToday = statusToday.filter(x => x.status === "accepted").reduce((sum, x) => sum + x.r.amount, 0);
+        const unpaidToday = statusToday.filter(x => x.status === "accepted-unpaid").length;
+        const pendingToday = statusToday.filter(x => x.status === "accepted-pending").length;
+        const rejectedToday = statusToday.filter(x => x.status === "rejected").length;
+        const pendingNote = pendingToday ? `, ${pendingToday} accepted with payout still pending` : "";
+        decisionText = `<span class="decision">Decision today:</span> ${decisionToday.length} request${decisionToday.length === 1 ? "" : "s"} processed, ${euro(paidToday)} accepted and paid, ${unpaidToday} accepted but unpaid${pendingNote}, and ${rejectedToday} rejected.`;
+      } else if (nextDecision) {
+        decisionText = `Next subsidy decision: <strong>${dateForDay(nextDecision.decisionDay)}</strong>.`;
+      }
+
+      let failureText = "";
+      if (lastRejected) {
+        const rejDay = lastRejected.finalDecisionDay !== null && lastRejected.finalDecisionDay !== undefined ? lastRejected.finalDecisionDay : lastRejected.decisionDay;
+        failureText = `<span class="reject">Latest rejection:</span> <strong>${lastRejected.name}</strong> was rejected on ${dateForDay(rejDay)}. ${lastRejected.rejectionReason}`;
+      } else if (nextRejected) {
+        failureText = `First future rejection in this scenario: <strong>${nextRejected.name}</strong> on ${dateForDay(nextRejected.decisionDay)}.`;
+      } else {
+        failureText = `No rejection exists under the current sliders. Increase submission pressure, reduce the budget, or lower the acceptance rate to create rejections.`;
+      }
+
+      let complaintText = "";
+      const upheldSoFar = state.requests.filter(r => r.hasComplaint && r.finalAccepted === true && state.day >= r.complaintResolveDay);
+      if (current.complaints.length) {
+        const complaintTotal = current.complaints.reduce((sum, r) => sum + r.amount, 0);
+        complaintText = `<span class="complaint-note">Complaints under review:</span> ${current.complaints.length} contested rejection${current.complaints.length === 1 ? "" : "s"} holding <strong>${euro(complaintTotal)}</strong> reserved — this budget can't be released or given to anyone else until each complaint resolves.`;
+      } else if (upheldSoFar.length) {
+        complaintText = `<span class="complaint-note">Complaints:</span> ${upheldSoFar.length} complaint${upheldSoFar.length === 1 ? " has" : "s have"} been upheld so far, each paid at its original queue position.`;
+      }
+
+      let unpaidText = "";
+      if (lastUnpaid) {
+        unpaidText = `<span class="reject">Funds ran out:</span> <strong>${lastUnpaid.name}</strong> was accepted on ${dateForDay(lastUnpaid.decisionDay)} but the programme budget had already run out by then — short ${euro(lastUnpaid.payoutShortage)}.`;
+      } else if (nextUnpaid) {
+        unpaidText = `First future case of an accepted subsidy running out of funds: <strong>${nextUnpaid.name}</strong> on ${dateForDay(nextUnpaid.decisionDay)}.`;
+      } else {
+        unpaidText = `No accepted subsidy has run out of funds under the current sliders.`;
+      }
+
+      const reviewText = currentReviews.length
+        ? `${currentReviews.length} request${currentReviews.length === 1 ? " is" : "s are"} currently submitted or processing.`
+        : `No subsidy request is currently in processing.`;
+
+      const complaintReserveNote = current.complaintReserve > 0
+        ? ` A further <strong>${euro(current.complaintReserve)}</strong> is locked as a complaint hold.`
+        : "";
+
+      document.getElementById("statusText").innerHTML = `
+        <strong>${dateForDay(state.day)} · Day ${state.day}:</strong>
+        ${reviewText}
+        Regular processing reserves are <strong>${euro(current.regularReserve)}</strong>.${complaintReserveNote}
+        Accepted and paid deductions are <strong>${euro(current.awarded)}</strong>, with <strong>${euro(current.released)}</strong> released from rejected reserves so far.
+        Available budget is <strong>${euro(current.available)}</strong>.
+        ${decisionText}
+        ${failureText}
+        ${complaintText}
+        ${unpaidText}
+      `;
+    }
+
+    function updateLabels() {
+      const { start, end } = windowBounds();
+      document.getElementById("dateLabel").textContent = `${dateForDay(state.day)} · Day ${state.day}`;
+      document.getElementById("dayControlLabel").textContent = `${state.day} / ${totalDays}`;
+      document.getElementById("windowLabel").textContent = `${state.windowDays} visible days`;
+      document.getElementById("pressureLabel").textContent = `${state.pressure} requests`;
+      document.getElementById("limitLabel").textContent = euro(state.budgetLimit);
+      document.getElementById("acceptanceLabel").textContent = `${state.acceptanceRate}% accepted`;
+      document.getElementById("processingLabel").textContent = `Random ${state.processingMinDays}–${state.processingMaxDays} days`;
+      document.getElementById("windowRangeLabel").textContent = `Visible: Day ${start}–${end}`;
+      document.getElementById("daySlider").value = state.day;
+      document.getElementById("dayFineSlider").value = state.day;
+      document.getElementById("daySliderTimeline").value = state.day;
+      document.getElementById("timelineDayLabel").textContent = `${state.day} / ${totalDays}`;
+      document.getElementById("windowSlider").value = state.windowDays;
+      document.getElementById("pressureSlider").value = state.pressure;
+      document.getElementById("limitSlider").value = state.budgetLimit;
+      document.getElementById("acceptanceSlider").value = state.acceptanceRate;
+      document.getElementById("speedSlider").value = state.playbackSlowdown;
+      document.getElementById("speedLabel").textContent = `${state.playbackSlowdown}%`;
+      document.getElementById("timelineDayScrubber").classList.toggle("is-playing", isPlaying);
+
+    }
+
+    function render({ rebuildEvents = false, followEvents = false } = {}) {
+      simulate();
+      // The timeline only ever reveals up to the furthest day the simulation
+      // has reached, not whatever state.day happens to be right now. This
+      // lets a paused user drag the day slider backward to inspect earlier
+      // days without the timeline hiding rows it had already shown — only
+      // dragging forward past the current watermark reveals anything new.
+      if (state.day > state.furthestDayReached) {
+        state.furthestDayReached = state.day;
+      }
+      updateLabels();
+
+      if (rebuildEvents || document.querySelectorAll(".event").length !== state.requests.length) {
+        buildEvents();
+      }
+
+      updateEvents({ follow: followEvents });
+      updateMetrics();
+      buildTimeline();
+    }
+
+    let timer = null;
+    let isPlaying = false;
+    const baseTickMs = 650;
+
+    function currentTickMs() {
+      return baseTickMs * (1 + state.playbackSlowdown / 100);
+    }
+
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(() => {
+        const btn = document.getElementById("playBtn");
+        const scrubbers = [document.getElementById("timelineDayScrubber")];
+        if (state.day >= totalDays) {
+          clearInterval(timer);
+          timer = null;
+          isPlaying = false;
+          btn.textContent = "Play simulation";
+          scrubbers.forEach(s => s.classList.remove("is-playing"));
+          return;
+        }
+        state.day += 1;
+        render({ followEvents: true });
+      }, currentTickMs());
+    }
+
+    function play() {
+      const btn = document.getElementById("playBtn");
+      const scrubbers = [
+        document.getElementById("timelineDayScrubber")
+      ];
+
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+        isPlaying = false;
+        btn.textContent = "Play simulation";
+        scrubbers.forEach(s => s.classList.remove("is-playing"));
+        return;
+      }
+
+      isPlaying = true;
+      btn.textContent = "Pause";
+      scrubbers.forEach(s => s.classList.add("is-playing"));
+      startTimer();
+    }
+
+    function reset() {
+      if (timer) clearInterval(timer);
+      timer = null;
+      isPlaying = false;
+      document.getElementById("playBtn").textContent = "Play simulation";
+      state.day = 0;
+      state.furthestDayReached = 0;
+      state.processingSeed = Math.floor(Math.random() * 1000000);
+      render({ rebuildEvents: true });
+    }
+
+    document.getElementById("playBtn").addEventListener("click", play);
+    document.getElementById("resetBtn").addEventListener("click", reset);
+
+    document.getElementById("speedSlider").addEventListener("input", e => {
+      state.playbackSlowdown = Number(e.target.value);
+      document.getElementById("speedLabel").textContent = `${state.playbackSlowdown}%`;
+      if (timer) startTimer();
+    });
+
+    ["daySlider", "dayFineSlider", "daySliderTimeline"].forEach(id => {
+      document.getElementById(id).addEventListener("input", e => {
+        state.day = Number(e.target.value);
+        render({ followEvents: true });
+      });
+    });
+
+    document.getElementById("windowSlider").addEventListener("input", e => {
+      state.windowDays = Number(e.target.value);
+      render();
+    });
+
+    document.getElementById("pressureSlider").addEventListener("input", e => {
+      state.pressure = Number(e.target.value);
+      render({ rebuildEvents: true, followEvents: true });
+    });
+
+    document.getElementById("limitSlider").addEventListener("input", e => {
+      state.budgetLimit = Number(e.target.value);
+      render({ rebuildEvents: true, followEvents: true });
+    });
+
+    document.getElementById("acceptanceSlider").addEventListener("input", e => {
+      state.acceptanceRate = Number(e.target.value);
+      render({ rebuildEvents: true, followEvents: true });
+    });
+
+
+    render({ rebuildEvents: true });
+  </script>
+
+
+</body></html>

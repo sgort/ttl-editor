@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="_d17f3da0-748c-11f1-acb3-8f2331a1839a" name="DRD aanspraak op individuele inkomenstoeslag" namespace="http://iknow.nl/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.45.0">
+  <dmn:decision id="_bca439b7-fdb8-40e3-8a1d-3bb95571c65c" name="Beslistabel bepalen aanspraak op individuele inkomenstoeslag" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1980542-748c-11f1-acc2-77771ae19ce0">
+      <dmn:requiredInput href="#_d1962f60-748c-11f1-acbd-0b6bc3d5eede" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1976b3c-748c-11f1-acc0-8b0bc57a54ad">
+      <dmn:requiredInput href="#_d195a432-748c-11f1-acbb-5f133c8b7d59" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d18efaec-748c-11f1-acb4-63543d63a53a">
+      <dmn:requiredDecision href="#_299e6c91-3fe5-49aa-88cc-efd03583ae87" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d197b434-748c-11f1-acc1-735abb76e2d2">
+      <dmn:requiredInput href="#_d195f400-748c-11f1-acbc-4f5166582a13" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d18f8fa2-748c-11f1-acb6-c78a3ffa471a">
+      <dmn:requiredDecision href="#_47e5f1bc-2557-44f3-9aa2-07e520126f33" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d19718bc-748c-11f1-acbf-a726db63bb1e">
+      <dmn:requiredInput href="#_d1952ed0-748c-11f1-acba-1366718634c7" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d198504c-748c-11f1-acc3-23eadc15b40b">
+      <dmn:requiredInput href="#_d196797a-748c-11f1-acbe-2fe2e25cbf38" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1b48636-748c-11f1-accc-23f1ffb93a80">
+      <dmn:requiredInput href="#_d1b37674-748c-11f1-acc9-232cef11d86c" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1b4cc22-748c-11f1-accd-735bdcb5758b">
+      <dmn:requiredInput href="#_d1b3cf52-748c-11f1-acca-5b6688208a44" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1af2290-748c-11f1-acc7-a3a928b9ea64">
+      <dmn:requiredDecision href="#_adcd1d42-b570-4e57-854b-ce5444975185" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1ae4172-748c-11f1-acc4-e34e762756b3">
+      <dmn:requiredDecision href="#_912d27e0-1b8f-47bd-98cf-1863354ef321" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d1b93ae6-748c-11f1-acd5-0f8711492ea2">
+      <dmn:requiredAuthority href="#_d1b5a0d4-748c-11f1-acce-8fad2eddbbb9" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1ba72bc-748c-11f1-acd6-c3f2455bef5d">
+      <dmn:requiredAuthority href="#_d1b66366-748c-11f1-accf-536e2012c0db" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1bac51e-748c-11f1-acd7-53e238ad3776">
+      <dmn:requiredAuthority href="#_d1b6a45c-748c-11f1-acd0-63c65f739fac" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1bb0a4c-748c-11f1-acd8-57b4bc1fe787">
+      <dmn:requiredAuthority href="#_d1b6ea8e-748c-11f1-acd1-cf7b1a59a325" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1bb4d5e-748c-11f1-acd9-1b1389b80de2">
+      <dmn:requiredAuthority href="#_d1b73bd8-748c-11f1-acd2-db462f3c8856" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1bb9b4c-748c-11f1-acda-8fd6dd1b9b4a">
+      <dmn:requiredAuthority href="#_d1b78674-748c-11f1-acd3-1b92f74d330d" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1bbeda4-748c-11f1-acdb-532bcb3cbf9a">
+      <dmn:requiredAuthority href="#_d1b7d228-748c-11f1-acd4-8b04172de7c0" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_bca439b7-fdb8-40e3-8a1d-3bb95571c65c_table" typeRef="boolean" hitPolicy="FIRST" outputLabel="aanspraak op individuele inkomenstoeslag">
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.woonachtig in de gemeente waar wordt aangevraagd</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input label="natuurlijke persoon.leeftijd op peildatum">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>years(years and months duration(natuurlijke persoon.geboortedatum, peildatum))</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.uitzicht op inkomensverbetering</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.langdurig laag inkomen</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>natuurlijke persoon.vermogen op 31 december vorig jaar</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.een schuldregeling</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="string">
+          <dmn:text>natuurlijke persoon.gezinssituatie</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>partner.uitzicht op inkomensverbetering</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="aanspraak op individuele inkomenstoeslag" typeRef="boolean" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&lt;= van toepassing zijnde vermogensgrens</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>not "met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>not "met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&lt;= van toepassing zijnde vermogensgrens</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&gt;= 21 and &lt; pensioengerechtigde leeftijd</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_299e6c91-3fe5-49aa-88cc-efd03583ae87" name="Beslistabel bepalen langdurig laag inkomen" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1d15400-748c-11f1-acf1-97df6f8954ca">
+      <dmn:requiredInput href="#_d1cf60d2-748c-11f1-acea-dfcd96f45c08" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1d10f04-748c-11f1-acf0-2bf7d4ba8453">
+      <dmn:requiredInput href="#_d1cf1e6a-748c-11f1-ace9-ab09a1e5e9d4" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1d0c742-748c-11f1-acef-d74dca177842">
+      <dmn:requiredInput href="#_d1cedc5c-748c-11f1-ace8-6f639bfe61a4" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1e09636-748c-11f1-acf7-67ac72c681c8">
+      <dmn:requiredDecision href="#_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1df7058-748c-11f1-acf4-fb8de47c10b5">
+      <dmn:requiredDecision href="#_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1e19e64-748c-11f1-acfa-d7ed298d9baf">
+      <dmn:requiredDecision href="#_1fd5fa9b-4052-477d-9837-f18f59e0b1be" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d1ea7bc4-748c-11f1-ad06-d339757fa560">
+      <dmn:requiredAuthority href="#_d1e8f56a-748c-11f1-ad01-832d6644485d" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1ead8a8-748c-11f1-ad07-57652efcc66f">
+      <dmn:requiredAuthority href="#_d1ea1788-748c-11f1-ad05-0b5a84a16021" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1ec265e-748c-11f1-ad0c-63ea952d503c">
+      <dmn:requiredAuthority href="#_d1b66366-748c-11f1-accf-536e2012c0db" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_299e6c91-3fe5-49aa-88cc-efd03583ae87_table" typeRef="boolean" hitPolicy="FIRST" outputLabel="langdurig laag inkomen">
+      <dmn:input>
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>natuurlijke persoon.fiscaal gezinsinkomen vorig jaar</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>natuurlijke persoon.fiscaal gezinsinkomen twee jaar geleden</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>natuurlijke persoon.fiscaal gezinsinkomen drie jaar geleden</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="langdurig laag inkomen" typeRef="boolean" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>&lt;= van toepassing zijnde loongrens vorig jaar voor volwassenen</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&lt;= van toepassing zijnde loongrens twee jaar geleden voor volwassenen</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>&lt;= van toepassing zijnde loongrens drie jaar geleden voor volwassenen</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_47e5f1bc-2557-44f3-9aa2-07e520126f33" name="Beslistabel bepalen schuldregeling" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1d08386-748c-11f1-acee-8fd0b13db2cf">
+      <dmn:requiredInput href="#_d1ce8252-748c-11f1-ace7-3306eb1acb75" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1d19a8c-748c-11f1-acf2-37e3e64e40c4">
+      <dmn:requiredInput href="#_d1cfa59c-748c-11f1-aceb-af66c63e733f" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d1d1da92-748c-11f1-acf3-5b0906591489">
+      <dmn:requiredInput href="#_d1cfe674-748c-11f1-acec-1b4e736991ca" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d1eb1c6e-748c-11f1-ad08-23fa0966107a">
+      <dmn:requiredAuthority href="#_d1e95262-748c-11f1-ad02-7b92718e5fa7" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1eb5e04-748c-11f1-ad09-73a2e7afb43f">
+      <dmn:requiredAuthority href="#_d1e9920e-748c-11f1-ad03-878728da6bdf" />
+    </dmn:authorityRequirement>
+    <dmn:authorityRequirement id="_d1eb9eaa-748c-11f1-ad0a-37c52c4e8ab4">
+      <dmn:requiredAuthority href="#_d1e9d0b6-748c-11f1-ad04-039233e041ec" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_47e5f1bc-2557-44f3-9aa2-07e520126f33_table" typeRef="boolean" hitPolicy="FIRST" outputLabel="een schuldregeling">
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.een schuldregeling van een door de gemeente aangewezen of gemandateerde</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.minnelijke schuldregeling</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="boolean">
+          <dmn:text>natuurlijke persoon.opgelegde schuldregeling op grond van WSNP</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="een schuldregeling" typeRef="boolean" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>true</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>-</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>false</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_912d27e0-1b8f-47bd-98cf-1863354ef321" name="Bepalen van toepassing zijnde vermogensgrens" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1d032f0-748c-11f1-aced-b35680e8ab60">
+      <dmn:requiredInput href="#_d1952ed0-748c-11f1-acba-1366718634c7" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d1ebea18-748c-11f1-ad0b-27de4c817b6e">
+      <dmn:requiredAuthority href="#_d1b78674-748c-11f1-acd3-1b92f74d330d" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_912d27e0-1b8f-47bd-98cf-1863354ef321_table" typeRef="number" outputLabel="van toepassing zijnde vermogensgrens">
+      <dmn:input label="vorig jaar">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>berekeningsjaar-1</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input>
+        <dmn:inputExpression typeRef="string">
+          <dmn:text>natuurlijke persoon.gezinssituatie</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="van toepassing zijnde vermogensgrens" typeRef="number" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>2024</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>7575</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>2024</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand met kinderen"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>15150</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>2024</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>"met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>15150</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_adcd1d42-b570-4e57-854b-ce5444975185" name="Bepaal pensioengerechtigde leeftijd" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1e84656-748c-11f1-ad00-573b7dc099bc">
+      <dmn:requiredInput href="#_d1b3cf52-748c-11f1-acca-5b6688208a44" />
+    </dmn:informationRequirement>
+    <dmn:decisionTable id="_adcd1d42-b570-4e57-854b-ce5444975185_table" typeRef="number" outputLabel="pensioengerechtigde leeftijd">
+      <dmn:input label="berekeningsjaar">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>year(peildatum)</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="pensioengerechtigde leeftijd" typeRef="number" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>67</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>2026</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>67</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_1fd5fa9b-4052-477d-9837-f18f59e0b1be" name="Bepalen van toepassing zijnde loongrens vorig jaar voor volwassenen" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1fda924-748c-11f1-ad18-7b893bb9a6cb">
+      <dmn:requiredInput href="#_d1952ed0-748c-11f1-acba-1366718634c7" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d20f7064-748c-11f1-ad1e-5bf4b4ed1e23">
+      <dmn:requiredInput href="#_d1b3cf52-748c-11f1-acca-5b6688208a44" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d2109796-748c-11f1-ad21-a7c9aa19d2de">
+      <dmn:requiredAuthority href="#_d1b78674-748c-11f1-acd3-1b92f74d330d" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_1fd5fa9b-4052-477d-9837-f18f59e0b1be_table" typeRef="number" outputLabel="van toepassing zijnde loongrens vorig jaar voor volwassenen">
+      <dmn:input>
+        <dmn:inputExpression typeRef="string">
+          <dmn:text>natuurlijke persoon.gezinssituatie</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input label="berekeningsjaar">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>year(peildatum)</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="van toepassing zijnde loongrens vorig jaar voor volwassenen" typeRef="number" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>26664</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand met kinderen"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>32715</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>36350</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f" name="Bepalen van toepassing zijnde loongrens drie jaar geleden" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1fdf262-748c-11f1-ad19-5321352c0240">
+      <dmn:requiredInput href="#_d1952ed0-748c-11f1-acba-1366718634c7" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d20fb1be-748c-11f1-ad1f-5f2221b8afca">
+      <dmn:requiredInput href="#_d1b3cf52-748c-11f1-acca-5b6688208a44" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d210f0a6-748c-11f1-ad22-0bb7c210e22d">
+      <dmn:requiredAuthority href="#_d1b78674-748c-11f1-acd3-1b92f74d330d" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f_table" typeRef="number" outputLabel="van toepassing zijnde loongrens drie jaar geleden voor volwassenen">
+      <dmn:input>
+        <dmn:inputExpression typeRef="string">
+          <dmn:text>natuurlijke persoon.gezinssituatie</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input label="berekeningsjaar">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>year(peildatum)</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="van toepassing zijnde loongrens drie jaar geleden voor volwassenen" typeRef="number" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>22000</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand met kinderen"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>27000</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>30000</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:decision id="_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1" name="Bepalen van toepassing zijnde loongrens twee jaar geleden" camunda:historyTimeToLive="0">
+    <dmn:informationRequirement id="_d1fe4cc6-748c-11f1-ad1a-0f63b5a95267">
+      <dmn:requiredInput href="#_d1952ed0-748c-11f1-acba-1366718634c7" />
+    </dmn:informationRequirement>
+    <dmn:informationRequirement id="_d20fef26-748c-11f1-ad20-671ad6bc431e">
+      <dmn:requiredInput href="#_d1b3cf52-748c-11f1-acca-5b6688208a44" />
+    </dmn:informationRequirement>
+    <dmn:authorityRequirement id="_d211488a-748c-11f1-ad23-939def43143c">
+      <dmn:requiredAuthority href="#_d1b78674-748c-11f1-acd3-1b92f74d330d" />
+    </dmn:authorityRequirement>
+    <dmn:decisionTable id="_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1_table" typeRef="number" outputLabel="van toepassing zijnde loongrens twee jaar geleden voor volwassenen">
+      <dmn:input>
+        <dmn:inputExpression typeRef="string">
+          <dmn:text>natuurlijke persoon.gezinssituatie</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:input label="berekeningsjaar">
+        <dmn:inputExpression typeRef="number">
+          <dmn:text>year(peildatum)</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output label="van toepassing zijnde loongrens twee jaar geleden voor volwassenen" typeRef="number" />
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>24720</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"alleenstaand met kinderen"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>30330</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule>
+        <dmn:inputEntry>
+          <dmn:text>"met partner"</dmn:text>
+        </dmn:inputEntry>
+        <dmn:inputEntry>
+          <dmn:text>2025</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry>
+          <dmn:text>33700</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:inputData id="_d1ce8252-748c-11f1-ace7-3306eb1acb75" name="natuurlijke persoon.een schuldregeling van een door de gemeente aangewezen of gemandateerde">
+    <dmn:variable id="_d21487ca-748c-11f1-ad2a-2bc8bc8ba018" name="natuurlijke persoon.een schuldregeling van een door de gemeente aangewezen of gemandateerde" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1cedc5c-748c-11f1-ace8-6f639bfe61a4" name="natuurlijke persoon.fiscaal gezinsinkomen drie jaar geleden">
+    <dmn:variable id="_d214e030-748c-11f1-ad2b-7bd1b1fd5175" name="natuurlijke persoon.fiscaal gezinsinkomen drie jaar geleden" typeRef="number" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1cf1e6a-748c-11f1-ace9-ab09a1e5e9d4" name="natuurlijke persoon.fiscaal gezinsinkomen twee jaar geleden">
+    <dmn:variable id="_d2152fd6-748c-11f1-ad2c-1334c358f19d" name="natuurlijke persoon.fiscaal gezinsinkomen twee jaar geleden" typeRef="number" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1cf60d2-748c-11f1-acea-dfcd96f45c08" name="natuurlijke persoon.fiscaal gezinsinkomen vorig jaar">
+    <dmn:variable id="_d2157b12-748c-11f1-ad2d-8b50d2e26573" name="natuurlijke persoon.fiscaal gezinsinkomen vorig jaar" typeRef="number" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1b37674-748c-11f1-acc9-232cef11d86c" name="natuurlijke persoon.geboortedatum">
+    <dmn:variable id="_d215c536-748c-11f1-ad2e-175d9d234fdd" name="natuurlijke persoon.geboortedatum" typeRef="date" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1952ed0-748c-11f1-acba-1366718634c7" name="natuurlijke persoon.gezinssituatie">
+    <dmn:variable id="_d2160f32-748c-11f1-ad2f-bf11645357da" name="natuurlijke persoon.gezinssituatie" typeRef="string" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1cfa59c-748c-11f1-aceb-af66c63e733f" name="natuurlijke persoon.minnelijke schuldregeling">
+    <dmn:variable id="_d21653d4-748c-11f1-ad30-8f126d89aef6" name="natuurlijke persoon.minnelijke schuldregeling" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1cfe674-748c-11f1-acec-1b4e736991ca" name="natuurlijke persoon.opgelegde schuldregeling op grond van WSNP">
+    <dmn:variable id="_d216992a-748c-11f1-ad31-0fc6ddc17588" name="natuurlijke persoon.opgelegde schuldregeling op grond van WSNP" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d195a432-748c-11f1-acbb-5f133c8b7d59" name="natuurlijke persoon.uitzicht op inkomensverbetering">
+    <dmn:variable id="_d216dca0-748c-11f1-ad32-8369f374ef9d" name="natuurlijke persoon.uitzicht op inkomensverbetering" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d195f400-748c-11f1-acbc-4f5166582a13" name="natuurlijke persoon.vermogen op 31 december vorig jaar">
+    <dmn:variable id="_d217207a-748c-11f1-ad33-dfd78942d57a" name="natuurlijke persoon.vermogen op 31 december vorig jaar" typeRef="number" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1962f60-748c-11f1-acbd-0b6bc3d5eede" name="natuurlijke persoon.woonachtig in de gemeente waar wordt aangevraagd">
+    <dmn:variable id="_d217697c-748c-11f1-ad34-73c0d8a0b7c5" name="natuurlijke persoon.woonachtig in de gemeente waar wordt aangevraagd" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d196797a-748c-11f1-acbe-2fe2e25cbf38" name="partner.uitzicht op inkomensverbetering">
+    <dmn:variable id="_d217b558-748c-11f1-ad35-8f119d77bc46" name="partner.uitzicht op inkomensverbetering" typeRef="boolean" />
+  </dmn:inputData>
+  <dmn:inputData id="_d1b3cf52-748c-11f1-acca-5b6688208a44" name="peildatum">
+    <dmn:variable id="_d21800d0-748c-11f1-ad36-cf7b783a353f" name="peildatum" typeRef="date" />
+  </dmn:inputData>
+  <dmn:knowledgeSource id="_d1b5a0d4-748c-11f1-acce-8fad2eddbbb9" name="aanspraak individuele inkomenstoeslag">
+    <dmn:description>https://hva.pna-web.com/hva/?type=CPT&amp;id=4b7157ff-2bc6-4ada-ba36-8123e6038dfe</dmn:description>
+    <dmn:type>CPT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b78674-748c-11f1-acd3-1b92f74d330d" name="natuurlijk persoon heeft gezinssituatie">
+    <dmn:description>https://hva.pna-web.com/hva/?type=CPT&amp;id=8bf152a7-22a1-4624-b43b-aa9c9ff68b30</dmn:description>
+    <dmn:type>CPT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b7d228-748c-11f1-acd4-8b04172de7c0" name="rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering">
+    <dmn:description>https://hva.pna-web.com/hva/?type=CPT&amp;id=cf35d84d-bec6-42b7-8491-9208ef44d2c9</dmn:description>
+    <dmn:type>CPT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b66366-748c-11f1-accf-536e2012c0db" name="natuurlijke persoon heeft langdurig laag inkomen">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=0f0d5140-0624-4aa3-a077-2a26087d1436</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b6a45c-748c-11f1-acd0-63c65f739fac" name="partner van rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=602be365-47f7-4546-9a0c-94915c2add57</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b6ea8e-748c-11f1-acd1-cf7b1a59a325" name="natuurlijk persoon heeft woonadres">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1b73bd8-748c-11f1-acd2-db462f3c8856" name="natuurlijk persoon beschikt over een vermogen">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=6fea33db-8454-4a6c-9e02-db6a1f3417db</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1e8f56a-748c-11f1-ad01-832d6644485d" name="bepalen langdurig laag inkomen">
+    <dmn:description>https://hva.pna-web.com/hva/?type=CPT&amp;id=bc6e9ec5-719e-4abf-ac8f-9bfea17908c2</dmn:description>
+    <dmn:type>CPT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1ea1788-748c-11f1-ad05-0b5a84a16021" name="natuurlijk persoon heeft fiscaal gezinsinkomen in kalenderjaar">
+    <dmn:description>https://hva.pna-web.com/hva/?type=CPT&amp;id=4b0c647a-40a1-4c20-bb19-662b12d7ae52</dmn:description>
+    <dmn:type>CPT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1e95262-748c-11f1-ad02-7b92718e5fa7" name="Aanvrager heeft een opgelegde schuldregeling op grond van de WSNP">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=099f9264-089e-4a68-b7e2-ded26f479c11</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1e9920e-748c-11f1-ad03-878728da6bdf" name="aanvrager heeft een minnelijke schuldregeling">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=148afe2c-dc30-4512-a536-087f542b54e1</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmn:knowledgeSource id="_d1e9d0b6-748c-11f1-ad04-039233e041ec" name="aanvrager heeft een schuldregeling van een door de gemeente aangewezen/gemandateerde instantie">
+    <dmn:description>https://hva.pna-web.com/hva/?type=APT&amp;id=3f211a1c-450a-4029-b0aa-4be3d9d97966</dmn:description>
+    <dmn:type>APT</dmn:type>
+  </dmn:knowledgeSource>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape id="_d2187ca4-748c-11f1-ad37-cff6c681c5d5" dmnElementRef="_bca439b7-fdb8-40e3-8a1d-3bb95571c65c">
+        <dc:Bounds height="80" width="180" x="1080" y="120" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d218eed2-748c-11f1-ad38-53f27ad50839" dmnElementRef="_299e6c91-3fe5-49aa-88cc-efd03583ae87">
+        <dc:Bounds height="80" width="180" x="160" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d2193aae-748c-11f1-ad39-fb31fd32d5e3" dmnElementRef="_47e5f1bc-2557-44f3-9aa2-07e520126f33">
+        <dc:Bounds height="80" width="180" x="390" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d2197ea6-748c-11f1-ad3a-9f514cbcff44" dmnElementRef="_912d27e0-1b8f-47bd-98cf-1863354ef321">
+        <dc:Bounds height="80" width="180" x="620" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d219cf14-748c-11f1-ad3b-5316f1864511" dmnElementRef="_adcd1d42-b570-4e57-854b-ce5444975185">
+        <dc:Bounds height="80" width="180" x="850" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21a743c-748c-11f1-ad3d-573c8065d2ff" dmnElementRef="_d195a432-748c-11f1-acbb-5f133c8b7d59">
+        <dc:Bounds height="80" width="180" x="1080" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21ab654-748c-11f1-ad3e-6bc776d0a54c" dmnElementRef="_d195f400-748c-11f1-acbc-4f5166582a13">
+        <dc:Bounds height="80" width="180" x="1310" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21af970-748c-11f1-ad3f-dfe65b17d160" dmnElementRef="_d1962f60-748c-11f1-acbd-0b6bc3d5eede">
+        <dc:Bounds height="80" width="180" x="1540" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21b3d4a-748c-11f1-ad40-0748604df49c" dmnElementRef="_d196797a-748c-11f1-acbe-2fe2e25cbf38">
+        <dc:Bounds height="80" width="180" x="1770" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21b8476-748c-11f1-ad41-f7ca67dda3b7" dmnElementRef="_d1b37674-748c-11f1-acc9-232cef11d86c">
+        <dc:Bounds height="80" width="180" x="2000" y="330" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21c2a02-748c-11f1-ad43-f7f266269c60" dmnElementRef="_1fd5fa9b-4052-477d-9837-f18f59e0b1be">
+        <dc:Bounds height="80" width="180" x="160" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21dace2-748c-11f1-ad48-23fd0060f0b2" dmnElementRef="_d1ce8252-748c-11f1-ace7-3306eb1acb75">
+        <dc:Bounds height="80" width="180" x="1540" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21ec51e-748c-11f1-ad4c-63eb794962ff" dmnElementRef="_d1cfa59c-748c-11f1-aceb-af66c63e733f">
+        <dc:Bounds height="80" width="180" x="1770" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21c707a-748c-11f1-ad44-037d1ece9aa7" dmnElementRef="_3cf65a11-8b0b-49a5-a90b-c1c5d8f0916f">
+        <dc:Bounds height="80" width="180" x="390" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21cb292-748c-11f1-ad45-431041a7f709" dmnElementRef="_ac0ec9fc-d8f9-4195-b7f6-b9036e61eab1">
+        <dc:Bounds height="80" width="180" x="620" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21f0eb6-748c-11f1-ad4d-33144df667e3" dmnElementRef="_d1cfe674-748c-11f1-acec-1b4e736991ca">
+        <dc:Bounds height="80" width="180" x="2000" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21df030-748c-11f1-ad49-eb0c64042fd4" dmnElementRef="_d1cedc5c-748c-11f1-ace8-6f639bfe61a4">
+        <dc:Bounds height="80" width="180" x="850" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21e3a40-748c-11f1-ad4a-a78b21f38079" dmnElementRef="_d1cf1e6a-748c-11f1-ace9-ab09a1e5e9d4">
+        <dc:Bounds height="80" width="180" x="1080" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21e7e1a-748c-11f1-ad4b-c77c27de6a4a" dmnElementRef="_d1cf60d2-748c-11f1-acea-dfcd96f45c08">
+        <dc:Bounds height="80" width="180" x="1310" y="580" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21fa7cc-748c-11f1-ad4e-ebcdbd16098d" dmnElementRef="_d1952ed0-748c-11f1-acba-1366718634c7">
+        <dc:Bounds height="80" width="180" x="1770" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="_d21ff43e-748c-11f1-ad4f-67e50c080d72" dmnElementRef="_d1b3cf52-748c-11f1-acca-5b6688208a44">
+        <dc:Bounds height="80" width="180" x="2000" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="_d1c00ef2-748c-11f1-ace6-c74ed82006ef" dmnElementRef="_d1b4cc22-748c-11f1-accd-735bdcb5758b">
+        <di:waypoint x="2090" y="830" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1be7a42-748c-11f1-ace0-8fde95f8c445" dmnElementRef="_d19718bc-748c-11f1-acbf-a726db63bb1e">
+        <di:waypoint x="1860" y="830" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bfc78a-748c-11f1-ace5-63c69e05781c" dmnElementRef="_d1b48636-748c-11f1-accc-23f1ffb93a80">
+        <di:waypoint x="2090" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bf7ee2-748c-11f1-ace4-c7f67fd3ee05" dmnElementRef="_d198504c-748c-11f1-acc3-23eadc15b40b">
+        <di:waypoint x="1860" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bf35cc-748c-11f1-ace3-4bd430c73dd3" dmnElementRef="_d1980542-748c-11f1-acc2-77771ae19ce0">
+        <di:waypoint x="1630" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1beebe4-748c-11f1-ace2-a37b26c83007" dmnElementRef="_d197b434-748c-11f1-acc1-735abb76e2d2">
+        <di:waypoint x="1400" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1beb516-748c-11f1-ace1-0ff4b4ab242c" dmnElementRef="_d1976b3c-748c-11f1-acc0-8b0bc57a54ad">
+        <di:waypoint x="1170" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1be314a-748c-11f1-acdf-ff4dd3bc703c" dmnElementRef="_d1af2290-748c-11f1-acc7-a3a928b9ea64">
+        <di:waypoint x="940" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bdf98c-748c-11f1-acde-2f89fc98b528" dmnElementRef="_d1ae4172-748c-11f1-acc4-e34e762756b3">
+        <di:waypoint x="710" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bdae3c-748c-11f1-acdd-6bab8ab94a75" dmnElementRef="_d18f8fa2-748c-11f1-acb6-c78a3ffa471a">
+        <di:waypoint x="480" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1bd4348-748c-11f1-acdc-1b96bc475af7" dmnElementRef="_d18efaec-748c-11f1-acb4-63543d63a53a">
+        <di:waypoint x="250" y="330" />
+        <di:waypoint x="1170" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ee7f26-748c-11f1-ad14-1b2af7bb5360" dmnElementRef="_d1d15400-748c-11f1-acf1-97df6f8954ca">
+        <di:waypoint x="1400" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ee2b98-748c-11f1-ad13-8f86efbdd8af" dmnElementRef="_d1d10f04-748c-11f1-acf0-2bf7d4ba8453">
+        <di:waypoint x="1170" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1edefca-748c-11f1-ad12-83786192bf58" dmnElementRef="_d1d0c742-748c-11f1-acef-d74dca177842">
+        <di:waypoint x="940" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ec8d88-748c-11f1-ad0d-5ff0df89a05d" dmnElementRef="_d1df7058-748c-11f1-acf4-fb8de47c10b5">
+        <di:waypoint x="710" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ecce24-748c-11f1-ad0e-ff9e5fd7cc23" dmnElementRef="_d1e09636-748c-11f1-acf7-67ac72c681c8">
+        <di:waypoint x="480" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ed1956-748c-11f1-ad0f-2348ec531a36" dmnElementRef="_d1e19e64-748c-11f1-acfa-d7ed298d9baf">
+        <di:waypoint x="250" y="580" />
+        <di:waypoint x="250" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ef108a-748c-11f1-ad16-571f16052aeb" dmnElementRef="_d1d1da92-748c-11f1-acf3-5b0906591489">
+        <di:waypoint x="2090" y="580" />
+        <di:waypoint x="480" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1eebf40-748c-11f1-ad15-c72ae847c6da" dmnElementRef="_d1d19a8c-748c-11f1-acf2-37e3e64e40c4">
+        <di:waypoint x="1860" y="580" />
+        <di:waypoint x="480" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1eda718-748c-11f1-ad11-33d489030668" dmnElementRef="_d1d08386-748c-11f1-acee-8fd0b13db2cf">
+        <di:waypoint x="1630" y="580" />
+        <di:waypoint x="480" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ed6226-748c-11f1-ad10-0b55a3c79ccb" dmnElementRef="_d1d032f0-748c-11f1-aced-b35680e8ab60">
+        <di:waypoint x="1860" y="830" />
+        <di:waypoint x="710" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d1ef70c0-748c-11f1-ad17-2b25923fce1f" dmnElementRef="_d1e84656-748c-11f1-ad00-573b7dc099bc">
+        <di:waypoint x="2090" y="830" />
+        <di:waypoint x="940" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d212969a-748c-11f1-ad27-37bd577f5334" dmnElementRef="_d20f7064-748c-11f1-ad1e-5bf4b4ed1e23">
+        <di:waypoint x="2090" y="830" />
+        <di:waypoint x="250" y="660" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d2125284-748c-11f1-ad26-8b003946d4f6" dmnElementRef="_d1fda924-748c-11f1-ad18-7b893bb9a6cb">
+        <di:waypoint x="1860" y="830" />
+        <di:waypoint x="250" y="660" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d212d81c-748c-11f1-ad28-3359854c294f" dmnElementRef="_d20fb1be-748c-11f1-ad1f-5f2221b8afca">
+        <di:waypoint x="2090" y="830" />
+        <di:waypoint x="480" y="660" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d2122020-748c-11f1-ad25-8785f8476bb3" dmnElementRef="_d1fdf262-748c-11f1-ad19-5321352c0240">
+        <di:waypoint x="1860" y="830" />
+        <di:waypoint x="480" y="660" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d213c6dc-748c-11f1-ad29-938d6f0eb8d5" dmnElementRef="_d20fef26-748c-11f1-ad20-671ad6bc431e">
+        <di:waypoint x="2090" y="830" />
+        <di:waypoint x="710" y="660" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="_d211d21e-748c-11f1-ad24-330bf309395f" dmnElementRef="_d1fe4cc6-748c-11f1-ad1a-0f63b5a95267">
+        <di:waypoint x="1860" y="830" />
+        <di:waypoint x="710" y="660" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

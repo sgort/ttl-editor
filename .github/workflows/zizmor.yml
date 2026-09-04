@@ -1,0 +1,111 @@
+name: Supply-chain audit
+
+# Deliberately NO branches filter on pull_request, and none on paths either.
+# The audit must run on EVERY pull request, whatever it changes and whatever
+# it targets -- both filters are the same hole in different dimensions: paths
+# lets a pull request skip the gate by touching nothing watched, branches lets
+# it skip by targeting a base that is not watched.
+#
+# The branches variant is the nastier of the two. `audit` is a required status
+# check in the "acc supply-chain gate" ruleset, which applies only while the
+# base IS acc. So a stacked pull request -- one based on a feature branch --
+# matched no trigger, accumulated no audit, and still reported CLEAN with zero
+# checks. It read as ready and was not. The moment its parent merged, GitHub
+# auto-retargeted it to acc, the ruleset started applying, the required check
+# was missing, and the pull request blocked permanently: a retarget emits no
+# pull_request event, so nothing ever backfilled it. (Escape hatch, if one is
+# ever stuck this way: `gh pr close <n> && gh pr reopen <n>` -- `reopened` is
+# in the default types set and by then the base is acc.)
+#
+# Cost is one extra ~40s read-only run per feature-branch-targeting pull
+# request. push stays filtered: acc and main are the only branches whose
+# post-merge state is worth re-auditing.
+#
+# Do NOT copy this shape into azure-static-web-apps-*.yml. Those carry a
+# branches filter for the opposite reason and fail in the opposite direction:
+# an absent filter on the AUDIT makes a required check silently missing, while
+# an absent filter on a DEPLOY makes a scarce environment silently exhausted.
+# ronl-business-api hit that on 2026-08-28 -- five open pull requests against
+# a three-environment Static Web Apps ceiling. This repository has TWO Static
+# Web Apps filtered to different branches (orange-beach on acc, white-sky on
+# main), so unfiltering them would claim two staging slots per pull request
+# and let an acc-targeting pull request stage on the production app.
+# Audit widely, deploy narrowly.
+on:
+  pull_request:
+  push:
+    branches:
+      - acc
+      - main
+
+# Read-only: the audit inspects the tree and needs nothing else.
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    name: audit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node 24 for the config validator
+        # renovate@44.50.3 declares engines.node ^24.11.0; the runner's
+        # default is Node 22. npm accepts that with an EBADENGINE warning
+        # rather than refusing, so the validator ran unsupported and green
+        # -- the kind of mismatch that keeps working until it abruptly
+        # does not. Reuses the setup-node pin this repository already
+        # carries, so Renovate maintains one digest rather than two.
+        #
+        # Placed BEFORE the zizmor step deliberately: a step after a
+        # failing one is skipped, and the validator's `if: always()`
+        # would then run on whatever Node the runner defaulted to.
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
+        with:
+          # The action's `version` input defaults to "latest". Pinning it is
+          # the whole point of this exercise — and it keeps CI's findings
+          # identical to the local baseline this plan was measured against.
+          # Not Renovate-maintained: the github-actions manager does not
+          # parse action inputs, so this must be bumped by hand.
+          version: '1.29.0'
+          # advanced-security uploads SARIF, which needs security-events:
+          # write. This job is contents: read only, so it must be false.
+          advanced-security: false
+          annotations: true
+          online-audits: false
+          # Leave `token` at its default. Setting it to '' looks like sound
+          # least-privilege hardening, but zizmor's --gh-token is env-backed
+          # and clap rejects a set-but-empty value before any audit runs,
+          # even with online-audits: false:
+          #   error: invalid value '' for '--gh-token <GH_TOKEN>'
+          # The default is ${{ github.token }}, scoped to contents: read and
+          # mounted read-only, so the exposure it would have removed is
+          # negligible anyway.
+
+      - name: Validate renovate.json
+        # Runs even when zizmor fails, so a single run reports on both halves
+        # of the policy rather than the first failure hiding the second.
+        if: always()
+        # Pinned like everything else here. A supply-chain check that fetched a
+        # floating version of its own tool would be self-defeating. Renovate's
+        # npm manager will NOT maintain this for us -- it is an inline npx
+        # argument, not a manifest entry -- so it is bumped by hand, alongside
+        # the zizmor version above.
+        #
+        # --strict also fails on configuration Renovate would silently
+        # auto-migrate. That is deliberate: it is how `baseBranches`, renamed
+        # upstream to `baseBranchPatterns`, was caught in linked-data-explorer
+        # rather than living on as a deprecated key that still "worked".
+        #
+        # No filename argument. Passing one switches the validator into global
+        # config mode, which applies different rules than the repository config
+        # this file actually is -- it will happily validate and tell you
+        # nothing useful.
+        run: npx --yes --package renovate@44.50.3 renovate-config-validator --strict

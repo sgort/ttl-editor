@@ -1,6 +1,1083 @@
 {
   "versions": [
     {
+      "format": "commits",
+      "version": "2026.09.0",
+      "status": "Released",
+      "date": "4 sep 2026",
+      "commits": [
+        {
+          "sha": "dc62384",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Vite migration baseline re-measured on the testing-library majors",
+          "details": [
+            "The migration plan asked for a re-measurement if more dependency work landed before phase 1, and the testing-library major did land. Still 16 suites and 257 tests, now measured on top of jest-dom 7.0.1 and user-event 14.6.5. The major was taken deliberately before phase 1 rather than during it, because it changes the instrument the migration is measured with.",
+            "Records how that measurement nearly went wrong. npm install reported \"up to date\" while node_modules still held the old versions -- npm had written the new ones into its hidden lockfile without replacing the package directories. A run against that tree would have reported a green 257 measured on the old testing-library and declared the majors safe on no evidence. CI is immune because it installs with npm ci on a clean runner; local runs are not.",
+            "Adds removing @testing-library/user-event to the cleanup phase. Zero files import it -- it arrived with the Create React App template and was never used, which is why a 13 to 14 major was a no-op here despite v14 being the release that made the API async."
+          ]
+        },
+        {
+          "sha": "ac87ae0",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Vite migration plan refreshed against a moved acc",
+          "details": [
+            "The plan was written on 29 August and reviewed 34 commits later. Its phases are unchanged; what changed is the ground it described. The acceptance baseline was re-measured rather than trusted -- still 16 suites and 257 tests -- which mattered because the tree had since taken React 19.2.8 and lucide-react v1, a major on a UI dependency.",
+            "Corrects the staging ceiling from three to ten. Ten staging environments coexisted and the eleventh was refused, which puts these apps on Standard rather than Free. The conclusion was right for the wrong number, so only the number changed.",
+            "Records that the plan's own precondition -- resolve the staging-slot issue or thin the Renovate queue before starting -- is now met, and flags two Renovate pull requests that interact with the migration: one bumping a dependency the migration deletes, one changing the test instrument."
+          ]
+        },
+        {
+          "sha": "e28f325",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Documentation-only changes no longer claim a staging slot",
+          "details": [
+            "Both Static Web Apps workflows deployed on every pull request regardless of what changed, so a two-file documentation change claimed a staging environment and returned nothing for it.",
+            "Filtered with paths-ignore rather than paths. An allowlist would mean enumerating every path that affects the build, and this is a single package rather than a monorepo, so there is no natural boundary to enumerate -- and anything forgotten from such a list silently skips a deploy, a considerably worse failure than one unnecessary preview. The default stays deploy; only docs, .claude and markdown are excluded."
+          ]
+        },
+        {
+          "sha": "3cdf974",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "TypeScript majors deferred until the Vite migration",
+          "details": [
+            "The TypeScript v7 pull request failed every build on an out-of-sync lockfile, but that was the symptom. It shipped a package.json bump with no lockfile at all because react-scripts@5.0.1 peer-requires typescript ^3.2.1 || ^4, so npm could not resolve v7 and Renovate's lockfile generation failed.",
+            "Nothing inside the pull request could fix that: regenerating the lockfile fails the same way, and --legacy-peer-deps would force through a real incompatibility rather than resolve it. Only the major is held; minor and patch updates continue to flow. The rule is written to be removed as part of the Vite migration, which deletes react-scripts."
+          ]
+        },
+        {
+          "sha": "ddc3eb2",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "testing-library updated to jest-dom 7 and user-event 14",
+          "details": [
+            "Taken deliberately before the Vite migration's first phase rather than during it, because these packages are the instrument the migration is measured with. The baseline was re-measured on top of them and still reports 16 suites and 257 tests.",
+            "The user-event 13 to 14 bump is normally the breaking one -- v14 made the API async and introduced setup() -- but no file in src imports it, so the only real risk was jest-dom 6 to 7."
+          ]
+        },
+        {
+          "sha": "dce3293",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Stored line endings normalised with .gitattributes",
+          "details": [
+            "The repository stored 263 text files with LF and two without: one workflow with CRLF throughout and one XML example with mixed endings. Nothing declared which was intended, so a file's form depended on which tool last wrote it. Editing the CRLF workflow with a tool that writes LF turned a three-line change into a seventy-four-line diff, which is how it was noticed.",
+            "text=auto normalises the stored form. Checkout is deliberately left alone -- no eol=lf -- so core.autocrlf still decides what lands in the working tree and nobody's editor changes. Binary extensions are declared explicitly rather than left to content sniffing. The renormalisation changes no content: with carriage returns ignored, only .gitattributes itself differs."
+          ]
+        },
+        {
+          "sha": "7155813",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Deploy workflows named after the environments they deploy",
+          "details": [
+            "Both Static Web Apps workflows were called \"Azure Static Web Apps CI/CD\" and both their jobs \"Build and Deploy Job\". In the Actions list, in a pull request's checks, and in gh run list, a run against the production app looked identical to one against acceptance; telling them apart meant opening the run and reading which API token it used.",
+            "They now say which environment they are -- Deploy ACC and Deploy PROD, with the Azure resource name kept in parentheses. Names only: triggers, permissions, action pins and every step are untouched. Renaming a job renames the check it reports, so this was worth doing before any deploy check is ever made required."
+          ]
+        },
+        {
+          "sha": "6303bdf",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "lucide-react updated to 1.33.0",
+          "details": [
+            "A major on a UI dependency, taken in the same pass as the other majors so the Vite migration starts from a settled tree. The full suite was re-measured afterwards and still reports 16 suites and 257 tests."
+          ]
+        },
+        {
+          "sha": "7c78fee",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Tailwind majors deferred until the Vite migration",
+          "details": [
+            "Tailwind v4 fails to compile here: the PostCSS plugin moved to a separate @tailwindcss/postcss package and the configuration has to be rewritten. That is a hand migration, and it is throwaway work under Create React App, because the Vite setup replaces the PostCSS wiring with the @tailwindcss/vite plugin rather than porting it.",
+            "Left enabled, Renovate re-opens the same failing pull request every cycle and it holds a staging slot while doing so. Only the major is held. The rule is written to be removed as part of the Vite migration."
+          ]
+        },
+        {
+          "sha": "74b1254",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Renovate capped at five concurrent pull requests",
+          "details": [
+            "Renovate's default prConcurrentLimit is ten and this configuration never overrode it. The Static Web Apps staging ceiling is also ten. The two numbers being equal meant a full Renovate queue consumed every staging environment and the next pull request opened by a human was refused outright.",
+            "That is not hypothetical: ten open dependency pull requests held all ten slots, and two unrelated pull requests had their deploy fail on arrival. It also self-perpetuated -- merging two freed two slots, and Renovate opened two new pull requests into them within the minute.",
+            "Capping at five leaves five slots permanently available for human work. Deliberately not solved by raising the tier: a higher ceiling moves the number at which the same collision happens rather than removing it."
+          ]
+        },
+        {
+          "sha": "f39d229",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Node updated to v24 in the deploy workflows",
+          "details": [
+            "Workflow-only change with no lockfile involvement, so nothing could invalidate it and it needed no rebase."
+          ]
+        },
+        {
+          "sha": "73f1e1a",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The supply-chain audit runs on every pull request, not only those targeting acc or main",
+          "details": [
+            "The audit triggered on pull_request only for acc and main. Combined with the ruleset that makes audit a required check on acc, that produced a pull request which could never merge: one based on a feature branch matched no trigger, so it accumulated no audit at all, and because the ruleset only applies while the base is acc, GitHub reported it as CLEAN with zero checks. It read as ready and was not.",
+            "The moment its parent merged, GitHub auto-retargeted the child to acc, the ruleset began applying, the required check was missing, and the pull request blocked permanently -- a retarget emits no pull_request event, so nothing ever backfilled it.",
+            "The file already carried the argument one dimension over, in its reasoning for having no paths filter: a filter lets a pull request skip the gate by touching nothing watched, and a branches filter lets it skip by targeting a base that is not watched. push stays filtered. The deploy workflows deliberately keep their narrow filters, because an absent filter there exhausts a bounded pool of staging environments instead."
+          ]
+        },
+        {
+          "sha": "0d64d54",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "The Semgrep plugin's local cache is ignored",
+          "details": [
+            "Machine-local state written into the repository root by the Semgrep MCP plugin, showing up as untracked noise in every git status."
+          ]
+        },
+        {
+          "sha": "3daa049",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "actions/setup-node updated to v7",
+          "details": [
+            "Pinned by commit digest, as the supply-chain policy requires. Workflow-only, so it carried no lockfile conflict."
+          ]
+        },
+        {
+          "sha": "77d92eb",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "actions/checkout updated to v7",
+          "details": [
+            "Pinned by commit digest, as the supply-chain policy requires. Workflow-only, so it carried no lockfile conflict."
+          ]
+        },
+        {
+          "sha": "9b9a711",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "autoprefixer updated to 10.5.4",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "fb155e9",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lint-staged updated to v17",
+          "details": [
+            "A major on the tool that runs the pre-commit gate, so it was verified rather than assumed: a deliberately misformatted file was staged and lint-staged run directly, confirming prettier and eslint both still execute and re-stage their output."
+          ]
+        },
+        {
+          "sha": "9854331",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "eslint-plugin-simple-import-sort updated to v14",
+          "details": [
+            "Major update to the import-ordering lint rule; the suite and lint both stayed green."
+          ]
+        },
+        {
+          "sha": "613aba6",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "prettier updated to 3.9.6",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "8bb0d9c",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "React updated to 19.2.8",
+          "details": [
+            "Lockfile-only update across the React monorepo, react and react-dom together."
+          ]
+        },
+        {
+          "sha": "2ef7e1c",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "postcss updated to 8.5.26",
+          "details": ["Lockfile-only dependency update."]
+        },
+        {
+          "sha": "197b7d2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The Create React App to Vite migration is planned",
+          "details": [
+            "Create React App was deprecated on 14 February 2025. It still builds, but receives no new features, no performance work and no active security updates, which sits badly in a repository that spent August enforcing that nothing a pipeline downloads may float. linked-data-explorer already builds with Vite, so this aligns the tooling rather than introducing a third way of doing things.",
+            "Written against measurements rather than assumptions. The baseline is the existing suite, and the migration is correct when those same tests pass under Vitest and the built site behaves identically -- not \"does it build\", because a Vite build pointed at the wrong output directory succeeds and publishes nothing.",
+            "Scope was counted, not estimated: the env-var uses, process.env references, %PUBLIC_URL% occurrences, jest.* call sites and test scripts were each enumerated. Four phases, ordered so a working test suite exists at every point, because react-scripts provides both the build and the test runner and removing it takes away the regression net and the thing being tested at the same moment."
+          ]
+        },
+        {
+          "sha": "a4859e6",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The release process verifies the working branch is gone from the remote",
+          "details": [
+            "Merging with --delete-branch removes both copies, and the repository now deletes branches on merge, so there is normally nothing to do. But a release merged some other way leaves the remote branch behind, and one survived exactly that way and was noticed only later. Written as a check rather than an action."
+          ]
+        },
+        {
+          "sha": "64c63f9",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The merge method is enforced by repository settings, not by remembering",
+          "details": [
+            "The rule said never squash and missed that rebase-and-merge rewrites hashes just as thoroughly -- deceptively so, since it preserves the commit count while replacing every hash. Either one orphans the commit SHAs a changelog entry names.",
+            "Squash and rebase are now disabled repository-wide, leaving merge commits only, so the failure is impossible by construction rather than forbidden by a rule. GitHub's default button is \"Squash and merge\", so without the setting a single absent-minded click would orphan a release's entire entry."
+          ]
+        },
+        {
+          "sha": "a3fd0b5",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The config validator runs on the Node version Renovate requires",
+          "details": [
+            "Renovate declares engines.node ^24.11.0 and the runner defaults to Node 22. npm accepts that mismatch with a warning rather than refusing, so the validator ran unsupported and reported green -- the kind of mismatch that keeps working right up until it abruptly does not, at which point the gate fails for a reason unrelated to anything anyone changed.",
+            "The step is placed before the audit rather than beside the validator it serves: a step following a failed one is skipped, so putting it after would mean the validator's always() condition ran on whatever Node the runner happened to default to."
+          ]
+        },
+        {
+          "sha": "89518fd",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "renovate.json is validated in the audit gate",
+          "details": [
+            "The gate enforced that every action reference is a commit hash but had nothing to say about renovate.json, the other half of the same policy. Pinning without automated updates decays into an unpatched tree, so a Renovate that has silently stopped running is a supply-chain failure the audit is supposed to catch.",
+            "Not hypothetical: in linked-data-explorer, five keys used as JSON comments were rejected as invalid configuration and Renovate stopped opening pull requests as a precaution. Nothing in CI noticed; the repository looked green while half its policy was inert.",
+            "The validator runs as a second step in the existing audit job, so it is covered by the current required status check and needs no ruleset change. It runs with --strict, which also fails on configuration Renovate would silently auto-migrate."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "2026.08.3",
+      "status": "Released",
+      "date": "28 aug 2026",
+      "commits": [
+        {
+          "sha": "4b020ba",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Release PRs are merged, never squashed",
+          "details": [
+            "The changelog entry names each commit by its SHA. Squashing a release pull request collapses them into one new commit, leaving the entry pointing at commits that do not exist on the target branch.",
+            "Renovate's dependency PRs are the opposite case and should be squashed: each is a single change, and no entry names its constituent commits. So the rule is not \"never squash\" but \"never squash a pull request whose commits a changelog entry names\"."
+          ]
+        },
+        {
+          "sha": "7bff543",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Releases land through a pull request",
+          "details": [
+            "The acceptance branch now requires a pull request and a passing supply-chain audit, so the old flow — fast-forwarding acc locally and pushing directly — is rejected outright. Releases go through a pull request like everything else and are audited before they land.",
+            "Five further corrections came with it, all found by cutting v2026.08.2 under the new gate rather than by reasoning about it: --no-merges in the commit range, since pull-request landing puts a merge commit in every range; computing that range only after the branch is up to date, because rebasing rewrites the SHAs the entry records; a new first step reconciling open pull requests before any version editing, because dependency updates rewrite the same lockfile the version bump edits; ci added to the recognised commit types; and a rule that a source change the entry needs must be committed before the bump, or it ships unlisted."
+          ]
+        },
+        {
+          "sha": "82837d7",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "tailwindcss updated to 3.4.19",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate. It satisfied the 14-day minimum release age check and passed the supply-chain audit before merging."
+          ]
+        },
+        {
+          "sha": "06f641b",
+          "author": "renovate[bot]",
+          "type": "fix",
+          "subject": "postcss updated to 8.5.23 — security advisory",
+          "details": [
+            "Resolves a published security advisory in postcss.",
+            "Raised through Renovate's vulnerability-alerts path, which overrides the 14-day cooldown: this pull request carried no minimum-release-age check at all, while the tailwindcss update in the same release went through it normally.",
+            "That is the first observed confirmation that the no-cooldown security lane works end to end — GitHub advisory alerts feed Renovate, the cooldown is bypassed for them alone, and the update is still gated by the supply-chain audit before it can merge."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "2026.08.2",
+      "status": "Released",
+      "date": "28 aug 2026",
+      "commits": [
+        {
+          "sha": "2a9e809",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "CI commits get their own changelog type",
+          "details": [
+            "The changelog renderer had no ci type, so pipeline and supply-chain commits fell through to the generic other icon. This release alone carries four of them, and the repo now does enough CI work for the distinction to be worth drawing."
+          ]
+        },
+        {
+          "sha": "aa05de2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Supply-chain gate documented, README corrected",
+          "details": [
+            "Adds docs/the-gate-has-teeth.md: what the CI gate delivers, how each piece is built and why each setting is what it is, how it behaves day to day, and what it deliberately does not protect — the floating build container, npm integrity covering what is tested rather than what is shipped, and the fact that zizmor validates pin format but never pin truth.",
+            "Includes a replication guide for linked-data-explorer and ronl-business-api, and records the empty-token failure as evidence the gate works.",
+            "The README claimed the docs/ directory had been removed, which is no longer true. Product documentation still lives on the IOU Architecture site; docs/ now holds engineering records that belong beside the code."
+          ]
+        },
+        {
+          "sha": "fd565a2",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "eslint-plugin-prettier updated to 5.5.6",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate, the first to land under the new policy. It passed the 14-day minimum release age check and the blocking supply-chain audit before merging."
+          ]
+        },
+        {
+          "sha": "39d8425",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@testing-library/react updated to 16.3.2",
+          "details": [
+            "Lockfile-only dependency update raised by Renovate, gated by the same 14-day cooldown and audit check. Renovate PRs are subject to the policy Renovate itself maintains."
+          ]
+        },
+        {
+          "sha": "8665a05",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Audit gate unblocked — the zizmor token must not be empty",
+          "details": [
+            "Setting token: '' looked like sound least-privilege hardening but broke the gate outright. zizmor's --gh-token is environment-backed, and an empty value is rejected at argument parsing, before any audit runs; online-audits: false does not avoid it.",
+            "Restores the default of the workflow token, which is scoped to contents: read and mounted read-only, so the exposure this would have removed was negligible. A comment records the failure so the same hardening is not retried."
+          ]
+        },
+        {
+          "sha": "5da74d2",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Register and spec corrected after final review",
+          "details": [
+            "Renovate would have silently downgraded the deploy action. Its v1 is both a 2021 tag and a 2024 branch head; the workflows pin the branch, while Renovate resolves the tag — so a routine-looking digest update would have reverted the production deploy step to 3.5-year-old code, with the 14-day cooldown offering no protection against a years-old commit. Updates for that dependency are now disabled, with the reason recorded inline.",
+            "The register claimed blanket Renovate coverage. The zizmor version pin is an action input, which Renovate does not parse, so it never updates automatically. A Maintained-by column now separates automated pins from manual ones.",
+            "The container exception was also understated: because the build is not skipped, the production bundle is built inside the floating image, making it the build toolchain rather than merely an upload step."
+          ]
+        },
+        {
+          "sha": "7263969",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Blocking supply-chain audit, Renovate cooldown and exceptions register",
+          "details": [
+            "Runs zizmor on pull requests and pushes to acc and main, pinned to an exact version rather than the action default of latest — an unpinned tool inside the gate that forbids unpinned things would defeat itself. Introduced only after the tree reached zero findings, so it lands green.",
+            "Renovate maintains the digests under a 14-day cooldown, with an override so security advisories are not delayed by it.",
+            "The register records what cannot be pinned: the Static Web Apps action delegates to a container image on a floating tag, so pinning the action leaves the payload floating."
+          ]
+        },
+        {
+          "sha": "40a8187",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Actions pinned to digests, GITHUB_TOKEN scoped to least privilege",
+          "details": [
+            "Pins actions/checkout, actions/setup-node and the Azure Static Web Apps deploy action to commit digests — all at the then-current major, so the change is behaviour-preserving rather than an upgrade.",
+            "Adds persist-credentials: false. Previously a live workflow token was written into .git/config and mounted into a closed-source third-party container; the deploy action authenticates with explicitly passed tokens instead.",
+            "Workflows now default to contents: read. The deploy job adds pull-requests: write for its PR comments; the close job takes an empty permissions block."
+          ]
+        },
+        {
+          "sha": "4c88b13",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Hash-pin policy stated in the repository",
+          "details": [
+            "Every action reference must be a commit hash, with no exemption for first-party actions. The pinned zizmor version already enforces this by default, so the file changes no findings today; it is committed so enforcement does not depend on a tool default that a future release could relax."
+          ]
+        },
+        {
+          "sha": "78437bc",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Implementation plan with measured checkpoints",
+          "details": [
+            "Eight tasks driving the audit from 16 findings to zero, with every checkpoint count measured against the pinned zizmor version rather than estimated.",
+            "Resolves the ambiguous deploy-action reference by pinning the branch commit: the executed surface — the action manifest, its Dockerfile and its entrypoint — is byte-identical at both candidate commits, and the branch version declares a superset of inputs."
+          ]
+        },
+        {
+          "sha": "7a29a64",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Design for supply-chain pinning of IOU pipelines",
+          "details": [
+            "Records the decision to enforce hash pinning inside each repository rather than migrate to the ictu organisation, and the five-component pattern this repo pilots for linked-data-explorer and ronl-business-api.",
+            "Covers digest pins, least-privilege permissions, Renovate with a 14-day cooldown and a no-cooldown lane for advisories, a blocking audit gate, and an exceptions register."
+          ]
+        },
+        {
+          "sha": "4228e05",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Dangling docs/ references repointed at the documentation site",
+          "details": [
+            "Earlier commits deleted the repo-side testing and namespace documentation, but references to those paths survived in the source. The IOU Architecture documentation site is now the single source of truth, so the references point at it directly rather than at paths that no longer resolve."
+          ]
+        },
+        {
+          "sha": "ee1f087",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "bump-release no longer uses npm version, which mangles CalVer",
+          "details": [
+            "npm coerces its argument to strict SemVer, and a zero-padded CalVer month is not a valid numeric identifier, so a 2026.08.x argument is silently written as 2026.8.x. There is no flag to disable the coercion. The release step now spells out editing package.json and the lockfile by hand, naming the exact keys."
+          ]
+        },
+        {
+          "sha": "90599b0",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "bump-release now versions the lockfile too",
+          "details": [
+            "No release had ever touched package-lock.json, so it still read the value from the initial commit while package.json had moved on across 35 changelog entries. The drift was never fatal — npm ci validates dependency satisfiability rather than the root version field — but the lockfile is what CI installs from and what audit and provenance tooling reads."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "2026.08.1",
+      "status": "Released",
+      "date": "20 aug 2026",
+      "commits": [
+        {
+          "sha": "db3a1dc",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Changelog tab label reverted to “Changelog”",
+          "details": [
+            "`c4f4c3b` changed the tab label from `Changelog` to `Changelog!`, with a commit message reading *“chore: changelog button to changelog!”*. Nothing else in that commit touched the label and no test asserts on it, so it reads as an accidental edit that shipped rather than deliberate copy. The two changes cancel out within this release, so there is no net change for users."
+          ]
+        },
+        {
+          "sha": "a38a28a",
+          "author": "Steven Gort",
+          "type": "other",
+          "subject": "Both deploys now gated on lint and the test suite",
+          "details": [
+            "Neither Azure Static Web Apps workflow ran anything of this repository's own. The deploy action builds inside its own container and invokes none of our scripts, so both went from checkout straight to build-and-deploy — and with `pre-push` gating only lint and formatting, nothing anywhere stopped a deploy that broke the suite.",
+            "Both workflows now set up Node 20 and run `npm ci`, `npm run lint` and `npm run test:ci` ahead of the deploy action, with a failure blocking the deploy — covering `acc` (orange-beach) and `main` (white-sky) alike. Measured before wiring: 16 suites, 257 tests, all passing, 6.6s."
+          ]
+        },
+        {
+          "sha": "a8d277d",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Repo-side test documentation retired in favour of the documentation site",
+          "details": [
+            "Deletes `docs/TESTS.md` (333 lines) and `docs/TESTING-GUIDE.md` (188 lines). The IOU Architecture documentation site is now the single source of truth for test documentation, at `cpsv-editor/developer/testing`; the repo-side copies had drifted from what the suite actually does and are not maintained."
+          ]
+        },
+        {
+          "sha": "99d1c69",
+          "author": "Pieter 't Hoen",
+          "type": "chore",
+          "subject": "VS Code settings formatting corrected",
+          "details": ["Two-line formatting fix in `.vscode/settings.json`."]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "2026.08.0",
+      "status": "Released",
+      "date": "18 aug 2026",
+      "commits": [
+        {
+          "sha": "cf170a7",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Prettier formatting for the Amsterdam CHANGELOG",
+          "details": [
+            "Whitespace-only fix so the pre-push hook's repo-wide `check-format` passes after the prior commit's edits."
+          ]
+        },
+        {
+          "sha": "500779b",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Amsterdam CHANGELOG executive summary + outputs-fallback entry",
+          "details": [
+            "Adds an executive summary at the top of the Amsterdam CPRMV/DMN changelog, walking the pipeline end to end: legal analysis in iKnow, the two `HvA_full_dmn_export.dmn` iterations (with the spec-owner Q&A round in between), the deploy-blocker/FEEL fixes that landed in `HvA_full_dmn_export-patched.dmn`, MC/DC verification, cell-level grounding, LDE validator fixes, and the CPSV Editor publish.",
+            "Also adds a changelog row documenting the DMN output-discovery gap found on republish (Concepts tab losing outputs when the live evaluate response came back empty) and its fix via `extractOutputsFromDMN`'s static XML fallback, reproduced live with a structurally-coupled input combination from the test suite."
+          ]
+        },
+        {
+          "sha": "71a3a40",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Concepts tab lost output variables when evaluate returns no match",
+          "details": [
+            "The DRD root (`hitPolicy=RULE ORDER`) has no catch-all rule, so evaluating it against the auto-generated baseline request body legitimately returns an empty result set. `extractOutputsFromTestResult()` could only discover an output's name/type from what the engine actually returned, so an empty result meant zero output concepts even though the DMN declares one. Inputs never had this problem — `generateRequestBodyFromDMN()` already reads `<dmn:inputData>` directly from the XML, independent of any evaluate result.",
+            "New `extractOutputsFromDMN()` closes the same gap for outputs: reads a decision's declared `<dmn:output>` name/type straight from the XML, namespace-agnostically, handling multiple output columns and the name-vs-label fallback. `handleEvaluateDMN` now falls back to it whenever the live evaluate result yields nothing. 7 new tests in `dmnHelpers.test.js`. Confirmed live: the Concepts tab shows the `aanspraken` output alongside the 52 inputs even when Evaluate Decision returns an empty result, and the republished TTL carries it through to TriplyDB."
+          ]
+        },
+        {
+          "sha": "40f42fc",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DOD met — publish Digital-Twin-Inkomensregelingen.ttl",
+          "details": [
+            "Cell-level legislative grounding (Layers 1-4 of `cprmv-cell-level-linking-prototype.md`) applied to `HvA_full_dmn_export-patched.dmn`'s Rule 1, deployed, evaluated, and published live via the CPSV Editor — zero DMN evaluation issues, zero SHACL validation issues.",
+            "Adds the published `.ttl` itself and the Gemeente Amsterdam organization logo referenced from it, plus a single consolidated CHANGELOG.md entry for the whole effort."
+          ]
+        },
+        {
+          "sha": "7c47c8e",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Cell-grounding resources weren't SHACL-conformant",
+          "details": [
+            "Live SHACL validation in the CPSV Editor against a real published `.ttl` surfaced two `RuleShape` violations: `cprmv:id` is required (`sh:minCount 1`) on every `cprmv:Rule` — cell resources used `dct:identifier` instead (not checked by this shape at all), and concept resources had no identifier property whatsoever. Both now emit `cprmv:id`, including compound-cell grounding sub-resources.",
+            "`cprmv:isBasedOn` has `sh:class cprmv:Rule` — its object must itself be typed `cprmv:Rule`. Concept-resource targets already were; a direct external citation URI (CVDR, wetten.overheid.nl) was not. Every distinct citation URI referenced via `isBasedOn` now gets a minted, deduplicated stub (`<uri> a cprmv:Rule ; cprmv:id \"<uri>\" .`). 3 new tests; full suite passes."
+          ]
+        },
+        {
+          "sha": "bde5627",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Date-typed DMN inputs need type: Date, not String",
+          "details": [
+            "`generateRequestBodyFromDMN()`'s `typeRef=\"date\"` branch typed every date input as `{value: \"YYYY-MM-DD\", type: \"String\"}` on the incorrect assumption that Operaton converts internally. Wrong for any DMN that calls `.year`/`.years` on the input directly, as several Amsterdam decisions do — confirmed via Operaton's own logs (`DMN-01005 Invalid value ... for clause with type 'date'`).",
+            "Now emits the full ISO timestamp + offset with `type: 'Date'`, matching the format already documented as required elsewhere in this project's own REST variable typing notes."
+          ]
+        },
+        {
+          "sha": "8c7db5b",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Consolidate cell-grounding changelog, move notice to dmn-fix doc",
+          "details": [
+            "Collapsed two same-day CHANGELOG rows into one, dropping process narrative (a CORS issue, a wrong-file mixup) already captured in the commits themselves, keeping the substance: Layers 1-4 implemented for real against `HvA_full_dmn_export-patched.dmn`, plus the two defects building them surfaced.",
+            "`cprmv-cell-level-linking-prototype.md` trimmed to state the file choice plainly; `hva-full-dmn-export-feel-evaluation-fix.md` gains the one \"Verification status\" note that this file's Rule 1 carries real cell-level grounding, pointing to the prototype doc for design detail."
+          ]
+        },
+        {
+          "sha": "8e3d590",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Ground Rule 1 in HvA_full_dmn_export-patched.dmn, not the standalone file",
+          "details": [
+            "Live-testing the deploy/evaluate CORS fix surfaced that cell-level grounding had been applied to the wrong file. `individuele inkomenstoeslag-iknow-patched.dmn` predates this project's FEEL-evaluation fix and still has 23 unfixed multi-word bare-name expressions; deploying it additionally shadowed the already-fixed decisions in `HvA_full_dmn_export-patched.dmn` on Operaton, since both files declare identical decision keys and \"latest version by key\" resolution doesn't care which file a deployment came from. The stray deployment was deleted.",
+            "`HvA_full_dmn_export-patched.dmn` includes the identical decision as one of its 25 (same key, already fixed) — grounded that copy instead, with the same real citations, using its own cell ids. Redeployed as the sole source of truth; the 100-case MC/DC suite still passes 100/100, confirming the grounding attributes remain inert to FEEL evaluation as already established empirically."
+          ]
+        },
+        {
+          "sha": "f69c76b",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Route DMN evaluate through the LDE backend too",
+          "details": [
+            "Same CORS problem as the deploy fix: Evaluate Decision, \"run all intermediate decisions\", and \"run test cases\" all POSTed straight to Operaton's own evaluate endpoint from the browser, which is blocked the same way deploy was.",
+            "All three call sites now go through a shared `evaluateViaBackend()` helper hitting the LDE backend's `POST /v1/dmns/evaluate/:decisionKey`, forwarding the same request body unchanged. The \"Evaluation URL\" preview in the API Configuration panel now shows the actual LDE-backend URL."
+          ]
+        },
+        {
+          "sha": "21775f8",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Route DMN deploy through the LDE backend, not Operaton directly",
+          "details": [
+            "Deploying straight from the browser to Operaton's `/engine-rest/deployment/create` hits CORS in local dev. `handleDeployDMN` now POSTs to the LDE backend's new `POST /v1/dmns/deploy`, mirroring the pattern `runBackendValidation()` already uses for `/v1/dmns/validate`: browser → LDE backend (CORS-allowed) → Operaton server-to-server. The now-unused `apiConfig.deploymentEndpoint` field is removed."
+          ]
+        },
+        {
+          "sha": "a70265b",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Implement cell-level legislative grounding (Layers 1-3)",
+          "details": [
+            "Layer 1: `xmlns:cprmv`/`xmlns:dct` declared on `<dmn:definitions>`; real `dct:source`/`cprmv:sourceQuote`/`cprmv:isBasedOn` attributes added to Rule 1's 6 grounded cells, using citations cross-referenced from `HvA_annotaties.xml`. Confirmed to still deploy cleanly to Operaton.",
+            "Layer 2: `dmnHelpers.js`'s `extractRulesFromDMN()` now reads every cell's id, FEEL text, and groundings into `rule.inputEntries`/`outputEntries`. Surfaced a pre-existing defect: every selector-based DMN lookup silently matched nothing against a real, `dmn:`-prefixed DMN, since CSS type selectors match by (namespace, local name) and an unprefixed selector implies the null namespace — meaning cell-level grounding, and even the existing rule-level export, never actually worked for real DMN files. Fixed via a namespace-agnostic `queryAllLocal`/`queryLocal` helper.",
+            "Layer 3: `ttlGenerator.js`'s `generateDmnSection()` now emits a `cprmv:hasPart` list of per-cell `cprmv:Rule` resources on each `DecisionRule`, with deduplicated concept minting and a nested `hasPart` for compound cells. Verified end-to-end against the real DMN (11 new tests in `ttlGenerator.cellGrounding.test.js`, 2 new in `dmnHelpers.test.js`); 249/249 tests pass repo-wide."
+          ]
+        },
+        {
+          "sha": "44d27ee",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Close MC/DC rule-coverage gap in HvA DMN test suite (69 → 100 cases)",
+          "details": [
+            "Every one of the DRD's 99 rules across all 25 decisions now has a dedicated, empirically-verified test case, up from representative coverage on the 13 composite decisions. 30 new cases added, all run live against the deployed patched DMN with zero errors.",
+            "Verifying the DRD root's remaining output rows surfaced a real, verified finding rather than a defect: several rows are structurally coupled under `hitPolicy=RULE ORDER` — a shared qualifying fact and direct `requiredDecision` chains mean triggering one row legitimately triggers others in the same evaluation. Documented in a new \"Structural couplings\" section of `test-cases-validation-hva.md`, with `test-cases-hva.sh` gaining a parser for the root's multi-row expected format."
+          ]
+        },
+        {
+          "sha": "303fc66",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Extract applicable legal sources for HvA_full_dmn_export.dmn",
+          "details": [
+            "New `extract-legal-sources.py` walks every decision's `authorityRequirement` → `knowledgeSource` link in the original export, resolves each concept/text-annotation id against `HvA_annotaties.xml`'s own registries, and reports per decision the named source document (+ BWB number where applicable), JuriConnect citation where present, and grounding quote. Read-only, unrelated to the FEEL-evaluation fix.",
+            "Confirms 97 of 99 `authorityRequirement` links resolve cleanly, spanning 14 named source documents and 23 distinct JCI citations across 72 citing text annotations. Outputs a markdown report and full JSON data, regenerable any time either export changes."
+          ]
+        },
+        {
+          "sha": "41b3f20",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Link test-cases-validation-hva.md from CHANGELOG.md",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "cb008a9",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Add project permission allowlist for common read-only npm scripts",
+          "details": [
+            "Allowlists `npm run lint`, `type-check`, `test`, `test:e2e`, `test:coverage`, `check-format`, `format:check`, `deps:check` — reduces permission prompts for the most frequently-run read-only dev commands."
+          ]
+        },
+        {
+          "sha": "3e9cac6",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Add SKIP_DEPLOY option to test-cases-hva.sh",
+          "details": [
+            "Lets the suite rerun against whatever's already deployed, without redeploying the DMN each time — useful when iterating on the test-case JSON itself and the DMN hasn't changed."
+          ]
+        },
+        {
+          "sha": "f1ec0c9",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Full 25-decision coverage; fix hitPolicy gap; consolidate changelog",
+          "details": [
+            "Brings the remaining 11 composite decisions into the test suite (69 cases total, full coverage of all 25 decisions). Adds `test-cases-hva.sh`, a self-contained runner that deploys the patched DMN and evaluates every case with a pass/fail summary.",
+            "Building the new cases surfaced one more real defect: two decisions had no `hitPolicy` (defaulting to `UNIQUE`) despite having a wildcard default rule — invalid under `UNIQUE`, since the default always matches alongside a specific rule. Fixed by adding `hitPolicy=\"FIRST\"`, matching every sibling decision's convention. Also consolidates three separate/inline changelogs into one new `CHANGELOG.md`."
+          ]
+        },
+        {
+          "sha": "603fb9f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Link the new test-suite files in the changelog row",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "d055dbb",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Add HvA DMN test suite; fix two more malformed FEEL patterns found while writing it",
+          "details": [
+            "Adds a 40-case, 14-decision test suite: MC/DC-style one-case-per-rule coverage for the 10 self-contained leaf decisions, plus integration coverage for 4 composite decisions. Every case's request body is the full 52-variable baseline merged with case-specific overrides, and every expected value was captured by running the case live.",
+            "Building the cases surfaced two more malformed rule-cell patterns in `HvA_full_dmn_export-patched.dmn`: bare `and`-joined comparisons aren't valid unary-test ranges (rewritten to interval notation), and `not \"met partner\"` has the same missing-parentheses problem as `not -` (rewritten to `not(\"met partner\")`). All 40 cases run live with zero errors against the redeployed patched DMN."
+          ]
+        },
+        {
+          "sha": "426e675",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Move changelog link to hva-full-dmn-export-feel-evaluation-fix.md to the latest row",
+          "details": ["Cross-link fix, no content change."]
+        },
+        {
+          "sha": "38bbc14",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Resolve malformed 'not -' / 'not(null) -' rule cells in Amsterdam HvA DMN",
+          "details": [
+            "44 `not -` cells (always on boolean columns) and 12 `not(null) -` cells (always on string columns) are malformed FEEL — `not` requires a parenthesized argument. Both patterns are 100% type-consistent file-wide: `not(null) -` reads as a genuine \"must have a value\" check with a stray trailing dash export artifact (dash dropped); `not -` had both its argument and trailing dash mangled into a bare dash (resolved to `false`, confirmed against business logic, e.g. `bijzondere bijstand`'s \"financiele draagkracht\" really must be false to qualify).",
+            "Confirmed live against the local Operaton instance: `bijzondere bijstand` now gives a clean true/false discrimination, proving the column is a real enforced constraint, not a wildcard or parse failure."
+          ]
+        },
+        {
+          "sha": "9ca1af0",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Add missing dmn:output name attribute, unblocking DMN evaluation",
+          "details": [
+            "Root-caused the evaluate blocker left open by the multi-word FEEL fix: Operaton's result serialization requires `<dmn:output name=\"...\">` — this DMN only ever declared `label`. Without `name`, evaluating a decision whose inputs all resolve throws an unlogged, blank exception. Isolated via bisection against two independent decisions; added `name` (reusing the existing decision-result token) to all 25 `<dmn:output>` elements.",
+            "Confirmed live: 4 leaf decisions now evaluate to the correct value, and a 3-level-deep composite decision chains correctly through its full `requiredDecision` graph. Also nailed down the REST `Date` type/format this DMN's date inputs actually need. Surfaced one more genuine defect (`not -`, 44 occurrences), left unfixed pending a correct, non-guessed rewrite."
+          ]
+        },
+        {
+          "sha": "a2bbdd4",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Flatten multi-word FEEL names in Amsterdam HvA DMN export",
+          "details": [
+            "Operaton's feel-scala engine can't parse this DMN's multi-word bare-name input-expression convention — it consumes only the first word and throws `FEEL/SCALA-01008` on the rest, confirmed on 3 independent decisions. The file deploys (structurally valid DMN) but none of its 25 decisions can actually be evaluated.",
+            "Also found while scoping the fix: rule cells embed cross-decision references as literal output-label text needing an explicit `<dmn:variable>` binding; a genuine 3-way output-label naming collision across decisions; a placeholder expression that was never valid FEEL; and a previously-documented unbound-variable bug. Adds `HvA_full_dmn_export-patched.dmn` (52 inputData + 25 decision-result names flattened, 4 categories of broken FEEL fixed) alongside the untouched original. Live evaluate-time verification left open for the next commit."
+          ]
+        },
+        {
+          "sha": "12bcd47",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Normalize Amsterdam HvA DMN export via Camunda Modeler resave",
+          "details": [
+            "Purely mechanical resave through Camunda Modeler: indentation/attribute-order/self-closing-tag style normalized, `knowledgeSource` description/type moved from non-standard attributes to spec-correct child elements. Verified lossless — all element ids and rule cell text byte-identical before/after; the `historyTimeToLive` and ampersand-escaping fixes remain intact."
+          ]
+        },
+        {
+          "sha": "7e9e540",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Changelog entry for the Amsterdam DMN Operaton deploy fix",
+          "details": [
+            "Documents the `historyTimeToLive`/ampersand-escaping deploy fix in the spec-proposal doc's changelog for traceability."
+          ]
+        },
+        {
+          "sha": "e7de109",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Operaton deploy blockers in Amsterdam HvA DMN export",
+          "details": [
+            "Two issues prevented this DMN from deploying to Operaton: no `camunda:historyTimeToLive` set anywhere (added to all 25 decisions, matching the sibling file's convention), and 48 unescaped `&` characters in `<dmn:knowledgeSource description=...>` URLs (invalid XML, independent of the TTL issue — escaped all of them). Verified all 25 decisions carry the TTL attribute and the file parses cleanly with a standard XML parser."
+          ]
+        },
+        {
+          "sha": "baebd52",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Sync cell-level linking prototype with spec-proposal doc",
+          "details": [
+            "Brings the prototype doc in line with the revised spec-proposal doc: Layer 1 attribute set, before/after XML citations, the Rule 1 column-by-column table, the extended Layer 3 TTL sketch with concept dedup, and the Layer 4/open-questions sections all updated to match."
+          ]
+        },
+        {
+          "sha": "60fda3c",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §4 fix — restore dct:source as the DMN traceability attribute",
+          "details": [
+            "Found while syncing the prototype doc: dropping `cprmv:concept` per the spec owner's Q4 answer had silently dropped the only DMN-attribute carrier for the raw concept/text-annotation id that §5's `dct:source`/concept-dedup design needs. Restores `dct:source` as a DMN attribute, cleanly split from `isBasedOn` (always a citation, never a UUID standing in for one)."
+          ]
+        },
+        {
+          "sha": "8fe9807",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §6 — mark open questions 1-6 resolved, fix implements error",
+          "details": [
+            "Records the spec owner's actual answers for open questions 1-6, with pointers to where each resolution landed elsewhere in the doc. Fixes a factual error: `cprmv:implements` doesn't exist — the real relation is `cpsv:implements`. Splits an old catch-all item into a specific `ruleType`/`rulesetType` question (flagged unprompted by the spec owner as still under consideration) and the general ReSpec-documentation question."
+          ]
+        },
+        {
+          "sha": "1b40ae7",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §3 — drop JCI mandate, adopt ReferenceMethod framing",
+          "details": [
+            "Per the spec owner's answer, JCI isn't the format to mandate — CPRMV 0.4.2 introduces `ReferenceMethod` as a pluggable concept, with JCI/ELI as known methods rather than one canonical grammar. Reframes around two citation targets: external legal resources vs. our own minted `cprmv:Rule`s, addressed via the spec owner's internal \"rule id path\" method, which already matches §5's existing `hasPart`-path URI scheme."
+          ]
+        },
+        {
+          "sha": "24fcbe5",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §5 — mint shared concepts once, per spec owner's Q4/Q5 answers",
+          "details": [
+            "Per Q4, an iKnow concept a cell points at is itself a `cprmv:Rule`, referenced via the same `cprmv:isBasedOn` relation used everywhere else. Per Q5, the minting rule is reframed around reuse: a concept referenced from more than one place is minted exactly once and reused by URI. Grounded in a real, verified case — a decision's own `authorityRequirement` and Rule 1's output cell resolve to the same concept, confirmed directly in the DMN."
+          ]
+        },
+        {
+          "sha": "82fea96",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §4 — drop cprmv:concept, fold into isBasedOn",
+          "details": [
+            "Per the spec owner's answer to open question 4: a \"concept\" is itself a `cprmv:Rule`, not a separate tool-specific pointer property. Collapses the DMN-attribute set from three to two (`sourceQuote`/`isBasedOn`) — `isBasedOn` now carries either a legislative citation or the iKnow concept's own reference, supported by real evidence that Amsterdam's annotation data already produces `isBasedOn` values in more than one format."
+          ]
+        },
+        {
+          "sha": "37bee7f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "cprmv proposal §5 — key cell URIs off DMN inputEntry/outputEntry id",
+          "details": [
+            "The re-exported DMN now gives every `<inputEntry>`/`<outputEntry>` its own id, so cell-level `cprmv:Rule` URIs are minted from that id instead of column position — more robust against column reordering, with a positional fallback for sources without per-cell ids. Flags a new open question on cross-export id stability."
+          ]
+        },
+        {
+          "sha": "998fec1",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Re-export Amsterdam HvA DMN from iKnow",
+          "details": [
+            "Fresh export from iKnow: every `<dmn:input>`, `<dmn:output>`, `<dmn:rule>`, `<dmn:inputEntry>`, and `<dmn:outputEntry>` now carries its own id (previously none did). Decision/decision-table ids — the anchor already used by shipped TTL — are unchanged; no content changes."
+          ]
+        },
+        {
+          "sha": "6cde457",
+          "author": "Mariette Lokin",
+          "type": "docs",
+          "subject": "Edit cprmv-cell-level-linking-prototype.md",
+          "details": ["Collaborator edit to the prototype doc."]
+        },
+        {
+          "sha": "0568804",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Handle multi-grounding cells in cprmv cell-level linking proposal, add changelogs",
+          "details": [
+            "A single decision-table cell can be a compound FEEL expression where each conjunct may need its own citation. Two encodings were tested directly against local Operaton: repeatable child elements (rejected outright — no extension point in the DMN schema's unary-tests content model) and numbered attribute families (deploys fine, no upper bound). Design updated accordingly on both the DMN side (numbered attributes) and the TTL side (recursive `cprmv:hasPart`, no new SHACL shapes). Adds a changelog table to the top of both design docs."
+          ]
+        },
+        {
+          "sha": "3830fd2",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "DMN tab Base URL defaults to localhost Operaton in dev server",
+          "details": [
+            "`apiConfig.baseUrl` now reads `REACT_APP_OPERATON_URL`, falling back to the production instance, instead of hardcoding the shared Operaton URL. Without this, the DMN tab silently pointed local development at the shared ACC/PROD Operaton instance instead of the local Docker container."
+          ]
+        },
+        {
+          "sha": "c5c4b17",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Extend cprmv cell-level linking proposal with the DMN-to-TTL pipeline",
+          "details": [
+            "A DMN in this project is never published in isolation — it becomes part of a `.ttl` generated by the CPSV Editor's own code, so that pipeline is brought into scope. Adds Layer 2 (what `dmnHelpers.js` reads today), Layer 3 (the concrete TTL a grounded cell should produce, reusing existing `hasPart`/`isBasedOn` patterns), and Layer 4 (what does/doesn't need to change in the LDE validator services) to the prototype doc; corrects an earlier mistake in the spec-proposal doc (`cprmv:isBasedOn` is an object property, `sh:class cprmv:Rule`, not a literal citation string)."
+          ]
+        },
+        {
+          "sha": "03d2bbf",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Prettier formatting for Amsterdam docs",
+          "details": ["Whitespace-only formatting fix."]
+        },
+        {
+          "sha": "e4e4cd0",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Amsterdam DMN deploy fix, and cprmv proposal for cell-level legislative linking",
+          "details": [
+            "Adds the source materials for this whole batch of work (the two iKnow DMN exports, the annotation registry, a validation reference doc), a patched single-decision file fixing an Operaton deploy failure (missing element ids), and the initial cell-level legislative linking proposal: a design for linking legislation at decision-table cell granularity (finer than DMN's native decision-level `knowledgeSource`, or CPRMV's rule-level `extends`/`ruleType`/`confidence`), prototyped against one real rule and cross-referenced against the annotation data, plus a spec-owner-facing doc flagging where the abstract CPRMV vocabulary diverges from what's actually shipping."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "2026.07.0",
+      "status": "Released",
+      "date": "22 jul 2026",
+      "commits": [
+        {
+          "sha": "b47705c",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Adopt CalVer (YYYY.MM.patch) for release versions",
+          "details": [
+            "Matches the Norm Editor's release-tagging convention (2026.07.0, then 2026.07.1 for a same-month follow-up, 2026.08.0 the next month) — the version string only, nothing else about the workflow changes (no generate-changelog.mjs, no commit-message enforcement, no versions.json). Historical SemVer entries (1.10.6, 1.10.7) are left as-is; only new entries going forward use CalVer."
+          ]
+        },
+        {
+          "sha": "8d8a7eb",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Move --coverage from test to test:ci",
+          "details": [
+            "react-scripts test --coverage in interactive watch mode locks coverage collection to whichever files matched the very first run — which, on a clean watch-mode start, is \"no tests found related to files changed since last commit\" (0 files). Pressing 'a' to run everything afterward still reports 0% across the board, since the collection set was already pinned empty. --watchAll=false avoids this entirely (a single full run collects real numbers every time), so --coverage now lives on test:ci instead. npm run test stays plain, for day-to-day watch mode."
+          ]
+        },
+        {
+          "sha": "8562f09",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P4 network-touching util coverage (shaclHelper, triplydbHelper)",
+          "details": [
+            "Adds shaclHelper.test.js (3 tests: success, neutral-invalid backend response, and the distinct unavailable state on network failure — SHACL validation is advisory and must never block publishing) and triplydbHelper.test.js (37 tests across all ten exports: buildGraphIRI, config validation, the three publish paths including the SPARQL @prefix→PREFIX conversion and INSERT DATA/GRAPH wrapping, logo asset upload, connection testing across every HTTP status branch, and the three localStorage-backed config functions).",
+            "Both use a plain global.fetch mock rather than msw, deviating from TESTING-GUIDE.md's original P4 plan — every function here is a single self-contained fetch call, not a multi-request flow, so the same proportionate approach from P2's ronlHelper.test.js still fits. Noted in TESTS.md as a deliberate deviation, not an oversight."
+          ]
+        },
+        {
+          "sha": "4ed7b9e",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P3 hook coverage (useEditorState, useArrayHandlers, useDsoImport)",
+          "details": [
+            "Adds useArrayHandlers.test.js (renderHook + a useState harness, since the hook only returns handlers, not the array itself), useDsoImport.test.js (real window.history navigation + a global.fetch mock, covering the DSO deep-link import's no-op/error/success paths and the immediate URL-stripping behavior), and useEditorState.test.js (mocked ronlHelper, covering every default, the RONL-concepts-loading effect, and clearAllData — including that it intentionally does not reset the TriplyDB config)."
+          ]
+        },
+        {
+          "sha": "595124f",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Add TESTS.md documenting P0-P2 test coverage so far",
+          "details": [
+            "New file modeled on ronl-business-api's docs/TESTS.md: per-file test inventories with counts, the two real bugs found and fixed along the way (isBasedOn/extends parser gap, cprmvImport id collision), the documented (not silently patched) concepts/DMN coupling, and an honest note that no coverage report has been generated yet."
+          ]
+        },
+        {
+          "sha": "9c53862",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "P2 pure-logic util coverage (validators, ttlHelpers, ronlHelper, dmnHelpers, iknowParser, cprmvImport)",
+          "details": [
+            "Adds validators.test.js, ttlHelpers.test.js, dmnHelpers.test.js, and iknowParser.test.js, plus extends cprmvImport.test.js with namespace variants (0.4.1 slash, 0.3.0 contains), the legacy flat-array shape, and malformed-input handling. constants.js is deliberately skipped — pure static data, nothing to meaningfully test."
+          ]
+        },
+        {
+          "sha": "48c6642",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "cprmvImport id collision across calls in the same millisecond",
+          "details": [
+            "flattenCprmvRules minted ids as Date.now() + a per-call sequence counter that reset to 0 on every call. Two calls landing in the same millisecond would mint identical ids, colliding as React keys if both calls' results end up merged into the same cprmvRules list. The sequence counter is now module-level and never resets, so ids stay unique for the life of the page regardless of call timing."
+          ]
+        },
+        {
+          "sha": "61c6433",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "TTL round-trip regression tests + fix isBasedOn parser gap (P1)",
+          "details": [
+            "Adds parse → generate → parse round-trip tests against real fixtures, comparing every business field rather than a brittle byte-diff.",
+            "Fixes a real data-loss bug found by the new tests: a past commit renamed the generator's cprmv:extends predicate to cprmv:isBasedOn, but parseTTL.enhanced.js's read side was never updated to match, so every export-then-reimport of a temporal rule since that rename silently dropped its extends/isBasedOn relationship. The parser now recognizes both.",
+            "Also documents, rather than silently patches, that NL-SBB concepts only regenerate when a DMN model is actually attached in session state — confirmed correct when dmnData is derived the way importHandler.js really does it."
+          ]
+        },
+        {
+          "sha": "1764e07",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Fix stale CRA App.test.js stub (P0)",
+          "details": [
+            "Replaces the untouched CRA boilerplate assertion (getByText(/learn react/i), which this app never rendered) with a real smoke test against the actual header. test:ci was red for this reason alone; now 14/14 pass."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
+      "version": "1.10.7",
+      "status": "Released",
+      "date": "22 jul 2026",
+      "commits": [
+        {
+          "sha": "8ad0bb1",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Adopt ronl-business-api's per-commit changelog format + repo-local bump-release",
+          "details": [
+            "ChangelogTab.jsx now renders \"format\": \"commits\" entries (icon+color header per commit, sha/author trailer, Upcoming/Released status badge) alongside the existing legacy \"sections\" shape, so new releases can use the same per-commit changelog convention as ronl-business-api and the Linked Data Explorer. Legacy entries are unaffected and keep rendering exactly as before.",
+            "package.json's version (0.1.0) is reconciled to match changelog.json's actual version (1.10.6), so the two stay in lockstep from here on instead of drifting independently.",
+            ".gitignore no longer blanket-ignores .claude/ — only settings.local.json and scheduled_tasks.lock stay machine-local, matching ronl-business-api's convention — so the new tailored .claude/commands/bump-release.md ships with the repo instead of being invisible to every other clone. That command adapts ronl-business-api's release-cutting skill for this single-package repo: no scope dimension, no endpoint-map reconciliation, targeting src/data/changelog.json directly."
+          ]
+        },
+        {
+          "sha": "f8c7623",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Changelog TESTING-GUIDE.md formatting fixed",
+          "details": [
+            "Prettier pass over the newly-added TESTING-GUIDE.md — this repo's check-format runs across the whole tree, so the guide's table formatting needed a --write pass before it would pass the pre-push hook."
+          ]
+        },
+        {
+          "sha": "43b8242",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Add TESTING-GUIDE.md covering analysis, plan, and phased approach",
+          "details": [
+            "Grounds a testing strategy in the app's current state (thin/undocumented coverage, a stale failing App.test.js stub, no RDF library, no local backend) and sequences it against the CRA-to-Vite migration flagged in the due-diligence doc: pure-logic tests first (cheap to port to Vitest), then the bundler swap, then DOM-heavy component/DMNTab/E2E work written once directly against Vite/Vitest."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.6",
+      "date": "July 1, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "Test cases that expect an empty result set are now auto-verified",
+          "items": [
+            "A DMN test case whose expected value is the literal empty collection \"[]\" (or \"{}\") — meaning no rule matches and the engine returns an empty result — was reported as 'OK (unchecked)' with 'the expected value could not be parsed for an automatic check'. The empty-result branch in evaluateTestCaseExpectation only recognised the descriptive strings 'empty result' / 'no matching rule', so a literal \"[]\" fell through to the key=value parser, found no pairs, and was judged unverified even though the engine's empty response was exactly correct.",
+            "The empty-result check now also matches a literal empty array or object, so an expected value of \"[]\" is treated as 'expect an empty result set'. Boundary cases such as the Thuisbatterij jaarGebondenBudget years outside the modelled range (2025, 2028) now pass automatically. A non-empty response against an \"[]\" expectation still fails, and structured/descriptive expectations are unaffected."
+          ]
+        }
+      ]
+    },
+    {
+      "version": "1.10.5",
+      "date": "June 30, 2026",
+      "status": "Released",
+      "statusColor": "green",
+      "borderColor": "green",
+      "sections": [
+        {
+          "icon": "🔀",
+          "iconColor": "blue",
+          "title": "Choose which CPRMV vocabulary version to preview, export and publish",
+          "items": [
+            "A CPRMV version selector (0.4.1 / 0.3.2) next to the preview/export controls now drives the generated TTL. The editor previously always emitted the 0.4.1 namespace (https://standaarden.open-regels.nl/standards/cprmv/0.4.1#), so data published for a 0.3.x consumer was invisible to it. Selecting 0.3.2 binds cprmv: to https://cprmv.open-regels.nl/0.3.2/ — the versioned-path namespace the Linked Data Explorer /v1/norms?cprmv_version=0.3.2 query reads.",
+            "The two targets differ in shape, not just prefix. 0.4.1 wraps the rules in a cprmv:RuleSet (+ cprmv:hasPart); 0.3.2 instead emits a cprmv:Dataset / dcat:Dataset per ruleset — the unit /v1/norms reports under dataset_versions. The flat cprmv:Rule resources (cprmv:id, rulesetId, definition, situatie, norm, ruleIdPath) are emitted for both targets. Each cprmv:Dataset's dcat:version is the date that ruleset's own rules carry (from ruleIdPath), so the dataset version matches the rules' applicable_date by construction.",
+            "The selection applies consistently to the live preview, the TTL download and the publish-to-TriplyDB action."
+          ]
+        },
+        {
+          "icon": "🗓️",
+          "iconColor": "blue",
+          "title": "Consolidation date is derived from the rules, not entered by hand",
+          "items": [
+            "The published consolidation date — the eli:is_realized_by version on the LegalResource and every cprmv:RuleSet's cprmv:validFrom and versioned cprmv:id — is now derived per ruleset from the BWB in-force date the rules themselves carry in their ruleIdPath (e.g. BWBR0015703_2026-04-03_0 → 2026-04-03), rather than the manually-entered 'Version or consolidation date' (eli:is_realized_by) field. That field had let an operator pick a date that disagreed with the rules — e.g. a hand-typed 2026-03-04 against 2026-04-03 rules — producing a dataset whose version never matched its rules' applicable_date.",
+            "Each ruleset is dated from its own rules, so non-primary rulesets (those entering via cprmv:Rule references, e.g. BWBR0044894 and BWBR0015711) are now versioned correctly too — previously they were emitted version-less because the editor didn't know their version, even though the rules did. The manual field remains a fallback when no rule carries a dated ruleIdPath, with today's date as a last resort."
+          ]
+        },
+        {
+          "icon": "🧩",
+          "iconColor": "blue",
+          "title": "Rules sharing a legal path no longer collapse on publish",
+          "items": [
+            "A cprmv:Rule's subject URI was built only from its ruleIdPath, so two rules on the same legal path — a range's bounds ('meer dan € 59.782, doch minder dan € 251.233') or multiple maxima ('per maand' / 'per kalenderjaar') — resolved to the same RDF subject and silently merged on publish. A 69-rule import surfaced as only 66 norms in the Linked Data Explorer.",
+            "Each rule now gets a unique subject URI: the first occurrence of a path keeps the path-derived URI, and each subsequent duplicate gets an _N suffix (_2, _3, …) in document order. Both the flat cprmv:Rule resources and the 0.4.1 cprmv:RuleSet hasPart list use the same assignment, so all values survive (69 in, 69 out). The duplicates still share a rule_id_path_key, which the LDE treats as the dedup key.",
+            "Adds a generator test for the duplicate-path case; run the suite with npm run test:generator."
+          ]
+        },
+        {
+          "icon": "✅",
+          "iconColor": "green",
+          "title": "0.3.2 datasets pass CPSV-AP 3.2.0 validation",
+          "items": [
+            "The 0.3.2 cprmv:Dataset records were co-typed dcat:Dataset, which triggered the CPSV-AP 3.2.0 DatasetShape (sh:targetClass dcat:Dataset) and raised an error per dataset for missing dct:title, dct:description and dct:publisher plus an untyped dcat:landingPage. They are now typed only cprmv:Dataset — the class the Linked Data Explorer dataset_versions query reads, and one that no shape targets — so pre-publish validation passes while the data stays fully consumable. Verified against the live /v1/shacl/validate backend: 4 errors per dataset → 0. Mirrors the RuleSet emitter's existing reason for not co-typing dcat:Dataset."
+          ]
+        },
+        {
+          "icon": "🪆",
+          "iconColor": "blue",
+          "title": "Nested sub-clauses fold into their parent rule on import",
+          "items": [
+            "Importing a CPRMV Rules API payload no longer creates standalone, norm-less rules for nested enumeration sub-clauses (e.g. the 'onderdeel 1°./2°./3°.' under 'Artikel 31, lid 2, onderdeel r.'). Those hasPart members carry no rule_id_path, so they are now folded — in order, recursively — into the parent rule's cprmv:definition, which keeps the complete legal text (… ingeval: <clause> <clause> …). Nested members that are rules in their own right (carry a rule_id_path) are still imported separately. For the 1 juli 2026 0.4.1 normenbrief this turns 81 imported entries into 72 — exactly the norms /v1/norms returns."
+          ]
+        },
+        {
+          "icon": "🎨",
+          "iconColor": "purple",
+          "title": "Toolbar polish and a runnable generator test suite",
+          "items": [
+            "The CPRMV version selector is styled as a toolbar control matching the action buttons, and the Import / Show Preview / Clear All buttons no longer wrap to two lines — the header row is now a consistent height.",
+            "Generator tests are runnable with npm run test:generator (one-shot), test:generator:watch and test:ci. They cover the version selector (namespace + shape), the rules-derived dates and the duplicate-path URI handling, and live in src/utils/ttlGenerator.*.test.js so they stay in sync with the code."
+          ]
+        }
+      ]
+    },
+    {
       "version": "1.10.4",
       "date": "June 17, 2026",
       "status": "Released",

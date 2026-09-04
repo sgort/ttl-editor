@@ -55,16 +55,50 @@ const hasPartOf = (obj) => {
 
 const asString = (v) => (v == null ? '' : String(v));
 
+// Module-level, never reset — two flattenCprmvRules() calls landing in the
+// same millisecond (Date.now() alone isn't fine-grained enough) would
+// otherwise mint identical `base + seq` ids, colliding as React keys if both
+// calls' results end up merged into the same list.
+let globalSeq = 0;
+
+// Recursively collect the definitions of nested SUB-CLAUSES — hasPart members
+// that are not themselves rules (they carry no rule_id_path), e.g. the
+// "onderdeel 1°./2°./3°." enumeration nested under "Artikel 31, lid 2,
+// onderdeel r.". The editor model is flat and these belong to the parent's
+// text, so they are folded into the parent's definition instead of being
+// imported as standalone, norm-less rules. Members that ARE rules in their own
+// right (carry a rule_id_path) are skipped here and emitted separately by the
+// caller. Joined with a single space; the source clauses keep their own
+// trailing punctuation.
+const subClauseText = (ruleObj) => {
+  const nested = hasPartOf(ruleObj);
+  if (!nested) return '';
+  const parts = [];
+  for (const sub of Object.values(nested)) {
+    if (!sub || typeof sub !== 'object') continue;
+    if (asString(looseField(sub, 'rule_id_path', 'ruleIdPath'))) continue;
+    const def = asString(stdField(sub, 'definition'));
+    if (def) parts.push(def);
+    const deeper = subClauseText(sub);
+    if (deeper) parts.push(deeper);
+  }
+  return parts.join(' ');
+};
+
 /**
  * Flatten CPRMV Rules API JSON into the editor's flat cprmvRules array.
- * Nested sub-rules are flattened into their own entries (the editor model is flat).
+ *
+ * Nested members that are rules in their own right (carry a rule_id_path) become
+ * their own entries. Nested SUB-CLAUSES (members without a rule_id_path — e.g.
+ * the "onderdeel 1°./2°./3°." enumeration under "onderdeel r.") are folded into
+ * their parent rule's definition rather than imported as separate norm-less
+ * rules, so the parent keeps the complete legal text.
  *
  * @param {Array|Object} jsonData parsed API output
  * @returns {Array<{id,ruleId,rulesetId,definition,situatie,norm,ruleIdPath}>}
  */
 export const flattenCprmvRules = (jsonData) => {
   const out = [];
-  let seq = 0;
   const base = Date.now();
 
   const visitRule = (key, ruleObj, inheritedRulesetId = '') => {
@@ -72,17 +106,31 @@ export const flattenCprmvRules = (jsonData) => {
     // Nested sub-rules often carry only id + definition; inherit the parent's
     // rulesetId so they group under the same RuleSet on export.
     const rulesetId = asString(looseField(ruleObj, 'rulesetid', 'rulesetId')) || inheritedRulesetId;
+    // Fold nested sub-clauses (hasPart members without a rule_id_path) into this
+    // rule's definition rather than importing them as separate, norm-less rules.
+    let definition = asString(stdField(ruleObj, 'definition'));
+    const extra = subClauseText(ruleObj);
+    if (extra) definition = definition ? `${definition} ${extra}` : extra;
     out.push({
-      id: base + seq++,
+      id: base + globalSeq++,
       ruleId: asString(stdField(ruleObj, 'id') ?? key),
       rulesetId,
-      definition: asString(stdField(ruleObj, 'definition')),
+      definition,
       situatie: asString(looseField(ruleObj, 'situatie')),
       norm: asString(looseField(ruleObj, 'norm')),
       ruleIdPath: asString(looseField(ruleObj, 'rule_id_path', 'ruleIdPath')),
     });
+    // Still recurse into nested members that ARE rules in their own right (carry
+    // a rule_id_path); their own sub-clauses fold into them in turn. Plain
+    // sub-clauses were already folded into `definition` above.
     const nested = hasPartOf(ruleObj);
-    if (nested) Object.entries(nested).forEach(([k, v]) => visitRule(k, v, rulesetId));
+    if (nested) {
+      Object.entries(nested).forEach(([k, v]) => {
+        if (v && typeof v === 'object' && asString(looseField(v, 'rule_id_path', 'ruleIdPath'))) {
+          visitRule(k, v, rulesetId);
+        }
+      });
+    }
   };
 
   const visitEntry = (entry) => {

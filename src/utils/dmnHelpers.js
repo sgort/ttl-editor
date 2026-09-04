@@ -1,4 +1,30 @@
 /**
+ * Namespace-agnostic element lookup for real-world DMN files.
+ *
+ * Every DMN authoring tool this project has seen in practice (Camunda Modeler,
+ * iKnow) exports elements under a namespace prefix -- `<dmn:decisionTable>`,
+ * `<dmn:rule>`, etc. An unprefixed CSS type selector (`querySelectorAll('rule')`)
+ * silently matches nothing against a prefixed element: for non-HTML documents,
+ * Selectors API type selectors match by (namespace, local name), and an
+ * unprefixed selector implies the *null* namespace, not "any namespace" --
+ * confirmed empirically in jsdom and consistent with the same behavior in real
+ * browsers. `getElementsByTagNameNS('*', localName)` matches by local name
+ * regardless of namespace/prefix, which is what every lookup below needs.
+ *
+ * @param {Element|Document} root
+ * @param {string} localName
+ * @returns {Element[]}
+ */
+function queryAllLocal(root, localName) {
+  return Array.from(root.getElementsByTagNameNS('*', localName));
+}
+
+/** Single-result convenience wrapper around queryAllLocal. */
+function queryLocal(root, localName) {
+  return root.getElementsByTagNameNS('*', localName)[0] || null;
+}
+
+/**
  * Sanitizes a service identifier to create valid URIs
  * @param {string} identifier - Service identifier
  * @returns {string} - Sanitized identifier suitable for URIs
@@ -46,7 +72,7 @@ export function extractPrimaryDecisionKey(dmnContent) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
 
-    const decisionElements = Array.from(xmlDoc.querySelectorAll('decision'));
+    const decisionElements = queryAllLocal(xmlDoc, 'decision');
     const skippedConstants = decisionElements.filter((d) =>
       (d.getAttribute('id') || '').startsWith('p_')
     ).length;
@@ -70,7 +96,7 @@ export function extractPrimaryDecisionKey(dmnContent) {
     // Ids that are required by another decision — these are NOT roots.
     const requiredIds = new Set();
     decisionElements.forEach((d) => {
-      d.querySelectorAll('requiredDecision').forEach((rd) => {
+      queryAllLocal(d, 'requiredDecision').forEach((rd) => {
         const ref = (rd.getAttribute('href') || '').replace(/^#/, '');
         if (ref) requiredIds.add(ref);
       });
@@ -180,6 +206,135 @@ export function extractOutputsFromTestResult(dmnData) {
 }
 
 /**
+ * Map a DMN typeRef to Operaton's REST variable type naming, matching the
+ * convention used elsewhere in this file/DMNTab.jsx (Boolean/Integer/Double/
+ * Date, default String).
+ */
+function operatonTypeForTypeRef(typeRef) {
+  switch ((typeRef || '').toLowerCase()) {
+    case 'boolean':
+      return 'Boolean';
+    case 'integer':
+    case 'long':
+      return 'Integer';
+    case 'number':
+    case 'double':
+    case 'decimal':
+      return 'Double';
+    case 'date':
+      return 'Date';
+    default:
+      return 'String';
+  }
+}
+
+/**
+ * Extract a decision's declared output variable(s) directly from the DMN XML
+ * (`<dmn:output name="..." typeRef="...">` inside its `<dmn:decisionTable>`),
+ * independent of any live evaluate result.
+ *
+ * `extractOutputsFromTestResult` above can only discover output names/types
+ * by inspecting what an evaluate call actually returned — which silently
+ * yields nothing whenever the decision legitimately produces no matching row
+ * (e.g. a `RULE ORDER` root with no catch-all rule, evaluated against a
+ * baseline/disqualifying auto-generated request body). Unlike inputs — which
+ * `generateRequestBodyFromDMN` already discovers by parsing `<dmn:inputData>`
+ * directly, so they're unaffected by whether the decision matched anything —
+ * outputs had no such XML-derived fallback. This closes that asymmetry.
+ *
+ * @param {string} dmnContent - Raw DMN XML content
+ * @param {string} decisionKey - The `<dmn:decision id="...">` to look up
+ * @returns {Array<{name: string, type: string}>}
+ */
+export function extractOutputsFromDMN(dmnContent, decisionKey) {
+  if (!dmnContent || !decisionKey) return [];
+
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
+
+    const decisions = queryAllLocal(xmlDoc, 'decision');
+    const decision = decisions.find((d) => d.getAttribute('id') === decisionKey);
+    if (!decision) return [];
+
+    const outputs = queryAllLocal(decision, 'output');
+    return outputs
+      .map((o) => ({
+        name: o.getAttribute('name') || o.getAttribute('label'),
+        type: operatonTypeForTypeRef(o.getAttribute('typeRef')),
+      }))
+      .filter((o) => Boolean(o.name));
+  } catch (err) {
+    console.error('Error extracting outputs from DMN:', err);
+    return [];
+  }
+}
+
+/**
+ * Extract cell-level legislative groundings from a DMN <inputEntry>/<outputEntry>
+ * element's `dct:source` / `cprmv:sourceQuote` / `cprmv:isBasedOn` attributes.
+ *
+ * Supports both the unnumbered shorthand (exactly one grounding — the common
+ * case) and the numbered attribute family (`dct:source1`, `cprmv:sourceQuote1`,
+ * `cprmv:isBasedOn1`, `dct:source2`, ...) used for compound cells that need more
+ * than one grounding — see cprmv-cell-level-linking-prototype.md, "Multiple
+ * groundings per cell". No upper bound on the numbered form; scanning stops at
+ * the first N with none of the three attributes present.
+ *
+ * @param {Element} entryEl - an <inputEntry> or <outputEntry> element
+ * @returns {Array<{source: string|null, sourceQuote: string|null, isBasedOn: string|null}>}
+ *   Empty array when the cell carries no grounding attributes at all — most
+ *   cells (wildcards, cross-decision references with no annotation coverage)
+ *   are rightfully ungrounded.
+ */
+function extractCellGroundings(entryEl) {
+  const groundings = [];
+
+  const push = (source, sourceQuote, isBasedOn) => {
+    if (source || sourceQuote || isBasedOn) {
+      groundings.push({
+        source: source || null,
+        sourceQuote: sourceQuote || null,
+        isBasedOn: isBasedOn || null,
+      });
+    }
+  };
+
+  push(
+    entryEl.getAttribute('dct:source'),
+    entryEl.getAttribute('cprmv:sourceQuote'),
+    entryEl.getAttribute('cprmv:isBasedOn')
+  );
+
+  for (let n = 1; ; n++) {
+    const source = entryEl.getAttribute(`dct:source${n}`);
+    const sourceQuote = entryEl.getAttribute(`cprmv:sourceQuote${n}`);
+    const isBasedOn = entryEl.getAttribute(`cprmv:isBasedOn${n}`);
+    if (!source && !sourceQuote && !isBasedOn) break;
+    push(source, sourceQuote, isBasedOn);
+  }
+
+  return groundings;
+}
+
+/**
+ * Extract one <inputEntry>/<outputEntry> cell: its own `id` (the stable per-cell
+ * key a published TTL's cell URI is built from), its FEEL condition/value text,
+ * and any cprmv groundings (see extractCellGroundings).
+ *
+ * @param {Element} entryEl - an <inputEntry> or <outputEntry> element
+ * @returns {{id: string|null, text: string, groundings: Array}}
+ */
+function extractCell(entryEl) {
+  const textEl = queryLocal(entryEl, 'text');
+  return {
+    id: entryEl.getAttribute('id') || null,
+    text: textEl ? textEl.textContent : '',
+    groundings: extractCellGroundings(entryEl),
+  };
+}
+
+/**
  * Extracts rules from DMN content and generates TTL
  * @param {string} dmnContent - Raw DMN XML content
  * @param {string} serviceUri - URI of the service
@@ -197,7 +352,7 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
     const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
 
     // Extract decision tables
-    const decisionTables = xmlDoc.querySelectorAll('decisionTable');
+    const decisionTables = queryAllLocal(xmlDoc, 'decisionTable');
 
     decisionTables.forEach((table, tableIndex) => {
       const tableId = table.getAttribute('id') || `table-${tableIndex}`;
@@ -206,7 +361,7 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
       const rulesetType = table.getAttribute('cprmv:rulesetType') || 'decision-table';
 
       // Extract rules from the decision table
-      const ruleElements = table.querySelectorAll('rule');
+      const ruleElements = queryAllLocal(table, 'rule');
 
       ruleElements.forEach((rule, ruleIndex) => {
         const ruleId = rule.getAttribute('id') || `rule-${ruleIndex}`;
@@ -220,13 +375,13 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
         const cprmvConfidence = rule.getAttribute('cprmv:confidence') || 'medium';
         const cprmvNote = rule.getAttribute('cprmv:note');
 
-        // Extract input and output entries
-        const inputs = Array.from(rule.querySelectorAll('inputEntry text')).map(
-          (t) => t.textContent
-        );
-        const outputs = Array.from(rule.querySelectorAll('outputEntry text')).map(
-          (t) => t.textContent
-        );
+        // Extract input and output entries — cell-level id + FEEL text + any
+        // cprmv groundings (inputEntries/outputEntries), plus the plain FEEL
+        // text arrays (inputs/outputs) kept for backward compatibility.
+        const inputEntries = queryAllLocal(rule, 'inputEntry').map(extractCell);
+        const outputEntries = queryAllLocal(rule, 'outputEntry').map(extractCell);
+        const inputs = inputEntries.map((c) => c.text);
+        const outputs = outputEntries.map((c) => c.text);
 
         const ruleObj = {
           id: ruleId,
@@ -239,6 +394,8 @@ export function extractRulesFromDMN(dmnContent, serviceUri) {
           note: cprmvNote,
           inputs: inputs,
           outputs: outputs,
+          inputEntries: inputEntries,
+          outputEntries: outputEntries,
           tableId: tableId,
           rulesetType: rulesetType,
         };
@@ -465,8 +622,13 @@ function looseValueEqual(exp, act) {
 export function evaluateTestCaseExpectation(expected, parsed) {
   const actual = flattenEngineOutputs(parsed);
 
-  // Cases that expect no matching rule (empty result set).
-  if (typeof expected === 'string' && /empty result|no matching rule/i.test(expected)) {
+  // Cases that expect no matching rule (empty result set). This covers both a
+  // descriptive expectation ("empty result", "no matching rule") and a literal
+  // empty-collection value ("[]" or "{}") copied straight from the engine output.
+  if (
+    typeof expected === 'string' &&
+    (/empty result|no matching rule/i.test(expected) || /^\s*(\[\s*\]|\{\s*\})\s*$/.test(expected))
+  ) {
     const isEmpty = !actual || Object.keys(actual).length === 0;
     return {
       verdict: isEmpty ? 'pass' : 'fail',
@@ -499,6 +661,7 @@ const dmnHelpers = {
   extractRulesFromDMN,
   extractInputsFromTestResult,
   extractOutputsFromTestResult,
+  extractOutputsFromDMN,
   validateDMNData,
   sanitizeServiceIdentifier,
   buildServiceUri,

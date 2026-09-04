@@ -1,0 +1,1637 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_BehandelenVergunningaanvraag" targetNamespace="https://www.gemmaonline.nl/bpmn/behandelen-vergunningaanvraag" exporter="ChatGPT" exporterVersion="GPT-5.5 Thinking">
+  <bpmn:category id="Category_Phases">
+    <bpmn:categoryValue id="CategoryValue_Phase1" value="Intake vergunningaanvraag"/>
+    <bpmn:categoryValue id="CategoryValue_Phase2" value="Inhoudelijk behandelen vergunningaanvraag"/>
+    <bpmn:categoryValue id="CategoryValue_Phase3" value="Besluiten vergunningaanvraag"/>
+    <bpmn:categoryValue id="CategoryValue_Phase4" value="Bekendmaken besluit vergunningaanvraag"/>
+  </bpmn:category>
+  <bpmn:message id="Message_AmbtshalveVerzoek" name="Ambtshalve verzoek revisie/aanscherping/intrekking"/>
+  <bpmn:message id="Message_AanvraagDoorgezonden" name="Vergunningaanvraag doorgezonden"/>
+  <bpmn:process id="Process_BehandelenVergunningaanvraag" name="Behandelen aanvraag omgevingsvergunning" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:documentation>Camunda 7-compatible BPMN model derived from the GEMMA Online process poster 'Bedrijfsproces Behandelen aanvraag omgevingsvergunning'. The model is intentionally conservative: manual decision points from the poster are represented as user tasks and exclusive gateways with process variables. Configure forms, assignees, listeners and service implementations in Camunda/Operaton as needed. Source PDF: https://www.gemmaonline.nl/images/gemma/5/58/Procesposter_bedrijfsproces_015_Behandelen_vergunningaanvraag.pdf Routing variables used: viaOmgevingsloket, gemeenteBevoegdGezag, adviesVergunningplichtNodig, vergunningplichtig, adviesAanvraagvereistenNodig, aanvraagVoldoet, aanvullingVoldoende, adviesProcedureNodig, complexeAanvraag, extraGegevensNodig, hervattenNaAanvulling, planschadeRisico, aanpassingAanvraagNodig, collegeAccordNodig, raadsadviesGewenst, uitgebreideProcedure, geschilpuntenUitZienswijzen, collegeVaststellingNodig, registratieNodig, omgevingsplanBijwerken, toezichtNodig.</bpmn:documentation>
+    <bpmn:startEvent id="Start_AanvraagIngediend" name="Vergunningaanvraag ingediend">
+      <bpmn:outgoing>Flow_001_Start_AanvraagIngediend_to_Task_RegistrerenVTH</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Start_AmbtshalveVerzoek" name="Ambtshalve verzoek revisie/aanscherping/intrekking">
+      <bpmn:outgoing>Flow_002_Start_AmbtshalveVerzoek_to_Task_RegistrerenVTH</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MsgDef_AmbtshalveVerzoek" messageRef="Message_AmbtshalveVerzoek"/>
+    </bpmn:startEvent>
+    <bpmn:startEvent id="Start_Doorgezonden" name="Vergunningaanvraag doorgezonden">
+      <bpmn:outgoing>Flow_003_Start_Doorgezonden_to_Task_RegistrerenVTH</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MsgDef_Doorgezonden" messageRef="Message_AanvraagDoorgezonden"/>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_RegistrerenVTH" name="Registreren aanvraag in VTH-systeem">
+      <bpmn:incoming>Flow_001_Start_AanvraagIngediend_to_Task_RegistrerenVTH</bpmn:incoming>
+      <bpmn:incoming>Flow_002_Start_AmbtshalveVerzoek_to_Task_RegistrerenVTH</bpmn:incoming>
+      <bpmn:incoming>Flow_003_Start_Doorgezonden_to_Task_RegistrerenVTH</bpmn:incoming>
+      <bpmn:outgoing>Flow_004_Task_RegistrerenVTH_to_Gateway_ViaOmgevingsloket</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_ViaOmgevingsloket" name="Via Omgevingsloket?" default="Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief">
+      <bpmn:incoming>Flow_004_Task_RegistrerenVTH_to_Gateway_ViaOmgevingsloket</bpmn:incoming>
+      <bpmn:outgoing>Flow_005_Gateway_ViaOmgevingsloket_to_Task_RegistrerenOmgevingsloket</bpmn:outgoing>
+      <bpmn:outgoing>Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_RegistrerenOmgevingsloket" name="Registreren aanvraag in Omgevingsloket">
+      <bpmn:incoming>Flow_005_Gateway_ViaOmgevingsloket_to_Task_RegistrerenOmgevingsloket</bpmn:incoming>
+      <bpmn:outgoing>Flow_007_Task_RegistrerenOmgevingsloket_to_Task_OntvangstbevestigingArchief</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_OntvangstbevestigingArchief" name="Verzenden ontvangstbevestiging en archiveren aanvraag/bijlagen">
+      <bpmn:incoming>Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief</bpmn:incoming>
+      <bpmn:incoming>Flow_007_Task_RegistrerenOmgevingsloket_to_Task_OntvangstbevestigingArchief</bpmn:incoming>
+      <bpmn:outgoing>Flow_008_Task_OntvangstbevestigingArchief_to_Task_PublicerenAanvraag</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_PublicerenAanvraag" name="Publiceren aanvraag">
+      <bpmn:incoming>Flow_008_Task_OntvangstbevestigingArchief_to_Task_PublicerenAanvraag</bpmn:incoming>
+      <bpmn:outgoing>Flow_009_Task_PublicerenAanvraag_to_Task_ToewijzenHoofdbehandelaar</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ToewijzenHoofdbehandelaar" name="Toewijzen aan hoofdbehandelaar">
+      <bpmn:incoming>Flow_009_Task_PublicerenAanvraag_to_Task_ToewijzenHoofdbehandelaar</bpmn:incoming>
+      <bpmn:outgoing>Flow_010_Task_ToewijzenHoofdbehandelaar_to_Task_ControlerenBevoegdGezag</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ControlerenBevoegdGezag" name="Controleren bevoegd gezag">
+      <bpmn:incoming>Flow_010_Task_ToewijzenHoofdbehandelaar_to_Task_ControlerenBevoegdGezag</bpmn:incoming>
+      <bpmn:outgoing>Flow_011_Task_ControlerenBevoegdGezag_to_Gateway_BevoegdGezag</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_BevoegdGezag" name="Gemeente bevoegd gezag?" default="Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag">
+      <bpmn:incoming>Flow_011_Task_ControlerenBevoegdGezag_to_Gateway_BevoegdGezag</bpmn:incoming>
+      <bpmn:outgoing>Flow_012_Gateway_BevoegdGezag_to_Task_ControlerenVergunningplicht</bpmn:outgoing>
+      <bpmn:outgoing>Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_OverdragenBevoegdGezag" name="Overdragen aan bevoegd bestuursorgaan">
+      <bpmn:incoming>Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag</bpmn:incoming>
+      <bpmn:outgoing>Flow_014_Task_OverdragenBevoegdGezag_to_End_GestaaktOverdracht</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_GestaaktOverdracht" name="Behandelen vergunningaanvraag gestaakt - overgedragen">
+      <bpmn:incoming>Flow_014_Task_OverdragenBevoegdGezag_to_End_GestaaktOverdracht</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_ControlerenVergunningplicht" name="Controleren vergunningplicht">
+      <bpmn:incoming>Flow_012_Gateway_BevoegdGezag_to_Task_ControlerenVergunningplicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_015_Task_ControlerenVergunningplicht_to_Gateway_AdviesVergunningplicht</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AdviesVergunningplicht" name="Advies vergunningplicht nodig?" default="Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig">
+      <bpmn:incoming>Flow_015_Task_ControlerenVergunningplicht_to_Gateway_AdviesVergunningplicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_016_Gateway_AdviesVergunningplicht_to_Task_AdviserenVergunningplicht</bpmn:outgoing>
+      <bpmn:outgoing>Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AdviserenVergunningplicht" name="Adviseren vergunningplicht">
+      <bpmn:incoming>Flow_016_Gateway_AdviesVergunningplicht_to_Task_AdviserenVergunningplicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_018_Task_AdviserenVergunningplicht_to_Gateway_Vergunningplichtig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Vergunningplichtig" name="Vergunningplichtig?" default="Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht">
+      <bpmn:incoming>Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig</bpmn:incoming>
+      <bpmn:incoming>Flow_018_Task_AdviserenVergunningplicht_to_Gateway_Vergunningplichtig</bpmn:incoming>
+      <bpmn:outgoing>Flow_019_Gateway_Vergunningplichtig_to_Task_ControlerenAanvraagvereisten</bpmn:outgoing>
+      <bpmn:outgoing>Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_BerichtGeenVergunningplicht" name="Bericht: geen vergunningplicht / meldingplicht">
+      <bpmn:incoming>Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_021_Task_BerichtGeenVergunningplicht_to_Task_PublicerenBuitenbehandelingGeenPlicht</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_PublicerenBuitenbehandelingGeenPlicht" name="Publiceren buitenbehandelingstelling">
+      <bpmn:incoming>Flow_021_Task_BerichtGeenVergunningplicht_to_Task_PublicerenBuitenbehandelingGeenPlicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_022_Task_PublicerenBuitenbehandelingGeenPlicht_to_End_GestaaktGeenVergunningplicht</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_GestaaktGeenVergunningplicht" name="Gestaakt - geen vergunningplicht">
+      <bpmn:incoming>Flow_022_Task_PublicerenBuitenbehandelingGeenPlicht_to_End_GestaaktGeenVergunningplicht</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_ControlerenAanvraagvereisten" name="Controleren aanvraagvereisten">
+      <bpmn:incoming>Flow_019_Gateway_Vergunningplichtig_to_Task_ControlerenAanvraagvereisten</bpmn:incoming>
+      <bpmn:incoming>Flow_031_Gateway_AanvullingVoldoende_to_Task_ControlerenAanvraagvereisten</bpmn:incoming>
+      <bpmn:outgoing>Flow_023_Task_ControlerenAanvraagvereisten_to_Gateway_AdviesAanvraagvereisten</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AdviesAanvraagvereisten" name="Advies aanvraagvereisten nodig?" default="Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet">
+      <bpmn:incoming>Flow_023_Task_ControlerenAanvraagvereisten_to_Gateway_AdviesAanvraagvereisten</bpmn:incoming>
+      <bpmn:outgoing>Flow_024_Gateway_AdviesAanvraagvereisten_to_Task_AdviserenAanvraagvereisten</bpmn:outgoing>
+      <bpmn:outgoing>Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AdviserenAanvraagvereisten" name="Adviseren aanvraagvereisten">
+      <bpmn:incoming>Flow_024_Gateway_AdviesAanvraagvereisten_to_Task_AdviserenAanvraagvereisten</bpmn:incoming>
+      <bpmn:outgoing>Flow_026_Task_AdviserenAanvraagvereisten_to_Gateway_AanvraagVoldoet</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AanvraagVoldoet" name="Aanvraag voldoet?" default="Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling">
+      <bpmn:incoming>Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet</bpmn:incoming>
+      <bpmn:incoming>Flow_026_Task_AdviserenAanvraagvereisten_to_Gateway_AanvraagVoldoet</bpmn:incoming>
+      <bpmn:outgoing>Flow_027_Gateway_AanvraagVoldoet_to_Task_ControlerenProcedure</bpmn:outgoing>
+      <bpmn:outgoing>Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_VerzoekAanvulling" name="Verzoek aanvulling aanvraag">
+      <bpmn:incoming>Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling</bpmn:incoming>
+      <bpmn:outgoing>Flow_029_Task_VerzoekAanvulling_to_Receive_AanvullingOfTermijn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Receive_AanvullingOfTermijn" name="Ontvang aanvulling of termijn verstreken">
+      <bpmn:incoming>Flow_029_Task_VerzoekAanvulling_to_Receive_AanvullingOfTermijn</bpmn:incoming>
+      <bpmn:outgoing>Flow_030_Receive_AanvullingOfTermijn_to_Gateway_AanvullingVoldoende</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AanvullingVoldoende" name="Aanvulling voldoende?" default="Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen">
+      <bpmn:incoming>Flow_030_Receive_AanvullingOfTermijn_to_Gateway_AanvullingVoldoende</bpmn:incoming>
+      <bpmn:outgoing>Flow_031_Gateway_AanvullingVoldoende_to_Task_ControlerenAanvraagvereisten</bpmn:outgoing>
+      <bpmn:outgoing>Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_BesluitNietBehandelen" name="Besluit aanvraag niet behandelen">
+      <bpmn:incoming>Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen</bpmn:incoming>
+      <bpmn:outgoing>Flow_033_Task_BesluitNietBehandelen_to_Task_BekendmakenNietBehandelen</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_BekendmakenNietBehandelen" name="Bekendmaken en publiceren buitenbehandelingstelling">
+      <bpmn:incoming>Flow_033_Task_BesluitNietBehandelen_to_Task_BekendmakenNietBehandelen</bpmn:incoming>
+      <bpmn:outgoing>Flow_034_Task_BekendmakenNietBehandelen_to_End_GestaaktAanvraagvereisten</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_GestaaktAanvraagvereisten" name="Gestaakt - aanvraagvereisten onvoldoende">
+      <bpmn:incoming>Flow_034_Task_BekendmakenNietBehandelen_to_End_GestaaktAanvraagvereisten</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="Task_ControlerenProcedure" name="Controleren procedure">
+      <bpmn:incoming>Flow_027_Gateway_AanvraagVoldoet_to_Task_ControlerenProcedure</bpmn:incoming>
+      <bpmn:outgoing>Flow_035_Task_ControlerenProcedure_to_Gateway_AdviesProcedure</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AdviesProcedure" name="Advies procedure nodig?" default="Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure">
+      <bpmn:incoming>Flow_035_Task_ControlerenProcedure_to_Gateway_AdviesProcedure</bpmn:incoming>
+      <bpmn:outgoing>Flow_036_Gateway_AdviesProcedure_to_Task_AdviserenProcedure</bpmn:outgoing>
+      <bpmn:outgoing>Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AdviserenProcedure" name="Adviseren procedure">
+      <bpmn:incoming>Flow_036_Gateway_AdviesProcedure_to_Task_AdviserenProcedure</bpmn:incoming>
+      <bpmn:outgoing>Flow_038_Task_AdviserenProcedure_to_Task_VerzendBerichtProcedure</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VerzendBerichtProcedure" name="Versturen bericht behandeling en procedure">
+      <bpmn:incoming>Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure</bpmn:incoming>
+      <bpmn:incoming>Flow_038_Task_AdviserenProcedure_to_Task_VerzendBerichtProcedure</bpmn:incoming>
+      <bpmn:outgoing>Flow_039_Task_VerzendBerichtProcedure_to_Event_IntakeGereed</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateThrowEvent id="Event_IntakeGereed" name="Intake vergunningaanvraag gereed">
+      <bpmn:incoming>Flow_039_Task_VerzendBerichtProcedure_to_Event_IntakeGereed</bpmn:incoming>
+      <bpmn:outgoing>Flow_040_Event_IntakeGereed_to_Task_BeoordeelComplexeAanvraag</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="Task_BeoordeelComplexeAanvraag" name="Beoordelen complexe aanvraag">
+      <bpmn:incoming>Flow_040_Event_IntakeGereed_to_Task_BeoordeelComplexeAanvraag</bpmn:incoming>
+      <bpmn:outgoing>Flow_041_Task_BeoordeelComplexeAanvraag_to_Gateway_ComplexeAanvraag</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_ComplexeAanvraag" name="Complexe aanvraag?" default="Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking">
+      <bpmn:incoming>Flow_041_Task_BeoordeelComplexeAanvraag_to_Gateway_ComplexeAanvraag</bpmn:incoming>
+      <bpmn:outgoing>Flow_042_Gateway_ComplexeAanvraag_to_Task_ControlerenCoordinatieregeling</bpmn:outgoing>
+      <bpmn:outgoing>Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ControlerenCoordinatieregeling" name="Controleren toepassen coördinatieregeling">
+      <bpmn:incoming>Flow_042_Gateway_ComplexeAanvraag_to_Task_ControlerenCoordinatieregeling</bpmn:incoming>
+      <bpmn:outgoing>Flow_044_Task_ControlerenCoordinatieregeling_to_Task_BetrekkenKetenpartners</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_BetrekkenKetenpartners" name="Betrekken ketenpartners">
+      <bpmn:incoming>Flow_044_Task_ControlerenCoordinatieregeling_to_Task_BetrekkenKetenpartners</bpmn:incoming>
+      <bpmn:outgoing>Flow_045_Task_BetrekkenKetenpartners_to_Gateway_MergeSamenwerking</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeSamenwerking" name="Externe samenwerking bepaald">
+      <bpmn:incoming>Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking</bpmn:incoming>
+      <bpmn:incoming>Flow_045_Task_BetrekkenKetenpartners_to_Gateway_MergeSamenwerking</bpmn:incoming>
+      <bpmn:outgoing>Flow_046_Gateway_MergeSamenwerking_to_Task_BetrekkenInterneAdviseurs</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_BetrekkenInterneAdviseurs" name="Betrekken interne adviseurs">
+      <bpmn:incoming>Flow_046_Gateway_MergeSamenwerking_to_Task_BetrekkenInterneAdviseurs</bpmn:incoming>
+      <bpmn:outgoing>Flow_047_Task_BetrekkenInterneAdviseurs_to_Task_ToewijzenInplannenWerk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_ToewijzenInplannenWerk" name="Toewijzen en inplannen werk">
+      <bpmn:incoming>Flow_047_Task_BetrekkenInterneAdviseurs_to_Task_ToewijzenInplannenWerk</bpmn:incoming>
+      <bpmn:outgoing>Flow_048_Task_ToewijzenInplannenWerk_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_UitvoerenInhoudelijkeToetsing" name="Uitvoeren inhoudelijke toetsing">
+      <bpmn:incoming>Flow_048_Task_ToewijzenInplannenWerk_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:incoming>
+      <bpmn:incoming>Flow_055_Gateway_HervattenNaAanvulling_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:incoming>
+      <bpmn:incoming>Flow_065_Receive_AangepasteAanvraag_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:incoming>
+      <bpmn:outgoing>Flow_049_Task_UitvoerenInhoudelijkeToetsing_to_Task_OpstellenAdviesDeelgebied</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_OpstellenAdviesDeelgebied" name="Opstellen advies deelgebied(en)">
+      <bpmn:incoming>Flow_049_Task_UitvoerenInhoudelijkeToetsing_to_Task_OpstellenAdviesDeelgebied</bpmn:incoming>
+      <bpmn:outgoing>Flow_050_Task_OpstellenAdviesDeelgebied_to_Gateway_ExtraGegevensNodig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_ExtraGegevensNodig" name="Aanvullende gegevens nodig?" default="Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico">
+      <bpmn:incoming>Flow_050_Task_OpstellenAdviesDeelgebied_to_Gateway_ExtraGegevensNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_051_Gateway_ExtraGegevensNodig_to_Task_VerzoekAanvullingInhoudelijk</bpmn:outgoing>
+      <bpmn:outgoing>Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_VerzoekAanvullingInhoudelijk" name="Verzoeken aanvullende gegevens/bescheiden">
+      <bpmn:incoming>Flow_051_Gateway_ExtraGegevensNodig_to_Task_VerzoekAanvullingInhoudelijk</bpmn:incoming>
+      <bpmn:outgoing>Flow_053_Task_VerzoekAanvullingInhoudelijk_to_Receive_AanvullingInhoudelijk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Receive_AanvullingInhoudelijk" name="Ontvang aanvulling inhoudelijke toetsing">
+      <bpmn:incoming>Flow_053_Task_VerzoekAanvullingInhoudelijk_to_Receive_AanvullingInhoudelijk</bpmn:incoming>
+      <bpmn:outgoing>Flow_054_Receive_AanvullingInhoudelijk_to_Gateway_HervattenNaAanvulling</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_HervattenNaAanvulling" name="Behandeling hervatten?" default="Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen">
+      <bpmn:incoming>Flow_054_Receive_AanvullingInhoudelijk_to_Gateway_HervattenNaAanvulling</bpmn:incoming>
+      <bpmn:outgoing>Flow_055_Gateway_HervattenNaAanvulling_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:outgoing>
+      <bpmn:outgoing>Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_BesluitAlsnogNietBehandelen" name="Besluit alsnog buiten behandeling">
+      <bpmn:incoming>Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen</bpmn:incoming>
+      <bpmn:outgoing>Flow_057_Task_BesluitAlsnogNietBehandelen_to_Task_PublicerenBBInhoudelijk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_PublicerenBBInhoudelijk" name="Publiceren buitenbehandelingstelling">
+      <bpmn:incoming>Flow_057_Task_BesluitAlsnogNietBehandelen_to_Task_PublicerenBBInhoudelijk</bpmn:incoming>
+      <bpmn:outgoing>Flow_058_Task_PublicerenBBInhoudelijk_to_End_GestaaktInhoudelijk</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_GestaaktInhoudelijk" name="Gestaakt - inhoudelijke aanvulling onvoldoende">
+      <bpmn:incoming>Flow_058_Task_PublicerenBBInhoudelijk_to_End_GestaaktInhoudelijk</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_PlanschadeRisico" name="Planschaderisico?" default="Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig">
+      <bpmn:incoming>Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico</bpmn:incoming>
+      <bpmn:outgoing>Flow_059_Gateway_PlanschadeRisico_to_Task_AfsluitenPlanschadeOvereenkomst</bpmn:outgoing>
+      <bpmn:outgoing>Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AfsluitenPlanschadeOvereenkomst" name="Afsluiten planschade-overeenkomst">
+      <bpmn:incoming>Flow_059_Gateway_PlanschadeRisico_to_Task_AfsluitenPlanschadeOvereenkomst</bpmn:incoming>
+      <bpmn:outgoing>Flow_061_Task_AfsluitenPlanschadeOvereenkomst_to_Gateway_AanpassingAanvraagNodig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_AanpassingAanvraagNodig" name="Aanpassing aanvraag nodig?" default="Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging">
+      <bpmn:incoming>Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig</bpmn:incoming>
+      <bpmn:incoming>Flow_061_Task_AfsluitenPlanschadeOvereenkomst_to_Gateway_AanpassingAanvraagNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_062_Gateway_AanpassingAanvraagNodig_to_Task_VerzoekAanpassingAanvraag</bpmn:outgoing>
+      <bpmn:outgoing>Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_VerzoekAanpassingAanvraag" name="Verzoeken aanpassing aanvraag">
+      <bpmn:incoming>Flow_062_Gateway_AanpassingAanvraagNodig_to_Task_VerzoekAanpassingAanvraag</bpmn:incoming>
+      <bpmn:outgoing>Flow_064_Task_VerzoekAanpassingAanvraag_to_Receive_AangepasteAanvraag</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Receive_AangepasteAanvraag" name="Ontvang aangepaste aanvraag">
+      <bpmn:incoming>Flow_064_Task_VerzoekAanpassingAanvraag_to_Receive_AangepasteAanvraag</bpmn:incoming>
+      <bpmn:outgoing>Flow_065_Receive_AangepasteAanvraag_to_Task_UitvoerenInhoudelijkeToetsing</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_UitvoerenIntegraleAfweging" name="Uitvoeren integrale afweging">
+      <bpmn:incoming>Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging</bpmn:incoming>
+      <bpmn:outgoing>Flow_066_Task_UitvoerenIntegraleAfweging_to_Task_FormulerenConceptBeschikking</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_FormulerenConceptBeschikking" name="Formuleren conceptbeschikking / ontwerpbeschikking">
+      <bpmn:incoming>Flow_066_Task_UitvoerenIntegraleAfweging_to_Task_FormulerenConceptBeschikking</bpmn:incoming>
+      <bpmn:outgoing>Flow_067_Task_FormulerenConceptBeschikking_to_Gateway_CollegeAccordNodig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_CollegeAccordNodig" name="College-akkoord nodig?" default="Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk">
+      <bpmn:incoming>Flow_067_Task_FormulerenConceptBeschikking_to_Gateway_CollegeAccordNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_068_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptCollege</bpmn:outgoing>
+      <bpmn:outgoing>Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AccorderenConceptAmbtelijk" name="Accorderen conceptbeschikking (ambtelijk)">
+      <bpmn:incoming>Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk</bpmn:incoming>
+      <bpmn:outgoing>Flow_070_Task_AccorderenConceptAmbtelijk_to_Gateway_MergeAccordConcept</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_AccorderenConceptCollege" name="Accorderen conceptbeschikking (College)">
+      <bpmn:incoming>Flow_068_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptCollege</bpmn:incoming>
+      <bpmn:outgoing>Flow_071_Task_AccorderenConceptCollege_to_Gateway_RaadsadviesGewenst</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_RaadsadviesGewenst" name="Raadsadvies gewenst?" default="Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept">
+      <bpmn:incoming>Flow_071_Task_AccorderenConceptCollege_to_Gateway_RaadsadviesGewenst</bpmn:incoming>
+      <bpmn:outgoing>Flow_072_Gateway_RaadsadviesGewenst_to_Task_OpvragenRaadsadvies</bpmn:outgoing>
+      <bpmn:outgoing>Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_OpvragenRaadsadvies" name="Opvragen raadsadvies">
+      <bpmn:incoming>Flow_072_Gateway_RaadsadviesGewenst_to_Task_OpvragenRaadsadvies</bpmn:incoming>
+      <bpmn:outgoing>Flow_074_Task_OpvragenRaadsadvies_to_Task_UitbrengenRaadsadvies</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_UitbrengenRaadsadvies" name="Uitbrengen raadsadvies">
+      <bpmn:incoming>Flow_074_Task_OpvragenRaadsadvies_to_Task_UitbrengenRaadsadvies</bpmn:incoming>
+      <bpmn:outgoing>Flow_075_Task_UitbrengenRaadsadvies_to_Task_VerwerkenRaadsadvies</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VerwerkenRaadsadvies" name="Verwerken raadsadvies">
+      <bpmn:incoming>Flow_075_Task_UitbrengenRaadsadvies_to_Task_VerwerkenRaadsadvies</bpmn:incoming>
+      <bpmn:outgoing>Flow_076_Task_VerwerkenRaadsadvies_to_Gateway_MergeAccordConcept</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeAccordConcept" name="Concept geaccordeerd">
+      <bpmn:incoming>Flow_070_Task_AccorderenConceptAmbtelijk_to_Gateway_MergeAccordConcept</bpmn:incoming>
+      <bpmn:incoming>Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept</bpmn:incoming>
+      <bpmn:incoming>Flow_076_Task_VerwerkenRaadsadvies_to_Gateway_MergeAccordConcept</bpmn:incoming>
+      <bpmn:outgoing>Flow_077_Gateway_MergeAccordConcept_to_Event_ConceptBeschikkingGereed</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="Event_ConceptBeschikkingGereed" name="Conceptbeschikking gereed">
+      <bpmn:incoming>Flow_077_Gateway_MergeAccordConcept_to_Event_ConceptBeschikkingGereed</bpmn:incoming>
+      <bpmn:outgoing>Flow_078_Event_ConceptBeschikkingGereed_to_Gateway_UitgebreideProcedure</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:exclusiveGateway id="Gateway_UitgebreideProcedure" name="Uitgebreide procedure?" default="Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV">
+      <bpmn:incoming>Flow_078_Event_ConceptBeschikkingGereed_to_Gateway_UitgebreideProcedure</bpmn:incoming>
+      <bpmn:outgoing>Flow_079_Gateway_UitgebreideProcedure_to_Task_TerInzageLeggenOntwerp</bpmn:outgoing>
+      <bpmn:outgoing>Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_TerInzageLeggenOntwerp" name="Ter inzage leggen ontwerpbeschikking">
+      <bpmn:incoming>Flow_079_Gateway_UitgebreideProcedure_to_Task_TerInzageLeggenOntwerp</bpmn:incoming>
+      <bpmn:outgoing>Flow_081_Task_TerInzageLeggenOntwerp_to_Task_VerzamelenZienswijzen</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VerzamelenZienswijzen" name="Verzamelen zienswijzen">
+      <bpmn:incoming>Flow_081_Task_TerInzageLeggenOntwerp_to_Task_VerzamelenZienswijzen</bpmn:incoming>
+      <bpmn:outgoing>Flow_082_Task_VerzamelenZienswijzen_to_Task_OpstellenEindverslagUOV</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_OpstellenEindverslagUOV" name="Opstellen eindverslag UOV-procedure">
+      <bpmn:incoming>Flow_082_Task_VerzamelenZienswijzen_to_Task_OpstellenEindverslagUOV</bpmn:incoming>
+      <bpmn:outgoing>Flow_083_Task_OpstellenEindverslagUOV_to_Gateway_MergeUOV</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeUOV" name="UOV afgerond / niet nodig">
+      <bpmn:incoming>Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV</bpmn:incoming>
+      <bpmn:incoming>Flow_083_Task_OpstellenEindverslagUOV_to_Gateway_MergeUOV</bpmn:incoming>
+      <bpmn:outgoing>Flow_084_Gateway_MergeUOV_to_Gateway_GeschilpuntenZienswijzen</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_GeschilpuntenZienswijzen" name="Geschilpunten uit zienswijzen?" default="Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking">
+      <bpmn:incoming>Flow_084_Gateway_MergeUOV_to_Gateway_GeschilpuntenZienswijzen</bpmn:incoming>
+      <bpmn:outgoing>Flow_085_Gateway_GeschilpuntenZienswijzen_to_Task_OplossenGeschilpunten</bpmn:outgoing>
+      <bpmn:outgoing>Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_OplossenGeschilpunten" name="Oplossen geschilpunten">
+      <bpmn:incoming>Flow_085_Gateway_GeschilpuntenZienswijzen_to_Task_OplossenGeschilpunten</bpmn:incoming>
+      <bpmn:outgoing>Flow_087_Task_OplossenGeschilpunten_to_Task_AdviserenAanpassenBeschikking</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_AdviserenAanpassenBeschikking" name="Adviseren aanpassen beschikking">
+      <bpmn:incoming>Flow_087_Task_OplossenGeschilpunten_to_Task_AdviserenAanpassenBeschikking</bpmn:incoming>
+      <bpmn:outgoing>Flow_088_Task_AdviserenAanpassenBeschikking_to_Task_BeantwoordenZienswijzen</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_BeantwoordenZienswijzen" name="Beantwoorden zienswijzen">
+      <bpmn:incoming>Flow_088_Task_AdviserenAanpassenBeschikking_to_Task_BeantwoordenZienswijzen</bpmn:incoming>
+      <bpmn:outgoing>Flow_089_Task_BeantwoordenZienswijzen_to_Task_FormulerenDefinitieveBeschikking</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_FormulerenDefinitieveBeschikking" name="Formuleren definitieve beschikking">
+      <bpmn:incoming>Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking</bpmn:incoming>
+      <bpmn:incoming>Flow_089_Task_BeantwoordenZienswijzen_to_Task_FormulerenDefinitieveBeschikking</bpmn:incoming>
+      <bpmn:outgoing>Flow_090_Task_FormulerenDefinitieveBeschikking_to_Task_BerekenenLeges</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_BerekenenLeges" name="Berekenen leges">
+      <bpmn:incoming>Flow_090_Task_FormulerenDefinitieveBeschikking_to_Task_BerekenenLeges</bpmn:incoming>
+      <bpmn:outgoing>Flow_091_Task_BerekenenLeges_to_Gateway_CollegeVaststellingNodig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_CollegeVaststellingNodig" name="Vaststelling door College?" default="Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk">
+      <bpmn:incoming>Flow_091_Task_BerekenenLeges_to_Gateway_CollegeVaststellingNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_092_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingCollege</bpmn:outgoing>
+      <bpmn:outgoing>Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_VaststellenBeschikkingAmbtelijk" name="Vaststellen beschikking (ambtelijk)">
+      <bpmn:incoming>Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk</bpmn:incoming>
+      <bpmn:outgoing>Flow_095_Task_VaststellenBeschikkingAmbtelijk_to_Gateway_MergeVaststelling</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_VaststellenBeschikkingCollege" name="Vaststellen beschikking (College)">
+      <bpmn:incoming>Flow_092_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingCollege</bpmn:incoming>
+      <bpmn:outgoing>Flow_094_Task_VaststellenBeschikkingCollege_to_Gateway_MergeVaststelling</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeVaststelling" name="Beschikking vastgesteld">
+      <bpmn:incoming>Flow_094_Task_VaststellenBeschikkingCollege_to_Gateway_MergeVaststelling</bpmn:incoming>
+      <bpmn:incoming>Flow_095_Task_VaststellenBeschikkingAmbtelijk_to_Gateway_MergeVaststelling</bpmn:incoming>
+      <bpmn:outgoing>Flow_096_Gateway_MergeVaststelling_to_Event_DefinitiefVastgesteld</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:intermediateThrowEvent id="Event_DefinitiefVastgesteld" name="Definitieve beschikking vastgesteld">
+      <bpmn:incoming>Flow_096_Gateway_MergeVaststelling_to_Event_DefinitiefVastgesteld</bpmn:incoming>
+      <bpmn:outgoing>Flow_097_Event_DefinitiefVastgesteld_to_Task_VerzendenBeschikkingAanvrager</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="Task_VerzendenBeschikkingAanvrager" name="Verzenden beschikking aan aanvrager">
+      <bpmn:incoming>Flow_097_Event_DefinitiefVastgesteld_to_Task_VerzendenBeschikkingAanvrager</bpmn:incoming>
+      <bpmn:outgoing>Flow_098_Task_VerzendenBeschikkingAanvrager_to_Task_MededelenBelanghebbenden</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_MededelenBelanghebbenden" name="Mededelen beschikking aan belanghebbenden">
+      <bpmn:incoming>Flow_098_Task_VerzendenBeschikkingAanvrager_to_Task_MededelenBelanghebbenden</bpmn:incoming>
+      <bpmn:outgoing>Flow_099_Task_MededelenBelanghebbenden_to_Task_PublicerenBeschikking</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_PublicerenBeschikking" name="Publiceren beschikking">
+      <bpmn:incoming>Flow_099_Task_MededelenBelanghebbenden_to_Task_PublicerenBeschikking</bpmn:incoming>
+      <bpmn:outgoing>Flow_100_Task_PublicerenBeschikking_to_Gateway_RegistrerenNodig</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_RegistrerenNodig" name="Registreren nodig?" default="Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie">
+      <bpmn:incoming>Flow_100_Task_PublicerenBeschikking_to_Gateway_RegistrerenNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_101_Gateway_RegistrerenNodig_to_Task_RegistrerenRegisters</bpmn:outgoing>
+      <bpmn:outgoing>Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_RegistrerenRegisters" name="Registreren in lokale/landelijke registers">
+      <bpmn:incoming>Flow_101_Gateway_RegistrerenNodig_to_Task_RegistrerenRegisters</bpmn:incoming>
+      <bpmn:outgoing>Flow_103_Task_RegistrerenRegisters_to_Gateway_MergeRegistratie</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeRegistratie" name="Registratie verwerkt">
+      <bpmn:incoming>Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie</bpmn:incoming>
+      <bpmn:incoming>Flow_103_Task_RegistrerenRegisters_to_Gateway_MergeRegistratie</bpmn:incoming>
+      <bpmn:outgoing>Flow_104_Gateway_MergeRegistratie_to_Gateway_OmgevingsplanBijwerken</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_OmgevingsplanBijwerken" name="Omgevingsplan bijwerken initiëren?" default="Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan">
+      <bpmn:incoming>Flow_104_Gateway_MergeRegistratie_to_Gateway_OmgevingsplanBijwerken</bpmn:incoming>
+      <bpmn:outgoing>Flow_105_Gateway_OmgevingsplanBijwerken_to_Task_InitieerBijwerkenOmgevingsplan</bpmn:outgoing>
+      <bpmn:outgoing>Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_InitieerBijwerkenOmgevingsplan" name="Initiëren bijwerken omgevingsplan">
+      <bpmn:incoming>Flow_105_Gateway_OmgevingsplanBijwerken_to_Task_InitieerBijwerkenOmgevingsplan</bpmn:incoming>
+      <bpmn:outgoing>Flow_107_Task_InitieerBijwerkenOmgevingsplan_to_Gateway_MergeOmgevingsplan</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeOmgevingsplan" name="Omgevingsplanactie verwerkt">
+      <bpmn:incoming>Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan</bpmn:incoming>
+      <bpmn:incoming>Flow_107_Task_InitieerBijwerkenOmgevingsplan_to_Gateway_MergeOmgevingsplan</bpmn:incoming>
+      <bpmn:outgoing>Flow_108_Gateway_MergeOmgevingsplan_to_Gateway_ToezichtNodig</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_ToezichtNodig" name="Toezicht nodig?" default="Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht">
+      <bpmn:incoming>Flow_108_Gateway_MergeOmgevingsplan_to_Gateway_ToezichtNodig</bpmn:incoming>
+      <bpmn:outgoing>Flow_109_Gateway_ToezichtNodig_to_Task_AanmeldenToezicht</bpmn:outgoing>
+      <bpmn:outgoing>Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_AanmeldenToezicht" name="Aanmelden voor toezicht">
+      <bpmn:incoming>Flow_109_Gateway_ToezichtNodig_to_Task_AanmeldenToezicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_111_Task_AanmeldenToezicht_to_Gateway_MergeToezicht</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MergeToezicht" name="Vervolgacties verwerkt">
+      <bpmn:incoming>Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht</bpmn:incoming>
+      <bpmn:incoming>Flow_111_Task_AanmeldenToezicht_to_Gateway_MergeToezicht</bpmn:incoming>
+      <bpmn:outgoing>Flow_112_Gateway_MergeToezicht_to_End_Gereed</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_Gereed" name="Behandelen vergunningaanvraag gereed">
+      <bpmn:incoming>Flow_112_Gateway_MergeToezicht_to_End_Gereed</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_001_Start_AanvraagIngediend_to_Task_RegistrerenVTH" sourceRef="Start_AanvraagIngediend" targetRef="Task_RegistrerenVTH"/>
+    <bpmn:sequenceFlow id="Flow_002_Start_AmbtshalveVerzoek_to_Task_RegistrerenVTH" sourceRef="Start_AmbtshalveVerzoek" targetRef="Task_RegistrerenVTH"/>
+    <bpmn:sequenceFlow id="Flow_003_Start_Doorgezonden_to_Task_RegistrerenVTH" sourceRef="Start_Doorgezonden" targetRef="Task_RegistrerenVTH"/>
+    <bpmn:sequenceFlow id="Flow_004_Task_RegistrerenVTH_to_Gateway_ViaOmgevingsloket" sourceRef="Task_RegistrerenVTH" targetRef="Gateway_ViaOmgevingsloket"/>
+    <bpmn:sequenceFlow id="Flow_005_Gateway_ViaOmgevingsloket_to_Task_RegistrerenOmgevingsloket" sourceRef="Gateway_ViaOmgevingsloket" targetRef="Task_RegistrerenOmgevingsloket" name="Nee">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('viaOmgevingsloket') == false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief" sourceRef="Gateway_ViaOmgevingsloket" targetRef="Task_OntvangstbevestigingArchief" name="Ja / al geregistreerd"/>
+    <bpmn:sequenceFlow id="Flow_007_Task_RegistrerenOmgevingsloket_to_Task_OntvangstbevestigingArchief" sourceRef="Task_RegistrerenOmgevingsloket" targetRef="Task_OntvangstbevestigingArchief"/>
+    <bpmn:sequenceFlow id="Flow_008_Task_OntvangstbevestigingArchief_to_Task_PublicerenAanvraag" sourceRef="Task_OntvangstbevestigingArchief" targetRef="Task_PublicerenAanvraag"/>
+    <bpmn:sequenceFlow id="Flow_009_Task_PublicerenAanvraag_to_Task_ToewijzenHoofdbehandelaar" sourceRef="Task_PublicerenAanvraag" targetRef="Task_ToewijzenHoofdbehandelaar"/>
+    <bpmn:sequenceFlow id="Flow_010_Task_ToewijzenHoofdbehandelaar_to_Task_ControlerenBevoegdGezag" sourceRef="Task_ToewijzenHoofdbehandelaar" targetRef="Task_ControlerenBevoegdGezag"/>
+    <bpmn:sequenceFlow id="Flow_011_Task_ControlerenBevoegdGezag_to_Gateway_BevoegdGezag" sourceRef="Task_ControlerenBevoegdGezag" targetRef="Gateway_BevoegdGezag"/>
+    <bpmn:sequenceFlow id="Flow_012_Gateway_BevoegdGezag_to_Task_ControlerenVergunningplicht" sourceRef="Gateway_BevoegdGezag" targetRef="Task_ControlerenVergunningplicht" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('gemeenteBevoegdGezag') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag" sourceRef="Gateway_BevoegdGezag" targetRef="Task_OverdragenBevoegdGezag" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_014_Task_OverdragenBevoegdGezag_to_End_GestaaktOverdracht" sourceRef="Task_OverdragenBevoegdGezag" targetRef="End_GestaaktOverdracht"/>
+    <bpmn:sequenceFlow id="Flow_015_Task_ControlerenVergunningplicht_to_Gateway_AdviesVergunningplicht" sourceRef="Task_ControlerenVergunningplicht" targetRef="Gateway_AdviesVergunningplicht"/>
+    <bpmn:sequenceFlow id="Flow_016_Gateway_AdviesVergunningplicht_to_Task_AdviserenVergunningplicht" sourceRef="Gateway_AdviesVergunningplicht" targetRef="Task_AdviserenVergunningplicht" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('adviesVergunningplichtNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig" sourceRef="Gateway_AdviesVergunningplicht" targetRef="Gateway_Vergunningplichtig" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_018_Task_AdviserenVergunningplicht_to_Gateway_Vergunningplichtig" sourceRef="Task_AdviserenVergunningplicht" targetRef="Gateway_Vergunningplichtig"/>
+    <bpmn:sequenceFlow id="Flow_019_Gateway_Vergunningplichtig_to_Task_ControlerenAanvraagvereisten" sourceRef="Gateway_Vergunningplichtig" targetRef="Task_ControlerenAanvraagvereisten" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('vergunningplichtig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht" sourceRef="Gateway_Vergunningplichtig" targetRef="Task_BerichtGeenVergunningplicht" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_021_Task_BerichtGeenVergunningplicht_to_Task_PublicerenBuitenbehandelingGeenPlicht" sourceRef="Task_BerichtGeenVergunningplicht" targetRef="Task_PublicerenBuitenbehandelingGeenPlicht"/>
+    <bpmn:sequenceFlow id="Flow_022_Task_PublicerenBuitenbehandelingGeenPlicht_to_End_GestaaktGeenVergunningplicht" sourceRef="Task_PublicerenBuitenbehandelingGeenPlicht" targetRef="End_GestaaktGeenVergunningplicht"/>
+    <bpmn:sequenceFlow id="Flow_023_Task_ControlerenAanvraagvereisten_to_Gateway_AdviesAanvraagvereisten" sourceRef="Task_ControlerenAanvraagvereisten" targetRef="Gateway_AdviesAanvraagvereisten"/>
+    <bpmn:sequenceFlow id="Flow_024_Gateway_AdviesAanvraagvereisten_to_Task_AdviserenAanvraagvereisten" sourceRef="Gateway_AdviesAanvraagvereisten" targetRef="Task_AdviserenAanvraagvereisten" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('adviesAanvraagvereistenNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet" sourceRef="Gateway_AdviesAanvraagvereisten" targetRef="Gateway_AanvraagVoldoet" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_026_Task_AdviserenAanvraagvereisten_to_Gateway_AanvraagVoldoet" sourceRef="Task_AdviserenAanvraagvereisten" targetRef="Gateway_AanvraagVoldoet"/>
+    <bpmn:sequenceFlow id="Flow_027_Gateway_AanvraagVoldoet_to_Task_ControlerenProcedure" sourceRef="Gateway_AanvraagVoldoet" targetRef="Task_ControlerenProcedure" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('aanvraagVoldoet') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling" sourceRef="Gateway_AanvraagVoldoet" targetRef="Task_VerzoekAanvulling" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_029_Task_VerzoekAanvulling_to_Receive_AanvullingOfTermijn" sourceRef="Task_VerzoekAanvulling" targetRef="Receive_AanvullingOfTermijn"/>
+    <bpmn:sequenceFlow id="Flow_030_Receive_AanvullingOfTermijn_to_Gateway_AanvullingVoldoende" sourceRef="Receive_AanvullingOfTermijn" targetRef="Gateway_AanvullingVoldoende"/>
+    <bpmn:sequenceFlow id="Flow_031_Gateway_AanvullingVoldoende_to_Task_ControlerenAanvraagvereisten" sourceRef="Gateway_AanvullingVoldoende" targetRef="Task_ControlerenAanvraagvereisten" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('aanvullingVoldoende') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen" sourceRef="Gateway_AanvullingVoldoende" targetRef="Task_BesluitNietBehandelen" name="Nee / termijn verstreken"/>
+    <bpmn:sequenceFlow id="Flow_033_Task_BesluitNietBehandelen_to_Task_BekendmakenNietBehandelen" sourceRef="Task_BesluitNietBehandelen" targetRef="Task_BekendmakenNietBehandelen"/>
+    <bpmn:sequenceFlow id="Flow_034_Task_BekendmakenNietBehandelen_to_End_GestaaktAanvraagvereisten" sourceRef="Task_BekendmakenNietBehandelen" targetRef="End_GestaaktAanvraagvereisten"/>
+    <bpmn:sequenceFlow id="Flow_035_Task_ControlerenProcedure_to_Gateway_AdviesProcedure" sourceRef="Task_ControlerenProcedure" targetRef="Gateway_AdviesProcedure"/>
+    <bpmn:sequenceFlow id="Flow_036_Gateway_AdviesProcedure_to_Task_AdviserenProcedure" sourceRef="Gateway_AdviesProcedure" targetRef="Task_AdviserenProcedure" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('adviesProcedureNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure" sourceRef="Gateway_AdviesProcedure" targetRef="Task_VerzendBerichtProcedure" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_038_Task_AdviserenProcedure_to_Task_VerzendBerichtProcedure" sourceRef="Task_AdviserenProcedure" targetRef="Task_VerzendBerichtProcedure"/>
+    <bpmn:sequenceFlow id="Flow_039_Task_VerzendBerichtProcedure_to_Event_IntakeGereed" sourceRef="Task_VerzendBerichtProcedure" targetRef="Event_IntakeGereed"/>
+    <bpmn:sequenceFlow id="Flow_040_Event_IntakeGereed_to_Task_BeoordeelComplexeAanvraag" sourceRef="Event_IntakeGereed" targetRef="Task_BeoordeelComplexeAanvraag"/>
+    <bpmn:sequenceFlow id="Flow_041_Task_BeoordeelComplexeAanvraag_to_Gateway_ComplexeAanvraag" sourceRef="Task_BeoordeelComplexeAanvraag" targetRef="Gateway_ComplexeAanvraag"/>
+    <bpmn:sequenceFlow id="Flow_042_Gateway_ComplexeAanvraag_to_Task_ControlerenCoordinatieregeling" sourceRef="Gateway_ComplexeAanvraag" targetRef="Task_ControlerenCoordinatieregeling" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('complexeAanvraag') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking" sourceRef="Gateway_ComplexeAanvraag" targetRef="Gateway_MergeSamenwerking" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_044_Task_ControlerenCoordinatieregeling_to_Task_BetrekkenKetenpartners" sourceRef="Task_ControlerenCoordinatieregeling" targetRef="Task_BetrekkenKetenpartners"/>
+    <bpmn:sequenceFlow id="Flow_045_Task_BetrekkenKetenpartners_to_Gateway_MergeSamenwerking" sourceRef="Task_BetrekkenKetenpartners" targetRef="Gateway_MergeSamenwerking"/>
+    <bpmn:sequenceFlow id="Flow_046_Gateway_MergeSamenwerking_to_Task_BetrekkenInterneAdviseurs" sourceRef="Gateway_MergeSamenwerking" targetRef="Task_BetrekkenInterneAdviseurs"/>
+    <bpmn:sequenceFlow id="Flow_047_Task_BetrekkenInterneAdviseurs_to_Task_ToewijzenInplannenWerk" sourceRef="Task_BetrekkenInterneAdviseurs" targetRef="Task_ToewijzenInplannenWerk"/>
+    <bpmn:sequenceFlow id="Flow_048_Task_ToewijzenInplannenWerk_to_Task_UitvoerenInhoudelijkeToetsing" sourceRef="Task_ToewijzenInplannenWerk" targetRef="Task_UitvoerenInhoudelijkeToetsing"/>
+    <bpmn:sequenceFlow id="Flow_049_Task_UitvoerenInhoudelijkeToetsing_to_Task_OpstellenAdviesDeelgebied" sourceRef="Task_UitvoerenInhoudelijkeToetsing" targetRef="Task_OpstellenAdviesDeelgebied"/>
+    <bpmn:sequenceFlow id="Flow_050_Task_OpstellenAdviesDeelgebied_to_Gateway_ExtraGegevensNodig" sourceRef="Task_OpstellenAdviesDeelgebied" targetRef="Gateway_ExtraGegevensNodig"/>
+    <bpmn:sequenceFlow id="Flow_051_Gateway_ExtraGegevensNodig_to_Task_VerzoekAanvullingInhoudelijk" sourceRef="Gateway_ExtraGegevensNodig" targetRef="Task_VerzoekAanvullingInhoudelijk" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('extraGegevensNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico" sourceRef="Gateway_ExtraGegevensNodig" targetRef="Gateway_PlanschadeRisico" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_053_Task_VerzoekAanvullingInhoudelijk_to_Receive_AanvullingInhoudelijk" sourceRef="Task_VerzoekAanvullingInhoudelijk" targetRef="Receive_AanvullingInhoudelijk"/>
+    <bpmn:sequenceFlow id="Flow_054_Receive_AanvullingInhoudelijk_to_Gateway_HervattenNaAanvulling" sourceRef="Receive_AanvullingInhoudelijk" targetRef="Gateway_HervattenNaAanvulling"/>
+    <bpmn:sequenceFlow id="Flow_055_Gateway_HervattenNaAanvulling_to_Task_UitvoerenInhoudelijkeToetsing" sourceRef="Gateway_HervattenNaAanvulling" targetRef="Task_UitvoerenInhoudelijkeToetsing" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('hervattenNaAanvulling') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen" sourceRef="Gateway_HervattenNaAanvulling" targetRef="Task_BesluitAlsnogNietBehandelen" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_057_Task_BesluitAlsnogNietBehandelen_to_Task_PublicerenBBInhoudelijk" sourceRef="Task_BesluitAlsnogNietBehandelen" targetRef="Task_PublicerenBBInhoudelijk"/>
+    <bpmn:sequenceFlow id="Flow_058_Task_PublicerenBBInhoudelijk_to_End_GestaaktInhoudelijk" sourceRef="Task_PublicerenBBInhoudelijk" targetRef="End_GestaaktInhoudelijk"/>
+    <bpmn:sequenceFlow id="Flow_059_Gateway_PlanschadeRisico_to_Task_AfsluitenPlanschadeOvereenkomst" sourceRef="Gateway_PlanschadeRisico" targetRef="Task_AfsluitenPlanschadeOvereenkomst" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('planschadeRisico') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig" sourceRef="Gateway_PlanschadeRisico" targetRef="Gateway_AanpassingAanvraagNodig" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_061_Task_AfsluitenPlanschadeOvereenkomst_to_Gateway_AanpassingAanvraagNodig" sourceRef="Task_AfsluitenPlanschadeOvereenkomst" targetRef="Gateway_AanpassingAanvraagNodig"/>
+    <bpmn:sequenceFlow id="Flow_062_Gateway_AanpassingAanvraagNodig_to_Task_VerzoekAanpassingAanvraag" sourceRef="Gateway_AanpassingAanvraagNodig" targetRef="Task_VerzoekAanpassingAanvraag" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('aanpassingAanvraagNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging" sourceRef="Gateway_AanpassingAanvraagNodig" targetRef="Task_UitvoerenIntegraleAfweging" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_064_Task_VerzoekAanpassingAanvraag_to_Receive_AangepasteAanvraag" sourceRef="Task_VerzoekAanpassingAanvraag" targetRef="Receive_AangepasteAanvraag"/>
+    <bpmn:sequenceFlow id="Flow_065_Receive_AangepasteAanvraag_to_Task_UitvoerenInhoudelijkeToetsing" sourceRef="Receive_AangepasteAanvraag" targetRef="Task_UitvoerenInhoudelijkeToetsing"/>
+    <bpmn:sequenceFlow id="Flow_066_Task_UitvoerenIntegraleAfweging_to_Task_FormulerenConceptBeschikking" sourceRef="Task_UitvoerenIntegraleAfweging" targetRef="Task_FormulerenConceptBeschikking"/>
+    <bpmn:sequenceFlow id="Flow_067_Task_FormulerenConceptBeschikking_to_Gateway_CollegeAccordNodig" sourceRef="Task_FormulerenConceptBeschikking" targetRef="Gateway_CollegeAccordNodig"/>
+    <bpmn:sequenceFlow id="Flow_068_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptCollege" sourceRef="Gateway_CollegeAccordNodig" targetRef="Task_AccorderenConceptCollege" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('collegeAccordNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk" sourceRef="Gateway_CollegeAccordNodig" targetRef="Task_AccorderenConceptAmbtelijk" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_070_Task_AccorderenConceptAmbtelijk_to_Gateway_MergeAccordConcept" sourceRef="Task_AccorderenConceptAmbtelijk" targetRef="Gateway_MergeAccordConcept"/>
+    <bpmn:sequenceFlow id="Flow_071_Task_AccorderenConceptCollege_to_Gateway_RaadsadviesGewenst" sourceRef="Task_AccorderenConceptCollege" targetRef="Gateway_RaadsadviesGewenst"/>
+    <bpmn:sequenceFlow id="Flow_072_Gateway_RaadsadviesGewenst_to_Task_OpvragenRaadsadvies" sourceRef="Gateway_RaadsadviesGewenst" targetRef="Task_OpvragenRaadsadvies" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('raadsadviesGewenst') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept" sourceRef="Gateway_RaadsadviesGewenst" targetRef="Gateway_MergeAccordConcept" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_074_Task_OpvragenRaadsadvies_to_Task_UitbrengenRaadsadvies" sourceRef="Task_OpvragenRaadsadvies" targetRef="Task_UitbrengenRaadsadvies"/>
+    <bpmn:sequenceFlow id="Flow_075_Task_UitbrengenRaadsadvies_to_Task_VerwerkenRaadsadvies" sourceRef="Task_UitbrengenRaadsadvies" targetRef="Task_VerwerkenRaadsadvies"/>
+    <bpmn:sequenceFlow id="Flow_076_Task_VerwerkenRaadsadvies_to_Gateway_MergeAccordConcept" sourceRef="Task_VerwerkenRaadsadvies" targetRef="Gateway_MergeAccordConcept"/>
+    <bpmn:sequenceFlow id="Flow_077_Gateway_MergeAccordConcept_to_Event_ConceptBeschikkingGereed" sourceRef="Gateway_MergeAccordConcept" targetRef="Event_ConceptBeschikkingGereed"/>
+    <bpmn:sequenceFlow id="Flow_078_Event_ConceptBeschikkingGereed_to_Gateway_UitgebreideProcedure" sourceRef="Event_ConceptBeschikkingGereed" targetRef="Gateway_UitgebreideProcedure"/>
+    <bpmn:sequenceFlow id="Flow_079_Gateway_UitgebreideProcedure_to_Task_TerInzageLeggenOntwerp" sourceRef="Gateway_UitgebreideProcedure" targetRef="Task_TerInzageLeggenOntwerp" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('uitgebreideProcedure') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV" sourceRef="Gateway_UitgebreideProcedure" targetRef="Gateway_MergeUOV" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_081_Task_TerInzageLeggenOntwerp_to_Task_VerzamelenZienswijzen" sourceRef="Task_TerInzageLeggenOntwerp" targetRef="Task_VerzamelenZienswijzen"/>
+    <bpmn:sequenceFlow id="Flow_082_Task_VerzamelenZienswijzen_to_Task_OpstellenEindverslagUOV" sourceRef="Task_VerzamelenZienswijzen" targetRef="Task_OpstellenEindverslagUOV"/>
+    <bpmn:sequenceFlow id="Flow_083_Task_OpstellenEindverslagUOV_to_Gateway_MergeUOV" sourceRef="Task_OpstellenEindverslagUOV" targetRef="Gateway_MergeUOV"/>
+    <bpmn:sequenceFlow id="Flow_084_Gateway_MergeUOV_to_Gateway_GeschilpuntenZienswijzen" sourceRef="Gateway_MergeUOV" targetRef="Gateway_GeschilpuntenZienswijzen"/>
+    <bpmn:sequenceFlow id="Flow_085_Gateway_GeschilpuntenZienswijzen_to_Task_OplossenGeschilpunten" sourceRef="Gateway_GeschilpuntenZienswijzen" targetRef="Task_OplossenGeschilpunten" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('geschilpuntenUitZienswijzen') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking" sourceRef="Gateway_GeschilpuntenZienswijzen" targetRef="Task_FormulerenDefinitieveBeschikking" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_087_Task_OplossenGeschilpunten_to_Task_AdviserenAanpassenBeschikking" sourceRef="Task_OplossenGeschilpunten" targetRef="Task_AdviserenAanpassenBeschikking"/>
+    <bpmn:sequenceFlow id="Flow_088_Task_AdviserenAanpassenBeschikking_to_Task_BeantwoordenZienswijzen" sourceRef="Task_AdviserenAanpassenBeschikking" targetRef="Task_BeantwoordenZienswijzen"/>
+    <bpmn:sequenceFlow id="Flow_089_Task_BeantwoordenZienswijzen_to_Task_FormulerenDefinitieveBeschikking" sourceRef="Task_BeantwoordenZienswijzen" targetRef="Task_FormulerenDefinitieveBeschikking"/>
+    <bpmn:sequenceFlow id="Flow_090_Task_FormulerenDefinitieveBeschikking_to_Task_BerekenenLeges" sourceRef="Task_FormulerenDefinitieveBeschikking" targetRef="Task_BerekenenLeges"/>
+    <bpmn:sequenceFlow id="Flow_091_Task_BerekenenLeges_to_Gateway_CollegeVaststellingNodig" sourceRef="Task_BerekenenLeges" targetRef="Gateway_CollegeVaststellingNodig"/>
+    <bpmn:sequenceFlow id="Flow_092_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingCollege" sourceRef="Gateway_CollegeVaststellingNodig" targetRef="Task_VaststellenBeschikkingCollege" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('collegeVaststellingNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk" sourceRef="Gateway_CollegeVaststellingNodig" targetRef="Task_VaststellenBeschikkingAmbtelijk" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_094_Task_VaststellenBeschikkingCollege_to_Gateway_MergeVaststelling" sourceRef="Task_VaststellenBeschikkingCollege" targetRef="Gateway_MergeVaststelling"/>
+    <bpmn:sequenceFlow id="Flow_095_Task_VaststellenBeschikkingAmbtelijk_to_Gateway_MergeVaststelling" sourceRef="Task_VaststellenBeschikkingAmbtelijk" targetRef="Gateway_MergeVaststelling"/>
+    <bpmn:sequenceFlow id="Flow_096_Gateway_MergeVaststelling_to_Event_DefinitiefVastgesteld" sourceRef="Gateway_MergeVaststelling" targetRef="Event_DefinitiefVastgesteld"/>
+    <bpmn:sequenceFlow id="Flow_097_Event_DefinitiefVastgesteld_to_Task_VerzendenBeschikkingAanvrager" sourceRef="Event_DefinitiefVastgesteld" targetRef="Task_VerzendenBeschikkingAanvrager"/>
+    <bpmn:sequenceFlow id="Flow_098_Task_VerzendenBeschikkingAanvrager_to_Task_MededelenBelanghebbenden" sourceRef="Task_VerzendenBeschikkingAanvrager" targetRef="Task_MededelenBelanghebbenden"/>
+    <bpmn:sequenceFlow id="Flow_099_Task_MededelenBelanghebbenden_to_Task_PublicerenBeschikking" sourceRef="Task_MededelenBelanghebbenden" targetRef="Task_PublicerenBeschikking"/>
+    <bpmn:sequenceFlow id="Flow_100_Task_PublicerenBeschikking_to_Gateway_RegistrerenNodig" sourceRef="Task_PublicerenBeschikking" targetRef="Gateway_RegistrerenNodig"/>
+    <bpmn:sequenceFlow id="Flow_101_Gateway_RegistrerenNodig_to_Task_RegistrerenRegisters" sourceRef="Gateway_RegistrerenNodig" targetRef="Task_RegistrerenRegisters" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('registratieNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie" sourceRef="Gateway_RegistrerenNodig" targetRef="Gateway_MergeRegistratie" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_103_Task_RegistrerenRegisters_to_Gateway_MergeRegistratie" sourceRef="Task_RegistrerenRegisters" targetRef="Gateway_MergeRegistratie"/>
+    <bpmn:sequenceFlow id="Flow_104_Gateway_MergeRegistratie_to_Gateway_OmgevingsplanBijwerken" sourceRef="Gateway_MergeRegistratie" targetRef="Gateway_OmgevingsplanBijwerken"/>
+    <bpmn:sequenceFlow id="Flow_105_Gateway_OmgevingsplanBijwerken_to_Task_InitieerBijwerkenOmgevingsplan" sourceRef="Gateway_OmgevingsplanBijwerken" targetRef="Task_InitieerBijwerkenOmgevingsplan" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('omgevingsplanBijwerken') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan" sourceRef="Gateway_OmgevingsplanBijwerken" targetRef="Gateway_MergeOmgevingsplan" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_107_Task_InitieerBijwerkenOmgevingsplan_to_Gateway_MergeOmgevingsplan" sourceRef="Task_InitieerBijwerkenOmgevingsplan" targetRef="Gateway_MergeOmgevingsplan"/>
+    <bpmn:sequenceFlow id="Flow_108_Gateway_MergeOmgevingsplan_to_Gateway_ToezichtNodig" sourceRef="Gateway_MergeOmgevingsplan" targetRef="Gateway_ToezichtNodig"/>
+    <bpmn:sequenceFlow id="Flow_109_Gateway_ToezichtNodig_to_Task_AanmeldenToezicht" sourceRef="Gateway_ToezichtNodig" targetRef="Task_AanmeldenToezicht" name="Ja">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable('toezichtNodig') == true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht" sourceRef="Gateway_ToezichtNodig" targetRef="Gateway_MergeToezicht" name="Nee"/>
+    <bpmn:sequenceFlow id="Flow_111_Task_AanmeldenToezicht_to_Gateway_MergeToezicht" sourceRef="Task_AanmeldenToezicht" targetRef="Gateway_MergeToezicht"/>
+    <bpmn:sequenceFlow id="Flow_112_Gateway_MergeToezicht_to_End_Gereed" sourceRef="Gateway_MergeToezicht" targetRef="End_Gereed"/>
+    <bpmn:group id="Group_Phase1" categoryValueRef="CategoryValue_Phase1"/>
+    <bpmn:group id="Group_Phase2" categoryValueRef="CategoryValue_Phase2"/>
+    <bpmn:group id="Group_Phase3" categoryValueRef="CategoryValue_Phase3"/>
+    <bpmn:group id="Group_Phase4" categoryValueRef="CategoryValue_Phase4"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Camunda 7 layout - structured bands">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_BehandelenVergunningaanvraag">
+      <bpmndi:BPMNShape id="Group_Phase1_di" bpmnElement="Group_Phase1">
+        <dc:Bounds x="92" y="193" width="4175" height="1359"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="100" y="199" width="4159" height="24"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_Phase2_di" bpmnElement="Group_Phase2">
+        <dc:Bounds x="4464" y="193" width="4052" height="1359"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4472" y="199" width="4036" height="24"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_Phase3_di" bpmnElement="Group_Phase3">
+        <dc:Bounds x="8728" y="193" width="2935" height="1359"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="8736" y="199" width="2919" height="24"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Group_Phase4_di" bpmnElement="Group_Phase4">
+        <dc:Bounds x="11860" y="193" width="2619" height="1359"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="11868" y="199" width="2603" height="24"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_AanvraagIngediend_di" bpmnElement="Start_AanvraagIngediend">
+        <dc:Bounds x="162" y="592" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="122" y="632" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_AmbtshalveVerzoek_di" bpmnElement="Start_AmbtshalveVerzoek">
+        <dc:Bounds x="162" y="742" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="122" y="782" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Doorgezonden_di" bpmnElement="Start_Doorgezonden">
+        <dc:Bounds x="162" y="892" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="122" y="932" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrerenVTH_di" bpmnElement="Task_RegistrerenVTH">
+        <dc:Bounds x="320" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ViaOmgevingsloket_di" bpmnElement="Gateway_ViaOmgevingsloket">
+        <dc:Bounds x="585" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="540" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrerenOmgevingsloket_di" bpmnElement="Task_RegistrerenOmgevingsloket">
+        <dc:Bounds x="642" y="868" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OntvangstbevestigingArchief_di" bpmnElement="Task_OntvangstbevestigingArchief">
+        <dc:Bounds x="793" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicerenAanvraag_di" bpmnElement="Task_PublicerenAanvraag">
+        <dc:Bounds x="1030" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ToewijzenHoofdbehandelaar_di" bpmnElement="Task_ToewijzenHoofdbehandelaar">
+        <dc:Bounds x="1266" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControlerenBevoegdGezag_di" bpmnElement="Task_ControlerenBevoegdGezag">
+        <dc:Bounds x="1502" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_BevoegdGezag_di" bpmnElement="Gateway_BevoegdGezag">
+        <dc:Bounds x="1768" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1722" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OverdragenBevoegdGezag_di" bpmnElement="Task_OverdragenBevoegdGezag">
+        <dc:Bounds x="1718" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_GestaaktOverdracht_di" bpmnElement="End_GestaaktOverdracht">
+        <dc:Bounds x="1990" y="952" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1950" y="992" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControlerenVergunningplicht_di" bpmnElement="Task_ControlerenVergunningplicht">
+        <dc:Bounds x="1954" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdviesVergunningplicht_di" bpmnElement="Gateway_AdviesVergunningplicht">
+        <dc:Bounds x="2219" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2174" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviserenVergunningplicht_di" bpmnElement="Task_AdviserenVergunningplicht">
+        <dc:Bounds x="2276" y="538" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Vergunningplichtig_di" bpmnElement="Gateway_Vergunningplichtig">
+        <dc:Bounds x="2456" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2410" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BerichtGeenVergunningplicht_di" bpmnElement="Task_BerichtGeenVergunningplicht">
+        <dc:Bounds x="2406" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicerenBuitenbehandelingGeenPlicht_di" bpmnElement="Task_PublicerenBuitenbehandelingGeenPlicht">
+        <dc:Bounds x="2642" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_GestaaktGeenVergunningplicht_di" bpmnElement="End_GestaaktGeenVergunningplicht">
+        <dc:Bounds x="2936" y="952" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2896" y="992" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControlerenAanvraagvereisten_di" bpmnElement="Task_ControlerenAanvraagvereisten">
+        <dc:Bounds x="2685" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdviesAanvraagvereisten_di" bpmnElement="Gateway_AdviesAanvraagvereisten">
+        <dc:Bounds x="2950" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2905" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviserenAanvraagvereisten_di" bpmnElement="Task_AdviserenAanvraagvereisten">
+        <dc:Bounds x="3008" y="538" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AanvraagVoldoet_di" bpmnElement="Gateway_AanvraagVoldoet">
+        <dc:Bounds x="3186" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3142" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzoekAanvulling_di" bpmnElement="Task_VerzoekAanvulling">
+        <dc:Bounds x="3136" y="1108" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Receive_AanvullingOfTermijn_di" bpmnElement="Receive_AanvullingOfTermijn">
+        <dc:Bounds x="3373" y="1108" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AanvullingVoldoende_di" bpmnElement="Gateway_AanvullingVoldoende">
+        <dc:Bounds x="3660" y="1125" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3614" y="1087" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BesluitNietBehandelen_di" bpmnElement="Task_BesluitNietBehandelen">
+        <dc:Bounds x="3610" y="1318" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BekendmakenNietBehandelen_di" bpmnElement="Task_BekendmakenNietBehandelen">
+        <dc:Bounds x="3846" y="1318" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_GestaaktAanvraagvereisten_di" bpmnElement="End_GestaaktAanvraagvereisten">
+        <dc:Bounds x="4140" y="1342" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4100" y="1382" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControlerenProcedure_di" bpmnElement="Task_ControlerenProcedure">
+        <dc:Bounds x="3416" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdviesProcedure_di" bpmnElement="Gateway_AdviesProcedure">
+        <dc:Bounds x="3681" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3636" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviserenProcedure_di" bpmnElement="Task_AdviserenProcedure">
+        <dc:Bounds x="3738" y="538" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzendBerichtProcedure_di" bpmnElement="Task_VerzendBerichtProcedure">
+        <dc:Bounds x="3868" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_IntakeGereed_di" bpmnElement="Event_IntakeGereed">
+        <dc:Bounds x="4161" y="742" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4121" y="782" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BeoordeelComplexeAanvraag_di" bpmnElement="Task_BeoordeelComplexeAanvraag">
+        <dc:Bounds x="4534" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ComplexeAanvraag_di" bpmnElement="Gateway_ComplexeAanvraag">
+        <dc:Bounds x="4799" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4754" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ControlerenCoordinatieregeling_di" bpmnElement="Task_ControlerenCoordinatieregeling">
+        <dc:Bounds x="4856" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BetrekkenKetenpartners_di" bpmnElement="Task_BetrekkenKetenpartners">
+        <dc:Bounds x="5093" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeSamenwerking_di" bpmnElement="Gateway_MergeSamenwerking">
+        <dc:Bounds x="5272" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5227" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BetrekkenInterneAdviseurs_di" bpmnElement="Task_BetrekkenInterneAdviseurs">
+        <dc:Bounds x="5437" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ToewijzenInplannenWerk_di" bpmnElement="Task_ToewijzenInplannenWerk">
+        <dc:Bounds x="5674" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UitvoerenInhoudelijkeToetsing_di" bpmnElement="Task_UitvoerenInhoudelijkeToetsing">
+        <dc:Bounds x="5910" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OpstellenAdviesDeelgebied_di" bpmnElement="Task_OpstellenAdviesDeelgebied">
+        <dc:Bounds x="6146" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ExtraGegevensNodig_di" bpmnElement="Gateway_ExtraGegevensNodig">
+        <dc:Bounds x="6412" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6366" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzoekAanvullingInhoudelijk_di" bpmnElement="Task_VerzoekAanvullingInhoudelijk">
+        <dc:Bounds x="6362" y="943" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Receive_AanvullingInhoudelijk_di" bpmnElement="Receive_AanvullingInhoudelijk">
+        <dc:Bounds x="6598" y="943" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_HervattenNaAanvulling_di" bpmnElement="Gateway_HervattenNaAanvulling">
+        <dc:Bounds x="6884" y="960" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6840" y="922" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BesluitAlsnogNietBehandelen_di" bpmnElement="Task_BesluitAlsnogNietBehandelen">
+        <dc:Bounds x="6834" y="1153" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicerenBBInhoudelijk_di" bpmnElement="Task_PublicerenBBInhoudelijk">
+        <dc:Bounds x="7071" y="1153" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_GestaaktInhoudelijk_di" bpmnElement="End_GestaaktInhoudelijk">
+        <dc:Bounds x="7364" y="1177" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7324" y="1217" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PlanschadeRisico_di" bpmnElement="Gateway_PlanschadeRisico">
+        <dc:Bounds x="6626" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6582" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AfsluitenPlanschadeOvereenkomst_di" bpmnElement="Task_AfsluitenPlanschadeOvereenkomst">
+        <dc:Bounds x="6684" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AanpassingAanvraagNodig_di" bpmnElement="Gateway_AanpassingAanvraagNodig">
+        <dc:Bounds x="6863" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6818" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzoekAanpassingAanvraag_di" bpmnElement="Task_VerzoekAanpassingAanvraag">
+        <dc:Bounds x="6813" y="1348" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Receive_AangepasteAanvraag_di" bpmnElement="Receive_AangepasteAanvraag">
+        <dc:Bounds x="7049" y="1348" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UitvoerenIntegraleAfweging_di" bpmnElement="Task_UitvoerenIntegraleAfweging">
+        <dc:Bounds x="7028" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FormulerenConceptBeschikking_di" bpmnElement="Task_FormulerenConceptBeschikking">
+        <dc:Bounds x="7264" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CollegeAccordNodig_di" bpmnElement="Gateway_CollegeAccordNodig">
+        <dc:Bounds x="7529" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7484" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccorderenConceptAmbtelijk_di" bpmnElement="Task_AccorderenConceptAmbtelijk">
+        <dc:Bounds x="7587" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AccorderenConceptCollege_di" bpmnElement="Task_AccorderenConceptCollege">
+        <dc:Bounds x="7587" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RaadsadviesGewenst_di" bpmnElement="Gateway_RaadsadviesGewenst">
+        <dc:Bounds x="7874" y="540" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7829" y="502" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OpvragenRaadsadvies_di" bpmnElement="Task_OpvragenRaadsadvies">
+        <dc:Bounds x="7824" y="313" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UitbrengenRaadsadvies_di" bpmnElement="Task_UitbrengenRaadsadvies">
+        <dc:Bounds x="8060" y="313" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerwerkenRaadsadvies_di" bpmnElement="Task_VerwerkenRaadsadvies">
+        <dc:Bounds x="8296" y="313" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeAccordConcept_di" bpmnElement="Gateway_MergeAccordConcept">
+        <dc:Bounds x="8110" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="8065" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_ConceptBeschikkingGereed_di" bpmnElement="Event_ConceptBeschikkingGereed">
+        <dc:Bounds x="8375" y="742" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="8335" y="782" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_UitgebreideProcedure_di" bpmnElement="Gateway_UitgebreideProcedure">
+        <dc:Bounds x="8798" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="8753" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_TerInzageLeggenOntwerp_di" bpmnElement="Task_TerInzageLeggenOntwerp">
+        <dc:Bounds x="8877" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzamelenZienswijzen_di" bpmnElement="Task_VerzamelenZienswijzen">
+        <dc:Bounds x="9114" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OpstellenEindverslagUOV_di" bpmnElement="Task_OpstellenEindverslagUOV">
+        <dc:Bounds x="9350" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeUOV_di" bpmnElement="Gateway_MergeUOV">
+        <dc:Bounds x="9529" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="9484" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_GeschilpuntenZienswijzen_di" bpmnElement="Gateway_GeschilpuntenZienswijzen">
+        <dc:Bounds x="9744" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="9699" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_OplossenGeschilpunten_di" bpmnElement="Task_OplossenGeschilpunten">
+        <dc:Bounds x="9823" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AdviserenAanpassenBeschikking_di" bpmnElement="Task_AdviserenAanpassenBeschikking">
+        <dc:Bounds x="10060" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BeantwoordenZienswijzen_di" bpmnElement="Task_BeantwoordenZienswijzen">
+        <dc:Bounds x="10296" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FormulerenDefinitieveBeschikking_di" bpmnElement="Task_FormulerenDefinitieveBeschikking">
+        <dc:Bounds x="10468" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BerekenenLeges_di" bpmnElement="Task_BerekenenLeges">
+        <dc:Bounds x="10705" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_CollegeVaststellingNodig_di" bpmnElement="Gateway_CollegeVaststellingNodig">
+        <dc:Bounds x="10970" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="10925" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VaststellenBeschikkingAmbtelijk_di" bpmnElement="Task_VaststellenBeschikkingAmbtelijk">
+        <dc:Bounds x="11027" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VaststellenBeschikkingCollege_di" bpmnElement="Task_VaststellenBeschikkingCollege">
+        <dc:Bounds x="11027" y="523" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeVaststelling_di" bpmnElement="Gateway_MergeVaststelling">
+        <dc:Bounds x="11314" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="11269" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_DefinitiefVastgesteld_di" bpmnElement="Event_DefinitiefVastgesteld">
+        <dc:Bounds x="11557" y="742" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="11517" y="782" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerzendenBeschikkingAanvrager_di" bpmnElement="Task_VerzendenBeschikkingAanvrager">
+        <dc:Bounds x="11930" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MededelenBelanghebbenden_di" bpmnElement="Task_MededelenBelanghebbenden">
+        <dc:Bounds x="12166" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublicerenBeschikking_di" bpmnElement="Task_PublicerenBeschikking">
+        <dc:Bounds x="12403" y="718" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_RegistrerenNodig_di" bpmnElement="Gateway_RegistrerenNodig">
+        <dc:Bounds x="12668" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="12623" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RegistrerenRegisters_di" bpmnElement="Task_RegistrerenRegisters">
+        <dc:Bounds x="12726" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeRegistratie_di" bpmnElement="Gateway_MergeRegistratie">
+        <dc:Bounds x="13012" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="12967" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_OmgevingsplanBijwerken_di" bpmnElement="Gateway_OmgevingsplanBijwerken">
+        <dc:Bounds x="13227" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13182" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InitieerBijwerkenOmgevingsplan_di" bpmnElement="Task_InitieerBijwerkenOmgevingsplan">
+        <dc:Bounds x="13284" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeOmgevingsplan_di" bpmnElement="Gateway_MergeOmgevingsplan">
+        <dc:Bounds x="13571" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13526" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ToezichtNodig_di" bpmnElement="Gateway_ToezichtNodig">
+        <dc:Bounds x="13786" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13741" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AanmeldenToezicht_di" bpmnElement="Task_AanmeldenToezicht">
+        <dc:Bounds x="13844" y="928" width="150" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MergeToezicht_di" bpmnElement="Gateway_MergeToezicht">
+        <dc:Bounds x="14130" y="735" width="50" height="50"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="14085" y="697" width="140" height="28"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Gereed_di" bpmnElement="End_Gereed">
+        <dc:Bounds x="14373" y="742" width="36" height="36"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="14333" y="782" width="116" height="30"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_001_Start_AanvraagIngediend_to_Task_RegistrerenVTH_di" bpmnElement="Flow_001_Start_AanvraagIngediend_to_Task_RegistrerenVTH">
+        <di:waypoint x="198" y="610"/>
+        <di:waypoint x="395" y="610"/>
+        <di:waypoint x="395" y="718"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_002_Start_AmbtshalveVerzoek_to_Task_RegistrerenVTH_di" bpmnElement="Flow_002_Start_AmbtshalveVerzoek_to_Task_RegistrerenVTH">
+        <di:waypoint x="198" y="760"/>
+        <di:waypoint x="320" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_003_Start_Doorgezonden_to_Task_RegistrerenVTH_di" bpmnElement="Flow_003_Start_Doorgezonden_to_Task_RegistrerenVTH">
+        <di:waypoint x="198" y="910"/>
+        <di:waypoint x="395" y="910"/>
+        <di:waypoint x="395" y="802"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_004_Task_RegistrerenVTH_to_Gateway_ViaOmgevingsloket_di" bpmnElement="Flow_004_Task_RegistrerenVTH_to_Gateway_ViaOmgevingsloket">
+        <di:waypoint x="470" y="760"/>
+        <di:waypoint x="585" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_005_Gateway_ViaOmgevingsloket_to_Task_RegistrerenOmgevingsloket_di" bpmnElement="Flow_005_Gateway_ViaOmgevingsloket_to_Task_RegistrerenOmgevingsloket">
+        <di:waypoint x="610" y="785"/>
+        <di:waypoint x="610" y="910"/>
+        <di:waypoint x="642" y="910"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="590" y="824" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief_di" bpmnElement="Flow_006_Gateway_ViaOmgevingsloket_to_Task_OntvangstbevestigingArchief">
+        <di:waypoint x="635" y="760"/>
+        <di:waypoint x="793" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="694" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_007_Task_RegistrerenOmgevingsloket_to_Task_OntvangstbevestigingArchief_di" bpmnElement="Flow_007_Task_RegistrerenOmgevingsloket_to_Task_OntvangstbevestigingArchief">
+        <di:waypoint x="792" y="910"/>
+        <di:waypoint x="868" y="910"/>
+        <di:waypoint x="868" y="802"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_008_Task_OntvangstbevestigingArchief_to_Task_PublicerenAanvraag_di" bpmnElement="Flow_008_Task_OntvangstbevestigingArchief_to_Task_PublicerenAanvraag">
+        <di:waypoint x="943" y="760"/>
+        <di:waypoint x="1030" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_009_Task_PublicerenAanvraag_to_Task_ToewijzenHoofdbehandelaar_di" bpmnElement="Flow_009_Task_PublicerenAanvraag_to_Task_ToewijzenHoofdbehandelaar">
+        <di:waypoint x="1180" y="760"/>
+        <di:waypoint x="1266" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_010_Task_ToewijzenHoofdbehandelaar_to_Task_ControlerenBevoegdGezag_di" bpmnElement="Flow_010_Task_ToewijzenHoofdbehandelaar_to_Task_ControlerenBevoegdGezag">
+        <di:waypoint x="1416" y="760"/>
+        <di:waypoint x="1502" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_011_Task_ControlerenBevoegdGezag_to_Gateway_BevoegdGezag_di" bpmnElement="Flow_011_Task_ControlerenBevoegdGezag_to_Gateway_BevoegdGezag">
+        <di:waypoint x="1652" y="760"/>
+        <di:waypoint x="1768" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_012_Gateway_BevoegdGezag_to_Task_ControlerenVergunningplicht_di" bpmnElement="Flow_012_Gateway_BevoegdGezag_to_Task_ControlerenVergunningplicht">
+        <di:waypoint x="1818" y="760"/>
+        <di:waypoint x="1954" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1866" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag_di" bpmnElement="Flow_013_Gateway_BevoegdGezag_to_Task_OverdragenBevoegdGezag">
+        <di:waypoint x="1792" y="785"/>
+        <di:waypoint x="1792" y="928"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1772" y="832" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_014_Task_OverdragenBevoegdGezag_to_End_GestaaktOverdracht_di" bpmnElement="Flow_014_Task_OverdragenBevoegdGezag_to_End_GestaaktOverdracht">
+        <di:waypoint x="1868" y="970"/>
+        <di:waypoint x="1990" y="970"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_015_Task_ControlerenVergunningplicht_to_Gateway_AdviesVergunningplicht_di" bpmnElement="Flow_015_Task_ControlerenVergunningplicht_to_Gateway_AdviesVergunningplicht">
+        <di:waypoint x="2104" y="760"/>
+        <di:waypoint x="2219" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_016_Gateway_AdviesVergunningplicht_to_Task_AdviserenVergunningplicht_di" bpmnElement="Flow_016_Gateway_AdviesVergunningplicht_to_Task_AdviserenVergunningplicht">
+        <di:waypoint x="2244" y="735"/>
+        <di:waypoint x="2244" y="580"/>
+        <di:waypoint x="2276" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2224" y="634" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig_di" bpmnElement="Flow_017_Gateway_AdviesVergunningplicht_to_Gateway_Vergunningplichtig">
+        <di:waypoint x="2269" y="760"/>
+        <di:waypoint x="2456" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2342" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_018_Task_AdviserenVergunningplicht_to_Gateway_Vergunningplichtig_di" bpmnElement="Flow_018_Task_AdviserenVergunningplicht_to_Gateway_Vergunningplichtig">
+        <di:waypoint x="2426" y="580"/>
+        <di:waypoint x="2480" y="580"/>
+        <di:waypoint x="2480" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_019_Gateway_Vergunningplichtig_to_Task_ControlerenAanvraagvereisten_di" bpmnElement="Flow_019_Gateway_Vergunningplichtig_to_Task_ControlerenAanvraagvereisten">
+        <di:waypoint x="2506" y="760"/>
+        <di:waypoint x="2685" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2575" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht_di" bpmnElement="Flow_020_Gateway_Vergunningplichtig_to_Task_BerichtGeenVergunningplicht">
+        <di:waypoint x="2480" y="785"/>
+        <di:waypoint x="2480" y="928"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2460" y="832" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_021_Task_BerichtGeenVergunningplicht_to_Task_PublicerenBuitenbehandelingGeenPlicht_di" bpmnElement="Flow_021_Task_BerichtGeenVergunningplicht_to_Task_PublicerenBuitenbehandelingGeenPlicht">
+        <di:waypoint x="2556" y="970"/>
+        <di:waypoint x="2642" y="970"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_022_Task_PublicerenBuitenbehandelingGeenPlicht_to_End_GestaaktGeenVergunningplicht_di" bpmnElement="Flow_022_Task_PublicerenBuitenbehandelingGeenPlicht_to_End_GestaaktGeenVergunningplicht">
+        <di:waypoint x="2792" y="970"/>
+        <di:waypoint x="2936" y="970"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_023_Task_ControlerenAanvraagvereisten_to_Gateway_AdviesAanvraagvereisten_di" bpmnElement="Flow_023_Task_ControlerenAanvraagvereisten_to_Gateway_AdviesAanvraagvereisten">
+        <di:waypoint x="2835" y="760"/>
+        <di:waypoint x="2950" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_024_Gateway_AdviesAanvraagvereisten_to_Task_AdviserenAanvraagvereisten_di" bpmnElement="Flow_024_Gateway_AdviesAanvraagvereisten_to_Task_AdviserenAanvraagvereisten">
+        <di:waypoint x="2975" y="735"/>
+        <di:waypoint x="2975" y="580"/>
+        <di:waypoint x="3008" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2955" y="634" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet_di" bpmnElement="Flow_025_Gateway_AdviesAanvraagvereisten_to_Gateway_AanvraagVoldoet">
+        <di:waypoint x="3000" y="760"/>
+        <di:waypoint x="3186" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3073" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_026_Task_AdviserenAanvraagvereisten_to_Gateway_AanvraagVoldoet_di" bpmnElement="Flow_026_Task_AdviserenAanvraagvereisten_to_Gateway_AanvraagVoldoet">
+        <di:waypoint x="3158" y="580"/>
+        <di:waypoint x="3212" y="580"/>
+        <di:waypoint x="3212" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_027_Gateway_AanvraagVoldoet_to_Task_ControlerenProcedure_di" bpmnElement="Flow_027_Gateway_AanvraagVoldoet_to_Task_ControlerenProcedure">
+        <di:waypoint x="3236" y="760"/>
+        <di:waypoint x="3416" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3306" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling_di" bpmnElement="Flow_028_Gateway_AanvraagVoldoet_to_Task_VerzoekAanvulling">
+        <di:waypoint x="3212" y="785"/>
+        <di:waypoint x="3212" y="1108"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3192" y="922" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_029_Task_VerzoekAanvulling_to_Receive_AanvullingOfTermijn_di" bpmnElement="Flow_029_Task_VerzoekAanvulling_to_Receive_AanvullingOfTermijn">
+        <di:waypoint x="3286" y="1150"/>
+        <di:waypoint x="3373" y="1150"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_030_Receive_AanvullingOfTermijn_to_Gateway_AanvullingVoldoende_di" bpmnElement="Flow_030_Receive_AanvullingOfTermijn_to_Gateway_AanvullingVoldoende">
+        <di:waypoint x="3523" y="1150"/>
+        <di:waypoint x="3660" y="1150"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_031_Gateway_AanvullingVoldoende_to_Task_ControlerenAanvraagvereisten_di" bpmnElement="Flow_031_Gateway_AanvullingVoldoende_to_Task_ControlerenAanvraagvereisten">
+        <di:waypoint x="3684" y="1175"/>
+        <di:waypoint x="3684" y="1215"/>
+        <di:waypoint x="2760" y="1215"/>
+        <di:waypoint x="2760" y="802"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3664" y="1171" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen_di" bpmnElement="Flow_032_Gateway_AanvullingVoldoende_to_Task_BesluitNietBehandelen">
+        <di:waypoint x="3684" y="1175"/>
+        <di:waypoint x="3684" y="1318"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3664" y="1222" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_033_Task_BesluitNietBehandelen_to_Task_BekendmakenNietBehandelen_di" bpmnElement="Flow_033_Task_BesluitNietBehandelen_to_Task_BekendmakenNietBehandelen">
+        <di:waypoint x="3760" y="1360"/>
+        <di:waypoint x="3846" y="1360"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_034_Task_BekendmakenNietBehandelen_to_End_GestaaktAanvraagvereisten_di" bpmnElement="Flow_034_Task_BekendmakenNietBehandelen_to_End_GestaaktAanvraagvereisten">
+        <di:waypoint x="3996" y="1360"/>
+        <di:waypoint x="4140" y="1360"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_035_Task_ControlerenProcedure_to_Gateway_AdviesProcedure_di" bpmnElement="Flow_035_Task_ControlerenProcedure_to_Gateway_AdviesProcedure">
+        <di:waypoint x="3566" y="760"/>
+        <di:waypoint x="3681" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_036_Gateway_AdviesProcedure_to_Task_AdviserenProcedure_di" bpmnElement="Flow_036_Gateway_AdviesProcedure_to_Task_AdviserenProcedure">
+        <di:waypoint x="3706" y="735"/>
+        <di:waypoint x="3706" y="580"/>
+        <di:waypoint x="3738" y="580"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3686" y="634" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure_di" bpmnElement="Flow_037_Gateway_AdviesProcedure_to_Task_VerzendBerichtProcedure">
+        <di:waypoint x="3731" y="760"/>
+        <di:waypoint x="3868" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3779" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_038_Task_AdviserenProcedure_to_Task_VerzendBerichtProcedure_di" bpmnElement="Flow_038_Task_AdviserenProcedure_to_Task_VerzendBerichtProcedure">
+        <di:waypoint x="3888" y="580"/>
+        <di:waypoint x="3942" y="580"/>
+        <di:waypoint x="3942" y="718"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_039_Task_VerzendBerichtProcedure_to_Event_IntakeGereed_di" bpmnElement="Flow_039_Task_VerzendBerichtProcedure_to_Event_IntakeGereed">
+        <di:waypoint x="4018" y="760"/>
+        <di:waypoint x="4161" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_040_Event_IntakeGereed_to_Task_BeoordeelComplexeAanvraag_di" bpmnElement="Flow_040_Event_IntakeGereed_to_Task_BeoordeelComplexeAanvraag">
+        <di:waypoint x="4197" y="760"/>
+        <di:waypoint x="4534" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_041_Task_BeoordeelComplexeAanvraag_to_Gateway_ComplexeAanvraag_di" bpmnElement="Flow_041_Task_BeoordeelComplexeAanvraag_to_Gateway_ComplexeAanvraag">
+        <di:waypoint x="4684" y="760"/>
+        <di:waypoint x="4799" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_042_Gateway_ComplexeAanvraag_to_Task_ControlerenCoordinatieregeling_di" bpmnElement="Flow_042_Gateway_ComplexeAanvraag_to_Task_ControlerenCoordinatieregeling">
+        <di:waypoint x="4824" y="735"/>
+        <di:waypoint x="4824" y="565"/>
+        <di:waypoint x="4856" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="4804" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking_di" bpmnElement="Flow_043_Gateway_ComplexeAanvraag_to_Gateway_MergeSamenwerking">
+        <di:waypoint x="4849" y="760"/>
+        <di:waypoint x="5272" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="5040" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_044_Task_ControlerenCoordinatieregeling_to_Task_BetrekkenKetenpartners_di" bpmnElement="Flow_044_Task_ControlerenCoordinatieregeling_to_Task_BetrekkenKetenpartners">
+        <di:waypoint x="5006" y="565"/>
+        <di:waypoint x="5093" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_045_Task_BetrekkenKetenpartners_to_Gateway_MergeSamenwerking_di" bpmnElement="Flow_045_Task_BetrekkenKetenpartners_to_Gateway_MergeSamenwerking">
+        <di:waypoint x="5243" y="565"/>
+        <di:waypoint x="5297" y="565"/>
+        <di:waypoint x="5297" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_046_Gateway_MergeSamenwerking_to_Task_BetrekkenInterneAdviseurs_di" bpmnElement="Flow_046_Gateway_MergeSamenwerking_to_Task_BetrekkenInterneAdviseurs">
+        <di:waypoint x="5322" y="760"/>
+        <di:waypoint x="5437" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_047_Task_BetrekkenInterneAdviseurs_to_Task_ToewijzenInplannenWerk_di" bpmnElement="Flow_047_Task_BetrekkenInterneAdviseurs_to_Task_ToewijzenInplannenWerk">
+        <di:waypoint x="5587" y="760"/>
+        <di:waypoint x="5674" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_048_Task_ToewijzenInplannenWerk_to_Task_UitvoerenInhoudelijkeToetsing_di" bpmnElement="Flow_048_Task_ToewijzenInplannenWerk_to_Task_UitvoerenInhoudelijkeToetsing">
+        <di:waypoint x="5824" y="760"/>
+        <di:waypoint x="5910" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_049_Task_UitvoerenInhoudelijkeToetsing_to_Task_OpstellenAdviesDeelgebied_di" bpmnElement="Flow_049_Task_UitvoerenInhoudelijkeToetsing_to_Task_OpstellenAdviesDeelgebied">
+        <di:waypoint x="6060" y="760"/>
+        <di:waypoint x="6146" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_050_Task_OpstellenAdviesDeelgebied_to_Gateway_ExtraGegevensNodig_di" bpmnElement="Flow_050_Task_OpstellenAdviesDeelgebied_to_Gateway_ExtraGegevensNodig">
+        <di:waypoint x="6296" y="760"/>
+        <di:waypoint x="6412" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_051_Gateway_ExtraGegevensNodig_to_Task_VerzoekAanvullingInhoudelijk_di" bpmnElement="Flow_051_Gateway_ExtraGegevensNodig_to_Task_VerzoekAanvullingInhoudelijk">
+        <di:waypoint x="6436" y="785"/>
+        <di:waypoint x="6436" y="943"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6416" y="840" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico_di" bpmnElement="Flow_052_Gateway_ExtraGegevensNodig_to_Gateway_PlanschadeRisico">
+        <di:waypoint x="6462" y="760"/>
+        <di:waypoint x="6626" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6524" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_053_Task_VerzoekAanvullingInhoudelijk_to_Receive_AanvullingInhoudelijk_di" bpmnElement="Flow_053_Task_VerzoekAanvullingInhoudelijk_to_Receive_AanvullingInhoudelijk">
+        <di:waypoint x="6512" y="985"/>
+        <di:waypoint x="6598" y="985"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_054_Receive_AanvullingInhoudelijk_to_Gateway_HervattenNaAanvulling_di" bpmnElement="Flow_054_Receive_AanvullingInhoudelijk_to_Gateway_HervattenNaAanvulling">
+        <di:waypoint x="6748" y="985"/>
+        <di:waypoint x="6884" y="985"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_055_Gateway_HervattenNaAanvulling_to_Task_UitvoerenInhoudelijkeToetsing_di" bpmnElement="Flow_055_Gateway_HervattenNaAanvulling_to_Task_UitvoerenInhoudelijkeToetsing">
+        <di:waypoint x="6910" y="1010"/>
+        <di:waypoint x="6910" y="1050"/>
+        <di:waypoint x="5985" y="1050"/>
+        <di:waypoint x="5985" y="802"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6890" y="1006" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen_di" bpmnElement="Flow_056_Gateway_HervattenNaAanvulling_to_Task_BesluitAlsnogNietBehandelen">
+        <di:waypoint x="6910" y="1010"/>
+        <di:waypoint x="6910" y="1153"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6890" y="1058" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_057_Task_BesluitAlsnogNietBehandelen_to_Task_PublicerenBBInhoudelijk_di" bpmnElement="Flow_057_Task_BesluitAlsnogNietBehandelen_to_Task_PublicerenBBInhoudelijk">
+        <di:waypoint x="6984" y="1195"/>
+        <di:waypoint x="7071" y="1195"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_058_Task_PublicerenBBInhoudelijk_to_End_GestaaktInhoudelijk_di" bpmnElement="Flow_058_Task_PublicerenBBInhoudelijk_to_End_GestaaktInhoudelijk">
+        <di:waypoint x="7221" y="1195"/>
+        <di:waypoint x="7364" y="1195"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_059_Gateway_PlanschadeRisico_to_Task_AfsluitenPlanschadeOvereenkomst_di" bpmnElement="Flow_059_Gateway_PlanschadeRisico_to_Task_AfsluitenPlanschadeOvereenkomst">
+        <di:waypoint x="6652" y="735"/>
+        <di:waypoint x="6652" y="565"/>
+        <di:waypoint x="6684" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6632" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig_di" bpmnElement="Flow_060_Gateway_PlanschadeRisico_to_Gateway_AanpassingAanvraagNodig">
+        <di:waypoint x="6676" y="760"/>
+        <di:waypoint x="6863" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6750" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_061_Task_AfsluitenPlanschadeOvereenkomst_to_Gateway_AanpassingAanvraagNodig_di" bpmnElement="Flow_061_Task_AfsluitenPlanschadeOvereenkomst_to_Gateway_AanpassingAanvraagNodig">
+        <di:waypoint x="6834" y="565"/>
+        <di:waypoint x="6888" y="565"/>
+        <di:waypoint x="6888" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_062_Gateway_AanpassingAanvraagNodig_to_Task_VerzoekAanpassingAanvraag_di" bpmnElement="Flow_062_Gateway_AanpassingAanvraagNodig_to_Task_VerzoekAanpassingAanvraag">
+        <di:waypoint x="6888" y="785"/>
+        <di:waypoint x="6888" y="1348"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6868" y="1042" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging_di" bpmnElement="Flow_063_Gateway_AanpassingAanvraagNodig_to_Task_UitvoerenIntegraleAfweging">
+        <di:waypoint x="6913" y="760"/>
+        <di:waypoint x="7028" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="6951" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_064_Task_VerzoekAanpassingAanvraag_to_Receive_AangepasteAanvraag_di" bpmnElement="Flow_064_Task_VerzoekAanpassingAanvraag_to_Receive_AangepasteAanvraag">
+        <di:waypoint x="6963" y="1390"/>
+        <di:waypoint x="7049" y="1390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_065_Receive_AangepasteAanvraag_to_Task_UitvoerenInhoudelijkeToetsing_di" bpmnElement="Flow_065_Receive_AangepasteAanvraag_to_Task_UitvoerenInhoudelijkeToetsing">
+        <di:waypoint x="7124" y="1432"/>
+        <di:waypoint x="7124" y="1472"/>
+        <di:waypoint x="5985" y="1472"/>
+        <di:waypoint x="5985" y="802"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_066_Task_UitvoerenIntegraleAfweging_to_Task_FormulerenConceptBeschikking_di" bpmnElement="Flow_066_Task_UitvoerenIntegraleAfweging_to_Task_FormulerenConceptBeschikking">
+        <di:waypoint x="7178" y="760"/>
+        <di:waypoint x="7264" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_067_Task_FormulerenConceptBeschikking_to_Gateway_CollegeAccordNodig_di" bpmnElement="Flow_067_Task_FormulerenConceptBeschikking_to_Gateway_CollegeAccordNodig">
+        <di:waypoint x="7414" y="760"/>
+        <di:waypoint x="7529" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_068_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptCollege_di" bpmnElement="Flow_068_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptCollege">
+        <di:waypoint x="7554" y="735"/>
+        <di:waypoint x="7554" y="565"/>
+        <di:waypoint x="7587" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7534" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk_di" bpmnElement="Flow_069_Gateway_CollegeAccordNodig_to_Task_AccorderenConceptAmbtelijk">
+        <di:waypoint x="7554" y="785"/>
+        <di:waypoint x="7554" y="970"/>
+        <di:waypoint x="7587" y="970"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7534" y="854" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_070_Task_AccorderenConceptAmbtelijk_to_Gateway_MergeAccordConcept_di" bpmnElement="Flow_070_Task_AccorderenConceptAmbtelijk_to_Gateway_MergeAccordConcept">
+        <di:waypoint x="7737" y="970"/>
+        <di:waypoint x="8135" y="970"/>
+        <di:waypoint x="8135" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_071_Task_AccorderenConceptCollege_to_Gateway_RaadsadviesGewenst_di" bpmnElement="Flow_071_Task_AccorderenConceptCollege_to_Gateway_RaadsadviesGewenst">
+        <di:waypoint x="7737" y="565"/>
+        <di:waypoint x="7874" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_072_Gateway_RaadsadviesGewenst_to_Task_OpvragenRaadsadvies_di" bpmnElement="Flow_072_Gateway_RaadsadviesGewenst_to_Task_OpvragenRaadsadvies">
+        <di:waypoint x="7899" y="540"/>
+        <di:waypoint x="7899" y="397"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7879" y="444" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept_di" bpmnElement="Flow_073_Gateway_RaadsadviesGewenst_to_Gateway_MergeAccordConcept">
+        <di:waypoint x="7899" y="590"/>
+        <di:waypoint x="7899" y="760"/>
+        <di:waypoint x="8110" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="7879" y="651" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_074_Task_OpvragenRaadsadvies_to_Task_UitbrengenRaadsadvies_di" bpmnElement="Flow_074_Task_OpvragenRaadsadvies_to_Task_UitbrengenRaadsadvies">
+        <di:waypoint x="7974" y="355"/>
+        <di:waypoint x="8060" y="355"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_075_Task_UitbrengenRaadsadvies_to_Task_VerwerkenRaadsadvies_di" bpmnElement="Flow_075_Task_UitbrengenRaadsadvies_to_Task_VerwerkenRaadsadvies">
+        <di:waypoint x="8210" y="355"/>
+        <di:waypoint x="8296" y="355"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_076_Task_VerwerkenRaadsadvies_to_Gateway_MergeAccordConcept_di" bpmnElement="Flow_076_Task_VerwerkenRaadsadvies_to_Gateway_MergeAccordConcept">
+        <di:waypoint x="8372" y="397"/>
+        <di:waypoint x="8372" y="825"/>
+        <di:waypoint x="8135" y="825"/>
+        <di:waypoint x="8135" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_077_Gateway_MergeAccordConcept_to_Event_ConceptBeschikkingGereed_di" bpmnElement="Flow_077_Gateway_MergeAccordConcept_to_Event_ConceptBeschikkingGereed">
+        <di:waypoint x="8160" y="760"/>
+        <di:waypoint x="8375" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_078_Event_ConceptBeschikkingGereed_to_Gateway_UitgebreideProcedure_di" bpmnElement="Flow_078_Event_ConceptBeschikkingGereed_to_Gateway_UitgebreideProcedure">
+        <di:waypoint x="8411" y="760"/>
+        <di:waypoint x="8798" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_079_Gateway_UitgebreideProcedure_to_Task_TerInzageLeggenOntwerp_di" bpmnElement="Flow_079_Gateway_UitgebreideProcedure_to_Task_TerInzageLeggenOntwerp">
+        <di:waypoint x="8823" y="735"/>
+        <di:waypoint x="8823" y="565"/>
+        <di:waypoint x="8877" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="8803" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV_di" bpmnElement="Flow_080_Gateway_UitgebreideProcedure_to_Gateway_MergeUOV">
+        <di:waypoint x="8848" y="760"/>
+        <di:waypoint x="9529" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="9168" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_081_Task_TerInzageLeggenOntwerp_to_Task_VerzamelenZienswijzen_di" bpmnElement="Flow_081_Task_TerInzageLeggenOntwerp_to_Task_VerzamelenZienswijzen">
+        <di:waypoint x="9027" y="565"/>
+        <di:waypoint x="9114" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_082_Task_VerzamelenZienswijzen_to_Task_OpstellenEindverslagUOV_di" bpmnElement="Flow_082_Task_VerzamelenZienswijzen_to_Task_OpstellenEindverslagUOV">
+        <di:waypoint x="9264" y="565"/>
+        <di:waypoint x="9350" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_083_Task_OpstellenEindverslagUOV_to_Gateway_MergeUOV_di" bpmnElement="Flow_083_Task_OpstellenEindverslagUOV_to_Gateway_MergeUOV">
+        <di:waypoint x="9500" y="565"/>
+        <di:waypoint x="9554" y="565"/>
+        <di:waypoint x="9554" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_084_Gateway_MergeUOV_to_Gateway_GeschilpuntenZienswijzen_di" bpmnElement="Flow_084_Gateway_MergeUOV_to_Gateway_GeschilpuntenZienswijzen">
+        <di:waypoint x="9579" y="760"/>
+        <di:waypoint x="9744" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_085_Gateway_GeschilpuntenZienswijzen_to_Task_OplossenGeschilpunten_di" bpmnElement="Flow_085_Gateway_GeschilpuntenZienswijzen_to_Task_OplossenGeschilpunten">
+        <di:waypoint x="9769" y="735"/>
+        <di:waypoint x="9769" y="565"/>
+        <di:waypoint x="9823" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="9749" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking_di" bpmnElement="Flow_086_Gateway_GeschilpuntenZienswijzen_to_Task_FormulerenDefinitieveBeschikking">
+        <di:waypoint x="9794" y="760"/>
+        <di:waypoint x="10468" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="10111" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_087_Task_OplossenGeschilpunten_to_Task_AdviserenAanpassenBeschikking_di" bpmnElement="Flow_087_Task_OplossenGeschilpunten_to_Task_AdviserenAanpassenBeschikking">
+        <di:waypoint x="9973" y="565"/>
+        <di:waypoint x="10060" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_088_Task_AdviserenAanpassenBeschikking_to_Task_BeantwoordenZienswijzen_di" bpmnElement="Flow_088_Task_AdviserenAanpassenBeschikking_to_Task_BeantwoordenZienswijzen">
+        <di:waypoint x="10210" y="565"/>
+        <di:waypoint x="10296" y="565"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_089_Task_BeantwoordenZienswijzen_to_Task_FormulerenDefinitieveBeschikking_di" bpmnElement="Flow_089_Task_BeantwoordenZienswijzen_to_Task_FormulerenDefinitieveBeschikking">
+        <di:waypoint x="10446" y="565"/>
+        <di:waypoint x="10543" y="565"/>
+        <di:waypoint x="10543" y="718"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_090_Task_FormulerenDefinitieveBeschikking_to_Task_BerekenenLeges_di" bpmnElement="Flow_090_Task_FormulerenDefinitieveBeschikking_to_Task_BerekenenLeges">
+        <di:waypoint x="10618" y="760"/>
+        <di:waypoint x="10705" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_091_Task_BerekenenLeges_to_Gateway_CollegeVaststellingNodig_di" bpmnElement="Flow_091_Task_BerekenenLeges_to_Gateway_CollegeVaststellingNodig">
+        <di:waypoint x="10855" y="760"/>
+        <di:waypoint x="10970" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_092_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingCollege_di" bpmnElement="Flow_092_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingCollege">
+        <di:waypoint x="10995" y="735"/>
+        <di:waypoint x="10995" y="565"/>
+        <di:waypoint x="11027" y="565"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="10975" y="626" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk_di" bpmnElement="Flow_093_Gateway_CollegeVaststellingNodig_to_Task_VaststellenBeschikkingAmbtelijk">
+        <di:waypoint x="10995" y="785"/>
+        <di:waypoint x="10995" y="970"/>
+        <di:waypoint x="11027" y="970"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="10975" y="854" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_094_Task_VaststellenBeschikkingCollege_to_Gateway_MergeVaststelling_di" bpmnElement="Flow_094_Task_VaststellenBeschikkingCollege_to_Gateway_MergeVaststelling">
+        <di:waypoint x="11177" y="565"/>
+        <di:waypoint x="11339" y="565"/>
+        <di:waypoint x="11339" y="735"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_095_Task_VaststellenBeschikkingAmbtelijk_to_Gateway_MergeVaststelling_di" bpmnElement="Flow_095_Task_VaststellenBeschikkingAmbtelijk_to_Gateway_MergeVaststelling">
+        <di:waypoint x="11177" y="970"/>
+        <di:waypoint x="11339" y="970"/>
+        <di:waypoint x="11339" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_096_Gateway_MergeVaststelling_to_Event_DefinitiefVastgesteld_di" bpmnElement="Flow_096_Gateway_MergeVaststelling_to_Event_DefinitiefVastgesteld">
+        <di:waypoint x="11364" y="760"/>
+        <di:waypoint x="11557" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_097_Event_DefinitiefVastgesteld_to_Task_VerzendenBeschikkingAanvrager_di" bpmnElement="Flow_097_Event_DefinitiefVastgesteld_to_Task_VerzendenBeschikkingAanvrager">
+        <di:waypoint x="11593" y="760"/>
+        <di:waypoint x="11930" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_098_Task_VerzendenBeschikkingAanvrager_to_Task_MededelenBelanghebbenden_di" bpmnElement="Flow_098_Task_VerzendenBeschikkingAanvrager_to_Task_MededelenBelanghebbenden">
+        <di:waypoint x="12080" y="760"/>
+        <di:waypoint x="12166" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_099_Task_MededelenBelanghebbenden_to_Task_PublicerenBeschikking_di" bpmnElement="Flow_099_Task_MededelenBelanghebbenden_to_Task_PublicerenBeschikking">
+        <di:waypoint x="12316" y="760"/>
+        <di:waypoint x="12403" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_100_Task_PublicerenBeschikking_to_Gateway_RegistrerenNodig_di" bpmnElement="Flow_100_Task_PublicerenBeschikking_to_Gateway_RegistrerenNodig">
+        <di:waypoint x="12553" y="760"/>
+        <di:waypoint x="12668" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_101_Gateway_RegistrerenNodig_to_Task_RegistrerenRegisters_di" bpmnElement="Flow_101_Gateway_RegistrerenNodig_to_Task_RegistrerenRegisters">
+        <di:waypoint x="12693" y="785"/>
+        <di:waypoint x="12693" y="970"/>
+        <di:waypoint x="12726" y="970"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="12673" y="854" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie_di" bpmnElement="Flow_102_Gateway_RegistrerenNodig_to_Gateway_MergeRegistratie">
+        <di:waypoint x="12718" y="760"/>
+        <di:waypoint x="13012" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="12845" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_103_Task_RegistrerenRegisters_to_Gateway_MergeRegistratie_di" bpmnElement="Flow_103_Task_RegistrerenRegisters_to_Gateway_MergeRegistratie">
+        <di:waypoint x="12876" y="970"/>
+        <di:waypoint x="13037" y="970"/>
+        <di:waypoint x="13037" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_104_Gateway_MergeRegistratie_to_Gateway_OmgevingsplanBijwerken_di" bpmnElement="Flow_104_Gateway_MergeRegistratie_to_Gateway_OmgevingsplanBijwerken">
+        <di:waypoint x="13062" y="760"/>
+        <di:waypoint x="13227" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_105_Gateway_OmgevingsplanBijwerken_to_Task_InitieerBijwerkenOmgevingsplan_di" bpmnElement="Flow_105_Gateway_OmgevingsplanBijwerken_to_Task_InitieerBijwerkenOmgevingsplan">
+        <di:waypoint x="13252" y="785"/>
+        <di:waypoint x="13252" y="970"/>
+        <di:waypoint x="13284" y="970"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13232" y="854" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan_di" bpmnElement="Flow_106_Gateway_OmgevingsplanBijwerken_to_Gateway_MergeOmgevingsplan">
+        <di:waypoint x="13277" y="760"/>
+        <di:waypoint x="13571" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13404" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_107_Task_InitieerBijwerkenOmgevingsplan_to_Gateway_MergeOmgevingsplan_di" bpmnElement="Flow_107_Task_InitieerBijwerkenOmgevingsplan_to_Gateway_MergeOmgevingsplan">
+        <di:waypoint x="13434" y="970"/>
+        <di:waypoint x="13596" y="970"/>
+        <di:waypoint x="13596" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_108_Gateway_MergeOmgevingsplan_to_Gateway_ToezichtNodig_di" bpmnElement="Flow_108_Gateway_MergeOmgevingsplan_to_Gateway_ToezichtNodig">
+        <di:waypoint x="13621" y="760"/>
+        <di:waypoint x="13786" y="760"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_109_Gateway_ToezichtNodig_to_Task_AanmeldenToezicht_di" bpmnElement="Flow_109_Gateway_ToezichtNodig_to_Task_AanmeldenToezicht">
+        <di:waypoint x="13811" y="785"/>
+        <di:waypoint x="13811" y="970"/>
+        <di:waypoint x="13844" y="970"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13791" y="854" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht_di" bpmnElement="Flow_110_Gateway_ToezichtNodig_to_Gateway_MergeToezicht">
+        <di:waypoint x="13836" y="760"/>
+        <di:waypoint x="14130" y="760"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="13963" y="736" width="40" height="20"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_111_Task_AanmeldenToezicht_to_Gateway_MergeToezicht_di" bpmnElement="Flow_111_Task_AanmeldenToezicht_to_Gateway_MergeToezicht">
+        <di:waypoint x="13994" y="970"/>
+        <di:waypoint x="14155" y="970"/>
+        <di:waypoint x="14155" y="785"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_112_Gateway_MergeToezicht_to_End_Gereed_di" bpmnElement="Flow_112_Gateway_MergeToezicht_to_End_Gereed">
+        <di:waypoint x="14180" y="760"/>
+        <di:waypoint x="14373" y="760"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

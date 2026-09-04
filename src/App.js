@@ -99,6 +99,9 @@ function App() {
   // These are UI-specific, not moved to hook
   const [activeTab, setActiveTab] = useState('service');
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
+  // CPRMV vocabulary version that preview, download and publish target.
+  // '0.4.1' = RuleSet/hasPart model; '0.3.2' = flat cprmv:Rule + cprmv:Dataset.
+  const [cprmvVersion, setCprmvVersion] = useState('0.4.1');
   const [importStatus, setImportStatus] = useState({
     show: false,
     success: false,
@@ -145,6 +148,7 @@ function App() {
     dmnData,
     concepts,
     vendorService,
+    cprmvVersion,
   });
 
   const [message, setMessage] = useState('');
@@ -746,16 +750,37 @@ function App() {
                 />
                 <label
                   htmlFor="ttl-import"
-                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 cursor-pointer shadow-md transition-colors whitespace-nowrap"
                 >
                   <Upload size={20} />
                   Import TTL File
                 </label>
 
+                {/* CPRMV target version — applies to preview, download and publish.
+                    Styled as a toolbar control matching the action buttons
+                    (px-4 py-2, rounded-lg, shadow-md, solid colour, white text). */}
+                <div
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md"
+                  title="CPRMV vocabulary version for preview, export and publish"
+                >
+                  <label htmlFor="cprmv-version" className="text-sm font-semibold">
+                    CPRMV
+                  </label>
+                  <select
+                    id="cprmv-version"
+                    value={cprmvVersion}
+                    onChange={(e) => setCprmvVersion(e.target.value)}
+                    className="text-sm font-medium bg-white text-gray-800 rounded px-2 py-1 border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/60"
+                  >
+                    <option value="0.4.1">0.4.1</option>
+                    <option value="0.3.2">0.3.2</option>
+                  </select>
+                </div>
+
                 {/* Toggle Preview Button */}
                 <button
                   onClick={() => setShowPreviewPanel(!showPreviewPanel)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg shadow-md transition-colors whitespace-nowrap ${
                     showPreviewPanel
                       ? 'bg-green-600 text-white hover:bg-green-700'
                       : 'bg-gray-600 text-white hover:bg-gray-700'
@@ -768,7 +793,7 @@ function App() {
 
                 <button
                   onClick={() => setShowClearDialog(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-md transition-colors whitespace-nowrap"
                   title="Clear all fields"
                 >
                   <Trash2 size={20} />

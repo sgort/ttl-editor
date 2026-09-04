@@ -1,0 +1,1083 @@
+[
+  {
+    "name": "TC-R1_Afwijzing_AanvragerFailliet",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: aanvragerFailliet=true triggers immediate rejection regardless of any other input. Covers Rule_Afwijzing_AanvragerFailliet.",
+    "expected": "rechtOpSubsidie=false, reden=Aanvrager is failliet",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R2_Afwijzing_NietInFlevoland",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: provincieWoning≠Flevoland triggers rejection when aanvragerFailliet=false. Covers Rule_Afwijzing_NietInFlevoland.",
+    "expected": "rechtOpSubsidie=false, reden=Woning ligt niet in Flevoland",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Noord-Holland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R3_Afwijzing_GeenEigenaarOfHuurder",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: relatieTotWoning=neither 'eigenaar' nor 'huurder' triggers rejection. Covers Rule_Afwijzing_GeenEigenaarOfHuurder.",
+    "expected": "rechtOpSubsidie=false, reden=Aanvrager is geen eigenaar of huurder",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "gebruiker",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R4_Afwijzing_HuurderZonderToestemming",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: huurder + toestemmingEigenaar=false → reject. Covers Rule_Afwijzing_HuurderZonderToestemming.",
+    "expected": "rechtOpSubsidie=false, reden=Huurder heeft geen toestemming van eigenaar",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R5_Afwijzing_NaamNietOpEnergierekening",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: rekeningNaamKomtOvereen=false triggers rejection when failliet=false and all other conditions would otherwise allow approval. Covers Rule_Afwijzing_NaamNietOpEnergierekening.",
+    "expected": "rechtOpSubsidie=false, reden=Aanvrager staat niet op de energierekening",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R6_Toekenning_Eigenaar_AllConditionsMet",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC baseline for approval: eigenaar, Flevoland, not failliet, rekening=true. toestemmingEigenaar is irrelevant for eigenaar (MC/DC pair with TC-R6b). Covers Rule_Toekenning_Eigenaar.",
+    "expected": "rechtOpSubsidie=true, reden=Aanvrager heeft recht op subsidie",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R6b_Toekenning_Eigenaar_ToestemmingIrrelevant",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "Boundary/MC/DC: eigenaar does NOT require toestemmingEigenaar — approval must still be granted with toestemming=false. Demonstrates that condition only matters for huurder path.",
+    "expected": "rechtOpSubsidie=true, reden=Aanvrager heeft recht op subsidie",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R7_Toekenning_Huurder_MetToestemming",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "MC/DC: huurder + toestemmingEigenaar=true → approved (MC/DC pair with TC-R4). Covers Rule_Toekenning_Huurder.",
+    "expected": "rechtOpSubsidie=true, reden=Aanvrager heeft recht op subsidie; huurder met toestemming eigenaar",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-R8_Afwijzing_Standaard_Vangnet",
+    "decision": "RechtOpSubsidieThuisbatterij",
+    "description": "Catch-all fallback: unknown relatieTotWoning with no clear match above catch-all rule. Covers Rule_Afwijzing_Standaard.",
+    "expected": "rechtOpSubsidie=false, reden=Aanvrager is geen eigenaar of huurder",
+    "requestBody": {
+      "variables": {
+        "aanvragerFailliet": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "provincieWoning": {
+          "value": "Flevoland",
+          "type": "String"
+        },
+        "rekeningNaamKomtOvereen": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "relatieTotWoning": {
+          "value": "erfpachter",
+          "type": "String"
+        },
+        "toestemmingEigenaar": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-JB1_Budget2026",
+    "decision": "jaarGebondenBudget",
+    "description": "MC/DC: aanvraagDatum in 2026 → plafondEigenaren=437500, plafondHuurders=437500.",
+    "expected": "plafondEigenaren=437500.0, plafondHuurders=437500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-06-01",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-JB2_Budget2027",
+    "decision": "jaarGebondenBudget",
+    "description": "MC/DC: aanvraagDatum in 2027 → plafondEigenaren=437500, plafondHuurders=437500.",
+    "expected": "plafondEigenaren=437500.0, plafondHuurders=437500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-06-01",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-JB3_Budget_OnbekendJaar_2025",
+    "decision": "jaarGebondenBudget",
+    "description": "Boundary: year=2025 — no rule matches, expect no output row (null/empty result). Tests DMN gap outside modelled years.",
+    "expected": "[]",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2025-12-31",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-JB4_Budget_OnbekendJaar_2028",
+    "decision": "jaarGebondenBudget",
+    "description": "Boundary: year=2028 — no rule matches, expect no output row (null/empty result).",
+    "expected": "[]",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2028-01-01",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SC1_Constanten_Standaard",
+    "decision": "SubsidieConstantenThuisbatterij",
+    "description": "Single rule: verifies all constant outputs — subsidiePercentage=0.25, subsidieMinimum=750, subsidieMaximum=1250, minimaleNoodzakelijkeKosten=750.",
+    "expected": "subsidiePercentage=0.25, subsidieMinimum=750.0, subsidieMaximum=1250.0, minimaleNoodzakelijkeKosten=750.0",
+    "requestBody": {
+      "variables": {}
+    }
+  },
+  {
+    "name": "TC-BH1_Basis_ExactThreshold_3000",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Boundary ON: gemaakteKosten=3000 (exact threshold). 0.25*3000=750 = subsidieMinimum. Rule_Basis_BovenMinimum fires; output is 750.",
+    "expected": "basisHoogteSubsidie=750.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 3000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BH2_Basis_OnderThreshold_2999",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Boundary BELOW: gemaakteKosten=2999 (just below 3000 threshold). Rule_Basis_OnderMinimum fires; output is 0.",
+    "expected": "basisHoogteSubsidie=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 2999,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BH3_Basis_MiddenRange_4000",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Nominal mid-range: gemaakteKosten=4000. 0.25*4000=1000 (between 750 and 1250). Output is 1000.",
+    "expected": "basisHoogteSubsidie=1000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 4000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BH4_Basis_ExactMaximum_5000",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Boundary ON maximum: gemaakteKosten=5000. 0.25*5000=1250 = subsidieMaximum exactly. Output is 1250 (no clamping needed, at cap).",
+    "expected": "basisHoogteSubsidie=1250.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 5000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BH5_Basis_BovenMaximum_7000",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Boundary ABOVE maximum: gemaakteKosten=7000. 0.25*7000=1750 > subsidieMaximum=1250. Output is clamped to 1250.",
+    "expected": "basisHoogteSubsidie=1250.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 7000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BH6_Basis_NulKosten",
+    "decision": "BerekenBasisHoogteSubsidie",
+    "description": "Extreme lower boundary: gemaakteKosten=0. Well below threshold → output is 0.",
+    "expected": "basisHoogteSubsidie=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP1_2026_Eigenaar_Start_NogNietsGebruikt",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON start of scheme: 2026-01-12, eigenaar, reedsGesubsidieerdEigenaren=0 → beschikbaarSubsidiePlafond = 437500-0 = 437500.",
+    "expected": "beschikbaarSubsidiePlafond=437500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-01-12",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP2_2026_Eigenaar_VoorStart_2026-01-11",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary BEFORE scheme starts: 2026-01-11 — no date range matches. Fallback rule fires → beschikbaarSubsidiePlafond=0.",
+    "expected": "beschikbaarSubsidiePlafond=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-01-11",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP3_2026_Eigenaar_EindeSplitsDag_2026-09-30",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON last split day: 2026-09-30, eigenaar, gedeeltelijk gebruikt (50000) → 437500-50000=387500.",
+    "expected": "beschikbaarSubsidiePlafond=387500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-09-30",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 50000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 200000,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP4_2026_Huurder_Midden",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "MC/DC: huurder in 2026 split period → plafondHuurders - reedsGesubsidieerdHuurders = 437500-100000=337500. Rule_Platform_2026_Huurder_Gescheiden.",
+    "expected": "beschikbaarSubsidiePlafond=337500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-06-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 100000,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP5_2026_Eigenaar_PlafondUitgeput",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary floor: eigenaar plafond fully exhausted (reedsGesubsidieerdEigenaren=437500) → max(437500-437500,0)=0.",
+    "expected": "beschikbaarSubsidiePlafond=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-06-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 437500,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP6_2026_Eigenaar_PlafondOverschreven",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary floor: reedsGesubsidieerdEigenaren exceeds plafond (500000>437500) → floor to 0.",
+    "expected": "beschikbaarSubsidiePlafond=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-06-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 500000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP7_2026_Gebundeld_Start_2026-10-01",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON first bundled day (2026-10-01): any type → plafondE+plafondH - reedsE - reedsH = 437500+437500-50000-100000 = 725000.",
+    "expected": "beschikbaarSubsidiePlafond=725000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-10-01",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 50000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 100000,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP8_2026_Gebundeld_Huurder_Midden",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "MC/DC: huurder in 2026 bundled period — type is irrelevant once in bundled window. Same formula as eigenaar. 437500+437500-0-200000=675000.",
+    "expected": "beschikbaarSubsidiePlafond=675000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-11-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 200000,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP9_2026_Gebundeld_Einde_2026-12-31",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON last day of 2026 bundled window: 2026-12-31 → rule fires normally.",
+    "expected": "beschikbaarSubsidiePlafond=875000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-12-31",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP10_2027_Eigenaar_Start_2027-01-01",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON first day of 2027 eigenaar split period: plafondEigenaren(2027)=437500, reedsGesubsidieerdEigenaren=0 → 437500.",
+    "expected": "beschikbaarSubsidiePlafond=437500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-01-01",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP11_2027_Huurder_SplitsPeriode",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "MC/DC: huurder in 2027 split period → plafondHuurders(2027)-reedsGesubsidieerdHuurders = 437500-87500=350000.",
+    "expected": "beschikbaarSubsidiePlafond=350000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 87500,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP12_2027_Eigenaar_EindeSplits_2027-09-30",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON last split day in 2027: 2027-09-30 → eigenaar split rule still fires.",
+    "expected": "beschikbaarSubsidiePlafond=437500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-09-30",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP13_2027_Gebundeld_Start_2027-10-01",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON first bundled day of 2027: 2027-10-01 → 1000000 - reedsE - reedsH = 1000000-0-0=1000000 (note: 2027 bundled pool is 1M, not 875K).",
+    "expected": "beschikbaarSubsidiePlafond=1000000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-10-01",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP14_2027_Gebundeld_Einde_2027-12-31",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary ON last day of 2027 bundled period: 2027-12-31 → 1000000-200000-300000=500000.",
+    "expected": "beschikbaarSubsidiePlafond=500000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2027-12-31",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "huurder",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 200000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 300000,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP15_NaAanvraagPeriode_2028-01-01",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "Boundary AFTER all modelled periods: 2028-01-01 → fallback rule → beschikbaarSubsidiePlafond=0.",
+    "expected": "beschikbaarSubsidiePlafond=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2028-01-01",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-SP16_OnbekendAanvragerType_InGeldigeperiode",
+    "decision": "BerekenBeschikbaarSubsidiePlafond",
+    "description": "MC/DC: aanvragerType=unknown value in split period (not 'eigenaar' or 'huurder') → neither eigenaar nor huurder split rule fires; falls through to bundled rule if date matches, or fallback. Date 2026-06-15 has no bundled rule → fallback = 0.",
+    "expected": "beschikbaarSubsidiePlafond=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-06-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "beheerder",
+          "type": "String"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BHS1_BasisPastBinnenPlafond",
+    "decision": "BehaalbareHoogteSubsidie",
+    "description": "MC/DC Rule 1: basisHoogteSubsidie <= beschikbaarSubsidiePlafond → hoogteSubsidie = basisHoogteSubsidie. gemaakteKosten=4000 → basis=1000; reedsGesubsidieerdEigenaren=0 → plafond=437500. 1000<=437500 ✓ → output=1000.",
+    "expected": "hoogteSubsidie=1000.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 4000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BHS2_BasisBeperktDoorPlafond",
+    "decision": "BehaalbareHoogteSubsidie",
+    "description": "MC/DC Rule 2: basisHoogteSubsidie > beschikbaarSubsidiePlafond → hoogteSubsidie = beschikbaarSubsidiePlafond. gemaakteKosten=7000 → basis=1250; reedsGesubsidieerdEigenaren=437000 → plafond=500. 1250>500 → output=500.",
+    "expected": "hoogteSubsidie=500.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 7000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 437000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BHS3_BasisGelijkAanPlafond",
+    "decision": "BehaalbareHoogteSubsidie",
+    "description": "Boundary ON: basisHoogteSubsidie exactly equals beschikbaarSubsidiePlafond → Rule 1 fires (<=). gemaakteKosten=7000 → basis=1250; reedsGesubsidieerdEigenaren=436250 → plafond=437500-436250=1250. output=1250.",
+    "expected": "hoogteSubsidie=1250.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 7000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 436250,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BHS4_PlafondNul_GeenSubsidie",
+    "decision": "BehaalbareHoogteSubsidie",
+    "description": "Boundary: plafond fully exhausted. reedsGesubsidieerdEigenaren=437500 → plafond=0. basisHoogteSubsidie=1250 > 0 → Rule 2 fires → hoogteSubsidie=0.",
+    "expected": "hoogteSubsidie=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 7000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 437500,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC-BHS5_BasisNul_PlafondPositief",
+    "decision": "BehaalbareHoogteSubsidie",
+    "description": "Boundary: gemaakteKosten below threshold → basis=0. 0 <= any plafond → Rule 1 fires → hoogteSubsidie=0.",
+    "expected": "hoogteSubsidie=0.0",
+    "requestBody": {
+      "variables": {
+        "aanvraagDatum": {
+          "value": "2026-05-15",
+          "type": "String"
+        },
+        "aanvragerType": {
+          "value": "eigenaar",
+          "type": "String"
+        },
+        "gemaakteKosten": {
+          "value": 2000,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdEigenaren": {
+          "value": 0,
+          "type": "Double"
+        },
+        "reedsGesubsidieerdHuurders": {
+          "value": 0,
+          "type": "Double"
+        }
+      }
+    }
+  }
+]
