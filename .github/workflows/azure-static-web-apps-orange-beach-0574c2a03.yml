@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: Deploy ACC (orange-beach)
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       contents: read
       pull-requests: write
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and deploy ACC
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -64,7 +64,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     permissions: {}
     runs-on: ubuntu-latest
-    name: Close Pull Request Job
+    name: Close ACC staging environment
     steps:
       - name: Close Pull Request
         id: closepullrequest
