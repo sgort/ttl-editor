@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import changelogData from '../../data/changelog.json';
 import roadmapData from '../../data/roadmap.json';
+import { getBuildInfo } from '../../utils/buildInfo';
 
 const borderColorMap = {
   green: 'border-green-500',
@@ -94,6 +95,7 @@ function CommitBlock({ commit }) {
 
 // Main ChangelogTab component with collapsible versions
 export default function ChangelogTab() {
+  const buildInfo = getBuildInfo();
   // Track which versions are expanded (only first one by default)
   const [expandedVersions, setExpandedVersions] = useState(
     new Set(changelogData.versions.length > 0 ? [0] : [])
@@ -123,6 +125,19 @@ export default function ChangelogTab() {
               <h2 className="text-2xl font-bold text-gray-800">Documentation & Changelog</h2>
               <p className="text-gray-600 text-sm mt-1">
                 Complete history of features, improvements, and documentation
+              </p>
+              {/*
+                Which build is actually being served. The version headings below
+                come from package.json and are bumped by hand, so they identify a
+                release but not a build of it — ACC and PROD can serve different
+                builds of the same version, and a redeploy produces a new
+                artifact with an unchanged version string.
+              */}
+              <p
+                className="text-gray-400 text-xs mt-1 font-mono"
+                title={buildInfo.sha || undefined}
+              >
+                {buildInfo.label}
               </p>
             </div>
           </div>
