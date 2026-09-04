@@ -42,3 +42,6 @@ cpsv-editor.zip
 # Python cache from ad hoc scripts (e.g. examples/organizations/amsterdam/testCases/*.py)
 __pycache__/
 *.pyc
+
+# Semgrep local cache/config from the MCP plugin
+.semgrep/
