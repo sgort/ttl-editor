@@ -26,6 +26,8 @@
     "test:p3:watch": "vitest useEditorState useArrayHandlers useDsoImport",
     "test:p4": "vitest run shaclHelper triplydbHelper",
     "test:p4:watch": "vitest shaclHelper triplydbHelper",
+    "test:p5": "vitest run PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowImportTab IKnowMappingTab VendorTab",
+    "test:p5:watch": "vitest PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowImportTab IKnowMappingTab VendorTab",
     "prepare": "husky",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
