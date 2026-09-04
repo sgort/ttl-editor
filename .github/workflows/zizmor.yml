@@ -1,10 +1,38 @@
 name: Supply-chain audit
 
+# Deliberately NO branches filter on pull_request, and none on paths either.
+# The audit must run on EVERY pull request, whatever it changes and whatever
+# it targets -- both filters are the same hole in different dimensions: paths
+# lets a pull request skip the gate by touching nothing watched, branches lets
+# it skip by targeting a base that is not watched.
+#
+# The branches variant is the nastier of the two. `audit` is a required status
+# check in the "acc supply-chain gate" ruleset, which applies only while the
+# base IS acc. So a stacked pull request -- one based on a feature branch --
+# matched no trigger, accumulated no audit, and still reported CLEAN with zero
+# checks. It read as ready and was not. The moment its parent merged, GitHub
+# auto-retargeted it to acc, the ruleset started applying, the required check
+# was missing, and the pull request blocked permanently: a retarget emits no
+# pull_request event, so nothing ever backfilled it. (Escape hatch, if one is
+# ever stuck this way: `gh pr close <n> && gh pr reopen <n>` -- `reopened` is
+# in the default types set and by then the base is acc.)
+#
+# Cost is one extra ~40s read-only run per feature-branch-targeting pull
+# request. push stays filtered: acc and main are the only branches whose
+# post-merge state is worth re-auditing.
+#
+# Do NOT copy this shape into azure-static-web-apps-*.yml. Those carry a
+# branches filter for the opposite reason and fail in the opposite direction:
+# an absent filter on the AUDIT makes a required check silently missing, while
+# an absent filter on a DEPLOY makes a scarce environment silently exhausted.
+# ronl-business-api hit that on 2026-08-28 -- five open pull requests against
+# a three-environment Static Web Apps ceiling. This repository has TWO Static
+# Web Apps filtered to different branches (orange-beach on acc, white-sky on
+# main), so unfiltering them would claim two staging slots per pull request
+# and let an acc-targeting pull request stage on the production app.
+# Audit widely, deploy narrowly.
 on:
   pull_request:
-    branches:
-      - acc
-      - main
   push:
     branches:
       - acc
