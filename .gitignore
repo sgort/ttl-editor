@@ -10,6 +10,9 @@
 
 # production
 /build
+# Vite build output. Both exist during the migration: react-scripts
+# emits build/, vite emits dist/. Phase 3 removes the former.
+/dist
 
 # misc
 # Claude Code local-only settings (shared commands like .claude/commands/

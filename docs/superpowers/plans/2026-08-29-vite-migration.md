@@ -319,6 +319,27 @@ phase.
 anyone reaching for `--runInBand` will get a rejected flag. Worth a line in
 `docs/testing.md`.
 
+**[4 Sep, found in phase 2] The dev server's port changes, and the backend's CORS
+allowlist does not know the new one.** `react-scripts start` serves on 3000.
+`vite` serves on **5173**, and `vite preview` on **4173**. The LDE backend
+allowlists origins, so the moment phase 3 makes `npm start` mean `vite`, every
+local developer's SHACL validation, DSO import and TriplyDB publish starts
+failing with `CORS blocked for origin: http://localhost:5173` — against a
+backend that is running and correct.
+
+Observed during the phase 2 preview click-through: the publish modal's SHACL
+validation reached `localhost:3001` and was refused for origin
+`http://localhost:4173`. The request firing at the right URL is what phase 2
+needed to prove, so this is not a migration defect. But it is a real change in
+the local development contract, and it is invisible from this repository — the
+fix belongs in the **backend's** CORS configuration, not here.
+
+Either add 5173 and 4173 to the backend allowlist before phase 3 merges, or set
+`server.port: 3000` and `preview.port: 3000` in `vite.config` to keep the
+existing contract. The second is a one-line change here and needs no
+coordination with another repository; prefer it unless there is a reason to move
+to Vite's defaults.
+
 **Do not add tests during the migration.** The suite is the instrument. Changing
 the instrument and the thing it measures at the same time is how a migration
 becomes unfalsifiable. P5–P6 exist for that, afterwards.
