@@ -92,6 +92,24 @@ Helpful absences, confirmed: **no `jsconfig.json`**, so no path aliases to port;
 `postcss.config.js` and `tailwind.config.js` already exist as real files, which
 Vite picks up without changes.
 
+**[4 Sep, during phase 1] One absence that was not confirmed: JSX in `.js` files.**
+Three files carry it — `src/App.js`, `src/App.test.js` and `src/index.js`.
+Vite has never parsed JSX out of a `.js` extension, and under Vite 8 there is no
+config escape hatch: the `oxc` transformer derives `lang` from the extension and
+`OxcOptions` deliberately omits `lang` from what a config may set. Nor can the
+React plugin rescue them — `@vitejs/plugin-react` v5 deletes its own Babel
+transform when it detects rolldown-Vite, so `.js` reaches oxc untouched and
+fails with `Unexpected JSX expression`.
+
+The fix is the one Vite documents: rename the three to `.jsx`. This works under
+**both** toolchains, so it is safe to do in phase 1 — webpack's
+`resolve.extensions` and Vite's both include `.jsx`, extensionless imports like
+`import App from './App'` keep resolving, CRA's `paths.appIndexJs` resolves
+`src/index` across extensions, and Jest's `testMatch` already covers `.jsx`.
+Verified: `react-scripts build` and `react-scripts test` both still pass after
+the rename. Phase 2's root `index.html` therefore points at **`/src/index.jsx`**,
+not `/src/index.js`.
+
 ## Ordering, and why it is this way
 
 The temptation is to swap the build first. Do not. `react-scripts` provides
@@ -132,7 +150,9 @@ Goal: **257/257 under Vitest**, while `react-scripts test` still passes too.
    ```
 
 4. Add `"test:vitest": "vitest run"` **without touching the 12 existing scripts**.
-5. Run both. Both must be 257/257.
+5. Rename the three JSX-bearing `.js` files to `.jsx` — see the note under
+   "Known scope, measured". Content unchanged; `git mv` keeps the history.
+6. Run both. Both must be 257/257.
 
 **Expect failures here, and treat them as information.** Jest and Vitest differ
 on module mocking and timer behaviour. Fix them in the _config_, not by editing
@@ -157,7 +177,7 @@ These genuinely coexist: CRA reads `public/index.html`, Vite reads a root
    `%PUBLIC_URL%` occurrences for plain `/` paths, and adding:
 
    ```html
-   <script type="module" src="/src/index.js"></script>
+   <script type="module" src="/src/index.jsx"></script>
    ```
 
 3. Add `"build:vite": "vite"` / `"preview": "vite preview"` alongside the CRA
