@@ -1,10 +1,11 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
-// Phase 1 of the CRA-to-Vite migration: Vitest runs alongside Jest, against the
-// same unmodified test files. This config is deliberately separate from
-// vite.config.js, which does not exist yet — phase 2 creates it and folds this
-// `test` block into it.
+// Phase 2 of the CRA-to-Vite migration: Vite builds alongside Create React App.
+// The two genuinely coexist — CRA reads public/index.html, Vite reads the root
+// index.html — so nothing needs removing until phase 3.
+//
+// This replaces vitest.config.mjs: the plan calls for one config, not two.
 //
 // See docs/superpowers/plans/2026-08-29-vite-migration.md.
 
@@ -32,6 +33,13 @@ const rewriteJestMock = {
 
 export default defineConfig({
   plugins: [rewriteJestMock, react()],
+  build: {
+    // Vite's default, stated explicitly because it is the single highest-risk
+    // line in this migration: CI still says output_location: 'build', and phase
+    // 3 is what changes both together. A mismatch deploys an empty directory
+    // and reports success.
+    outDir: 'dist',
+  },
   test: {
     environment: 'jsdom',
     globals: true,
