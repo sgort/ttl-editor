@@ -144,11 +144,18 @@ function readRegister() {
     // optional, and a row that carries one gets it verified.
     const m = depCell.match(/^([\w.-]+\/[\w.-]+)(?:\s*\(\s*[×x]\s*(\d+)\s*\))?$/);
     if (!m) continue; // prose rows: "zizmor itself", "npm dependencies", …
-    rows[m[1]] = {
+
+    // An action can legitimately be pinned at MORE THAN ONE digest -- different
+    // workflows in the same repo may sit on different majors mid-upgrade, and a
+    // good register records every one. linked-data-explorer does exactly this
+    // with actions/checkout (v4.4.0 in three workflows, v3.7.0 in four). Keying
+    // by action alone silently kept the last row and invented a mismatch
+    // against the others, so rows are collected per action.
+    (rows[m[1]] ??= []).push({
       digest: pin.replace(/[.…]+$/, ''),
       version,
       count: m[2] ? Number(m[2]) : null,
-    };
+    });
   }
 
   // "**30 `uses:` references across 9 workflows**" — optional headline.
@@ -227,17 +234,42 @@ function checkFormat(pins) {
   }
 }
 
+/**
+ * A register's version cell may carry an annotation the workflow comment does
+ * not -- "v1 (branch head)" against a bare "v1". Compare the leading token, so
+ * the register can explain itself without tripping the check.
+ */
+function versionToken(v) {
+  return String(v ?? '')
+    .trim()
+    .split(/[\s(]/)[0];
+}
+
 function checkRegister(pins, register, workflowCount) {
   if (!register) return;
   const { rows, totals } = register;
+  const rowsFor = (action) => rows[action] ?? [];
 
-  const inWorkflows = new Map();
-  const uses = new Map(); // action -> how many times it is referenced
+  // Group workflow pins by action AND digest: the same action at two digests is
+  // two distinct things to verify, not one.
+  const byActionDigest = new Map(); // "action@digest" -> {action, digest, comment, count}
+  const uses = new Map(); // action -> total references, across all its digests
   for (const p of pins) {
     if (!/^[0-9a-f]{40}$/.test(p.ref)) continue;
-    inWorkflows.set(p.action, p);
+    const k = `${p.action}@${p.ref}`;
+    const seen = byActionDigest.get(k);
+    if (seen) seen.count += 1;
+    else
+      byActionDigest.set(k, {
+        action: p.action,
+        digest: p.ref,
+        comment: p.comment,
+        count: 1,
+        file: p.file,
+      });
     uses.set(p.action, (uses.get(p.action) ?? 0) + 1);
   }
+  const inWorkflows = byActionDigest;
 
   if (totals) {
     if (totals.refs !== pins.length) {
@@ -254,41 +286,59 @@ function checkRegister(pins, register, workflowCount) {
     }
   }
 
-  for (const [action, wf] of inWorkflows) {
-    const row = rows[action];
-    if (!row) {
+  const claimed = new Set(); // register rows a workflow pin accounted for
+
+  for (const wf of inWorkflows.values()) {
+    const candidates = rowsFor(wf.action);
+    if (candidates.length === 0) {
       fail(
         'register',
-        `${action} is pinned in ${wf.file} but absent from ${REGISTER}'s Pinned table`
+        `${wf.action} is pinned in ${wf.file} but absent from ${REGISTER}'s Pinned table`
       );
       continue;
     }
-    if (!wf.ref.startsWith(row.digest)) {
+
+    // Rows are matched by digest, not by action: an action pinned at two
+    // digests has two rows, and each workflow pin must find its own.
+    const row = candidates.find((r) => wf.digest.startsWith(r.digest));
+    if (!row) {
+      const listed = candidates.map((r) => `${r.digest.slice(0, 12)}… (${r.version})`).join(', ');
       fail(
         'register',
-        `${action}: workflow pins ${wf.ref.slice(0, 12)}… (${wf.comment}) but ` +
-          `${REGISTER} records ${row.digest.slice(0, 12)}… (${row.version})`
+        `${wf.action}: workflow pins ${wf.digest.slice(0, 12)}… (${wf.comment}) but ` +
+          `${REGISTER} records only ${listed}`
       );
-    } else if (wf.comment && row.version && wf.comment !== row.version) {
+      continue;
+    }
+    claimed.add(row);
+
+    if (wf.comment && row.version && versionToken(wf.comment) !== versionToken(row.version)) {
       fail(
         'register',
-        `${action}: digests agree but versions do not — workflow says ` +
+        `${wf.action}: digests agree but versions do not — workflow says ` +
           `${wf.comment}, ${REGISTER} says ${row.version}`
       );
     }
 
-    if (row.count !== null && row.count !== uses.get(action)) {
+    // A ×N on a row counts THAT digest's references, not the action's total --
+    // an action at two digests has its uses split across two rows.
+    if (row.count !== null && row.count !== wf.count) {
       fail(
         'register',
-        `${action}: ${REGISTER} records ×${row.count} but the workflows ` +
-          `reference it ${uses.get(action)} time(s)`
+        `${wf.action} at ${wf.digest.slice(0, 12)}…: ${REGISTER} records ` +
+          `×${row.count} but the workflows reference it ${wf.count} time(s)`
       );
     }
   }
 
-  for (const action of Object.keys(rows)) {
-    if (!inWorkflows.has(action)) {
-      notes.push(`${REGISTER} lists ${action}, which no workflow currently uses`);
+  for (const [action, candidates] of Object.entries(rows)) {
+    for (const row of candidates) {
+      if (!claimed.has(row)) {
+        notes.push(
+          `${REGISTER} lists ${action} at ${row.digest.slice(0, 12)}… (${row.version}), ` +
+            `which no workflow currently uses`
+        );
+      }
     }
   }
 }
