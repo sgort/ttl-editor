@@ -22,7 +22,8 @@ import { expect, test } from '@playwright/test';
  * decision keys rather than rejecting them, so repeated runs are fine, but they
  * do accumulate.
  *
- * WHICH DMN: defaults to the SVB example. Override with E2E_DMN, which accepts
+ * WHICH DMN: defaults to the pinned SVB copy in e2e-fixtures/. Override with
+ * E2E_DMN, which resolves against examples/organizations and accepts
  *   an org-qualified name   E2E_DMN=heusden/HeusdenpasEindresultaat
  *   a bare file name        E2E_DMN=UWV_Leeftijdsinformatie
  *   a path                  E2E_DMN=examples/organizations/duo/Student-finance-application.dmn
@@ -30,7 +31,12 @@ import { expect, test } from '@playwright/test';
  */
 
 const EXAMPLES_ROOT = resolve(process.cwd(), 'examples/organizations');
-const DEFAULT_DMN = 'svb/RONL_BerekenLeeftijden_CPRMV';
+
+// The default is a pinned copy under e2e-fixtures/, so that editing the
+// examples corpus cannot quietly change what a default run drives. E2E_DMN
+// still resolves against examples/organizations, so any of the 31 models there
+// remains reachable on demand. See e2e-fixtures/manifest.json.
+const PINNED_DEFAULT = resolve(process.cwd(), 'e2e-fixtures/svb/RONL_BerekenLeeftijden_CPRMV.dmn');
 
 /** Every .dmn under examples/organizations, as absolute paths. */
 const allExamples = () => {
@@ -77,7 +83,7 @@ const resolveDmn = (spec) => {
   );
 };
 
-const DMN_PATH = resolveDmn(process.env.E2E_DMN ?? DEFAULT_DMN);
+const DMN_PATH = process.env.E2E_DMN ? resolveDmn(process.env.E2E_DMN) : PINNED_DEFAULT;
 const DMN_NAME = basename(DMN_PATH);
 
 const SERVICE = {
