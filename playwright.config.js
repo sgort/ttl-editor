@@ -13,8 +13,16 @@ import { defineConfig, devices } from '@playwright/test';
  * Run it locally, with both services up:
  *
  *   npm run test:e2e            drive the default SVB example
- *   npm run test:e2e:ui         the same, in Playwright's UI mode
  *   E2E_DMN=heusden/HeusdenpasEindresultaat npm run test:e2e
+ *
+ *   npm run test:e2e:ui        the same journey in Playwright's UI mode
+ *
+ * UI mode does NOT run anything on startup, and that is not a hang. It opens,
+ * discovers the tests, and waits for you to press play — the green ▶ at the top
+ * of the TESTS panel, the ▶ that appears on hovering a test row, or F5. Until
+ * then no dev server starts, the preflight below has not run, and nothing has
+ * touched the backend, so an idle window with an empty trace pane is exactly
+ * what it should look like. It stays open and re-runs on save; Ctrl-C exits.
  *
  * See e2e/authoring-journey.spec.js for what E2E_DMN accepts.
  */
