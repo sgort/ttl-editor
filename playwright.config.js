@@ -1,5 +1,16 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// A headed run exists to be watched, and the journey finishes in about two
+// seconds — too fast to follow. Slow the actions down by default when --headed
+// is present, and let E2E_SLOW_MO override in either direction (0 disables it).
+// Headless runs stay at full speed, since nobody is looking.
+// npm_lifecycle_event is the npm script being run, and it is the reliable signal
+// here: process.argv alone does not carry --headed by the time this config is
+// evaluated, so detecting on that silently did nothing.
+const isHeaded =
+  process.env.npm_lifecycle_event === 'test:e2e:headed' || process.argv.includes('--headed');
+const slowMo = Number(process.env.E2E_SLOW_MO ?? (isHeaded ? 400 : 0));
+
 /**
  * P7 of the testing roadmap: an end-to-end authoring journey.
  *
@@ -12,8 +23,14 @@ import { defineConfig, devices } from '@playwright/test';
  *
  * Run it locally, with both services up:
  *
- *   npm run test:e2e            drive the default SVB example
+ *   npm run test:e2e            drive the default SVB example, headless
  *   E2E_DMN=heusden/HeusdenpasEindresultaat npm run test:e2e
+ *
+ *   npm run test:e2e:headed    watch it in a real browser window: tabs opening,
+ *                              the DMN uploading, Deploy to Operaton and
+ *                              Evaluate Decision being clicked. Actions are
+ *                              slowed to 400ms so they can be followed; set
+ *                              E2E_SLOW_MO to change that, or 0 for full speed.
  *
  *   npm run test:e2e:ui        the same journey in Playwright's UI mode
  *
@@ -54,10 +71,19 @@ export default defineConfig({
   // would convert "the backend was down" into a green run.
   retries: 0,
 
-  reporter: [['list'], ['html', { open: 'never' }]],
+  // `open: 'always'` matches ronl-business-api's frontend suite: the HTML report
+  // opens after every run rather than leaving you to remember
+  // `npx playwright show-report`. It is where the trace, the screenshots and the
+  // video live, which is most of the value of running this at all.
+  //
+  // Note it serves the report and holds the terminal until Ctrl-C. That is fine
+  // for a suite run by hand, which this is — but anything that ever wires it
+  // into CI must override this, or the job will hang rather than finish.
+  reporter: [['list'], ['html', { open: 'always' }]],
 
   use: {
     baseURL: 'http://localhost:3000',
+    launchOptions: { slowMo },
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
