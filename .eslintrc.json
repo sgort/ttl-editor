@@ -35,5 +35,21 @@
         "assert": "either"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["e2e/**/*.js", "playwright.config.js"],
+      "rules": {
+        "testing-library/prefer-screen-queries": "off",
+        "testing-library/prefer-find-by": "off",
+        "testing-library/no-node-access": "off",
+        "testing-library/no-await-sync-queries": "off",
+        "testing-library/await-async-query": "off",
+        "testing-library/no-container": "off",
+        "jest/no-conditional-expect": "off",
+        "jest/expect-expect": "off",
+        "jest/valid-expect": "off"
+      }
+    }
+  ]
 }
