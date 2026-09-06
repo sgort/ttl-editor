@@ -1,13 +1,23 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import PublishDialog from './PublishDialog';
 
+const savedConfig = {
+  baseUrl: 'https://api.example.org',
+  account: 'acme',
+  dataset: 'services',
+  apiToken: 'secret-token',
+};
+
+// The dialog is controlled: App owns the config and renders the dialog only
+// while it is open, so there is no `isOpen` prop and no internal copy of the
+// config to fall back on. See issue #87.
 const renderDialog = (overrides = {}) => {
   const props = {
-    isOpen: true,
     onClose: vi.fn(),
     onPublish: vi.fn(),
-    currentConfig: null,
+    config: savedConfig,
+    onConfigChange: vi.fn(),
     publishingState: null,
     ttlContent: '',
     ...overrides,
@@ -16,13 +26,7 @@ const renderDialog = (overrides = {}) => {
 };
 
 describe('PublishDialog', () => {
-  test('renders nothing when closed', () => {
-    const { container } = renderDialog({ isOpen: false });
-
-    expect(container).toBeEmptyDOMElement();
-  });
-
-  test('renders the TriplyDB connection fields when open', () => {
+  test('renders the TriplyDB connection fields', () => {
     renderDialog();
 
     // "Publish to TriplyDB" is both the heading and the submit button, so the
@@ -32,38 +36,28 @@ describe('PublishDialog', () => {
     expect(screen.getByPlaceholderText('PublishTest')).toBeInTheDocument();
   });
 
-  test('falls back to the default base URL when no config was saved', () => {
-    // currentConfig is null on a first run; the dialog must still offer a usable
-    // endpoint rather than an empty field.
-    renderDialog({ currentConfig: null });
-
-    expect(screen.getByDisplayValue('https://api.open-regels.triply.cc')).toBeInTheDocument();
-  });
-
-  test('prefers a saved config over the defaults', () => {
-    renderDialog({
-      currentConfig: {
-        baseUrl: 'https://api.example.org',
-        account: 'acme',
-        dataset: 'services',
-        apiToken: 'secret',
-      },
-    });
+  test('displays the config it is given', () => {
+    renderDialog();
 
     expect(screen.getByDisplayValue('https://api.example.org')).toBeInTheDocument();
     expect(screen.getByDisplayValue('acme')).toBeInTheDocument();
     expect(screen.getByDisplayValue('services')).toBeInTheDocument();
   });
 
+  // The dialog holds no config state of its own, so an edit is only visible to
+  // the user if it reaches the owner. Defaults are the loader's job and are
+  // covered in triplydbHelper.test.js, not here.
+  test('reports an edited field to the owner without mutating the config', () => {
+    const { props } = renderDialog();
+
+    fireEvent.change(screen.getByPlaceholderText('stevengort'), { target: { value: 'acmeX' } });
+
+    expect(props.onConfigChange).toHaveBeenCalledWith({ ...savedConfig, account: 'acmeX' });
+    expect(props.config).toEqual(savedConfig);
+  });
+
   test('masks the API token by default', () => {
-    renderDialog({
-      currentConfig: {
-        baseUrl: 'https://api.example.org',
-        account: 'acme',
-        dataset: 'services',
-        apiToken: 'secret-token',
-      },
-    });
+    renderDialog();
 
     expect(screen.getByPlaceholderText('Enter your TriplyDB API token')).toHaveAttribute(
       'type',
