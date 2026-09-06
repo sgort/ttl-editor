@@ -1,5 +1,4 @@
 import { AlertCircle, Database, FileText, FileUp, Plus, Trash2 } from 'lucide-react';
-import React from 'react';
 
 import exampleCPRMVData from '../../data/cprmv-example.json';
 import { flattenCprmvRules } from '../../utils/cprmvImport';

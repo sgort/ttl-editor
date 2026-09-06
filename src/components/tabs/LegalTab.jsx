@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * LegalTab - Form for editing legal resource metadata
  * Maps to eli:LegalResource in CPSV-AP 3.2.0

@@ -1,6 +1,6 @@
 // IKnowMappingTab.jsx - Tab for configuring iKnow XML import mappings
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { applyMapping, getAvailableFields, parseIKnowXML } from '../../utils/iknowParser';
 

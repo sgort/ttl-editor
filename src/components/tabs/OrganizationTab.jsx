@@ -1,5 +1,5 @@
 import { BookOpen, CheckCircle, Upload, X } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 /**
  * OrganizationTab - Form for editing organization/competent authority metadata

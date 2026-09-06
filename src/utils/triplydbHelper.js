@@ -24,7 +24,6 @@ const DEFAULT_CONFIG = {
  * @param {string} filename - Filename to check
  * @returns {string} Filename with .ttl extension
  */
-// eslint-disable-next-line no-unused-vars
 const ensureTTLExtension = (filename) => {
   if (!filename || filename.trim() === '') {
     return 'service.ttl';
@@ -122,7 +121,7 @@ export const publishToTriplyDB = async (
     try {
       responseData = JSON.parse(responseText);
       console.log('Parsed JSON response:', responseData);
-    } catch (e) {
+    } catch {
       console.log('Response is not JSON');
       responseData = { message: responseText };
     }
@@ -338,7 +337,7 @@ ${dataLines.join('\n')}
       try {
         const errorData = JSON.parse(responseText);
         errorMessage = errorData.message || errorData.error || responseText;
-      } catch (e) {
+      } catch {
         // Not JSON, use as is
       }
 
@@ -450,7 +449,7 @@ export const validateTriplyDBConfig = (config) => {
   // Validate URL format
   try {
     new URL(config.baseUrl);
-  } catch (e) {
+  } catch {
     return { valid: false, error: 'Invalid Base URL format' };
   }
 

@@ -1,5 +1,4 @@
 import { Database, Plus, Trash2 } from 'lucide-react';
-import React from 'react';
 
 import { UNIT_OPTIONS } from '../../utils';
 

@@ -1,6 +1,6 @@
 // IKnowImportTab.jsx - Enhanced import tab with iKnow XML mapping support
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { applyMapping, parseIKnowXML } from './../../utils/iknowParser';
 

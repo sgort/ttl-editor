@@ -97,7 +97,10 @@ export const useEditorState = () => {
 
   // iKnow state
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
-  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
+  // Seeded directly rather than assigned by an effect on mount: iknowMappings is
+  // a static import, so there is nothing to synchronise and an effect only
+  // guaranteed a second render with the real value.
+  const [availableIKnowMappings, setAvailableIKnowMappings] = useState(iknowMappings);
 
   // TriplyDB configuration state (NEW)
   const [triplyDBConfig, setTriplyDBConfig] = useState(() => loadTriplyDBConfig());
@@ -107,11 +110,6 @@ export const useEditorState = () => {
   const [ronlMethodConcepts, setRonlMethodConcepts] = useState([]);
   const [ronlConceptsLoading, setRonlConceptsLoading] = useState(false);
   const [ronlConceptsError, setRonlConceptsError] = useState('');
-
-  // Load available iKnow mappings on mount
-  useEffect(() => {
-    setAvailableIKnowMappings(iknowMappings);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;

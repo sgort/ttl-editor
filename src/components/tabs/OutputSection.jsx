@@ -1,5 +1,4 @@
 import { FileText } from 'lucide-react';
-import React from 'react';
 
 export default function OutputSection({ output, setOutput }) {
   const updateField = (field, value) => {

@@ -15,7 +15,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { sanitizeIri } from '../../utils';
 import {
@@ -71,11 +71,16 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // gated on `uploadedFile` and the imported DMN would appear unusable.
   // The upload handlers manage `uploadedFile` themselves, so this only fires when
   // there is content but no file loaded in the current session.
+  // The same shape as PublishDialog's effects: local state derived from a prop,
+  // synchronised by hand. Unlike a dialog this tab cannot simply remount, so it
+  // likely wants a different remedy. See
+  // https://github.com/sgort/ttl-editor/issues/87.
   useEffect(() => {
     if (dmnData.isImported) return; // preserved-mode renders its own UI
     if (!dmnData.content || uploadedFile) return;
 
     const content = dmnData.content;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUploadedFile({
       name: dmnData.fileName || 'imported.dmn',
       content,
@@ -172,7 +177,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
    * Filters out constant parameters (p_* prefix) automatically.
    * Returns [{id, name, inputs: [{name, typeRef}]}]
    */
-  const parseDMNDecisionsFromXML = (dmnContent) => {
+  function parseDMNDecisionsFromXML(dmnContent) {
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
@@ -248,7 +253,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       console.error('Error parsing DMN decisions:', err);
       return [];
     }
-  };
+  }
 
   /**
    * Build NL-SBB concepts from input/output variable lists and store in state.
@@ -300,7 +305,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setConcepts(generatedConcepts);
   };
 
-  const generateRequestBodyFromDMN = (dmnContent) => {
+  function generateRequestBodyFromDMN(dmnContent) {
     // Helper — parses a FEEL allowed-values list and returns the first item.
     // String literals are unwrapped, numbers parsed, booleans coerced.
     const parseFirstFeelListItem = (text) => {
@@ -513,7 +518,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       console.error('Error generating request body from DMN:', err);
       return '';
     }
-  };
+  }
 
   const loadExampleDMN = async () => {
     try {
@@ -570,7 +575,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     }
   };
 
-  const runBackendValidation = async (content) => {
+  async function runBackendValidation(content) {
     const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
     setIsValidating(true);
     setValidationResult(null);
@@ -624,7 +629,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     } finally {
       setIsValidating(false);
     }
-  };
+  }
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];

@@ -17,7 +17,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import PublishDialog from './components/PublishDialog';

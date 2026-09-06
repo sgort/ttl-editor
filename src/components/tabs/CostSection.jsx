@@ -1,5 +1,4 @@
 import { Euro } from 'lucide-react';
-import React from 'react';
 
 export default function CostSection({ cost, setCost }) {
   const updateField = (field, value) => {
