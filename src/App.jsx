@@ -1154,25 +1154,34 @@ function App() {
         </div>
       )}
 
-      {/* Publish Dialog */}
-      <PublishDialog
-        isOpen={showPublishDialog}
-        onClose={() => {
-          setShowPublishDialog(false);
-          setPublishingState(null); // Reset state on close
-        }}
-        onPublish={handlePublish}
-        currentConfig={
-          triplyDBConfig || {
-            baseUrl: 'https://api.open-regels.triply.cc',
-            account: '',
-            dataset: '',
-            apiToken: '',
-          }
-        }
-        publishingState={publishingState}
-        ttlContent={showPublishDialog ? getTTLContent() : ''}
-      />
+      {/* Publish Dialog.
+          Rendered only while open, rather than mounted permanently and hiding
+          itself. That is what lets the dialog be ordinary React: it no longer
+          needs effects to synchronise a prop into state or to reset results on
+          close, because unmounting does both. See issue #87.
+
+          config is triplyDBConfig itself, not a copy. That state already lived
+          here, had exactly one consumer — this dialog — and the publish flow
+          already wrote back to it, so a local copy plus a syncing effect was
+          duplication. Holding it here is also what keeps an unsaved edit alive
+          across a close, which unmounting would otherwise discard.
+
+          No fallback: loadTriplyDBConfig() returns {...DEFAULT_CONFIG} when
+          storage is empty rather than null, so triplyDBConfig is always an
+          object and the previous `|| { ... }` here could never fire. */}
+      {showPublishDialog && (
+        <PublishDialog
+          onClose={() => {
+            setShowPublishDialog(false);
+            setPublishingState(null); // Reset state on close
+          }}
+          onPublish={handlePublish}
+          config={triplyDBConfig}
+          onConfigChange={setTriplyDBConfig}
+          publishingState={publishingState}
+          ttlContent={getTTLContent()}
+        />
+      )}
     </div>
   );
 }

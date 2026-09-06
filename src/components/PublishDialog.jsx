@@ -6,69 +6,37 @@ import { useEffect, useState } from 'react';
 import { validateTtl } from '../utils/shaclHelper';
 
 const PublishDialog = ({
-  isOpen,
   onClose,
   onPublish,
-  currentConfig,
+  config,
+  onConfigChange,
   publishingState, // ← Progress tracking support
   ttlContent, // ← Turtle to SHACL-validate before publishing (advisory)
 }) => {
-  // Initialize with default empty config if currentConfig is undefined
-  const defaultConfig = {
-    baseUrl: 'https://api.open-regels.triply.cc',
-    account: '',
-    dataset: '',
-    apiToken: '',
-  };
-
-  const [config, setConfig] = useState(currentConfig || defaultConfig);
   const [showToken, setShowToken] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
   // Pre-publish SHACL validation (advisory — never blocks publishing).
   const [shaclResult, setShaclResult] = useState(null);
-  const [shaclValidating, setShaclValidating] = useState(false);
+  // Seeded rather than set at the top of the effect below. Validation starts on
+  // mount whenever there is content, so the initial value is knowable here — and
+  // setting it inside the effect is the cascading render react-hooks warns about.
+  // The dialog is modal, so ttlContent does not change while it is open.
+  const [shaclValidating, setShaclValidating] = useState(() =>
+    Boolean(ttlContent && ttlContent.trim())
+  );
 
-  // Update local config when currentConfig changes.
+  // Run SHACL validation on mount (advisory; results are informational).
   //
-  // This effect exists only because App.jsx mounts this dialog permanently and
-  // it hides itself with `if (!isOpen) return null`, so its state survives every
-  // close. Mounting it conditionally would make the effect unnecessary — useState
-  // already seeds config from currentConfig — but that changes whether a
-  // half-typed configuration survives a close, which is a product decision.
-  // See https://github.com/sgort/ttl-editor/issues/87.
+  // App renders this dialog only while it is open, so mounting IS opening and
+  // there is no previous result to clear first. Two sibling effects used to live
+  // here — one syncing a config prop into local state, one resetting results on
+  // close — and both existed only because the dialog was mounted permanently and
+  // hid itself. Unmounting does that work now. See issue #87.
   useEffect(() => {
-    if (currentConfig) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setConfig(currentConfig);
-    }
-  }, [currentConfig]);
-
-  // Reset test + SHACL result when dialog opens/closes.
-  //
-  // Undoing by hand what unmounting would do for free — same root cause as
-  // above. See https://github.com/sgort/ttl-editor/issues/87.
-  useEffect(() => {
-    if (!isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTestResult(null);
-      setShaclResult(null);
-    }
-  }, [isOpen]);
-
-  // Run SHACL validation when the dialog opens (advisory; results are informational).
-  //
-  // The clearing of previous results at the start is the flagged part; starting
-  // an async operation from an effect is legitimate. With a conditional mount
-  // there would be nothing to clear. See
-  // https://github.com/sgort/ttl-editor/issues/87.
-  useEffect(() => {
-    if (!isOpen || !ttlContent || !ttlContent.trim()) return undefined;
+    if (!ttlContent || !ttlContent.trim()) return undefined;
     let cancelled = false;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShaclResult(null);
-    setShaclValidating(true);
     validateTtl(ttlContent).then((result) => {
       if (!cancelled) {
         setShaclResult(result);
@@ -78,7 +46,7 @@ const PublishDialog = ({
     return () => {
       cancelled = true;
     };
-  }, [isOpen, ttlContent]);
+  }, [ttlContent]);
 
   const handleRevalidate = async () => {
     if (!ttlContent || !ttlContent.trim()) return;
@@ -89,10 +57,8 @@ const PublishDialog = ({
     setShaclValidating(false);
   };
 
-  if (!isOpen) return null;
-
   const updateField = (field, value) => {
-    setConfig({ ...config, [field]: value });
+    onConfigChange({ ...config, [field]: value });
     setTestResult(null); // Clear test result when config changes
   };
 
