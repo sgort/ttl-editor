@@ -1,7 +1,7 @@
 // src/components/PublishDialog.jsx
 // Merged version: Beautiful UX from original + Working progress tracking logic
 import { AlertCircle, CheckCircle, Cloud, Eye, EyeOff, Loader, Upload, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { validateTtl } from '../utils/shaclHelper';
 
@@ -30,25 +30,43 @@ const PublishDialog = ({
   const [shaclResult, setShaclResult] = useState(null);
   const [shaclValidating, setShaclValidating] = useState(false);
 
-  // Update local config when currentConfig changes
+  // Update local config when currentConfig changes.
+  //
+  // This effect exists only because App.jsx mounts this dialog permanently and
+  // it hides itself with `if (!isOpen) return null`, so its state survives every
+  // close. Mounting it conditionally would make the effect unnecessary — useState
+  // already seeds config from currentConfig — but that changes whether a
+  // half-typed configuration survives a close, which is a product decision.
+  // See https://github.com/sgort/ttl-editor/issues/87.
   useEffect(() => {
     if (currentConfig) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConfig(currentConfig);
     }
   }, [currentConfig]);
 
-  // Reset test + SHACL result when dialog opens/closes
+  // Reset test + SHACL result when dialog opens/closes.
+  //
+  // Undoing by hand what unmounting would do for free — same root cause as
+  // above. See https://github.com/sgort/ttl-editor/issues/87.
   useEffect(() => {
     if (!isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTestResult(null);
       setShaclResult(null);
     }
   }, [isOpen]);
 
   // Run SHACL validation when the dialog opens (advisory; results are informational).
+  //
+  // The clearing of previous results at the start is the flagged part; starting
+  // an async operation from an effect is legitimate. With a conditional mount
+  // there would be nothing to clear. See
+  // https://github.com/sgort/ttl-editor/issues/87.
   useEffect(() => {
     if (!isOpen || !ttlContent || !ttlContent.trim()) return undefined;
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setShaclResult(null);
     setShaclValidating(true);
     validateTtl(ttlContent).then((result) => {

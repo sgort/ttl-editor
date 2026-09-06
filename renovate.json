@@ -23,9 +23,9 @@
       "enabled": false
     },
     {
-      "description": "@vitejs/plugin-react v6 stays deferred after the Vite migration, and the cause has MOVED rather than gone. v6 pulls @rolldown/plugin-babel, whose peers want Babel 8. That used to be blocked by react-scripts holding the tree on Babel 7; react-scripts is gone, but phase 3 had to add eslint-config-react-app as an explicit devDependency to keep `npm run lint` working, and it depends on babel-preset-react-app, which depends on @babel/plugin-transform-runtime@^7. So the Babel 7 anchor simply changed owner. Verified after the cutover with npm install --dry-run: still ERESOLVE, same conflicting peer. What actually unblocks this is migrating off eslint-config-react-app to eslint 9 flat config with the Vite-idiomatic React plugins -- eslint 8 is end-of-life and that config is unmaintained, so it is worth doing on its own merits. Minor and patch updates are unaffected; only the major is held.",
+      "description": "eslint v10 is deferred until eslint-plugin-react, eslint-plugin-jsx-a11y and eslint-plugin-import declare support for it. This one does NOT fail to resolve, which is why it needs a rule: npm prints \"ERESOLVE overriding peer dependency\" and installs anyway, so a v10 pull request goes green while three plugins run outside their declared peer range -- eslint-plugin-react caps at ^9.7, jsx-a11y and import at ^9. A passing build is not evidence here. PR #78 proposed exactly this and was closed for this reason. The repository moved to eslint 9 flat config on 6 September 2026; 9.39.5 satisfies every plugin. Re-check when eslint-plugin-react ships a release naming ^10 in its peers, and remove this rule then. Minor and patch updates to eslint are unaffected; only the major is held.",
       "matchManagers": ["npm"],
-      "matchPackageNames": ["@vitejs/plugin-react"],
+      "matchPackageNames": ["eslint"],
       "matchUpdateTypes": ["major"],
       "enabled": false
     }

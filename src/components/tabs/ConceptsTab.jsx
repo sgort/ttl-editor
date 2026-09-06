@@ -1,5 +1,4 @@
 import { BookOpen, ExternalLink, Plus, Trash2 } from 'lucide-react';
-import React from 'react';
 
 import { sanitizeIri } from '../../utils';
 

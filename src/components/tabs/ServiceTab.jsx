@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { LANGUAGE_OPTIONS, SECTOR_OPTIONS } from '../../utils';
 import CostSection from './CostSection';
 import OutputSection from './OutputSection';

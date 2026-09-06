@@ -1,5 +1,4 @@
 import { Plus, Scale, Trash2 } from 'lucide-react';
-import React from 'react';
 
 import { CONFIDENCE_LEVELS } from '../../utils';
 

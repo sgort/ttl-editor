@@ -148,7 +148,7 @@ export const parseTTLEnhanced = (ttlContent) => {
       if (!str) return '';
       try {
         return decodeURI(str);
-      } catch (e) {
+      } catch {
         return str;
       }
     };
