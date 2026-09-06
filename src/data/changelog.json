@@ -2,6 +2,211 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.1",
+      "status": "Released",
+      "date": "6 sep 2026",
+      "commits": [
+        {
+          "sha": "16911c4",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Build-type commits get their own changelog icon",
+          "details": [
+            "The Vite migration landed four commits under the build: prefix, and ChangelogTab's type map had no entry for it, so all four fell through to 'other' and rendered with the generic page icon.",
+            "Committed before the release bump rather than folded into it. The bump commit is the boundary marker the changelog tooling searches for and is never listed in its own entry, so a source change hidden inside it would ship undocumented."
+          ]
+        },
+        {
+          "sha": "5260598",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Migrated to eslint 9 flat config and dropped eslint-config-react-app",
+          "details": [
+            "eslint-config-react-app was carrying more than its rules. It pinned eslint to 8, which is end-of-life; it pulled babel-preset-react-app, whose @babel/plugin-transform-runtime@^7 was the last thing holding @vitejs/plugin-react at v5; and it contributed three flowtype rules to a repository with no Flow. It is now replaced by a flat eslint.config.mjs on eslint 9.39.5, with eslint-plugin-jest swapped for @vitest/eslint-plugin and TypeScript removed as the Create React App leftover it was.",
+            "The rule set was chosen from measurement rather than a guess: a candidate config reported 100 errors, but 63 of those were missing globals in the candidate itself rather than findings. The real 37 split into 29 worth fixing and 38 noise. Four remain suppressed per site with links to issue #87. eslint 10 is deferred by a new Renovate rule, and the point of that rule is that v10 does not fail to resolve — npm overrides the peer ranges with a warning, so a v10 pull request goes green while three plugins run outside their declared support."
+          ]
+        },
+        {
+          "sha": "f61dcad",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Round-trip end-to-end journey, with its fixtures pinned",
+          "details": [
+            "The counterpart to the authoring journey: that one proves the application can create a service, this one proves it can read an existing one back, swap its decision model, and write it out again without losing the rest. Import a full TTL, clear the imported DMN, upload a different one, deploy, evaluate with a fixed request body, then download and check what was written.",
+            "The evaluation asserts values rather than a status code — zorgtoeslag 1150 and a specific annotation string — because a decision table that stopped matching would still answer 200 with an empty result set. That assertion was verified to bite by setting the expected value wrong and watching the test fail. Fixtures are copied into e2e-fixtures/ with a manifest recording each one's provenance, so editing an example cannot silently change what a test asserts."
+          ]
+        },
+        {
+          "sha": "57cabab",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "End-to-end runs are now watchable, and open their report",
+          "details": [
+            "The suite proved a journey but showed nothing of it: every run was headless, and the HTML report was written and left for someone to remember to open. A new test:e2e:headed script opens a real browser window with actions slowed to 400ms, and the report now opens itself, matching the convention in ronl-business-api.",
+            "The first version of the headed detection keyed off process.argv and silently did nothing — argv does not carry the flag by the time the config is evaluated. It ran green and half a second faster than a slowed run could possibly be, which is the only reason it was caught."
+          ]
+        },
+        {
+          "sha": "acd200b",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Playwright UI mode waits for you to press play",
+          "details": [
+            "An idle UI-mode window with an empty trace pane reads as a hang. It is not: the runner discovers the tests and then waits, so no dev server starts and nothing reaches the backend until play is pressed. The previous wording implied the UI and headless commands behave alike, which is the half-truth that cost the time."
+          ]
+        },
+        {
+          "sha": "90b4bec",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "The end-to-end suite checks its live stack before running",
+          "details": [
+            "The suite drives a real stack, and when part of it was down the failure arrived disguised — a connection refused surfaced as an amber validation banner, or as a deploy that quietly never enabled the Evaluate button, with the runner then reporting a timeout on a button several steps from the cause. A global setup now checks the Linked Data Explorer backend and the Operaton engine first and names what is missing.",
+            "The backend URL is read from .env.development rather than hardcoded, so the preflight checks the same host the application will call. The backend-down case did not have to be staged: the backend was down on the first run after this landed, and the check caught it."
+          ]
+        },
+        {
+          "sha": "62ab033",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "check-supply-chain mishandled an action pinned at two digests",
+          "details": [
+            "Found by running the script against linked-data-explorer and ronl-business-api before asking either to adopt it. An action can legitimately be pinned at more than one digest mid-upgrade, but the register was keyed by action alone, so the second row overwrote the first and every workflow on the other digest was reported as disagreeing. Rows are now collected per action and matched to a workflow pin by digest.",
+            "A second bug: a register may annotate a version cell where a workflow comment cannot, and exact-string comparison called that a mismatch. Versions are now compared on the leading token so a register can explain itself. Neither bug could surface in this repository, which pins every action once — they were only visible from outside."
+          ]
+        },
+        {
+          "sha": "aa9dcbe",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "End-to-end authoring journey against a live stack (P7)",
+          "details": [
+            "The last item on the testing roadmap. Playwright drives the real application from an empty form to an exported TTL, through a real deploy and a real evaluation, with nothing between the browser and the engine mocked. The export assertion reads the downloaded file rather than trusting the filename, since a filename check passes on an empty file.",
+            "It found a defect no unit test could reach: below 1600px the preview panel, mounted fixed and 500px wide, covers the header controls — at 1280px, opening the preview leaves no way to close it. The suite runs at 1600x900 so the journey is not blocked, and the threshold is documented rather than dodged. Not wired into CI: it needs the backend and an Operaton engine, neither of which exists on a runner."
+          ]
+        },
+        {
+          "sha": "7f53ba6",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Every form control is now associated with its label",
+          "details": [
+            "102 form controls had no id and one htmlFor between them, and 38 had no accessible name at all — no label association, no aria-label, not even a placeholder. In a government authoring tool that is a WCAG 1.3.1 and 4.1.2 gap independent of testing, and eslint-config-react-app never enabled the rule that would have flagged it. All 102 now have a name, and the rule is enforced.",
+            "The codemod that did it introduced a real defect first: VendorTab's access-type radios are nested inside their labels, and pairing them walked past a label's own radio to the next one, leaving the Fair Use label pointing at the IAM Required radio. That passed the lint rule, because a htmlFor did exist. Only computing the accessible name at runtime caught it, which is the argument for the guard test that now covers nine components."
+          ]
+        },
+        {
+          "sha": "ee25faa",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "The Changelog tab shows the build id",
+          "details": [
+            "The version headings here come from package.json and are bumped by hand, so they identify a release but not a build of it: acceptance and production can serve different builds of the same version, and a redeploy produces a new artifact carrying the same string. The tab now shows the commit SHA and the workflow run number beneath the heading, with the full SHA available for a lookup, and reads 'local build' when nothing was injected.",
+            "The values are passed in from the deploy workflows rather than derived from git at build time, because the Static Web Apps action does not build on the runner — it hands the directory to a container where git may not exist, and a build id that silently failed to resolve would be worse than none."
+          ]
+        },
+        {
+          "sha": "570fd98",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "DMNTab's validate, deploy and evaluate lifecycle covered (P6)",
+          "details": [
+            "DMNTab is the editor's core feature and was its least-covered surface at 8.24%. The suite walks the real lifecycle rather than testing each call in isolation, because the interface enforces that order: the Evaluate button stays disabled until a deployment has succeeded.",
+            "Two findings. The unreachable-backend path is a deliberate third outcome — not valid, not invalid, but skipped — and is now pinned as one. And handleDeployDMN's opening guard is unreachable: the Deploy button renders inside the branch that requires an uploaded file, so the error it raises can never fire."
+          ]
+        },
+        {
+          "sha": "ef610d7",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "VendorTab's branching, nested merges and certifiedBy derivation covered",
+          "details": [
+            "VendorTab had the thinnest test file in the set, on the grounds that the component might be removed entirely. That question was settled — it stays — so the thin treatment no longer had a reason. Branch coverage went from 22% to 83%.",
+            "The tests pin something that was invisible: VendorTab switches on the vendor URI rather than a capability flag, so iKnow gets integration tooling, Blueriq gets the contact form, and every other vendor gets an 'under development' placeholder. Adding a vendor to the concept list gives it a dropdown entry and nothing else."
+          ]
+        },
+        {
+          "sha": "a89912a",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Smoke coverage for the tab components, PreviewPanel and PublishDialog (P5)",
+          "details": [
+            "Deliberately thin and even: every component renders with realistic props, and one representative interaction proves the controlled-component contract. Fifteen files, no component left at zero, and src/components coverage moved from 3.9% to 41%.",
+            "The tests found a latent crash in IKnowMappingTab, which reads mappingConfig.mappings unguarded inside an expression short-circuited by an empty configuration name — so a config without that key renders fine and throws the moment someone types a name. Not reachable through the application today, but the component neither defaults the prop nor declares the requirement."
+          ]
+        },
+        {
+          "sha": "0fccea9",
+          "author": "Steven Gort",
+          "type": "build",
+          "subject": "Vite migration phase 4: the transitional shims are gone",
+          "details": [
+            "Both shims that carried the suite across the migration are removed — the jest-to-vi global alias and the transform that rewrote jest.mock calls — and the Vitest setup file folded back into one. @testing-library/user-event went too, imported by zero files since it arrived with the Create React App template.",
+            "Three corrections to the plan, all found by testing rather than reading. There were 45 jest call sites, not the 43 the plan counted, because both counts came from a pattern that missed two wrapped across lines. And only one of three Renovate deferral rules was actually removable: the constraints had changed owner rather than disappeared."
+          ]
+        },
+        {
+          "sha": "da43457",
+          "author": "Steven Gort",
+          "type": "build",
+          "subject": "Vite migration phase 3: the atomic cutover from Create React App",
+          "details": [
+            "The only phase that cannot be half-done. The build now emits dist/ instead of build/, so the deploy workflows had to expect dist/ in the same commit — which is why the environment rename, the script rewrite, the workflow changes and the react-scripts removal all land together. react-scripts is gone and its dependency tree with it: npm audit dropped from 52 vulnerabilities to 10, and production builds from roughly 30 seconds to under two.",
+            "Two things the plan did not cover, both of which would have deployed green and broken. The workflows pass the backend URL through an env block, and Vite only exposes VITE_-prefixed variables, so renaming the call sites alone would have left both environments talking to localhost. And react-scripts was where eslint itself came from, so removing it would have broken the lint step that runs before the tests."
+          ]
+        },
+        {
+          "sha": "0f99e82",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "check-supply-chain, the preflight zizmor cannot be",
+          "details": [
+            "zizmor validates that a workflow pin has the shape of a 40-character SHA. It cannot confirm the SHA is the right one, so a wrong or hostile digest carrying a plausible version comment passes zizmor, Prettier and human review alike, because nothing ever re-resolves the reference. This script resolves every digest against the GitHub API and compares it with the version its comment claims."
+          ]
+        },
+        {
+          "sha": "3b9d95b",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Deferred @vitejs/plugin-react majors until the migration landed",
+          "details": [
+            "Renovate proposed v6 within minutes of the phase 1 pull request that introduced the dependency, and it could not install: v6 wants Babel 8 while react-scripts held the tree on Babel 7, so the pull request was red on arrival and would have stayed red every cycle. The third instance of one pattern, given the same treatment as the tailwindcss and typescript holds.",
+            "The rule has since been removed, in the eslint 9 migration that satisfied its stated condition."
+          ]
+        },
+        {
+          "sha": "beb510d",
+          "author": "Steven Gort",
+          "type": "build",
+          "subject": "Vite migration phase 2: Vite builds alongside Create React App",
+          "details": [
+            "Additive and independently revertable — react-scripts still owned the build and CI still published build/, so nothing that shipped changed yet. The two toolchains genuinely coexist, since Create React App reads public/index.html and Vite reads a new root index.html.",
+            "Output was compared rather than assumed: the same eleven public assets in both, one main chunk each within a kilobyte of the other. Two differences are deliberate — Vite does not publish sourcemaps, and an apple-touch-icon that has 404'd in both builds for as long as the template has been here was carried over verbatim rather than quietly fixed inside a toolchain migration."
+          ]
+        },
+        {
+          "sha": "e0866b0",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "jsdom updated to v30",
+          "details": [
+            "Held deliberately until the Vite migration finished, because jsdom is the DOM implementation the whole suite runs in and changing the instrument mid-migration would have made the result unfalsifiable. Re-measured on merge: 34 files and 362 tests, unchanged."
+          ]
+        },
+        {
+          "sha": "f43c243",
+          "author": "Steven Gort",
+          "type": "build",
+          "subject": "Vite migration phase 1: Vitest runs alongside Jest",
+          "details": [
+            "Additive and independently revertable: react-scripts still provided both the build and the test runner, and both runners reported the same 16 suites and 257 tests. The order matters — swapping the build first would have removed the regression net and the thing being tested at the same moment, leaving no way to tell a migration defect from a configuration defect.",
+            "Three files were renamed to .jsx, the only ones carrying JSX in a .js extension. Vite has never parsed JSX out of that extension and under Vite 8 there is no configuration escape hatch, so the rename is what the toolchain documents — and it works under both, which was verified rather than assumed."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.0",
       "status": "Released",
       "date": "4 sep 2026",

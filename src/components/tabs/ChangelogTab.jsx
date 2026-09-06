@@ -55,6 +55,10 @@ const COMMIT_TYPE_META = {
   docs: { icon: '📘', color: 'text-blue-700' },
   chore: { icon: '🧹', color: 'text-gray-700' },
   ci: { icon: '🔒', color: 'text-amber-700' },
+  // Toolchain and build-system work — the Create React App to Vite migration
+  // landed four commits under this prefix, which previously fell through to
+  // 'other' and rendered as a generic page icon.
+  build: { icon: '🏗️', color: 'text-teal-700' },
   refactor: { icon: '♻️', color: 'text-orange-700' },
   other: { icon: '📄', color: 'text-gray-700' },
 };
