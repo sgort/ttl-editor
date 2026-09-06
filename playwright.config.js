@@ -21,6 +21,12 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
 
+  // Checks the live stack before anything is driven, and fails with a message
+  // naming what is missing. Without it, a backend that is down surfaces as a
+  // Playwright timeout on a button — true, but several steps removed from the
+  // cause. See e2e/global-setup.js.
+  globalSetup: './e2e/global-setup.js',
+
   // Kept out of src/ on purpose: vite.config.mjs points Vitest at
   // 'src/**/*.test.{js,jsx}', and a Playwright spec picked up by Vitest fails in
   // a thoroughly confusing way. Separate directories make that impossible rather
