@@ -104,6 +104,17 @@ export default [
       // accessible-names.test.jsx, for one. Those tests do assert; the rule
       // cannot follow a function call to find out. Nine false positives.
       'vitest/expect-expect': 'off',
+
+      // Vitest's expect() takes an optional second argument: a message shown
+      // when the assertion fails. The rule caps arguments at 1 by default, so
+      // it flags a documented part of the API. Raised rather than switched off
+      // — minArgs still catches a bare expect() with no subject.
+      //
+      // no-eager-tabs.test.js relies on it. Its assertions guard a bundling
+      // property, and a failure there reads as "expected [] to equal
+      // ['DMNTab']" with no hint of what that means; the message explains that
+      // a barrel re-export silently un-splits the chunk.
+      'vitest/valid-expect': ['error', { maxArgs: 2 }],
     },
   },
 

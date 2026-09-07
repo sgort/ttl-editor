@@ -4,6 +4,7 @@ import { AlertCircle, CheckCircle, Cloud, Eye, EyeOff, Loader, Upload, X } from 
 import { useEffect, useState } from 'react';
 
 import { validateTtl } from '../utils/shaclHelper';
+import { testTriplyDBConnection } from '../utils/triplydbHelper';
 
 const PublishDialog = ({
   onClose,
@@ -67,7 +68,6 @@ const PublishDialog = ({
     setTestResult(null);
 
     try {
-      const { testTriplyDBConnection } = await import('../utils/triplydbHelper');
       const result = await testTriplyDBConnection(config);
       setTestResult(result);
     } catch (error) {
