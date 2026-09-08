@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { StrictMode } from 'react';
 
 import { useDsoImport } from './useDsoImport';
 
@@ -144,5 +145,37 @@ describe('useDsoImport', () => {
 
     await waitFor(() => expect(setActiveTab).toHaveBeenCalled());
     expect(setOrganization).not.toHaveBeenCalled();
+  });
+});
+
+describe('useDsoImport StrictMode guard', () => {
+  // consumedRef guards against React's development double-invoke. The effect's
+  // dependency array is empty, so a plain re-render never re-runs it and only
+  // StrictMode reaches the guard — which is the situation it was written for.
+  // Without it the import runs twice: two fetches, two notifications, and the
+  // URL cleaned before the second pass can read its own parameters.
+  test('imports once even when StrictMode invokes the effect twice', async () => {
+    navigateTo('?dsoImport=dmn&dmnId=42');
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ dmnXml: '<definitions />', activityName: 'Kappen' }),
+    });
+
+    const setDmnData = vi.fn();
+    const notify = vi.fn();
+    renderHook(
+      () =>
+        useDsoImport({
+          setDmnData,
+          setService: vi.fn(),
+          setOrganization: vi.fn(),
+          setActiveTab: vi.fn(),
+          notify,
+        }),
+      { wrapper: StrictMode }
+    );
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 });

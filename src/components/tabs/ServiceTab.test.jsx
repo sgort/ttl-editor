@@ -67,3 +67,59 @@ describe('ServiceTab', () => {
     expect(screen.getByPlaceholderText('e.g., output-001')).toBeInTheDocument();
   });
 });
+
+describe('ServiceTab custom sector', () => {
+  const SECTOR_LABEL = /Government level providing this service/;
+  const NATIONAL =
+    'https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL';
+
+  // Sector and customSector are written in one setState so they can never
+  // disagree: picking anything but "custom" has to clear the free-text URI, or
+  // a stale value keeps being serialised into the TTL long after the user
+  // stopped choosing "custom".
+  test('choosing "custom" keeps whatever custom URI was already entered', () => {
+    const { props } = renderTab({
+      service: { ...service, sector: '', customSector: 'https://example.org/kept' },
+    });
+
+    fireEvent.change(screen.getByLabelText(SECTOR_LABEL), { target: { value: 'custom' } });
+
+    expect(props.setService).toHaveBeenCalledWith(
+      expect.objectContaining({ sector: 'custom', customSector: 'https://example.org/kept' })
+    );
+  });
+
+  test('choosing a listed sector clears the custom URI', () => {
+    const { props } = renderTab({
+      service: { ...service, sector: 'custom', customSector: 'https://example.org/stale' },
+    });
+
+    fireEvent.change(screen.getByLabelText(SECTOR_LABEL), { target: { value: NATIONAL } });
+
+    expect(props.setService).toHaveBeenCalledWith(
+      expect.objectContaining({ sector: NATIONAL, customSector: '' })
+    );
+  });
+
+  test('the custom URI field appears only for "custom" and shows the current value', () => {
+    renderTab({ service: { ...service, sector: 'custom', customSector: 'https://example.org/x' } });
+
+    expect(screen.getByLabelText('Custom sector URI')).toHaveValue('https://example.org/x');
+  });
+
+  test('the custom URI field renders empty rather than uncontrolled when unset', () => {
+    // customSector is absent, not empty-string: an imported service that never
+    // had the field. Without the || '' the input would go uncontrolled and
+    // React would warn.
+    const { customSector: _omitted, ...withoutCustom } = service;
+    renderTab({ service: { ...withoutCustom, sector: 'custom' } });
+
+    expect(screen.getByLabelText('Custom sector URI')).toHaveValue('');
+  });
+
+  test('no custom URI field is offered for a listed sector', () => {
+    renderTab({ service: { ...service, sector: NATIONAL } });
+
+    expect(screen.queryByLabelText('Custom sector URI')).not.toBeInTheDocument();
+  });
+});

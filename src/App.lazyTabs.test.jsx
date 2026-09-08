@@ -18,6 +18,18 @@ import App from './App';
 
 const openTab = (name) => fireEvent.click(screen.getByRole('button', { name }));
 
+/**
+ * findBy* default to 1000ms, which these tests can exceed under load.
+ *
+ * Every other component test resolves its subject through the module graph the
+ * runner has already loaded; these four wait on a real dynamic import, and when
+ * the full suite is running that import competes with every other worker. The
+ * test then fails for want of a few hundred milliseconds while passing on its
+ * own — which says nothing about the code. Verified: the file passes in
+ * isolation and failed only in the parallel run.
+ */
+const LAZY_CHUNK_TIMEOUT = { timeout: 15_000 };
+
 const CHANGELOG_HEADING = 'Documentation & Changelog';
 const DMN_HEADING = 'DMN Decision Engine Integration';
 // The Service tab is eager and is the default, so its content is the marker for
@@ -34,7 +46,9 @@ describe('lazy-loaded tabs', () => {
 
     // findBy* rather than getBy*: the chunk resolves on a microtask, so the
     // heading is not there on the tick the click returns.
-    expect(await screen.findByText(CHANGELOG_HEADING)).toBeInTheDocument();
+    expect(
+      await screen.findByText(CHANGELOG_HEADING, undefined, LAZY_CHUNK_TIMEOUT)
+    ).toBeInTheDocument();
   });
 
   test('the DMN tab is not rendered before its first visit', () => {
@@ -50,7 +64,7 @@ describe('lazy-loaded tabs', () => {
     render(<App />);
 
     openTab('DMN');
-    expect(await screen.findByText(DMN_HEADING)).toBeInTheDocument();
+    expect(await screen.findByText(DMN_HEADING, undefined, LAZY_CHUNK_TIMEOUT)).toBeInTheDocument();
 
     openTab('Service');
 
@@ -66,10 +80,10 @@ describe('lazy-loaded tabs', () => {
     render(<App />);
 
     openTab('DMN');
-    await screen.findByText(DMN_HEADING);
+    await screen.findByText(DMN_HEADING, undefined, LAZY_CHUNK_TIMEOUT);
 
     openTab('Changelog');
-    await screen.findByText(CHANGELOG_HEADING);
+    await screen.findByText(CHANGELOG_HEADING, undefined, LAZY_CHUNK_TIMEOUT);
 
     // Each lazy tab has its own Suspense boundary, so loading one never disturbs
     // the other's subtree.
