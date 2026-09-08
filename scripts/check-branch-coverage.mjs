@@ -76,7 +76,7 @@ const RATCHET_SLACK = 10;
 /**
  * Files below the floor, pinned at their measured value as of 2026-09-08.
  *
- * Together these need roughly 559 of the branches between this repository
+ * Together these need roughly 455 of the branches between this repository
  * and 80% everywhere, so they are staged rather than blocked on. Raise a pin as
  * tests land; delete the entry once the file clears FLOOR.
  */
@@ -91,8 +91,6 @@ const DEBT = {
   'src/components/tabs/DMNTab.jsx': 30,
   // 74 branches. Much of it is wiring that E2E covers.
   'src/App.jsx': 34,
-  // 104 branches. The generator has deep per-vocabulary conditionals.
-  'src/utils/ttlGenerator.js': 60,
 };
 
 const COVERAGE = resolve('coverage/coverage-final.json');
