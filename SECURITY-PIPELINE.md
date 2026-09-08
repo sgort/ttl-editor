@@ -47,6 +47,62 @@ up in a digest table and runs the audit as
 `ghcr.io/zizmorcore/zizmor:1.29.0@sha256:863026d54f91271b10b60b67ad8054cb37120167e162482597db102b3026a284`
 — a genuine container digest pin, not just a version string.
 
+## Keeping this register true
+
+The Pinned table above is no longer prose — it is read by a machine on every
+audit run. `scripts/check-supply-chain.mjs` compares it with the workflows
+(digests and version comments) and separately resolves each digest against the
+GitHub API to confirm it is the version its comment claims. Run it by hand with
+`npm run check-supply-chain`; `--offline` skips the API and checks format and
+register agreement only.
+
+It closes the gap zizmor structurally cannot: zizmor validates that a `uses:`
+names a 40-character SHA, not that the SHA is the **right** one. A wrong or
+hostile digest carrying a plausible `# v7.0.1` comment passes zizmor, Prettier
+and review alike, because nothing else re-resolves the reference.
+
+**It blocks.** The step lives in the `audit` job, which the `acc supply-chain
+gate` ruleset already requires — so no ruleset change was needed, and none
+would have been noticed if it had been.
+
+### Renovate does not maintain this table
+
+It rewrites workflow pins and their version comments together, honestly and
+correctly, and never touches this file. So an action-bump pull request leaves
+the register describing a policy the workflows no longer follow.
+
+**So: when a Renovate pull request bumps an action, update this table on that
+pull request's branch, before merging it.** Not afterwards. The check runs on
+the pull request, so a register fixed after the merge leaves the check red for
+that pull request's entire life.
+
+This is not theoretical, and it is the one thing that was got wrong when this
+check was designed. Issue #76 predicted that a Renovate bump would pass, on the
+reasoning that Renovate rewrites the version comment alongside the digest so
+pin truth still holds. Pin truth does hold — but register agreement does not,
+and the check fails. Verified against a real Renovate pull request in
+[linked-data-explorer#66](https://github.com/sgort/linked-data-explorer/pull/66):
+
+```
+[register] actions/checkout: workflow pins 3d3c42e5aac5… (v7.0.1) but
+           SECURITY-PIPELINE.md records only 11d5960a3267… (v4.4.0), a37ce9120846… (v3.7.0)
+```
+
+The habit above is what makes that a one-line edit rather than a blocked
+pipeline. It was exercised twice there
+([#66](https://github.com/sgort/linked-data-explorer/pull/66),
+[#67](https://github.com/sgort/linked-data-explorer/pull/67)) before that
+repository promoted its own step to blocking, which is why this one could start
+blocking rather than repeat the proving phase.
+
+### If the API ever fails the gate
+
+Add `--offline`. It keeps register agreement blocking and drops only the
+network-dependent half. **Do not reach for `continue-on-error`** — it rewrites
+the _step's_ reported conclusion as well as the job's, and the honest result is
+not exposed by the REST API, so a finding becomes visible only in the step's log
+while the checks list, the job and the step all read "success".
+
 ## Exceptions
 
 ### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned, and it builds what ships
