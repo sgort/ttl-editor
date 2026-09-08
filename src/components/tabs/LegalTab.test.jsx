@@ -15,7 +15,7 @@ const renderTab = (overrides = {}) => {
     analysisConcepts: [],
     methodConcepts: [],
     loadingConcepts: false,
-    conceptsError: null,
+    conceptsFailed: false,
     ...overrides,
   };
   return { props, ...render(<LegalTab {...props} />) };
@@ -49,9 +49,12 @@ describe('LegalTab', () => {
     ).toBeInTheDocument();
   });
 
-  test('renders without crashing when the RONL concept fetch failed', () => {
-    renderTab({ conceptsError: 'Failed to fetch concepts' });
+  test('names concepts, not vendors, when the RONL fetch failed', () => {
+    renderTab({ conceptsFailed: true });
 
+    // The same fetch feeds the Vendor tab, which calls the results vendors.
+    // This tab has to say concepts.
+    expect(screen.getByText(/Failed to load concepts from TriplyDB/)).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText('e.g., BWBR0011453 or CVDR123456 or https://...')
     ).toBeInTheDocument();

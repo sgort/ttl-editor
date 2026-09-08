@@ -17,7 +17,7 @@ export default function LegalTab({
   analysisConcepts,
   methodConcepts,
   loadingConcepts,
-  conceptsError,
+  conceptsFailed,
 }) {
   // Helper to update a single field
   const updateField = (field, value) => {
@@ -211,9 +211,11 @@ export default function LegalTab({
         <h3 className="text-lg font-semibold text-gray-900 mb-4">RONL Concepts</h3>
 
         {/* Error message */}
-        {conceptsError && (
+        {conceptsFailed && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-            <p className="text-sm text-red-800">⚠️ {conceptsError}</p>
+            <p className="text-sm text-red-800">
+              ⚠️ Failed to load concepts from TriplyDB. Please check your connection.
+            </p>
           </div>
         )}
 

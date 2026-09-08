@@ -104,7 +104,7 @@ function App() {
     ronlAnalysisConcepts,
     ronlMethodConcepts,
     ronlConceptsLoading,
-    ronlConceptsError,
+    ronlConceptsFailed,
     clearAllData,
   } = useEditorState();
 
@@ -1048,7 +1048,7 @@ function App() {
                   analysisConcepts={ronlAnalysisConcepts}
                   methodConcepts={ronlMethodConcepts}
                   loadingConcepts={ronlConceptsLoading}
-                  conceptsError={ronlConceptsError}
+                  conceptsFailed={ronlConceptsFailed}
                 />
               )}
               {activeTab === 'rules' && (
@@ -1121,7 +1121,7 @@ function App() {
                     organization={organization}
                     vendorConcepts={ronlMethodConcepts}
                     loadingVendors={ronlConceptsLoading}
-                    vendorsError={ronlConceptsError}
+                    vendorsFailed={ronlConceptsFailed}
                   />
                 </Suspense>
               )}

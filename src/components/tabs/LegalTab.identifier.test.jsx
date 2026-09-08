@@ -29,7 +29,7 @@ const renderWith = (legalResource) =>
       analysisConcepts={[]}
       methodConcepts={[]}
       loadingConcepts={false}
-      conceptsError={null}
+      conceptsFailed={false}
     />
   );
 
