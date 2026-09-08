@@ -2,6 +2,13 @@
 // global.fetch mock is proportionate — msw is reserved for the larger
 // surfaces (shaclHelper.js, triplydbHelper.js) per phase P4, see
 // https://iou-architectuur.open-regels.nl/cpsv-editor/developer/testing/.
+
+// setupTests.js stubs fetchAllRonlConcepts for the whole suite, so that no
+// test reaches TriplyDB by accident. This file is the exception that has to
+// see the real implementation — it is the one testing it — and says so here
+// rather than silently asserting against the stub.
+vi.unmock('./ronlHelper');
+
 import { fetchAllRonlConcepts, fetchRonlConcepts } from './ronlHelper';
 
 function mockFetchOnce(response, ok = true) {
