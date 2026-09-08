@@ -77,14 +77,16 @@ const RATCHET_SLACK = 10;
  * Files below the floor, pinned at their measured value as of 2026-09-08.
  *
  * One file remains: DMNTab.jsx, at 1811 lines the largest in the repository and
- * needing 208 of the branches between here and 80% everywhere — more than the
+ * needing 145 of the branches between here and 80% everywhere — more than the
  * three files retired alongside this edit needed together. Raise a pin as tests
  * land; delete the entry once the file clears FLOOR.
  */
 const DEBT = {
-  // 208 branches, the biggest file in the repository. Both E2E journeys drive
-  // its upload, deploy and evaluate paths.
-  'src/components/tabs/DMNTab.jsx': 30,
+  // 145 branches still to go, on the biggest file in the repository. Its
+  // request-body generation is covered; what remains sits behind the upload,
+  // deploy and evaluate lifecycle, each stage gating the controls of the next —
+  // and both E2E journeys already drive that chain end to end.
+  'src/components/tabs/DMNTab.jsx': 45,
 };
 
 const COVERAGE = resolve('coverage/coverage-final.json');
