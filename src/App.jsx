@@ -17,21 +17,17 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 
 import PreviewPanel from './components/PreviewPanel';
 import PublishDialog from './components/PublishDialog';
 import {
-  ChangelogTab,
   ConceptsTab,
-  CPRMVTab,
-  DMNTab,
   LegalTab,
   OrganizationTab,
   ParametersTab,
   RulesTab,
   ServiceTab,
-  VendorTab,
 } from './components/tabs';
 import {
   useConceptsHandlers,
@@ -53,6 +49,22 @@ import {
   uploadLogoAsset,
 } from './utils/triplydbHelper';
 import { generateTTL } from './utils/ttlGenerator';
+
+// Heavy tabs, fetched on first use rather than shipped in the entry chunk.
+//
+// These four carry most of the bundle. ChangelogTab and CPRMVTab each import a
+// large build-time JSON blob — changelog.json (~158 kB, and it grows with every
+// release) and cprmv-example.json (~69 kB). DMNTab and VendorTab are the two
+// largest components, and VendorTab pulls IKnowMappingTab along with it.
+//
+// The lazy() call alone does nothing: these four are also absent from
+// ./components/tabs for this to have any effect, because a static re-export
+// there pins the module into the entry chunk regardless. See that file, and
+// no-eager-tabs.test.js, which guards both halves.
+const ChangelogTab = lazy(() => import('./components/tabs/ChangelogTab'));
+const CPRMVTab = lazy(() => import('./components/tabs/CPRMVTab'));
+const DMNTab = lazy(() => import('./components/tabs/DMNTab'));
+const VendorTab = lazy(() => import('./components/tabs/VendorTab'));
 
 function App() {
   // Set states
@@ -98,6 +110,23 @@ function App() {
 
   // These are UI-specific, not moved to hook
   const [activeTab, setActiveTab] = useState('service');
+
+  // Tabs opened at least once this session.
+  //
+  // Only DMNTab reads this, and only because it stays mounted while hidden (see
+  // its render site). Being lazy, it must not render before its first visit —
+  // otherwise React resolves the import on mount and the chunk ships on every
+  // page load anyway. "Has it ever been open" is exactly that condition.
+  //
+  // Updated from the tab button's click handler rather than an effect. An effect
+  // watching activeTab would be a setState-in-effect cascade, which is the shape
+  // issue #87 removed from this file.
+  const [visitedTabs, setVisitedTabs] = useState(() => new Set(['service']));
+
+  const openTab = (tab) => {
+    setActiveTab(tab);
+    setVisitedTabs((visited) => (visited.has(tab) ? visited : new Set(visited).add(tab)));
+  };
   const [showPreviewPanel, setShowPreviewPanel] = useState(false);
   // CPRMV vocabulary version that preview, download and publish target.
   // '0.4.1' = RuleSet/hasPart model; '0.3.2' = flat cprmv:Rule + cprmv:Dataset.
@@ -903,7 +932,7 @@ function App() {
                   <button
                     key={tab}
                     data-tab-id={tab}
-                    onClick={() => setActiveTab(tab)}
+                    onClick={() => openTab(tab)}
                     className={`flex-shrink-0 px-3 py-2.5 text-sm font-medium transition-colors ${
                       activeTab === tab
                         ? activeColor
@@ -1039,21 +1068,38 @@ function App() {
                 />
               )}
               {activeTab === 'cprmv' && (
-                <CPRMVTab
-                  cprmvRules={cprmvRules}
-                  addCPRMVRule={addCPRMVRule}
-                  removeCPRMVRule={removeCPRMVRule}
-                  updateCPRMVRule={updateCPRMVRule}
-                  handleImportJSON={handleImportJSON}
-                  setCprmvRules={setCprmvRules}
-                  legalResource={legalResource}
-                />
+                <Suspense fallback={null}>
+                  <CPRMVTab
+                    cprmvRules={cprmvRules}
+                    addCPRMVRule={addCPRMVRule}
+                    removeCPRMVRule={removeCPRMVRule}
+                    updateCPRMVRule={updateCPRMVRule}
+                    handleImportJSON={handleImportJSON}
+                    setCprmvRules={setCprmvRules}
+                    legalResource={legalResource}
+                  />
+                </Suspense>
               )}
               {/* DMN tab stays mounted (hidden when inactive) so an uploaded file,
-                  deployment status and test-case run results survive tab switches. */}
-              <div className={activeTab === 'dmn' ? '' : 'hidden'}>
-                <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
-              </div>
+                  deployment status and test-case run results survive tab switches.
+                  Being lazy, it renders only once the tab has been visited — before
+                  that there is no state to preserve, and rendering it eagerly would
+                  fetch the chunk on every page load and save nothing.
+
+                  Its Suspense boundary is its own rather than shared with the
+                  tabs above. A boundary that re-suspends hides everything already
+                  inside it, so a shared one would blank this always-mounted subtree
+                  every time another lazy tab was opened for the first time. React
+                  preserves hidden children's state, so nothing would actually be
+                  lost — keeping the boundaries separate simply means the two tabs'
+                  loading states never interact. */}
+              {visitedTabs.has('dmn') && (
+                <div className={activeTab === 'dmn' ? '' : 'hidden'}>
+                  <Suspense fallback={null}>
+                    <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
+                  </Suspense>
+                </div>
+              )}
               {activeTab === 'concepts' && (
                 <ConceptsTab
                   concepts={concepts}
@@ -1063,21 +1109,27 @@ function App() {
                 />
               )}
               {activeTab === 'vendor' && (
-                <VendorTab
-                  mappingConfig={iknowMappingConfig}
-                  setMappingConfig={setIknowMappingConfig}
-                  availableMappings={availableIKnowMappings}
-                  onImportComplete={handleIKnowImport}
-                  vendorService={vendorService}
-                  setVendorService={setVendorService}
-                  service={service}
-                  organization={organization}
-                  vendorConcepts={ronlMethodConcepts}
-                  loadingVendors={ronlConceptsLoading}
-                  vendorsError={ronlConceptsError}
-                />
+                <Suspense fallback={null}>
+                  <VendorTab
+                    mappingConfig={iknowMappingConfig}
+                    setMappingConfig={setIknowMappingConfig}
+                    availableMappings={availableIKnowMappings}
+                    onImportComplete={handleIKnowImport}
+                    vendorService={vendorService}
+                    setVendorService={setVendorService}
+                    service={service}
+                    organization={organization}
+                    vendorConcepts={ronlMethodConcepts}
+                    loadingVendors={ronlConceptsLoading}
+                    vendorsError={ronlConceptsError}
+                  />
+                </Suspense>
               )}
-              {activeTab === 'changelog' && <ChangelogTab />}
+              {activeTab === 'changelog' && (
+                <Suspense fallback={null}>
+                  <ChangelogTab />
+                </Suspense>
+              )}
             </div>
           </div>
 
