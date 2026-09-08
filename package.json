@@ -15,7 +15,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ci": "vitest run --coverage",
+    "test:ci": "vitest run --coverage && node scripts/check-branch-coverage.mjs",
     "test:generator": "vitest run ttlGenerator",
     "test:generator:watch": "vitest ttlGenerator",
     "test:roundtrip": "vitest run roundtrip",
@@ -26,8 +26,8 @@
     "test:p3:watch": "vitest useEditorState useArrayHandlers useDsoImport",
     "test:p4": "vitest run shaclHelper triplydbHelper",
     "test:p4:watch": "vitest shaclHelper triplydbHelper",
-    "test:p5": "vitest run PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowImportTab IKnowMappingTab VendorTab",
-    "test:p5:watch": "vitest PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowImportTab IKnowMappingTab VendorTab",
+    "test:p5": "vitest run PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowMappingTab VendorTab",
+    "test:p5:watch": "vitest PreviewPanel PublishDialog ServiceTab CostSection OutputSection OrganizationTab LegalTab RulesTab ParametersTab ConceptsTab CPRMVTab ChangelogTab IKnowMappingTab VendorTab",
     "test:p6": "vitest run DMNTab",
     "test:p6:watch": "vitest DMNTab",
     "test:e2e": "playwright test",
@@ -38,7 +38,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "check-supply-chain": "node scripts/check-supply-chain.mjs"
+    "check-supply-chain": "node scripts/check-supply-chain.mjs",
+    "check-coverage": "node scripts/check-branch-coverage.mjs"
   },
   "browserslist": {
     "production": [

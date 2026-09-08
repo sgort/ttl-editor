@@ -171,3 +171,29 @@ describe('pre-configured array hooks', () => {
     expect(result.current.cprmvRules[0]).toMatchObject({ ruleId: '' });
   });
 });
+
+describe('useArrayHandlers id generation', () => {
+  // `item.id || 0` exists for items that predate id assignment — imported
+  // arrays, mostly, where an entry can arrive without one. Without the
+  // fallback the reduce yields NaN and every later id becomes NaN too.
+  test('handleAdd ignores items that carry no id when picking the next one', () => {
+    const { result } = renderHook(() =>
+      useHarness([{ name: 'no id at all' }, { id: 7, name: 'has one' }], createDefaultTemporalRule)
+    );
+
+    act(() => result.current.handleAdd());
+
+    expect(result.current.items).toHaveLength(3);
+    expect(result.current.items[2].id).toBe(8);
+  });
+
+  test('handleAdd starts at 1 when every existing item lacks an id', () => {
+    const { result } = renderHook(() =>
+      useHarness([{ name: 'first' }, { name: 'second' }], createDefaultTemporalRule)
+    );
+
+    act(() => result.current.handleAdd());
+
+    expect(result.current.items[2].id).toBe(1);
+  });
+});
