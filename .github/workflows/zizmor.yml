@@ -109,3 +109,46 @@ jobs:
         # this file actually is -- it will happily validate and tell you
         # nothing useful.
         run: npx --yes --package renovate@44.50.3 renovate-config-validator --strict
+
+      - name: Verify pin truth and register agreement
+        # The third half of the policy, and the one zizmor structurally cannot
+        # cover. zizmor validates pin FORMAT -- that a `uses:` names a
+        # 40-character SHA. It cannot say the SHA is the RIGHT one, so a wrong
+        # or hostile digest carrying a plausible "# v7.0.1" comment passes
+        # zizmor, Prettier and review alike. This resolves every digest against
+        # the GitHub API and compares SECURITY-PIPELINE.md's Pinned table with
+        # the workflows.
+        #
+        # if: always() for the same reason as the validator above -- one run
+        # should report on every half of the policy, not stop at the first.
+        if: always()
+        #
+        # BLOCKING from the outset, unlike the adoptions downstream.
+        #
+        # linked-data-explorer and ronl-business-api both landed this
+        # non-blocking, because Renovate rewrites workflow pins and never
+        # touches SECURITY-PIPELINE.md -- so an action bump fails the register
+        # half until the register is updated by hand, and blocking on that
+        # would fail a required check on routine dependency updates.
+        #
+        # That is answered rather than avoided: update the register ON the
+        # bump's branch, before merging. Proven in linked-data-explorer over
+        # two bumps (sgort/linked-data-explorer#66, #67), which is why this
+        # repository does not need to repeat the non-blocking phase. See
+        # SECURITY-PIPELINE.md, "Keeping this register true".
+        #
+        # The known cost: this puts a network call inside a job the ruleset
+        # requires, so a GitHub API outage or rate limit can fail a gate
+        # unrelated to the change under review. It is 4 calls for 11
+        # references -- results are deduplicated per action and version -- and
+        # the script reports transport failure as a finding rather than
+        # passing quietly. If it ever proves flaky, add --offline: that keeps
+        # register agreement blocking and drops only the network-dependent
+        # half. Do NOT reach for continue-on-error instead; it rewrites the
+        # STEP's reported conclusion as well as the job's, so a finding
+        # becomes visible only in this log while the checks list, the job and
+        # the step all read "success".
+        env:
+          # contents: read suffices -- this only resolves public refs.
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run check-supply-chain
