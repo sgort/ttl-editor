@@ -76,21 +76,15 @@ const RATCHET_SLACK = 10;
 /**
  * Files below the floor, pinned at their measured value as of 2026-09-08.
  *
- * Together these need roughly 455 of the branches between this repository
- * and 80% everywhere, so they are staged rather than blocked on. Raise a pin as
- * tests land; delete the entry once the file clears FLOOR.
+ * One file remains: DMNTab.jsx, at 1811 lines the largest in the repository and
+ * needing 208 of the branches between here and 80% everywhere — more than the
+ * three files retired alongside this edit needed together. Raise a pin as tests
+ * land; delete the entry once the file clears FLOOR.
  */
 const DEBT = {
-  // 90 branches, and the largest single gap. Reachable only through VendorTab.
-  'src/components/tabs/IKnowMappingTab.jsx': 9,
-  // 83 branches. The publish flow itself is covered; the progress, error and
-  // SHACL-result states are not.
-  'src/components/PublishDialog.jsx': 18,
   // 208 branches, the biggest file in the repository. Both E2E journeys drive
   // its upload, deploy and evaluate paths.
   'src/components/tabs/DMNTab.jsx': 30,
-  // 74 branches. Much of it is wiring that E2E covers.
-  'src/App.jsx': 34,
 };
 
 const COVERAGE = resolve('coverage/coverage-final.json');
