@@ -94,8 +94,37 @@ function reactBindings(ast) {
   return names;
 }
 
-const isDynamicImport = (node) =>
-  node?.type === 'CallExpression' && node.callee?.type === 'Import' && node.arguments.length === 1;
+/**
+ * The specifier node of a dynamic import, or null when the node is not one.
+ *
+ * The two @babel/parser majors disagree on how they represent `import(…)`, and
+ * both are in play here: v7 is what the repo pins, v8 is what Renovate proposes.
+ *
+ *   v7   CallExpression, callee.type 'Import', specifier in arguments[0]
+ *   v8   ImportExpression (ESTree-aligned),    specifier in .source
+ *
+ * Everything else this file reads is identical across the two — ImportDeclaration,
+ * ExportNamedDeclaration, ExportAllDeclaration and StringLiteral all keep their
+ * shape — so this is the only place that needs to know.
+ *
+ * Recognising both matters more than it looks. Under v8 the v7-only predicate
+ * matched nothing, so lazyBindings() found no bindings and strayDynamicImports()
+ * found no strays: the guard could no longer see the thing it exists to check.
+ * It failed loudly rather than passing vacuously, which is the good outcome and
+ * not one to rely on — hence the fixtures at the bottom of this file, which pin
+ * both shapes without needing either parser version installed.
+ *
+ * No argument-count check: v7 accepts `import(spec, options)` for import
+ * attributes, and a two-argument dynamic import is still a dynamic import.
+ */
+const dynamicImportSpecifier = (node) => {
+  if (!node || typeof node !== 'object') return null;
+  if (node.type === 'ImportExpression') return node.source ?? null;
+  if (node.type === 'CallExpression' && node.callee?.type === 'Import') {
+    return node.arguments?.[0] ?? null;
+  }
+  return null;
+};
 
 /**
  * Top-level `const X = lazy(() => import('…'))` bindings, as name → specifier.
@@ -114,10 +143,9 @@ function lazyBindings(ast) {
       if (init.arguments.length !== 1) continue;
       const arrow = init.arguments[0];
       if (arrow.type !== 'ArrowFunctionExpression') continue;
-      if (!isDynamicImport(arrow.body)) continue;
-      const arg = arrow.body.arguments[0];
-      if (arg.type !== 'StringLiteral') continue;
-      bindings.set(decl.id.name, arg.value);
+      const specifier = dynamicImportSpecifier(arrow.body);
+      if (specifier?.type !== 'StringLiteral') continue;
+      bindings.set(decl.id.name, specifier.value);
       sanctioned.add(arrow.body);
     }
   }
@@ -141,9 +169,9 @@ function strayDynamicImports(ast) {
       node.forEach(walk);
       return;
     }
-    if (isDynamicImport(node) && !sanctioned.has(node)) {
-      const arg = node.arguments[0];
-      strays.push(arg?.type === 'StringLiteral' ? arg.value : '<computed specifier>');
+    const specifier = dynamicImportSpecifier(node);
+    if (specifier && !sanctioned.has(node)) {
+      strays.push(specifier.type === 'StringLiteral' ? specifier.value : '<computed specifier>');
     }
     for (const key of Object.keys(node)) {
       if (key === 'loc' || key === 'leadingComments' || key === 'trailingComments') continue;
@@ -310,6 +338,36 @@ export { default as ServiceTab } from './ServiceTab';
       "function App() {\n  const DMNTab = lazy(() => import('./components/tabs/DMNTab'));"
     );
     expect(lazyBindings(parseSource(src)).bindings.get('DMNTab')).toBeUndefined();
+  });
+
+  // Both parser majors, pinned as literal AST fragments.
+  //
+  // The checks above run through whichever @babel/parser is installed, so they
+  // can only ever exercise one of the two shapes. These do not parse anything:
+  // they hand dynamicImportSpecifier() the node each major produces for
+  // `import('./M')`, so the day the pin moves to v8 this file keeps working and
+  // says so here rather than in a CI log.
+  it.each([
+    [
+      'v7',
+      {
+        type: 'CallExpression',
+        callee: { type: 'Import' },
+        arguments: [{ type: 'StringLiteral', value: './M' }],
+      },
+    ],
+    ['v8', { type: 'ImportExpression', source: { type: 'StringLiteral', value: './M' } }],
+  ])('reads a dynamic import specifier from the %s AST shape', (_major, node) => {
+    expect(dynamicImportSpecifier(node)).toEqual({ type: 'StringLiteral', value: './M' });
+  });
+
+  it('treats an ordinary call as not a dynamic import', () => {
+    const notAnImport = {
+      type: 'CallExpression',
+      callee: { type: 'Identifier', name: 'require' },
+      arguments: [{ type: 'StringLiteral', value: './M' }],
+    };
+    expect(dynamicImportSpecifier(notAnImport)).toBeNull();
   });
 
   it('rejects a lazy() whose callee is not React lazy', () => {
