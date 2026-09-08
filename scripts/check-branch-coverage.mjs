@@ -52,8 +52,10 @@
  *
  * These numbers come from Vitest only. The two Playwright journeys drive TTL
  * import, DMN upload, deployment and evaluation end to end, and none of that
- * reaches this report. importHandler.js reads 0% here and is exercised on every
- * E2E run. Treat the list as a measure of unit-test coverage, not of risk.
+ * reaches this report. DMNTab.jsx reads 30% here while both journeys exercise
+ * its upload, deploy and evaluate paths on every run. Treat the list as a
+ * measure of unit-test coverage, not of risk — and, when picking what to work
+ * on next, prefer the entries with no E2E journey beneath them.
  */
 
 import { existsSync, readFileSync } from 'node:fs';
@@ -74,14 +76,11 @@ const RATCHET_SLACK = 10;
 /**
  * Files below the floor, pinned at their measured value as of 2026-09-08.
  *
- * Together these need roughly 665 of the ~787 branches between this repository
+ * Together these need roughly 559 of the branches between this repository
  * and 80% everywhere, so they are staged rather than blocked on. Raise a pin as
  * tests land; delete the entry once the file clears FLOOR.
  */
 const DEBT = {
-  // 106 branches. Exercised end to end by the round-trip Playwright journey,
-  // which is why this reads far worse than it behaves.
-  'src/utils/importHandler.js': 0,
   // 90 branches, and the largest single gap. Reachable only through VendorTab.
   'src/components/tabs/IKnowMappingTab.jsx': 9,
   // 83 branches. The publish flow itself is covered; the progress, error and
