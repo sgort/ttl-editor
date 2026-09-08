@@ -36,7 +36,7 @@ const VendorTab = ({
   setVendorService,
   vendorConcepts = [],
   loadingVendors = false,
-  vendorsError = '',
+  vendorsFailed = false,
   service = {},
   organization = {},
 }) => {
@@ -112,9 +112,11 @@ const VendorTab = ({
         <h3 className="text-xl font-bold">Select Vendor</h3>
 
         {/* Error message */}
-        {vendorsError && (
+        {vendorsFailed && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-            <p className="text-sm text-red-800">⚠️ {vendorsError}</p>
+            <p className="text-sm text-red-800">
+              ⚠️ Failed to load vendors from TriplyDB. Please check your connection.
+            </p>
           </div>
         )}
 

@@ -49,7 +49,7 @@ const renderTab = (overrides = {}) => {
     setVendorService: vi.fn(),
     vendorConcepts: concepts,
     loadingVendors: false,
-    vendorsError: '',
+    vendorsFailed: false,
     service: {},
     organization: {},
     ...overrides,
@@ -85,10 +85,14 @@ describe('VendorTab', () => {
       expect(screen.getByRole('combobox')).toBeDisabled();
     });
 
-    test('surfaces an error when the vendor concepts failed to load', () => {
-      renderTab({ vendorsError: 'Failed to fetch concepts' });
+    test('names vendors, not concepts, when the RONL fetch failed', () => {
+      renderTab({ vendorsFailed: true });
 
-      expect(screen.getByText(/Failed to fetch concepts/)).toBeInTheDocument();
+      // This tab loads the same data as the Legal tab but calls it vendors —
+      // and says "Loading vendors from TriplyDB..." while it waits, so the
+      // failure has to use the same word.
+      expect(screen.getByText(/Failed to load vendors from TriplyDB/)).toBeInTheDocument();
+      expect(screen.queryByText(/concepts/i)).not.toBeInTheDocument();
     });
 
     test('choosing a vendor sets selectedVendor at the top level', () => {

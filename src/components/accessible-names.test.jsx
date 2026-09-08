@@ -131,7 +131,7 @@ describe('every form control has an accessible name', () => {
         analysisConcepts={[]}
         methodConcepts={[]}
         loadingConcepts={false}
-        conceptsError={null}
+        conceptsFailed={false}
       />
     );
     expectEveryControlToBeNamed();
@@ -205,7 +205,7 @@ describe('every form control has an accessible name', () => {
         setVendorService={vi.fn()}
         vendorConcepts={[{ uri: 'https://regels.overheid.nl/termen/Blueriq', label: 'Blueriq' }]}
         loadingVendors={false}
-        vendorsError=""
+        vendorsFailed={false}
         service={{}}
         organization={{}}
       />

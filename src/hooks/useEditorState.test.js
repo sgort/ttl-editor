@@ -67,18 +67,16 @@ describe('useEditorState — RONL concepts loading', () => {
     await waitFor(() => expect(result.current.ronlConceptsLoading).toBe(false));
     expect(result.current.ronlAnalysisConcepts).toEqual([{ uri: 'a1', label: 'Analysis 1' }]);
     expect(result.current.ronlMethodConcepts).toEqual([{ uri: 'm1', label: 'Method 1' }]);
-    expect(result.current.ronlConceptsError).toBe('');
+    expect(result.current.ronlConceptsFailed).toBe(false);
   });
 
-  test('sets a user-facing error message when the fetch fails', async () => {
+  test('flags the failure when the fetch fails, leaving the wording to the tabs', async () => {
     fetchAllRonlConcepts.mockRejectedValue(new Error('network down'));
 
     const { result } = renderHook(() => useEditorState());
 
     await waitFor(() => expect(result.current.ronlConceptsLoading).toBe(false));
-    expect(result.current.ronlConceptsError).toBe(
-      'Failed to load concepts from TriplyDB. Please check your connection.'
-    );
+    expect(result.current.ronlConceptsFailed).toBe(true);
     expect(result.current.ronlAnalysisConcepts).toEqual([]);
   });
 });
