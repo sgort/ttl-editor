@@ -11,6 +11,14 @@ const isHeaded =
   process.env.npm_lifecycle_event === 'test:e2e:headed' || process.argv.includes('--headed');
 const slowMo = Number(process.env.E2E_SLOW_MO ?? (isHeaded ? 400 : 0));
 
+// Where the journeys point. Unset means the local dev server, which is what a
+// developer wants and what every existing invocation gets. Setting it drives an
+// already-deployed build instead -- an acceptance environment, or a Static Web
+// Apps preview -- and then Playwright must NOT start a server of its own, so
+// `webServer` is dropped below. Playwright has no --base-url flag, and the only
+// CLI override is a whole second config file, so this variable is the lever.
+const deployedTarget = process.env.E2E_BASE_URL;
+
 /**
  * P7 of the testing roadmap: an end-to-end authoring journey.
  *
@@ -33,6 +41,38 @@ const slowMo = Number(process.env.E2E_SLOW_MO ?? (isHeaded ? 400 : 0));
  *                              E2E_SLOW_MO to change that, or 0 for full speed.
  *
  *   npm run test:e2e:ui        the same journey in Playwright's UI mode
+ *
+ * ── Against an already-deployed build ──
+ *
+ * E2E_BASE_URL points the journeys at a deployed app rather than a local dev
+ * server, and suppresses the webServer block so none is started. The preflight
+ * probes whatever E2E_BACKEND_URL and E2E_OPERATON_URL name, so all three move
+ * together -- pointing the browser at acceptance while the preflight checks
+ * localhost would report a healthy stack that nothing under test is using.
+ *
+ *   E2E_BASE_URL=https://acc.cpsv-editor.open-regels.nl \
+ *   E2E_BACKEND_URL=https://acc.backend.linkeddata.open-regels.nl \
+ *   E2E_OPERATON_URL=https://operaton.open-regels.nl \
+ *   npm run test:e2e
+ *
+ * In PowerShell the inline prefix is not a thing; set them first:
+ *
+ *   $env:E2E_BASE_URL = 'https://acc.cpsv-editor.open-regels.nl'
+ *
+ * There is deliberately no npm script wrapping this. A script would have to
+ * carry the URLs, and the whole risk here is running against the wrong stack --
+ * which is worth typing out rather than aliasing.
+ *
+ * KNOW WHAT THIS WRITES TO. The journeys are not read-only: they upload a DMN,
+ * click Deploy to Operaton and evaluate it. .env.acceptance and .env.production
+ * name the SAME engine, https://operaton.open-regels.nl, so a run against
+ * acceptance deploys a real version of that decision key into the engine
+ * production also evaluates against. Locally this does not arise --
+ * .env.development points at localhost:8081.
+ *
+ * And note what a deployed target does not let you change: the app calls the
+ * backend IT was built against. E2E_BACKEND_URL redirects the preflight probe,
+ * not the application. Driving a deployed build means driving its stack.
  *
  * UI mode does NOT run anything on startup, and that is not a hang. It opens,
  * discovers the tests, and waits for you to press play — the green ▶ at the top
@@ -82,7 +122,7 @@ export default defineConfig({
   reporter: [['list'], ['html', { open: 'always' }]],
 
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: deployedTarget ?? 'http://localhost:3000',
     launchOptions: { slowMo },
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
@@ -118,10 +158,17 @@ export default defineConfig({
   // have running is used as-is rather than colliding with strictPort: 3000 in
   // vite.config.mjs, which would otherwise fail outright instead of picking
   // another port.
-  webServer: {
-    command: 'npm start',
-    url: 'http://localhost:3000',
-    reuseExistingServer: true,
-    timeout: 120_000,
-  },
+  //
+  // Dropped entirely when E2E_BASE_URL names a deployed build. webServer runs
+  // regardless of baseURL, so leaving it in place would boot a dev server the
+  // run never visits -- or, worse, silently reuse one already on :3000 and give
+  // every appearance of having tested the deployment.
+  webServer: deployedTarget
+    ? undefined
+    : {
+        command: 'npm start',
+        url: 'http://localhost:3000',
+        reuseExistingServer: true,
+        timeout: 120_000,
+      },
 });
