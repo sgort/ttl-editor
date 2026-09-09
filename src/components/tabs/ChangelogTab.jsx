@@ -60,6 +60,10 @@ const COMMIT_TYPE_META = {
   // 'other' and rendered as a generic page icon.
   build: { icon: '🏗️', color: 'text-teal-700' },
   refactor: { icon: '♻️', color: 'text-orange-700' },
+  // Same reason as `build` above: the lazy-loading work that halved the entry
+  // chunk landed under this prefix and would otherwise render as a generic
+  // page icon, indistinguishable from an unclassified commit.
+  perf: { icon: '⚡', color: 'text-indigo-700' },
   other: { icon: '📄', color: 'text-gray-700' },
 };
 
