@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * LegalTab - Form for editing legal resource metadata
  * Maps to eli:LegalResource in CPSV-AP 3.2.0
@@ -19,7 +17,7 @@ export default function LegalTab({
   analysisConcepts,
   methodConcepts,
   loadingConcepts,
-  conceptsError,
+  conceptsFailed,
 }) {
   // Helper to update a single field
   const updateField = (field, value) => {
@@ -88,12 +86,16 @@ export default function LegalTab({
 
       {/* BWB/CVDR Identifier */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="legal-tab-bwb-id-cvdr-id-or-full-document-uri"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">BWB ID, CVDR ID, or full document URI</span>
           <span className="text-gray-500"> (eli:LegalResource)</span>
           <span className="text-red-500"> *</span>
         </label>
         <input
+          id="legal-tab-bwb-id-cvdr-id-or-full-document-uri"
           type="text"
           value={legalResource.bwbId}
           onChange={(e) => updateField('bwbId', e.target.value)}
@@ -139,11 +141,15 @@ export default function LegalTab({
 
       {/* Version Date */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="legal-tab-version-or-consolidation-date"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Version or consolidation date</span>
           <span className="text-gray-500"> (eli:is_realized_by)</span>
         </label>
         <input
+          id="legal-tab-version-or-consolidation-date"
           type="date"
           value={legalResource.version}
           onChange={(e) => updateField('version', e.target.value)}
@@ -158,11 +164,15 @@ export default function LegalTab({
 
       {/* Legal Title */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="legal-tab-official-title-of-the-legal-document"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Official title of the legal document</span>
           <span className="text-gray-500"> (dct:title)</span>
         </label>
         <input
+          id="legal-tab-official-title-of-the-legal-document"
           type="text"
           value={legalResource.title}
           onChange={(e) => updateField('title', e.target.value)}
@@ -179,11 +189,15 @@ export default function LegalTab({
 
       {/* Description */}
       <div>
-        <label className="block text-sm text-gray-700 mb-1">
+        <label
+          htmlFor="legal-tab-description-of-the-legal-resource"
+          className="block text-sm text-gray-700 mb-1"
+        >
           <span className="font-medium">Description of the legal resource</span>
           <span className="text-gray-500"> (dct:description)</span>
         </label>
         <textarea
+          id="legal-tab-description-of-the-legal-resource"
           value={legalResource.description}
           onChange={(e) => updateField('description', e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500"
@@ -197,9 +211,11 @@ export default function LegalTab({
         <h3 className="text-lg font-semibold text-gray-900 mb-4">RONL Concepts</h3>
 
         {/* Error message */}
-        {conceptsError && (
+        {conceptsFailed && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
-            <p className="text-sm text-red-800">⚠️ {conceptsError}</p>
+            <p className="text-sm text-red-800">
+              ⚠️ Failed to load concepts from TriplyDB. Please check your connection.
+            </p>
           </div>
         )}
 
@@ -214,12 +230,13 @@ export default function LegalTab({
         <div className="grid grid-cols-2 gap-4">
           {/* Analysis Concept Dropdown */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label htmlFor="legal-tab-analysis" className="block text-sm text-gray-700 mb-1">
               <span className="font-medium">Analysis</span>
               <span className="text-gray-500"> (ronl:AnalysisConcept)</span>
               <span className="text-red-500"> *</span>
             </label>
             <select
+              id="legal-tab-analysis"
               value={ronlAnalysis}
               onChange={(e) => setRonlAnalysis(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
@@ -236,12 +253,13 @@ export default function LegalTab({
 
           {/* Method Concept Dropdown */}
           <div>
-            <label className="block text-sm text-gray-700 mb-1">
+            <label htmlFor="legal-tab-method" className="block text-sm text-gray-700 mb-1">
               <span className="font-medium">Method</span>
               <span className="text-gray-500"> (ronl:MethodConcept)</span>
               <span className="text-red-500"> *</span>
             </label>
             <select
+              id="legal-tab-method"
               value={ronlMethod}
               onChange={(e) => setRonlMethod(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"

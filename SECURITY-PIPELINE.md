@@ -25,8 +25,8 @@ mechanisms above to actually run:
 
 | Dependency                     | Pin                                                 | Version           | Maintained by                                                           |
 | ------------------------------ | --------------------------------------------------- | ----------------- | ----------------------------------------------------------------------- |
-| `actions/checkout`             | `a37ce9120846195fa4ece8f58b268e6043cb2f26`          | v3.7.0            | Renovate                                                                |
-| `actions/setup-node`           | `49933ea5288caeca8642d1e84afbd3f7d6820020`          | v4.4.0            | Renovate                                                                |
+| `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                                |
+| `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                                |
 | `zizmorcore/zizmor-action`     | `3dc1ecc9bcb9e94e9b2c709687979e1298497054`          | v0.6.2            | Renovate                                                                |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below      |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | manual — Renovate's github-actions manager does not parse action inputs |
@@ -46,6 +46,62 @@ isolation. `zizmor-action`'s `action.sh` looks the requested `version`
 up in a digest table and runs the audit as
 `ghcr.io/zizmorcore/zizmor:1.29.0@sha256:863026d54f91271b10b60b67ad8054cb37120167e162482597db102b3026a284`
 — a genuine container digest pin, not just a version string.
+
+## Keeping this register true
+
+The Pinned table above is no longer prose — it is read by a machine on every
+audit run. `scripts/check-supply-chain.mjs` compares it with the workflows
+(digests and version comments) and separately resolves each digest against the
+GitHub API to confirm it is the version its comment claims. Run it by hand with
+`npm run check-supply-chain`; `--offline` skips the API and checks format and
+register agreement only.
+
+It closes the gap zizmor structurally cannot: zizmor validates that a `uses:`
+names a 40-character SHA, not that the SHA is the **right** one. A wrong or
+hostile digest carrying a plausible `# v7.0.1` comment passes zizmor, Prettier
+and review alike, because nothing else re-resolves the reference.
+
+**It blocks.** The step lives in the `audit` job, which the `acc supply-chain
+gate` ruleset already requires — so no ruleset change was needed, and none
+would have been noticed if it had been.
+
+### Renovate does not maintain this table
+
+It rewrites workflow pins and their version comments together, honestly and
+correctly, and never touches this file. So an action-bump pull request leaves
+the register describing a policy the workflows no longer follow.
+
+**So: when a Renovate pull request bumps an action, update this table on that
+pull request's branch, before merging it.** Not afterwards. The check runs on
+the pull request, so a register fixed after the merge leaves the check red for
+that pull request's entire life.
+
+This is not theoretical, and it is the one thing that was got wrong when this
+check was designed. Issue #76 predicted that a Renovate bump would pass, on the
+reasoning that Renovate rewrites the version comment alongside the digest so
+pin truth still holds. Pin truth does hold — but register agreement does not,
+and the check fails. Verified against a real Renovate pull request in
+[linked-data-explorer#66](https://github.com/sgort/linked-data-explorer/pull/66):
+
+```
+[register] actions/checkout: workflow pins 3d3c42e5aac5… (v7.0.1) but
+           SECURITY-PIPELINE.md records only 11d5960a3267… (v4.4.0), a37ce9120846… (v3.7.0)
+```
+
+The habit above is what makes that a one-line edit rather than a blocked
+pipeline. It was exercised twice there
+([#66](https://github.com/sgort/linked-data-explorer/pull/66),
+[#67](https://github.com/sgort/linked-data-explorer/pull/67)) before that
+repository promoted its own step to blocking, which is why this one could start
+blocking rather than repeat the proving phase.
+
+### If the API ever fails the gate
+
+Add `--offline`. It keeps register agreement blocking and drops only the
+network-dependent half. **Do not reach for `continue-on-error`** — it rewrites
+the _step's_ reported conclusion as well as the job's, and the honest result is
+not exposed by the REST API, so a finding becomes visible only in the step's log
+while the checks list, the job and the step all read "success".
 
 ## Exceptions
 
@@ -96,12 +152,12 @@ automated digest update would silently revert the deploy step to
 3.5-year-old code. The action has only ever published `v1`, so nothing
 is lost by maintaining this pin by hand instead.
 
-### `node-version: '20'` in the deploy workflows — floats across patch releases
+### `node-version: '24'` in the deploy workflows — floats across patch releases
 
 Both Azure Static Web Apps workflows pass `actions/setup-node`
-`node-version: '20'`, not an exact patch, and there is no `.nvmrc` and
+`node-version: '24'`, not an exact patch, and there is no `.nvmrc` and
 no `engines` field anywhere pinning a runtime version. `setup-node`
-therefore downloads whichever 20.x patch is current at run time.
+therefore downloads whichever 24.x patch is current at run time.
 
 **Reachable from our side:** yes, in principle — an exact patch or an
 `.nvmrc` `setup-node` can read would close this. **Not done here:**

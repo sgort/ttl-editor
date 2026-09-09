@@ -97,7 +97,10 @@ export const useEditorState = () => {
 
   // iKnow state
   const [iknowMappingConfig, setIknowMappingConfig] = useState({ mappings: {} });
-  const [availableIKnowMappings, setAvailableIKnowMappings] = useState([]);
+  // Seeded directly rather than assigned by an effect on mount: iknowMappings is
+  // a static import, so there is nothing to synchronise and an effect only
+  // guaranteed a second render with the real value.
+  const [availableIKnowMappings, setAvailableIKnowMappings] = useState(iknowMappings);
 
   // TriplyDB configuration state (NEW)
   const [triplyDBConfig, setTriplyDBConfig] = useState(() => loadTriplyDBConfig());
@@ -106,19 +109,21 @@ export const useEditorState = () => {
   const [ronlAnalysisConcepts, setRonlAnalysisConcepts] = useState([]);
   const [ronlMethodConcepts, setRonlMethodConcepts] = useState([]);
   const [ronlConceptsLoading, setRonlConceptsLoading] = useState(false);
-  const [ronlConceptsError, setRonlConceptsError] = useState('');
-
-  // Load available iKnow mappings on mount
-  useEffect(() => {
-    setAvailableIKnowMappings(iknowMappings);
-  }, []);
+  // Whether the RONL vocabulary fetch failed — not a message.
+  //
+  // One fetch populates two tabs: Legal calls the results "concepts", Vendor
+  // calls them "vendors". A single sentence stored here was shown verbatim in
+  // both, so the Vendor tab reported a failure to load "concepts" directly
+  // above its own "Loading vendors from TriplyDB..." line. Each tab now words
+  // its own message and this only says whether there is one to show.
+  const [ronlConceptsFailed, setRonlConceptsFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
     const loadConcepts = async () => {
       setRonlConceptsLoading(true);
-      setRonlConceptsError('');
+      setRonlConceptsFailed(false);
 
       try {
         const { analysisConcepts, methodConcepts } = await fetchAllRonlConcepts(RONL_ENDPOINT);
@@ -132,9 +137,7 @@ export const useEditorState = () => {
       } catch (error) {
         if (cancelled) return;
         console.error('Failed to load RONL concepts:', error);
-        setRonlConceptsError(
-          'Failed to load concepts from TriplyDB. Please check your connection.'
-        );
+        setRonlConceptsFailed(true);
       } finally {
         if (!cancelled) setRonlConceptsLoading(false);
       }
@@ -253,7 +256,7 @@ export const useEditorState = () => {
     ronlAnalysisConcepts,
     ronlMethodConcepts,
     ronlConceptsLoading,
-    ronlConceptsError,
+    ronlConceptsFailed,
     // Actions
     clearAllData,
   };

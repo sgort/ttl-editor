@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Core Public Service Editor - Generate RDF/Turtle files for government services following CPSV-AP and CPRMV standards"
+    />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="/manifest.json" />
+    <!--
+      The build-time placeholders CRA used on the paths above are gone: Vite
+      serves the public/ directory at the site root, so a plain absolute path is
+      already correct both in dev and in the build.
+
+      /logo192.png does not exist and never has — the file is absent from
+      public/ on CRA too, so this apple-touch-icon 404s in production today.
+      Carried over verbatim rather than fixed, to keep the migration a pure
+      toolchain change. public/apple-touch-icon.png is the obvious replacement,
+      separately.
+    -->
+    <title>Core Public Service Editor</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>

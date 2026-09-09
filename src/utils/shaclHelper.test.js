@@ -1,12 +1,12 @@
 import { validateTtl } from './shaclHelper';
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('validateTtl', () => {
   test('returns the backend result data on success', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({
         success: true,
@@ -39,7 +39,7 @@ describe('validateTtl', () => {
   });
 
   test('returns a neutral invalid shape when the backend responds but success is false', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ success: false, error: { message: 'Malformed Turtle' } }),
     });
@@ -53,7 +53,7 @@ describe('validateTtl', () => {
   });
 
   test('never throws — a network failure yields a distinct unavailable state instead', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('fetch failed'));
+    global.fetch = vi.fn().mockRejectedValue(new Error('fetch failed'));
 
     const result = await validateTtl('@prefix cpsv: <http://purl.org/vocab/cpsv#> .');
 

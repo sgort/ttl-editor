@@ -2,10 +2,17 @@
 // global.fetch mock is proportionate — msw is reserved for the larger
 // surfaces (shaclHelper.js, triplydbHelper.js) per phase P4, see
 // https://iou-architectuur.open-regels.nl/cpsv-editor/developer/testing/.
+
+// setupTests.js stubs fetchAllRonlConcepts for the whole suite, so that no
+// test reaches TriplyDB by accident. This file is the exception that has to
+// see the real implementation — it is the one testing it — and says so here
+// rather than silently asserting against the stub.
+vi.unmock('./ronlHelper');
+
 import { fetchAllRonlConcepts, fetchRonlConcepts } from './ronlHelper';
 
 function mockFetchOnce(response, ok = true) {
-  global.fetch = jest.fn().mockResolvedValue({
+  global.fetch = vi.fn().mockResolvedValue({
     ok,
     status: ok ? 200 : 500,
     statusText: ok ? 'OK' : 'Internal Server Error',
@@ -14,7 +21,7 @@ function mockFetchOnce(response, ok = true) {
 }
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
 });
 
 describe('fetchRonlConcepts', () => {
@@ -75,7 +82,7 @@ describe('fetchRonlConcepts', () => {
 describe('fetchAllRonlConcepts', () => {
   test('fetches analysis and method concepts in parallel', async () => {
     let call = 0;
-    global.fetch = jest.fn().mockImplementation(async () => {
+    global.fetch = vi.fn().mockImplementation(async () => {
       call += 1;
       return {
         ok: true,

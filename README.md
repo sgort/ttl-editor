@@ -119,7 +119,7 @@ See [Semantic Mediation Reference Architecture](https://iou-architectuur.open-re
 ```bash
 npm install
 npm start       # development server at http://localhost:3000
-npm run build   # production build → build/
+npm run build   # production build → dist/
 ```
 
 ---

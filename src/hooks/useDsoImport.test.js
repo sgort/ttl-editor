@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { StrictMode } from 'react';
 
 import { useDsoImport } from './useDsoImport';
 
@@ -7,11 +8,11 @@ function navigateTo(search) {
 }
 
 function renderDsoImport(overrides = {}) {
-  const setDmnData = jest.fn();
-  const setService = jest.fn();
-  const setOrganization = jest.fn();
-  const setActiveTab = jest.fn();
-  const notify = jest.fn();
+  const setDmnData = vi.fn();
+  const setService = vi.fn();
+  const setOrganization = vi.fn();
+  const setActiveTab = vi.fn();
+  const notify = vi.fn();
 
   const handlers = { setDmnData, setService, setOrganization, setActiveTab, notify, ...overrides };
   const view = renderHook(() => useDsoImport(handlers));
@@ -19,14 +20,14 @@ function renderDsoImport(overrides = {}) {
 }
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
   window.history.pushState({}, '', '/');
 });
 
 describe('useDsoImport', () => {
   test('does nothing when dsoImport is absent from the URL', () => {
     navigateTo('?foo=bar');
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     const { setDmnData, notify } = renderDsoImport();
 
     expect(global.fetch).not.toHaveBeenCalled();
@@ -36,14 +37,14 @@ describe('useDsoImport', () => {
 
   test('does nothing when dsoImport is present but not "dmn"', () => {
     navigateTo('?dsoImport=other');
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     const { setDmnData } = renderDsoImport();
     expect(setDmnData).not.toHaveBeenCalled();
   });
 
   test('strips the DSO import params from the URL immediately, even before the fetch resolves', () => {
     navigateTo('?dsoImport=dmn&dmnId=abc123&env=pre&extra=keep-me');
-    global.fetch = jest.fn(() => new Promise(() => {})); // never resolves
+    global.fetch = vi.fn(() => new Promise(() => {})); // never resolves
     renderDsoImport();
 
     const params = new URLSearchParams(window.location.search);
@@ -54,7 +55,7 @@ describe('useDsoImport', () => {
 
   test('reports an error and never fetches when dmnId is missing', async () => {
     navigateTo('?dsoImport=dmn');
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     const { notify } = renderDsoImport();
 
     await waitFor(() =>
@@ -72,7 +73,7 @@ describe('useDsoImport', () => {
     );
     const dmnXml =
       '<?xml version="1.0"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"><decision id="d1"/></definitions>';
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       text: async () => dmnXml,
     });
@@ -111,9 +112,7 @@ describe('useDsoImport', () => {
 
   test('reports an error when the backend responds non-ok', async () => {
     navigateTo('?dsoImport=dmn&dmnId=abc123');
-    global.fetch = jest
-      .fn()
-      .mockResolvedValue({ ok: false, status: 502, statusText: 'Bad Gateway' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 502, statusText: 'Bad Gateway' });
     const { notify, setDmnData } = renderDsoImport();
 
     await waitFor(() =>
@@ -129,7 +128,7 @@ describe('useDsoImport', () => {
 
   test('reports an error when the backend returns an empty DMN document', async () => {
     navigateTo('?dsoImport=dmn&dmnId=abc123');
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, text: async () => '   ' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => '   ' });
     const { notify } = renderDsoImport();
 
     await waitFor(() =>
@@ -141,10 +140,42 @@ describe('useDsoImport', () => {
 
   test('does not prefill organization when no authority is present', async () => {
     navigateTo('?dsoImport=dmn&dmnId=abc123&activityName=Something');
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, text: async () => '<definitions/>' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => '<definitions/>' });
     const { setOrganization, setActiveTab } = renderDsoImport();
 
     await waitFor(() => expect(setActiveTab).toHaveBeenCalled());
     expect(setOrganization).not.toHaveBeenCalled();
+  });
+});
+
+describe('useDsoImport StrictMode guard', () => {
+  // consumedRef guards against React's development double-invoke. The effect's
+  // dependency array is empty, so a plain re-render never re-runs it and only
+  // StrictMode reaches the guard — which is the situation it was written for.
+  // Without it the import runs twice: two fetches, two notifications, and the
+  // URL cleaned before the second pass can read its own parameters.
+  test('imports once even when StrictMode invokes the effect twice', async () => {
+    navigateTo('?dsoImport=dmn&dmnId=42');
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ dmnXml: '<definitions />', activityName: 'Kappen' }),
+    });
+
+    const setDmnData = vi.fn();
+    const notify = vi.fn();
+    renderHook(
+      () =>
+        useDsoImport({
+          setDmnData,
+          setService: vi.fn(),
+          setOrganization: vi.fn(),
+          setActiveTab: vi.fn(),
+          notify,
+        }),
+      { wrapper: StrictMode }
+    );
+
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 });

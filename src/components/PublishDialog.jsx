@@ -1,56 +1,43 @@
 // src/components/PublishDialog.jsx
 // Merged version: Beautiful UX from original + Working progress tracking logic
 import { AlertCircle, CheckCircle, Cloud, Eye, EyeOff, Loader, Upload, X } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { validateTtl } from '../utils/shaclHelper';
+import { testTriplyDBConnection } from '../utils/triplydbHelper';
 
 const PublishDialog = ({
-  isOpen,
   onClose,
   onPublish,
-  currentConfig,
+  config,
+  onConfigChange,
   publishingState, // ← Progress tracking support
   ttlContent, // ← Turtle to SHACL-validate before publishing (advisory)
 }) => {
-  // Initialize with default empty config if currentConfig is undefined
-  const defaultConfig = {
-    baseUrl: 'https://api.open-regels.triply.cc',
-    account: '',
-    dataset: '',
-    apiToken: '',
-  };
-
-  const [config, setConfig] = useState(currentConfig || defaultConfig);
   const [showToken, setShowToken] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
   // Pre-publish SHACL validation (advisory — never blocks publishing).
   const [shaclResult, setShaclResult] = useState(null);
-  const [shaclValidating, setShaclValidating] = useState(false);
+  // Seeded rather than set at the top of the effect below. Validation starts on
+  // mount whenever there is content, so the initial value is knowable here — and
+  // setting it inside the effect is the cascading render react-hooks warns about.
+  // The dialog is modal, so ttlContent does not change while it is open.
+  const [shaclValidating, setShaclValidating] = useState(() =>
+    Boolean(ttlContent && ttlContent.trim())
+  );
 
-  // Update local config when currentConfig changes
+  // Run SHACL validation on mount (advisory; results are informational).
+  //
+  // App renders this dialog only while it is open, so mounting IS opening and
+  // there is no previous result to clear first. Two sibling effects used to live
+  // here — one syncing a config prop into local state, one resetting results on
+  // close — and both existed only because the dialog was mounted permanently and
+  // hid itself. Unmounting does that work now. See issue #87.
   useEffect(() => {
-    if (currentConfig) {
-      setConfig(currentConfig);
-    }
-  }, [currentConfig]);
-
-  // Reset test + SHACL result when dialog opens/closes
-  useEffect(() => {
-    if (!isOpen) {
-      setTestResult(null);
-      setShaclResult(null);
-    }
-  }, [isOpen]);
-
-  // Run SHACL validation when the dialog opens (advisory; results are informational).
-  useEffect(() => {
-    if (!isOpen || !ttlContent || !ttlContent.trim()) return undefined;
+    if (!ttlContent || !ttlContent.trim()) return undefined;
     let cancelled = false;
-    setShaclResult(null);
-    setShaclValidating(true);
     validateTtl(ttlContent).then((result) => {
       if (!cancelled) {
         setShaclResult(result);
@@ -60,7 +47,7 @@ const PublishDialog = ({
     return () => {
       cancelled = true;
     };
-  }, [isOpen, ttlContent]);
+  }, [ttlContent]);
 
   const handleRevalidate = async () => {
     if (!ttlContent || !ttlContent.trim()) return;
@@ -71,10 +58,8 @@ const PublishDialog = ({
     setShaclValidating(false);
   };
 
-  if (!isOpen) return null;
-
   const updateField = (field, value) => {
-    setConfig({ ...config, [field]: value });
+    onConfigChange({ ...config, [field]: value });
     setTestResult(null); // Clear test result when config changes
   };
 
@@ -83,7 +68,6 @@ const PublishDialog = ({
     setTestResult(null);
 
     try {
-      const { testTriplyDBConnection } = await import('../utils/triplydbHelper');
       const result = await testTriplyDBConnection(config);
       setTestResult(result);
     } catch (error) {
@@ -400,10 +384,14 @@ const PublishDialog = ({
 
               {/* Base URL */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-triply-db-base-url"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   TriplyDB Base URL <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-triply-db-base-url"
                   type="text"
                   value={config.baseUrl}
                   onChange={(e) => updateField('baseUrl', e.target.value)}
@@ -418,10 +406,14 @@ const PublishDialog = ({
 
               {/* Account */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-account-name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Account Name <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-account-name"
                   type="text"
                   value={config.account}
                   onChange={(e) => updateField('account', e.target.value)}
@@ -436,10 +428,14 @@ const PublishDialog = ({
 
               {/* Dataset */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-dataset-name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Dataset Name <span className="text-red-500">*</span>
                 </label>
                 <input
+                  id="publish-dialog-dataset-name"
                   type="text"
                   value={config.dataset}
                   onChange={(e) => updateField('dataset', e.target.value)}
@@ -452,11 +448,15 @@ const PublishDialog = ({
 
               {/* API Token */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="publish-dialog-api-token"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   API Token <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <input
+                    id="publish-dialog-api-token"
                     type={showToken ? 'text' : 'password'}
                     value={config.apiToken}
                     onChange={(e) => updateField('apiToken', e.target.value)}

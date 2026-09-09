@@ -1,6 +1,6 @@
 // Backend API configuration (matches triplydbHelper.js pattern)
 const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || 'https://acc.backend.linkeddata.open-regels.nl';
+  import.meta.env.VITE_BACKEND_URL || 'https://acc.backend.linkeddata.open-regels.nl';
 const API_VERSION = 'v1';
 
 /**

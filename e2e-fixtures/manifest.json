@@ -1,0 +1,23 @@
+{
+  "purpose": "Inputs the end-to-end suite drives. Copies, not moves: examples/ remains the application's own example corpus, and src/parseTTL.roundtrip.test.js still reads examples/full-test-import-export.ttl. Pinning copies here means editing an example cannot silently change what an end-to-end test asserts, and tightening an assertion here cannot disturb the examples users are shown. Convention borrowed from linked-data-explorer's e2e-fixtures/, including this manifest and its source field.",
+  "fixtures": [
+    {
+      "path": "round-trip/full-test-import-export.ttl",
+      "usedBy": "e2e/round-trip-journey.spec.js",
+      "role": "The service imported at step 1, and the baseline every later assertion measures against. Deliberately comprehensive: service, organization, legal resource, cost, output, 5 temporal rules, 5 parameters, 6 CPRMV rules, 8 concepts, an embedded DMN with full validation metadata, and a vendor section — so that a field silently lost on import or re-export has somewhere to show up.",
+      "source": "examples/full-test-import-export.ttl, copied 2026-09-06 after two changes made in that original. Steven selected both RONL Concepts in the Legal tab and re-exported, adding cprmv:hasAnalysis (WetsanalyseJAS) and cprmv:hasMethod (iKnow) and upgrading the file from the CPRMV 0.3.0 namespace to 0.4.1. It was then regenerated through the current ttlGenerator with a vendorService added, because the file carried no vendor triples at all despite being named full-test — the ronl:VendorService model spans nine source files and is published RDF, so a comprehensive fixture that omits it is not comprehensive. Regenerating also picked up the dmn-variables skos:ConceptScheme block the current generator emits and the older file lacked."
+    },
+    {
+      "path": "toeslagen/BerekenRechtEnHoogteZorg.dmn",
+      "usedBy": "e2e/round-trip-journey.spec.js",
+      "role": "The replacement decision model attached at step 4, deployed at step 5 and evaluated at step 6. Chosen because its six boolean/double eligibility inputs and its zorgtoeslag + annotation outputs make an exact-value assertion possible: the request body in the spec yields 1150 and a specific annotation string, so a decision table that stopped matching would fail rather than answer 200 with an empty result set.",
+      "source": "examples/organizations/toeslagen/BerekenRechtEnHoogteZorg.dmn, copied unchanged 2026-09-06. Decision key berekenrechtenhoogtezorg."
+    },
+    {
+      "path": "svb/RONL_BerekenLeeftijden_CPRMV.dmn",
+      "usedBy": "e2e/authoring-journey.spec.js",
+      "role": "The default model for the authoring journey. Pinned here so the default cannot drift when the examples corpus changes; E2E_DMN still resolves names against examples/organizations, so any of the 31 models there can be driven on demand.",
+      "source": "examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn, copied unchanged 2026-09-06. Decision key RONL_BerekenLeeftijden. Note it fails the backend's own DMN syntax validation with 2 errors and 13 warnings, and deploys and evaluates successfully regardless — validation is advisory in this application, and the journey deliberately does not assert the model is clean."
+    }
+  ]
+}

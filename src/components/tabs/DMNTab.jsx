@@ -15,7 +15,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { sanitizeIri } from '../../utils';
 import {
@@ -60,7 +60,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // through the LDE backend's /v1/dmns/deploy instead — see handleDeployDMN)
   // but evaluate still calls Operaton directly.
   const [apiConfig, setApiConfig] = useState({
-    baseUrl: process.env.REACT_APP_OPERATON_URL || 'https://operaton.open-regels.nl',
+    baseUrl: import.meta.env.VITE_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
     evaluateEndpoint: '/engine-rest/decision-definition/key/{key}/evaluate',
   });
@@ -71,11 +71,16 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // gated on `uploadedFile` and the imported DMN would appear unusable.
   // The upload handlers manage `uploadedFile` themselves, so this only fires when
   // there is content but no file loaded in the current session.
+  // The same shape as PublishDialog's effects: local state derived from a prop,
+  // synchronised by hand. Unlike a dialog this tab cannot simply remount, so it
+  // likely wants a different remedy. See
+  // https://github.com/sgort/ttl-editor/issues/87.
   useEffect(() => {
     if (dmnData.isImported) return; // preserved-mode renders its own UI
     if (!dmnData.content || uploadedFile) return;
 
     const content = dmnData.content;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setUploadedFile({
       name: dmnData.fileName || 'imported.dmn',
       content,
@@ -172,7 +177,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
    * Filters out constant parameters (p_* prefix) automatically.
    * Returns [{id, name, inputs: [{name, typeRef}]}]
    */
-  const parseDMNDecisionsFromXML = (dmnContent) => {
+  function parseDMNDecisionsFromXML(dmnContent) {
     try {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(dmnContent, 'text/xml');
@@ -248,7 +253,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       console.error('Error parsing DMN decisions:', err);
       return [];
     }
-  };
+  }
 
   /**
    * Build NL-SBB concepts from input/output variable lists and store in state.
@@ -300,7 +305,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setConcepts(generatedConcepts);
   };
 
-  const generateRequestBodyFromDMN = (dmnContent) => {
+  function generateRequestBodyFromDMN(dmnContent) {
     // Helper — parses a FEEL allowed-values list and returns the first item.
     // String literals are unwrapped, numbers parsed, booleans coerced.
     const parseFirstFeelListItem = (text) => {
@@ -513,7 +518,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       console.error('Error generating request body from DMN:', err);
       return '';
     }
-  };
+  }
 
   const loadExampleDMN = async () => {
     try {
@@ -570,8 +575,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     }
   };
 
-  const runBackendValidation = async (content) => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+  async function runBackendValidation(content) {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
     setIsValidating(true);
     setValidationResult(null);
     try {
@@ -624,7 +629,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     } finally {
       setIsValidating(false);
     }
-  };
+  }
 
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -697,7 +702,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       // server-to-server on the LDE side and CORS-immune by construction.
       // Same pattern runBackendValidation() above already uses for
       // /v1/dmns/validate.
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
       const response = await fetch(`${backendUrl}/v1/dmns/deploy`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -737,7 +742,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // -- bodyStr is already the `{variables: {...}}` shape Operaton itself
   // expects, so it's forwarded unchanged.
   const evaluateViaBackend = (decisionKey, bodyStr) => {
-    const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
     return fetch(`${backendUrl}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1126,8 +1131,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         </div>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Base URL</label>
+            <label
+              htmlFor="dmntab-base-url"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Base URL
+            </label>
             <input
+              id="dmntab-base-url"
               type="text"
               value={apiConfig.baseUrl}
               onChange={(e) => setApiConfig((prev) => ({ ...prev, baseUrl: e.target.value }))}
@@ -1136,8 +1147,14 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Decision Key</label>
+            <label
+              htmlFor="dmntab-decision-key"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Decision Key
+            </label>
             <input
+              id="dmntab-decision-key"
               type="text"
               value={apiConfig.decisionKey}
               onChange={(e) => {
@@ -1154,7 +1171,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 Evaluated via the LDE backend (avoids Operaton CORS from the browser):
               </p>
               <code className="text-xs text-gray-700 break-all">
-                {process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'}
+                {import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001'}
                 /v1/dmns/evaluate/{apiConfig.decisionKey}
               </code>
             </div>
@@ -1211,13 +1228,17 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
                 </p>
                 {decisions.length > 1 ? (
                   <div className="mt-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="dmntab-decision-key-this-file-has-decisions-pick-the-one-to-evaluate"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Decision Key{' '}
                       <span className="font-normal text-gray-500">
                         — this file has {decisions.length} decisions, pick the one to evaluate
                       </span>
                     </label>
                     <select
+                      id="dmntab-decision-key-this-file-has-decisions-pick-the-one-to-evaluate"
                       value={
                         decisions.some((d) => d.id === apiConfig.decisionKey)
                           ? apiConfig.decisionKey
@@ -1427,13 +1448,19 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Request Body</label>
+            <label
+              htmlFor="dmntab-request-body"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Request Body
+            </label>
             {testBody && (
               <p className="text-xs text-gray-500 mb-2">
                 ✨ Auto-generated from DMN input variables. Adjust values as needed.
               </p>
             )}
             <textarea
+              id="dmntab-request-body"
               value={testBody}
               onChange={(e) => setTestBody(e.target.value)}
               rows={12}
@@ -1469,7 +1496,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
           {testResponse && (
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">Response</label>
+                <span className="block text-sm font-medium text-gray-700">Response</span>
                 <span
                   className={`text-xs font-medium px-2 py-1 rounded ${
                     testResponse.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'

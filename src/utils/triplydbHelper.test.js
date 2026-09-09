@@ -19,7 +19,7 @@ const VALID_CONFIG = {
 };
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
   localStorage.clear();
 });
 
@@ -63,7 +63,7 @@ describe('validateTriplyDBConfig', () => {
 
 describe('publishToTriplyDB', () => {
   test('uploads the file and reports success on a 200 JSON response', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
       statusText: 'OK',
@@ -89,13 +89,13 @@ describe('publishToTriplyDB', () => {
   });
 
   test('rejects empty content before making any request', async () => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     await expect(publishToTriplyDB('', VALID_CONFIG)).rejects.toThrow('Generated file is empty');
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('surfaces the backend error message on a non-ok JSON response', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 400,
       statusText: 'Bad Request',
@@ -108,7 +108,7 @@ describe('publishToTriplyDB', () => {
   });
 
   test('falls back to raw response text when the error body is not JSON', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
@@ -121,7 +121,7 @@ describe('publishToTriplyDB', () => {
   });
 
   test('translates a fetch TypeError into a friendly network-error message', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+    global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
 
     await expect(publishToTriplyDB('some ttl content', VALID_CONFIG)).rejects.toThrow(
       'Network error: Could not connect to TriplyDB.'
@@ -131,7 +131,7 @@ describe('publishToTriplyDB', () => {
 
 describe('updateTriplyDBService', () => {
   test('throws before fetching when the config is invalid', async () => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     await expect(updateTriplyDBService({ ...VALID_CONFIG, apiToken: '' })).rejects.toThrow(
       'API Token is required'
     );
@@ -139,7 +139,7 @@ describe('updateTriplyDBService', () => {
   });
 
   test('posts to the backend proxy and reports success', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
       statusText: 'OK',
@@ -157,7 +157,7 @@ describe('updateTriplyDBService', () => {
   });
 
   test('throws the backend error when the update fails', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 502,
       statusText: 'Bad Gateway',
@@ -169,7 +169,7 @@ describe('updateTriplyDBService', () => {
   });
 
   test('translates a fetch TypeError into a friendly network-error message', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+    global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
     await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow(
       'Network error: Could not connect to backend.'
     );
@@ -178,7 +178,7 @@ describe('updateTriplyDBService', () => {
 
 describe('publishToTriplyDB_SPARQL', () => {
   test('throws before fetching when the config is invalid', async () => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     await expect(
       publishToTriplyDB_SPARQL('a valid enough ttl body over 100 chars long padding padding', {
         ...VALID_CONFIG,
@@ -189,7 +189,7 @@ describe('publishToTriplyDB_SPARQL', () => {
   });
 
   test('throws before fetching when the TTL content is too short', async () => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     await expect(publishToTriplyDB_SPARQL('short', VALID_CONFIG)).rejects.toThrow(
       'TTL content is too short'
     );
@@ -197,7 +197,7 @@ describe('publishToTriplyDB_SPARQL', () => {
   });
 
   test('converts @prefix declarations to SPARQL PREFIX and wraps data in INSERT DATA / GRAPH', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, text: async () => '' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => '' });
 
     const ttl =
       '@prefix cpsv: <http://purl.org/vocab/cpsv#> .\n' +
@@ -215,7 +215,7 @@ describe('publishToTriplyDB_SPARQL', () => {
   });
 
   test('surfaces the backend error message on a non-ok response', async () => {
-    global.fetch = jest.fn().mockResolvedValue({
+    global.fetch = vi.fn().mockResolvedValue({
       ok: false,
       status: 400,
       statusText: 'Bad Request',
@@ -236,7 +236,7 @@ describe('uploadLogoAsset', () => {
   });
 
   test('converts a base64 image and uploads it as an asset', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: true });
+    global.fetch = vi.fn().mockResolvedValue({ ok: true });
     const base64 = `data:image/png;base64,${Buffer.from('fake-png-bytes').toString('base64')}`;
 
     const result = await uploadLogoAsset(base64, 'logo.png', VALID_CONFIG);
@@ -252,7 +252,7 @@ describe('uploadLogoAsset', () => {
   });
 
   test('throws when the upload fails', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, text: async () => 'upload rejected' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, text: async () => 'upload rejected' });
     const base64 = `data:image/png;base64,${Buffer.from('fake-png-bytes').toString('base64')}`;
 
     await expect(uploadLogoAsset(base64, 'logo.png', VALID_CONFIG)).rejects.toThrow(
@@ -263,33 +263,33 @@ describe('uploadLogoAsset', () => {
 
 describe('testTriplyDBConnection', () => {
   test('returns invalid config error without making a request', async () => {
-    global.fetch = jest.fn();
+    global.fetch = vi.fn();
     const result = await testTriplyDBConnection({ ...VALID_CONFIG, apiToken: '' });
     expect(result).toEqual({ success: false, error: 'API Token is required' });
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
   test('reports success on a 200 response', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: true, status: 200, statusText: 'OK' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, status: 200, statusText: 'OK' });
     const result = await testTriplyDBConnection(VALID_CONFIG);
     expect(result).toEqual({ success: true, message: 'Successfully connected to TriplyDB' });
   });
 
   test('reports a dataset-not-found error on 404', async () => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 404, statusText: 'Not Found' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 404, statusText: 'Not Found' });
     const result = await testTriplyDBConnection(VALID_CONFIG);
     expect(result.success).toBe(false);
     expect(result.error).toContain('Dataset not found');
   });
 
   test.each([401, 403])('reports an auth error on %i', async (status) => {
-    global.fetch = jest.fn().mockResolvedValue({ ok: false, status, statusText: 'Unauthorized' });
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status, statusText: 'Unauthorized' });
     const result = await testTriplyDBConnection(VALID_CONFIG);
     expect(result.error).toContain('Authentication failed');
   });
 
   test('reports a generic error on any other status', async () => {
-    global.fetch = jest
+    global.fetch = vi
       .fn()
       .mockResolvedValue({ ok: false, status: 503, statusText: 'Service Unavailable' });
     const result = await testTriplyDBConnection(VALID_CONFIG);
@@ -297,7 +297,7 @@ describe('testTriplyDBConnection', () => {
   });
 
   test('catches a network failure and reports it as a connection error', async () => {
-    global.fetch = jest.fn().mockRejectedValue(new Error('DNS failure'));
+    global.fetch = vi.fn().mockRejectedValue(new Error('DNS failure'));
     const result = await testTriplyDBConnection(VALID_CONFIG);
     expect(result).toEqual({ success: false, error: 'Connection error: DNS failure' });
   });

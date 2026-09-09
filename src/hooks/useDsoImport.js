@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { extractPrimaryDecisionKey } from '../utils/dmnHelpers';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 // Query params that make up the LDE → CPSV Editor deep-link contract.
 const DSO_IMPORT_PARAMS = [
