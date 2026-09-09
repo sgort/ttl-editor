@@ -2,6 +2,177 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.2",
+      "status": "Released",
+      "date": "9 sep 2026",
+      "commits": [
+        {
+          "sha": "08fc5e0",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Performance commits get their own changelog icon",
+          "details": [
+            "The lazy-loading work in this release landed under the perf prefix, which COMMIT_TYPE_META did not know. It fell through to other and rendered as a generic page icon, indistinguishable from an unclassified commit. Same gap the build prefix had before the Vite migration, and the same fix."
+          ]
+        },
+        {
+          "sha": "e8f37f0",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Formatting is now checked in CI, not only on a developer's machine",
+          "details": [
+            "check-format was enforced by the pre-push hook alone, so the rule held locally and not on the shared branch. That gap is not theoretical: in Linked Data Explorer a Prettier 3.7 to 3.9 bump changed how short union types are formatted, and five untouched files began failing prettier --check the moment it merged, with every CI check green. The symptom would have been the next person's git push failing on files they had never opened.",
+            "The step goes in the audit job rather than the deploy workflows. Those carry paths-ignore for docs/** and **/*.md, deliberately, so a documentation change does not claim one of ten staging environments and return nothing for it — which means a formatting check placed there would never see markdown, precisely what drifts, since lint-staged only formats src/** and package.json on commit. The audit job has no path filter and is the required status check.",
+            "That job had no npm ci at all until now: zizmor is an action, the Renovate validator runs from npx, and check-supply-chain is plain node. Prettier needs node_modules, and it has to be this repository's Prettier rather than a version named in the workflow — a second pinned version is a second thing to keep in step, reintroducing the drift the check exists to catch. Also adds docs/ci-posture-across-repos.md, which records where the CPSV Editor, Linked Data Explorer and RONL Business API stand on build provenance, supply-chain verification and the coverage floor."
+          ]
+        },
+        {
+          "sha": "963eef1",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "DMNTab reaches the branch floor, and the coverage gate script is retired",
+          "details": [
+            "DMNTab.jsx was the last file below the per-file 80% branch floor and the last entry in DEBT. It now reads 98.34% (415/422), measured identically in isolation and in the full suite. Four new suites cover the test-case batch runner, DRD parsing and the intermediate runner, the import and example lifecycles, and the validation panel; the existing request-body suite gains the name-based type heuristics. Reaching the later stages means walking the whole chain — upload, validate, deploy, evaluate — because each stage gates the next stage's controls.",
+            "With nothing left to exempt, scripts/check-branch-coverage.mjs is deleted and the policy is native: thresholds branches 80, perFile true, in vite.config.mjs. Vitest's threshold globs are additive rather than overriding, which is why the script had to exist while any file was still below the floor. Confirmed the native threshold actually gates by raising it to 99 and watching it name eight files.",
+            "Adding 56 tests pushed the parallel run past its timing headroom: unrelated App tests began failing intermittently, a different one each run and always passing in isolation. Three consecutive full runs were clean without the new files and one in three failed with them. Fixed at its own boundary — asyncUtilTimeout 5000 and testTimeout 15000, both commented as contention headroom — rather than by serialising the suite."
+          ]
+        },
+        {
+          "sha": "f934ddc",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "check-supply-chain now runs in the audit job, and blocks",
+          "details": [
+            "The script landed as a command run by hand, which closes the two gaps SECURITY-PIPELINE.md records only when someone remembers — and the register drifted within a week of predicting it would, caught by a documentation review rather than by anything in CI. It is a third step in the audit job rather than a new job, because the acc supply-chain gate requires the status check named audit: a step is covered automatically, whereas a new job would have silently not blocked until someone added it to the ruleset.",
+            "Blocking from the outset, unlike the adoptions downstream. Renovate rewrites workflow pins and never touches the register, so an action bump fails the register half until the register is updated by hand. That is answered rather than avoided — update the register on the bump's branch, before merging — and was proven in Linked Data Explorer over two bumps, so this repository does not need to repeat the proving phase.",
+            "Acceptance was by making it fail: a planted wrong digest with a plausible comment, a digest changed without updating the register, and a transport failure with a deliberately invalid token, which produced four API-error findings rather than silence. The known cost is a network call inside a required job; if it proves flaky the answer is --offline, never continue-on-error, which rewrites the step's reported conclusion as well as the job's."
+          ]
+        },
+        {
+          "sha": "2664ce6",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "The DMN request-body generator is pinned precisely",
+          "details": [
+            "generateRequestBodyFromDMN reads a model's input variables and proposes a value and an Operaton type for each, so Evaluate can be pressed straight after upload without anyone hand-writing JSON. Getting a type wrong does not fail loudly — Operaton accepts the request and returns something unexpected — which is why the mapping is worth pinning.",
+            "Two sources, and the order matters. An inputValues constraint on the decision-table column wins, because it lists values the model actually accepts; failing that, the input's typeRef decides. A constraint that is present but empty must fall through to typeRef rather than win with an empty string. For dates the variable's name decides: geboorte, birth and dob produce a plausible historical date, because a decision about age wants a date of birth rather than today.",
+            "The ratchet fired for real on the way through. With the pin still at 30 and coverage at 45.73%, the gate failed and named the value to use — the anti-staleness half of the debt list working outside a mutation test for the first time."
+          ]
+        },
+        {
+          "sha": "89de07e",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "PublishDialog, App and IKnowMappingTab clear the floor",
+          "details": [
+            "PublishDialog 18.52% to 88.15%, App 34.57% to 81.48%, IKnowMappingTab 9.45% to 86.61%. Forty of forty-one files now hold 80% branch coverage or better.",
+            "The advisory nature of SHACL is pinned deliberately: a document with violations still offers the Publish button and says so. That is a product decision rather than an oversight, and nothing recorded it. App is covered through its handlers rather than its markup, and cancelling the native save dialog is the case worth naming — it throws AbortError, which is not a failure, and must leave no message and trigger no fallback download, or cancelling produces the very file the user just declined to save."
+          ]
+        },
+        {
+          "sha": "4489e68",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "ttlGenerator comes off the debt list",
+          "details": [
+            "From 60.49% to 81.66% branch coverage, in four files and eighty tests. The recurring rule being pinned is that an empty field must produce no triple rather than a triple with an empty literal: the published graph is validated against CPSV-AP shapes, where an empty object is not the same as an absent one.",
+            "Two behaviours guard bugs the file already carries scars from. Rules sharing a ruleIdPath get distinct subjects, because range bounds and per-period maxima legitimately share one legal path and would otherwise collapse onto a single RDF subject, silently losing every norm but the last. And primaryRulesetDate prefers the date carried by the rules over the hand-entered version, because the rules' date is the one the CPRMV API actually resolved."
+          ]
+        },
+        {
+          "sha": "1612f57",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "importHandler comes off the debt list at 100%",
+          "details": [
+            "From 0% to 132 of 132 branches. The module had no unit tests at all: the round-trip Playwright journey drives it end to end, which is why it worked, but that exercises exactly one shape of document — a complete one, exported by this editor. The interesting behaviour is the other shape, and every field parseTTL touches is a decision about what missing should become.",
+            "Two behaviours are worth naming because they are the kind that hide. applyImportedData resets DMN state when the imported file carries none, rather than leaving it alone, so a previous document's DMN cannot survive the import of one without it — and both halves of the check are required. The defaults that are answers rather than blanks are asserted by name: language nl, currency EUR, access type fair-use, certification not-certified, validation not-validated."
+          ]
+        },
+        {
+          "sha": "e990ad1",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Each tab now words its own RONL fetch failure",
+          "details": [
+            "The Vendor tab reported a failure to load concepts directly above its own \"Loading vendors from TriplyDB...\" line, because one sentence was stored centrally and shown verbatim in two places. A single fetch populates both tabs and the two call the results by different names, so no one sentence can be right in both.",
+            "useEditorState now reports that the fetch failed rather than how to say so: a string becomes a boolean, and each tab supplies its own wording. Both existing tests were asserting the wrong thing. The Vendor test checked for a string the test itself invented and passed in as a prop, so it asserted that the component rendered whatever it was handed — matching the defect rather than catching it."
+          ]
+        },
+        {
+          "sha": "1d98097",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The unit suite no longer reaches TriplyDB",
+          "details": [
+            "Fixes the acc build. useEditorState fetches the RONL concept vocabularies on mount, so every test rendering App was making a live request to TriplyDB — neither of the two files doing it mocks the call or looks at the result.",
+            "That made coverage depend on the machine. Whether the request came back before the test ended decided whether the effect's continuation ran at all, so useEditorState.js measured 83.33% locally and 50% on CI: the same commit, the same tests. The per-file floor then read the local number and CI failed on the merge. The floor was honest; the measurement it was pinned to was not.",
+            "setupTests.js now stubs the fetch for the whole suite, and two tests cover what the network was covering by accident — the effect guards each continuation after its await with a cancelled flag, and resolve and reject leave the try block by different paths. Identical numbers in isolation and in the full suite is the property that was missing, not the higher figure."
+          ]
+        },
+        {
+          "sha": "0d61054",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser updated to v8",
+          "details": [
+            "Unblocked by the tab-guard fix below, which taught no-eager-tabs.test.js to recognise both majors' representation of a dynamic import. Verified green on the merged tree: 736 tests, the per-file branch floor, lint, formatting and the build all pass under v8."
+          ]
+        },
+        {
+          "sha": "d4ded19",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "A per-file 80% branch coverage floor, enforced from this commit",
+          "details": [
+            "Thirty-five of forty-one files met it; the remaining six were pinned at their current values as recorded debt and could not regress. Nine files were brought over the line — ninety-four branches, each covering behaviour rather than lines.",
+            "The floor could not live in Vitest at the time. Its thresholds block accepts glob keys that look like per-file overrides, but they are additive: configuring it that way produced fifteen files failing against the global 80 regardless of their glob entries. The script carrying the debt list was explicitly temporary and said so in its header. Branches rather than statements or lines, because those largely restate whether a file was imported, and a function count rewards splitting code into more functions.",
+            "IKnowImportTab.jsx and its test are deleted. Nothing rendered it — absent from the barrel, imported by no component — so it was already tree-shaken out of the bundle and cost nothing but 274 lines of untested, unreachable source."
+          ]
+        },
+        {
+          "sha": "c4e45be",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The lazy-tab guard recognises both Babel majors' dynamic-import AST",
+          "details": [
+            "no-eager-tabs.test.js knew only @babel/parser v7's representation of import(), so under v8 it stopped recognising dynamic imports entirely: it found no lazy bindings and no stray imports, going blind to the property it exists to check. v7 emits a CallExpression with an Import callee; v8 emits an ESTree-aligned ImportExpression with the specifier on .source.",
+            "Everything else the file reads is identical across the majors, so the damage was confined to one predicate. Two fixtures now hand that predicate the literal AST node each major produces, because the parsing checks can only ever exercise whichever parser is installed — which is exactly how the defect shipped. The guard failed loudly rather than passing vacuously, but that followed from how the assertions happened to be written rather than from any design decision, so both shapes are now pinned explicitly."
+          ]
+        },
+        {
+          "sha": "f5e483f",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react updated to v1.34.0",
+          "details": [
+            "Icon library patch update, verified green on the merged tree alongside the Babel major."
+          ]
+        },
+        {
+          "sha": "d3914a3",
+          "author": "Steven Gort",
+          "type": "perf",
+          "subject": "The four heavy tabs are lazy-loaded",
+          "details": [
+            "Takes the entry chunk from 685.71 kB to 392.74 kB (176.58 to 104.71 kB gzipped) and clears both build warnings. ChangelogTab and CPRMVTab each import a large build-time JSON blob, and DMNTab and VendorTab are the two largest components.",
+            "The lazy() calls are the smaller half of it. A static re-export in the tabs barrel pins a module into the entry chunk even when App imports it dynamically. Measured before designing the change: with ChangelogTab left in the barrel, adding lazy() moved nothing at all — 685.71 kB before and 685.84 kB after. Removing that one line took the entry chunk to 541.84 kB. The app behaves identically either way, so no behavioural test can see the difference, which is why no-eager-tabs.test.js parses rather than greps and guards both halves.",
+            "DMNTab needed more than a lazy() call. It stays mounted while hidden so an uploaded file, deployment status and test-case results survive tab switches, but a lazy component rendered unconditionally resolves its import on mount and ships on every page load anyway. It now renders once its tab has been visited and stays mounted thereafter. Each lazy tab gets its own Suspense boundary, so a boundary re-suspending cannot blank the always-mounted DMN subtree."
+          ]
+        },
+        {
+          "sha": "a2b593f",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "PublishDialog is mounted only while it is open",
+          "details": [
+            "App mounted the dialog permanently and the dialog hid itself with an early return, so its state survived every close. Three pieces of machinery existed only to undo by hand what unmounting does for free: an effect syncing the current config into a local copy, an effect clearing the test and SHACL results on close, and a reset at the top of the validation effect. Two of them needed react-hooks/set-state-in-effect suppressions to pass lint."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.1",
       "status": "Released",
       "date": "6 sep 2026",
