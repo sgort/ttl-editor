@@ -66,6 +66,8 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '24'
+          # For the `npm ci` the formatting check needs, further down.
+          cache: 'npm'
       - name: Run zizmor
         uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
         with:
@@ -109,6 +111,45 @@ jobs:
         # this file actually is -- it will happily validate and tell you
         # nothing useful.
         run: npx --yes --package renovate@44.50.3 renovate-config-validator --strict
+
+      - name: Install dependencies for the formatter
+        # The only step in this job that needs node_modules. Everything above
+        # runs from npx or plain node, which is why the audit had no install
+        # at all until formatting joined it.
+        #
+        # It has to be THIS repository's prettier, not a version named in the
+        # workflow. linked-data-explorer#45 exists because prettier 3.7 -> 3.9
+        # changed how short union types are formatted: five untouched files
+        # started failing `prettier --check` the moment the bump merged, with
+        # every CI check green, and the symptom would have been the next
+        # person's `git push` failing on files they had never opened. An
+        # `npx prettier@<pinned>` here would be a second version to keep in
+        # step with package.json -- reintroducing exactly the drift the check
+        # exists to catch. npm ci costs install time and cannot drift.
+        #
+        # cache: 'npm' is set on the setup-node step above so this restores
+        # rather than resolves. The audit is a required check on every pull
+        # request and pays this cost every time.
+        if: always()
+        run: npm ci
+      - name: Check formatting
+        # Here rather than in the deploy workflows, which carry
+        # `paths-ignore: docs/**, **/*.md` and would therefore never check the
+        # files most likely to drift. Prettier formats markdown, and
+        # lint-staged only covers src/** and package.json, so a documentation
+        # change is currently formatted by nothing before it lands and the
+        # first person to feel it is whoever next runs `git push`.
+        #
+        # `prettier --check .` from the root is right here: one package, one
+        # .prettierignore, and it is the same command .husky/pre-push runs. Do
+        # NOT copy linked-data-explorer's per-workspace fan-out -- that exists
+        # because .prettierignore resolves relative to the working directory
+        # and a root run there would silently check dist/ and coverage/.
+        #
+        # if: always() for the same reason as the validator above -- a zizmor
+        # failure should not hide a formatting failure behind it.
+        if: always()
+        run: npm run check-format
 
       - name: Verify pin truth and register agreement
         # The third half of the policy, and the one zizmor structurally cannot
