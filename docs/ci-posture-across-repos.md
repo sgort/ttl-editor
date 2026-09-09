@@ -10,7 +10,7 @@ memory.
 
 | repository           | `acc` at  |
 | -------------------- | --------- |
-| ttl-editor           | `bd71dd9` |
+| ttl-editor           | `6e8e019` |
 | linked-data-explorer | `04cc38c` |
 | ronl-business-api    | `04e38c8` |
 
@@ -148,11 +148,29 @@ changelog is code-split, so the string lands in a separate chunk and grepping th
 entry bundle looks exactly like failure. Confirm the chunk hash changes between
 the two builds; if it does not, the second build did not run.
 
-### Known gap
+### Exercised, at last, in one of the three
 
-**Production is wired everywhere and exercised nowhere.** All three applications
-carry the `env:` block in their production workflows, and none of those workflows
-has run since. Worth one glance at the changelog on each first production release.
+**ttl-editor ran its production workflow on 2026-09-09** and the Changelog tab
+renders a real build id. That was the first execution of any of these `env:`
+blocks in production, and it is the only evidence that the placement is right:
+until a workflow runs, a correctly-written block and an unreachable one look
+identical.
+
+It closes as a gap rather than as a formality, because the promotion that
+carried it was also the Create React App to Vite cutover. `output_location`
+moved from `build` to `dist` in the same commit as the build script, which is
+what the ACC workflow's own comment insists on — a stale value there "uploads an
+empty directory and reports SUCCESS". Promoting the migration in parts would
+have separated them.
+
+Verified in the order that distinguishes the failure modes: the build id first
+(`local build` would mean the block never reached Oryx), then a hard refresh
+(the lazy chunks 404 if `output_location` is wrong), then a DMN round trip
+against the production backend.
+
+**Still wired and unexercised in the other two.** Linked Data Explorer and RONL
+Business API carry the block in their production workflows and neither has run
+since. Worth one glance at the changelog on each first production release.
 
 ---
 
@@ -458,6 +476,23 @@ artifact, with the real deploy being a manual script run from a clean `acc` afte
 the release pull request merges. Nothing in that job has an external side effect,
 so there is nothing to gate — the change is the trigger alone.
 
+### A ruleset scoped to one branch gates one branch
+
+Worth stating because it is easy to read a repository as protected when only half
+of it is. ttl-editor's `acc supply-chain gate` ruleset applies to `refs/heads/acc`
+and nothing else. `main` has branch protection — a pull request is required — but
+**zero required approvals and no required status checks at all**. So on the
+promotion pull request, `audit` and the production build ran and reported, and
+neither could have blocked the merge.
+
+That is defensible: `main` is promoted from `acc`, and those commits already
+passed the gate on their own `acc` pull request. But the promotion pull request
+is the one carrying a build-system change into production, and it is gated by
+nobody. Read the checks there rather than trusting the button.
+
+The same question is worth asking of the other two: a ruleset naming one branch
+says nothing about any other.
+
 **Production workflows are deliberately excluded from that treatment** in Linked
 Data Explorer, on evidence rather than preference:
 
@@ -470,6 +505,53 @@ A `pull_request` trigger on a production workflow would make every pull request
 to `main` wait on a human approval **before the tests could run** — an approval
 gate in front of the check meant to inform it. `main` is promoted from `acc`, so
 those commits already ran the full suite on their `acc` pull request.
+
+### A commit message can turn every gate off
+
+GitHub Actions honours `[skip ci]`, `[ci skip]`, `[no ci]`, `[skip actions]` and
+`[actions skip]` **anywhere in a commit message**, including in prose that is
+merely discussing them. It does not distinguish a marker from a quotation.
+
+Observed here, on a ttl-editor pull request whose commit message explained that
+two files had come to exist on only one remote because they were originally
+committed with such a marker — and quoted it. Every workflow was skipped:
+
+```
+gh pr checks 110       no checks reported
+gh run list --branch   (empty)
+mergeStateStatus       BLOCKED
+```
+
+**The failure mode is silence, not red.** `audit` is a required check under the
+`acc` ruleset, so the pull request could never become mergeable, and there was no
+failing run to explain why — the checks list was not failing, it was empty. That
+is the same shape as the `continue-on-error` problem recorded above, approached
+from the opposite direction: there a check ran and reported a success it had not
+earned; here a required check never ran at all and reported nothing.
+
+The fix was to describe the marker in words instead of containing one. Two
+consequences to carry:
+
+- **A skip marker in a merged commit can suppress the deploy on the branch it
+  lands on**, not only the checks on the pull request. Had it survived, the same
+  string could have skipped the acceptance deploy on the push to `acc`.
+- **The marker is how the two remotes diverged in the first place.** The files it
+  hid were added with it, as were three commits removing superseded test-case
+  directories and one adding a stray `tictactoe.html` to the repository root.
+  Treat it as a signal that something bypassed review rather than as a
+  convenience for a documentation-only change — `paths-ignore` expresses that
+  intent without switching the gates off.
+
+Note what limits the blast radius here, because it is a repository setting and
+not a law. ttl-editor composes merge commits as `merge_commit_title=PR_TITLE`
+with `merge_commit_message=BLANK`, so a pull request body never reaches the
+merge commit — only the title does. A repository configured with `PR_BODY`
+instead would let a marker quoted anywhere in a description suppress the deploy
+on the branch it merges to. Check that setting before writing prose about skip
+markers in a pull request, as this one does.
+
+This section is itself the test case: it names all five markers in full, and it
+is safe to do so because they sit in a file rather than in a commit message.
 
 ### Formatting
 
@@ -515,7 +597,8 @@ Three mechanics matter if this is replicated:
 | ronl-business-api    | #87   | the backend runs no tests on a pull request, so its branch floor is retrospective     |
 | linked-data-explorer | —     | `CaseworkerCasePanel.tsx` sits at exactly 80.00% with no margin                       |
 | ttl-editor           | —     | three files sit within one branch of the floor, with no ratchet left to absorb a slip |
-| all three            | —     | production build ids are wired but unexercised                                        |
+| l-d-e, r-b-a         | —     | production build ids are wired but unexercised; ttl-editor has now run its own        |
+| ttl-editor           | —     | `main` has no required status checks, so the promotion PR is gated by nobody          |
 
 On #84 specifically: `@ronl/shared` currently holds **no executable logic at
 all** — types, constant seed data and re-exports. So nothing is escaping the
