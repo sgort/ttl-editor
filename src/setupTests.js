@@ -6,7 +6,25 @@
 // The suite is Vitest, and `vi` comes from `globals: true` in vite.config.mjs.
 import '@testing-library/jest-dom';
 
+import { configure } from '@testing-library/react';
 import { vi } from 'vitest';
+
+/**
+ * How long a findBy query or a waitFor may keep looking before giving up.
+ *
+ * Testing Library's default is one second, which is generous on an idle machine
+ * and not generous at all on a saturated one. The suite runs its files in
+ * parallel, and under coverage instrumentation a control that appears in tens of
+ * milliseconds alone can take well over a second when every core is busy — so
+ * the failures this produces are unrelated to the test that reports them and
+ * move around between runs.
+ *
+ * Five seconds is contention headroom, not a defect mask: an element that is
+ * genuinely never rendered still fails, only later. The alternative — running
+ * the files serially — would diverge from CI, cost real time on every run, and
+ * hide the order dependencies that parallelism is good at exposing.
+ */
+configure({ asyncUtilTimeout: 5000 });
 
 /**
  * No test reaches TriplyDB over the network.
