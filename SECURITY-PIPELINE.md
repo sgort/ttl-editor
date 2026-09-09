@@ -30,6 +30,7 @@ mechanisms above to actually run:
 | `zizmorcore/zizmor-action`     | `3dc1ecc9bcb9e94e9b2c709687979e1298497054`          | v0.6.2            | Renovate                                                                |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below      |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | manual — Renovate's github-actions manager does not parse action inputs |
+| semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block        |
 | npm dependencies (test/lint)   | `package-lock.json`, `sha512` integrity per package | lockfileVersion 3 | Renovate                                                                |
 
 The npm layer feeding `npm ci` — lint and the test suite — was already
