@@ -34,11 +34,40 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    // Vitest's default is 5s per test. The component suites walk whole
+    // lifecycles — upload, validate, deploy, evaluate — each step a FileReader
+    // or a mocked round trip, and each one waiting on the DOM; under coverage
+    // instrumentation with every file running in parallel, the slowest of them
+    // came within a few hundred milliseconds of that ceiling and intermittently
+    // crossed it. See the note on asyncUtilTimeout in src/setupTests.js.
+    testTimeout: 15000,
     setupFiles: ['./src/setupTests.js'],
     include: ['src/**/*.test.{js,jsx}'],
     coverage: {
       provider: 'v8',
       include: ['src/**/*.{js,jsx}'],
+      // A branch floor, per file.
+      //
+      // Per file, because a project average lets a well-tested utility pay for
+      // an untested component; the branches that matter are precisely the ones
+      // nobody has exercised, and an average is designed to hide them.
+      //
+      // Branches, because statement and line coverage largely restate "was this
+      // file imported", and function coverage rewards splitting code into more
+      // functions. A branch is a decision the code makes; an uncovered branch is
+      // a decision no test has ever checked.
+      //
+      // This lived in scripts/check-branch-coverage.mjs while some files were
+      // still below the floor: Vitest's threshold globs are additive rather than
+      // overriding — "Global threshold is for all files, even if they are
+      // included by glob patterns" — so a per-file exemption cannot be expressed
+      // here, and the ratchet that carried the debt had to live outside. With
+      // nothing left to exempt, that no longer matters and the policy is native.
+      //
+      // One caveat travels with the numbers: they come from Vitest alone. The
+      // two Playwright journeys drive TTL import, DMN upload, deployment and
+      // evaluation end to end, and none of that reaches this report.
+      thresholds: { branches: 80, perFile: true },
     },
   },
 });

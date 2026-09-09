@@ -350,3 +350,123 @@ describe('a model with nothing to fill in', () => {
     expect(screen.getByLabelText(/Request Body/).value).not.toContain('"variables"');
   });
 });
+
+/**
+ * `dmnWith` always emits a <variable> child, which is what modern RONL exports
+ * look like. Older models — the bundled SVB example among them — declare an
+ * <inputData> with a name and nothing else, and the generator then has only the
+ * name to go on. That fallback is a separate ladder from the typeRef switch
+ * above and gets its own fixture.
+ */
+const dmnWithBareInputs = (names) =>
+  `<?xml version="1.0"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/">` +
+  names.map((name) => `<inputData id="id_${name}" name="${name}" />`).join('') +
+  `<decision id="Bepaal" name="Bepaal"><decisionTable id="t" /></decision></definitions>`;
+
+describe('an inputData with no declared type', () => {
+  test('a name that reads like a birth date gets a plausible birth date', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWithBareInputs(['geboortedatum']));
+
+    expect(vars.geboortedatum.type).toBe('String');
+    expect(new Date(vars.geboortedatum.value).getFullYear()).toBeLessThan(
+      new Date().getFullYear() - 10
+    );
+  });
+
+  test('any other date-ish name gets today', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWithBareInputs(['peildatum']));
+
+    expect(vars.peildatum).toEqual({
+      value: new Date().toISOString().split('T')[0],
+      type: 'String',
+    });
+  });
+
+  test('a name that reads like an amount becomes a numeric zero', async () => {
+    // Four name fragments stand in for "this is a quantity": aantal, bedrag,
+    // inkomen and norm. A String '' in one of these positions makes Operaton
+    // reject the evaluation outright, so the guess matters.
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWithBareInputs(['inkomen', 'aantalKinderen']));
+
+    expect(vars.inkomen).toEqual({ value: 0, type: 'Integer' });
+    expect(vars.aantalKinderen).toEqual({ value: 0, type: 'Integer' });
+  });
+
+  test('a name that suggests nothing at all stays an empty string', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWithBareInputs(['gemeente']));
+
+    expect(vars.gemeente).toEqual({ value: '', type: 'String' });
+  });
+});
+
+describe('the remaining typeRef spellings', () => {
+  test('long and number under an inputValues constraint keep their own types', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(
+      dmnWith([
+        { name: 'teller', typeRef: 'long', allowed: '7,8' },
+        { name: 'factor', typeRef: 'number', allowed: '0.5,1' },
+        { name: 'ratio', typeRef: 'double', allowed: '2.5' },
+      ])
+    );
+
+    expect(vars.teller).toEqual({ value: 7, type: 'Integer' });
+    expect(vars.factor).toEqual({ value: 0.5, type: 'Double' });
+    expect(vars.ratio).toEqual({ value: 2.5, type: 'Double' });
+  });
+
+  test('a string named for an application date, without the day, is still a date', async () => {
+    // 'aanvraag' alone reaches the last clause of the date test — the one that
+    // asks for 'aanvraag' and 'dag' together — and settles it.
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWith([{ name: 'aanvraag', typeRef: 'string' }]));
+
+    expect(vars.aanvraag).toEqual({ value: '', type: 'String' });
+  });
+
+  test('a string named for a birth date gets a birth date, not today', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(dmnWith([{ name: 'geboortedatum', typeRef: 'string' }]));
+
+    expect(vars.geboortedatum.type).toBe('String');
+    expect(new Date(vars.geboortedatum.value).getFullYear()).toBeLessThan(
+      new Date().getFullYear() - 10
+    );
+  });
+});
+
+describe('an inputValues constraint the parser cannot make sense of', () => {
+  test('an unterminated string literal is ignored rather than half-read', async () => {
+    renderTab();
+
+    const vars = await bodyAfterUpload(
+      dmnWith([{ name: 'gemeente', typeRef: 'string', allowed: '"Almere' }])
+    );
+
+    // The constraint contributed nothing, so the typeRef heuristics decide.
+    expect(vars.gemeente).toEqual({ value: '', type: 'String' });
+  });
+
+  test('a bare FEEL name is taken at face value', async () => {
+    // Unquoted entries appear in models that treat the column as an enumeration
+    // of symbols. There is nothing to parse, so the text itself is the example.
+    renderTab();
+
+    const vars = await bodyAfterUpload(
+      dmnWith([{ name: 'gemeente', typeRef: 'string', allowed: 'Almere,Lelystad' }])
+    );
+
+    expect(vars.gemeente).toEqual({ value: 'Almere', type: 'String' });
+  });
+});

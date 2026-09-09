@@ -15,7 +15,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ci": "vitest run --coverage && node scripts/check-branch-coverage.mjs",
+    "test:ci": "vitest run --coverage",
     "test:generator": "vitest run ttlGenerator",
     "test:generator:watch": "vitest ttlGenerator",
     "test:roundtrip": "vitest run roundtrip",
@@ -38,8 +38,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "check-supply-chain": "node scripts/check-supply-chain.mjs",
-    "check-coverage": "node scripts/check-branch-coverage.mjs"
+    "check-supply-chain": "node scripts/check-supply-chain.mjs"
   },
   "browserslist": {
     "production": [
