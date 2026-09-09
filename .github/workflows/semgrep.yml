@@ -1,0 +1,122 @@
+name: Semgrep
+
+# Same trigger shape as zizmor.yml, and for the same reason documented at
+# length there: no branches filter and no paths filter on pull_request, so
+# a pull request cannot skip the scan by targeting an unwatched base or by
+# touching nothing watched. push stays filtered to the two branches whose
+# post-merge state is worth re-scanning.
+#
+# Unlike the audit job, this one is NOT yet a required check, so a missing
+# run here cannot wedge a pull request the way a missing `audit` did. That
+# changes the day it is added to the "acc supply-chain gate" ruleset -- at
+# which point the trigger shape above is what stops it becoming the same
+# trap. Promotion is a ruleset change, deliberately not a change to this
+# file: `continue-on-error` would be the obvious alternative and is the
+# wrong tool, for the reason zizmor.yml already spells out -- it rewrites
+# the STEP's reported conclusion as well as the job's, so a finding shows
+# up only in the log while the checks list, the job and the step all read
+# "success".
+on:
+  pull_request:
+  push:
+    branches:
+      - acc
+      - main
+
+# The only workflow here that sets concurrency, and deliberately so. This is
+# the slowest read-only job on an unfiltered pull_request trigger, so a branch
+# pushed three times in a minute otherwise runs three full scans of which two
+# are already stale.
+#
+# cancel-in-progress is conditional rather than `true`, which is the part that
+# matters. The push runs on acc and main are what write the Semgrep Cloud
+# baseline; cancelling one mid-upload leaves the dashboard describing a scan
+# that never finished, and nothing would re-run to correct it. Pull-request
+# runs write nothing durable, so superseding them is free.
+#
+# Not copied into the other three workflows. For the deploy pair that is a
+# real decision rather than an oversight -- cancelling a half-finished
+# deployment is not obviously safer than letting it complete -- and it should
+# be taken on its own merits, not inherited from here.
+concurrency:
+  group: semgrep-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+# Read-only. Findings go to Semgrep Cloud over the API, not to the GitHub
+# security tab, so security-events: write is not needed. If SARIF upload is
+# ever added, that permission comes with it -- and note zizmor.yml sets
+# advanced-security: false for precisely this reason.
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # semgrep ci is diff-aware on a pull request: it scans the merge
+          # base against the head and reports only what the pull request
+          # introduces. It cannot compute that from a shallow clone, and it
+          # degrades quietly to a full scan rather than failing -- which
+          # would turn every pull request into a 17-finding wall and train
+          # everyone to ignore it. Full history is the difference between
+          # "this pull request adds a finding" and "this repository has
+          # findings".
+          fetch-depth: 0
+
+      - name: Install Semgrep
+        # Hand-pinned, exactly like zizmor's `version:` input and the
+        # renovate@44.50.3 argument in the audit workflow. Renovate's
+        # managers do not parse a version out of a run: block, so this is
+        # bumped by hand and carries a register row saying so.
+        #
+        # The venv is required, not stylistic: ubuntu-latest marks its
+        # system Python as externally-managed (PEP 668), so a bare
+        # `pip install` exits 1 with error: externally-managed-environment.
+        run: |
+          python3 -m venv "$RUNNER_TEMP/semgrep-venv"
+          "$RUNNER_TEMP/semgrep-venv/bin/pip" install --quiet semgrep==1.176.1
+          echo "$RUNNER_TEMP/semgrep-venv/bin" >> "$GITHUB_PATH"
+
+      - name: Verify the pinned version installed
+        # Cheap, and it makes the log state which Semgrep produced the
+        # findings below it. A scan whose tool version is not in its own
+        # output is what made the first triage in #112 ambiguous.
+        run: semgrep --version
+
+      - name: Scan
+        env:
+          # Required. Without it `semgrep ci` refuses to run, and an
+          # unauthenticated `semgrep scan` would silently drop Supply Chain
+          # -- the SCA half is the entire point of this job.
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+        # No --dry-run: results should reach the Semgrep Cloud dashboard so
+        # the finding count is tracked over time rather than living in a run
+        # log that expires. --dry-run is the right flag when scanning from a
+        # workstation, not from CI.
+        #
+        # The push runs on acc and main are what establish the dashboard
+        # baseline, and they must be the ones that do it. Semgrep derives the
+        # project identity from its environment: inside Actions it reads
+        # GITHUB_REPOSITORY and registers sgort/ttl-editor, while a local run
+        # registers local_scan/ttl-editor. Seeding the baseline from a
+        # workstation would create two projects with split history, and the
+        # one holding the baseline would be the one CI never writes to again.
+        #
+        # Exit status is policy-driven: semgrep ci exits non-zero only on
+        # findings the Semgrep Cloud policy marks BLOCKING. All 17 current
+        # findings are non-blocking, so this is green today and turns red the
+        # day the policy says a class of finding matters. That is the
+        # intended promotion path -- tighten the policy, not this file.
+        #
+        # --no-suppress-errors is deliberate. By default semgrep ci prints
+        # "There were errors during analysis but Semgrep will succeed" and
+        # exits 0, which is exactly how the broken snap install went unnoticed
+        # locally: the scan crashed on a missing git binary and still reported
+        # success. In CI a tool that cannot run is a failure, not a warning.
+        run: semgrep ci --no-suppress-errors
