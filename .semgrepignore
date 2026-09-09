@@ -1,0 +1,36 @@
+# Paths Semgrep should not scan, in .gitignore syntax.
+#
+# Semgrep already limits itself to files tracked by git, so node_modules,
+# build/ and coverage/ are excluded by .gitignore without needing a line
+# here. This file is for paths that ARE tracked and ARE meant to be, but
+# are not application code.
+
+# Reference material, not application code, and not served by the app.
+#
+# Note this is the repository-root examples/ tree, which is a DIFFERENT
+# thing from public/examples/. public/examples IS served -- DMNTab.jsx
+# fetches /examples/organizations/svb/... from it at runtime -- and must
+# keep being scanned. The two trees have confusingly similar paths and
+# only this one is inert.
+#
+# What it currently silences, all triaged in #112 and all in files the
+# application never loads:
+#   - duo/Handleiding Chat op de wet (uitgebreid).html
+#       missing-integrity: no SRI on a cdn.tailwindcss.com script tag, in
+#       a standalone documentation artifact.
+#   - flevoland/.../BPMN/Python/archive/dashboard.py
+#   - flevoland/.../BPMN/Python/archive/runner.py
+#       flask render-template-string, in an archived demo of an unrelated
+#       BPMN project. runner.py renders a module constant with no
+#       interpolation at all.
+#
+# If anything under examples/ ever becomes application code, delete this
+# rule rather than carving an exception into it.
+#
+# The leading slash is load-bearing. A bare `examples/` is .gitignore
+# syntax for "a directory named examples at ANY depth", which also
+# swallows public/examples/ -- verified: it silently dropped
+# public/examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn,
+# the file DMNTab.jsx fetches at runtime, from the scanned set. Anchoring
+# to the repository root is what keeps the distinction above real.
+/examples/
