@@ -14,6 +14,11 @@ two audiences at once:
 §10 says what the visual needs to carry, and §13 lists what is still open and
 who owns it. Everything else is the material.
 
+**The visual now exists.** Eight slides, exported from this brief, live in
+[`dmn-workflow-slides/`](dmn-workflow-slides/) with a README covering export
+settings and MkDocs embedding. Where the two disagree, this page is the
+source and the slides are the rendering.
+
 Every number here was measured from the repository, not estimated. Sources are
 the three folder changelogs
 ([Amsterdam](../examples/organizations/amsterdam/CHANGELOG.md),
@@ -104,7 +109,7 @@ The derivation strategy. §5 lists the actual choices made and why. This is
 where the work is either honest or not: the temptation is to make the model run
 by quietly changing what it decides.
 
-### 4 · Derive
+### 4 · Derive _(human)_
 
 Produce a second file — `<original>-patched.dmn` — and leave the original
 untouched. The original is the auditable record of what the legal analysis
@@ -361,6 +366,7 @@ publishing:
 | A model that had to be re-derived, not patched  | [`den haag/testCases/test-cases-validation-alo.md`](../examples/organizations/den%20haag/testCases/test-cases-validation-alo.md) §5                                                                                       |
 | What each pass inherited from the previous ones | [`den haag/testCases/test-cases-validation-alo.md`](../examples/organizations/den%20haag/testCases/test-cases-validation-alo.md) §7                                                                                       |
 | How the legal sources were traced               | [`amsterdam/testCases/extract-legal-sources.py`](../examples/organizations/amsterdam/testCases/extract-legal-sources.py) and [`legal-sources-hva.md`](../examples/organizations/amsterdam/testCases/legal-sources-hva.md) |
+| The slide deck built from this brief            | [`dmn-workflow-slides/`](dmn-workflow-slides/) — eight 4K PNGs and a README; the same content as a PDF sits beside it                                                                                                     |
 
 ---
 
