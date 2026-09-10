@@ -1,0 +1,2355 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041> a cpsv:PublicService ;
+    dct:identifier "normbedragen-jul26-041" ;
+    dct:title "Normenbrief - Informatie voor gemeenten"@nl ;
+    dct:description "Ieder half jaar veranderen de bedragen en percentages voor de uitvoering van de Participatiewet, IOAW, IOAZ en het Bbz 2004. Het gaat onder meer om de bijstandsnormen, de minimumbedragen studietoeslag en de grondslagen IOAW en IOAZ. De uitkeringen worden ieder halfjaar aangepast als gevolg van de indexering van het wettelijk minimumuurloon."@nl ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> ;
+    dcat:keyword "allowance, social, income,"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn>  .
+
+<https://publications.europa.eu/resource/authority/language/NL> a dct:LinguisticSystem .
+
+<https://publications.europa.eu/resource/authority/corporate-body-classification/NATIONAL> a skos:Concept .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/19087/Sociale_Zaken_en_Werkgelegenheid> a cv:PublicOrganisation ;
+    dct:identifier "Sociale_Zaken_en_Werkgelegenheid" ;
+    skos:prefLabel "Sociale Zaken en Werkgelegenheid (SZW)"@nl ;
+    foaf:homepage <https://szw.nl> ;
+    dct:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png> ;
+    schema:image <./assets/Sociale_Zaken_en_Werkgelegenheid_logo.png>  .
+
+<https://publications.europa.eu/resource/authority/country/NLD> a dct:Location .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/BWBR0015703> a eli:LegalResource ;
+    dct:identifier "BWBR0015703" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "De informatie in dit onderdeel vormt geen bekendmaking in de zin van de Grondwet. Alleen publicatie in het Tractatenblad, het Staatsblad, de Staatscourant en andere vanwege de overheid verkrijgbaar gestelde publicatiebladen heeft een officieel karakter."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/RuleSpeak> ;
+    eli:is_realized_by <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+
+# ============================================================
+#  CPRMV RuleSet
+# ============================================================
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0015703-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0015703_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0015703_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0015703/2026-07-01> ;
+    dct:title "Participatiewet"@nl ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-3> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22a_lid-3_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22a_lid-3_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-2_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-2_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-19_lid-3> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-15_lid-2_onderdeel-b_onderdeel-2°> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-15_lid-2_onderdeel-b_onderdeel-3°_onderdeel-ii> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-j> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-m> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-n> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-r> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-y> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-z> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-aa> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-33_lid-5_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-33_lid-5_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-2_onderdeel-d> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-c> <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-35_lid-2> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0yar3xr-cell-UnaryTests_06m15wh> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0zzeplm-cell-UnaryTests_0h8qb5r> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_05p8y4i-cell-UnaryTests_17q23lc> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0lycko6-cell-UnaryTests_0jut2a0> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_02fzff8-cell-UnaryTests_0zn4svg> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0tv6bfi-cell-UnaryTests_04lml7g> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1y6sceg-cell-UnaryTests_1codt0n> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_06gy25k-cell-UnaryTests_1frbnp8> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0l3sva9-cell-UnaryTests_14xbrdv> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1sqe0dq-cell-UnaryTests_1q625nf> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0ksktvy-cell-UnaryTests_0f6c6qv> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_025n7b3-cell-UnaryTests_1lifz1c> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1n8r7qq-cell-UnaryTests_01gqxt7> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MK-cell-UnaryTests_norm_MK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MMK-cell-UnaryTests_norm_MMK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MOK-cell-UnaryTests_norm_MOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_JO-cell-UnaryTests_norm_JO> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_JOK-cell-UnaryTests_norm_JOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_OK-cell-UnaryTests_norm_OK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_OOK-cell-UnaryTests_norm_OOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0ajbb2x> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0iildzk> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1jkq2bf> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0x5er5y> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_13xeman> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0545h9n> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0w4tguf> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1ool6dv> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_07ilwms> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1tg3hf1> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1r0wkpz> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0bm63m9> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0v4yv5d> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1fd1sc1> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0pp3akh> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0ek3wvv> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1kplyfr> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0zrkt61> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_15q4g55> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0bqqbxp> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0lllmmm> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1a5mec0> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1pu6fcm> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0bh43uw> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1l3ur2f> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0jy1rnz> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0k9vctz> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_05xgl0h> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1t1bdt3> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_18kvhjw> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1sibpzt> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1ww716b> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0uxv2iz> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0vo73lk> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_19os0q8> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_02kmr8o> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_09pccxo> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1rbqwbm> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1r8jhgb> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1lpym02> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_M> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MM> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MMK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MO> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJ> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_J> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJ> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JO> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_O> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OO> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OOK> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_I> <https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_II> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0044894_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0044894-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0044894_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0044894_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0044894_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0044894/2026-07-01> ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-c> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-d> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-e> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-f> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-g> <https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7b>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015711_2026-01-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0015711-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0015711_2026-01-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0015711_2026-01-01" ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0015711_2026-01-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0015711/2026-01-01> ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-b_2> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-2> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-6_lid-2> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-15_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-20> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-22> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-24> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-25> <https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-26>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0004044_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0004044-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0004044_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0004044_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0004044_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0004044/2026-07-01> ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-3_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-3_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-4> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-2> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-5> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-7> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-9> <https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-10>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0004163_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0004163-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0004163_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0004163_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0004163_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0004163/2026-07-01> ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-a> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-c> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-b> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-2_onderdeel-2°> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-2_onderdeel-3°> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-2> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-2_2> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-3> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-9> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-11> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-13> <https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-14>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0029368_2026-07-01/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0029368-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0029368_2026-07-01> a cprmv:RuleSet ;
+    cprmv:id "BWBR0029368_2026-07-01" ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0029368_2026-07-01/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0029368/2026-07-01> ;
+    cprmv:rulesetId "BWBR0029368" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0029368_2026-07-01_0_Artikel-2-8_lid-1_onderdeel-b>) .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0002471_2026-02-21/method> a cprmv:RuleMethod, cprmv:CodificationMethod ;
+    cprmv:id "BWBR0002471-method" .
+
+<https://cprmv.open-regels.nl/rulesets/BWBR0002471_2026-02-21> a cprmv:RuleSet ;
+    cprmv:id "BWBR0002471_2026-02-21" ;
+    cprmv:validFrom "2026-02-21"^^xsd:date ;
+    cprmv:isOutputOf <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    cprmv:hasMethod <https://cprmv.open-regels.nl/rulesets/BWBR0002471_2026-02-21/method> ;
+    prov:wasDerivedFrom <https://wetten.overheid.nl/BWBR0002471/2026-02-21> ;
+    cprmv:rulesetId "BWBR0002471" ;
+    cprmv:hasPart (<https://cprmv.open-regels.nl/rules/BWBR0002471_2026-02-21_0_Artikel-2_lid-6> <https://cprmv.open-regels.nl/rules/BWBR0002471_2026-02-21_0_Artikel-2_lid-6_2>) .
+
+
+# ============================================================
+#  CPRMV Rules
+# ============================================================
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande van 18, 19 of 20 jaar: € 350,42;"@nl ;
+    cprmv:situatie "een alleenstaande van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "350,42" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 700,84;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "700,84" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.364,32."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.364,32" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 1, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande ouder van 18, 19 of 20 jaar: € 350,42;"@nl ;
+    cprmv:situatie "een alleenstaande ouder van 18, 19 of 20 jaar"@nl ;
+    cprmv:norm "350,42" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn: € 1.106,40;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn"@nl ;
+    cprmv:norm "1.106,40" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners: € 1.769,88."@nl ;
+    cprmv:situatie "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.769,88" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 2, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-3> a cprmv:Rule ;
+    cprmv:id "lid 3" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "Voor belanghebbenden van 18, 19 of 20 jaar verhoogt het college de norm met een bedrag van € 762,24, indien die belanghebbende voor de kosten van levensonderhoud geen beroep kan doen op zijn ouders, omdat: de middelen van de ouders daartoe niet toereikend zijn; of deze persoon redelijkerwijs het onderhoudsrecht jegens de ouders niet te gelde kan maken."@nl ;
+    cprmv:situatie "Voor belanghebbenden van 18, 19 of 20 jaar verhoogt het college de norm met een bedrag van"@nl ;
+    cprmv:norm "762,24" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 20, lid 3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.419,46;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.419,46" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 21, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners: € 2.027,79."@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.027,79" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 21, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners: € 1.587,34;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "1.587,34" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 22, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners: € 2.176,10;"@nl ;
+    cprmv:situatie "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners"@nl ;
+    cprmv:norm "2.176,10" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 22, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22a_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze een of meer ten laste komende kinderen hebben: € 755,98 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder,"@nl ;
+    cprmv:situatie "indien ze een of meer ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "755,98" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 22a, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22a_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "indien ze geen ten laste komende kinderen hebben: € 350,42 plus de op basis van dit artikel van toepassing zijnde norm voor de echtgenoot van 21 jaar of ouder."@nl ;
+    cprmv:situatie "indien ze geen ten laste komende kinderen hebben"@nl ;
+    cprmv:norm "350,42" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 22a, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een alleenstaande of een alleenstaande ouder: € 449,44;"@nl ;
+    cprmv:situatie "een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "449,44" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 23, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "gehuwden: € 699,11."@nl ;
+    cprmv:situatie "gehuwden"@nl ;
+    cprmv:norm "699,11" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 23, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande of een alleenstaande ouder € 47,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande of een alleenstaande ouder"@nl ;
+    cprmv:norm "47,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 23, lid 2, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor gehuwden € 106,00."@nl ;
+    cprmv:situatie "voor gehuwden"@nl ;
+    cprmv:norm "106,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 23, lid 2, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-19_lid-3> a cprmv:Rule ;
+    cprmv:id "lid 3" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van 4,8 procent per 1 januari 2009: 5 procent van die bijstand."@nl ;
+    cprmv:situatie "In de algemene bijstand is een vakantietoeslag begrepen ter hoogte van"@nl ;
+    cprmv:norm "5" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 19, lid 3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-15_lid-2_onderdeel-b_onderdeel-2°> a cprmv:Rule ;
+    cprmv:id "onderdeel 2°." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor zover de totale waarde van deze lijfrente of lijfrenten niet meer bedraagt dan € 337.989,00, waarbij voor de vaststelling van de waarde wordt uitgegaan van de waarde zonder aftrek van de eventueel door de belanghebbende daarover verschuldigde bedragen als bedoeld in artikel 31, derde lid; en"@nl ;
+    cprmv:situatie "voor zover de totale waarde van deze lijfrente of lijfrenten niet meer bedraagt dan"@nl ;
+    cprmv:norm "337.989,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 15, lid 2, onderdeel b, onderdeel 2°" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-15_lid-2_onderdeel-b_onderdeel-3°_onderdeel-ii> a cprmv:Rule ;
+    cprmv:id "onderdeel (ii)" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "tijdens de toetsingsperiode heeft plaatsgevonden, daarbij jaarlijks ten minste enige inleg heeft plaatsgevonden en de inleg ten hoogste € 8.112,00 per jaar heeft bedragen."@nl ;
+    cprmv:situatie "tijdens de toetsingsperiode heeft plaatsgevonden, daarbij jaarlijks ten minste enige inleg heeft plaatsgevonden en de inleg ten hoogste"@nl ;
+    cprmv:norm "8.112,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 15, lid 2, onderdeel b, onderdeel 3°., onderdeel (ii)" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-j> a cprmv:Rule ;
+    cprmv:id "onderdeel j." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "een een- of tweemalige premie van ten hoogste € 3.398,00 per 1 juli 2026: € 3.446,00 per kalenderjaar, voor zover dit naar het oordeel van het college bijdraagt aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "een een- of tweemalige premie van ten hoogste € 3.398,00 per 1 juli 2026:"@nl ;
+    cprmv:norm "3.446,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel j." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-m> a cprmv:Rule ;
+    cprmv:id "onderdeel m." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "giften, voor zover de som van deze giften en de bijdragen, bedoeld in artikel 18, achtste lid, niet meer bedraagt dan € 1.200,00 per kalenderjaar;"@nl ;
+    cprmv:situatie "giften, voor zover de som van deze giften en de bijdragen, bedoeld in artikel 18, achtste lid, niet meer bedraagt dan"@nl ;
+    cprmv:norm "1.200,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel m." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-n> a cprmv:Rule ;
+    cprmv:id "onderdeel n." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per 1 juli 2026: € 289,00 per maand, voor zover hij algemene bijstand ontvangt, waarbij voor een persoon die de pensioengerechtigde leeftijd nog niet heeft bereikt geldt dat die inkomsten gedurende ten hoogste zes maanden niet tot de middelen worden gerekend en dat dit naar het oordeel van het college moet bijdragen aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid tot 25 procent van deze inkomsten, met een maximum van € 285,00 per 1 juli 2026:"@nl ;
+    cprmv:norm "289,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel n." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-r> a cprmv:Rule ;
+    cprmv:id "onderdeel r." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per 1 juli 2026: € 180,17 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij algemene bijstand ontvangt en onderdeel y, z of aa niet van toepassing is, ingeval: hij de volledige zorg heeft voor een tot zijn last komend kind tot 12 jaar, de periode van zes maanden, bedoeld in onderdeel n, is verstreken, en dit volgens het college bijdraagt aan zijn arbeidsinschakeling;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een alleenstaande ouder tot 12,5 procent van deze inkomsten, met een maximum van € 177,66 per 1 juli 2026:"@nl ;
+    cprmv:norm "180,17" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel r." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-y> a cprmv:Rule ;
+    cprmv:id "onderdeel y." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026: € 182,73 per maand, voor zover hij algemene bijstand ontvangt, tenzij onderdeel n van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026:"@nl ;
+    cprmv:norm "182,73" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel y." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-z> a cprmv:Rule ;
+    cprmv:id "onderdeel z." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026: € 182,73 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in onderdeel n, is verstreken, voor zover hij algemene bijstand ontvangt, tenzij onderdeel y van toepassing is;"@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026:"@nl ;
+    cprmv:norm "182,73" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel z." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-31_lid-2_onderdeel-aa> a cprmv:Rule ;
+    cprmv:id "onderdeel aa." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026: € 182,73 per maand, nadat de periode van twaalf maanden, bedoeld in onderdeel z, is verstreken, voor zover hij algemene bijstand ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht."@nl ;
+    cprmv:situatie "inkomsten uit een dienstbetrekking als bedoeld in artikel 10d, eerste of tweede lid, van een persoon die behoort tot de doelgroep loonkostensubsidie, tot 15 procent van deze inkomsten uit arbeid, met een maximum van € 180,19 per 1 juli 2026:"@nl ;
+    cprmv:norm "182,73" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 31, lid 2, onderdeel aa." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-33_lid-5_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande en een alleenstaande ouder: € 26,50 per kalendermaand;"@nl ;
+    cprmv:situatie "voor een alleenstaande en een alleenstaande ouder"@nl ;
+    cprmv:norm "26,50" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 33, lid 5, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-33_lid-5_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 53,00 per kalendermaand."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "53,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 33, lid 5, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-2_onderdeel-d> a cprmv:Rule ;
+    cprmv:id "onderdeel d." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan € 67.500,00;"@nl ;
+    cprmv:situatie "het vermogen gebonden in de woning met bijbehorend erf, bedoeld in artikel 50, eerste lid, voorzover dit minder bedraagt dan"@nl ;
+    cprmv:norm "67.500,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 34, lid 2, onderdeel d." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande: € 8.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande"@nl ;
+    cprmv:norm "8.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 34, lid 3, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor een alleenstaande ouder: € 16.000,00;"@nl ;
+    cprmv:situatie "voor een alleenstaande ouder"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 34, lid 3, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-34_lid-3_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "voor de gehuwden tezamen: € 16.000,00."@nl ;
+    cprmv:situatie "voor de gehuwden tezamen"@nl ;
+    cprmv:norm "16.000,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 34, lid 3, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-35_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0015703" ;
+    cprmv:definition "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van € 176,00 niet te boven gaan."@nl ;
+    cprmv:situatie "Het college kan bijzondere bijstand weigeren, indien de in het eerste lid bedoelde kosten binnen twaalf maanden een bedrag van"@nl ;
+    cprmv:norm "176,00" ;
+    cprmv:ruleIdPath "BWBR0015703_2026-07-01_0, Artikel 35, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "21-jarigen en ouder: € 390,07;"@nl ;
+    cprmv:situatie "21-jarigen en ouder"@nl ;
+    cprmv:norm "390,07" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "20-jarigen: € 312,06;"@nl ;
+    cprmv:situatie "20-jarigen"@nl ;
+    cprmv:norm "312,06" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "19-jarigen: € 234,05;"@nl ;
+    cprmv:situatie "19-jarigen"@nl ;
+    cprmv:norm "234,05" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-d> a cprmv:Rule ;
+    cprmv:id "onderdeel d." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "18-jarigen: € 195,04;"@nl ;
+    cprmv:situatie "18-jarigen"@nl ;
+    cprmv:norm "195,04" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel d." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-e> a cprmv:Rule ;
+    cprmv:id "onderdeel e." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "17-jarigen: € 154,08;"@nl ;
+    cprmv:situatie "17-jarigen"@nl ;
+    cprmv:norm "154,08" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel e." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-f> a cprmv:Rule ;
+    cprmv:id "onderdeel f." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "16-jarigen: € 134,58;"@nl ;
+    cprmv:situatie "16-jarigen"@nl ;
+    cprmv:norm "134,58" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel f." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7a_onderdeel-g> a cprmv:Rule ;
+    cprmv:id "onderdeel g." ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "15-jarigen: € 117,03."@nl ;
+    cprmv:situatie "15-jarigen"@nl ;
+    cprmv:norm "117,03" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7a., onderdeel g." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0044894_2026-07-01_0_Artikel-7b> a cprmv:Rule ;
+    cprmv:id "Artikel 7b" ;
+    cprmv:rulesetId "BWBR0044894" ;
+    cprmv:definition "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand € 234,05."@nl ;
+    cprmv:situatie "Het bedrag, bedoeld in artikel 36b, vijfde lid, van de Participatiewet bedraagt per maand"@nl ;
+    cprmv:norm "234,05" ;
+    cprmv:ruleIdPath "BWBR0044894_2026-07-01_0, Artikel 7b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0044894>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a. " ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "wordt niet verleend indien het eigen vermogen meer bedraagt dan  € 251.233,00;"@nl ;
+    cprmv:situatie "wordt niet verleend indien het eigen vermogen meer bedraagt dan"@nl ;
+    cprmv:norm "251.233,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b. " ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan € 251.233,00 slechts verleend indien dit eigen vermogen niet meer bedraagt dan 30 procent van het totaal vermogen."@nl ;
+    cprmv:situatie "wordt, indien het eigen vermogen meer bedraagt dan"@nl ;
+    cprmv:norm "59.782" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-1_onderdeel-b_2> a cprmv:Rule ;
+    cprmv:id "onderdeel b. " ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan € 251.233,00 slechts verleend indien dit eigen vermogen niet meer bedraagt dan 30 procent van het totaal vermogen."@nl ;
+    cprmv:situatie "wordt, indien het eigen vermogen meer bedraagt dan € 59.782, doch minder dan"@nl ;
+    cprmv:norm "251.233,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 3, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-3_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "In afwijking van het eerste lid wordt aan de zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, bijstand in de vorm van een bedrag om niet als bedoeld in de artikelen 12 en 26 niet verleend, indien het eigen vermogen meer bedraagt dan € 175.864,00."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt aan de zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, bijstand in de vorm van een bedrag om niet als bedoeld in de artikelen 12 en 26 niet verleend, indien het eigen vermogen meer bedraagt dan"@nl ;
+    cprmv:norm "175.864,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 3, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-6_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Bij de bijstandsverlening aan een zelfstandige worden de verschuldigde inkomstenbelasting en premies volksverzekeringen over inkomen waarover geen loonbelasting is geheven gesteld op 20 procent per 1 januari 2025: 19 procent van dat inkomen."@nl ;
+    cprmv:situatie "Bij de bijstandsverlening aan een zelfstandige worden de verschuldigde inkomstenbelasting en premies volksverzekeringen over inkomen waarover geen loonbelasting is geheven gesteld op"@nl ;
+    cprmv:norm "19" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 6, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-15_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "de rente van de geldlening bedraagt 5 procent per 1 juli 2009: 8 procent per jaar gedurende de gehele looptijd van de geldlening;"@nl ;
+    cprmv:situatie "de rente van de geldlening bedraagt"@nl ;
+    cprmv:norm "8" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 15, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-20> a cprmv:Rule ;
+    cprmv:id "Artikel 20" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, kan ter voorziening in de behoefte aan bedrijfskapitaal bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste € 261.048,00. Dit bedrag geldt per bedrijf of zelfstandig beroep."@nl ;
+    cprmv:situatie "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, kan ter voorziening in de behoefte aan bedrijfskapitaal bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste"@nl ;
+    cprmv:norm "261.048,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 20" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-22> a cprmv:Rule ;
+    cprmv:id "Artikel 22" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Bijstand in de behoefte aan bedrijfskapitaal kan aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, worden verleend in de vorm van een bedrag om niet tot ten hoogste € 13.052,00, indien het inkomen van de zelfstandige duurzaam lager is dan de som van de bijstandsnorm, bedoeld in hoofdstuk 3, paragraaf 3.2 en 3.3, van de wet, en de verleende bijzondere bijstand en diens vermogen de grens genoemd in artikel 3, eerste lid, niet te boven gaat. Deze bijstand gaat niet samen met bijstand als bedoeld in artikel 20."@nl ;
+    cprmv:situatie "Bijstand in de behoefte aan bedrijfskapitaal kan aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel a, worden verleend in de vorm van een bedrag om niet tot ten hoogste"@nl ;
+    cprmv:norm "13.052,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 22" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-24> a cprmv:Rule ;
+    cprmv:id "Artikel 24" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel b, kan ter voorziening in de behoefte aan bedrijfskapitaal uitsluitend bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste € 48.060,00. Dit bedrag geldt per bedrijf of zelfstandig beroep."@nl ;
+    cprmv:situatie "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel b, kan ter voorziening in de behoefte aan bedrijfskapitaal uitsluitend bijstand in de vorm van een rentedragende geldlening of borgtocht worden verleend tot een bedrag van ten hoogste"@nl ;
+    cprmv:norm "48.060,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 24" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-25> a cprmv:Rule ;
+    cprmv:id "Artikel 25" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, wordt algemene bijstand verleend voor de duur dat hij uit het bedrijf of zelfstandig beroep naar verwachting een bruto inkomen zal behalen dat gemiddeld minstens € 10.368,00 per boekjaar bedraagt."@nl ;
+    cprmv:situatie "Aan een zelfstandige als bedoeld in artikel 2, eerste lid, onderdeel c, wordt algemene bijstand verleend voor de duur dat hij uit het bedrijf of zelfstandig beroep naar verwachting een bruto inkomen zal behalen dat gemiddeld minstens"@nl ;
+    cprmv:norm "10.368,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 25" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015711_2026-01-01_0_Artikel-26> a cprmv:Rule ;
+    cprmv:id "Artikel 26" ;
+    cprmv:rulesetId "BWBR0015711" ;
+    cprmv:definition "Bijstand ter voorziening in de behoefte aan bedrijfskapitaal wordt aan de zelfstandige, bedoeld in artikel 2, eerste lid, onderdeel c, slechts verleend tot ten hoogste € 13.052,00. Deze bijstand wordt verstrekt in de vorm van een bedrag om niet of, voor zover het eigen vermogen meer bedraagt dan het bedrag, genoemd in artikel 3, tweede lid, in de vorm van een renteloze lening. Artikel 13 is van overeenkomstige toepassing."@nl ;
+    cprmv:situatie "Bijstand ter voorziening in de behoefte aan bedrijfskapitaal wordt aan de zelfstandige, bedoeld in artikel 2, eerste lid, onderdeel c, slechts verleend tot ten hoogste"@nl ;
+    cprmv:norm "13.052,00" ;
+    cprmv:ruleIdPath "BWBR0015711_2026-01-01_0, Artikel 26" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015711>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-3_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "voor de werkloze werknemer en de echtgenoot die beiden 21 jaar of ouder zijn, de helft van de grondslag netto gelijk is aan € 1.013,90;"@nl ;
+    cprmv:situatie "voor de werkloze werknemer en de echtgenoot die beiden 21 jaar of ouder zijn, de helft van de grondslag netto gelijk is aan"@nl ;
+    cprmv:norm "1.013,90" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 5, lid 3, onderdeel a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-3_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "voor de alleenstaande werkloze werknemer, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan € 1.013,90."@nl ;
+    cprmv:situatie "voor de alleenstaande werkloze werknemer, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan"@nl ;
+    cprmv:norm "1.013,90" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 5, lid 3, onderdeel b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-5_lid-4> a cprmv:Rule ;
+    cprmv:id "lid 4" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "De grondslag, bedoeld in het eerste lid, wordt zodanig vastgesteld dat deze voor de alleenstaande werkloze werknemer van 23 jaar of ouder netto gelijk is aan € 1.419,46."@nl ;
+    cprmv:situatie "De grondslag, bedoeld in het eerste lid, wordt zodanig vastgesteld dat deze voor de alleenstaande werkloze werknemer van 23 jaar of ouder netto gelijk is aan"@nl ;
+    cprmv:norm "1.419,46" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 5, lid 4" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "onderdeel a." ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "de gewezen zelfstandige en de echtgenoot de helft van de grondslag netto gelijk is aan € 1.013,90;"@nl ;
+    cprmv:situatie "de gewezen zelfstandige en de echtgenoot de helft van de grondslag netto gelijk is aan"@nl ;
+    cprmv:norm "1.013,90" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 5, lid 4, onderdeel a." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "onderdeel c." ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "voor de alleenstaande gewezen zelfstandige, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan € 1.013,90."@nl ;
+    cprmv:situatie "voor de alleenstaande gewezen zelfstandige, bedoeld in het eerste lid, onderdeel c, die met een of meer meerderjarige personen in dezelfde woning zijn hoofdverblijf heeft, de grondslag netto gelijk is aan"@nl ;
+    cprmv:norm "1.013,90" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 5, lid 4, onderdeel c." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-4_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "voor de alleenstaande gewezen zelfstandige netto gelijk is aan € 1.419,46;"@nl ;
+    cprmv:situatie "voor de alleenstaande gewezen zelfstandige netto gelijk is aan"@nl ;
+    cprmv:norm "1.419,46" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 5, lid 4, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0029368_2026-07-01_0_Artikel-2-8_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "onderdeel b." ;
+    cprmv:rulesetId "BWBR0029368" ;
+    cprmv:definition "een eenmalige premie die door burgemeester en wethouders kan worden toegekend in het kader van een voorziening gericht op arbeidsinschakeling van ten hoogste € 3.446 per kalenderjaar; en"@nl ;
+    cprmv:situatie "een eenmalige premie die door burgemeester en wethouders kan worden toegekend in het kader van een voorziening gericht op arbeidsinschakeling van ten hoogste"@nl ;
+    cprmv:norm "3.446" ;
+    cprmv:ruleIdPath "BWBR0029368_2026-07-01_0, Artikel 2:8, lid 1, onderdeel b." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0029368>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0002471_2026-02-21_0_Artikel-2_lid-6> a cprmv:Rule ;
+    cprmv:id "lid 6" ;
+    cprmv:rulesetId "BWBR0002471" ;
+    cprmv:definition "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste € 220 per maand en € 2.200 per kalenderjaar. Hierbij wordt onder vrijwilliger verstaan degene die niet bij wijze van beroep arbeid verricht voor een algemeen nut beogende instelling, een sportorganisatie of een niet als zodanig aan te merken lichaam dat niet is onderworpen aan de vennootschapsbelasting of daarvan is vrijgesteld. "@nl ;
+    cprmv:situatie "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste"@nl ;
+    cprmv:norm "220" ;
+    cprmv:ruleIdPath "BWBR0002471_2026-02-21_0, Artikel 2, lid 6" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0002471>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0002471_2026-02-21_0_Artikel-2_lid-6_2> a cprmv:Rule ;
+    cprmv:id "lid 6" ;
+    cprmv:rulesetId "BWBR0002471" ;
+    cprmv:definition "Het eerste lid is eveneens niet van toepassing op personen die als vrijwilliger uitsluitend vergoedingen of verstrekkingen ontvangen met een gezamenlijke waarde van ten hoogste € 220 per maand en € 2.200 per kalenderjaar. Hierbij wordt onder vrijwilliger verstaan degene die niet bij wijze van beroep arbeid verricht voor een algemeen nut beogende instelling, een sportorganisatie of een niet als zodanig aan te merken lichaam dat niet is onderworpen aan de vennootschapsbelasting of daarvan is vrijgesteld. "@nl ;
+    cprmv:norm "2.200" ;
+    cprmv:ruleIdPath "BWBR0002471_2026-02-21_0, Artikel 2, lid 6" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0002471>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van € 448,90 per maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "448,90" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 8, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-5> a cprmv:Rule ;
+    cprmv:id "lid 5" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van € 280,95 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval: hij de volledige zorg heeft voor zijn kind tot 12 jaar, de periode van zes maanden, bedoeld in het tweede lid, is verstreken, en dit volgens het college bijdraagt aan zijn arbeidsinschakeling."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "280,95" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 8, lid 5" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-7> a cprmv:Rule ;
+    cprmv:id "lid 7" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van € 285,20 per maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het tweede of vijfde lid van toepassing is."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 8, lid 7" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-9> a cprmv:Rule ;
+    cprmv:id "lid 9" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 285,20 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het tweede lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het zevende lid van toepassing is."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 8, lid 9" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004044_2026-07-01_0_Artikel-8_lid-10> a cprmv:Rule ;
+    cprmv:id "lid 10" ;
+    cprmv:rulesetId "BWBR0004044" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 285,20 per maand, nadat de periode van twaalf maanden, bedoeld in het negende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004044_2026-07-01_0, Artikel 8, lid 10" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004044>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-2_onderdeel-2°> a cprmv:Rule ;
+    cprmv:id "onderdeel 2°." ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige bedroeg de laatste drie boekjaren gemiddeld minder dan € 33.467,00 per jaar;"@nl ;
+    cprmv:situatie "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige bedroeg de laatste drie boekjaren gemiddeld minder dan"@nl ;
+    cprmv:norm "33.467,00" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 5, lid 2, onderdeel 2°." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-5_lid-2_onderdeel-3°> a cprmv:Rule ;
+    cprmv:id "onderdeel 3°." ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige zou bij voortzetting van het bedrijf of beroep naar verwachting duurzaam minder dan € 36.780 per jaar bedragen; en"@nl ;
+    cprmv:situatie "het inkomen uit arbeid of overig inkomen van de gewezen zelfstandige zou bij voortzetting van het bedrijf of beroep naar verwachting duurzaam minder dan"@nl ;
+    cprmv:norm "36.780" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 5, lid 2, onderdeel 3°." ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition " Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van € 175.864,00 buiten beschouwing blijft. Het inkomen uit vermogen wordt bepaald op 5% per 1 januari 2025: 3% per jaar van het vermogen. "@nl ;
+    cprmv:situatie "Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van"@nl ;
+    cprmv:norm "175.864,00" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-2_2> a cprmv:Rule ;
+    cprmv:id "lid 2" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition " Als inkomen wordt voorts aangemerkt het inkomen uit het vermogen waarover de gewezen zelfstandige en zijn echtgenoot na de beëindiging van het bedrijf of beroep beschikken, met dien verstande dat daarbij een vermogen van € 175.864,00 buiten beschouwing blijft. Het inkomen uit vermogen wordt bepaald op 5% per 1 januari 2025: 3% per jaar van het vermogen. "@nl ;
+    cprmv:situatie "beschouwing blijft. Het inkomen uit vermogen wordt bepaald op"@nl ;
+    cprmv:norm "3" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 2" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-3> a cprmv:Rule ;
+    cprmv:id "lid 3" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van € 448,90 per maand, voor zover een uitkering wordt ontvangen en dit naar het oordeel van burgemeester en wethouders bijdraagt aan de arbeidsinschakeling."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid gedurende zes maanden tot 25 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "448,90" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-9> a cprmv:Rule ;
+    cprmv:id "lid 9" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van € 280,95 per maand, gedurende een aaneengesloten periode van maximaal 30 maanden, voor zover hij een uitkering ontvangt, ingeval: hij de volledige zorg heeft voor zijn kind tot 12 jaar, de periode van zes maanden, bedoeld in het derde lid, is verstreken, en dit volgens het college bijdraagt aan zijn arbeidsinschakeling."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een alleenstaande ouder tot 12,5 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "280,95" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 9" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-11> a cprmv:Rule ;
+    cprmv:id "lid 11" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van € 285,20 per maand, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het derde of negende lid van toepassing is."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die medisch urenbeperkt is tot 15 procent van dit inkomen uit arbeid, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 11" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-13> a cprmv:Rule ;
+    cprmv:id "lid 13" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 285,20 per maand, gedurende een periode van twaalf maanden nadat de periode van zes maanden, bedoeld in het derde lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt, tenzij het elfde lid van toepassing is."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 13" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/BWBR0004163_2026-07-01_0_Artikel-8_lid-14> a cprmv:Rule ;
+    cprmv:id "lid 14" ;
+    cprmv:rulesetId "BWBR0004163" ;
+    cprmv:definition "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van € 285,20 per maand, nadat de periode van twaalf maanden, bedoeld in het dertiende lid, is verstreken, voor zover hij een uitkering op grond van deze wet ontvangt en het college gelet op de in de persoon gelegen omstandigheden een uitbreiding van zijn arbeidsomvang niet mogelijk acht."@nl ;
+    cprmv:situatie "In afwijking van het eerste lid wordt niet als inkomen uit arbeid beschouwd het inkomen uit arbeid van een persoon die behoort tot de doelgroep loonkostensubsidie tot 15 procent van dit inkomen, met een maximum van"@nl ;
+    cprmv:norm "285,20" ;
+    cprmv:ruleIdPath "BWBR0004163_2026-07-01_0, Artikel 8, lid 14" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0004163>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0yar3xr-cell-UnaryTests_06m15wh> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0yar3xr-cell-UnaryTests_06m15wh" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0zzeplm-cell-UnaryTests_0h8qb5r> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0zzeplm-cell-UnaryTests_0h8qb5r" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_05p8y4i-cell-UnaryTests_17q23lc> a cprmv:Rule ;
+    cprmv:id "DecisionRule_05p8y4i-cell-UnaryTests_17q23lc" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0lycko6-cell-UnaryTests_0jut2a0> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0lycko6-cell-UnaryTests_0jut2a0" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_02fzff8-cell-UnaryTests_0zn4svg> a cprmv:Rule ;
+    cprmv:id "DecisionRule_02fzff8-cell-UnaryTests_0zn4svg" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0tv6bfi-cell-UnaryTests_04lml7g> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0tv6bfi-cell-UnaryTests_04lml7g" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1y6sceg-cell-UnaryTests_1codt0n> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1y6sceg-cell-UnaryTests_1codt0n" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_06gy25k-cell-UnaryTests_1frbnp8> a cprmv:Rule ;
+    cprmv:id "DecisionRule_06gy25k-cell-UnaryTests_1frbnp8" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0l3sva9-cell-UnaryTests_14xbrdv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0l3sva9-cell-UnaryTests_14xbrdv" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1sqe0dq-cell-UnaryTests_1q625nf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1sqe0dq-cell-UnaryTests_1q625nf" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_0ksktvy-cell-UnaryTests_0f6c6qv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0ksktvy-cell-UnaryTests_0f6c6qv" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_025n7b3-cell-UnaryTests_1lifz1c> a cprmv:Rule ;
+    cprmv:id "DecisionRule_025n7b3-cell-UnaryTests_1lifz1c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1n8r7qq-cell-UnaryTests_01gqxt7> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1n8r7qq-cell-UnaryTests_01gqxt7" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MK-cell-UnaryTests_norm_MK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MK-cell-UnaryTests_norm_MK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MMK-cell-UnaryTests_norm_MMK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MMK-cell-UnaryTests_norm_MMK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_MOK-cell-UnaryTests_norm_MOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MOK-cell-UnaryTests_norm_MOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_JO-cell-UnaryTests_norm_JO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_JO-cell-UnaryTests_norm_JO" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_JOK-cell-UnaryTests_norm_JOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_JOK-cell-UnaryTests_norm_JOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_OK-cell-UnaryTests_norm_OK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_OK-cell-UnaryTests_norm_OK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_norm_OOK-cell-UnaryTests_norm_OOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_OOK-cell-UnaryTests_norm_OOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0ajbb2x> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0ajbb2x" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0iildzk> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0iildzk" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1jkq2bf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1jkq2bf" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0x5er5y> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0x5er5y" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_13xeman> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_13xeman" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0545h9n> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0545h9n" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0w4tguf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0w4tguf" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1ool6dv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1ool6dv" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_07ilwms> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_07ilwms" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1tg3hf1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1tg3hf1" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1r0wkpz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1r0wkpz" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0bm63m9> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0bm63m9" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0v4yv5d> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0v4yv5d" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1fd1sc1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1fd1sc1" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0pp3akh> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0pp3akh" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0ek3wvv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0ek3wvv" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_1kplyfr> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1kplyfr" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0zrkt61> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0zrkt61" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_15q4g55> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_15q4g55" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1gk1h0n-cell-LiteralExpression_0bqqbxp> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0bqqbxp" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0lllmmm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0lllmmm" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1a5mec0> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1a5mec0" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1pu6fcm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1pu6fcm" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0bh43uw> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0bh43uw" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1l3ur2f> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1l3ur2f" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0jy1rnz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0jy1rnz" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0k9vctz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0k9vctz" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_05xgl0h> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_05xgl0h" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1t1bdt3> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1t1bdt3" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_18kvhjw> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_18kvhjw" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1sibpzt> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1sibpzt" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1ww716b> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1ww716b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0uxv2iz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0uxv2iz" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_0vo73lk> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0vo73lk" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_19os0q8> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_19os0q8" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_02kmr8o> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_02kmr8o" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_09pccxo> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_09pccxo" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1rbqwbm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1rbqwbm" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1r8jhgb> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1r8jhgb" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_1oxxdvb-cell-LiteralExpression_1lpym02> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1lpym02" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_M> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_M" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MM> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MM" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MMK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MMK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MO" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJ> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJ" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_J> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_J" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJ> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJ" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JO" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_JOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_O> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_O" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OO" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_OOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OOK" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_I> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_I" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_DecisionRule_2026H2-cell-LiteralExpression_2026H2_II> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_II" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+<https://cprmv.open-regels.nl/rules/incomplete_https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b" ;
+    cprmv:implements <https://wetten.overheid.nl/BWBR0015703/2026-07-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/dmn> a cprmv:DecisionModel ;
+    dct:identifier "pw-normbedragen" ;
+    dct:title "PW-normbedragen.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/normbedragen-jul26-041> ;
+    dct:source <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/file> ;
+    cprmv:deploymentId "0cad9eb6-ad06-11f1-a231-4af008e25a97" ;
+    cprmv:deployedAt "2026-09-10T10:54:52.568Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/pw-normbedragen/evaluate> ;
+    cprmv:lastTested "2026-09-10T10:54:54.536Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/input/1> a cpsv:Input ;
+    dct:identifier "peildatum" ;
+    dct:title "peildatum"@nl ;
+    dct:type "String" ;
+    schema:value "2026-09-10" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/input/2> a cpsv:Input ;
+    dct:identifier "norm" ;
+    dct:title "norm"@nl ;
+    dct:type "String" ;
+    schema:value "Alleenstaande in inrichting norm" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/1> a cpsv:Output ;
+    dct:identifier "bedrag" ;
+    dct:title "bedrag"@nl ;
+    dct:type "Double" ;
+    schema:value 449.44 ;
+    cpsv:produces <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0yar3xr> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0yar3xr" ;
+    dct:title "Decision rule DecisionRule_0yar3xr"@nl ;
+    dct:description "Decision rule DecisionRule_0yar3xr of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0yar3xr/cell/UnaryTests_06m15wh> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0zzeplm> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0zzeplm" ;
+    dct:title "Decision rule DecisionRule_0zzeplm"@nl ;
+    dct:description "Decision rule DecisionRule_0zzeplm of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0zzeplm/cell/UnaryTests_0h8qb5r> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_05p8y4i> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_05p8y4i" ;
+    dct:title "Decision rule DecisionRule_05p8y4i"@nl ;
+    dct:description "Decision rule DecisionRule_05p8y4i of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_05p8y4i/cell/UnaryTests_17q23lc> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0lycko6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0lycko6" ;
+    dct:title "Decision rule DecisionRule_0lycko6"@nl ;
+    dct:description "Decision rule DecisionRule_0lycko6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0lycko6/cell/UnaryTests_0jut2a0> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_02fzff8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_02fzff8" ;
+    dct:title "Decision rule DecisionRule_02fzff8"@nl ;
+    dct:description "Decision rule DecisionRule_02fzff8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_02fzff8/cell/UnaryTests_0zn4svg> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0tv6bfi> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0tv6bfi" ;
+    dct:title "Decision rule DecisionRule_0tv6bfi"@nl ;
+    dct:description "Decision rule DecisionRule_0tv6bfi of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0tv6bfi/cell/UnaryTests_04lml7g> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1y6sceg> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1y6sceg" ;
+    dct:title "Decision rule DecisionRule_1y6sceg"@nl ;
+    dct:description "Decision rule DecisionRule_1y6sceg of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1y6sceg/cell/UnaryTests_1codt0n> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_06gy25k> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_06gy25k" ;
+    dct:title "Decision rule DecisionRule_06gy25k"@nl ;
+    dct:description "Decision rule DecisionRule_06gy25k of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_06gy25k/cell/UnaryTests_1frbnp8> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0l3sva9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0l3sva9" ;
+    dct:title "Decision rule DecisionRule_0l3sva9"@nl ;
+    dct:description "Decision rule DecisionRule_0l3sva9 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0l3sva9/cell/UnaryTests_14xbrdv> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1sqe0dq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1sqe0dq" ;
+    dct:title "Decision rule DecisionRule_1sqe0dq"@nl ;
+    dct:description "Decision rule DecisionRule_1sqe0dq of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1sqe0dq/cell/UnaryTests_1q625nf> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0ksktvy> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0ksktvy" ;
+    dct:title "Decision rule DecisionRule_0ksktvy"@nl ;
+    dct:description "Decision rule DecisionRule_0ksktvy of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0ksktvy/cell/UnaryTests_0f6c6qv> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_025n7b3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_025n7b3" ;
+    dct:title "Decision rule DecisionRule_025n7b3"@nl ;
+    dct:description "Decision rule DecisionRule_025n7b3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_025n7b3/cell/UnaryTests_1lifz1c> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1n8r7qq> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1n8r7qq" ;
+    dct:title "Decision rule DecisionRule_1n8r7qq"@nl ;
+    dct:description "Decision rule DecisionRule_1n8r7qq of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1n8r7qq/cell/UnaryTests_01gqxt7> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_MK" ;
+    dct:title "Decision rule DecisionRule_norm_MK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_MK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MK/cell/UnaryTests_norm_MK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MMK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_MMK" ;
+    dct:title "Decision rule DecisionRule_norm_MMK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_MMK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MMK/cell/UnaryTests_norm_MMK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_MOK" ;
+    dct:title "Decision rule DecisionRule_norm_MOK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_MOK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MOK/cell/UnaryTests_norm_MOK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JO> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_JO" ;
+    dct:title "Decision rule DecisionRule_norm_JO"@nl ;
+    dct:description "Decision rule DecisionRule_norm_JO of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JO/cell/UnaryTests_norm_JO> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_JOK" ;
+    dct:title "Decision rule DecisionRule_norm_JOK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_JOK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JOK/cell/UnaryTests_norm_JOK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_OK" ;
+    dct:title "Decision rule DecisionRule_norm_OK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_OK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OK/cell/UnaryTests_norm_OK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OOK> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_norm_OOK" ;
+    dct:title "Decision rule DecisionRule_norm_OOK"@nl ;
+    dct:description "Decision rule DecisionRule_norm_OOK of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_0zn46gi" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OOK/cell/UnaryTests_norm_OOK> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_12kjlua> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_12kjlua" ;
+    dct:title "Decision rule DecisionRule_12kjlua"@nl ;
+    dct:description "Cells in this termijn carry no cprmv grounding: no normenbrief rule set for 2024-07-01 is published in this repository, and the grounding URIs would have to be guessed from the URI pattern rather than read from a source. The amounts are the ones delivered with the iKnow export."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:validFrom "2024-07-01"^^xsd:date ;
+    cprmv:validUntil "2024-12-31"^^xsd:date ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Cells in this termijn carry no cprmv grounding: no normenbrief rule set for 2024-07-01 is published in this repository, and the grounding URIs would have to be guessed from the URI pattern rather than read from a source. The amounts are the ones delivered with the iKnow export."@nl ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0h1w7x0> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_0h1w7x0" ;
+    dct:title "Decision rule DecisionRule_0h1w7x0"@nl ;
+    dct:description "Cells in this termijn carry no cprmv grounding: no normenbrief rule set for 2025-01-01 is published in this repository, and the grounding URIs would have to be guessed from the URI pattern rather than read from a source. The amounts are the ones delivered with the iKnow export."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:validFrom "2025-01-01"^^xsd:date ;
+    cprmv:validUntil "2025-06-30"^^xsd:date ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:note "Cells in this termijn carry no cprmv grounding: no normenbrief rule set for 2025-01-01 is published in this repository, and the grounding URIs would have to be guessed from the URI pattern rather than read from a source. The amounts are the ones delivered with the iKnow export."@nl ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1gk1h0n" ;
+    dct:title "Decision rule DecisionRule_1gk1h0n"@nl ;
+    dct:description "Decision rule DecisionRule_1gk1h0n of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:validFrom "2025-07-01"^^xsd:date ;
+    cprmv:validUntil "2025-12-31"^^xsd:date ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0ajbb2x> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0iildzk> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1jkq2bf> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0x5er5y> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_13xeman> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0545h9n> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0w4tguf> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1ool6dv> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_07ilwms> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1tg3hf1> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1r0wkpz> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0bm63m9> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0v4yv5d> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1fd1sc1> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0pp3akh> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0ek3wvv> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1kplyfr> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0zrkt61> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_15q4g55> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0bqqbxp> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_1oxxdvb" ;
+    dct:title "Decision rule DecisionRule_1oxxdvb"@nl ;
+    dct:description "Decision rule DecisionRule_1oxxdvb of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:validFrom "2026-01-01"^^xsd:date ;
+    cprmv:validUntil "2026-06-30"^^xsd:date ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0lllmmm> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1a5mec0> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1pu6fcm> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0bh43uw> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1l3ur2f> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0jy1rnz> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0k9vctz> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_05xgl0h> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1t1bdt3> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_18kvhjw> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1sibpzt> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1ww716b> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0uxv2iz> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0vo73lk> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_19os0q8> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_02kmr8o> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_09pccxo> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1rbqwbm> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1r8jhgb> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1lpym02> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "DecisionRule_2026H2" ;
+    dct:title "Decision rule DecisionRule_2026H2"@nl ;
+    dct:description "Decision rule DecisionRule_2026H2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/BWBR0015703> ;
+    cprmv:validFrom "2026-07-01"^^xsd:date ;
+    cprmv:validUntil "2026-12-31"^^xsd:date ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DecisionTable_05wib0m" ;
+    cprmv:rulesetType "decision-table" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_M> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MM> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MMK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MO> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MOK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MJ> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MJK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_J> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JJ> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JJK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JO> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JOK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_O> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OO> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OOK> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_I> <https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_II> ) .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0yar3xr/cell/UnaryTests_06m15wh> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0yar3xr-cell-UnaryTests_06m15wh" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0zzeplm/cell/UnaryTests_0h8qb5r> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0zzeplm-cell-UnaryTests_0h8qb5r" ;
+    cprmv:sourceQuote "gehuwden" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_05p8y4i/cell/UnaryTests_17q23lc> a cprmv:Rule ;
+    cprmv:id "DecisionRule_05p8y4i-cell-UnaryTests_17q23lc" ;
+    cprmv:sourceQuote "een alleenstaande ouder van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0lycko6/cell/UnaryTests_0jut2a0> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0lycko6-cell-UnaryTests_0jut2a0" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_02fzff8/cell/UnaryTests_0zn4svg> a cprmv:Rule ;
+    cprmv:id "DecisionRule_02fzff8-cell-UnaryTests_0zn4svg" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0tv6bfi/cell/UnaryTests_04lml7g> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0tv6bfi-cell-UnaryTests_04lml7g" ;
+    cprmv:sourceQuote "een alleenstaande van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1y6sceg/cell/UnaryTests_1codt0n> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1y6sceg-cell-UnaryTests_1codt0n" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_06gy25k/cell/UnaryTests_1frbnp8> a cprmv:Rule ;
+    cprmv:id "DecisionRule_06gy25k-cell-UnaryTests_1frbnp8" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0l3sva9/cell/UnaryTests_14xbrdv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0l3sva9-cell-UnaryTests_14xbrdv" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1sqe0dq/cell/UnaryTests_1q625nf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1sqe0dq-cell-UnaryTests_1q625nf" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_0ksktvy/cell/UnaryTests_0f6c6qv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_0ksktvy-cell-UnaryTests_0f6c6qv" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_025n7b3/cell/UnaryTests_1lifz1c> a cprmv:Rule ;
+    cprmv:id "DecisionRule_025n7b3-cell-UnaryTests_1lifz1c" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1n8r7qq/cell/UnaryTests_01gqxt7> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1n8r7qq-cell-UnaryTests_01gqxt7" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MK/cell/UnaryTests_norm_MK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MK-cell-UnaryTests_norm_MK" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MMK/cell/UnaryTests_norm_MMK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MMK-cell-UnaryTests_norm_MMK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_MOK/cell/UnaryTests_norm_MOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_MOK-cell-UnaryTests_norm_MOK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JO/cell/UnaryTests_norm_JO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_JO-cell-UnaryTests_norm_JO" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_JOK/cell/UnaryTests_norm_JOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_JOK-cell-UnaryTests_norm_JOK" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OK/cell/UnaryTests_norm_OK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_OK-cell-UnaryTests_norm_OK" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_norm_OOK/cell/UnaryTests_norm_OOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_norm_OOK-cell-UnaryTests_norm_OOK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0ajbb2x> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0ajbb2x" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0iildzk> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0iildzk" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1jkq2bf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1jkq2bf" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0x5er5y> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0x5er5y" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_13xeman> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_13xeman" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0545h9n> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0545h9n" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0w4tguf> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0w4tguf" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1ool6dv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1ool6dv" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_07ilwms> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_07ilwms" ;
+    cprmv:sourceQuote "een alleenstaande van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1tg3hf1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1tg3hf1" ;
+    cprmv:sourceQuote "een alleenstaande ouder van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1r0wkpz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1r0wkpz" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0bm63m9> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0bm63m9" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0v4yv5d> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0v4yv5d" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1fd1sc1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1fd1sc1" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0pp3akh> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0pp3akh" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0ek3wvv> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0ek3wvv" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_1kplyfr> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_1kplyfr" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0zrkt61> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0zrkt61" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_15q4g55> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_15q4g55" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1gk1h0n/cell/LiteralExpression_0bqqbxp> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1gk1h0n-cell-LiteralExpression_0bqqbxp" ;
+    cprmv:sourceQuote "gehuwden" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0lllmmm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0lllmmm" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1a5mec0> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1a5mec0" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1pu6fcm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1pu6fcm" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0bh43uw> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0bh43uw" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1l3ur2f> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1l3ur2f" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0jy1rnz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0jy1rnz" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0k9vctz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0k9vctz" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_05xgl0h> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_05xgl0h" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1t1bdt3> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1t1bdt3" ;
+    cprmv:sourceQuote "een alleenstaande van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_18kvhjw> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_18kvhjw" ;
+    cprmv:sourceQuote "een alleenstaande ouder van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1sibpzt> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1sibpzt" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1ww716b> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1ww716b" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0uxv2iz> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0uxv2iz" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_0vo73lk> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_0vo73lk" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_19os0q8> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_19os0q8" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_02kmr8o> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_02kmr8o" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_09pccxo> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_09pccxo" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1rbqwbm> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1rbqwbm" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1r8jhgb> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1r8jhgb" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_1oxxdvb/cell/LiteralExpression_1lpym02> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1oxxdvb-cell-LiteralExpression_1lpym02" ;
+    cprmv:sourceQuote "gehuwden" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_M> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_M" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MK" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MM> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MM" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MMK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MMK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten jonger zijn dan de pensioengerechtigde leeftijd, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MO" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MOK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MJ> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJ" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_MJK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_MJK" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_J> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_J" ;
+    cprmv:sourceQuote "een alleenstaande van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JK" ;
+    cprmv:sourceQuote "een alleenstaande ouder van 18, 19 of 20 jaar" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JJ> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJ" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JJK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JJK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten 18, 19 of 20 jaar zijn" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JO" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_JOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_JOK" ;
+    cprmv:sourceQuote "gehuwden waarvan een echtgenoot 18, 19 of 20 jaar is en de andere echtgenoot 21 jaar of ouder, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_O> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_O" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OK" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OO> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OO" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_OOK> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_OOK" ;
+    cprmv:sourceQuote "gehuwden waarvan beide echtgenoten de pensioengerechtigde leeftijd hebben bereikt, zonder kostendelende medebewoners" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_I> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_I" ;
+    cprmv:sourceQuote "een alleenstaande of een alleenstaande ouder" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> .
+
+<https://regels.overheid.nl/services/normbedragen-jul26-041/rules/DecisionRule_2026H2/cell/LiteralExpression_2026H2_II> a cprmv:Rule ;
+    cprmv:id "DecisionRule_2026H2-cell-LiteralExpression_2026H2_II" ;
+    cprmv:sourceQuote "gehuwden" ;
+    cprmv:isBasedOn <https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-23_lid-1_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-2_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-20_lid-1_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-21_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-07-01_0_Artikel-22_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-21_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-1_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-20_lid-2_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-22_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2025-07-01_0_Artikel-23_lid-1_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-21_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-c" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-1_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-20_lid-2_onderdeel-b" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-22_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-a" .
+
+<https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b> a cprmv:Rule ;
+    cprmv:id "https://cprmv.open-regels.nl/rules/BWBR0015703_2026-01-01_0_Artikel-23_lid-1_onderdeel-b" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-09-10"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/peildatum> a skos:Concept ;
+    skos:prefLabel "Peildatum"@nl ;
+    skos:definition "Peildatum is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PEIL" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/peildatum> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/norm> a skos:Concept ;
+    skos:prefLabel "Norm"@nl ;
+    skos:definition "Norm is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "NORM" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/norm> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/bedrag> a skos:Concept ;
+    skos:prefLabel "Bedrag"@nl ;
+    skos:definition "Bedrag is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BEDR" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bedrag> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MM> a skos:Concept ;
+    skos:prefLabel "MM"@nl ;
+    skos:definition "MM is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MM" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MM> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/JJ> a skos:Concept ;
+    skos:prefLabel "JJ"@nl ;
+    skos:definition "JJ is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "JJ" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/JJ> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/OO> a skos:Concept ;
+    skos:prefLabel "OO"@nl ;
+    skos:definition "OO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "OO" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/OO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/II> a skos:Concept ;
+    skos:prefLabel "II"@nl ;
+    skos:definition "II is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "II" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/5> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/II> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/JK> a skos:Concept ;
+    skos:prefLabel "JK"@nl ;
+    skos:definition "JK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "JK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/6> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/JK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MO> a skos:Concept ;
+    skos:prefLabel "MO"@nl ;
+    skos:definition "MO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MO" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/7> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/JO> a skos:Concept ;
+    skos:prefLabel "JO"@nl ;
+    skos:definition "JO is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "JO" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/8> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/JO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/JOK> a skos:Concept ;
+    skos:prefLabel "JOK"@nl ;
+    skos:definition "JOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "JOK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/9> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/JOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MOK> a skos:Concept ;
+    skos:prefLabel "MOK"@nl ;
+    skos:definition "MOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MOK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/10> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/I> a skos:Concept ;
+    skos:prefLabel "I"@nl ;
+    skos:definition "I is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "I" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/11> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/I> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MMK> a skos:Concept ;
+    skos:prefLabel "MMK"@nl ;
+    skos:definition "MMK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MMK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/12> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MMK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/J> a skos:Concept ;
+    skos:prefLabel "J"@nl ;
+    skos:definition "J is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "J" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/13> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/J> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/JJK> a skos:Concept ;
+    skos:prefLabel "JJK"@nl ;
+    skos:definition "JJK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "JJK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/14> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/JJK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/OOK> a skos:Concept ;
+    skos:prefLabel "OOK"@nl ;
+    skos:definition "OOK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "OOK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/15> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/OOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/M> a skos:Concept ;
+    skos:prefLabel "M"@nl ;
+    skos:definition "M is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "M" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/16> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/M> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MJK> a skos:Concept ;
+    skos:prefLabel "MJK"@nl ;
+    skos:definition "MJK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MJK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/17> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MJK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/O> a skos:Concept ;
+    skos:prefLabel "O"@nl ;
+    skos:definition "O is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "O" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/18> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/O> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/OK> a skos:Concept ;
+    skos:prefLabel "OK"@nl ;
+    skos:definition "OK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "OK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/19> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/OK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MJ> a skos:Concept ;
+    skos:prefLabel "MJ"@nl ;
+    skos:definition "MJ is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MJ" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/20> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MJ> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/pw-normbedragen/MK> a skos:Concept ;
+    skos:prefLabel "MK"@nl ;
+    skos:definition "MK is een waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "MK" ;
+    dct:subject <https://regels.overheid.nl/services/normbedragen-jul26-041/dmn/output/21> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/MK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
