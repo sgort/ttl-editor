@@ -11,7 +11,8 @@ two audiences at once:
 - **Information Architects** — what happens at each stage, which artefact comes
   out, and where a human has to decide.
 
-§10 says what the visual needs to carry. Everything before it is the material.
+§10 says what the visual needs to carry, and §13 lists what is still open and
+who owns it. Everything else is the material.
 
 Every number here was measured from the repository, not estimated. Sources are
 the three folder changelogs
@@ -374,9 +375,68 @@ reasonably want to use it:
   derivation (Den Haag 44 → 55, SZW 17 → 25), so it is not a count of what legal
   analysis delivered.
 - "0 failures" means every case passes against the live engine **today**. It
-  does not mean the models are legally correct. Four questions are open with the
-  responsible bodies, listed in the changelogs, and one value in the Den Haag
-  model has no source at all.
+  does not mean the models are legally correct. Four decisions are awaiting the
+  responsible body, plus one flagged assumption, and one value in the Den Haag
+  model has no source at all. They are listed in §13 — use that list rather
+  than the bare number.
 
 Being precise about that distinction is the difference between a diagram that
 earns trust and one that overclaims.
+
+---
+
+## 13. What is still open, and who owns it
+
+§12 counts four decisions awaiting the responsible body. Here they are,
+because a number without a list is not usable in a diagram.
+
+### Four decisions awaiting the responsible body
+
+| #   | Pass         | Question                                                                                                                                | Consequence if answered differently                                                                                                                                                                                             |
+| --- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **SZW**      | Do `JO` / `JOK` belong to Art. 20 **lid 1 c** rather than lid 2 c? Both carry the lid 2 c amount in all five termijnen.                 | The _amount_ is confirmed by a second published source; what would change is the article cited as its basis, and whether an 18/19/20-year-old with an AOW-age partner and **no** child should receive the _with children_ norm. |
+| 2   | **Den Haag** | What is the correct **reden code** for the ongeoorloofd-onbetaald-verlof rule? The source has a literal `???`.                          | `"04"` was adopted so the rule could be tested. It is the only value in any of the three models with no source.                                                                                                                 |
+| 3   | **Den Haag** | What is a **mixed household** entitled to — one person refused, the other entitled?                                                     | Today the model matches no rule and returns nothing. Any answer adds a rule; which answer is policy, not transcription.                                                                                                         |
+| 4   | **Den Haag** | Should `TekortSchieten`, `DringendeReden` and `HardheidsclausuleToepassen` be **wired into** the decision? Nothing requires them today. | Connecting them decides _when a hardship clause applies_, which is why they were left standalone and reported.                                                                                                                  |
+
+### Plus one flagged assumption
+
+Recorded inside a finding marked _fixed_, so it is not blocking, but it is
+still awaiting an answer:
+
+> **Den Haag** — the unknown-voorliggende-voorzieningen rule reported an
+> `informatiebehoefte` of `"datum vorige aanvraag"`, which names a different
+> fact than its own column. Changed to `"voorliggende voorzieningen"` — flagged
+> in case the text was right and the column is wrong.
+
+So the defensible phrasing is **"four decisions awaiting the responsible body,
+plus one flagged assumption"**, not a bare four.
+
+### Three lanes, not one list
+
+Everything above is a question for a **government body about its own
+regulation**. Two other kinds of open item exist and should not be folded into
+that count, because the addressee differs and so does what "resolved" means:
+
+| Lane               | Addressee                        | Open now                                                                                                             |
+| ------------------ | -------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **The regulation** | the government body that owns it | the four above, plus one flagged assumption                                                                          |
+| **The standard**   | the CPRMV specification owner    | 2 — identifier stability across re-exports, and `ruleType` / `rulesetType`                                           |
+| **The tooling**    | us                               | 1 — [#121](https://github.com/sgort/ttl-editor/issues/121), the legal-source layer never reaching the published file |
+
+Amsterdam also has a data-quality observation rather than a question: 2 of its
+99 legal links do not resolve against the annotations file they point into.
+
+### One thing the visual should not imply
+
+**All four belong to two of the three passes. Amsterdam contributes none.**
+
+Three are Den Haag's and one is SZW's. A diagram suggesting that every pass
+leaves questions behind would get this backwards, and the truth is more
+interesting: Amsterdam's 99 rules were legally coherent once the technical
+defects were fixed, whereas Den Haag's model had genuine policy holes — a
+household it could not decide, and three decisions connected to nothing.
+
+That difference is worth showing. It is the distinction between _"this export
+was broken"_ and _"this regulation was not finished"_, and only executing the
+model reveals which one you have.
