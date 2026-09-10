@@ -1,0 +1,1172 @@
+@prefix cpsv: <http://purl.org/vocab/cpsv#> .
+@prefix cv: <http://data.europa.eu/m8g/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ronl: <https://regels.overheid.nl/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
+
+# ============================================================
+#  Public Service
+# ============================================================
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud> a cpsv:PublicService ;
+    dct:identifier "aanvraag-levensonderhoud" ;
+    dct:title "Aanvraag LevensOnderhoud (ALO)"@nl ;
+    dct:description "Een aanvraag levensonderhoud is het formele verzoek van een persoon aan een gemeentelijke of overheidsinstantie om een uitkering of financiële ondersteuning te verkrijgen die het inkomen aanvult zodat in het basislevensonderhoud kan worden voorzien."@nl ;
+    cv:thematicArea <https://www.denhaag.nl/nl/werk-bijstand-en-uitkering/bijstandsuitkering-aanvragen/> ;
+    cv:sector <https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> ;
+    dcat:keyword "ALO"@nl ;
+    dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
+    cv:hasCompetentAuthority <https://organisaties.overheid.nl/24873/Gemeente_Den_Haag> ;
+    cv:hasLegalResource <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:hasDecisionModel <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn>  .
+
+<https://publications.europa.eu/resource/authority/language/NL> a dct:LinguisticSystem .
+
+<https://publications.europa.eu/resource/authority/corporate-body-classification/LOCAL> a skos:Concept .
+
+<https://www.denhaag.nl/nl/werk-bijstand-en-uitkering/bijstandsuitkering-aanvragen/> a skos:Concept .
+
+
+# ============================================================
+#  Organization
+# ============================================================
+
+<https://organisaties.overheid.nl/24873/Gemeente_Den_Haag> a cv:PublicOrganisation ;
+    dct:identifier "Gemeente_Den_Haag" ;
+    skos:prefLabel "Gemeente Den Haag"@nl ;
+    foaf:homepage <https://www.denhaag.nl/> ;
+    dct:spatial <https://publications.europa.eu/resource/authority/country/NLD> ;
+    foaf:logo <./assets/Gemeente_Den_Haag_logo.png> ;
+    schema:image <./assets/Gemeente_Den_Haag_logo.png>  .
+
+<https://publications.europa.eu/resource/authority/country/NLD> a dct:Location .
+
+
+# ============================================================
+#  Legal Resource
+# ============================================================
+
+<https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> a eli:LegalResource ;
+    dct:identifier "jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11" ;
+    dct:title "Participatiewet"@nl ;
+    dct:description "Iedere in Nederland woonachtige Nederlander die hier te lande in zodanige omstandigheden verkeert of dreigt te geraken dat hij niet over de middelen beschikt om in de noodzakelijke kosten van bestaan te voorzien, heeft recht op bijstand van overheidswege."@nl ;
+    cprmv:hasAnalysis <https://regels.overheid.nl/termen/WetsanalyseJAS> ;
+    cprmv:hasMethod <https://regels.overheid.nl/termen/Demo> ;
+    eli:is_realized_by <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11/2026-01-01>  .
+
+
+# ============================================================
+#  DMN Decision Model
+# ============================================================
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> a cprmv:DecisionModel ;
+    dct:identifier "dt225_BeslissingALO" ;
+    dct:title "225_Beslissing_Levensonderhoud-patched.dmn"@nl ;
+    cprmv:implements <https://regels.overheid.nl/services/aanvraag-levensonderhoud> ;
+    dct:source <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/file> ;
+    cprmv:deploymentId "2e9465d3-ad1d-11f1-a231-4af008e25a97" ;
+    cprmv:deployedAt "2026-09-10T13:40:27.807Z"^^xsd:dateTime ;
+    cprmv:implementedBy <https://operaton.open-regels.nl/engine-rest/decision-definition/key/dt225_BeslissingALO/evaluate> ;
+    cprmv:lastTested "2026-09-10T13:40:29.465Z"^^xsd:dateTime ;
+    cprmv:testStatus "passed" ;
+    dct:description "DMN decision model for service evaluation"@nl .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/1> a cpsv:Input ;
+    dct:identifier "aanvraagtypeALO" ;
+    dct:title "aanvraagtypeALO"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/2> a cpsv:Input ;
+    dct:identifier "lopendeAanvraagOfUitkering" ;
+    dct:title "lopendeAanvraagOfUitkering"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/3> a cpsv:Input ;
+    dct:identifier "eersteAanvragerVastgesteld" ;
+    dct:title "eersteAanvragerVastgesteld"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/4> a cpsv:Input ;
+    dct:identifier "tweedeAanvragerVastgesteld" ;
+    dct:title "tweedeAanvragerVastgesteld"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/5> a cpsv:Input ;
+    dct:identifier "ongeoorloofdOnbetaaldVerlof" ;
+    dct:title "ongeoorloofdOnbetaaldVerlof"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/6> a cpsv:Input ;
+    dct:identifier "maandelijksInkomen" ;
+    dct:title "maandelijksInkomen"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/7> a cpsv:Input ;
+    dct:identifier "bijstandsNorm" ;
+    dct:title "bijstandsNorm"@nl ;
+    dct:type "Double" ;
+    schema:value 0 ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/8> a cpsv:Input ;
+    dct:identifier "inkomenVastgesteld" ;
+    dct:title "inkomenVastgesteld"@nl ;
+    dct:type "Boolean" ;
+    schema:value false ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/9> a cpsv:Input ;
+    dct:identifier "geenInAanmerkingTeNemenVermogen" ;
+    dct:title "geenInAanmerkingTeNemenVermogen"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/10> a cpsv:Input ;
+    dct:identifier "voorliggendeVoorzieningenUitsluiting" ;
+    dct:title "voorliggendeVoorzieningenUitsluiting"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/11> a cpsv:Input ;
+    dct:identifier "bijstandsVorm" ;
+    dct:title "bijstandsVorm"@nl ;
+    dct:type "String" ;
+    schema:value "Om niet" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/12> a cpsv:Input ;
+    dct:identifier "oordeelTekortSchieten" ;
+    dct:title "oordeelTekortSchieten"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/13> a cpsv:Input ;
+    dct:identifier "oordeelDringendeReden" ;
+    dct:title "oordeelDringendeReden"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/14> a cpsv:Input ;
+    dct:identifier "oordeelHardheidsclausule" ;
+    dct:title "oordeelHardheidsclausule"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/15> a cpsv:Input ;
+    dct:identifier "aanvragerWoonachtigInGemeente" ;
+    dct:title "aanvragerWoonachtigInGemeente"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/16> a cpsv:Input ;
+    dct:identifier "aanvragerLeeftijdOK" ;
+    dct:title "aanvragerLeeftijdOK"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/17> a cpsv:Input ;
+    dct:identifier "aanvragerVerblijfstitelOK" ;
+    dct:title "aanvragerVerblijfstitelOK"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/18> a cpsv:Input ;
+    dct:identifier "aanvragerDetentie" ;
+    dct:title "aanvragerDetentie"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/19> a cpsv:Input ;
+    dct:identifier "aanvragerMaatregel100" ;
+    dct:title "aanvragerMaatregel100"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/20> a cpsv:Input ;
+    dct:identifier "aanvragerRechtOpStufi" ;
+    dct:title "aanvragerRechtOpStufi"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/21> a cpsv:Input ;
+    dct:identifier "partnerWoonachtigInGemeente" ;
+    dct:title "partnerWoonachtigInGemeente"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/22> a cpsv:Input ;
+    dct:identifier "partnerLeeftijdOK" ;
+    dct:title "partnerLeeftijdOK"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/23> a cpsv:Input ;
+    dct:identifier "partnerVerblijfstitelOK" ;
+    dct:title "partnerVerblijfstitelOK"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/24> a cpsv:Input ;
+    dct:identifier "partnerDetentie" ;
+    dct:title "partnerDetentie"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/25> a cpsv:Input ;
+    dct:identifier "partnerMaatregel100" ;
+    dct:title "partnerMaatregel100"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/26> a cpsv:Input ;
+    dct:identifier "partnerRechtOpStufi" ;
+    dct:title "partnerRechtOpStufi"@nl ;
+    dct:type "String" ;
+    schema:value "ja" ;
+    cpsv:isRequiredBy <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/1> a cpsv:Output ;
+    dct:identifier "beslissingALO" ;
+    dct:title "beslissingALO"@nl ;
+    dct:type "String" ;
+    schema:value "Geen recht" ;
+    cpsv:produces <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/2> a cpsv:Output ;
+    dct:identifier "informatiebehoefte" ;
+    dct:title "informatiebehoefte"@nl ;
+    dct:type "String" ;
+    schema:value "" ;
+    cpsv:produces <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/3> a cpsv:Output ;
+    dct:identifier "redenAfwijzing" ;
+    dct:title "redenAfwijzing"@nl ;
+    dct:type "String" ;
+    schema:value "00" ;
+    cpsv:produces <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn> .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_1" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_1"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_2" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_2"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_3" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_3"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_4" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_4"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_5" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_5"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_6" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_6"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_BeslissingALO_7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_BeslissingALO_7" ;
+    dct:title "Decision rule R_dt225_BeslissingALO_7"@nl ;
+    dct:description "Decision rule R_dt225_BeslissingALO_7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_BeslissingALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_1" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_1"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_2" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_2"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_3" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_3"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_4" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_4"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_5" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_5"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_6" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_6"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_7" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_7"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_8" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_8"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_9" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_9"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_9 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_10" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_10"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_10 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_11" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_11"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_11 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_12> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_12" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_12"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_12 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_13> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_13" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_13"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_13 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_14> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_14" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_14"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_14 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_15> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_15" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_15"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_15 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechtOpALO_16> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechtOpALO_16" ;
+    dct:title "Decision rule R_dt225_RechtOpALO_16"@nl ;
+    dct:description "Decision rule R_dt225_RechtOpALO_16 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechtOpALO" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_1" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_1"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_2" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_2"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_3" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_3"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_4" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_4"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_5" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_5"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_6" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_6"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_7" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_7"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_8" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_8"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_9" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_9"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_9 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_10" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_10"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_10 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_11" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_11"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_11 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_12> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_12" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_12"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_12 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendeAanvrager_13> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendeAanvrager_13" ;
+    dct:title "Decision rule R_dt225_RechthebbendeAanvrager_13"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendeAanvrager_13 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendeAanvrager" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_1" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_1"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_2" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_2"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_3> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_3" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_3"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_3 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_4> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_4" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_4"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_4 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_5> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_5" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_5"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_5 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_6> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_6" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_6"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_6 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_7> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_7" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_7"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_7 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_8> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_8" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_8"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_8 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_9> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_9" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_9"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_9 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_10> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_10" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_10"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_10 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_11> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_11" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_11"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_11 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_12> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_12" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_12"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_12 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_RechthebbendePartner_13> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_RechthebbendePartner_13" ;
+    dct:title "Decision rule R_dt225_RechthebbendePartner_13"@nl ;
+    dct:description "Decision rule R_dt225_RechthebbendePartner_13 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_RechthebbendePartner" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_TekortSchieten_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_TekortSchieten_1" ;
+    dct:title "Decision rule R_dt225_TekortSchieten_1"@nl ;
+    dct:description "Decision rule R_dt225_TekortSchieten_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_TekortSchieten" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_TekortSchieten_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_TekortSchieten_2" ;
+    dct:title "Decision rule R_dt225_TekortSchieten_2"@nl ;
+    dct:description "Decision rule R_dt225_TekortSchieten_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_TekortSchieten" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_DringendeReden_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_DringendeReden_1" ;
+    dct:title "Decision rule R_dt225_DringendeReden_1"@nl ;
+    dct:description "Decision rule R_dt225_DringendeReden_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_DringendeReden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_DringendeReden_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_DringendeReden_2" ;
+    dct:title "Decision rule R_dt225_DringendeReden_2"@nl ;
+    dct:description "Decision rule R_dt225_DringendeReden_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_DringendeReden" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_HardheidsclausuleToepassen_1> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_HardheidsclausuleToepassen_1" ;
+    dct:title "Decision rule R_dt225_HardheidsclausuleToepassen_1"@nl ;
+    dct:description "Decision rule R_dt225_HardheidsclausuleToepassen_1 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_HardheidsclausuleToepassen" ;
+    cprmv:rulesetType "decision-table" .
+
+<https://regels.overheid.nl/services/aanvraag-levensonderhoud/rules/R_dt225_HardheidsclausuleToepassen_2> a cpsv:Rule, cprmv:DecisionRule ;
+    dct:identifier "R_dt225_HardheidsclausuleToepassen_2" ;
+    dct:title "Decision rule R_dt225_HardheidsclausuleToepassen_2"@nl ;
+    dct:description "Decision rule R_dt225_HardheidsclausuleToepassen_2 of the DMN decision model."@nl ;
+    cpsv:implements <https://wetten.overheid.nl/jci1.3:c:BWBR0015703&hoofdstuk=2&paragraaf=2.2&artikel=11> ;
+    cprmv:ruleType "decision-rule" ;
+    cprmv:confidence "medium" ;
+    cprmv:decisionTable "DT_dt225_HardheidsclausuleToepassen" ;
+    cprmv:rulesetType "decision-table" .
+
+# =====================================
+# NL-SBB Concept Definitions (DMN Variables)
+# =====================================
+
+<https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
+    dct:title "DMN Variabelen Begrippenkader"@nl ;
+    dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
+    dct:creator "RONL" ;
+    dct:created "2026-09-10"^^xsd:date .
+
+# Input Variable Concepts
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvraagtypeALO> a skos:Concept ;
+    skos:prefLabel "Aanvraagtype ALO"@nl ;
+    skos:definition "Aanvraagtype ALO is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AA" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/1> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvraagtypeALO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/lopendeAanvraagOfUitkering> a skos:Concept ;
+    skos:prefLabel "Lopende Aanvraag Of Uitkering"@nl ;
+    skos:definition "Lopende Aanvraag Of Uitkering is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "LAOU" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/2> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/lopendeAanvraagOfUitkering> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/eersteAanvragerVastgesteld> a skos:Concept ;
+    skos:prefLabel "Eerste Aanvrager Vastgesteld"@nl ;
+    skos:definition "Eerste Aanvrager Vastgesteld is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "EAV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/3> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/eersteAanvragerVastgesteld> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/tweedeAanvragerVastgesteld> a skos:Concept ;
+    skos:prefLabel "Tweede Aanvrager Vastgesteld"@nl ;
+    skos:definition "Tweede Aanvrager Vastgesteld is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "TAV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/4> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/tweedeAanvragerVastgesteld> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/ongeoorloofdOnbetaaldVerlof> a skos:Concept ;
+    skos:prefLabel "Ongeoorloofd Onbetaald Verlof"@nl ;
+    skos:definition "Ongeoorloofd Onbetaald Verlof is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "OOV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/5> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/ongeoorloofdOnbetaaldVerlof> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/maandelijksInkomen> a skos:Concept ;
+    skos:prefLabel "Maandelijks Inkomen"@nl ;
+    skos:definition "Maandelijks Inkomen is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "MI" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/6> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/maandelijksInkomen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/bijstandsNorm> a skos:Concept ;
+    skos:prefLabel "Bijstands Norm"@nl ;
+    skos:definition "Bijstands Norm is een waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BN" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/7> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsNorm> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/inkomenVastgesteld> a skos:Concept ;
+    skos:prefLabel "Inkomen Vastgesteld"@nl ;
+    skos:definition "Inkomen Vastgesteld is een ja/nee waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "IV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/8> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/inkomenVastgesteld> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/geenInAanmerkingTeNemenVermogen> a skos:Concept ;
+    skos:prefLabel "Geen In Aanmerking Te Nemen Vermogen"@nl ;
+    skos:definition "Geen In Aanmerking Te Nemen Vermogen is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "GIATNV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/9> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/geenInAanmerkingTeNemenVermogen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/voorliggendeVoorzieningenUitsluiting> a skos:Concept ;
+    skos:prefLabel "Voorliggende Voorzieningen Uitsluiting"@nl ;
+    skos:definition "Voorliggende Voorzieningen Uitsluiting is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "VVU" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/10> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/voorliggendeVoorzieningenUitsluiting> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/bijstandsVorm> a skos:Concept ;
+    skos:prefLabel "Bijstands Vorm"@nl ;
+    skos:definition "Bijstands Vorm is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "BV" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/11> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/bijstandsVorm> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/oordeelTekortSchieten> a skos:Concept ;
+    skos:prefLabel "Oordeel Tekort Schieten"@nl ;
+    skos:definition "Oordeel Tekort Schieten is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "OTS" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/12> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/oordeelTekortSchieten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/oordeelDringendeReden> a skos:Concept ;
+    skos:prefLabel "Oordeel Dringende Reden"@nl ;
+    skos:definition "Oordeel Dringende Reden is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ODR" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/13> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/oordeelDringendeReden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/oordeelHardheidsclausule> a skos:Concept ;
+    skos:prefLabel "Oordeel Hardheidsclausule"@nl ;
+    skos:definition "Oordeel Hardheidsclausule is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "OH" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/14> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/oordeelHardheidsclausule> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerWoonachtigInGemeente> a skos:Concept ;
+    skos:prefLabel "Aanvrager Woonachtig In Gemeente"@nl ;
+    skos:definition "Aanvrager Woonachtig In Gemeente is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AWIG" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/15> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerWoonachtigInGemeente> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerLeeftijdOK> a skos:Concept ;
+    skos:prefLabel "Aanvrager Leeftijd OK"@nl ;
+    skos:definition "Aanvrager Leeftijd OK is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "ALO" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/16> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerLeeftijdOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerVerblijfstitelOK> a skos:Concept ;
+    skos:prefLabel "Aanvrager Verblijfstitel OK"@nl ;
+    skos:definition "Aanvrager Verblijfstitel OK is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AVO" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/17> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerVerblijfstitelOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerDetentie> a skos:Concept ;
+    skos:prefLabel "Aanvrager Detentie"@nl ;
+    skos:definition "Aanvrager Detentie is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AD" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/18> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerDetentie> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerMaatregel100> a skos:Concept ;
+    skos:prefLabel "Aanvrager Maatregel100"@nl ;
+    skos:definition "Aanvrager Maatregel100 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AM" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/19> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerMaatregel100> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/aanvragerRechtOpStufi> a skos:Concept ;
+    skos:prefLabel "Aanvrager Recht Op Stufi"@nl ;
+    skos:definition "Aanvrager Recht Op Stufi is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "AROS" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/20> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/aanvragerRechtOpStufi> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerWoonachtigInGemeente> a skos:Concept ;
+    skos:prefLabel "Partner Woonachtig In Gemeente"@nl ;
+    skos:definition "Partner Woonachtig In Gemeente is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PWIG" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/21> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerWoonachtigInGemeente> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerLeeftijdOK> a skos:Concept ;
+    skos:prefLabel "Partner Leeftijd OK"@nl ;
+    skos:definition "Partner Leeftijd OK is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PLO" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/22> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerLeeftijdOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerVerblijfstitelOK> a skos:Concept ;
+    skos:prefLabel "Partner Verblijfstitel OK"@nl ;
+    skos:definition "Partner Verblijfstitel OK is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PVO" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/23> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerVerblijfstitelOK> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerDetentie> a skos:Concept ;
+    skos:prefLabel "Partner Detentie"@nl ;
+    skos:definition "Partner Detentie is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PD" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/24> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerDetentie> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerMaatregel100> a skos:Concept ;
+    skos:prefLabel "Partner Maatregel100"@nl ;
+    skos:definition "Partner Maatregel100 is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PM" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/25> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerMaatregel100> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/partnerRechtOpStufi> a skos:Concept ;
+    skos:prefLabel "Partner Recht Op Stufi"@nl ;
+    skos:definition "Partner Recht Op Stufi is een tekstuele waarde die als invoer dient voor de beslisregel."@nl ;
+    skos:notation "PROS" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/input/26> ;
+    dct:type "dmn:InputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/partnerRechtOpStufi> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+# Output Variable Concepts
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/beslissingALO> a skos:Concept ;
+    skos:prefLabel "Beslissing ALO"@nl ;
+    skos:definition "Beslissing ALO is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "BA" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/1> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/beslissingALO> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/informatiebehoefte> a skos:Concept ;
+    skos:prefLabel "Informatiebehoefte"@nl ;
+    skos:definition "Informatiebehoefte is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "INFO" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/2> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/informatiebehoefte> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/redenAfwijzing> a skos:Concept ;
+    skos:prefLabel "Reden Afwijzing"@nl ;
+    skos:definition "Reden Afwijzing is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RA" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/3> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/redenAfwijzing> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/rechthebbendeAanvrager> a skos:Concept ;
+    skos:prefLabel "Rechthebbende Aanvrager"@nl ;
+    skos:definition "Rechthebbende Aanvrager is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RA1" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/4> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/rechthebbendeAanvrager> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/informatiebehoefteAanvrager> a skos:Concept ;
+    skos:prefLabel "Informatiebehoefte Aanvrager"@nl ;
+    skos:definition "Informatiebehoefte Aanvrager is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "IA" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/5> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/informatiebehoefteAanvrager> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/rechthebbendePartner> a skos:Concept ;
+    skos:prefLabel "Rechthebbende Partner"@nl ;
+    skos:definition "Rechthebbende Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "RP" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/6> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/rechthebbendePartner> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/informatiebehoeftePartner> a skos:Concept ;
+    skos:prefLabel "Informatiebehoefte Partner"@nl ;
+    skos:definition "Informatiebehoefte Partner is een tekstuele waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "IP" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/7> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/informatiebehoeftePartner> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/tekortSchieten> a skos:Concept ;
+    skos:prefLabel "Tekort Schieten"@nl ;
+    skos:definition "Tekort Schieten is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "TS" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/8> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/tekortSchieten> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/dringendeReden> a skos:Concept ;
+    skos:prefLabel "Dringende Reden"@nl ;
+    skos:definition "Dringende Reden is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "DR" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/9> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/dringendeReden> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+
+<https://regels.overheid.nl/concepts/dt225beslissingalo/hardheidsclausuleToepassen> a skos:Concept ;
+    skos:prefLabel "Hardheidsclausule Toepassen"@nl ;
+    skos:definition "Hardheidsclausule Toepassen is een ja/nee waarde die als uitvoer wordt gegenereerd door de beslisregel."@nl ;
+    skos:notation "HT" ;
+    dct:subject <https://regels.overheid.nl/services/aanvraag-levensonderhoud/dmn/output/10> ;
+    dct:type "dmn:OutputVariable" ;
+    skos:exactMatch <https://regels.overheid.nl/concepts/hardheidsclausuleToepassen> ;
+    skos:inScheme <https://regels.overheid.nl/schemes/dmn-variables> .
+

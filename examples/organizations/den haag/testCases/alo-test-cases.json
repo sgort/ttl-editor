@@ -6562,7 +6562,367 @@
     }
   },
   {
-    "name": "TC056_edge_inkomen_gelijk_aan_norm",
+    "name": "TC056_RechtOpALO_direct_groen",
+    "decision": "dt225_RechtOpALO",
+    "rule": "RechtOpALO (direct)",
+    "description": "Entitled at the RechtOpALO level, asserted on that decision rather than inferred from what Beslissing ALO did with it.",
+    "expected": "rechtOpALO=\"groen\", redenAfwijzing=\"\", informatiebehoefte=\"\"",
+    "expectedOutputs": {
+      "rechtOpALO": "groen",
+      "redenAfwijzing": "",
+      "informatiebehoefte": ""
+    },
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "inkomenVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": "ja",
+          "type": "String"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": "nee",
+          "type": "String"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "oordeelTekortSchieten": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC057_RechtOpALO_direct_oranje",
+    "decision": "dt225_RechtOpALO",
+    "rule": "RechtOpALO (direct)",
+    "description": "Oranje with the aanvrager's own behoefte passed up from the person decision - the join the root-routed cases exercise only indirectly.",
+    "expected": "rechtOpALO=\"oranje\", redenAfwijzing=\"\", informatiebehoefte=\"verblijfstitel\"",
+    "expectedOutputs": {
+      "rechtOpALO": "oranje",
+      "redenAfwijzing": "",
+      "informatiebehoefte": "verblijfstitel"
+    },
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 800.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "inkomenVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": "ja",
+          "type": "String"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": "nee",
+          "type": "String"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "oordeelTekortSchieten": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": "onbekend",
+          "type": "String"
+        },
+        "aanvragerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC058_RechtOpALO_direct_rood",
+    "decision": "dt225_RechtOpALO",
+    "rule": "RechtOpALO (direct)",
+    "description": "Rood with a reden, asserted at the decision that produces it.",
+    "expected": "rechtOpALO=\"rood\", redenAfwijzing=\"02\", informatiebehoefte=\"\"",
+    "expectedOutputs": {
+      "rechtOpALO": "rood",
+      "redenAfwijzing": "02",
+      "informatiebehoefte": ""
+    },
+    "requestBody": {
+      "variables": {
+        "aanvraagtypeALO": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "lopendeAanvraagOfUitkering": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "eersteAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "tweedeAanvragerVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ongeoorloofdOnbetaaldVerlof": {
+          "value": "nee",
+          "type": "String"
+        },
+        "maandelijksInkomen": {
+          "value": 1500.0,
+          "type": "Double"
+        },
+        "bijstandsNorm": {
+          "value": 1320.0,
+          "type": "Double"
+        },
+        "inkomenVastgesteld": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "geenInAanmerkingTeNemenVermogen": {
+          "value": "ja",
+          "type": "String"
+        },
+        "voorliggendeVoorzieningenUitsluiting": {
+          "value": "nee",
+          "type": "String"
+        },
+        "bijstandsVorm": {
+          "value": "Om niet",
+          "type": "String"
+        },
+        "oordeelTekortSchieten": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelDringendeReden": {
+          "value": "nee",
+          "type": "String"
+        },
+        "oordeelHardheidsclausule": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerVerblijfstitelOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "aanvragerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "aanvragerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerWoonachtigInGemeente": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerLeeftijdOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerVerblijfstitelOK": {
+          "value": "ja",
+          "type": "String"
+        },
+        "partnerDetentie": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerMaatregel100": {
+          "value": "nee",
+          "type": "String"
+        },
+        "partnerRechtOpStufi": {
+          "value": "nee",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC059_edge_inkomen_gelijk_aan_norm",
     "decision": "dt225_BeslissingALO",
     "rule": "RechtOpALO R7 boundary",
     "description": "maandelijksInkomen exactly equals bijstandsNorm. The test is a strict `<`, so equality is NOT a low income and the application is refused with reden 02. A `<=` here would silently entitle everyone at the norm.",
@@ -6682,7 +7042,7 @@
     }
   },
   {
-    "name": "TC057_edge_inkomen_net_onder_norm",
+    "name": "TC060_edge_inkomen_net_onder_norm",
     "decision": "dt225_BeslissingALO",
     "rule": "RechtOpALO R16 boundary",
     "description": "One cent below the norm is a low income, so the same applicant is entitled. Pairs with the case above to pin the boundary from both sides.",
@@ -6802,7 +7162,7 @@
     }
   },
   {
-    "name": "TC058_edge_FIRST_geen_aanvraag_dominates",
+    "name": "TC061_edge_FIRST_geen_aanvraag_dominates",
     "decision": "dt225_BeslissingALO",
     "rule": "RechtOpALO R1 precedence",
     "description": "Several refusal grounds are true at once - no ALO application, a running application, income above the norm and an excluding provision. FIRST must return reden 00, the earliest rule, not any of the others.",
@@ -6922,7 +7282,7 @@
     }
   },
   {
-    "name": "TC059_edge_rood_outranks_onbekend",
+    "name": "TC062_edge_rood_outranks_onbekend",
     "decision": "dt225_RechthebbendeAanvrager",
     "rule": "dt225_RechthebbendeAanvrager precedence",
     "description": "One fact disqualifies and another is unknown at the same time. The rood rules come first, so the person is rood - the applicant is refused rather than asked for information they do not need.",
@@ -7041,9 +7401,9 @@
     }
   },
   {
-    "name": "TC060_edge_aanvrager_oranje_outranks_partner_oranje",
+    "name": "TC063_edge_aanvrager_oranje_outranks_partner_oranje",
     "decision": "dt225_BeslissingALO",
-    "rule": "RechtOpALO R10 before R11",
+    "rule": "RechtOpALO R10/R11 precedence",
     "description": "Both people have an unknown fact. R10 precedes R11, so the aanvrager's behoefte is the one reported - a deliberate precedence, not an arbitrary one.",
     "expected": "beslissingALO=\"Informatie nodig\", redenAfwijzing=\"\", informatiebehoefte=\"detentie\"",
     "expectedOutputs": {
@@ -7161,7 +7521,7 @@
     }
   },
   {
-    "name": "TC061_gap_aanvrager_rood_partner_groen",
+    "name": "TC064_gap_aanvrager_rood_partner_groen",
     "decision": "dt225_BeslissingALO",
     "rule": "(no rule matches)",
     "description": "RECORDED MODEL GAP, not a defect in this pass. R5 needs BOTH people rood and R16 needs BOTH groen, so one rood and one groen matches nothing: RechtOpALO returns no row, and Beslissing ALO therefore returns an empty result set. The source model has the same hole. Flagged for Den Haag rather than closed on inference about how a mixed household should be decided.",
@@ -7277,7 +7637,7 @@
     }
   },
   {
-    "name": "TC062_gap_partner_rood_aanvrager_groen",
+    "name": "TC065_gap_partner_rood_aanvrager_groen",
     "decision": "dt225_BeslissingALO",
     "rule": "(no rule matches)",
     "description": "The mirror image of the case above, included so the gap is documented as symmetric rather than looking like an aanvrager-only problem.",

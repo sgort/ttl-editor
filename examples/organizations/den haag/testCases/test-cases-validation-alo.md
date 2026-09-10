@@ -1,6 +1,6 @@
 # Test cases — `225_Beslissing_Levensonderhoud-patched.dmn`
 
-The reasoning behind each of the 62 cases in
+The reasoning behind each of the 65 cases in
 [`alo-test-cases.json`](alo-test-cases.json), what they proved, and how to run
 them yourself. Companion to [`test-cases-alo.sh`](test-cases-alo.sh) (the
 runner) and [`../CHANGELOG.md`](../CHANGELOG.md) (the history).
@@ -126,23 +126,34 @@ lesson from SZW.
 
 ---
 
-## 3. What the 62 cases cover
+## 3. What the 65 cases cover
 
-One dedicated case per rule, 55 of them, plus 7 edge and gap cases.
+One dedicated case per rule, 55 of them, plus three cases evaluating
+`RechtOpALO` directly and 7 edge and gap cases.
 
-| group                               | cases | routed to     | what a failure would mean                                    |
-| ----------------------------------- | ----- | ------------- | ------------------------------------------------------------ |
-| `BeslissingALO` rules 1–7           | 7     | root          | the final decision mapping a colour or bijstandsvorm wrongly |
-| `RechtOpALO` rules 1–16             | 16    | root          | an entitlement ground misfiring, or a passthrough breaking   |
-| `RechthebbendeAanvrager` rules 1–13 | 13    | that decision | a person's facts scored wrongly                              |
-| `RechthebbendePartner` rules 1–13   | 13    | that decision | the partner table drifting from the aanvrager table          |
-| the three judgement decisions       | 6     | each decision | a standalone rule regressing unnoticed                       |
-| boundary, precedence, recorded gap  | 7     | mixed         | a comparison operator or rule order changing                 |
+| group                               | cases | routed to     | what a failure would mean                                          |
+| ----------------------------------- | ----- | ------------- | ------------------------------------------------------------------ |
+| `BeslissingALO` rules 1–7           | 7     | root          | the final decision mapping a colour or bijstandsvorm wrongly       |
+| `RechtOpALO` rules 1–16             | 16    | root          | an entitlement ground misfiring, or a passthrough breaking         |
+| `RechthebbendeAanvrager` rules 1–13 | 13    | that decision | a person's facts scored wrongly                                    |
+| `RechthebbendePartner` rules 1–13   | 13    | that decision | the partner table drifting from the aanvrager table                |
+| the three judgement decisions       | 6     | each decision | a standalone rule regressing unnoticed                             |
+| `RechtOpALO` evaluated directly     | 3     | that decision | the intermediate colour itself changing, and the concept vanishing |
+| boundary, precedence, recorded gap  | 7     | mixed         | a comparison operator or rule order changing                       |
 
 The `RechtOpALO` rules are driven through `dt225_BeslissingALO` deliberately.
 Routing them to `dt225_RechtOpALO` would assert the same values one hop earlier;
 routing them through the root asserts the _chain_ as well, and the objective for
 this pass is coverage towards `Beslissing ALO`.
+
+Driving all 16 through the root has one cost, found by inspecting a published
+export rather than by reasoning: nothing then names `dt225_RechtOpALO` as a
+case's own decision, so its output variable `rechtOpALO` never appears in an
+evaluate response — and it is not an `inputData` either, so the editor's
+Concepts tab omitted the model's central intermediate concept entirely. Three
+cases evaluate `dt225_RechtOpALO` directly, one per colour, which restores the
+concept and asserts the intermediate value itself rather than inferring it from
+what `Beslissing ALO` did with it.
 
 The person decisions' **rood** rules cannot be observed from the root, because
 one person rood and the other groen matches no `RechtOpALO` rule at all
@@ -356,9 +367,24 @@ Applied from the start rather than rediscovered:
 | SZW       | mutation-check the runner before trusting a green run (§6)                                 |
 | SZW       | cross-check the generator's inventory against the DMN before emitting cases (§4)           |
 
-New this pass: an object model must be flattened to scalars before a DMN engine
-can evaluate it (§5.1), and a fact that can be _unknown_ needs a third value
-rather than a second boolean (§5.4).
+New this pass, and worth carrying forward:
+
+- An object model must be flattened to scalars before a DMN engine can evaluate
+  it (§5.1).
+- A fact that can be _unknown_ needs a third value, not a second boolean
+  (§5.4). Collapsing six unknown-fact rules into one "information incomplete"
+  boolean costs exactly the discriminating power the output existed for.
+- **Routing every case through the root hides the intermediate outputs.**
+  Concepts are derived from evaluate responses, so a decision that is only ever
+  a `requiredDecision` never contributes its own output variable to the
+  published vocabulary. Found by inspecting a published `.ttl`, not by reasoning
+  about the model — see §3.
+- **A comparison that cannot distinguish `false` from absent is not a
+  comparison** (§6).
+
+The last two surfaced only because the suite was run through the editor and the
+result inspected, rather than checked against the engine alone. Publishing early
+is part of the method, not the last step.
 
 ---
 
@@ -389,6 +415,16 @@ The legal layer is nonetheless **preserved**: all 11 `knowledgeSource` elements
 and all 12 `authorityRequirement` links are carried across, ids and names
 unchanged. The earlier deployable dropped all 23.
 
+They do **not** currently reach the published TTL. Verified against
+[`../Aanvraag-LevensOnderhoud-ALO.ttl`](../Aanvraag-LevensOnderhoud-ALO.ttl):
+zero occurrences, and `grep -rn "knowledgeSource|authorityRequirement" src/`
+matches nothing — the application has no notion of DMN's legal-source layer.
+A missing capability rather than a defect, tracked as
+[ttl-editor#121](https://github.com/sgort/ttl-editor/issues/121) with a
+suggested `prov:wasDerivedFrom` mapping. Preserving them in the DMN is still
+right: they are what any future support would read, and they are visible to
+anyone opening the model in a modeller.
+
 ---
 
 ## 9. Running the cases
@@ -397,7 +433,7 @@ unchanged. The earlier deployable dropped all 23.
 
 ```bash
 cd "examples/organizations/den haag/testCases"
-./test-cases-alo.sh                                  # deploys, then runs all 62
+./test-cases-alo.sh                                  # deploys, then runs all 65
 SKIP_DEPLOY=1 ./test-cases-alo.sh                    # reuse what's already live
 VERBOSE=1 ./test-cases-alo.sh                        # print passes too
 OPERATON_URL=http://localhost:8081/engine-rest ./test-cases-alo.sh
@@ -409,7 +445,7 @@ Defaults to `https://operaton.open-regels.nl/engine-rest`. Requires `curl` and
 Current result:
 
 ```
-Results: 62 passed, 0 failed (of 62)
+Results: 65 passed, 0 failed (of 65)
 ```
 
 Mutation-checked in every branch — a wrong string, an empty string against a
@@ -420,11 +456,17 @@ reported as failures, so a green run means the comparisons actually ran.
 ### In the CPSV Editor
 
 The same file drives the DMN tab's **Run All Test Cases**. Each case carries a
-`decision`, so the 30 root-routed cases, the 26 person-decision cases and the 6
-judgement cases all route correctly from one file.
+`decision`, so the root-routed cases, the 26 person-decision cases, the three
+`RechtOpALO` cases and the 6 judgement cases all route correctly from one file.
+
+**Run the suite before publishing.** Concepts are derived from evaluate
+responses, so a single evaluation of the root yields only its own three
+outputs. Running all 65 unions inputs and outputs across every case, taking
+the published vocabulary from 29 concepts to 37 — the same 26 inputs plus all
+11 outputs across the seven decisions.
 
 The tab reads the human-readable `expected` string rather than
-`expectedOutputs`, which is why every case carries both. All 62 were verified
+`expectedOutputs`, which is why every case carries both. All 65 were verified
 through that path as well, against the live engine, so none degrades to an
 amber "unverified" verdict.
 
