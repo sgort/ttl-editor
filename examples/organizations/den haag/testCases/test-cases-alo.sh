@@ -1,24 +1,25 @@
 #!/bin/bash
 
-# Run every case in pw-normbedragen-test-cases.json against an Operaton
-# instance. Deploys PW-normbedragen.dmn first by default (so this is
+# Run every case in alo-test-cases.json against an Operaton
+# instance. Deploys 225_Beslissing_Levensonderhoud-patched.dmn first by default (so this is
 # self-contained), then evaluates each case against its own `decision` and
 # compares the engine's answer to that case's `expectedOutputs`.
 #
 # Usage:
-#   ./test-cases-pw.sh
-#   OPERATON_URL=https://operaton.open-regels.nl/engine-rest ./test-cases-pw.sh
-#   SKIP_DEPLOY=1 ./test-cases-pw.sh   # reuse whatever's already deployed —
+#   ./test-cases-alo.sh
+#   OPERATON_URL=https://operaton.open-regels.nl/engine-rest ./test-cases-alo.sh
+#   SKIP_DEPLOY=1 ./test-cases-alo.sh   # reuse whatever's already deployed —
 #                                      # e.g. when iterating on the cases file
 #                                      # itself, where the DMN hasn't changed
-#   VERBOSE=1 ./test-cases-pw.sh       # print every case, not just failures
+#   VERBOSE=1 ./test-cases-alo.sh       # print every case, not just failures
 #
-# Why `expectedOutputs` and not `expected`: the sibling Amsterdam runner parses
+# Why `expectedOutputs` and not `expected`: the Amsterdam runner parses
 # the human-readable `expected` string, which works but has to re-derive types
 # from text. These cases carry the same expectation twice — `expected` for the
 # editor's DMN tab, which reads that field, and `expectedOutputs` as real JSON
-# for this runner. Numbers compare as numbers here, so 1106.40 and 1106.4 are
-# the same value rather than two different strings.
+# for this runner. Booleans stay booleans and an empty result set is
+# distinguishable from a row of empty strings, which matters here: the
+# recorded model gap returns no row at all.
 #
 # Requires: curl, jq
 
@@ -28,12 +29,12 @@ OPERATON_URL="${OPERATON_URL:-https://operaton.open-regels.nl/engine-rest}"
 SKIP_DEPLOY="${SKIP_DEPLOY:-0}"
 VERBOSE="${VERBOSE:-0}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DMN_FILE="$SCRIPT_DIR/../PW-normbedragen.dmn"
-CASES_FILE="$SCRIPT_DIR/pw-normbedragen-test-cases.json"
+DMN_FILE="$SCRIPT_DIR/../225_Beslissing_Levensonderhoud-patched.dmn"
+CASES_FILE="$SCRIPT_DIR/alo-test-cases.json"
 
 echo ""
 echo "======================================================="
-echo "Test Cases: PW-normbedragen.dmn"
+echo "Test Cases: 225_Beslissing_Levensonderhoud-patched.dmn"
 echo "======================================================="
 echo "Operaton: $OPERATON_URL"
 echo ""
@@ -43,9 +44,9 @@ if [ "$SKIP_DEPLOY" = "1" ]; then
 else
     echo "── Deploying $DMN_FILE ..."
     deploy_response=$(curl -s -X POST \
-      -F "deployment-name=PW-normbedragen" \
+      -F "deployment-name=225_Beslissing_Levensonderhoud-patched" \
       -F "deploy-changed-only=true" \
-      -F "PW-normbedragen.dmn=@${DMN_FILE};type=text/xml" \
+      -F "225_Beslissing_Levensonderhoud-patched.dmn=@${DMN_FILE};type=text/xml" \
       "$OPERATON_URL/deployment/create")
 
     deployed_count=$(echo "$deploy_response" | jq '.deployedDecisionDefinitions | length' 2>/dev/null)
