@@ -2,6 +2,35 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.4",
+      "status": "Released",
+      "date": "11 sep 2026",
+      "commits": [
+        {
+          "sha": "5e1d3fd",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "The transitive dependency tree refreshed for the first time",
+          "details": [
+            "Renovate's first lock-file maintenance, enabled by the commit below. It changed 202 entries in package-lock.json — 68 moved, 87 added, 47 removed — every one within a range package.json already declared, so the manifest itself is untouched. It closed the last seven Semgrep Supply Chain findings: every copy of brace-expansion 1.x moved to 1.1.18, of picomatch 2.x to 2.3.2, and postcss-selector-parser to 6.1.4. The scan on acc now reports 0.",
+            "The only dependency of the app itself that moved is lucide-react, to 1.35.0. Three packages behind Vite and jsdom moved back a patch version — rolldown to 1.2.6, @oxc-project/types to 0.147.0 and @csstools/css-color-parser to 4.2.1. That is the 14-day cooldown at work: the newer versions had come in through a local install on 4 September, were 8 to 11 days old when the refresh ran, and so it resolved each to the newest version past the cooldown."
+          ]
+        },
+        {
+          "sha": "1b2457e",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The transitive dependency tree is refreshed every week",
+          "details": [
+            "Renovate only ever proposes packages a manifest names. Lock-file maintenance, which refreshes everything else in package-lock.json, is off by default and had never been turned on here — which is why the seven remaining Supply Chain findings had not closed, although each had a fixed version inside its declared range. It now runs on Monday mornings and takes the first free pull-request slot.",
+            "Major updates now wait in the Dependency Dashboard for approval and hold no pull-request slot until someone approves one, so they cannot crowd out the weekly refresh — the lesson Linked Data Explorer learned first. Security fixes are exempt, so one that happens to be a major version never waits on a click.",
+            "npm 10.9.4, bundled with Node 22, cannot perform that refresh on this dependency tree: its resolver crashes with \"Cannot read properties of null (reading 'edgesOut')\". npm 11 resolves it cleanly, and npm ci and CI are unaffected. The README's Getting started now says to use Node 24 / npm 11, and why."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.3",
       "status": "Released",
       "date": "11 sep 2026",
