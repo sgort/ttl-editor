@@ -273,6 +273,65 @@ describe('applyMapping', () => {
     expect(result.service.identifier).toBe(encodeURIComponent('pensioengerechtigde leeftijd'));
   });
 
+  // Characterisation test: the replace transform had no coverage at all, and
+  // the next two tests change the code path it runs through. This one passes
+  // before that change and must keep passing after it.
+  test('applies a replace transform', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'leeftijd', replacement: 'age' },
+        },
+      },
+    };
+    const result = applyMapping(parsedData, mapping);
+    expect(result.service.name).toBe('pensioengerechtigde age');
+  });
+
+  test('rejects a replace pattern whose quantified group contains a quantifier', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: '(a+)+$', replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).toThrow(/quantifier/i);
+  });
+
+  test('rejects a replace pattern longer than the length limit', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'a'.repeat(201), replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).toThrow(/201 characters exceeds/);
+  });
+
+  test('accepts a replace pattern exactly at the length limit', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'a'.repeat(200), replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).not.toThrow();
+  });
+
   test('groups parameters.* mappings into a single parameter object', () => {
     const mapping = {
       mappings: {
