@@ -66,6 +66,36 @@ and review alike, because nothing else re-resolves the reference.
 gate` ruleset already requires — so no ruleset change was needed, and none
 would have been noticed if it had been.
 
+### What the ruleset requires
+
+A branch ruleset is GitHub state, not a file, so nothing in a diff records it
+and nothing here is enforced by being written down. It is repeated because the
+alternative is that the only account of what gates `acc` lives in a settings
+page nobody reads until something is already stuck.
+
+`acc supply-chain gate` (ruleset `21728745`, enforcement `active`, scoped to
+`refs/heads/acc`) requires two status checks:
+
+| Check   | Workflow      | Covers                                                           |
+| ------- | ------------- | ---------------------------------------------------------------- |
+| `audit` | `zizmor.yml`  | workflow static analysis, renovate config, formatting, pin truth |
+| `scan`  | `semgrep.yml` | Semgrep Code and Supply Chain — the npm dependency tree          |
+
+`scan` was added on 11 September 2026, once the finding backlog was clean —
+see issues #112 and #113 for the triage and the reasoning. It covers what
+`check-supply-chain` never did: `check-supply-chain` verifies that **GitHub
+Actions** digest pins resolve to the versions their comments claim, and says
+nothing about the packages in `package-lock.json`.
+
+Two things to know before they surprise you:
+
+- **`bypass_actors` is empty.** There is no administrator override. If
+  semgrep.dev is unreachable or `SEMGREP_APP_TOKEN` is revoked, merges to `acc`
+  stop until the ruleset is edited. That is a minute's work for the repository
+  owner, and worth knowing now rather than diagnosing under pressure.
+- **Forked pull requests cannot pass `scan`.** Secrets are not passed to fork
+  runs, so the scan cannot start. Accepted knowingly; issue #128 tracks it.
+
 ### Renovate does not maintain this table
 
 It rewrites workflow pins and their version comments together, honestly and
