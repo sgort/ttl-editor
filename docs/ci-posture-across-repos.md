@@ -699,10 +699,26 @@ production build ran and reported, and none of them could have blocked the merge
 That asymmetry widened rather than narrowed when `scan` was added. Every control
 this document describes now gates `acc` and none of them gates `main`.
 
-That is defensible: `main` is promoted from `acc`, and those commits already
-passed the gate on their own `acc` pull request. But the promotion pull request is
-the one carrying a build-system change into production, and it is gated by nobody.
-Read the checks there rather than trusting the button.
+That is **decided, not merely defensible** — weighed on 11 September 2026 and
+deliberately kept. `main` is promoted from `acc`, and those commits already passed
+`audit` and `scan` on their own `acc` pull request, so re-running them adds latency
+without adding information about the code.
+
+The argument against stands and is worth keeping in view: the promotion pull
+request is the one carrying changes into production, and it is gated by nobody.
+"Already checked on `acc`" is true of the commits, not of the merge — a promotion
+can be opened from a stale `acc`, or carry a conflict resolution that appears in no
+earlier pull request. Read the checks there rather than trusting the button.
+
+If it is ever revisited, `audit` and `scan` are the two that could be required:
+both trigger on `pull_request` unfiltered with no paths filter, so neither can go
+missing on any base. **`Build and deploy PROD` cannot**, as things stand — its
+`paths-ignore` means a documentation-only promotion never triggers it, and a
+required check that never reports wedges the pull request permanently. That is the
+same hole this document describes above, in the other dimension. Seventeen of the
+v2026.09.3 promotion's 42 files matched that filter, so it is an ordinary case
+rather than a corner one. The full analysis is in
+[ttl-editor#131](https://github.com/sgort/ttl-editor/issues/131).
 
 The same question is worth asking of the other two: a ruleset naming one branch
 says nothing about any other.
