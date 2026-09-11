@@ -183,6 +183,10 @@ describe('extractValue', () => {
   test('returns null (not throwing) when traversing through a missing intermediate object', () => {
     expect(extractValue({}, 'a.b.c')).toBeNull();
   });
+
+  test('does not reach an object prototype through a constructor path', () => {
+    expect(extractValue({}, 'constructor.name')).toBeNull();
+  });
 });
 
 describe('applyMapping', () => {
@@ -294,5 +298,42 @@ describe('applyMapping', () => {
     };
     const result = applyMapping(parsedData, mapping);
     expect(result.parameters).toEqual([]);
+  });
+});
+
+describe('applyMapping prototype pollution', () => {
+  // Every assertion here reads a property off a plain object, so a leaked
+  // write to Object.prototype would make LATER tests pass for the wrong
+  // reason rather than failing loudly. Clean up whether or not the guard
+  // holds.
+  afterEach(() => {
+    delete Object.prototype.polluted;
+  });
+
+  const parsedData = {
+    concepts: [{ id: 'c1', name: 'pensioengerechtigde leeftijd' }],
+    textAnnotations: [],
+    documents: [],
+    metadata: {},
+  };
+
+  test('does not write to Object.prototype through a __proto__ target field', () => {
+    const mapping = {
+      mappings: { '__proto__.polluted': { source: 'concepts', path: 'name' } },
+    };
+
+    applyMapping(parsedData, mapping);
+
+    expect({}.polluted).toBeUndefined();
+  });
+
+  test('does not write to Object.prototype through a constructor.prototype target field', () => {
+    const mapping = {
+      mappings: { 'constructor.prototype.polluted': { source: 'concepts', path: 'name' } },
+    };
+
+    applyMapping(parsedData, mapping);
+
+    expect({}.polluted).toBeUndefined();
   });
 });

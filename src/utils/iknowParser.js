@@ -244,11 +244,26 @@ export const getAvailableFields = (parsedData) => {
 };
 
 /**
+ * Path segments that reach an object's prototype rather than its own data.
+ *
+ * Nothing in the application can currently supply one: every production call
+ * site of applyMapping passes a config from availableMappings, seeded once
+ * from the bundled src/config/iknow-mappings, and uploaded iKnow XML supplies
+ * only values, never paths. The guard exists because that is a property of
+ * today's wiring rather than of these functions -- IKnowMappingTab already
+ * JSON.parses a user-supplied config file into its editing state, and the day
+ * anything feeds such a config to applyMapping, walking a dot path would write
+ * straight to Object.prototype.
+ */
+const UNSAFE_PATH_SEGMENTS = new Set(['__proto__', 'constructor', 'prototype']);
+
+/**
  * Extract value from parsed data using a path expression
  * Path examples: 'concept.name', 'textAnnotation.text', 'concept.terms[0].value'
  */
 export const extractValue = (item, path) => {
   const parts = path.split('.');
+  if (parts.some((part) => UNSAFE_PATH_SEGMENTS.has(part))) return null;
   let value = item;
 
   for (const part of parts) {
@@ -435,6 +450,7 @@ const applyTransform = (value, transform) => {
  */
 const setNestedValue = (obj, path, value) => {
   const parts = path.split('.');
+  if (parts.some((part) => UNSAFE_PATH_SEGMENTS.has(part))) return;
   let current = obj;
 
   for (let i = 0; i < parts.length - 1; i++) {
