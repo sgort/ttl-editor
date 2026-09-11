@@ -34,3 +34,33 @@
 # the file DMNTab.jsx fetches at runtime, from the scanned set. Anchoring
 # to the repository root is what keeps the distinction above real.
 /examples/
+
+# Test files are excluded from Code scanning, but NOT from Secrets scanning,
+# which carries its own separate ignore list in the Semgrep project settings
+# and is deliberately left covering them. A hardcoded credential in a test is
+# the one finding class here worth having, and it survives this rule.
+#
+# What this silences, four findings across two rules, all triaged in #112:
+#   - parseTTL.roundtrip.test.js            path-join-resolve-traversal
+#   - ttlGenerator.citationStub.test.js     path-join-resolve-traversal
+#   - ChangelogTab.expansion.test.jsx       detect-non-literal-regexp
+#   - ttlGenerator.citationStub.test.js     detect-non-literal-regexp
+#
+# The pattern, not the instances, is the reason. Reading a fixture off disk
+# means path.resolve; asserting on generated text means building a RegExp
+# from a variable. Both are ordinary test code, so this set grows with every
+# test file that does either -- #119 added two without doing anything
+# unusual. Triaging each new one by hand is not a strategy.
+#
+# The precise alternative was rejected rather than overlooked. Semgrep has no
+# per-rule path setting: scoping a registry rule to paths means forking a
+# custom copy carrying paths.exclude and disabling the original, which is two
+# rules to maintain against upstream drift for four false positives. Nor can
+# the rules simply be switched off in Policies > Detection -- that is
+# org-wide across all paths, and detect-non-literal-regexp has a production
+# occurrence at iknowParser.js:433 that #112 item 5 is still deciding about.
+#
+# Test code does not ship. Given Secrets still covers it, the marginal value
+# of Code SAST here does not justify that maintenance.
+*.test.js
+*.test.jsx
