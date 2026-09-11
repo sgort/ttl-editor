@@ -116,6 +116,14 @@ See [Semantic Mediation Reference Architecture](https://iou-architectuur.open-re
 
 ## Getting started
 
+Use **Node 24 / npm 11** — the version CI runs. npm 10 (bundled with Node 22) can
+install from the lockfile with `npm ci`, but crashes on anything that re-resolves
+the dependency tree — `npm install <package>`, `npm update`, or regenerating the
+lockfile — with `Cannot read properties of null (reading 'edgesOut')`. It is a bug
+in npm 10's resolver, hit while walking `vitest`'s optional peer chain (`jsdom` →
+`canvas`); npm 11 resolves the same tree cleanly. Verified with npm 10.9.4 and
+11.19.1 on 2026-09-11.
+
 ```bash
 npm install
 npm start       # development server at http://localhost:3000
