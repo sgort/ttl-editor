@@ -2,6 +2,136 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.3",
+      "status": "Released",
+      "date": "11 sep 2026",
+      "commits": [
+        {
+          "sha": "9e27884",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Replace-transform patterns are bounded before they compile",
+          "details": [
+            "applyTransform compiled a mapping config's `transform.pattern` straight into a RegExp and ran it over extracted values. A pattern shaped like `(a+)+` gives the engine exponentially many ways to split the same input, so a non-matching subject of a few dozen characters can run effectively forever — on the main thread, in the browser.",
+            "Two checks now run first: a quantified group that itself contains a quantifier is refused, tested against the pattern with escape sequences blanked out so a literal `(\\+)+` is allowed while `(\\d+)+` is not; and patterns over 200 characters are refused as a backstop bounding what an undetected construction can cost. The first is deliberately narrow — it does not catch overlapping alternation like `(a|a)*`, which needs a real parser — and the length cap exists precisely because the heuristic will miss things.",
+            "Rejection throws rather than returning the value untransformed: a pattern of this shape is a configuration error, and silently skipping the transform would produce quietly wrong output with nothing to explain it."
+          ]
+        },
+        {
+          "sha": "cedd770",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Test files are out of Code scanning",
+          "details": [
+            "Four of sixteen findings were test files tripping two rules, two of them arriving with a single pull request that did nothing unusual. The pattern rather than the instances is the reason to act: reading a fixture off disk means `path.resolve`, and asserting on generated text means building a RegExp from a variable. Both are ordinary test code, so the set grows with every test file that does either.",
+            "Secrets scanning is not affected — it carries its own separate ignore list and keeps covering these files. A hardcoded credential in a test is the one finding class genuinely worth having there.",
+            "The narrower fix was rejected rather than overlooked. Semgrep has no per-rule path setting: scoping a registry rule to paths means forking a custom copy and disabling the original, two rules to maintain against upstream drift for four false positives. Disabling the rules outright is worse, being org-wide across all paths."
+          ]
+        },
+        {
+          "sha": "6bf584e",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "iKnow mapping paths refuse prototype segments",
+          "details": [
+            "extractValue and setNestedValue both walk a dot-separated path supplied by a mapping config. setNestedValue creates missing objects as it goes, so a target field of `__proto__.polluted` or `constructor.prototype.polluted` wrote straight to Object.prototype; extractValue reached the prototype on the read side, where `constructor.name` returned \"Object\" rather than null.",
+            "Neither was reachable. Every production call site of applyMapping passes a config from the bundled iknow-mappings, and uploaded iKnow XML supplies only values, never paths. That is a property of the current wiring rather than of these two functions, which is the reason to fix it here: the mapping tab already JSON.parses a user-supplied config into its editing state, and the day anything feeds such a config to applyMapping, all of it becomes live at once."
+          ]
+        },
+        {
+          "sha": "34879b3",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "The published Den Haag ALO service, and three cases the publish showed missing",
+          "details": [
+            "Adds the CPSV Editor export of the Den Haag ALO service and the organization logo, and closes a coverage gap that only became visible once the model was published.",
+            "All 16 RechtOpALO rules are driven through the entitlement decision, which is what the objective asks for and what proves the chain. But nothing named the RechtOpALO decision as a case's own decision, so its output variable never appeared in an evaluate response — and it is not an inputData either, so the published vocabulary omitted the model's central intermediate concept entirely: 26 inputs and 10 of 11 outputs, with the missing output being the one the whole model turns on."
+          ]
+        },
+        {
+          "sha": "f87920a",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "A deployable Den Haag ALO model, with a 62-case suite",
+          "details": [
+            "Third pass in the Amsterdam / SZW series, run as a clean derivation rather than an incremental patch: the findings from both earlier passes are applied from the start, with what was inherited and what is new tabulated in the validation notes.",
+            "The source decides entitlement to algemene levensonderhoud bijstand as a nine-decision DRD written against an object model, which no DMN engine can evaluate — three of its nine decisions are literal expressions invoking a decision as a function over a filtered collection, with non-FEEL argument separators and operators."
+          ]
+        },
+        {
+          "sha": "fd66995",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "No stub cprmv:id over a rule the document already publishes",
+          "details": [
+            "cprmv:isBasedOn carries sh:class cprmv:Rule, so its object must be typed. For an external citation this graph describes nothing else, so a minimal stub is minted using the URI itself as cprmv:id — there is no better identifier available for a wetten.overheid.nl or CVDR target.",
+            "That fallback is wrong when the target is a rule the same document emits in its own Rules section: the subject is already typed there with a real cprmv:id, and the stub asserts a second, contradictory one. Observed rather than hypothesised — twelve of the normenbrief export's 216 cprmv:Rule subjects carried two cprmv:id values."
+          ]
+        },
+        {
+          "sha": "034fa4f",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "The published normenbrief TTL carrying the grounded DMN",
+          "details": [
+            "Exported from the CPSV Editor on ACC after deploying PW-normbedragen.dmn under the existing normbedragen service. It is the first artefact in this repository where the normenbrief's published norms and a DMN grounded in those same norms sit in one document.",
+            "It carries cprmv:hasDecisionModel on the service, the normenbrief's own RuleSet and Rules sections unchanged, and a Decision Model section with all 80 grounded cells — 80 source quotes, the cell resources listed in their rules' hasPart, and validity ranges on the five termijn rules."
+          ]
+        },
+        {
+          "sha": "d378e8d",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "PW Normbedragen 2026-H2 termijn, cell grounding and a 121-case suite",
+          "details": [
+            "Adds the second-half-2026 bijstandsnormen, fixes three defects found while building them, grounds 80 of the model's cells in the norms this project already publishes, and backs the lot with a live test suite.",
+            "All 20 amounts come from the CPRMV norms API rather than a normenbrief transcription. This closed a live hole: any peildatum in the second half of 2026 previously answered with a null bedrag."
+          ]
+        },
+        {
+          "sha": "2a5a1f6",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "examples/ is out of the Semgrep scan",
+          "details": [
+            "Semgrep had no ignore file, so it scanned repository reference material as if it were application code. Three findings came from there: a missing integrity attribute on a CDN script tag in a standalone documentation artifact, and two Flask render_template_string calls in an archived demo of an unrelated BPMN project, one of which renders a module constant with no interpolation at all.",
+            "None of it is served. Root examples/ is a different tree from public/examples/, which is served at runtime and keeps being scanned. The leading slash in the ignore rule is load-bearing rather than stylistic: a bare `examples/` matches a directory of that name at any depth and silently dropped a served file from the scan, caught only by diffing the scanned file lists rather than the finding counts, which agreed either way."
+          ]
+        },
+        {
+          "sha": "2e4c1ac",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Semgrep scans dependencies in CI, on a ref rather than a laptop",
+          "details": [
+            "The three controls this repository already gates on — build provenance, supply-chain pinning, coverage floor — say nothing about the packages in package-lock.json. check-supply-chain verifies that GitHub Actions digest pins resolve to the versions their comments claim; it does not look at npm at all. So Renovate had been doing the dependency remediation and nothing was verifying it — a bot being trusted rather than a gate being enforced, and the difference shows on the day the bot is wrong or stalled.",
+            "The second reason is the one that prompted it. Scanning by hand from a workstation pins the results to whatever happens to be checked out, and nothing in the output says which commit they describe. A triage run that way reported 36 findings against a tree 51 commits behind acc; the real number on the branch head was 17, Renovate having already closed the other 19.",
+            "Deliberately a separate workflow rather than a step in the existing audit job, so promotion to a required check is a ruleset change rather than a file change. `--no-suppress-errors` is set because the default prints \"there were errors during analysis but Semgrep will succeed\" and exits 0 — which is exactly how a broken local install went unnoticed."
+          ]
+        },
+        {
+          "sha": "0da8efd",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Two example files recovered from the GitLab remote",
+          "details": [
+            "The GitLab and GitHub remotes hold the same repository under two main branches that diverged in March 2026. GitHub carried on; GitLab has not moved since. Comparing the trees turned up exactly two files present on the GitLab main and on no GitHub branch at all — neither main nor acc: temporal rule definitions for VO basisbekostiging carrying validity ranges and confidence levels, and a UWV variant of the AOW age determination."
+          ]
+        },
+        {
+          "sha": "92bdf26",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "E2E journeys can drive an already-deployed build",
+          "details": [
+            "E2E_BASE_URL points the journeys at a deployed app — an acceptance environment, a Static Web Apps preview — instead of a local dev server. Unset, nothing changes: the base URL stays localhost and the web server still starts as every existing invocation expects.",
+            "Playwright has no base-URL flag; the only CLI override is a whole second config file, so the lever has to be a variable the config reads. Dropping the webServer block when the variable is set is the half that is easy to miss — it runs regardless of base URL, so leaving it would boot a dev server the run never visits, or silently reuse one already listening on the port."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.2",
       "status": "Released",
       "date": "9 sep 2026",
