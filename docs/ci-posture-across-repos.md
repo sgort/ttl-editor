@@ -5,26 +5,34 @@ and RONL Business API (`ronl-business-api`) stand on three mechanisms that were
 rolled out across all of them in September 2026 — build provenance, supply-chain
 verification, and a per-file test-coverage floor.
 
+A **fourth** now exists in one of the three: ttl-editor gates merges on a Semgrep
+scan covering the npm dependency tree and the application code. It is described
+under §2 rather than given a section of its own, because it is the other half of
+the supply chain that `check-supply-chain` was never able to see.
+
 Verified against each repository's `acc` at the heads below, not written from
-memory.
+memory. ttl-editor's row was re-verified on 11 September 2026 when the Semgrep
+gate landed; the other two are as of the original pass.
 
 | repository           | `acc` at  |
 | -------------------- | --------- |
-| ttl-editor           | `bd71dd9` |
-| linked-data-explorer | `04cc38c` |
+| ttl-editor           | `4a3e5c3` |
+| linked-data-explorer | `afb182e` |
 | ronl-business-api    | `04e38c8` |
 
 ---
 
 ## Summary
 
-|                               | ttl-editor           | linked-data-explorer | ronl-business-api    |
-| ----------------------------- | -------------------- | -------------------- | -------------------- |
-| **Build id in the changelog** | ✅                   | ✅                   | ✅                   |
-| **check-supply-chain**        | ✅ blocking          | ✅ blocking          | ⚠️ non-blocking      |
-| **Per-file 80% branch floor** | ✅ native thresholds | ✅ native thresholds | ✅ native thresholds |
-| **Formatting checked in CI**  | ✅                   | ✅                   | —                    |
-| **Tests run before merge**    | ✅                   | ✅                   | ⚠️ frontend only     |
+|                               | ttl-editor           | linked-data-explorer | ronl-business-api       |
+| ----------------------------- | -------------------- | -------------------- | ----------------------- |
+| **Build id in the changelog** | ✅                   | ✅                   | ✅                      |
+| **check-supply-chain**        | ✅ blocking          | ✅ blocking          | ⚠️ non-blocking         |
+| **Semgrep Code + SCA**        | ✅ blocking          | —                    | —                       |
+| **Per-file 80% branch floor** | ✅ native thresholds | ✅ native thresholds | ✅ native thresholds    |
+| **Formatting checked in CI**  | ✅                   | ✅                   | —                       |
+| **Tests run before merge**    | ✅                   | ✅                   | ⚠️ frontend only        |
+| **Mirror in sync**            | ✅                   | ✅                   | ⚠️ both branches differ |
 
 Nothing in that table is uniform by accident. Each application has a different
 build shape, and the differences below are re-derived per repository rather than
@@ -148,11 +156,29 @@ changelog is code-split, so the string lands in a separate chunk and grepping th
 entry bundle looks exactly like failure. Confirm the chunk hash changes between
 the two builds; if it does not, the second build did not run.
 
-### Known gap
+### Exercised, at last, in one of the three
 
-**Production is wired everywhere and exercised nowhere.** All three applications
-carry the `env:` block in their production workflows, and none of those workflows
-has run since. Worth one glance at the changelog on each first production release.
+**ttl-editor ran its production workflow on 2026-09-09** and the Changelog tab
+renders a real build id. That was the first execution of any of these `env:`
+blocks in production, and it is the only evidence that the placement is right:
+until a workflow runs, a correctly-written block and an unreachable one look
+identical.
+
+It closes as a gap rather than as a formality, because the promotion that carried
+it was also the Create React App to Vite cutover. `output_location` moved from
+`build` to `dist` in the same commit as the build script, which is what the ACC
+workflow's own comment insists on — a stale value there "uploads an empty
+directory and reports SUCCESS". Promoting the migration in parts would have
+separated them.
+
+Verified in the order that distinguishes the failure modes: the build id first
+(`local build` would mean the block never reached Oryx), then a hard refresh (the
+lazy chunks 404 if `output_location` is wrong), then a DMN round trip against the
+production backend.
+
+**Still wired and unexercised in the other two.** Linked Data Explorer and RONL
+Business API carry the block in their production workflows and neither has run
+since. Worth one glance at the changelog on each first production release.
 
 ---
 
@@ -264,6 +290,113 @@ action alone was a real defect: the second row overwrote the first and every
 workflow on the other digest read as disagreeing. Do not collapse such rows to
 tidy a table.
 
+### The other supply chain: the npm tree
+
+`check-supply-chain` verifies that **GitHub Actions** digest pins resolve to the
+versions their comments claim. It says nothing about the packages in
+`package-lock.json`. Neither does zizmor, nor the coverage floor. So across all
+three applications, npm dependency vulnerabilities were remediated by Renovate
+and verified by nobody — a bot being trusted rather than a gate being enforced,
+and the difference only shows on the day the bot is wrong or stalled.
+
+ttl-editor closed that in September 2026 with a `Semgrep` workflow whose `scan`
+job is a required check alongside `audit`. It runs Semgrep Code and Supply Chain
+against an authenticated scan, reporting to the `sgort/ttl-editor` project in
+Semgrep Cloud. The other two repositories do not have it yet.
+
+|                     |                                                                       |
+| ------------------- | --------------------------------------------------------------------- |
+| Workflow            | `.github/workflows/semgrep.yml`                                       |
+| Job / check context | `scan`                                                                |
+| Trigger             | `pull_request` unfiltered, `push` on `acc` and `main`                 |
+| Scanner             | `semgrep==1.176.1`, hand-pinned, registered in `SECURITY-PIPELINE.md` |
+| Auth                | `SEMGREP_APP_TOKEN` repository secret, Agent (CI) scope               |
+
+#### Four decisions worth keeping
+
+**A separate workflow, not a step in the audit job.** `audit` is already a
+required check, so a step there would have been blocking from the day it merged.
+A separate workflow reports on every pull request and gates nothing until its
+job is added to the ruleset — which makes promotion a ruleset change, reversible
+without touching the file. `continue-on-error` is the obvious alternative and is
+the wrong tool for the reason §2 already records.
+
+**The token is not optional.** Semgrep Supply Chain resolves only on an
+authenticated scan. An unauthenticated `semgrep scan --config=p/…` gets the
+open-source SAST rules and no SCA at all, which would omit the entire reason the
+job exists.
+
+**`--no-suppress-errors`.** By default `semgrep ci` prints _"there were errors
+during analysis but Semgrep will succeed"_ and exits 0. That default is exactly
+how a broken local install went unnoticed for weeks: the scan crashed on a
+missing `git` binary and still reported success. In CI, a tool that cannot run is
+a failure.
+
+**`concurrency` cancels superseded pull-request runs but never a `push` run.**
+The push runs on `acc` and `main` write the Semgrep Cloud baseline; cancelling
+one leaves the dashboard describing a scan that never finished, with nothing
+queued to correct it.
+
+#### The finding count is not the measure
+
+The triage that produced this gate
+([ttl-editor#112](https://github.com/sgort/ttl-editor/issues/112)) opened by
+reporting **36 findings** and closed at **7**. Almost none of that movement was
+vulnerabilities being fixed:
+
+|     |                                                                     |
+| --- | ------------------------------------------------------------------- |
+| 36  | scanned against a local checkout 51 commits behind `origin/acc`     |
+| 17  | the real figure on the branch head — Renovate had already closed 19 |
+| 14  | `examples/` excluded; reference material is not application code    |
+| 16  | a new test file arrived carrying two more                           |
+| 12  | test files taken out of Code scanning                               |
+| 11  | after a fix, a suppression, and one finding that got worse first    |
+| 7   | CI honours dashboard triage; a local `--dry-run` does not           |
+
+Three lessons generalise beyond this repository, and are the reason this section
+records the trajectory rather than only the endpoint:
+
+**A scan run by hand is pinned to whatever is checked out.** Nothing in
+`semgrep ci` output names the commit it describes. The first triage described a
+lockfile drift that did not exist, because `node_modules` had been installed from
+one ref and `package-lock.json` read from another. A scan in CI cannot make that
+mistake, and that — not any individual finding — is what the gate buys.
+
+**"The finding will go away" is a prediction, not a plan.** Three fixes were
+justified partly on retiring a finding. None did. `prototype-pollution-loop`
+matches the _shape_ of a loop, not whether its keys are guarded; one fix made its
+own finding fire twice. Verify after, not before.
+
+**Check the set, not the total.** A `.semgrepignore` entry of `examples/` rather
+than `/examples/` silently dropped a served `.dmn` file from the scan, because
+`.gitignore` syntax matches a directory of that name at any depth. Both counts
+read 14. Only set-differencing the scanned file lists caught it.
+
+#### What remains, and what it costs
+
+Seven findings remain, all transitive npm packages — `brace-expansion`,
+`picomatch`, `postcss-selector-parser` — reached only through build and test
+tooling. Four are classed Unreachable and three Undetermined; the only runtime
+dependencies are `react`, `react-dom` and `lucide-react`. They cannot be closed
+by a Renovate bump, only by an upstream release or an `overrides` entry, which is
+not worth the resolution risk for code that never reaches a browser.
+
+Two costs come with making it required, both accepted deliberately:
+
+- **Forked pull requests cannot pass it.** Secrets are not passed to fork runs,
+  so `semgrep ci` cannot start and `--no-suppress-errors` fails the step. The
+  repository has one fork, which has opened a pull request before. Accepted
+  because the maintainer knows its author;
+  [#128](https://github.com/sgort/ttl-editor/issues/128) tracks removing the
+  edge. **Any repository adopting this without that luxury should do #128
+  first.**
+- **`bypass_actors` is empty and semgrep.dev is a third-party dependency in the
+  merge path.** If it is unreachable, or the token is revoked, merges to `acc`
+  stop until the ruleset is edited. `check-supply-chain` accepted an analogous
+  risk for the GitHub API — but the GitHub API is a dependency of the platform
+  anyway, and semgrep.dev is not. That is a genuinely new class of outage.
+
 ---
 
 ## 3. The per-file 80% branch floor
@@ -353,6 +486,15 @@ every run, and hide the order dependencies parallelism is good at exposing.
 Raising a wait is not a defect mask: an element that is genuinely never rendered
 still fails, only later.
 
+Linked Data Explorer saw the same shape at a much smaller dose. Adding 31 tests
+(1042 → 1073) produced exactly one parallel-only failure: a `ShaclValidator` test
+timing out at the 5000 ms default in a full run, passing 37/37 in isolation, in a
+file the change did not touch. It did not recur and no timeout was raised. Two
+readings from that: **the effect is proportional to how loaded the run is, not to
+how many tests you added** — 31 was enough to surface it once — and **a
+parallel-only failure is not a finding until it fails in isolation**, which is the
+check that separates contention from a real order dependency and costs one command.
+
 ### Runner mechanics
 
 - **Jest** takes a **glob key** (`'./src/**/*.ts'`), which it applies to each
@@ -383,18 +525,33 @@ The two are not interchangeable.
 Both repositories using native thresholds were measured clean before enforcing —
 but "clean" means different things:
 
-|                               | files measured | lowest branch coverage                       |
-| ----------------------------- | -------------- | -------------------------------------------- |
-| ronl-business-api backend     | —              | comfortable                                  |
-| linked-data-explorer backend  | 49             | `sparql.service.ts` 82.85%                   |
-| linked-data-explorer frontend | 64             | **`CaseworkerCasePanel.tsx` exactly 80.00%** |
-| ttl-editor                    | 41             | `useDsoImport.js` 80.39%                     |
+|                               | files measured | lowest branch coverage     |
+| ----------------------------- | -------------- | -------------------------- |
+| ronl-business-api backend     | —              | comfortable                |
+| linked-data-explorer backend  | 49             | `sparql.service.ts` 82.85% |
+| linked-data-explorer frontend | 68             | `GraphView.tsx` 82.26%     |
+| ttl-editor                    | 41             | `useDsoImport.js` 80.39%   |
 
-Thresholds pass at `>= 80`, so that Linked Data Explorer file is green with **zero
-margin**, and thirteen more sit between 80 and 85. The first uncovered branch added
-to any of them turns CI red on an otherwise unrelated change. That is the floor
-working, but it is worth meeting in a config comment rather than in a surprising
-failure.
+The Linked Data Explorer frontend row is the one that moved. At `04cc38c` it read
+**exactly 80.00%** — zero margin, the first uncovered branch added anywhere in that
+file turning CI red — with thirteen more files between 80 and 85 behind it. At
+`afb182e` the package average is **92.88%**, one file remains under 85, and none
+under 82. What that took, and what it did _not_ take, is
+[below](#buying-margin-and-how-to-tell-it-from-coverage-theatre).
+
+Two corrections to the earlier reading, both worth more than the numbers:
+
+- **The file was named wrong.** `CaseworkerCasePanel.tsx` does not exist in that
+  repository and never has. The file at 80.00% was
+  `ChainBuilder/TestCasePanel.tsx`. The wrong name reached a commit message, a
+  config comment and this document, and survived all three because nobody
+  re-derived it — in a document whose premise is that it was verified rather than
+  remembered. It is fixed in the config comment; the commit message is already
+  pushed and stays as it is.
+- **"Files measured" counts files carrying at least one branch** — 68 of the 77 in
+  the report. The earlier 64 is not reproducible under any rule found, and cannot
+  be a real change: the work that closed the gap added no source files, so per-file
+  branch counts are identical at both heads. Stating the rule is the fix.
 
 ttl-editor is in the same position and arrived there differently. Its three lowest
 files — `useDsoImport.js` 80.39% (41/51), `ConceptsTab.jsx` 80.56% (29/36),
@@ -410,6 +567,77 @@ whole handlers no test calls — so a branch floor steps straight over it. That 
 the same asymmetry `public-site/TopBar.tsx` shows in the other direction, and the
 reason a functions floor is a separate decision to be measured before it is
 made.
+
+### Buying margin, and how to tell it from coverage theatre
+
+Linked Data Explorer's frontend closed its zero-margin gap at `afb182e`: twelve
+files raised, package branches 90.59% → **92.88%**, files under 85% 14 → 1, tests
+1042 → 1073. **No production code changed** — test files only, plus the config
+comment.
+
+| file                  | before | after      |     | file               | before | after      |
+| --------------------- | ------ | ---------- | --- | ------------------ | ------ | ---------- |
+| `TestCasePanel`       | 80.00  | **100.00** |     | `ChainConfig`      | 80.56  | **94.44**  |
+| `ExportChain`         | 80.77  | **98.08**  |     | `FormList`         | 82.14  | **98.21**  |
+| `userTemplateStorage` | 80.77  | **100.00** |     | `RopaRecordEditor` | 81.37  | **94.12**  |
+| `SemanticView`        | 81.82  | **100.00** |     | `VendorModal`      | 84.78  | **100.00** |
+| `VendorBadge`         | 84.62  | **100.00** |     | `TextBlockEditor`  | 85.00  | **90.00**  |
+| `exampleVersions`     | 83.33  | **100.00** |     | `AssetLibrary`     | 80.95  | **85.71**  |
+
+The interesting part is not the numbers. Writing tests _to raise a coverage
+number_ is the failure mode this whole section exists to avoid, and three
+mechanics kept it honest.
+
+**Mutation-check every test, because a test written after the code cannot fail on
+its own merits.** Tests written against code that already exists pass on the first
+run, which proves nothing about whether they _can_ fail. Each new test therefore
+had the branch it targets deliberately broken in the production file, and had to
+fail — then the file was restored. Cheap to automate: a shell loop over `sed`
+one-liners, one full file-scoped run each.
+
+That caught **five tests passing vacuously**, which would otherwise have shipped as
+coverage with no protection behind it:
+
+- Two guard tests used a response fixture with no `data` field at all, so
+  `data ?? []` and the real `success && Array.isArray(data)` guard behaved
+  identically. The fixture had to carry a payload that _survives_ the guard's
+  removal before the test could fail.
+- Four component tests asserted "nothing was added" / "nothing was saved" — which
+  stays true when the handler **throws** partway through. React surfaces an error
+  thrown inside a click handler on `window`'s `error` event rather than rejecting
+  the click, so an assertion on the DOM sees a successful no-op either way. The fix
+  is a listener around the interaction that fails the test if anything was raised.
+
+That second shape is the transferable one: **on any React codebase, "nothing
+happened" is not a safe assertion** unless something is watching for the throw.
+
+**Some branches are unreachable, and the honest move is to leave them.** Three
+guards here sit behind a submit button already `disabled` on exactly the same
+condition — `filename.trim() || chainName` under `disabled={!filename.trim()}`, and
+two of the same shape. Covering them would mean invoking the handler directly,
+which tests nothing a user can do. They are why two of the files above stop at
+98.08 and 94.44 rather than 100. This is the same finding ttl-editor recorded
+about `DMNTab.jsx`'s seven remaining guards, reached independently in a different
+codebase and a different framework — **a per-file floor in the high nineties is
+usually the ceiling, and the last few points are dead code asking to be
+documented rather than tested.**
+
+**Two more branches are covered but behaviour-preserving**, and the comments say
+so rather than implying more: a pair of `if (!templates) return null` guards whose
+removal only produces a throw the surrounding `try/catch` already swallows, and a
+`?? ''` feeding an `Array.join` that coerces `undefined` anyway. Their mutations
+survive by construction. They are worth keeping — they assert the returned
+contract — but a reader deserves to know which mutations they do not catch.
+
+**And one file was deliberately left at the bottom.** `GraphView.tsx` stays at
+82.26% (51/62): all eleven uncovered branches are inside d3's force-simulation tick
+and drag handlers — `d.x || 0` fallbacks that need a node at the origin, and
+`if (!event.active)` guards that need synthesised `D3DragEvent`s. Reaching them
+means standing up a d3 harness and asserting on d3's mechanics rather than on the
+component. It has **one branch of slack**: a twelfth uncovered branch still reads
+80.95% and passes; the thirteenth fails. `vite.config.ts` records that, so whoever
+meets the floor there knows the answer is to test their new branch rather than
+lower the threshold.
 
 ### How to verify a threshold actually bites
 
@@ -458,6 +686,43 @@ artifact, with the real deploy being a manual script run from a clean `acc` afte
 the release pull request merges. Nothing in that job has an external side effect,
 so there is nothing to gate — the change is the trigger alone.
 
+### A ruleset scoped to one branch gates one branch
+
+Worth stating because it is easy to read a repository as protected when only half
+of it is. ttl-editor's `acc supply-chain gate` ruleset applies to `refs/heads/acc`
+and nothing else, and requires two status checks there: `audit` (`zizmor.yml`) and,
+since 11 September 2026, `scan` (`semgrep.yml`). `main` has branch protection — a
+pull request is required — but **zero required approvals and no required status
+checks at all**. So on the promotion pull request, `audit`, `scan` and the
+production build ran and reported, and none of them could have blocked the merge.
+
+That asymmetry widened rather than narrowed when `scan` was added. Every control
+this document describes now gates `acc` and none of them gates `main`.
+
+That is **decided, not merely defensible** — weighed on 11 September 2026 and
+deliberately kept. `main` is promoted from `acc`, and those commits already passed
+`audit` and `scan` on their own `acc` pull request, so re-running them adds latency
+without adding information about the code.
+
+The argument against stands and is worth keeping in view: the promotion pull
+request is the one carrying changes into production, and it is gated by nobody.
+"Already checked on `acc`" is true of the commits, not of the merge — a promotion
+can be opened from a stale `acc`, or carry a conflict resolution that appears in no
+earlier pull request. Read the checks there rather than trusting the button.
+
+If it is ever revisited, `audit` and `scan` are the two that could be required:
+both trigger on `pull_request` unfiltered with no paths filter, so neither can go
+missing on any base. **`Build and deploy PROD` cannot**, as things stand — its
+`paths-ignore` means a documentation-only promotion never triggers it, and a
+required check that never reports wedges the pull request permanently. That is the
+same hole this document describes above, in the other dimension. Seventeen of the
+v2026.09.3 promotion's 42 files matched that filter, so it is an ordinary case
+rather than a corner one. The full analysis is in
+[ttl-editor#131](https://github.com/sgort/ttl-editor/issues/131).
+
+The same question is worth asking of the other two: a ruleset naming one branch
+says nothing about any other.
+
 **Production workflows are deliberately excluded from that treatment** in Linked
 Data Explorer, on evidence rather than preference:
 
@@ -470,6 +735,51 @@ A `pull_request` trigger on a production workflow would make every pull request
 to `main` wait on a human approval **before the tests could run** — an approval
 gate in front of the check meant to inform it. `main` is promoted from `acc`, so
 those commits already ran the full suite on their `acc` pull request.
+
+### A commit message can turn every gate off
+
+GitHub Actions honours `[skip ci]`, `[ci skip]`, `[no ci]`, `[skip actions]` and
+`[actions skip]` **anywhere in a commit message**, including in prose that is
+merely discussing them. It does not distinguish a marker from a quotation.
+
+Observed on a ttl-editor pull request whose commit message explained that two
+files had come to exist on only one remote because they were originally committed
+with such a marker — and quoted it. Every workflow was skipped:
+
+```
+gh pr checks 110       no checks reported
+gh run list --branch   (empty)
+mergeStateStatus       BLOCKED
+```
+
+**The failure mode is silence, not red.** `audit` is a required check under the
+`acc` ruleset, so the pull request could never become mergeable, and there was no
+failing run to explain why — the checks list was not failing, it was empty. That
+is the same shape as the `continue-on-error` problem recorded above, approached
+from the opposite direction: there a check ran and reported a success it had not
+earned; here a required check never ran at all and reported nothing.
+
+The fix was to describe the marker in words instead of containing one. Two
+consequences to carry:
+
+- **A skip marker in a merged commit can suppress the deploy on the branch it
+  lands on**, not only the checks on the pull request. Had it survived, the same
+  string could have skipped the acceptance deploy on the push to `acc`.
+- **The marker is how the two remotes diverged in the first place**, which is the
+  subject of the next section. It is a signal that something bypassed review
+  rather than a convenience for a documentation-only change — `paths-ignore`
+  expresses that intent without switching the gates off.
+
+Note what limits the blast radius here, because it is a repository setting and not
+a law. ttl-editor composes merge commits as `merge_commit_title=PR_TITLE` with
+`merge_commit_message=BLANK`, so a pull request body never reaches the merge
+commit — only the title does. A repository configured with `PR_BODY` instead would
+let a marker quoted anywhere in a description suppress the deploy on the branch it
+merges to. Check that setting before writing prose about skip markers in a pull
+request, as this one does.
+
+This section is itself the test case: it names all five markers in full, and it is
+safe to do so because they sit in a file rather than in a commit message.
 
 ### Formatting
 
@@ -505,7 +815,90 @@ Three mechanics matter if this is replicated:
 
 ---
 
-## 5. Open work
+## 5. The second remote
+
+All three applications are mirrored to `git.open-regels.nl` as well as GitHub.
+None of the mechanisms above knows that. Every gate in this document runs on
+GitHub Actions, so the mirror is outside all of them — and a mirror nothing
+checks is not a backup, it is a second place for content to be.
+
+### Verified state
+
+By `git ls-remote` against both remotes, which needs no local clone and touches
+nothing:
+
+| repository           | `acc`                    | `main`                   |
+| -------------------- | ------------------------ | ------------------------ |
+| ttl-editor           | ✅ `6e8e019` both        | ✅ `bbda389` both        |
+| linked-data-explorer | ✅ `36c4246` both        | ✅ `007b350` both        |
+| ronl-business-api    | ⚠️ `04e38c8` / `66940d9` | ⚠️ `d6a3cee` / `53a4c0a` |
+
+RONL Business API disagrees on **both** branches. Which side is ahead is not
+knowable from `ls-remote` alone and is not guessed here; it needs the audit
+below.
+
+### What ttl-editor's divergence turned out to be
+
+`gitlab/main` had not moved since **4 March 2026** while GitHub moved 306 commits
+past it. It carried 18 commits GitHub had never seen. Seventeen were cross-remote
+sync merges with no content of their own, and the eighteenth turned out to have
+reached GitHub by another route.
+
+But the trees disagreed by more than the commits did. Nine files existed on
+`gitlab/main` and not on `origin/main`; seven were Create React App leftovers the
+Vite migration had deliberately removed, and **two were example TTLs that existed
+nowhere on GitHub at all** — not on `main`, not on `acc`. Both had originally been
+committed with a CI-skip marker, which is how they came to be on one remote and
+not the other without anything noticing.
+
+**Compare trees, not commit counts.** "18 commits ahead" was almost entirely
+noise; `git diff --name-status origin/main gitlab/main` filtered to additions is
+what found the two files that mattered:
+
+```bash
+git diff --name-status origin/main gitlab/main | awk '$1=="A"{print $2}'
+```
+
+Then check each result against every branch on the other remote, not just the
+matching one — the files were absent from `origin/main` _and_ `origin/acc`, and
+checking only `main` would have understated it.
+
+### Reconciling, in an order that matters
+
+Once the content is safe, a stale mirror wants a reset rather than a merge: a
+merge would drag seventeen contentless sync commits into the history permanently.
+But "safe" has to be true on **both** remotes before the reset, and the obvious
+order gets that wrong.
+
+1. **Land the missing content on GitHub.** Cherry-pick the commit that recovers
+   it, rather than merging the branch it sits on — that branch was based on the
+   stale remote, so its tree carries the whole pre-migration world with it.
+2. **Push `acc` to the mirror.** This is the step easy to skip. After step 1 the
+   files were on GitHub, but on GitLab they still existed _only on the branch
+   about to be overwritten_. Pushing `acc` first put them on `gitlab/acc`, so the
+   reset could not remove them from GitLab entirely.
+3. **Archive the ref being replaced.** `git push gitlab gitlab/main:refs/heads/archive/gitlab-main-<date>`.
+   A force-push leaves the old head unreachable and eventually collectable; an
+   archive branch costs nothing and makes the operation reversible.
+4. **Reset with `--force-with-lease=main:<old-sha>`**, naming the SHA, so the push
+   refuses if anything moved underneath.
+
+Before step 4, confirm every file about to disappear has a successor. Seven did
+here — `.eslintrc.json` → `eslint.config.mjs`, `public/index.html` → `index.html`,
+`src/index.js` → `src/index.jsx`, and so on. That last one was a guess at
+`src/main.jsx` first, and checking rather than assuming is the point: "successor
+missing" is a reason to stop.
+
+### What would have caught it earlier
+
+Nothing in place did, and nothing added since does. The mirror has no CI, so the
+only signal available is comparison, and the cheapest form is the `ls-remote`
+table above — four seconds, no clone, safe to run anywhere. Worth running at each
+release rather than discovering the answer six months later.
+
+---
+
+## 6. Open work
 
 | repository           | issue | what                                                                                  |
 | -------------------- | ----- | ------------------------------------------------------------------------------------- |
@@ -513,9 +906,19 @@ Three mechanics matter if this is replicated:
 | ronl-business-api    | #84   | `@ronl/shared` has no test runner, so logic placed there escapes the floor            |
 | ronl-business-api    | #85   | an unreachable `PHASE_NOT_MODELLED` branch keeps three tests permanently skipped      |
 | ronl-business-api    | #87   | the backend runs no tests on a pull request, so its branch floor is retrospective     |
-| linked-data-explorer | —     | `CaseworkerCasePanel.tsx` sits at exactly 80.00% with no margin                       |
+| linked-data-explorer | —     | `GraphView.tsx` at 82.26%: one branch of slack, behind a d3 harness                   |
 | ttl-editor           | —     | three files sit within one branch of the floor, with no ratchet left to absorb a slip |
-| all three            | —     | production build ids are wired but unexercised                                        |
+| l-d-e, r-b-a         | —     | production build ids are wired but unexercised; ttl-editor has now run its own        |
+| ttl-editor           | —     | `main` has no required status checks, so the promotion PR is gated by nobody          |
+| ronl-business-api    | —     | both `acc` and `main` differ between GitHub and GitLab; unaudited                     |
+
+Closed since the previous revision: Linked Data Explorer's frontend zero-margin
+entry, by
+[linked-data-explorer#83](https://github.com/sgort/linked-data-explorer/pull/83).
+`GraphView.tsx` replaces it as that repository's tightest file, but for a
+different reason — not "nobody got to it yet" but "the branches are d3's", which
+is a decision rather than a backlog item. Issue numbers are per repository
+throughout this table; the `#83` in the first row is a different repository's.
 
 On #84 specifically: `@ronl/shared` currently holds **no executable logic at
 all** — types, constant seed data and re-exports. So nothing is escaping the
@@ -548,3 +951,15 @@ counted.
 6. **Prove each gate by making it fail**, and confirm the failure names the file
    or the action. A green run proves nothing about a check that is silently
    inert.
+7. **Record the margin, not just the pass.** "Measured clean" and "measured clean
+   with room" are different states, and only the second survives an unrelated
+   change. Both repositories on native thresholds reached 80% with files at zero
+   or one branch of slack, and in both the config comment is where that belongs.
+8. **Check the second remote, if there is one.** Every gate here runs on GitHub
+   Actions; a mirror is outside all of them. Compare trees rather than commit
+   counts, and treat a CI-skip marker in the history as a likely cause.
+9. **Mutation-check any test written to reach the floor.** A test written after
+   the code passes immediately, which says nothing about whether it can fail.
+   Break the branch it targets, watch that test fail, restore. This is the step
+   that separates margin from theatre, and in Linked Data Explorer it caught five
+   of thirty-one new tests asserting nothing.

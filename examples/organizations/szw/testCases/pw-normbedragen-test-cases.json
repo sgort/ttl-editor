@@ -1,0 +1,2616 @@
+[
+  {
+    "name": "TC001_J_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande jongere zonder kinderen norm (alleenstaande van 18, 19 of 20 jaar, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column J applies.",
+    "expected": "bedrag=323.03",
+    "expectedOutputs": {
+      "bedrag": 323.03
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC002_J_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande jongere zonder kinderen norm (alleenstaande van 18, 19 of 20 jaar, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column J applies.",
+    "expected": "bedrag=332.17",
+    "expectedOutputs": {
+      "bedrag": 332.17
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC003_J_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande jongere zonder kinderen norm (alleenstaande van 18, 19 of 20 jaar, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column J applies.",
+    "expected": "bedrag=337.98",
+    "expectedOutputs": {
+      "bedrag": 337.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC004_J_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande jongere zonder kinderen norm (alleenstaande van 18, 19 of 20 jaar, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column J applies.",
+    "expected": "bedrag=345.99",
+    "expectedOutputs": {
+      "bedrag": 345.99
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC005_J_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande jongere zonder kinderen norm (alleenstaande van 18, 19 of 20 jaar, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column J applies.",
+    "expected": "bedrag=350.42",
+    "expectedOutputs": {
+      "bedrag": 350.42
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC006_JK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder jongere norm (alleenstaande ouder van 18, 19 of 20 jaar). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column JK applies.",
+    "expected": "bedrag=323.03",
+    "expectedOutputs": {
+      "bedrag": 323.03
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC007_JK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder jongere norm (alleenstaande ouder van 18, 19 of 20 jaar). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column JK applies.",
+    "expected": "bedrag=332.17",
+    "expectedOutputs": {
+      "bedrag": 332.17
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC008_JK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder jongere norm (alleenstaande ouder van 18, 19 of 20 jaar). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column JK applies.",
+    "expected": "bedrag=337.98",
+    "expectedOutputs": {
+      "bedrag": 337.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC009_JK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder jongere norm (alleenstaande ouder van 18, 19 of 20 jaar). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column JK applies.",
+    "expected": "bedrag=345.99",
+    "expectedOutputs": {
+      "bedrag": 345.99
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC010_JK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder jongere norm (alleenstaande ouder van 18, 19 of 20 jaar). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column JK applies.",
+    "expected": "bedrag=350.42",
+    "expectedOutputs": {
+      "bedrag": 350.42
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder jongere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC011_JJ_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere zonder kinderen norm (gehuwden, beide 18/19/20, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column JJ applies.",
+    "expected": "bedrag=646.06",
+    "expectedOutputs": {
+      "bedrag": 646.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC012_JJ_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere zonder kinderen norm (gehuwden, beide 18/19/20, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column JJ applies.",
+    "expected": "bedrag=664.34",
+    "expectedOutputs": {
+      "bedrag": 664.34
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC013_JJ_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere zonder kinderen norm (gehuwden, beide 18/19/20, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column JJ applies.",
+    "expected": "bedrag=675.96",
+    "expectedOutputs": {
+      "bedrag": 675.96
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC014_JJ_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere zonder kinderen norm (gehuwden, beide 18/19/20, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column JJ applies.",
+    "expected": "bedrag=691.98",
+    "expectedOutputs": {
+      "bedrag": 691.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC015_JJ_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere zonder kinderen norm (gehuwden, beide 18/19/20, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column JJ applies.",
+    "expected": "bedrag=700.84",
+    "expectedOutputs": {
+      "bedrag": 700.84
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC016_JJK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere met kinderen norm (gehuwden, beide 18/19/20, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column JJK applies.",
+    "expected": "bedrag=1019.9",
+    "expectedOutputs": {
+      "bedrag": 1019.9
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC017_JJK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere met kinderen norm (gehuwden, beide 18/19/20, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column JJK applies.",
+    "expected": "bedrag=1048.75",
+    "expectedOutputs": {
+      "bedrag": 1048.75
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC018_JJK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere met kinderen norm (gehuwden, beide 18/19/20, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column JJK applies.",
+    "expected": "bedrag=1067.12",
+    "expectedOutputs": {
+      "bedrag": 1067.12
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC019_JJK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere met kinderen norm (gehuwden, beide 18/19/20, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column JJK applies.",
+    "expected": "bedrag=1092.41",
+    "expectedOutputs": {
+      "bedrag": 1092.41
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC020_JJK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende jongere met kinderen norm (gehuwden, beide 18/19/20, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column JJK applies.",
+    "expected": "bedrag=1106.4",
+    "expectedOutputs": {
+      "bedrag": 1106.4
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC021_JO_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm (18/19/20 met partner boven de AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column JO applies.",
+    "expected": "bedrag=1631.48",
+    "expectedOutputs": {
+      "bedrag": 1631.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC022_JO_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm (18/19/20 met partner boven de AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column JO applies.",
+    "expected": "bedrag=1677.62",
+    "expectedOutputs": {
+      "bedrag": 1677.62
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC023_JO_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm (18/19/20 met partner boven de AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column JO applies.",
+    "expected": "bedrag=1707.04",
+    "expectedOutputs": {
+      "bedrag": 1707.04
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC024_JO_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm (18/19/20 met partner boven de AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column JO applies.",
+    "expected": "bedrag=1747.49",
+    "expectedOutputs": {
+      "bedrag": 1747.49
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC025_JO_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm (18/19/20 met partner boven de AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column JO applies.",
+    "expected": "bedrag=1769.88",
+    "expectedOutputs": {
+      "bedrag": 1769.88
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC026_JOK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm (18/19/20 met partner boven de AOW-leeftijd, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column JOK applies.",
+    "expected": "bedrag=1631.48",
+    "expectedOutputs": {
+      "bedrag": 1631.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC027_JOK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm (18/19/20 met partner boven de AOW-leeftijd, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column JOK applies.",
+    "expected": "bedrag=1677.62",
+    "expectedOutputs": {
+      "bedrag": 1677.62
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC028_JOK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm (18/19/20 met partner boven de AOW-leeftijd, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column JOK applies.",
+    "expected": "bedrag=1707.04",
+    "expectedOutputs": {
+      "bedrag": 1707.04
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC029_JOK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm (18/19/20 met partner boven de AOW-leeftijd, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column JOK applies.",
+    "expected": "bedrag=1747.49",
+    "expectedOutputs": {
+      "bedrag": 1747.49
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC030_JOK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm (18/19/20 met partner boven de AOW-leeftijd, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column JOK applies.",
+    "expected": "bedrag=1769.88",
+    "expectedOutputs": {
+      "bedrag": 1769.88
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere en 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC031_M_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande norm (alleenstaande van 21 jaar tot AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column M applies.",
+    "expected": "bedrag=1308.45",
+    "expectedOutputs": {
+      "bedrag": 1308.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC032_M_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande norm (alleenstaande van 21 jaar tot AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column M applies.",
+    "expected": "bedrag=1345.45",
+    "expectedOutputs": {
+      "bedrag": 1345.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC033_M_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande norm (alleenstaande van 21 jaar tot AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column M applies.",
+    "expected": "bedrag=1369.06",
+    "expectedOutputs": {
+      "bedrag": 1369.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC034_M_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande norm (alleenstaande van 21 jaar tot AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column M applies.",
+    "expected": "bedrag=1401.5",
+    "expectedOutputs": {
+      "bedrag": 1401.5
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC035_M_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande norm (alleenstaande van 21 jaar tot AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column M applies.",
+    "expected": "bedrag=1419.46",
+    "expectedOutputs": {
+      "bedrag": 1419.46
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC036_MK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder norm (alleenstaande ouder van 21 jaar tot AOW-leeftijd). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MK applies.",
+    "expected": "bedrag=1308.45",
+    "expectedOutputs": {
+      "bedrag": 1308.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC037_MK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder norm (alleenstaande ouder van 21 jaar tot AOW-leeftijd). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MK applies.",
+    "expected": "bedrag=1345.45",
+    "expectedOutputs": {
+      "bedrag": 1345.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC038_MK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder norm (alleenstaande ouder van 21 jaar tot AOW-leeftijd). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MK applies.",
+    "expected": "bedrag=1369.06",
+    "expectedOutputs": {
+      "bedrag": 1369.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC039_MK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder norm (alleenstaande ouder van 21 jaar tot AOW-leeftijd). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MK applies.",
+    "expected": "bedrag=1401.5",
+    "expectedOutputs": {
+      "bedrag": 1401.5
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC040_MK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder norm (alleenstaande ouder van 21 jaar tot AOW-leeftijd). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MK applies.",
+    "expected": "bedrag=1419.46",
+    "expectedOutputs": {
+      "bedrag": 1419.46
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC041_MM_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende norm (gehuwden, beide 21 tot AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MM applies.",
+    "expected": "bedrag=1869.21",
+    "expectedOutputs": {
+      "bedrag": 1869.21
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC042_MM_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende norm (gehuwden, beide 21 tot AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MM applies.",
+    "expected": "bedrag=1922.07",
+    "expectedOutputs": {
+      "bedrag": 1922.07
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC043_MM_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende norm (gehuwden, beide 21 tot AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MM applies.",
+    "expected": "bedrag=1955.8",
+    "expectedOutputs": {
+      "bedrag": 1955.8
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC044_MM_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende norm (gehuwden, beide 21 tot AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MM applies.",
+    "expected": "bedrag=2002.13",
+    "expectedOutputs": {
+      "bedrag": 2002.13
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC045_MM_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende norm (gehuwden, beide 21 tot AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MM applies.",
+    "expected": "bedrag=2027.79",
+    "expectedOutputs": {
+      "bedrag": 2027.79
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC046_MMK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende met kinderen norm (gehuwden, beide 21 tot AOW-leeftijd, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MMK applies.",
+    "expected": "bedrag=1869.21",
+    "expectedOutputs": {
+      "bedrag": 1869.21
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC047_MMK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende met kinderen norm (gehuwden, beide 21 tot AOW-leeftijd, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MMK applies.",
+    "expected": "bedrag=1922.07",
+    "expectedOutputs": {
+      "bedrag": 1922.07
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC048_MMK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende met kinderen norm (gehuwden, beide 21 tot AOW-leeftijd, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MMK applies.",
+    "expected": "bedrag=1955.8",
+    "expectedOutputs": {
+      "bedrag": 1955.8
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC049_MMK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende met kinderen norm (gehuwden, beide 21 tot AOW-leeftijd, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MMK applies.",
+    "expected": "bedrag=2002.13",
+    "expectedOutputs": {
+      "bedrag": 2002.13
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC050_MMK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende met kinderen norm (gehuwden, beide 21 tot AOW-leeftijd, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MMK applies.",
+    "expected": "bedrag=2027.79",
+    "expectedOutputs": {
+      "bedrag": 2027.79
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC051_MJ_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere zonder kinderen norm (21-plusser met partner van 18/19/20, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MJ applies.",
+    "expected": "bedrag=1257.64",
+    "expectedOutputs": {
+      "bedrag": 1257.64
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC052_MJ_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere zonder kinderen norm (21-plusser met partner van 18/19/20, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MJ applies.",
+    "expected": "bedrag=1293.21",
+    "expectedOutputs": {
+      "bedrag": 1293.21
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC053_MJ_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere zonder kinderen norm (21-plusser met partner van 18/19/20, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MJ applies.",
+    "expected": "bedrag=1315.88",
+    "expectedOutputs": {
+      "bedrag": 1315.88
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC054_MJ_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere zonder kinderen norm (21-plusser met partner van 18/19/20, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MJ applies.",
+    "expected": "bedrag=1347.06",
+    "expectedOutputs": {
+      "bedrag": 1347.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC055_MJ_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere zonder kinderen norm (21-plusser met partner van 18/19/20, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MJ applies.",
+    "expected": "bedrag=1364.32",
+    "expectedOutputs": {
+      "bedrag": 1364.32
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC056_MJK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere met kinderen norm (21-plusser met partner van 18/19/20, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MJK applies.",
+    "expected": "bedrag=1631.48",
+    "expectedOutputs": {
+      "bedrag": 1631.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC057_MJK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere met kinderen norm (21-plusser met partner van 18/19/20, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MJK applies.",
+    "expected": "bedrag=1677.62",
+    "expectedOutputs": {
+      "bedrag": 1677.62
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC058_MJK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere met kinderen norm (21-plusser met partner van 18/19/20, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MJK applies.",
+    "expected": "bedrag=1707.04",
+    "expectedOutputs": {
+      "bedrag": 1707.04
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC059_MJK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere met kinderen norm (21-plusser met partner van 18/19/20, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MJK applies.",
+    "expected": "bedrag=1747.49",
+    "expectedOutputs": {
+      "bedrag": 1747.49
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC060_MJK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende waarvan 1 jongere met kinderen norm (21-plusser met partner van 18/19/20, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MJK applies.",
+    "expected": "bedrag=1769.88",
+    "expectedOutputs": {
+      "bedrag": 1769.88
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC061_MO_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere norm (21-plusser met partner boven de AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MO applies.",
+    "expected": "bedrag=1976.64",
+    "expectedOutputs": {
+      "bedrag": 1976.64
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC062_MO_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere norm (21-plusser met partner boven de AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MO applies.",
+    "expected": "bedrag=2053.48",
+    "expectedOutputs": {
+      "bedrag": 2053.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC063_MO_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere norm (21-plusser met partner boven de AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MO applies.",
+    "expected": "bedrag=2094.98",
+    "expectedOutputs": {
+      "bedrag": 2094.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC064_MO_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere norm (21-plusser met partner boven de AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MO applies.",
+    "expected": "bedrag=2144.16",
+    "expectedOutputs": {
+      "bedrag": 2144.16
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC065_MO_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere norm (21-plusser met partner boven de AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MO applies.",
+    "expected": "bedrag=2176.1",
+    "expectedOutputs": {
+      "bedrag": 2176.1
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC066_MOK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere met kinderen norm (21-plusser met partner boven de AOW-leeftijd, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column MOK applies.",
+    "expected": "bedrag=1976.64",
+    "expectedOutputs": {
+      "bedrag": 1976.64
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC067_MOK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere met kinderen norm (21-plusser met partner boven de AOW-leeftijd, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column MOK applies.",
+    "expected": "bedrag=2053.48",
+    "expectedOutputs": {
+      "bedrag": 2053.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC068_MOK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere met kinderen norm (21-plusser met partner boven de AOW-leeftijd, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column MOK applies.",
+    "expected": "bedrag=2094.98",
+    "expectedOutputs": {
+      "bedrag": 2094.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC069_MOK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere met kinderen norm (21-plusser met partner boven de AOW-leeftijd, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column MOK applies.",
+    "expected": "bedrag=2144.16",
+    "expectedOutputs": {
+      "bedrag": 2144.16
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC070_MOK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samen wonende 1 oudere met kinderen norm (21-plusser met partner boven de AOW-leeftijd, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column MOK applies.",
+    "expected": "bedrag=2176.1",
+    "expectedOutputs": {
+      "bedrag": 2176.1
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samen wonende 1 oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC071_O_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande oudere norm (alleenstaande boven de AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column O applies.",
+    "expected": "bedrag=1456.85",
+    "expectedOutputs": {
+      "bedrag": 1456.85
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC072_O_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande oudere norm (alleenstaande boven de AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column O applies.",
+    "expected": "bedrag=1501.07",
+    "expectedOutputs": {
+      "bedrag": 1501.07
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC073_O_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande oudere norm (alleenstaande boven de AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column O applies.",
+    "expected": "bedrag=1530.21",
+    "expectedOutputs": {
+      "bedrag": 1530.21
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC074_O_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande oudere norm (alleenstaande boven de AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column O applies.",
+    "expected": "bedrag=1564.69",
+    "expectedOutputs": {
+      "bedrag": 1564.69
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC075_O_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande oudere norm (alleenstaande boven de AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column O applies.",
+    "expected": "bedrag=1587.34",
+    "expectedOutputs": {
+      "bedrag": 1587.34
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC076_OK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder oudere norm (alleenstaande ouder boven de AOW-leeftijd). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column OK applies.",
+    "expected": "bedrag=1456.85",
+    "expectedOutputs": {
+      "bedrag": 1456.85
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC077_OK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder oudere norm (alleenstaande ouder boven de AOW-leeftijd). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column OK applies.",
+    "expected": "bedrag=1501.07",
+    "expectedOutputs": {
+      "bedrag": 1501.07
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC078_OK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder oudere norm (alleenstaande ouder boven de AOW-leeftijd). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column OK applies.",
+    "expected": "bedrag=1530.21",
+    "expectedOutputs": {
+      "bedrag": 1530.21
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC079_OK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder oudere norm (alleenstaande ouder boven de AOW-leeftijd). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column OK applies.",
+    "expected": "bedrag=1564.69",
+    "expectedOutputs": {
+      "bedrag": 1564.69
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC080_OK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande ouder oudere norm (alleenstaande ouder boven de AOW-leeftijd). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column OK applies.",
+    "expected": "bedrag=1587.34",
+    "expectedOutputs": {
+      "bedrag": 1587.34
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande ouder oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC081_OO_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere norm (gehuwden, beide boven de AOW-leeftijd, geen kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column OO applies.",
+    "expected": "bedrag=1976.64",
+    "expectedOutputs": {
+      "bedrag": 1976.64
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC082_OO_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere norm (gehuwden, beide boven de AOW-leeftijd, geen kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column OO applies.",
+    "expected": "bedrag=2053.48",
+    "expectedOutputs": {
+      "bedrag": 2053.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC083_OO_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere norm (gehuwden, beide boven de AOW-leeftijd, geen kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column OO applies.",
+    "expected": "bedrag=2094.98",
+    "expectedOutputs": {
+      "bedrag": 2094.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC084_OO_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere norm (gehuwden, beide boven de AOW-leeftijd, geen kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column OO applies.",
+    "expected": "bedrag=2144.16",
+    "expectedOutputs": {
+      "bedrag": 2144.16
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC085_OO_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere norm (gehuwden, beide boven de AOW-leeftijd, geen kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column OO applies.",
+    "expected": "bedrag=2176.1",
+    "expectedOutputs": {
+      "bedrag": 2176.1
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC086_OOK_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere met kinderen norm (gehuwden, beide boven de AOW-leeftijd, met kind). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column OOK applies.",
+    "expected": "bedrag=1976.64",
+    "expectedOutputs": {
+      "bedrag": 1976.64
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC087_OOK_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere met kinderen norm (gehuwden, beide boven de AOW-leeftijd, met kind). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column OOK applies.",
+    "expected": "bedrag=2053.48",
+    "expectedOutputs": {
+      "bedrag": 2053.48
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC088_OOK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere met kinderen norm (gehuwden, beide boven de AOW-leeftijd, met kind). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column OOK applies.",
+    "expected": "bedrag=2094.98",
+    "expectedOutputs": {
+      "bedrag": 2094.98
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC089_OOK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere met kinderen norm (gehuwden, beide boven de AOW-leeftijd, met kind). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column OOK applies.",
+    "expected": "bedrag=2144.16",
+    "expectedOutputs": {
+      "bedrag": 2144.16
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC090_OOK_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonende oudere met kinderen norm (gehuwden, beide boven de AOW-leeftijd, met kind). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column OOK applies.",
+    "expected": "bedrag=2176.1",
+    "expectedOutputs": {
+      "bedrag": 2176.1
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende oudere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC091_I_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande in inrichting norm (alleenstaande in een inrichting). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column I applies.",
+    "expected": "bedrag=414.31",
+    "expectedOutputs": {
+      "bedrag": 414.31
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC092_I_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande in inrichting norm (alleenstaande in een inrichting). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column I applies.",
+    "expected": "bedrag=426.03",
+    "expectedOutputs": {
+      "bedrag": 426.03
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC093_I_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande in inrichting norm (alleenstaande in een inrichting). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column I applies.",
+    "expected": "bedrag=433.49",
+    "expectedOutputs": {
+      "bedrag": 433.49
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC094_I_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande in inrichting norm (alleenstaande in een inrichting). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column I applies.",
+    "expected": "bedrag=443.76",
+    "expectedOutputs": {
+      "bedrag": 443.76
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC095_I_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Alleenstaande in inrichting norm (alleenstaande in een inrichting). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column I applies.",
+    "expected": "bedrag=449.44",
+    "expectedOutputs": {
+      "bedrag": 449.44
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC096_II_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonend in inrichting norm (gehuwden, beiden in een inrichting). peildatum 2024-09-15 falls in the termijn 2024-07-01 <= peildatum < 2025-01-01, so PW_BijstandsnormBedragen column II applies.",
+    "expected": "bedrag=644.45",
+    "expectedOutputs": {
+      "bedrag": 644.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC097_II_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonend in inrichting norm (gehuwden, beiden in een inrichting). peildatum 2025-03-15 falls in the termijn 2025-01-01 <= peildatum < 2025-07-01, so PW_BijstandsnormBedragen column II applies.",
+    "expected": "bedrag=662.69",
+    "expectedOutputs": {
+      "bedrag": 662.69
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC098_II_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonend in inrichting norm (gehuwden, beiden in een inrichting). peildatum 2025-09-15 falls in the termijn 2025-07-01 <= peildatum < 2026-01-01, so PW_BijstandsnormBedragen column II applies.",
+    "expected": "bedrag=674.29",
+    "expectedOutputs": {
+      "bedrag": 674.29
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC099_II_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonend in inrichting norm (gehuwden, beiden in een inrichting). peildatum 2026-03-15 falls in the termijn 2026-01-01 <= peildatum < 2026-07-01, so PW_BijstandsnormBedragen column II applies.",
+    "expected": "bedrag=690.27",
+    "expectedOutputs": {
+      "bedrag": 690.27
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC100_II_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "Samenwonend in inrichting norm (gehuwden, beiden in een inrichting). peildatum 2026-09-15 falls in the termijn 2026-07-01 <= peildatum < 2027-01-01, so PW_BijstandsnormBedragen column II applies.",
+    "expected": "bedrag=699.11",
+    "expectedOutputs": {
+      "bedrag": 699.11
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonend in inrichting norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC101_leaf_all_columns_2024H2",
+    "decision": "PW_BijstandsnormBedragen",
+    "description": "PW_BijstandsnormBedragen evaluated directly for peildatum 2024-09-15, asserting all 20 norm columns of the 2024-07-01 <= peildatum < 2025-01-01 termijn in one case. This is the only place columns are checked independently of which norm name happens to select them.",
+    "expected": "M=1308.45, MK=1308.45, MM=1869.21, MMK=1869.21, MO=1976.64, MOK=1976.64, MJ=1257.64, MJK=1631.48, J=323.03, JK=323.03, JJ=646.06, JJK=1019.9, JO=1631.48, JOK=1631.48, O=1456.85, OK=1456.85, OO=1976.64, OOK=1976.64, I=414.31, II=644.45",
+    "expectedOutputs": {
+      "M": 1308.45,
+      "MK": 1308.45,
+      "MM": 1869.21,
+      "MMK": 1869.21,
+      "MO": 1976.64,
+      "MOK": 1976.64,
+      "MJ": 1257.64,
+      "MJK": 1631.48,
+      "J": 323.03,
+      "JK": 323.03,
+      "JJ": 646.06,
+      "JJK": 1019.9,
+      "JO": 1631.48,
+      "JOK": 1631.48,
+      "O": 1456.85,
+      "OK": 1456.85,
+      "OO": 1976.64,
+      "OOK": 1976.64,
+      "I": 414.31,
+      "II": 644.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-09-15",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC102_leaf_all_columns_2025H1",
+    "decision": "PW_BijstandsnormBedragen",
+    "description": "PW_BijstandsnormBedragen evaluated directly for peildatum 2025-03-15, asserting all 20 norm columns of the 2025-01-01 <= peildatum < 2025-07-01 termijn in one case. This is the only place columns are checked independently of which norm name happens to select them.",
+    "expected": "M=1345.45, MK=1345.45, MM=1922.07, MMK=1922.07, MO=2053.48, MOK=2053.48, MJ=1293.21, MJK=1677.62, J=332.17, JK=332.17, JJ=664.34, JJK=1048.75, JO=1677.62, JOK=1677.62, O=1501.07, OK=1501.07, OO=2053.48, OOK=2053.48, I=426.03, II=662.69",
+    "expectedOutputs": {
+      "M": 1345.45,
+      "MK": 1345.45,
+      "MM": 1922.07,
+      "MMK": 1922.07,
+      "MO": 2053.48,
+      "MOK": 2053.48,
+      "MJ": 1293.21,
+      "MJK": 1677.62,
+      "J": 332.17,
+      "JK": 332.17,
+      "JJ": 664.34,
+      "JJK": 1048.75,
+      "JO": 1677.62,
+      "JOK": 1677.62,
+      "O": 1501.07,
+      "OK": 1501.07,
+      "OO": 2053.48,
+      "OOK": 2053.48,
+      "I": 426.03,
+      "II": 662.69
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-03-15",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC103_leaf_all_columns_2025H2",
+    "decision": "PW_BijstandsnormBedragen",
+    "description": "PW_BijstandsnormBedragen evaluated directly for peildatum 2025-09-15, asserting all 20 norm columns of the 2025-07-01 <= peildatum < 2026-01-01 termijn in one case. This is the only place columns are checked independently of which norm name happens to select them.",
+    "expected": "M=1369.06, MK=1369.06, MM=1955.8, MMK=1955.8, MO=2094.98, MOK=2094.98, MJ=1315.88, MJK=1707.04, J=337.98, JK=337.98, JJ=675.96, JJK=1067.12, JO=1707.04, JOK=1707.04, O=1530.21, OK=1530.21, OO=2094.98, OOK=2094.98, I=433.49, II=674.29",
+    "expectedOutputs": {
+      "M": 1369.06,
+      "MK": 1369.06,
+      "MM": 1955.8,
+      "MMK": 1955.8,
+      "MO": 2094.98,
+      "MOK": 2094.98,
+      "MJ": 1315.88,
+      "MJK": 1707.04,
+      "J": 337.98,
+      "JK": 337.98,
+      "JJ": 675.96,
+      "JJK": 1067.12,
+      "JO": 1707.04,
+      "JOK": 1707.04,
+      "O": 1530.21,
+      "OK": 1530.21,
+      "OO": 2094.98,
+      "OOK": 2094.98,
+      "I": 433.49,
+      "II": 674.29
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC104_leaf_all_columns_2026H1",
+    "decision": "PW_BijstandsnormBedragen",
+    "description": "PW_BijstandsnormBedragen evaluated directly for peildatum 2026-03-15, asserting all 20 norm columns of the 2026-01-01 <= peildatum < 2026-07-01 termijn in one case. This is the only place columns are checked independently of which norm name happens to select them.",
+    "expected": "M=1401.5, MK=1401.5, MM=2002.13, MMK=2002.13, MO=2144.16, MOK=2144.16, MJ=1347.06, MJK=1747.49, J=345.99, JK=345.99, JJ=691.98, JJK=1092.41, JO=1747.49, JOK=1747.49, O=1564.69, OK=1564.69, OO=2144.16, OOK=2144.16, I=443.76, II=690.27",
+    "expectedOutputs": {
+      "M": 1401.5,
+      "MK": 1401.5,
+      "MM": 2002.13,
+      "MMK": 2002.13,
+      "MO": 2144.16,
+      "MOK": 2144.16,
+      "MJ": 1347.06,
+      "MJK": 1747.49,
+      "J": 345.99,
+      "JK": 345.99,
+      "JJ": 691.98,
+      "JJK": 1092.41,
+      "JO": 1747.49,
+      "JOK": 1747.49,
+      "O": 1564.69,
+      "OK": 1564.69,
+      "OO": 2144.16,
+      "OOK": 2144.16,
+      "I": 443.76,
+      "II": 690.27
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC105_leaf_all_columns_2026H2",
+    "decision": "PW_BijstandsnormBedragen",
+    "description": "PW_BijstandsnormBedragen evaluated directly for peildatum 2026-09-15, asserting all 20 norm columns of the 2026-07-01 <= peildatum < 2027-01-01 termijn in one case. This is the only place columns are checked independently of which norm name happens to select them.",
+    "expected": "M=1419.46, MK=1419.46, MM=2027.79, MMK=2027.79, MO=2176.1, MOK=2176.1, MJ=1364.32, MJK=1769.88, J=350.42, JK=350.42, JJ=700.84, JJK=1106.4, JO=1769.88, JOK=1769.88, O=1587.34, OK=1587.34, OO=2176.1, OOK=2176.1, I=449.44, II=699.11",
+    "expectedOutputs": {
+      "M": 1419.46,
+      "MK": 1419.46,
+      "MM": 2027.79,
+      "MMK": 2027.79,
+      "MO": 2176.1,
+      "MOK": 2176.1,
+      "MJ": 1364.32,
+      "MJK": 1769.88,
+      "J": 350.42,
+      "JK": 350.42,
+      "JJ": 700.84,
+      "JJK": 1106.4,
+      "JO": 1769.88,
+      "JOK": 1769.88,
+      "O": 1587.34,
+      "OK": 1587.34,
+      "OO": 2176.1,
+      "OOK": 2176.1,
+      "I": 449.44,
+      "II": 699.11
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC106_edge_lower_bound_inclusive_2024H2",
+    "decision": "pw-normbedragen",
+    "description": "peildatum exactly on 2024-07-01, the lower bound of the 2024H2 termijn. The unary test uses <=, so this date belongs to this termijn and not the one before it.",
+    "expected": "bedrag=1308.45",
+    "expectedOutputs": {
+      "bedrag": 1308.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-07-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC107_edge_lower_bound_inclusive_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "peildatum exactly on 2025-01-01, the lower bound of the 2025H1 termijn. The unary test uses <=, so this date belongs to this termijn and not the one before it.",
+    "expected": "bedrag=1345.45",
+    "expectedOutputs": {
+      "bedrag": 1345.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-01-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC108_edge_lower_bound_inclusive_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "peildatum exactly on 2025-07-01, the lower bound of the 2025H2 termijn. The unary test uses <=, so this date belongs to this termijn and not the one before it.",
+    "expected": "bedrag=1369.06",
+    "expectedOutputs": {
+      "bedrag": 1369.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-07-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC109_edge_lower_bound_inclusive_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "peildatum exactly on 2026-01-01, the lower bound of the 2026H1 termijn. The unary test uses <=, so this date belongs to this termijn and not the one before it.",
+    "expected": "bedrag=1401.5",
+    "expectedOutputs": {
+      "bedrag": 1401.5
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-01-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC110_edge_lower_bound_inclusive_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "peildatum exactly on 2026-07-01, the lower bound of the 2026H2 termijn. The unary test uses <=, so this date belongs to this termijn and not the one before it.",
+    "expected": "bedrag=1419.46",
+    "expectedOutputs": {
+      "bedrag": 1419.46
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-07-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC111_edge_day_before_2025H1",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2024-12-31, the day before the 2025H1 termijn opens. The upper bound of 2024H2 is exclusive, so this date must still resolve there.",
+    "expected": "bedrag=1308.45",
+    "expectedOutputs": {
+      "bedrag": 1308.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-12-31",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC112_edge_day_before_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2025-06-30, the day before the 2025H2 termijn opens. The upper bound of 2025H1 is exclusive, so this date must still resolve there.",
+    "expected": "bedrag=1345.45",
+    "expectedOutputs": {
+      "bedrag": 1345.45
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-06-30",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC113_edge_day_before_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2025-12-31, the day before the 2026H1 termijn opens. The upper bound of 2025H2 is exclusive, so this date must still resolve there.",
+    "expected": "bedrag=1369.06",
+    "expectedOutputs": {
+      "bedrag": 1369.06
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-12-31",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC114_edge_day_before_2026H2",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2026-06-30, the day before the 2026H2 termijn opens. The upper bound of 2026H1 is exclusive, so this date must still resolve there.",
+    "expected": "bedrag=1401.5",
+    "expectedOutputs": {
+      "bedrag": 1401.5
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-06-30",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC115_edge_before_first_termijn",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2024-06-30 is the day before the earliest termijn opens. PW_BijstandsnormBedragen has hitPolicy FIRST and no default rule, so every column resolves to null and bedrag is null — not an error, and not an empty result set.",
+    "expected": "bedrag=null",
+    "expectedOutputs": {
+      "bedrag": null
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2024-06-30",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC116_edge_after_last_termijn",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2027-01-01 is the exclusive upper bound of the last termijn, so no rule matches. PW_BijstandsnormBedragen has hitPolicy FIRST and no default rule, so every column resolves to null and bedrag is null — not an error, and not an empty result set.",
+    "expected": "bedrag=null",
+    "expectedOutputs": {
+      "bedrag": null
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2027-01-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC117_edge_far_future",
+    "decision": "pw-normbedragen",
+    "description": "peildatum 2030-01-01 is well past every modelled termijn. PW_BijstandsnormBedragen has hitPolicy FIRST and no default rule, so every column resolves to null and bedrag is null — not an error, and not an empty result set.",
+    "expected": "bedrag=null",
+    "expectedOutputs": {
+      "bedrag": null
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2030-01-01",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Alleenstaande norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC118_edge_unknown_norm",
+    "decision": "pw-normbedragen",
+    "description": "A norm name outside the 20 the table enumerates. pw-normbedragen has no default rule, so the result set is empty — structurally different from the null-bedrag cases above, where a row exists but every value is null.",
+    "expected": "no matching rule (empty result set)",
+    "expectedOutputs": [],
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Onbekende norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC119_regression_MJ_MO_no_longer_collide",
+    "decision": "pw-normbedragen",
+    "description": "Regression guard. 'Samenwonende waarvan 1 jongere zonder kinderen norm' once mapped to MO, the same column as 'Samen wonende 1 oudere norm', so both answered 2094.98 for a 2025-H2 peildatum. It now maps to MJ. This case pins the jongere reading; TC063_MO_2025H2 pins the oudere one.",
+    "expected": "bedrag=1315.88",
+    "expectedOutputs": {
+      "bedrag": 1315.88
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere zonder kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC120_regression_MJK_2025H2",
+    "decision": "pw-normbedragen",
+    "description": "Regression guard. The MJK cell of the 2025H2 termijn held 1315.88 — MJ's value — instead of 1707.04. Art. 20 lid 2 onderdeel c is a distinct, higher norm than lid 1 onderdeel c, and MJK equals JO/JOK in every termijn, which is what makes the old value detectable.",
+    "expected": "bedrag=1707.04",
+    "expectedOutputs": {
+      "bedrag": 1707.04
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2025-09-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC121_regression_MJK_2026H1",
+    "decision": "pw-normbedragen",
+    "description": "Regression guard. The MJK cell of the 2026H1 termijn held 1347.06 — MJ's value — instead of 1747.49. Art. 20 lid 2 onderdeel c is a distinct, higher norm than lid 1 onderdeel c, and MJK equals JO/JOK in every termijn, which is what makes the old value detectable.",
+    "expected": "bedrag=1747.49",
+    "expectedOutputs": {
+      "bedrag": 1747.49
+    },
+    "requestBody": {
+      "variables": {
+        "peildatum": {
+          "value": "2026-03-15",
+          "type": "String"
+        },
+        "norm": {
+          "value": "Samenwonende waarvan 1 jongere met kinderen norm",
+          "type": "String"
+        }
+      }
+    }
+  }
+]

@@ -183,6 +183,10 @@ describe('extractValue', () => {
   test('returns null (not throwing) when traversing through a missing intermediate object', () => {
     expect(extractValue({}, 'a.b.c')).toBeNull();
   });
+
+  test('does not reach an object prototype through a constructor path', () => {
+    expect(extractValue({}, 'constructor.name')).toBeNull();
+  });
 });
 
 describe('applyMapping', () => {
@@ -269,6 +273,65 @@ describe('applyMapping', () => {
     expect(result.service.identifier).toBe(encodeURIComponent('pensioengerechtigde leeftijd'));
   });
 
+  // Characterisation test: the replace transform had no coverage at all, and
+  // the next two tests change the code path it runs through. This one passes
+  // before that change and must keep passing after it.
+  test('applies a replace transform', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'leeftijd', replacement: 'age' },
+        },
+      },
+    };
+    const result = applyMapping(parsedData, mapping);
+    expect(result.service.name).toBe('pensioengerechtigde age');
+  });
+
+  test('rejects a replace pattern whose quantified group contains a quantifier', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: '(a+)+$', replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).toThrow(/quantifier/i);
+  });
+
+  test('rejects a replace pattern longer than the length limit', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'a'.repeat(201), replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).toThrow(/201 characters exceeds/);
+  });
+
+  test('accepts a replace pattern exactly at the length limit', () => {
+    const mapping = {
+      mappings: {
+        'service.name': {
+          source: 'concepts',
+          path: 'name',
+          transform: { type: 'replace', pattern: 'a'.repeat(200), replacement: 'x' },
+        },
+      },
+    };
+
+    expect(() => applyMapping(parsedData, mapping)).not.toThrow();
+  });
+
   test('groups parameters.* mappings into a single parameter object', () => {
     const mapping = {
       mappings: {
@@ -294,5 +357,42 @@ describe('applyMapping', () => {
     };
     const result = applyMapping(parsedData, mapping);
     expect(result.parameters).toEqual([]);
+  });
+});
+
+describe('applyMapping prototype pollution', () => {
+  // Every assertion here reads a property off a plain object, so a leaked
+  // write to Object.prototype would make LATER tests pass for the wrong
+  // reason rather than failing loudly. Clean up whether or not the guard
+  // holds.
+  afterEach(() => {
+    delete Object.prototype.polluted;
+  });
+
+  const parsedData = {
+    concepts: [{ id: 'c1', name: 'pensioengerechtigde leeftijd' }],
+    textAnnotations: [],
+    documents: [],
+    metadata: {},
+  };
+
+  test('does not write to Object.prototype through a __proto__ target field', () => {
+    const mapping = {
+      mappings: { '__proto__.polluted': { source: 'concepts', path: 'name' } },
+    };
+
+    applyMapping(parsedData, mapping);
+
+    expect({}.polluted).toBeUndefined();
+  });
+
+  test('does not write to Object.prototype through a constructor.prototype target field', () => {
+    const mapping = {
+      mappings: { 'constructor.prototype.polluted': { source: 'concepts', path: 'name' } },
+    };
+
+    applyMapping(parsedData, mapping);
+
+    expect({}.polluted).toBeUndefined();
   });
 });

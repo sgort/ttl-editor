@@ -1,0 +1,66 @@
+# Paths Semgrep should not scan, in .gitignore syntax.
+#
+# Semgrep already limits itself to files tracked by git, so node_modules,
+# build/ and coverage/ are excluded by .gitignore without needing a line
+# here. This file is for paths that ARE tracked and ARE meant to be, but
+# are not application code.
+
+# Reference material, not application code, and not served by the app.
+#
+# Note this is the repository-root examples/ tree, which is a DIFFERENT
+# thing from public/examples/. public/examples IS served -- DMNTab.jsx
+# fetches /examples/organizations/svb/... from it at runtime -- and must
+# keep being scanned. The two trees have confusingly similar paths and
+# only this one is inert.
+#
+# What it currently silences, all triaged in #112 and all in files the
+# application never loads:
+#   - duo/Handleiding Chat op de wet (uitgebreid).html
+#       missing-integrity: no SRI on a cdn.tailwindcss.com script tag, in
+#       a standalone documentation artifact.
+#   - flevoland/.../BPMN/Python/archive/dashboard.py
+#   - flevoland/.../BPMN/Python/archive/runner.py
+#       flask render-template-string, in an archived demo of an unrelated
+#       BPMN project. runner.py renders a module constant with no
+#       interpolation at all.
+#
+# If anything under examples/ ever becomes application code, delete this
+# rule rather than carving an exception into it.
+#
+# The leading slash is load-bearing. A bare `examples/` is .gitignore
+# syntax for "a directory named examples at ANY depth", which also
+# swallows public/examples/ -- verified: it silently dropped
+# public/examples/organizations/svb/RONL_BerekenLeeftijden_CPRMV.dmn,
+# the file DMNTab.jsx fetches at runtime, from the scanned set. Anchoring
+# to the repository root is what keeps the distinction above real.
+/examples/
+
+# Test files are excluded from Code scanning, but NOT from Secrets scanning,
+# which carries its own separate ignore list in the Semgrep project settings
+# and is deliberately left covering them. A hardcoded credential in a test is
+# the one finding class here worth having, and it survives this rule.
+#
+# What this silences, four findings across two rules, all triaged in #112:
+#   - parseTTL.roundtrip.test.js            path-join-resolve-traversal
+#   - ttlGenerator.citationStub.test.js     path-join-resolve-traversal
+#   - ChangelogTab.expansion.test.jsx       detect-non-literal-regexp
+#   - ttlGenerator.citationStub.test.js     detect-non-literal-regexp
+#
+# The pattern, not the instances, is the reason. Reading a fixture off disk
+# means path.resolve; asserting on generated text means building a RegExp
+# from a variable. Both are ordinary test code, so this set grows with every
+# test file that does either -- #119 added two without doing anything
+# unusual. Triaging each new one by hand is not a strategy.
+#
+# The precise alternative was rejected rather than overlooked. Semgrep has no
+# per-rule path setting: scoping a registry rule to paths means forking a
+# custom copy carrying paths.exclude and disabling the original, which is two
+# rules to maintain against upstream drift for four false positives. Nor can
+# the rules simply be switched off in Policies > Detection -- that is
+# org-wide across all paths, and detect-non-literal-regexp has a production
+# occurrence at iknowParser.js:433 that #112 item 5 is still deciding about.
+#
+# Test code does not ship. Given Secrets still covers it, the marginal value
+# of Code SAST here does not justify that maintenance.
+*.test.js
+*.test.jsx

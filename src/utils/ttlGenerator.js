@@ -1236,6 +1236,27 @@ export class TTLGenerator {
         const citationResources = new Map(); // uri -> ttl stub, emitted once at the end
         let cellResourcesTtl = '';
 
+        // Subjects generateCprmvRulesSection() already emits as cprmv:Rule, each
+        // carrying its own real cprmv:id. A citation pointing at one of those
+        // needs no stub: the subject is typed in this same document, and minting
+        // a stub asserts a SECOND, wrong cprmv:id (the URI) for it. Observed in
+        // examples/organizations/szw/Normenbrief---Informatie-voor-gemeenten.ttl,
+        // where 12 subjects ended up with two conflicting values.
+        //
+        // The filter mirrors that section's own emission condition exactly. A
+        // rule carrying none of ruleId/rulesetId/definition is skipped there, so
+        // nothing types its URI and its stub must still be minted -- otherwise
+        // cprmv:isBasedOn would point at an untyped subject and fail sh:class.
+        //
+        // Compared against the RAW uri the section emits, not a sanitized form:
+        // citedUri() sanitizes the cited value, and the stub is redundant only
+        // when the result is byte-identical to a subject actually written out.
+        const selfPublishedRuleUris = new Set(
+          (this.cprmvRules || [])
+            .filter((rule) => rule.ruleId || rule.rulesetId || rule.definition)
+            .map((rule) => this.cprmvRuleUri(rule))
+        );
+
         // The iKnow annotation tool's own id-resolution URL is HvA-specific; pass
         // an already-full URI (isValidUri) straight through so a future DMN from a
         // different organization/tool isn't forced through this exact domain.
@@ -1259,9 +1280,13 @@ export class TTLGenerator {
         // returns the sanitized URI to reference. cprmv:id falls back to the URI
         // itself -- there's no other identifier available for an external
         // resource this graph doesn't otherwise describe.
+        //
+        // Skipped entirely for a subject this document already publishes as a
+        // cprmv:Rule (selfPublishedRuleUris above): there the fallback is not
+        // merely uninformative but wrong, contradicting the real cprmv:id.
         const citedUri = (rawValue) => {
           const uri = sanitizeIri(citationUri(rawValue));
-          if (!citationResources.has(uri)) {
+          if (!selfPublishedRuleUris.has(uri) && !citationResources.has(uri)) {
             citationResources.set(
               uri,
               `<${uri}> a cprmv:Rule ;\n    cprmv:id "${escapeTTLString(uri)}" .\n\n`

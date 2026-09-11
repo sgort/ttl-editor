@@ -1,0 +1,2142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_dh225_ALO" name="Beslissing Levensonderhoud (ALO)" namespace="http://camunda.org/schema/1.0/dmn" exporter="ttl-editor clean pass" exporterVersion="1.0">
+  <knowledgeSource id="KnowledgeSource_0kqiqhe" name="Vastgesteld Adres" />
+  <knowledgeSource id="KnowledgeSource_0g3ixv4" name="Vastgestelde uitsluitingsgronden" />
+  <knowledgeSource id="KnowledgeSource_0fuzda0" name="Vastgestelde Verblijfstitel" />
+  <knowledgeSource id="KnowledgeSource_181l4fl" name="Vastgestelde Identiteit" />
+  <knowledgeSource id="KnowledgeSource_0lzebb5" name="Vastgesteld Inkomen" />
+  <knowledgeSource id="KnowledgeSource_0feyxav" name="Vastgesteld Vermogen" />
+  <knowledgeSource id="KnowledgeSource_1kvjjln" name="Vastgestelde relatie" />
+  <knowledgeSource id="KnowledgeSource_1xwo81u" name="Vastgestelde Bijstandsnorm" />
+  <knowledgeSource id="KnowledgeSource_08q8c9j" name="Vastgestelde voorliggende voorzieningen" />
+  <knowledgeSource id="KnowledgeSource_1mi98kn" name="Onbetaald verlof" />
+  <knowledgeSource id="KnowledgeSource_0l0nr72" name="Vastgestelde Referteperiode" />
+  <inputData id="InputData_aanvraagtypeALO" name="aanvraagtypeALO">
+    <variable id="Variable_aanvraagtypeALO" name="aanvraagtypeALO" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_lopendeAanvraagOfUitkering" name="lopendeAanvraagOfUitkering">
+    <variable id="Variable_lopendeAanvraagOfUitkering" name="lopendeAanvraagOfUitkering" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_eersteAanvragerVastgesteld" name="eersteAanvragerVastgesteld">
+    <variable id="Variable_eersteAanvragerVastgesteld" name="eersteAanvragerVastgesteld" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_tweedeAanvragerVastgesteld" name="tweedeAanvragerVastgesteld">
+    <variable id="Variable_tweedeAanvragerVastgesteld" name="tweedeAanvragerVastgesteld" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_ongeoorloofdOnbetaaldVerlof" name="ongeoorloofdOnbetaaldVerlof">
+    <variable id="Variable_ongeoorloofdOnbetaaldVerlof" name="ongeoorloofdOnbetaaldVerlof" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_maandelijksInkomen" name="maandelijksInkomen">
+    <variable id="Variable_maandelijksInkomen" name="maandelijksInkomen" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_bijstandsNorm" name="bijstandsNorm">
+    <variable id="Variable_bijstandsNorm" name="bijstandsNorm" typeRef="double" />
+  </inputData>
+  <inputData id="InputData_inkomenVastgesteld" name="inkomenVastgesteld">
+    <variable id="Variable_inkomenVastgesteld" name="inkomenVastgesteld" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_geenInAanmerkingTeNemenVermogen" name="geenInAanmerkingTeNemenVermogen">
+    <variable id="Variable_geenInAanmerkingTeNemenVermogen" name="geenInAanmerkingTeNemenVermogen" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_voorliggendeVoorzieningenUitsluiting" name="voorliggendeVoorzieningenUitsluiting">
+    <variable id="Variable_voorliggendeVoorzieningenUitsluiting" name="voorliggendeVoorzieningenUitsluiting" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_bijstandsVorm" name="bijstandsVorm">
+    <variable id="Variable_bijstandsVorm" name="bijstandsVorm" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_oordeelTekortSchieten" name="oordeelTekortSchieten">
+    <variable id="Variable_oordeelTekortSchieten" name="oordeelTekortSchieten" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_oordeelDringendeReden" name="oordeelDringendeReden">
+    <variable id="Variable_oordeelDringendeReden" name="oordeelDringendeReden" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_oordeelHardheidsclausule" name="oordeelHardheidsclausule">
+    <variable id="Variable_oordeelHardheidsclausule" name="oordeelHardheidsclausule" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerWoonachtigInGemeente" name="aanvragerWoonachtigInGemeente">
+    <variable id="Variable_aanvragerWoonachtigInGemeente" name="aanvragerWoonachtigInGemeente" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerLeeftijdOK" name="aanvragerLeeftijdOK">
+    <variable id="Variable_aanvragerLeeftijdOK" name="aanvragerLeeftijdOK" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerVerblijfstitelOK" name="aanvragerVerblijfstitelOK">
+    <variable id="Variable_aanvragerVerblijfstitelOK" name="aanvragerVerblijfstitelOK" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerDetentie" name="aanvragerDetentie">
+    <variable id="Variable_aanvragerDetentie" name="aanvragerDetentie" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerMaatregel100" name="aanvragerMaatregel100">
+    <variable id="Variable_aanvragerMaatregel100" name="aanvragerMaatregel100" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_aanvragerRechtOpStufi" name="aanvragerRechtOpStufi">
+    <variable id="Variable_aanvragerRechtOpStufi" name="aanvragerRechtOpStufi" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerWoonachtigInGemeente" name="partnerWoonachtigInGemeente">
+    <variable id="Variable_partnerWoonachtigInGemeente" name="partnerWoonachtigInGemeente" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerLeeftijdOK" name="partnerLeeftijdOK">
+    <variable id="Variable_partnerLeeftijdOK" name="partnerLeeftijdOK" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerVerblijfstitelOK" name="partnerVerblijfstitelOK">
+    <variable id="Variable_partnerVerblijfstitelOK" name="partnerVerblijfstitelOK" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerDetentie" name="partnerDetentie">
+    <variable id="Variable_partnerDetentie" name="partnerDetentie" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerMaatregel100" name="partnerMaatregel100">
+    <variable id="Variable_partnerMaatregel100" name="partnerMaatregel100" typeRef="string" />
+  </inputData>
+  <inputData id="InputData_partnerRechtOpStufi" name="partnerRechtOpStufi">
+    <variable id="Variable_partnerRechtOpStufi" name="partnerRechtOpStufi" typeRef="string" />
+  </inputData>
+  <decision id="dt225_BeslissingALO" name="Beslissing ALO" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_BeslissingALO_1">
+      <requiredDecision href="#dt225_RechtOpALO" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_BeslissingALO_2">
+      <requiredInput href="#InputData_bijstandsVorm" />
+    </informationRequirement>
+    <authorityRequirement id="AR_dt225_BeslissingALO_1">
+      <requiredAuthority href="#KnowledgeSource_1xwo81u" />
+    </authorityRequirement>
+    <decisionTable id="DT_dt225_BeslissingALO" hitPolicy="FIRST">
+      <input id="In_dt225_BeslissingALO_1" label="Recht op ALO">
+        <inputExpression id="InExpr_dt225_BeslissingALO_1" typeRef="string">
+          <text>rechtOpALO</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_BeslissingALO_1">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_BeslissingALO_2" label="Bijstandsvorm">
+        <inputExpression id="InExpr_dt225_BeslissingALO_2" typeRef="string">
+          <text>bijstandsVorm</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_BeslissingALO_2">
+          <text>"Om niet","Krediethypotheek","Verhaalbare bijstand","Leenbijstand"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_BeslissingALO_1" label="Beslissing ALO" name="beslissingALO" typeRef="string" />
+      <output id="Out_dt225_BeslissingALO_2" label="Reden afwijzing (doorgegeven)" name="redenAfwijzing" typeRef="string" />
+      <output id="Out_dt225_BeslissingALO_3" label="Informatiebehoefte (doorgegeven)" name="informatiebehoefte" typeRef="string" />
+      <rule id="R_dt225_BeslissingALO_1">
+        <inputEntry id="RIn_dt225_BeslissingALO_1_1">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_1_2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_1_1">
+          <text>"Geen recht"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_1_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_1_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_2">
+        <inputEntry id="RIn_dt225_BeslissingALO_2_1">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_2_2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_2_1">
+          <text>"Informatie nodig"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_2_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_2_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_3">
+        <inputEntry id="RIn_dt225_BeslissingALO_3_1">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_3_2">
+          <text>"Om niet"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_3_1">
+          <text>"Om niet"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_3_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_3_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_4">
+        <inputEntry id="RIn_dt225_BeslissingALO_4_1">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_4_2">
+          <text>"Krediethypotheek"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_4_1">
+          <text>"Krediethypotheek"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_4_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_4_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_5">
+        <inputEntry id="RIn_dt225_BeslissingALO_5_1">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_5_2">
+          <text>"Verhaalbare bijstand"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_5_1">
+          <text>"Verhaalbare bijstand"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_5_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_5_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_6">
+        <inputEntry id="RIn_dt225_BeslissingALO_6_1">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_6_2">
+          <text>"Leenbijstand"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_6_1">
+          <text>"Leenbijstand"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_6_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_6_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_BeslissingALO_7">
+        <inputEntry id="RIn_dt225_BeslissingALO_7_1">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_BeslissingALO_7_2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_7_1">
+          <text>"Bijstandsvorm te bepalen"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_7_2">
+          <text>redenAfwijzing</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_BeslissingALO_7_3">
+          <text>informatiebehoefte</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_RechtOpALO" name="Recht op ALO" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_RechtOpALO_1">
+      <requiredDecision href="#dt225_RechthebbendeAanvrager" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_2">
+      <requiredDecision href="#dt225_RechthebbendePartner" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_3">
+      <requiredInput href="#InputData_aanvraagtypeALO" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_4">
+      <requiredInput href="#InputData_lopendeAanvraagOfUitkering" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_5">
+      <requiredInput href="#InputData_eersteAanvragerVastgesteld" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_6">
+      <requiredInput href="#InputData_tweedeAanvragerVastgesteld" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_7">
+      <requiredInput href="#InputData_ongeoorloofdOnbetaaldVerlof" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_8">
+      <requiredInput href="#InputData_maandelijksInkomen" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_9">
+      <requiredInput href="#InputData_bijstandsNorm" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_10">
+      <requiredInput href="#InputData_inkomenVastgesteld" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_11">
+      <requiredInput href="#InputData_geenInAanmerkingTeNemenVermogen" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechtOpALO_12">
+      <requiredInput href="#InputData_voorliggendeVoorzieningenUitsluiting" />
+    </informationRequirement>
+    <authorityRequirement id="AR_dt225_RechtOpALO_1">
+      <requiredAuthority href="#KnowledgeSource_0g3ixv4" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechtOpALO_2">
+      <requiredAuthority href="#KnowledgeSource_0lzebb5" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechtOpALO_3">
+      <requiredAuthority href="#KnowledgeSource_08q8c9j" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechtOpALO_4">
+      <requiredAuthority href="#KnowledgeSource_0feyxav" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechtOpALO_5">
+      <requiredAuthority href="#KnowledgeSource_1mi98kn" />
+    </authorityRequirement>
+    <decisionTable id="DT_dt225_RechtOpALO" hitPolicy="FIRST">
+      <input id="In_dt225_RechtOpALO_1" label="Aanvraag is ALO">
+        <inputExpression id="InExpr_dt225_RechtOpALO_1" typeRef="boolean">
+          <text>aanvraagtypeALO</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_2" label="Lopende aanvraag of uitkering">
+        <inputExpression id="InExpr_dt225_RechtOpALO_2" typeRef="boolean">
+          <text>lopendeAanvraagOfUitkering</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_3" label="Eerste aanvrager vastgesteld">
+        <inputExpression id="InExpr_dt225_RechtOpALO_3" typeRef="boolean">
+          <text>eersteAanvragerVastgesteld</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_4" label="Tweede aanvrager vastgesteld">
+        <inputExpression id="InExpr_dt225_RechtOpALO_4" typeRef="boolean">
+          <text>tweedeAanvragerVastgesteld</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_5" label="Rechthebbende aanvrager">
+        <inputExpression id="InExpr_dt225_RechtOpALO_5" typeRef="string">
+          <text>rechthebbendeAanvrager</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechtOpALO_5">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechtOpALO_6" label="Rechthebbende partner">
+        <inputExpression id="InExpr_dt225_RechtOpALO_6" typeRef="string">
+          <text>rechthebbendePartner</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechtOpALO_6">
+          <text>"rood","oranje","groen"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechtOpALO_7" label="Ongeoorloofd onbetaald verlof">
+        <inputExpression id="InExpr_dt225_RechtOpALO_7" typeRef="string">
+          <text>ongeoorloofdOnbetaaldVerlof</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechtOpALO_7">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechtOpALO_8" label="Laag inkomen (inkomen &lt; bijstandsnorm)">
+        <inputExpression id="InExpr_dt225_RechtOpALO_8" typeRef="boolean">
+          <text>maandelijksInkomen &lt; bijstandsNorm</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_9" label="Inkomen vastgesteld">
+        <inputExpression id="InExpr_dt225_RechtOpALO_9" typeRef="boolean">
+          <text>inkomenVastgesteld</text>
+        </inputExpression>
+      </input>
+      <input id="In_dt225_RechtOpALO_10" label="Geen in aanmerking te nemen vermogen">
+        <inputExpression id="InExpr_dt225_RechtOpALO_10" typeRef="string">
+          <text>geenInAanmerkingTeNemenVermogen</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechtOpALO_10">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechtOpALO_11" label="Voorliggende voorzieningen die uitsluiten">
+        <inputExpression id="InExpr_dt225_RechtOpALO_11" typeRef="string">
+          <text>voorliggendeVoorzieningenUitsluiting</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechtOpALO_11">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_RechtOpALO_1" label="Recht op ALO" name="rechtOpALO" typeRef="string">
+        <outputValues id="OutVals_dt225_RechtOpALO_1">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Out_dt225_RechtOpALO_2" label="Reden afwijzing" name="redenAfwijzing" typeRef="string" />
+      <output id="Out_dt225_RechtOpALO_3" label="Informatiebehoefte" name="informatiebehoefte" typeRef="string" />
+      <rule id="R_dt225_RechtOpALO_1">
+        <inputEntry id="RIn_dt225_RechtOpALO_1_1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_1_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_1_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_1_2">
+          <text>"00"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_1_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_2">
+        <inputEntry id="RIn_dt225_RechtOpALO_2_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_2">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_2_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_2_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_2_2">
+          <text>"99"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_2_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_3">
+        <inputEntry id="RIn_dt225_RechtOpALO_3_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_3">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_3_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_3_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_3_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_3_3">
+          <text>"persoon"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_4">
+        <inputEntry id="RIn_dt225_RechtOpALO_4_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_4">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_4_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_4_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_4_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_4_3">
+          <text>"partner"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_5">
+        <inputEntry id="RIn_dt225_RechtOpALO_5_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_5">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_6">
+          <text>"rood"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_5_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_5_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_5_2">
+          <text>"01"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_5_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_6">
+        <inputEntry id="RIn_dt225_RechtOpALO_6_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_7">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_6_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_6_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_6_2">
+          <text>"04"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_6_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_7">
+        <inputEntry id="RIn_dt225_RechtOpALO_7_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_8">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_7_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_7_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_7_2">
+          <text>"02"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_7_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_8">
+        <inputEntry id="RIn_dt225_RechtOpALO_8_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_10">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_8_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_8_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_8_2">
+          <text>"03"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_8_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_9">
+        <inputEntry id="RIn_dt225_RechtOpALO_9_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_9_11">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_9_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_9_2">
+          <text>"06"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_9_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_10">
+        <inputEntry id="RIn_dt225_RechtOpALO_10_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_5">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_10_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_10_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_10_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_10_3">
+          <text>informatiebehoefteAanvrager</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_11">
+        <inputEntry id="RIn_dt225_RechtOpALO_11_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_6">
+          <text>"oranje"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_11_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_11_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_11_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_11_3">
+          <text>informatiebehoeftePartner</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_12">
+        <inputEntry id="RIn_dt225_RechtOpALO_12_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_7">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_12_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_12_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_12_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_12_3">
+          <text>"onbetaald verlof"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_13">
+        <inputEntry id="RIn_dt225_RechtOpALO_13_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_9">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_13_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_13_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_13_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_13_3">
+          <text>"inkomen"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_14">
+        <inputEntry id="RIn_dt225_RechtOpALO_14_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_10">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_14_11">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_14_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_14_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_14_3">
+          <text>"vermogen"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_15">
+        <inputEntry id="RIn_dt225_RechtOpALO_15_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_6">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_7">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_8">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_9">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_10">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_15_11">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_15_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_15_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_15_3">
+          <text>"voorliggende voorzieningen"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechtOpALO_16">
+        <inputEntry id="RIn_dt225_RechtOpALO_16_1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_2">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_3">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_4">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_5">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_6">
+          <text>"groen"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_7">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_8">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_9">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_10">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechtOpALO_16_11">
+          <text>"nee"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_16_1">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_16_2">
+          <text>""</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechtOpALO_16_3">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_RechthebbendeAanvrager" name="Rechthebbende aanvrager" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_1">
+      <requiredInput href="#InputData_aanvragerWoonachtigInGemeente" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_2">
+      <requiredInput href="#InputData_aanvragerLeeftijdOK" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_3">
+      <requiredInput href="#InputData_aanvragerVerblijfstitelOK" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_4">
+      <requiredInput href="#InputData_aanvragerDetentie" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_5">
+      <requiredInput href="#InputData_aanvragerMaatregel100" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendeAanvrager_6">
+      <requiredInput href="#InputData_aanvragerRechtOpStufi" />
+    </informationRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_1">
+      <requiredAuthority href="#KnowledgeSource_0kqiqhe" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_2">
+      <requiredAuthority href="#KnowledgeSource_0g3ixv4" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_3">
+      <requiredAuthority href="#KnowledgeSource_0fuzda0" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_4">
+      <requiredAuthority href="#KnowledgeSource_181l4fl" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_5">
+      <requiredAuthority href="#KnowledgeSource_1kvjjln" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendeAanvrager_6">
+      <requiredAuthority href="#KnowledgeSource_0l0nr72" />
+    </authorityRequirement>
+    <decisionTable id="DT_dt225_RechthebbendeAanvrager" hitPolicy="FIRST">
+      <input id="In_dt225_RechthebbendeAanvrager_1" label="Woonachtig in gemeente">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_1" typeRef="string">
+          <text>aanvragerWoonachtigInGemeente</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_1">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendeAanvrager_2" label="Leeftijd OK">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_2" typeRef="string">
+          <text>aanvragerLeeftijdOK</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_2">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendeAanvrager_3" label="Verblijfstitel OK">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_3" typeRef="string">
+          <text>aanvragerVerblijfstitelOK</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_3">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendeAanvrager_4" label="Detentie">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_4" typeRef="string">
+          <text>aanvragerDetentie</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_4">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendeAanvrager_5" label="Opgelegde 100% maatregel">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_5" typeRef="string">
+          <text>aanvragerMaatregel100</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_5">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendeAanvrager_6" label="Recht op studiefinanciering">
+        <inputExpression id="InExpr_dt225_RechthebbendeAanvrager_6" typeRef="string">
+          <text>aanvragerRechtOpStufi</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendeAanvrager_6">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_RechthebbendeAanvrager_1" label="Rechthebbende aanvrager" name="rechthebbendeAanvrager" typeRef="string">
+        <outputValues id="OutVals_dt225_RechthebbendeAanvrager_1">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Out_dt225_RechthebbendeAanvrager_2" label="Informatiebehoefte" name="informatiebehoefteAanvrager" typeRef="string" />
+      <rule id="R_dt225_RechthebbendeAanvrager_1">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_1">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_1_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_1_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_1_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_2">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_2">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_2_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_2_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_2_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_3">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_3">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_3_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_3_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_3_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_4">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_4">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_4_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_4_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_4_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_5">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_5">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_5_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_5_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_5_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_6">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_6_6">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_6_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_6_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_7">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_3">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_7_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_7_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_7_2">
+          <text>"verblijfstitel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_8">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_4">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_8_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_8_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_8_2">
+          <text>"detentie"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_9">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_5">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_9_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_9_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_9_2">
+          <text>"opgelegde maatregel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_10">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_10_6">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_10_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_10_2">
+          <text>"stufi"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_11">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_2">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_11_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_11_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_11_2">
+          <text>"leeftijd"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_12">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_1">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_12_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_12_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_12_2">
+          <text>"woonplaats"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendeAanvrager_13">
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_1">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_2">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_3">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_4">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_5">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendeAanvrager_13_6">
+          <text>"nee"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_13_1">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendeAanvrager_13_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_RechthebbendePartner" name="Rechthebbende partner" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_RechthebbendePartner_1">
+      <requiredInput href="#InputData_partnerWoonachtigInGemeente" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendePartner_2">
+      <requiredInput href="#InputData_partnerLeeftijdOK" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendePartner_3">
+      <requiredInput href="#InputData_partnerVerblijfstitelOK" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendePartner_4">
+      <requiredInput href="#InputData_partnerDetentie" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendePartner_5">
+      <requiredInput href="#InputData_partnerMaatregel100" />
+    </informationRequirement>
+    <informationRequirement id="IR_dt225_RechthebbendePartner_6">
+      <requiredInput href="#InputData_partnerRechtOpStufi" />
+    </informationRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_1">
+      <requiredAuthority href="#KnowledgeSource_0kqiqhe" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_2">
+      <requiredAuthority href="#KnowledgeSource_0g3ixv4" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_3">
+      <requiredAuthority href="#KnowledgeSource_0fuzda0" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_4">
+      <requiredAuthority href="#KnowledgeSource_181l4fl" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_5">
+      <requiredAuthority href="#KnowledgeSource_1kvjjln" />
+    </authorityRequirement>
+    <authorityRequirement id="AR_dt225_RechthebbendePartner_6">
+      <requiredAuthority href="#KnowledgeSource_0l0nr72" />
+    </authorityRequirement>
+    <decisionTable id="DT_dt225_RechthebbendePartner" hitPolicy="FIRST">
+      <input id="In_dt225_RechthebbendePartner_1" label="Woonachtig in gemeente">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_1" typeRef="string">
+          <text>partnerWoonachtigInGemeente</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_1">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendePartner_2" label="Leeftijd OK">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_2" typeRef="string">
+          <text>partnerLeeftijdOK</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_2">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendePartner_3" label="Verblijfstitel OK">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_3" typeRef="string">
+          <text>partnerVerblijfstitelOK</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_3">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendePartner_4" label="Detentie">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_4" typeRef="string">
+          <text>partnerDetentie</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_4">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendePartner_5" label="Opgelegde 100% maatregel">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_5" typeRef="string">
+          <text>partnerMaatregel100</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_5">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <input id="In_dt225_RechthebbendePartner_6" label="Recht op studiefinanciering">
+        <inputExpression id="InExpr_dt225_RechthebbendePartner_6" typeRef="string">
+          <text>partnerRechtOpStufi</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_RechthebbendePartner_6">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_RechthebbendePartner_1" label="Rechthebbende partner" name="rechthebbendePartner" typeRef="string">
+        <outputValues id="OutVals_dt225_RechthebbendePartner_1">
+          <text>"rood","oranje","groen"</text>
+        </outputValues>
+      </output>
+      <output id="Out_dt225_RechthebbendePartner_2" label="Informatiebehoefte" name="informatiebehoeftePartner" typeRef="string" />
+      <rule id="R_dt225_RechthebbendePartner_1">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_1">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_1_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_1_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_1_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_2">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_2">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_2_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_2_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_2_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_3">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_3">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_3_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_3_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_3_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_4">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_4">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_4_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_4_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_4_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_5">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_5">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_5_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_5_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_5_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_6">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_6_6">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_6_1">
+          <text>"rood"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_6_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_7">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_3">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_7_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_7_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_7_2">
+          <text>"verblijfstitel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_8">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_4">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_8_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_8_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_8_2">
+          <text>"detentie"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_9">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_5">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_9_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_9_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_9_2">
+          <text>"opgelegde maatregel"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_10">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_10_6">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_10_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_10_2">
+          <text>"stufi"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_11">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_2">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_11_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_11_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_11_2">
+          <text>"leeftijd"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_12">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_1">
+          <text>"onbekend"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_2">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_3">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_4">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_5">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_12_6">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_12_1">
+          <text>"oranje"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_12_2">
+          <text>"woonplaats"</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_RechthebbendePartner_13">
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_1">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_2">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_3">
+          <text>"ja"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_4">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_5">
+          <text>"nee"</text>
+        </inputEntry>
+        <inputEntry id="RIn_dt225_RechthebbendePartner_13_6">
+          <text>"nee"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_13_1">
+          <text>"groen"</text>
+        </outputEntry>
+        <outputEntry id="ROut_dt225_RechthebbendePartner_13_2">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_TekortSchieten" name="Tekort schieten" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_TekortSchieten_1">
+      <requiredInput href="#InputData_oordeelTekortSchieten" />
+    </informationRequirement>
+    <decisionTable id="DT_dt225_TekortSchieten" hitPolicy="FIRST">
+      <input id="In_dt225_TekortSchieten_1" label="Oordeel tekort schieten">
+        <inputExpression id="InExpr_dt225_TekortSchieten_1" typeRef="string">
+          <text>oordeelTekortSchieten</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_TekortSchieten_1">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_TekortSchieten_1" label="Tekort schieten" name="tekortSchieten" typeRef="boolean" />
+      <rule id="R_dt225_TekortSchieten_1">
+        <inputEntry id="RIn_dt225_TekortSchieten_1_1">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_TekortSchieten_1_1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_TekortSchieten_2">
+        <inputEntry id="RIn_dt225_TekortSchieten_2_1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_TekortSchieten_2_1">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_DringendeReden" name="Dringende reden" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_DringendeReden_1">
+      <requiredInput href="#InputData_oordeelDringendeReden" />
+    </informationRequirement>
+    <decisionTable id="DT_dt225_DringendeReden" hitPolicy="FIRST">
+      <input id="In_dt225_DringendeReden_1" label="Oordeel dringende reden">
+        <inputExpression id="InExpr_dt225_DringendeReden_1" typeRef="string">
+          <text>oordeelDringendeReden</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_DringendeReden_1">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_DringendeReden_1" label="Dringende reden" name="dringendeReden" typeRef="boolean" />
+      <rule id="R_dt225_DringendeReden_1">
+        <inputEntry id="RIn_dt225_DringendeReden_1_1">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_DringendeReden_1_1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_DringendeReden_2">
+        <inputEntry id="RIn_dt225_DringendeReden_2_1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_DringendeReden_2_1">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="dt225_HardheidsclausuleToepassen" name="Hardheidsclausule toepassen" camunda:historyTimeToLive="0">
+    <informationRequirement id="IR_dt225_HardheidsclausuleToepassen_1">
+      <requiredInput href="#InputData_oordeelHardheidsclausule" />
+    </informationRequirement>
+    <decisionTable id="DT_dt225_HardheidsclausuleToepassen" hitPolicy="FIRST">
+      <input id="In_dt225_HardheidsclausuleToepassen_1" label="Oordeel hardheidsclausule">
+        <inputExpression id="InExpr_dt225_HardheidsclausuleToepassen_1" typeRef="string">
+          <text>oordeelHardheidsclausule</text>
+        </inputExpression>
+        <inputValues id="InVals_dt225_HardheidsclausuleToepassen_1">
+          <text>"ja","nee","onbekend"</text>
+        </inputValues>
+      </input>
+      <output id="Out_dt225_HardheidsclausuleToepassen_1" label="Hardheidsclausule toepassen" name="hardheidsclausuleToepassen" typeRef="boolean" />
+      <rule id="R_dt225_HardheidsclausuleToepassen_1">
+        <inputEntry id="RIn_dt225_HardheidsclausuleToepassen_1_1">
+          <text>"ja"</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_HardheidsclausuleToepassen_1_1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="R_dt225_HardheidsclausuleToepassen_2">
+        <inputEntry id="RIn_dt225_HardheidsclausuleToepassen_2_1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="ROut_dt225_HardheidsclausuleToepassen_2_1">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_dh225">
+      <dmndi:DMNShape id="Shape_dt225_BeslissingALO" dmnElementRef="dt225_BeslissingALO">
+        <dc:Bounds height="80" width="200" x="160" y="60" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_RechtOpALO" dmnElementRef="dt225_RechtOpALO">
+        <dc:Bounds height="80" width="200" x="160" y="170" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_RechthebbendeAanvrager" dmnElementRef="dt225_RechthebbendeAanvrager">
+        <dc:Bounds height="80" width="200" x="160" y="280" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_RechthebbendePartner" dmnElementRef="dt225_RechthebbendePartner">
+        <dc:Bounds height="80" width="200" x="160" y="390" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_TekortSchieten" dmnElementRef="dt225_TekortSchieten">
+        <dc:Bounds height="80" width="200" x="160" y="500" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_DringendeReden" dmnElementRef="dt225_DringendeReden">
+        <dc:Bounds height="80" width="200" x="160" y="610" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_dt225_HardheidsclausuleToepassen" dmnElementRef="dt225_HardheidsclausuleToepassen">
+        <dc:Bounds height="80" width="200" x="160" y="720" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvraagtypeALO" dmnElementRef="InputData_aanvraagtypeALO">
+        <dc:Bounds height="60" width="160" x="500" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_lopendeAanvraagOfUitkering" dmnElementRef="InputData_lopendeAanvraagOfUitkering">
+        <dc:Bounds height="60" width="160" x="680" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_eersteAanvragerVastgesteld" dmnElementRef="InputData_eersteAanvragerVastgesteld">
+        <dc:Bounds height="60" width="160" x="860" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_tweedeAanvragerVastgesteld" dmnElementRef="InputData_tweedeAanvragerVastgesteld">
+        <dc:Bounds height="60" width="160" x="1040" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_ongeoorloofdOnbetaaldVerlof" dmnElementRef="InputData_ongeoorloofdOnbetaaldVerlof">
+        <dc:Bounds height="60" width="160" x="1220" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_maandelijksInkomen" dmnElementRef="InputData_maandelijksInkomen">
+        <dc:Bounds height="60" width="160" x="1400" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_bijstandsNorm" dmnElementRef="InputData_bijstandsNorm">
+        <dc:Bounds height="60" width="160" x="1580" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_inkomenVastgesteld" dmnElementRef="InputData_inkomenVastgesteld">
+        <dc:Bounds height="60" width="160" x="1760" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_geenInAanmerkingTeNemenVermogen" dmnElementRef="InputData_geenInAanmerkingTeNemenVermogen">
+        <dc:Bounds height="60" width="160" x="500" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_voorliggendeVoorzieningenUitsluiting" dmnElementRef="InputData_voorliggendeVoorzieningenUitsluiting">
+        <dc:Bounds height="60" width="160" x="680" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_bijstandsVorm" dmnElementRef="InputData_bijstandsVorm">
+        <dc:Bounds height="60" width="160" x="860" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_oordeelTekortSchieten" dmnElementRef="InputData_oordeelTekortSchieten">
+        <dc:Bounds height="60" width="160" x="1040" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_oordeelDringendeReden" dmnElementRef="InputData_oordeelDringendeReden">
+        <dc:Bounds height="60" width="160" x="1220" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_oordeelHardheidsclausule" dmnElementRef="InputData_oordeelHardheidsclausule">
+        <dc:Bounds height="60" width="160" x="1400" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerWoonachtigInGemeente" dmnElementRef="InputData_aanvragerWoonachtigInGemeente">
+        <dc:Bounds height="60" width="160" x="1580" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerLeeftijdOK" dmnElementRef="InputData_aanvragerLeeftijdOK">
+        <dc:Bounds height="60" width="160" x="1760" y="920" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerVerblijfstitelOK" dmnElementRef="InputData_aanvragerVerblijfstitelOK">
+        <dc:Bounds height="60" width="160" x="500" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerDetentie" dmnElementRef="InputData_aanvragerDetentie">
+        <dc:Bounds height="60" width="160" x="680" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerMaatregel100" dmnElementRef="InputData_aanvragerMaatregel100">
+        <dc:Bounds height="60" width="160" x="860" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_aanvragerRechtOpStufi" dmnElementRef="InputData_aanvragerRechtOpStufi">
+        <dc:Bounds height="60" width="160" x="1040" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerWoonachtigInGemeente" dmnElementRef="InputData_partnerWoonachtigInGemeente">
+        <dc:Bounds height="60" width="160" x="1220" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerLeeftijdOK" dmnElementRef="InputData_partnerLeeftijdOK">
+        <dc:Bounds height="60" width="160" x="1400" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerVerblijfstitelOK" dmnElementRef="InputData_partnerVerblijfstitelOK">
+        <dc:Bounds height="60" width="160" x="1580" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerDetentie" dmnElementRef="InputData_partnerDetentie">
+        <dc:Bounds height="60" width="160" x="1760" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerMaatregel100" dmnElementRef="InputData_partnerMaatregel100">
+        <dc:Bounds height="60" width="160" x="500" y="1100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="Shape_InputData_partnerRechtOpStufi" dmnElementRef="InputData_partnerRechtOpStufi">
+        <dc:Bounds height="60" width="160" x="680" y="1100" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
