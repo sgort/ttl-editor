@@ -412,8 +412,11 @@ either CVDR for Den Haag's own beleidsregels or `wetten.overheid.nl` for the
 Participatiewet articles behind each one.
 
 The legal layer is nonetheless **preserved**: all 11 `knowledgeSource` elements
-and all 12 `authorityRequirement` links are carried across, ids and names
-unchanged. The earlier deployable dropped all 23.
+are carried across with ids and names unchanged, and every one of the source's
+12 `authorityRequirement` links is represented. The derived file holds **18**
+rather than 12, because the source attached six of them to the single reusable
+person decision, and that decision is applied twice — to the aanvrager and to
+the partner — so those six appear on each. The earlier deployable dropped all 23.
 
 They do **not** currently reach the published TTL. Verified against
 [`../Aanvraag-LevensOnderhoud-ALO.ttl`](../Aanvraag-LevensOnderhoud-ALO.ttl):
