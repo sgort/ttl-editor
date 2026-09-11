@@ -6,7 +6,8 @@
   "internalChecksFilter": "strict",
   "vulnerabilityAlerts": {
     "minimumReleaseAge": null,
-    "labels": ["security"]
+    "labels": ["security"],
+    "dependencyDashboardApproval": false
   },
   "packageRules": [
     {
@@ -28,6 +29,20 @@
       "matchPackageNames": ["eslint"],
       "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "description": "Major updates wait in the Dependency Dashboard (#35) as checkboxes and hold no slot in prConcurrentLimit until someone ticks one; nobody merges a major on autopilot anyway. This keeps a slot for lock-file maintenance, which is only eligible inside its Monday schedule: in linked-data-explorer, updates eligible any day filled every free slot first and starved it (linked-data-explorer#97). vulnerabilityAlerts sets dependencyDashboardApproval false explicitly, so a security fix that happens to be a major never waits on a click. The two major-version holds above still apply.",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names. It takes the first free slot when one frees; it cannot evict an open pull request, which is why majors need approval above.",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "prPriority": 10
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 5am on monday"]
+  }
 }
