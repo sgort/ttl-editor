@@ -421,6 +421,77 @@ export const applyMapping = (parsedData, mappingConfig) => {
 };
 
 /**
+ * A quantified group that itself contains a quantifier -- (a+)+, (a*)*, (\d+){2,}.
+ *
+ * This is the canonical catastrophic-backtracking shape: the two quantifiers
+ * give the engine exponentially many ways to split the same input, so a
+ * non-matching subject of a few dozen characters can take longer than the heat
+ * death of the universe. It blocks the main thread while it does.
+ *
+ * Matched against the pattern with escape sequences blanked out, so a literal
+ * `(\+)+` -- a plus sign, quantified -- is correctly allowed while `(\d+)+` is
+ * correctly rejected.
+ *
+ * Deliberately narrow. It does not catch overlapping alternation like (a|a)*,
+ * which is equally dangerous and much harder to detect without parsing the
+ * pattern properly. If this guard ever needs to be comprehensive, reach for a
+ * real ReDoS analyser rather than growing this regex.
+ */
+const NESTED_QUANTIFIER = /\([^()]*(?:[*+]|\{\d+,\d*\})[^()]*\)\s*(?:[*+]|\{\d+,\d*\})/;
+
+/**
+ * Ceiling on a `replace` transform's pattern length.
+ *
+ * The NESTED_QUANTIFIER check above is a heuristic and will not catch every
+ * dangerous construction, so this is the backstop that bounds what an
+ * undetected one can cost. Every pattern in src/config/iknow-mappings is an
+ * order of magnitude under it -- a field-mapping pattern that needs 200
+ * characters is doing something this transform was never meant for.
+ */
+const MAX_TRANSFORM_PATTERN_LENGTH = 200;
+
+/**
+ * Compile a `replace` transform's pattern, refusing the two shapes that make a
+ * user-supplied regex a denial-of-service rather than a transformation.
+ *
+ * Nothing can currently supply a hostile pattern: every production call site of
+ * applyMapping passes a config from the bundled src/config/iknow-mappings. The
+ * guard is here for the same reason as UNSAFE_PATH_SEGMENTS above -- that is a
+ * property of today's wiring, not of this function, and IKnowMappingTab already
+ * JSON.parses a user-supplied config into its editing state.
+ *
+ * Throws rather than returning the value untransformed. A pattern this shape is
+ * a configuration error, and silently skipping the transform would produce
+ * quietly wrong output with nothing to explain it. Both call sites already wrap
+ * applyMapping in try/catch and surface err.message.
+ */
+const compileReplacePattern = (pattern) => {
+  if (pattern.length > MAX_TRANSFORM_PATTERN_LENGTH) {
+    throw new Error(
+      `Transform pattern rejected: ${pattern.length} characters exceeds the ` +
+        `${MAX_TRANSFORM_PATTERN_LENGTH}-character limit`
+    );
+  }
+
+  if (NESTED_QUANTIFIER.test(pattern.replace(/\\./g, 'x'))) {
+    throw new Error(
+      'Transform pattern rejected: a quantified group that itself contains a ' +
+        'quantifier can backtrack catastrophically'
+    );
+  }
+
+  // The two checks above are the whole point of this function, and they run
+  // before this line on every path that reaches it. Semgrep's rule matches a
+  // non-literal RegExp argument regardless -- it reports this line twice, once
+  // per taint path into the helper -- so the suppression is narrowed to this
+  // rule on this line rather than disabling it for the file or the repository.
+  // detect-non-literal-regexp stays live everywhere else, which matters: it is
+  // the rule that found this in the first place.
+  // nosemgrep: javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp
+  return new RegExp(pattern, 'g');
+};
+
+/**
  * Apply transformation function to extracted value
  */
 const applyTransform = (value, transform) => {
@@ -430,7 +501,7 @@ const applyTransform = (value, transform) => {
     case 'suffix':
       return `${value}${transform.value}`;
     case 'replace':
-      return value.replace(new RegExp(transform.pattern, 'g'), transform.replacement);
+      return value.replace(compileReplacePattern(transform.pattern), transform.replacement);
     case 'uri':
       return encodeURIComponent(value);
     case 'date':
