@@ -86,6 +86,13 @@ Tab state → generateTTL() → combine sections + namespaces → download .ttl
 Git push → GitHub Actions → npm run build → Azure Static Web Apps → cpsv-editor.open-regels.nl
 ```
 
+What gates that pipeline — build provenance, supply-chain pinning, the per-file
+coverage floor and the Semgrep scan — is documented once, for this repository and
+Linked Data Explorer together, in
+[linked-data-explorer's `docs/ci-posture-across-repos.md`](https://github.com/sgort/linked-data-explorer/blob/acc/docs/ci-posture-across-repos.md).
+This repository kept its own copy until 2026-09-11; the two had drifted in both
+directions, so there is now one.
+
 ---
 
 ## Standards
