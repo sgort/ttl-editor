@@ -38,7 +38,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
-    "check-supply-chain": "node scripts/check-supply-chain.mjs"
+    "check-supply-chain": "node scripts/check-supply-chain.mjs",
+    "check-mirror": "bash scripts/check-mirror.sh"
   },
   "browserslist": {
     "production": [
