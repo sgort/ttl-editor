@@ -132,10 +132,16 @@ in npm 10's resolver, hit while walking `vitest`'s optional peer chain (`jsdom` 
 11.19.1 on 2026-09-11.
 
 ```bash
-npm install
+npm ci          # install exactly what package-lock.json records
 npm start       # development server at http://localhost:3000
 npm run build   # production build → dist/
 ```
+
+`npm start` first checks that the installed dependencies still match
+`package-lock.json`, and stops with `npm ci` as the fix when they do not — after
+pulling a lockfile change, for example. `npm ci` rather than `npm install`:
+`npm install` re-resolves the version ranges and can pull a transitive release
+published that morning. Use `npm install <package>` only to add or upgrade one.
 
 ---
 
