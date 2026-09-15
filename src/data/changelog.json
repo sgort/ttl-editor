@@ -2,6 +2,111 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.5",
+      "status": "Released",
+      "date": "15 sep 2026",
+      "commits": [
+        {
+          "sha": "4f246ec",
+          "author": "Steven Gort",
+          "type": "chore",
+          "subject": "Lock-file maintenance no longer waits for a free pull-request slot",
+          "details": [
+            "Lock-file maintenance is only eligible inside its Monday window, so it cannot wait for a slot to free. Making majors wait for approval was meant to keep a slot for it, and cannot: Renovate's concurrency count includes every open Renovate pull request, security fixes included. ronl-business-api's Monday run was rate-limited exactly that way, and linked-data-explorer's the next day; this repository got its refresh (#140) with only one pull request open.",
+            "The lock-file maintenance rule now sets prConcurrentLimit and prHourlyLimit to 0, which Renovate reads as no limit for that branch alone. Every other update keeps the limit of five open pull requests and Renovate's default of two per hour."
+          ]
+        },
+        {
+          "sha": "29ce450",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Renovate maintains zizmor's own version after all",
+          "details": [
+            "The supply-chain register and the comment above zizmor's version input in the audit workflow both said the version is bumped by hand, because Renovate does not read action inputs. It does: Renovate's github-actions manager maps zizmor-action's version input to the Docker image ghcr.io/zizmorcore/zizmor, and the Dependency Dashboard already had an update to 1.30.1 waiting on its cooldown. Both now say so.",
+            "The register also records two rules that nothing enforces. Merge the zizmor-action bump first: the action only runs zizmor versions in its own digest table, and 1.30.1 is in v0.6.4's table but not v0.6.3's, so merged in the wrong order the zizmor bump fails the audit. And update the register row and its container digest by hand on that pull request's branch, because check-supply-chain reads only the pinned actions and nothing fails when those two go stale."
+          ]
+        },
+        {
+          "sha": "617bb0a",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The last four Semgrep findings are answered in the source, not the dashboard",
+          "details": [
+            "Every full scan since 11 September showed 4 Code findings that had been ignored in the Semgrep dashboard during the security triage, where the reasoning was invisible from the code. Two were prototype-pollution warnings in the iKnow parser's path helpers: one only reads, and both refuse __proto__, constructor and prototype before walking the path. Each now carries a suppression scoped to that one rule on that one line, with the reason and the condition under which it stops being true.",
+            "The other two flagged the tailwindcss and eslint major-version holds in renovate.json for lacking a minimum release age. They inherit the repository-wide 14 days, but the rule checks each package rule on its own, and JSON cannot carry a suppression comment. Both holds now state the 14 days themselves. Verified locally (4 results before, 0 after, and the rule still matching both suppressed lines when suppressions are disabled), and the full scan on acc after the merge reported 0 Code findings."
+          ]
+        },
+        {
+          "sha": "ed3340f",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react updated to 1.38.0",
+          "details": [
+            "The icon library, the only runtime dependency of the app that moved in this release. Renovate rebased this pull request onto the lock-file maintenance below before it merged, so it changed a single lockfile entry, 1.37.0 to 1.38.0."
+          ]
+        },
+        {
+          "sha": "1dc2d5a",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The supply-chain register moved to zizmor-action v0.6.3 alongside the bump",
+          "details": [
+            "Renovate rewrites a workflow's pinned digest and its version comment together, but never touches the register in SECURITY-PIPELINE.md. So the zizmor-action bump below left the register recording a digest no workflow used, and check-supply-chain failed the required audit on that pull request. The digest itself was right: tag v0.6.3 resolves to it.",
+            "As the register's own procedure asks, the row moved on the bump's branch before merging, the same way linked-data-explorer handled its checkout and setup-node bumps, so the check was green on the pull request rather than only after the merge."
+          ]
+        },
+        {
+          "sha": "c4f1f33",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "A push checks the install against the lockfile first",
+          "details": [
+            "The dependency check below now runs first in the pre-push hook, so a clone that has not been reinstalled since the lockfile moved stops there, with npm ci named as the fix, instead of failing lint or check-format on the wrong tool versions. That failure was real: a ronl-business-api clone with an old Prettier installed failed check-format on seven correctly formatted files, and nothing in the output pointed at the install.",
+            "It caught exactly that here on its first day: pushing the GitLab mirror after this release's dependency updates stopped with a stale install, and went through once npm ci had run."
+          ]
+        },
+        {
+          "sha": "96e69ea",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "The dev server checks installed dependencies against the lockfile before it starts",
+          "details": [
+            "Nothing told a developer that node_modules had fallen behind the lockfile: a fast-forward merge brings in lockfile changes and installs nothing. Measured on a workstation on 14 September, 53 packages were installed at a different version than the lockfile named and 86 were missing.",
+            "npm start now runs deps:check first, the same check ronl-business-api and linked-data-explorer use. It compares the lockfile with a snapshot taken after each install, ignoring the version a release bump rewrites, and when stale it says npm ci rather than npm install, so the committed lockfile is installed exactly instead of caret ranges being re-resolved. The README's getting-started steps now say npm ci too."
+          ]
+        },
+        {
+          "sha": "191dc3e",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "zizmor-action updated to v0.6.3",
+          "details": [
+            "The supply-chain audit's action, pinned by digest. Its pull request passed the audit once the register moved to the new digest on the same branch, listed above. v0.6.3 changes nothing the audit runs here: it changes the default zizmor version, and this repository pins 1.29.0 at an unchanged container digest."
+          ]
+        },
+        {
+          "sha": "ccfc527",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "The first scheduled lock-file maintenance",
+          "details": [
+            "The weekly refresh enabled in v2026.09.4, on its first Monday run. It moved six packages, all within declared ranges and all past the 14-day cooldown: lucide-react to 1.37.0, and five development-only packages behind eslint, jsdom and file-globbing tooling, none of which reach the app bundle."
+          ]
+        },
+        {
+          "sha": "7218939",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Each release checks the GitLab mirror",
+          "details": [
+            "The GitLab mirror is outside every CI gate and pushed by hand, so it drifts on every merge. npm run check-mirror compares it with GitHub and tells behind from diverged, which a commit count cannot: this repository's own GitLab main once held commits GitHub had never seen and was archived rather than forced into line. It never pushes; it prints the exact fast-forward command and stops, since writing to a shared remote is a human's decision.",
+            "It runs on a workstation, where the push happens, because the gitlab remote lives only in the local git config. The release procedure now calls it after every release merge."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.4",
       "status": "Released",
       "date": "11 sep 2026",

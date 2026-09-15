@@ -17,28 +17,32 @@
       "enabled": false
     },
     {
-      "description": "Tailwind CSS v4 stays deferred after the Vite migration -- for a DIFFERENT reason than before, so do not read this as the rule that was supposed to be removed in phase 4. It originally blamed react-scripts. react-scripts is now gone, and v4 does resolve cleanly (verified with npm install --dry-run). What still blocks it is postcss.config.js, which declares `tailwindcss: {}` as a PostCSS plugin: v4 moved that plugin into a separate @tailwindcss/postcss package, which is exactly what PR #56 failed to compile on. Under Vite the idiomatic setup is the @tailwindcss/vite plugin rather than a ported PostCSS pipeline, so this is a deliberate piece of work with its own acceptance run -- the migration plan lists it as explicitly out of scope for that reason. Minor and patch updates are unaffected; only the major is held. Remove this rule as part of the tailwind v4 migration, not before.",
+      "description": "Tailwind CSS v4 stays deferred after the Vite migration -- for a DIFFERENT reason than before, so do not read this as the rule that was supposed to be removed in phase 4. It originally blamed react-scripts. react-scripts is now gone, and v4 does resolve cleanly (verified with npm install --dry-run). What still blocks it is postcss.config.js, which declares `tailwindcss: {}` as a PostCSS plugin: v4 moved that plugin into a separate @tailwindcss/postcss package, which is exactly what PR #56 failed to compile on. Under Vite the idiomatic setup is the @tailwindcss/vite plugin rather than a ported PostCSS pipeline, so this is a deliberate piece of work with its own acceptance run -- the migration plan lists it as explicitly out of scope for that reason. Minor and patch updates are unaffected; only the major is held. Remove this rule as part of the tailwind v4 migration, not before. minimumReleaseAge restates the repository-wide 14 days rather than changing it: Semgrep's renovate-missing-minimum-release-age reads each package rule on its own, and the age should still be stated here if this hold is ever re-enabled.",
       "matchManagers": ["npm"],
       "matchPackageNames": ["tailwindcss"],
       "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "14 days",
       "enabled": false
     },
     {
-      "description": "eslint v10 is deferred until eslint-plugin-react, eslint-plugin-jsx-a11y and eslint-plugin-import declare support for it. This one does NOT fail to resolve, which is why it needs a rule: npm prints \"ERESOLVE overriding peer dependency\" and installs anyway, so a v10 pull request goes green while three plugins run outside their declared peer range -- eslint-plugin-react caps at ^9.7, jsx-a11y and import at ^9. A passing build is not evidence here. PR #78 proposed exactly this and was closed for this reason. The repository moved to eslint 9 flat config on 6 September 2026; 9.39.5 satisfies every plugin. Re-check when eslint-plugin-react ships a release naming ^10 in its peers, and remove this rule then. Minor and patch updates to eslint are unaffected; only the major is held.",
+      "description": "eslint v10 is deferred until eslint-plugin-react, eslint-plugin-jsx-a11y and eslint-plugin-import declare support for it. This one does NOT fail to resolve, which is why it needs a rule: npm prints \"ERESOLVE overriding peer dependency\" and installs anyway, so a v10 pull request goes green while three plugins run outside their declared peer range -- eslint-plugin-react caps at ^9.7, jsx-a11y and import at ^9. A passing build is not evidence here. PR #78 proposed exactly this and was closed for this reason. The repository moved to eslint 9 flat config on 6 September 2026; 9.39.5 satisfies every plugin. Re-check when eslint-plugin-react ships a release naming ^10 in its peers, and remove this rule then. Minor and patch updates to eslint are unaffected; only the major is held. minimumReleaseAge restates the repository-wide 14 days rather than changing it, for the same reason as the tailwindcss hold above.",
       "matchManagers": ["npm"],
       "matchPackageNames": ["eslint"],
       "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "14 days",
       "enabled": false
     },
     {
-      "description": "Major updates wait in the Dependency Dashboard (#35) as checkboxes and hold no slot in prConcurrentLimit until someone ticks one; nobody merges a major on autopilot anyway. This keeps a slot for lock-file maintenance, which is only eligible inside its Monday schedule: in linked-data-explorer, updates eligible any day filled every free slot first and starved it (linked-data-explorer#97). vulnerabilityAlerts sets dependencyDashboardApproval false explicitly, so a security fix that happens to be a major never waits on a click. The two major-version holds above still apply.",
+      "description": "Major updates wait in the Dependency Dashboard (#35) as checkboxes and hold no slot in prConcurrentLimit until someone ticks one; nobody merges a major on autopilot anyway. It was meant to keep a slot for lock-file maintenance too, and cannot: the concurrent count includes every open Renovate pull request, security ones included. Lock-file maintenance is exempted from the limits by its own rule below instead. vulnerabilityAlerts sets dependencyDashboardApproval false explicitly, so a security fix that happens to be a major never waits on a click. The two major-version holds above still apply.",
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
     },
     {
-      "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names. It takes the first free slot when one frees; it cannot evict an open pull request, which is why majors need approval above.",
+      "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names -- and it is only eligible inside its Monday schedule, so it cannot wait for a slot to free. prConcurrentLimit 0 and prHourlyLimit 0 exempt THIS branch from both limits; every other update keeps prConcurrentLimit 5 and Renovate's default prHourlyLimit of 2. Renovate computes a branch's limit from the upgrades inside it and treats 0 as no limit (calcLimit, lib/workers/global/limits.ts), and this branch holds exactly one upgrade, so nothing else inherits the exemption. This rule used to rely on majors needing approval to keep a slot free, and that cannot work: the concurrent count includes every open Renovate pull request, security ones included. ronl-business-api's Monday run on 2026-09-14 was rate-limited that way with majors already behind approval, and fixed it like this (sgort/ronl-business-api#133); linked-data-explorer's dashboard showed its refresh rate-limited the next day, and it takes the same rule. This repository got its refresh that Monday (#140) with one pull request open; the exemption keeps it from depending on that. prPriority 10 still orders it first among branches eligible in the same run.",
       "matchUpdateTypes": ["lockFileMaintenance"],
-      "prPriority": 10
+      "prPriority": 10,
+      "prConcurrentLimit": 0,
+      "prHourlyLimit": 0
     }
   ],
   "lockFileMaintenance": {
