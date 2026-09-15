@@ -291,6 +291,24 @@ gh pr create --base acc --title "chore: bump release to v<version>" --body "..."
   here: the `gitlab` remote lives in `.git/config`, so an Actions runner has no
   such remote, no key for it and no route to it. Run it where the push happens.
 
+- **Then check for orphaned preview environments:**
+
+  ```bash
+  npm run check-previews
+  ```
+
+  `close-preview-environments.yml` deletes a pull request's preview when it
+  closes, but GitHub does not start that workflow for a pull request with a
+  merge conflict. A stale Renovate pull request that closes that way leaves its
+  preview running. In September 2026 ACC held four orphaned previews — three
+  from exactly that, one from the path filter the workflow replaced — and PROD
+  another four, too old to trace. They were found only by looking at the portal.
+
+  The check lists the environments Azure actually has against the pull requests
+  GitHub has open, and prints an `az staticwebapp environment delete` command
+  for each orphan. Like `check-mirror`, it never deletes anything itself. It
+  needs an Azure login, so run it where `az` is logged in.
+
 - **Confirm the branch is gone from the remote too.** `gh pr merge --delete-branch`
   removes both copies, and both repositories now have `delete_branch_on_merge`
   enabled so a merge through the GitHub UI does the same. But a release merged some
