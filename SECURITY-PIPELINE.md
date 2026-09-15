@@ -23,15 +23,15 @@ mechanisms above to actually run:
 
 ## Pinned
 
-| Dependency                     | Pin                                                 | Version           | Maintained by                                                           |
-| ------------------------------ | --------------------------------------------------- | ----------------- | ----------------------------------------------------------------------- |
-| `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                                |
-| `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                                |
-| `zizmorcore/zizmor-action`     | `70fb788f84895a7701f5643d103d587e460b5c99`          | v0.6.3            | Renovate                                                                |
-| `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below      |
-| zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | manual — Renovate's github-actions manager does not parse action inputs |
-| semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block        |
-| npm dependencies (test/lint)   | `package-lock.json`, `sha512` integrity per package | lockfileVersion 3 | Renovate                                                                |
+| Dependency                     | Pin                                                 | Version           | Maintained by                                                      |
+| ------------------------------ | --------------------------------------------------- | ----------------- | ------------------------------------------------------------------ |
+| `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                           |
+| `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                           |
+| `zizmorcore/zizmor-action`     | `70fb788f84895a7701f5643d103d587e460b5c99`          | v0.6.3            | Renovate                                                           |
+| `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below |
+| zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | Renovate, as Docker image `ghcr.io/zizmorcore/zizmor` — see below  |
+| semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block   |
+| npm dependencies (test/lint)   | `package-lock.json`, `sha512` integrity per package | lockfileVersion 3 | Renovate                                                           |
 
 The npm layer feeding `npm ci` — lint and the test suite — was already
 hash-pinned before this work: `npm ci` verifies every package against
@@ -47,6 +47,20 @@ isolation. `zizmor-action`'s `action.sh` looks the requested `version`
 up in a digest table and runs the audit as
 `ghcr.io/zizmorcore/zizmor:1.29.0@sha256:863026d54f91271b10b60b67ad8054cb37120167e162482597db102b3026a284`
 — a genuine container digest pin, not just a version string.
+
+Renovate maintains that `version` input, although this table said otherwise
+until September 2026. Its github-actions manager maps `zizmor-action` to the
+Docker image `ghcr.io/zizmorcore/zizmor` (`known-actions.ts` in Renovate), so a
+zizmor release arrives as its own pull request. Two things follow from that:
+
+- **Merge the `zizmor-action` bump first.** The action runs only versions its
+  own digest table lists: zizmor 1.30.1 is in `zizmor-action` v0.6.4's table
+  and not v0.6.3's. A zizmor bump merged ahead of the action fails the audit at
+  "Run zizmor" — loudly, but on a required check.
+- **Update this row and the container digest above by hand, on that pull
+  request's branch.** `check-supply-chain` reads only `uses:` lines, so nothing
+  fails when these two go stale. That is how this row came to claim "manual"
+  while Renovate had a 1.30.1 update queued.
 
 ## Keeping this register true
 
