@@ -74,8 +74,14 @@ jobs:
           # The action's `version` input defaults to "latest". Pinning it is
           # the whole point of this exercise — and it keeps CI's findings
           # identical to the local baseline this plan was measured against.
-          # Not Renovate-maintained: the github-actions manager does not
-          # parse action inputs, so this must be bumped by hand.
+          # Renovate-maintained after all: its github-actions manager maps this
+          # action's `version` input to the Docker image
+          # ghcr.io/zizmorcore/zizmor (lib/modules/manager/github-actions/
+          # known-actions.ts), so a zizmor release arrives as its own pull
+          # request. That bump only runs once the action pinned above lists the
+          # new version in its digest table -- 1.30.1 is in v0.6.4's, not
+          # v0.6.3's -- so merge the zizmor-action update first. See
+          # SECURITY-PIPELINE.md, "Pinned".
           version: '1.29.0'
           # advanced-security uploads SARIF, which needs security-events:
           # write. This job is contents: read only, so it must be false.

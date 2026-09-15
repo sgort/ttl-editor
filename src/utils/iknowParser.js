@@ -275,6 +275,13 @@ export const extractValue = (item, path) => {
       const [, arrayName, index] = arrayMatch;
       value = value[arrayName]?.[parseInt(index)];
     } else {
+      // Read-only: this walks a local variable down the path and never writes
+      // to the object, and the UNSAFE_PATH_SEGMENTS check above has already
+      // refused __proto__, constructor and prototype. Semgrep's
+      // prototype-pollution-loop matches the `x = x[key]` walk regardless, so
+      // the suppression is narrowed to that rule on this line. Revisit if this
+      // loop ever assigns into `value` rather than only reading from it.
+      // nosemgrep: javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop
       value = value[part];
     }
   }
@@ -528,6 +535,14 @@ const setNestedValue = (obj, path, value) => {
     if (!current[parts[i]]) {
       current[parts[i]] = {};
     }
+    // The UNSAFE_PATH_SEGMENTS check at the top of this function has refused
+    // every __proto__, constructor and prototype segment before this loop runs,
+    // and each segment is used as a key exactly as split -- nothing parses
+    // brackets or escapes that could produce one afterwards. Semgrep's
+    // prototype-pollution-loop matches the `x = x[key]` walk regardless, so the
+    // suppression is narrowed to that rule on this line. Revisit if the guard
+    // moves below this loop or segments are ever transformed before use.
+    // nosemgrep: javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop
     current = current[parts[i]];
   }
 
