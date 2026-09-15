@@ -33,14 +33,16 @@
       "enabled": false
     },
     {
-      "description": "Major updates wait in the Dependency Dashboard (#35) as checkboxes and hold no slot in prConcurrentLimit until someone ticks one; nobody merges a major on autopilot anyway. This keeps a slot for lock-file maintenance, which is only eligible inside its Monday schedule: in linked-data-explorer, updates eligible any day filled every free slot first and starved it (linked-data-explorer#97). vulnerabilityAlerts sets dependencyDashboardApproval false explicitly, so a security fix that happens to be a major never waits on a click. The two major-version holds above still apply.",
+      "description": "Major updates wait in the Dependency Dashboard (#35) as checkboxes and hold no slot in prConcurrentLimit until someone ticks one; nobody merges a major on autopilot anyway. It was meant to keep a slot for lock-file maintenance too, and cannot: the concurrent count includes every open Renovate pull request, security ones included. Lock-file maintenance is exempted from the limits by its own rule below instead. vulnerabilityAlerts sets dependencyDashboardApproval false explicitly, so a security fix that happens to be a major never waits on a click. The two major-version holds above still apply.",
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
     },
     {
-      "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names. It takes the first free slot when one frees; it cannot evict an open pull request, which is why majors need approval above.",
+      "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names -- and it is only eligible inside its Monday schedule, so it cannot wait for a slot to free. prConcurrentLimit 0 and prHourlyLimit 0 exempt THIS branch from both limits; every other update keeps prConcurrentLimit 5 and Renovate's default prHourlyLimit of 2. Renovate computes a branch's limit from the upgrades inside it and treats 0 as no limit (calcLimit, lib/workers/global/limits.ts), and this branch holds exactly one upgrade, so nothing else inherits the exemption. This rule used to rely on majors needing approval to keep a slot free, and that cannot work: the concurrent count includes every open Renovate pull request, security ones included. ronl-business-api's Monday run on 2026-09-14 was rate-limited that way with majors already behind approval, and fixed it like this (sgort/ronl-business-api#133); linked-data-explorer's dashboard showed its refresh rate-limited the next day, and it takes the same rule. This repository got its refresh that Monday (#140) with one pull request open; the exemption keeps it from depending on that. prPriority 10 still orders it first among branches eligible in the same run.",
       "matchUpdateTypes": ["lockFileMaintenance"],
-      "prPriority": 10
+      "prPriority": 10,
+      "prConcurrentLimit": 0,
+      "prHourlyLimit": 0
     }
   ],
   "lockFileMaintenance": {
