@@ -190,11 +190,13 @@ function App() {
   // Consume the DSO → DMN deep-link handoff from the Linked Data Explorer.
   // Prefills DMN/Service/Organization tabs from ?dsoImport=dmn&… and reuses the
   // existing message banner for status. Deploy + publish stay in the normal flow.
+  // It gets openTab, not setActiveTab: switching to the DMN tab has to count as
+  // a visit, or the lazy DMN tab is marked active but never rendered.
   useDsoImport({
     setDmnData,
     setService,
     setOrganization,
-    setActiveTab,
+    setActiveTab: openTab,
     notify: ({ type, message: text }) => {
       setMessage(text);
       setMessageType(type);

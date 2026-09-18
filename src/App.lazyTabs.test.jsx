@@ -89,4 +89,31 @@ describe('lazy-loaded tabs', () => {
     // the other's subtree.
     expect(screen.getByText(DMN_HEADING)).toBeInTheDocument();
   });
+
+  describe('opened by the DSO deep link', () => {
+    const originalFetch = global.fetch;
+
+    afterEach(() => {
+      global.fetch = originalFetch;
+      window.history.pushState({}, '', '/');
+    });
+
+    test('renders the DMN tab without a tab click', async () => {
+      window.history.pushState({}, '', '/?dsoImport=dmn&dmnId=42&activityName=Boom+kappen');
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        text: async () =>
+          '<?xml version="1.0"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"><decision id="d1"/></definitions>',
+      });
+
+      render(<App />);
+
+      // The import switches to the DMN tab itself. It has to count as a visit,
+      // or the tab is marked active while its lazy content is never rendered —
+      // an empty panel until the user clicks away and back.
+      expect(
+        await screen.findByText(DMN_HEADING, undefined, LAZY_CHUNK_TIMEOUT)
+      ).toBeInTheDocument();
+    });
+  });
 });
