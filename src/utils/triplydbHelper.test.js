@@ -168,6 +168,27 @@ describe('updateTriplyDBService', () => {
     await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow('upstream unreachable');
   });
 
+  test('throws the detail of an RFC 9457 problem response', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 400,
+      statusText: 'Bad Request',
+      headers: { get: () => null },
+      json: async () => ({
+        type: 'about:blank',
+        status: 400,
+        title: 'Bad Request',
+        detail: 'TriplyDB host not allowed: evil.example',
+        instance: '/v1/triplydb/update-service',
+        code: 'INVALID_INPUT',
+      }),
+    });
+
+    await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow(
+      'TriplyDB host not allowed: evil.example'
+    );
+  });
+
   test('translates a fetch TypeError into a friendly network-error message', async () => {
     global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
     await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow(

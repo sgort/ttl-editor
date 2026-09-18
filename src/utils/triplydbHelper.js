@@ -1,5 +1,6 @@
 // triplydbHelper.js - TriplyDB API integration for publishing TTL files
 import { sanitizeServiceIdentifier } from './dmnHelpers';
+import { getProblemDetail } from './problem';
 
 // Get backend URL from environment
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
@@ -214,7 +215,7 @@ export const updateTriplyDBService = async (config, serviceName = null, graphNam
     console.log('Backend result:', result);
 
     if (!response.ok || !result.success) {
-      throw new Error(result.error || `Backend error: ${response.status}`);
+      throw new Error(getProblemDetail(result, `Backend error: ${response.status}`));
     }
 
     console.log('✅ Service updated successfully via backend!');

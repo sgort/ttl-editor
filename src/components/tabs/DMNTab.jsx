@@ -29,6 +29,7 @@ import {
   generateConceptNotation,
   generateConceptUri,
 } from '../../utils/dmnHelpers';
+import { getProblemDetail } from '../../utils/problem';
 
 const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -592,7 +593,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       } else {
         setValidationResult({
           valid: false,
-          parseError: data.error?.message ?? 'Backend validation failed',
+          parseError: getProblemDetail(data, 'Backend validation failed'),
           layers: {
             base: { label: 'Base DMN', issues: [] },
             business: { label: 'Business Rules', issues: [] },
@@ -715,7 +716,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        throw new Error(data.error?.message || `Deployment failed: ${response.statusText}`);
+        throw new Error(getProblemDetail(data, `Deployment failed: ${response.statusText}`));
       }
 
       setDeploymentStatus({ success: true, data: data.data });
