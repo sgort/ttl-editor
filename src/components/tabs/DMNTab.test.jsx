@@ -192,6 +192,27 @@ describe('DMNTab', () => {
       expect(await screen.findByText(/Malformed DMN/)).toBeInTheDocument();
     });
 
+    test('surfaces the detail of an RFC 9457 problem response', async () => {
+      mockBackend({
+        validate: json(
+          {
+            type: 'about:blank',
+            status: 400,
+            title: 'Bad Request',
+            detail: 'DMN is not well-formed XML',
+            instance: '/v1/dmns/validate',
+            code: 'INVALID_INPUT',
+          },
+          false
+        ),
+      });
+      renderTab();
+
+      await uploadDmn();
+
+      expect(await screen.findByText(/DMN is not well-formed XML/)).toBeInTheDocument();
+    });
+
     test('an unreachable backend is advisory, not blocking', async () => {
       // This is the path a developer hits with no local backend running, and the
       // one the ACC preview showed. It must read as "skipped", not "failed" —
@@ -253,6 +274,31 @@ describe('DMNTab', () => {
 
       expect(await screen.findByText(/Engine rejected the model/)).toBeInTheDocument();
       // A failed deployment must not mark the model as deployed.
+      expect(props.setDmnData).not.toHaveBeenCalledWith(
+        expect.objectContaining({ deployed: true })
+      );
+    });
+
+    test('reports the detail of an RFC 9457 problem response when deployment fails', async () => {
+      mockBackend({
+        deploy: json(
+          {
+            type: 'about:blank',
+            status: 502,
+            title: 'Bad Gateway',
+            detail: 'Operaton refused the deployment',
+            instance: '/v1/dmns/deploy',
+            code: 'UPSTREAM_ERROR',
+          },
+          false
+        ),
+      });
+      const { props } = renderTab();
+
+      await uploadDmn();
+      fireEvent.click(screen.getByRole('button', { name: /Deploy to Operaton/ }));
+
+      expect(await screen.findByText(/Operaton refused the deployment/)).toBeInTheDocument();
       expect(props.setDmnData).not.toHaveBeenCalledWith(
         expect.objectContaining({ deployed: true })
       );

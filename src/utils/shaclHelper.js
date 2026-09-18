@@ -5,6 +5,8 @@
 // backend failure yields a neutral { unavailable: true } shape so the publish
 // flow is never blocked (validation is advisory).
 
+import { getProblemDetail } from './problem';
+
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 const emptyLayers = () => ({
@@ -31,7 +33,7 @@ export const validateTtl = async (content) => {
     }
     return {
       valid: false,
-      parseError: data.error?.message ?? 'Backend validation failed',
+      parseError: getProblemDetail(data, 'Backend validation failed'),
       layers: emptyLayers(),
       summary: { errors: 1, warnings: 0, infos: 0 },
     };

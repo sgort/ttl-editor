@@ -52,6 +52,26 @@ describe('validateTtl', () => {
     expect(result.unavailable).toBeUndefined();
   });
 
+  test('reads the reason from an RFC 9457 problem response', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      json: async () => ({
+        type: 'about:blank',
+        status: 400,
+        title: 'Bad Request',
+        detail: 'Turtle syntax error at line 3',
+        instance: '/v1/shacl/validate',
+        code: 'INVALID_INPUT',
+      }),
+    });
+
+    const result = await validateTtl('not turtle');
+
+    expect(result.valid).toBe(false);
+    expect(result.parseError).toBe('Turtle syntax error at line 3');
+    expect(result.unavailable).toBeUndefined();
+  });
+
   test('never throws — a network failure yields a distinct unavailable state instead', async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error('fetch failed'));
 
