@@ -57,9 +57,11 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [isValidating, setIsValidating] = useState(false);
   const [validationExpanded, setValidationExpanded] = useState(true);
 
-  // Default Operaton configuration. Deploy no longer uses baseUrl (routed
-  // through the LDE backend's /v1/dmns/deploy instead — see handleDeployDMN)
-  // but evaluate still calls Operaton directly.
+  // Default Operaton configuration. Neither deploy nor evaluate uses baseUrl to
+  // reach Operaton: both go through the LDE backend (handleDeployDMN,
+  // evaluateViaBackend), which targets its own configured engine. baseUrl only
+  // builds the evaluate URL recorded as dmnData.apiEndpoint and published as
+  // cprmv:implementedBy.
   const [apiConfig, setApiConfig] = useState({
     baseUrl: import.meta.env.VITE_OPERATON_URL || 'https://operaton.open-regels.nl',
     decisionKey: '',
