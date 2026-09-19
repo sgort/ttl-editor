@@ -42,7 +42,7 @@ jobs:
     if: github.event.pull_request.base.ref == 'acc'
     # Checks out nothing and receives only the Azure token.
     permissions: {}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Close ACC staging environment
     steps:
       - name: Close Pull Request
@@ -54,7 +54,7 @@ jobs:
   close_prod_preview:
     if: github.event.pull_request.base.ref == 'main'
     permissions: {}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Close PROD staging environment
     steps:
       - name: Close Pull Request

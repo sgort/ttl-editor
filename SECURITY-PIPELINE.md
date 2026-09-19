@@ -210,6 +210,26 @@ out of scope for a branch pinning pipeline _code_; picking and then
 maintaining an exact Node version is a separate decision. **Accepted
 as a known gap,** reviewed when this document is next revised.
 
+### The runner image — `ubuntu-24.04` pins a release, not an image
+
+Every job ran on `ubuntu-latest` until
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+a label GitHub moves to a new Ubuntu release on its own schedule. All six jobs
+now name `ubuntu-24.04`, so a change of OS release arrives as a diff in this
+repository rather than silently under every job at once. ICTU recommendation 2.
+
+That pins the **release**, not the image. GitHub rebuilds `ubuntu-24.04` about
+weekly, and a hosted runner cannot be pinned to a digest. Here that matters less
+than it looks for the shipped build, and for a reason that is itself a gap: Oryx
+builds the deployed bundle inside `staticappsclient:stable` (above), not on the
+runner, so the runner image governs tests and audits only. Renovate's
+`github-actions` manager documents reading a versioned `runs-on` label as a
+`github-runner` dependency; confirm it is listed on the Dependency Dashboard
+before relying on that.
+
+**Reachable from our side:** the release, yes, and done; the image, no.
+**Accepted risk** for the image, reviewed when this document is next revised.
+
 ### `iou-architectuur` — known gap, deliberately deferred
 
 Out of scope by decision on 2026-08-26, recorded so the choice stays
