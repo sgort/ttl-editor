@@ -34,7 +34,7 @@ const DSO_IMPORT_PARAMS = [
  * @param {Function} handlers.setDmnData      - dmnData setter (useEditorState)
  * @param {Function} handlers.setService      - service setter (useEditorState)
  * @param {Function} handlers.setOrganization - organization setter (useEditorState)
- * @param {Function} handlers.setActiveTab    - active-tab setter (App)
+ * @param {Function} handlers.setActiveTab    - opens a tab (App's openTab, which also marks it visited)
  * @param {Function} handlers.notify          - ({ type, message }) => void banner reporter
  */
 export function useDsoImport({ setDmnData, setService, setOrganization, setActiveTab, notify }) {

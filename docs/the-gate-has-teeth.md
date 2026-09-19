@@ -112,8 +112,10 @@ permissions:
 ```
 
 with `build_and_deploy_job` adding only `pull-requests: write` (the Static Web Apps
-action posts PR comments), and `close_pull_request_job` taking `permissions: {}` —
-it checks out nothing and receives only the Azure token.
+action posts PR comments), and the close jobs taking `permissions: {}` — they check
+out nothing and receive only the Azure token. Those jobs have since moved out of the
+deploy workflows into `close-preview-environments.yml`, which has no path filter, so
+a documentation-only pull request that closes still gets its preview deleted.
 
 `actions/checkout` sets `persist-credentials: false`. Before this, a live
 `GITHUB_TOKEN` was written into `.git/config` and mounted into a closed-source

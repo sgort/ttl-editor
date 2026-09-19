@@ -1,6 +1,6 @@
 {
   "name": "ttl-editor",
-  "version": "2026.09.5",
+  "version": "2026.09.6",
   "private": true,
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -41,7 +41,8 @@
     "format": "prettier --write .",
     "check-format": "prettier --check .",
     "check-supply-chain": "node scripts/check-supply-chain.mjs",
-    "check-mirror": "bash scripts/check-mirror.sh"
+    "check-mirror": "bash scripts/check-mirror.sh",
+    "check-previews": "bash scripts/check-previews.sh"
   },
   "browserslist": {
     "production": [

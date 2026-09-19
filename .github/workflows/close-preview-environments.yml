@@ -1,0 +1,64 @@
+name: Close preview environments
+
+# Deletes the preview environment a deploy workflow built for a pull request,
+# when that pull request closes -- merged or not.
+#
+# This used to be a job inside each deploy workflow, and that is how previews
+# were left behind. Those workflows carry paths-ignore (docs/**, .claude/**,
+# **/*.md), and a path filter applies to the `closed` event as much as to
+# `opened`: a pull request whose files all match it never starts the workflow
+# when it closes. #66 did exactly that. Its preview was built before #65 added
+# the filter, #65 merged 27 seconds before #66 did, and nothing deleted
+# environment 66 on ACC.
+#
+# So this workflow has no path filter. Closing an environment that was never
+# created succeeds and does nothing -- #71's build failed before it deployed
+# anything, and its close job still passed -- so running on every close costs
+# one short job.
+#
+# What no workflow can fix: GitHub documents that pull_request workflows do not
+# run while a pull request has a merge conflict, and that covers `closed`. The
+# three Renovate pull requests that also left previews on ACC (#43, #45, #123)
+# closed with GitHub's mergeability recorded as unknown, and no workflow of any
+# kind ran for them, while two closed as mergeable on the same day (#62, #71)
+# got their close run. An event that starts no workflow cannot be handled in
+# one, so those are caught afterwards by scripts/check-previews.sh, which
+# bump-release runs at every release.
+#
+# pull_request_target would start even then. It is not used: zizmor flags it
+# as a dangerous trigger, and the Static Web Apps action's support for it is
+# unverified -- neither is worth taking on for a cleanup a script can do.
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - acc
+      - main
+
+permissions: {}
+
+jobs:
+  close_acc_preview:
+    if: github.event.pull_request.base.ref == 'acc'
+    # Checks out nothing and receives only the Azure token.
+    permissions: {}
+    runs-on: ubuntu-latest
+    name: Close ACC staging environment
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ORANGE_BEACH_0574C2A03 }}
+          action: 'close'
+
+  close_prod_preview:
+    if: github.event.pull_request.base.ref == 'main'
+    permissions: {}
+    runs-on: ubuntu-latest
+    name: Close PROD staging environment
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@4d27395796ac319302594769cfe812bd207490b1 # v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WHITE_SKY_02B674303 }}
+          action: 'close'
