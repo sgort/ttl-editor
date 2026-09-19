@@ -9,14 +9,15 @@
  *
  * Both values are injected at build time from the deploy workflows. Vite only
  * exposes variables prefixed VITE_ to the client bundle, so they are named
- * accordingly and set in the `env:` block of the Build And Deploy step — the
- * same mechanism VITE_BACKEND_URL uses.
+ * accordingly and set in the `env:` block of the Build step — the same
+ * mechanism VITE_BACKEND_URL uses.
  *
- * Deliberately NOT derived by shelling out to git. The Static Web Apps action
- * does not run the build on the runner; it hands the directory to Oryx, which
- * builds inside its own container. Whether git and .git are present there is not
- * something a provenance marker should depend on, and a silent failure would
- * produce a build id that lies — worse than none at all.
+ * Deliberately NOT derived by shelling out to git. That was a necessity while
+ * the Static Web Apps action handed the build to Oryx in its own container,
+ * where .git was not guaranteed; the runner builds since
+ * sgort/linked-data-explorer#119, and the rule stays so the build id has exactly
+ * one source. A silent failure would produce a build id that lies — worse than
+ * none at all.
  *
  * Read inside the function rather than captured at module scope, so tests can
  * stub the environment per case.

@@ -235,18 +235,33 @@ are undocumented invites false confidence.
 FROM mcr.microsoft.com/appsvc/staticappsclient:stable
 ```
 
-`skip_app_build` is not set, so Oryx runs **inside** that image and builds the
-production bundle there. The floating image is therefore the **build toolchain that
-produces the deployed artifact**, not merely an upload step. Pinning the action makes
-the wrapper immutable and leaves the payload floating. Unreachable from our side.
+When this was written, `skip_app_build` was not set, so Oryx ran **inside** that
+image and built the production bundle there. The floating image was therefore the
+**build toolchain that produced the deployed artifact**, not merely an upload step.
+Pinning the action makes the wrapper immutable and leaves the payload floating.
+Unreachable from our side.
 
-**`npm ci` integrity covers what is tested, not what is shipped.**
+_Narrowed since, in [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119):_
+both deploy workflows now build on the runner and pass `skip_app_build: true`, so
+the image only uploads `dist/`. It still floats, and still receives the deploy
+token and the artifact. It no longer decides what is built.
+
+**`npm ci` integrity covered what was tested, not what was shipped.**
 `package-lock.json` (lockfileVersion 3) carries a `sha512` per package, and `npm ci`
-verifies it — but that step feeds lint and the unit tests. Oryx performs its own
-install inside the container to produce the deployed bytes.
+verifies it — but that step fed lint and the unit tests. Oryx performed its own
+`npm install` inside the container to produce the deployed bytes.
 
-**`node-version: '20'` floats** across all 20.x patches and is downloaded at run
-time. There is no `.nvmrc` pinning CI.
+_Closed in [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119):_
+the bundle is now built on the runner from the same `npm ci` install the tests
+run against.
+
+**`node-version: '20'` floated** across all 20.x patches and was downloaded at run
+time, with no `.nvmrc` pinning CI. It later became a bare `'24'`, which floated the
+same way.
+
+_Closed in [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119):_
+both deploy workflows read an exact version from `.nvmrc`, maintained by Renovate,
+and that version now builds what ships.
 
 **zizmor validates pin _format_, never pin _truth_.** A wrong or hostile digest with
 a plausible `# v4.4.0` comment passes zizmor, Prettier and review alike. Nothing
