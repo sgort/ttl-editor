@@ -247,6 +247,26 @@ before relying on that.
 **Reachable from our side:** the release, yes, and done; the image, no.
 **Accepted risk** for the image, reviewed when this document is next revised.
 
+### The package-manager cooldown — `.npmrc`, and where it does not reach
+
+Renovate's `minimumReleaseAge` covers only the updates Renovate proposes.
+Lock-file maintenance hands the refresh to npm, which is where the transitive
+tree moves, and Renovate documents that its own cooldown cannot apply there.
+Since [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+the root `.npmrc` sets `min-release-age=14`, so npm itself will not resolve a
+version younger than 14 days. For its own update pull requests Renovate uses
+whichever cutoff is stricter, and if npm answers `ETARGET` on a security fix it
+retries without the cutoff. ICTU recommendation 6.
+
+Two places it does not reach, both measured on 19 September 2026:
+
+- **`npm ci`** ignores it on purpose (npm/cli#9281). CI only runs `npm ci`, so
+  it cannot fail on it, and is not protected by it.
+- **npm older than 11.10** ignores it without a warning. Node 24.20.0, which
+  `.nvmrc` names, bundles npm 11.19, so this repository's own toolchain is
+  covered; `scripts/check-deps.sh` warns at every dev-server start and push when
+  a machine runs something older.
+
 ### `iou-architectuur` — known gap, deliberately deferred
 
 Out of scope by decision on 2026-08-26, recorded so the choice stays
