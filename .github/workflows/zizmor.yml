@@ -65,7 +65,10 @@ jobs:
         # would then run on whatever Node the runner defaulted to.
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '24'
+          # Exact, like .nvmrc, and deliberately its own literal: this step
+          # needs Node 24 whatever the application runs on. Same version as
+          # .nvmrc today; Renovate's node manager keeps both current.
+          node-version: '24.20.0'
           # For the `npm ci` the formatting check needs, further down.
           cache: 'npm'
       - name: Run zizmor

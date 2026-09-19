@@ -33,11 +33,13 @@ mechanisms above to actually run:
 | semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block   |
 | npm dependencies (test/lint)   | `package-lock.json`, `sha512` integrity per package | lockfileVersion 3 | Renovate                                                           |
 
-The npm layer feeding `npm ci` — lint and the test suite — was already
-hash-pinned before this work: `npm ci` verifies every package against
-its lockfile integrity hash. This governs what gets **tested**, not
-what gets **shipped**: the production bundle is built separately, by
-Oryx, inside the deploy container — see the container exception below.
+The npm layer feeding `npm ci` was already hash-pinned before this
+work: `npm ci` verifies every package against its lockfile integrity
+hash. Until [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119)
+that governed what got **tested**, not what got **shipped**, because Oryx
+built the production bundle separately inside the deploy container. The
+runner now builds the bundle from that same install, so the lockfile
+governs both — see the container exception below.
 Lockfile covers integrity; the Renovate cooldown covers intent — a
 lockfile cannot tell you that a legitimately published version is
 malicious.
@@ -150,7 +152,7 @@ while the checks list, the job and the step all read "success".
 
 ## Exceptions
 
-### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned, and it builds what ships
+### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned; no longer builds what ships
 
 `Azure/static-web-apps-deploy` is a three-line wrapper. Its
 `action.yml` declares `runs: using: docker, image: "Dockerfile"`, and
@@ -162,14 +164,21 @@ COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 ```
 
-Neither deploy workflow sets `skip_app_build`, and there is no
-`staticwebapp.config.json` anywhere in the repo. Under those
-conditions, `StaticSitesClient` runs Oryx **inside** this container,
-and Oryx performs its own install and build of the production bundle
-there. The floating image is not merely an upload step — it is the
-build toolchain that produces the artifact that actually gets
-deployed, and it does its own dependency resolution independent of
+Until [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119)
+neither deploy workflow set `skip_app_build`, so `StaticSitesClient` ran
+Oryx **inside** this container, and Oryx performed its own `npm install`
+and build of the production bundle there, on Node 22.22.0, a version this
+repository never chose, while downloading PHP 8.0.30 and Composer 2.6.2
+it does not use. The floating image was the build toolchain for the
+deployed artifact, resolving dependencies independently of
 `package-lock.json`.
+
+Both workflows now build on the runner from `npm ci` and pass
+`skip_app_build: true`, so this container only uploads `dist/`. It
+still runs unpinned on every deploy and still receives the deploy token
+and the built artifact, so a compromised image could alter what is
+published or exfiltrate the token. That is serious, but it no longer
+decides what is in the build.
 
 **Reachable from our side:** no. **Would require:** Microsoft
 publishing digest-pinned image references, or IOU forking the action.
@@ -197,18 +206,24 @@ automated digest update would silently revert the deploy step to
 3.5-year-old code. The action has only ever published `v1`, so nothing
 is lost by maintaining this pin by hand instead.
 
-### `node-version: '24'` in the deploy workflows — floats across patch releases
+### ~~`node-version: '24'` in the deploy workflows — floats across patch releases~~ — closed
 
-Both Azure Static Web Apps workflows pass `actions/setup-node`
-`node-version: '24'`, not an exact patch, and there is no `.nvmrc` and
-no `engines` field anywhere pinning a runtime version. `setup-node`
-therefore downloads whichever 24.x patch is current at run time.
+This recorded a bare `'24'` in both deploy workflows, with no `.nvmrc`,
+so `setup-node` took whichever 24.x patch was current. It was also only
+half the story: that pin governed tests alone, since Oryx built what
+shipped on 22.22.0.
 
-**Reachable from our side:** yes, in principle — an exact patch or an
-`.nvmrc` `setup-node` can read would close this. **Not done here:**
-out of scope for a branch pinning pipeline _code_; picking and then
-maintaining an exact Node version is a separate decision. **Accepted
-as a known gap,** reviewed when this document is next revised.
+Closed with the runner build in
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119):
+both deploy workflows read an exact `24.20.0` from `.nvmrc`, which
+Renovate's `nvm` manager maintains, and that version now builds the
+bundle. 24.20.0 is what `'24'` resolved to on the runner at the time;
+24.21.0 was still inside the 14-day cooldown.
+
+`zizmor.yml` pins the same version as its own literal, on purpose: its
+`renovate-config-validator` step needs Node 24 whatever the
+application runs on, as in the other two repositories. There is still
+no `engines` field.
 
 ### The runner image — `ubuntu-24.04` pins a release, not an image
 
@@ -220,9 +235,11 @@ repository rather than silently under every job at once. ICTU recommendation 2.
 
 That pins the **release**, not the image. GitHub rebuilds `ubuntu-24.04` about
 weekly, and a hosted runner cannot be pinned to a digest. Here that matters less
-than it looks for the shipped build, and for a reason that is itself a gap: Oryx
-builds the deployed bundle inside `staticappsclient:stable` (above), not on the
-runner, so the runner image governs tests and audits only. Renovate's
+than it looks for the shipped build: what the build depends on is pinned
+separately — Node through `.nvmrc`, actions by digest, npm packages by the
+lockfile — so the weekly rebuild changes the environment around the build, not
+its inputs. Since the runner build landed, that environment builds what ships
+too. Renovate's
 `github-actions` manager documents reading a versioned `runs-on` label as a
 `github-runner` dependency; confirm it is listed on the Dependency Dashboard
 before relying on that.
