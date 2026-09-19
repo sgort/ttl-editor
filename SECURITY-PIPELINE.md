@@ -90,12 +90,24 @@ alternative is that the only account of what gates `acc` lives in a settings
 page nobody reads until something is already stuck.
 
 `acc supply-chain gate` (ruleset `21728745`, enforcement `active`, scoped to
-`refs/heads/acc`) requires two status checks:
+`refs/heads/acc`) requires three status checks:
 
-| Check   | Workflow      | Covers                                                           |
-| ------- | ------------- | ---------------------------------------------------------------- |
-| `audit` | `zizmor.yml`  | workflow static analysis, renovate config, formatting, pin truth |
-| `scan`  | `semgrep.yml` | Semgrep Code and Supply Chain — the npm dependency tree          |
+| Check                  | Workflow                                           | Covers                                                           |
+| ---------------------- | -------------------------------------------------- | ---------------------------------------------------------------- |
+| `audit`                | `zizmor.yml`                                       | workflow static analysis, renovate config, formatting, pin truth |
+| `scan`                 | `semgrep.yml`                                      | Semgrep Code and Supply Chain — the npm dependency tree          |
+| `Build and deploy ACC` | `azure-static-web-apps-orange-beach-0574c2a03.yml` | lint, the test suite and the production build                    |
+
+`Build and deploy ACC` was added for
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+so a red build or test run blocks a merge — a dependency pull request above
+all. Its workflow used to filter its `pull_request` trigger with `paths-ignore`,
+and a workflow its trigger filters out reports no check, so a documentation-only
+pull request would have waited forever. The filter moved into a `changes` job
+(#162): the build is skipped on a documentation-only pull request, a skipped job
+counts as passed, and if `changes` fails the build runs anyway. Required checks
+match by job name, so renaming this job means updating the ruleset in the same
+change. `main` still requires nothing, as decided in #131.
 
 `scan` was added on 11 September 2026, once the finding backlog was clean —
 see issues #112 and #113 for the triage and the reasoning. It covers what
