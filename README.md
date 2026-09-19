@@ -131,6 +131,10 @@ in npm 10's resolver, hit while walking `vitest`'s optional peer chain (`jsdom` 
 `canvas`); npm 11 resolves the same tree cleanly. Verified with npm 10.9.4 and
 11.19.1 on 2026-09-11.
 
+npm 11.10 or newer also applies the 14-day cooldown in `.npmrc` (`min-release-age`)
+to `npm install` and `npm update`. Older npm ignores it without a warning, and
+`npm run deps:check` says so.
+
 ```bash
 npm ci          # install exactly what package-lock.json records
 npm start       # development server at http://localhost:3000
