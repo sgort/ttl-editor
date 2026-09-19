@@ -2,6 +2,54 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.6",
+      "status": "Released",
+      "date": "19 sep 2026",
+      "commits": [
+        {
+          "sha": "1d01186",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The DMN tab renders when a DSO import opens it",
+          "details": [
+            "The DMN tab is lazy: it renders only once its tab has been visited, and a visit was recorded only by the tab button's own handler. The DSO import hook was handed the raw setActiveTab, so an import from the Linked Data Explorer made DMN the active tab without marking it visited. The tab was highlighted over an empty panel until the user clicked away and back.",
+            "The hook now receives openTab, the same handler the tab buttons use, and the lazy-tab tests cover the deep link."
+          ]
+        },
+        {
+          "sha": "2a82fba",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The editor shows the Linked Data Explorer backend's error messages again",
+          "details": [
+            "The Linked Data Explorer backend now answers every error as an RFC 9457 problem response, with the reason in `detail` (linked-data-explorer #162). The editor still read the older `error.message` envelope, so DMN validation, DMN deployment, SHACL validation and the TriplyDB service update showed generic fallback text instead of the server's reason.",
+            "A shared getProblemDetail helper now reads `detail` first, and still reads the older `error.message` and bare-string `error` shapes, which PROD's backend answers until its next promotion. Each call site keeps its previous fallback text for a body that carries no reason."
+          ]
+        },
+        {
+          "sha": "e185801",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Each release checks for orphaned preview environments",
+          "details": [
+            "A preview environment cannot be deleted when GitHub starts no workflow for its pull request's close, which is what happens to a pull request with a merge conflict. Three of the four previews orphaned on ACC in September 2026 were left that way, and none of the eight on ACC and PROD was noticed until someone opened the portal.",
+            "scripts/check-previews.sh (npm run check-previews) lists the environments Azure actually has for each app, compares them with the pull requests GitHub has open, and prints the exact `az staticwebapp environment delete` command for each orphan. Like check-mirror it never deletes anything itself, runs on a workstation where an Azure login exists, and hardcodes nothing: the apps are found from the deploy workflows' own file names. Anything it could not check makes it exit 1 with the reason. Environments not named after a pull request are reported and left alone. bump-release now runs it after check-mirror."
+          ]
+        },
+        {
+          "sha": "3a50384",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Preview environments close from a workflow with no path filter",
+          "details": [
+            "Four preview environments were still running on ACC for pull requests that had closed days or weeks earlier (#43, #45, #66, #123), and four more on PROD. Each served a public URL with old code and held one of the ten slots a Standard plan allows. For #66 the cause was the deploy workflows' path filter, which applies to the close event too: #66 changed only a file under docs/, so the workflow holding its close job never started. For the other three, GitHub started no workflow at all, which it documents for pull requests with a merge conflict.",
+            "Both close jobs now live in close-preview-environments.yml, which triggers on every pull request close for acc and main with no path filter. That fixes the first cause for good; the release check in the commit above catches the second. Running on every close is safe, because closing an environment that was never created succeeds and does nothing. Job names, the pinned action and its digest, the secrets and `permissions: {}` are unchanged, and zizmor reports no findings for the three workflows."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.5",
       "status": "Released",
       "date": "15 sep 2026",
