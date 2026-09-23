@@ -72,7 +72,7 @@ jobs:
           # For the `npm ci` the formatting check needs, further down.
           cache: 'npm'
       - name: Run zizmor
-        uses: zizmorcore/zizmor-action@70fb788f84895a7701f5643d103d587e460b5c99 # v0.6.3
+        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
         with:
           # The action's `version` input defaults to "latest". Pinning it is
           # the whole point of this exercise — and it keeps CI's findings
