@@ -162,6 +162,37 @@ the _step's_ reported conclusion as well as the job's, and the honest result is
 not exposed by the REST API, so a finding becomes visible only in the step's log
 while the checks list, the job and the step all read "success".
 
+## Dependency audit, daily
+
+Every gate above runs on a commit. A new advisory lands against code that has
+not changed, so a pipeline that only reacts to commits never sees it — and
+Dependabot alerts watch the default branch, `acc`, not the `main` that
+production deploys from. ICTU recommendation 10, tracked in [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119).
+
+`.github/workflows/dependency-audit.yml` runs at 05:17 UTC daily, and on
+demand. It audits **both `acc` and `main`**, reading each branch's lockfile
+with `npm audit --package-lock-only`, so it installs nothing.
+
+|                           |                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Job / check context       | `dependency-audit` — deliberately not `audit`, which is zizmor's required check in every one of these repositories |
+| Fails on                  | a **high or critical** advisory in **production** dependencies                                                     |
+| Reports but does not fail | moderate and low advisories, and everything dev-only                                                               |
+| Where it reports          | the run's step summary, and one tracking issue it opens, updates and closes                                        |
+| Node                      | an exact literal, not `.nvmrc` — it audits a branch that need not carry one                                        |
+
+**It counts advisories, not packages.** `npm audit` reports one entry per
+affected package, so one advisory on a widely-used package looks like dozens of
+findings: on 24 September 2026 linked-data-explorer's 28 "moderate" entries were
+three advisories, 24 of them the same `@tiptap/core` reached through its
+extensions. `scripts/audit-tree.mjs` groups by advisory before reporting.
+A number that overstates the problem gets ignored, which is the failure mode a
+daily audit exists to avoid.
+
+**A run that cannot audit exits 2, and is treated like a finding.** A tool that
+fails to run must not report a clean tree — the same rule `--no-suppress-errors`
+enforces for Semgrep.
+
 ## Exceptions
 
 ### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned; no longer builds what ships
