@@ -26,7 +26,11 @@ function audit(omitDev) {
   try {
     // npm exits non-zero when it finds anything, so the output is on stdout
     // either way; a real failure is a parse failure, handled below.
-    out = execFileSync('npm', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, shell: process.platform === 'win32' });
+    out = execFileSync('npm', args, {
+      encoding: 'utf8',
+      maxBuffer: 64 * 1024 * 1024,
+      shell: process.platform === 'win32',
+    });
   } catch (e) {
     out = e.stdout ?? '';
   }
@@ -44,7 +48,12 @@ function byAdvisory(report) {
     for (const via of entry.via ?? []) {
       if (typeof via === 'string') continue; // an indirect edge, not an advisory
       const key = via.url ?? via.title;
-      const row = advisories.get(key) ?? { title: via.title, severity: via.severity, url: via.url, packages: new Set() };
+      const row = advisories.get(key) ?? {
+        title: via.title,
+        severity: via.severity,
+        url: via.url,
+        packages: new Set(),
+      };
       row.packages.add(via.name ?? entry.name);
       advisories.set(key, row);
     }
@@ -68,7 +77,10 @@ const order = { critical: 0, high: 1, moderate: 2, low: 3, info: 4 };
 const fmt = (rows) =>
   rows
     .sort((a, b) => (order[a.severity] ?? 9) - (order[b.severity] ?? 9))
-    .map((a) => `- **${a.severity}** ${a.title}${a.url ? ` (${a.url})` : ''}\n  packages: ${[...a.packages].sort().join(', ')}`)
+    .map(
+      (a) =>
+        `- **${a.severity}** ${a.title}${a.url ? ` (${a.url})` : ''}\n  packages: ${[...a.packages].sort().join(', ')}`
+    )
     .join('\n');
 
 const lines = [];
@@ -103,7 +115,9 @@ if (process.env.AUDIT_REPORT_FILE) {
 }
 
 if (blocking.length) {
-  console.error(`::error::${label}: ${blocking.length} high or critical advisory in production dependencies`);
+  console.error(
+    `::error::${label}: ${blocking.length} high or critical advisory in production dependencies`
+  );
   process.exit(1);
 }
 process.exit(0);
