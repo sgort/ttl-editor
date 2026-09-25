@@ -38,6 +38,31 @@
       "dependencyDashboardApproval": true
     },
     {
+      "description": [
+        "ICTU recommendation 7: do not take a new major's first release. Renovate",
+        "never proposes X.0.0 for an npm package, so the earliest a major can be",
+        "offered is X.0.1 — the first patch, by which point the release has been",
+        "used by others. Majors still wait for Dependency Dashboard approval as",
+        "well (the rule above): this decides WHICH version may be offered, that",
+        "one decides WHETHER it is raised at all, and the assessment R7 asks for is",
+        "what the person ticking the box is doing.",
+        "allowedVersions applies to every update type of a matched package, not",
+        "only majors, which is why the pattern is written to match X.0.0 alone: no",
+        "minor or patch release can look like that. Scoped to npm deliberately —",
+        "the same pattern against Docker tags (18-alpine) or the github-runner",
+        "datasource (ubuntu 26.04) would mean something else entirely.",
+        "The cost, stated plainly: a package that publishes X.0.0 and never a patch",
+        "is never offered that major. Add a per-package exception with the reason,",
+        "the way a deferral is recorded.",
+        "minimumReleaseAge repeats the top-level 14 days and changes nothing; it is",
+        "here because Semgrep's renovate-missing-minimum-release-age flags a rule",
+        "that does not set it locally."
+      ],
+      "matchManagers": ["npm"],
+      "allowedVersions": "!/^\\d+\\.0\\.0$/",
+      "minimumReleaseAge": "14 days"
+    },
+    {
       "description": "Lock-file maintenance is the only thing that moves the transitive tree -- Renovate otherwise proposes only packages a manifest names -- and it is only eligible inside its Monday schedule, so it cannot wait for a slot to free. prConcurrentLimit 0 and prHourlyLimit 0 exempt THIS branch from both limits; every other update keeps prConcurrentLimit 5 and Renovate's default prHourlyLimit of 2. Renovate computes a branch's limit from the upgrades inside it and treats 0 as no limit (calcLimit, lib/workers/global/limits.ts), and this branch holds exactly one upgrade, so nothing else inherits the exemption. This rule used to rely on majors needing approval to keep a slot free, and that cannot work: the concurrent count includes every open Renovate pull request, security ones included. ronl-business-api's Monday run on 2026-09-14 was rate-limited that way with majors already behind approval, and fixed it like this (sgort/ronl-business-api#133); linked-data-explorer's dashboard showed its refresh rate-limited the next day, and it takes the same rule. This repository got its refresh that Monday (#140) with one pull request open; the exemption keeps it from depending on that. prPriority 10 still orders it first among branches eligible in the same run.",
       "matchUpdateTypes": ["lockFileMaintenance"],
       "prPriority": 10,
