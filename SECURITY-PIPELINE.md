@@ -27,17 +27,20 @@ mechanisms above to actually run:
 | ------------------------------ | --------------------------------------------------- | ----------------- | ------------------------------------------------------------------ |
 | `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                           |
 | `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                           |
+| `actions/upload-artifact`      | `043fb46d1a93c77aae656e7c1c64a875d1fc6a0a`          | v7.0.1            | Renovate                                                           |
 | `zizmorcore/zizmor-action`     | `70fb788f84895a7701f5643d103d587e460b5c99`          | v0.6.3            | Renovate                                                           |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | Renovate, as Docker image `ghcr.io/zizmorcore/zizmor` — see below  |
 | semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block   |
 | npm dependencies (test/lint)   | `package-lock.json`, `sha512` integrity per package | lockfileVersion 3 | Renovate                                                           |
 
-The npm layer feeding `npm ci` — lint and the test suite — was already
-hash-pinned before this work: `npm ci` verifies every package against
-its lockfile integrity hash. This governs what gets **tested**, not
-what gets **shipped**: the production bundle is built separately, by
-Oryx, inside the deploy container — see the container exception below.
+The npm layer feeding `npm ci` was already hash-pinned before this
+work: `npm ci` verifies every package against its lockfile integrity
+hash. Until [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119)
+that governed what got **tested**, not what got **shipped**, because Oryx
+built the production bundle separately inside the deploy container. The
+runner now builds the bundle from that same install, so the lockfile
+governs both — see the container exception below.
 Lockfile covers integrity; the Renovate cooldown covers intent — a
 lockfile cannot tell you that a legitimately published version is
 malicious.
@@ -88,12 +91,24 @@ alternative is that the only account of what gates `acc` lives in a settings
 page nobody reads until something is already stuck.
 
 `acc supply-chain gate` (ruleset `21728745`, enforcement `active`, scoped to
-`refs/heads/acc`) requires two status checks:
+`refs/heads/acc`) requires three status checks:
 
-| Check   | Workflow      | Covers                                                           |
-| ------- | ------------- | ---------------------------------------------------------------- |
-| `audit` | `zizmor.yml`  | workflow static analysis, renovate config, formatting, pin truth |
-| `scan`  | `semgrep.yml` | Semgrep Code and Supply Chain — the npm dependency tree          |
+| Check                  | Workflow                                           | Covers                                                           |
+| ---------------------- | -------------------------------------------------- | ---------------------------------------------------------------- |
+| `audit`                | `zizmor.yml`                                       | workflow static analysis, renovate config, formatting, pin truth |
+| `scan`                 | `semgrep.yml`                                      | Semgrep Code and Supply Chain — the npm dependency tree          |
+| `Build and deploy ACC` | `azure-static-web-apps-orange-beach-0574c2a03.yml` | lint, the test suite and the production build                    |
+
+`Build and deploy ACC` was added for
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+so a red build or test run blocks a merge — a dependency pull request above
+all. Its workflow used to filter its `pull_request` trigger with `paths-ignore`,
+and a workflow its trigger filters out reports no check, so a documentation-only
+pull request would have waited forever. The filter moved into a `changes` job
+(#162): the build is skipped on a documentation-only pull request, a skipped job
+counts as passed, and if `changes` fails the build runs anyway. Required checks
+match by job name, so renaming this job means updating the ruleset in the same
+change. `main` still requires nothing, as decided in #131.
 
 `scan` was added on 11 September 2026, once the finding backlog was clean —
 see issues #112 and #113 for the triage and the reasoning. It covers what
@@ -148,9 +163,40 @@ the _step's_ reported conclusion as well as the job's, and the honest result is
 not exposed by the REST API, so a finding becomes visible only in the step's log
 while the checks list, the job and the step all read "success".
 
+## Dependency audit, daily
+
+Every gate above runs on a commit. A new advisory lands against code that has
+not changed, so a pipeline that only reacts to commits never sees it — and
+Dependabot alerts watch the default branch, `acc`, not the `main` that
+production deploys from. ICTU recommendation 10, tracked in [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119).
+
+`.github/workflows/dependency-audit.yml` runs at 05:17 UTC daily, and on
+demand. It audits **both `acc` and `main`**, reading each branch's lockfile
+with `npm audit --package-lock-only`, so it installs nothing.
+
+|                           |                                                                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Job / check context       | `dependency-audit` — deliberately not `audit`, which is zizmor's required check in every one of these repositories |
+| Fails on                  | a **high or critical** advisory in **production** dependencies                                                     |
+| Reports but does not fail | moderate and low advisories, and everything dev-only                                                               |
+| Where it reports          | the run's step summary, and one tracking issue it opens, updates and closes                                        |
+| Node                      | an exact literal, not `.nvmrc` — it audits a branch that need not carry one                                        |
+
+**It counts advisories, not packages.** `npm audit` reports one entry per
+affected package, so one advisory on a widely-used package looks like dozens of
+findings: on 24 September 2026 linked-data-explorer's 28 "moderate" entries were
+three advisories, 24 of them the same `@tiptap/core` reached through its
+extensions. `scripts/audit-tree.mjs` groups by advisory before reporting.
+A number that overstates the problem gets ignored, which is the failure mode a
+daily audit exists to avoid.
+
+**A run that cannot audit exits 2, and is treated like a finding.** A tool that
+fails to run must not report a clean tree — the same rule `--no-suppress-errors`
+enforces for Semgrep.
+
 ## Exceptions
 
-### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned, and it builds what ships
+### `mcr.microsoft.com/appsvc/staticappsclient:stable` — cannot be pinned; no longer builds what ships
 
 `Azure/static-web-apps-deploy` is a three-line wrapper. Its
 `action.yml` declares `runs: using: docker, image: "Dockerfile"`, and
@@ -162,14 +208,21 @@ COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 ```
 
-Neither deploy workflow sets `skip_app_build`, and there is no
-`staticwebapp.config.json` anywhere in the repo. Under those
-conditions, `StaticSitesClient` runs Oryx **inside** this container,
-and Oryx performs its own install and build of the production bundle
-there. The floating image is not merely an upload step — it is the
-build toolchain that produces the artifact that actually gets
-deployed, and it does its own dependency resolution independent of
+Until [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119)
+neither deploy workflow set `skip_app_build`, so `StaticSitesClient` ran
+Oryx **inside** this container, and Oryx performed its own `npm install`
+and build of the production bundle there, on Node 22.22.0, a version this
+repository never chose, while downloading PHP 8.0.30 and Composer 2.6.2
+it does not use. The floating image was the build toolchain for the
+deployed artifact, resolving dependencies independently of
 `package-lock.json`.
+
+Both workflows now build on the runner from `npm ci` and pass
+`skip_app_build: true`, so this container only uploads `dist/`. It
+still runs unpinned on every deploy and still receives the deploy token
+and the built artifact, so a compromised image could alter what is
+published or exfiltrate the token. That is serious, but it no longer
+decides what is in the build.
 
 **Reachable from our side:** no. **Would require:** Microsoft
 publishing digest-pinned image references, or IOU forking the action.
@@ -197,18 +250,66 @@ automated digest update would silently revert the deploy step to
 3.5-year-old code. The action has only ever published `v1`, so nothing
 is lost by maintaining this pin by hand instead.
 
-### `node-version: '24'` in the deploy workflows — floats across patch releases
+### ~~`node-version: '24'` in the deploy workflows — floats across patch releases~~ — closed
 
-Both Azure Static Web Apps workflows pass `actions/setup-node`
-`node-version: '24'`, not an exact patch, and there is no `.nvmrc` and
-no `engines` field anywhere pinning a runtime version. `setup-node`
-therefore downloads whichever 24.x patch is current at run time.
+This recorded a bare `'24'` in both deploy workflows, with no `.nvmrc`,
+so `setup-node` took whichever 24.x patch was current. It was also only
+half the story: that pin governed tests alone, since Oryx built what
+shipped on 22.22.0.
 
-**Reachable from our side:** yes, in principle — an exact patch or an
-`.nvmrc` `setup-node` can read would close this. **Not done here:**
-out of scope for a branch pinning pipeline _code_; picking and then
-maintaining an exact Node version is a separate decision. **Accepted
-as a known gap,** reviewed when this document is next revised.
+Closed with the runner build in
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119):
+both deploy workflows read an exact `24.20.0` from `.nvmrc`, which
+Renovate's `nvm` manager maintains, and that version now builds the
+bundle. 24.20.0 is what `'24'` resolved to on the runner at the time;
+24.21.0 was still inside the 14-day cooldown.
+
+`zizmor.yml` pins the same version as its own literal, on purpose: its
+`renovate-config-validator` step needs Node 24 whatever the
+application runs on, as in the other two repositories. There is still
+no `engines` field.
+
+### The runner image — `ubuntu-24.04` pins a release, not an image
+
+Every job ran on `ubuntu-latest` until
+[linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+a label GitHub moves to a new Ubuntu release on its own schedule. All six jobs
+now name `ubuntu-24.04`, so a change of OS release arrives as a diff in this
+repository rather than silently under every job at once. ICTU recommendation 2.
+
+That pins the **release**, not the image. GitHub rebuilds `ubuntu-24.04` about
+weekly, and a hosted runner cannot be pinned to a digest. Here that matters less
+than it looks for the shipped build: what the build depends on is pinned
+separately — Node through `.nvmrc`, actions by digest, npm packages by the
+lockfile — so the weekly rebuild changes the environment around the build, not
+its inputs. Since the runner build landed, that environment builds what ships
+too. Renovate's
+`github-actions` manager documents reading a versioned `runs-on` label as a
+`github-runner` dependency; confirm it is listed on the Dependency Dashboard
+before relying on that.
+
+**Reachable from our side:** the release, yes, and done; the image, no.
+**Accepted risk** for the image, reviewed when this document is next revised.
+
+### The package-manager cooldown — `.npmrc`, and where it does not reach
+
+Renovate's `minimumReleaseAge` covers only the updates Renovate proposes.
+Lock-file maintenance hands the refresh to npm, which is where the transitive
+tree moves, and Renovate documents that its own cooldown cannot apply there.
+Since [linked-data-explorer#119](https://github.com/sgort/linked-data-explorer/issues/119),
+the root `.npmrc` sets `min-release-age=14`, so npm itself will not resolve a
+version younger than 14 days. For its own update pull requests Renovate uses
+whichever cutoff is stricter, and if npm answers `ETARGET` on a security fix it
+retries without the cutoff. ICTU recommendation 6.
+
+Two places it does not reach, both measured on 19 September 2026:
+
+- **`npm ci`** ignores it on purpose (npm/cli#9281). CI only runs `npm ci`, so
+  it cannot fail on it, and is not protected by it.
+- **npm older than 11.10** ignores it without a warning. Node 24.20.0, which
+  `.nvmrc` names, bundles npm 11.19, so this repository's own toolchain is
+  covered; `scripts/check-deps.sh` warns at every dev-server start and push when
+  a machine runs something older.
 
 ### `iou-architectuur` — known gap, deliberately deferred
 
