@@ -42,7 +42,8 @@
     "check-format": "prettier --check .",
     "check-supply-chain": "node scripts/check-supply-chain.mjs",
     "check-mirror": "bash scripts/check-mirror.sh",
-    "check-previews": "bash scripts/check-previews.sh"
+    "check-previews": "bash scripts/check-previews.sh",
+    "sbom": "node scripts/write-sbom.mjs"
   },
   "browserslist": {
     "production": [
