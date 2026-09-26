@@ -68,7 +68,7 @@ jobs:
           # Exact, like .nvmrc, and deliberately its own literal: this step
           # needs Node 24 whatever the application runs on. Same version as
           # .nvmrc today; Renovate's node manager keeps both current.
-          node-version: '24.20.0'
+          node-version: '24.21.0'
           # For the `npm ci` the formatting check needs, further down.
           cache: 'npm'
       - name: Run zizmor
