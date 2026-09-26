@@ -2,6 +2,172 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.09.7",
+      "status": "Released",
+      "date": "26 sep 2026",
+      "commits": [
+        {
+          "sha": "5b83e8d",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Each release now carries an SBOM, committed and uploaded",
+          "details": [
+            "ICTU recommendation 10 asks for SBOMs of released versions, kept analysable: when an advisory lands against something that shipped months ago, only a document written at the time can say what that version contained. scripts/write-sbom.mjs writes docs/sbom/<name>-<version>.cdx.json — CycloneDX, production dependencies only, read from the lockfile with --package-lock-only so it needs no install. npm run sbom is now a bump-release step, after the version bump, since the filename carries the version.",
+            ".github/workflows/sbom.yml runs on a push to main, on demand, and on pull requests that touch the tooling, and uploads the document as an artifact. Two copies, because neither suffices alone: on a public repository GitHub caps artifact retention at ninety days, so the committed copy is the durable one; the artifact is what a scanner or a Dependency-Track import can fetch without a checkout.",
+            "Three modes: writing; --check, strict, for where the release is cut; and --verify-release, which a promotion can honestly assert — a missing document fails, drift only warns, because a promotion carries every commit merged since the release. Both comparisons parse the JSON and ignore serialNumber and metadata.timestamp, so Prettier reformatting and re-runs do not register as drift."
+          ]
+        },
+        {
+          "sha": "35c3712",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The lockfile-sync check no longer fails on a clean checkout",
+          "details": [
+            "The new step failed on every pull request, and not for the reason it exists: npm ci --dry-run still runs lifecycle scripts, and the root postinstall (scripts/write-deps-marker.mjs) copies package-lock.json into a node_modules a dry run never creates. On a clean checkout that is ENOENT, reported under \"Lockfile matches package.json\" — precisely the confusion the step was added to remove. It had passed locally only because node_modules already existed.",
+            "--ignore-scripts skips the postinstall. Whether the lockfile satisfies package.json is decided before any script runs, so the check keeps its meaning."
+          ]
+        },
+        {
+          "sha": "d37875d",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "A lockfile out of sync with package.json now fails under its own name",
+          "details": [
+            "npm ci already refused a lockfile that disagrees with package.json, but only as an EUSAGE error inside \"Install dependencies for the formatter\", three steps into a job about pinning, where it does not read as a lockfile problem. On 25 September 2026 ronl-business-api hit exactly that: three dependency pull requests merged back to back, each green against its own base, left a lockfile matching no package.json.",
+            "An npm ci --dry-run step now runs before that install; it resolves and validates without writing node_modules and fails with the cause in its own name. Its limit is recorded next to it: it checks the pull request's own merge commit, so a pull request green against a stale base is not caught. Merge dependency pull requests one at a time, rebasing each onto the merged acc first."
+          ]
+        },
+        {
+          "sha": "e2b3396",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The ubuntu 26.04 runner major is assessed and deferred, on record",
+          "details": [
+            "ICTU recommendation 7 asks for a major to be assessed rather than taken or ignored, and for the decision to be recorded. ubuntu 26.04 was assessed on 24 September 2026 and held by a Renovate rule carrying its reason and the condition that ends it — the shape already used here for Tailwind 4 and ESLint 10. The runner pins exist to stop the image drifting, not to be newest; ubuntu-latest still resolves to 24.04. Revisit when it moves.",
+            "The other queued majors (react-router-dom 7, vitest 5, jsdom 30, vite 8, typescript 7, eslint 10, the React monorepo) are deliberately not deferred by rule: disabling them would hide them, so they stay behind Dependency Dashboard approval where a person sees them."
+          ]
+        },
+        {
+          "sha": "9cda617",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Renovate never offers a new major's X.0.0 release",
+          "details": [
+            "ICTU recommendation 7 also asks to wait for the first or second patch of a major. Majors already wait for Dependency Dashboard approval; nothing said which version may be offered once someone approves. A packageRules entry now sets allowedVersions to !/^\\d+\\.0\\.0$/ for the npm manager, so the earliest a major can arrive is X.0.1.",
+            "Scoped to npm deliberately: the same pattern against Docker tags or the github-runner datasource would mean something else. Verified with renovate-config-validator --strict and against fourteen versions; every major queued today is unaffected. The cost is recorded in the rule: a package that never publishes a patch after X.0.0 needs a per-package exception with its reason."
+          ]
+        },
+        {
+          "sha": "d1a2639",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The daily audit job is named dependency-audit, not audit",
+          "details": [
+            "audit is zizmor.yml's job and a required status check. Required checks match by name, so a second job called audit made the required context ambiguous — one passing and one failing check under one name, which no ruleset can satisfy. Its first run blocked sgort/ronl-business-api#206 outright.",
+            "The job is now dependency-audit, with the reason next to it, and SECURITY-PIPELINE.md names the check alongside the rest of the audit's specification."
+          ]
+        },
+        {
+          "sha": "de33192",
+          "author": "Steven Gort",
+          "type": "other",
+          "subject": "The audit script is wrapped to this repository's Prettier width",
+          "details": [
+            "eslint --fix only: scripts/*.mjs is linted here, and the shared copy had been written to the other two repositories' wrapping. No logic change."
+          ]
+        },
+        {
+          "sha": "7e5ef52",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The daily audit runs its script from a path the branch checkouts cannot remove",
+          "details": [
+            "The audit loop checks out origin/acc and origin/main in turn, replacing the working tree — including scripts/audit-tree.mjs, which did not yet exist on either target. The first run lost the script at the first checkout, and node's missing-module exit was read as \"a high or critical advisory was found\": a failure reported as a finding that did not exist.",
+            "The script is now copied to $RUNNER_TEMP before the loop and run from there. Each iteration resets its own status and anything above 2 is clamped to 2, so \"the audit could not run\" can never be mistaken for a finding or for a clean tree."
+          ]
+        },
+        {
+          "sha": "417a510",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Dependencies are audited daily, on acc and on main",
+          "details": [
+            "Every other gate runs on a commit, so a new advisory against unchanged code was seen by nothing, and Dependabot alerts watch acc, not the main that production deploys from. ICTU recommendation 10. .github/workflows/dependency-audit.yml runs at 05:17 UTC and on demand, reading each branch's lockfile with npm audit --package-lock-only. It fails on a high or critical advisory in production dependencies, reports the rest, and opens, updates and closes one tracking issue so a scheduled failure reaches someone.",
+            "scripts/audit-tree.mjs groups findings by advisory rather than by package: on 2026-09-24 linked-data-explorer's 28 moderate entries were three advisories. An audit that cannot run exits 2 and is treated as a finding, never as a clean tree. Measured before merging, ttl-editor had none, matching Dependabot."
+          ]
+        },
+        {
+          "sha": "a95dab0",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Lock file maintenance",
+          "details": [
+            "Renovate's scheduled refresh of package-lock.json, moving transitive dependencies within their existing ranges."
+          ]
+        },
+        {
+          "sha": "e69db67",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The build checks now required on acc are on record",
+          "details": [
+            "The acc ruleset now requires the ACC deploy workflow's build job, Build and deploy ACC, alongside its existing checks. SECURITY-PIPELINE.md records which checks gate acc and main, why the build check is safe to require now that the workflow filters in a changes job rather than on its trigger, and that renaming the job means updating the ruleset in the same change. main still requires nothing, as decided in #131.",
+            "Being documentation only, the change was also the test: its changes job reported not relevant, the build check skipped, and it merged under the new ruleset."
+          ]
+        },
+        {
+          "sha": "1ab793e",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "ACC deploy workflows filter in a job, so their build checks can be required",
+          "details": [
+            "A required check must report on every pull request, but a workflow its pull_request path filter excludes never starts and reports nothing, which would leave unrelated pull requests waiting forever. A job skipped by its own if: reports success instead.",
+            "Each ACC deploy workflow drops the path filter from its pull_request trigger and gains a changes job that asks the GitHub API for the pull request's files (renames under both names) and matches them against a pattern mirroring the push filter. Build and close jobs run when the pull request is relevant, and also when changes did not succeed, so a failed lookup means a full build rather than a free pass. Push triggers keep their filters."
+          ]
+        },
+        {
+          "sha": "9dd740e",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "npm itself now observes a 14-day release cooldown",
+          "details": [
+            "Renovate's minimumReleaseAge covers only the updates Renovate proposes; lock-file maintenance hands the refresh to npm, where the transitive tree moves. A root .npmrc now sets min-release-age=14, matching Renovate. ICTU recommendation 6.",
+            "Measured before writing it: npm 11.10 or newer honours it on install and update; npm ci ignores it on purpose (npm/cli#9281), so CI cannot fail on it; npm 10.9.8 ignores it silently. scripts/check-deps.sh now warns, without failing, when npm is older than 11.10, and SECURITY-PIPELINE.md records the setting and where it does not reach."
+          ]
+        },
+        {
+          "sha": "00c88f5",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The shipped bundle is built on the runner, on the Node version the tests use",
+          "details": [
+            "The deploy workflows now run npm run build on the runner, from the tree npm ci installed, and upload dist/ with skip_app_build: true. Until now Oryx built the shipped bundle inside the floating staticappsclient:stable container with npm install, on Node 22.22.0, while the tests ran on 24 — the code that passed the tests and the code that shipped were different builds. The VITE_ build variables move to the build step, which fails if dist/index.html is missing.",
+            "Node is read as an exact 24.20.0 from .nvmrc instead of a bare '24'; production moves from 22.22.0 to the version the tests already ran on. SECURITY-PIPELINE.md, docs/the-gate-has-teeth.md and the related code comments no longer describe Oryx building the bundle."
+          ]
+        },
+        {
+          "sha": "a4ee5bb",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Runners are pinned to ubuntu-24.04",
+          "details": [
+            "Every job now runs on ubuntu-24.04 instead of ubuntu-latest, a label GitHub moves to a new Ubuntu release on its own schedule, so a change of OS release arrives as a diff in this repository. ICTU recommendation 2.",
+            "SECURITY-PIPELINE.md records the limit under Exceptions: the label pins the release, not the image, which GitHub rebuilds about weekly and a hosted runner cannot pin by digest."
+          ]
+        },
+        {
+          "sha": "90ee264",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The DMN apiConfig.baseUrl comment says what it still does",
+          "details": [
+            "The comment said evaluate still called Operaton directly. That stopped being true when evaluate moved to evaluateViaBackend(), which posts to the Linked Data Explorer backend; deploy and evaluate both go through the backend now. What baseUrl still decides is the evaluate URL recorded as dmnData.apiEndpoint, which the TTL generator publishes as cprmv:implementedBy. Comment only; no behaviour change."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.6",
       "status": "Released",
       "date": "19 sep 2026",
