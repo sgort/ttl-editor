@@ -61,6 +61,11 @@ chair, that it intends to act on exactly this.
 happen anyway. §6 proposes running the fourth pass _against the draft profile_,
 so the profile is tested by the work rather than in addition to it.
 
+**What it would look like when it works:** a professional reads artikel 36 on
+`wetten.overheid.nl`, clicks once, and is looking at the decision model that
+implements it — and can call that model and get an answer. §6.2 sets out how,
+and why the hard part is already done.
+
 **The one-sentence case:**
 
 > Every one of the three delivered models opened correctly in a modelling tool,
@@ -264,6 +269,31 @@ This is the requirement with the widest reach. The other four make a model
 trustworthy; this one makes it _usable by somebody else_, which is the whole
 point of publishing decisions as services.
 
+### 4.6 The legal link, in a form the law's own infrastructure can index
+
+> **A sixth area, proposed rather than assumed.** The five above are the ones we
+> set out to specify. This one follows from the objective in §6.2, and it is the
+> requirement §2.2 asks for and that §4 otherwise leaves unanswered. Whether to
+> adopt it is a decision, not a foregone conclusion.
+
+**Observed.** §2.2 records that `knowledgeSource` and `authorityRequirement`
+carry whatever an author puts in them: in one model, data provenance rather than
+statute, with no resolvable address. A different model carried cell-level
+grounding in JuriConnect form — and that reference turns out to be **byte-for-byte
+the identifier the national legal-information service already keys on**. The join
+between a decision model and the law exists today, in one model, by accident of
+good practice rather than by requirement.
+
+**The profile must require.** That a model declares which legal provision each
+grounded rule implements, as a JuriConnect (`jci`) reference including the
+version coordinates, at the granularity at which the provision is published. Not
+a document-level "this model concerns the Participatiewet", but provision-level:
+_this rule implements artikel 36 as it stood on this date_.
+
+**Conformance is proved by.** Resolving every declared reference against the
+national legal-information service and getting the provision back — and, once
+§6.2 exists, finding the model again from that provision.
+
 ---
 
 ## 5. What this is not
@@ -379,6 +409,60 @@ appears in but never back-ported here. The demonstrator therefore begins with a
 model that already fails the profile, which is a more honest starting point than
 one we had quietly cleaned up first.
 
+### 6.2 From the law to the model, in one click
+
+A second objective for the fourth pass, and the one that makes the rest visible
+to people who will never read a profile.
+
+**What exists today.** On `wetten.overheid.nl`, artikel 36 carries a relations
+icon — _Toon relaties in LiDO_ — which opens a panel of external relations held
+at `linkeddata.overheid.nl`, grouped by the kind of thing on the other end:
+jurisprudentie, ministeriële regelingen, officiële publicaties, wetten. Following
+it opens LiDO, where the article's incoming and outgoing relations are listed and
+can be filtered.
+
+Every category is a **legal document**. A professional reading the article can
+reach the case law that interprets it and the regulations that depend on it. What
+they cannot reach is the decision model that executes it — because no such
+category exists.
+
+**What we propose.** Publish the artikel 36 model as linked data conformant to
+DMN-AP NL, register it in LiDO against the provision it implements, and add one
+entry to that panel:
+
+> **Kennismodel**
+
+One click from the text of the law to the executable model of it. Then, as more
+regulations are modelled, the same click from every article that has one.
+
+**Why this is tractable rather than aspirational.** The identifier LiDO uses to
+address the article is
+`jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01`.
+That string is **already present, unchanged, in the cell-level grounding of the
+existing Amsterdam model of this very article**. No mapping has to be invented
+and no crosswalk has to be maintained: the key the law's infrastructure indexes
+on is the key the modelling work already writes down. §4.6 is the requirement
+that turns that from a happy accident into a property every conformant model has.
+
+**What it needs from whom.** Three things, and only the first is ours:
+
+| Step                                                                  | Who                                             |
+| --------------------------------------------------------------------- | ----------------------------------------------- |
+| Publish the model as linked data, carrying its JuriConnect references | us, in the fourth pass                          |
+| Accept a decision model as a relatable object and index it            | the operator of LiDO (`linkeddata.overheid.nl`) |
+| Add the _Kennismodel_ entry to the relations panel                    | the operator of `wetten.overheid.nl`            |
+
+This adds a **fourth addressee** to the three in §2 — the legal-information
+infrastructure itself. It is the reason this objective is stated here rather than
+assumed: nothing about it is in our gift, and a profile that produced beautifully
+grounded models nobody could find from the law would have missed the point.
+
+**What it would demonstrate.** That _van wet tot loket_ is not a slogan. The
+route becomes: read the article, click once, see the decision model that
+implements it, and — because §4.3 requires it — call that model and get an
+answer. For a professional at a municipality, that is the difference between
+knowing a rule exists and being able to apply it.
+
 ### What the fourth pass would produce
 
 | Deliverable                  | Purpose                                                                                                   |
@@ -389,6 +473,7 @@ one we had quietly cleaned up first.
 | An MC/DC suite               | the first true MC/DC coverage in this programme                                                           |
 | A published decision service | linked data, with its legal basis attached                                                                |
 | A findings report            | which requirements the model failed first time, and which of them the profile caught rather than a person |
+| A LiDO registration          | the model discoverable from artikel 36 itself, via a _Kennismodel_ entry (§6.2)                           |
 
 ### How we would know the profile is any good
 

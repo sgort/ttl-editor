@@ -64,6 +64,11 @@ voorzittersstoel heeft uitgesproken hier werk van te willen maken.
 §6 stelt voor de vierde ronde _tegen het conceptprofiel aan_ te draaien, zodat
 het profiel door het werk getoetst wordt in plaats van bovenop het werk te komen.
 
+**Hoe het eruitziet als het werkt:** een professional leest artikel 36 op
+`wetten.overheid.nl`, klikt één keer, en kijkt naar het beslismodel dat het
+uitvoert — en kan dat model aanroepen en antwoord krijgen. §6.2 zet uiteen hoe,
+en waarom het moeilijke deel al gedaan is.
+
 **De kwestie in één zin:**
 
 > Alle drie de opgeleverde modellen openden correct in een modelleertool,
@@ -274,6 +279,33 @@ Dit is de eis met het grootste bereik. De andere vier maken een model
 betrouwbaar; deze maakt het _bruikbaar voor een ander_, en dat is de hele reden
 om beslissingen als dienst te publiceren.
 
+### 4.6 De juridische koppeling, in een vorm die de infrastructuur van de wet zelf kan indexeren
+
+> **Een zesde gebied, voorgesteld en niet verondersteld.** De vijf hierboven zijn
+> de gebieden die wij ons hadden voorgenomen vast te leggen. Dit gebied volgt uit
+> de doelstelling in §6.2, en het is de eis waarom §2.2 vraagt en die §4 verder
+> onbeantwoord laat. Of het wordt overgenomen, is een besluit en geen
+> uitgemaakte zaak.
+
+**Waargenomen.** §2.2 legt vast dat `knowledgeSource` en `authorityRequirement`
+bevatten wat de auteur erin zet: in het ene model herkomst van gegevens in plaats
+van wetgeving, zonder oplosbaar adres. Een ander model droeg verankering op
+celniveau in JuriConnect-vorm — en die verwijzing blijkt **teken voor teken de
+identificatie te zijn waarop de landelijke juridische informatievoorziening al
+sleutelt**. De koppeling tussen beslismodel en wet bestaat vandaag al, in één
+model, bij toeval van goed vakmanschap in plaats van als eis.
+
+**Het profiel moet eisen.** Dat een model verklaart welke wettelijke bepaling
+elke verankerde regel uitvoert, als JuriConnect-verwijzing (`jci`) inclusief de
+versiecoördinaten, op het niveau waarop die bepaling wordt gepubliceerd. Niet op
+documentniveau "dit model gaat over de Participatiewet", maar op bepalingsniveau:
+_deze regel voert artikel 36 uit zoals dat op deze datum luidde_.
+
+**Conformiteit wordt aangetoond door.** Elke verklaarde verwijzing op te lossen
+tegen de landelijke juridische informatievoorziening en de bepaling terug te
+krijgen — en, zodra §6.2 bestaat, het model vanuit die bepaling weer terug te
+vinden.
+
 ---
 
 ## 5. Wat dit niet is
@@ -393,6 +425,63 @@ ook voorkomt maar hier nooit teruggezet. De demonstrator begint dus met een mode
 dat al niet aan het profiel voldoet, en dat is een eerlijker vertrekpunt dan een
 model dat wij eerst stilletjes hadden opgeschoond.
 
+### 6.2 Van de wet naar het model, met één muisklik
+
+Een tweede doelstelling voor de vierde ronde, en degene die de rest zichtbaar
+maakt voor mensen die nooit een profiel zullen lezen.
+
+**Wat er vandaag al is.** Op `wetten.overheid.nl` draagt artikel 36 een
+relatie-icoon — _Toon relaties in LiDO_ — dat een venster opent met externe
+relaties die bij `linkeddata.overheid.nl` bekend zijn, gegroepeerd naar het soort
+object aan de andere kant: jurisprudentie, ministeriële regelingen, officiële
+publicaties, wetten. Doorklikken brengt u in LiDO, waar de inkomende en uitgaande
+relaties van het artikel worden opgesomd en gefilterd kunnen worden.
+
+Elke categorie is een **juridisch document**. Een professional die het artikel
+leest, kan de jurisprudentie bereiken die het uitlegt en de regelingen die ervan
+afhangen. Wat hij of zij niet kan bereiken, is het beslismodel dat het uitvoert —
+omdat die categorie niet bestaat.
+
+**Wat wij voorstellen.** Publiceer het model van artikel 36 als linked data,
+conform DMN-AP NL, registreer het in LiDO bij de bepaling die het uitvoert, en
+voeg één regel toe aan dat venster:
+
+> **Kennismodel**
+
+Eén muisklik van de tekst van de wet naar het uitvoerbare model daarvan. En
+vervolgens, naarmate meer regelingen zijn gemodelleerd, diezelfde klik vanaf elk
+artikel dat er een heeft.
+
+**Waarom dit haalbaar is en geen wensdenken.** De identificatie waarmee LiDO het
+artikel adresseert, luidt
+`jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01`.
+Die tekenreeks staat **ongewijzigd al in de verankering op celniveau van het
+bestaande Amsterdamse model van precies dit artikel**. Er hoeft geen afbeelding
+te worden bedacht en geen koppeltabel te worden onderhouden: de sleutel waarop de
+infrastructuur van de wet indexeert, is de sleutel die het modelleerwerk al
+opschrijft. §4.6 is de eis die dat verandert van een gelukkig toeval in een
+eigenschap van elk conform model.
+
+**Wat het van wie vraagt.** Drie stappen, en alleen de eerste is van ons:
+
+| Stap                                                                         | Wie                                              |
+| ---------------------------------------------------------------------------- | ------------------------------------------------ |
+| Het model als linked data publiceren, met zijn JuriConnect-verwijzingen erin | wij, in de vierde ronde                          |
+| Een beslismodel accepteren als relateerbaar object en het indexeren          | de beheerder van LiDO (`linkeddata.overheid.nl`) |
+| De regel _Kennismodel_ aan het relatievenster toevoegen                      | de beheerder van `wetten.overheid.nl`            |
+
+Hiermee komt er een **vierde geadresseerde** bij de drie uit §2 — de juridische
+informatievoorziening zelf. Dat is de reden dat deze doelstelling hier wordt
+benoemd en niet verondersteld: niets eraan ligt in onze handen, en een profiel
+dat prachtig verankerde modellen oplevert die vanuit de wet niet te vinden zijn,
+zou het punt hebben gemist.
+
+**Wat het zou aantonen.** Dat _van wet tot loket_ geen kreet is. De route wordt:
+lees het artikel, klik één keer, zie het beslismodel dat het uitvoert, en — omdat
+§4.3 dat eist — roep dat model aan en krijg antwoord. Voor een professional bij
+een gemeente is dat het verschil tussen weten dát een regel bestaat en haar
+kunnen toepassen.
+
 ### Wat de vierde ronde zou opleveren
 
 | Product                        | Doel                                                                                                   |
@@ -403,6 +492,7 @@ model dat wij eerst stilletjes hadden opgeschoond.
 | Een MC/DC-testverzameling      | de eerste echte MC/DC-dekking in dit programma                                                         |
 | Een gepubliceerde beslisdienst | linked data, met de juridische grondslag eraan vast                                                    |
 | Een bevindingenrapport         | op welke eisen het model de eerste keer viel, en welke daarvan het profiel ving in plaats van een mens |
+| Een registratie in LiDO        | het model vindbaar vanaf artikel 36 zelf, via een regel _Kennismodel_ (§6.2)                           |
 
 ### Hoe wij zouden weten of het profiel deugt
 
