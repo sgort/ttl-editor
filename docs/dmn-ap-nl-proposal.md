@@ -202,7 +202,7 @@ failures, not warnings.
 tables, plus a live evaluation demonstrating each declared outcome. A model that
 cannot be made to say yes does not conform.
 
-### 4.4 Test coverage using MC/DC
+### 4.4 Every condition must earn its place
 
 **Observed, and stated plainly: we have not done this.** All three passes
 achieved _rule coverage_ — one dedicated case per rule, 100, 121 and 65 cases
@@ -217,17 +217,31 @@ what [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage)
 is for, and it is the standard already used where software failure has
 consequences.
 
-**The profile must require.** MC/DC over the conditions of each decision table:
-every condition shown, by a pair of cases, to independently change the outcome.
-Submitted as evidence with the model, not asserted.
+**The profile must require** — stated as a property, because the property is
+what matters and the method for proving it is still open:
+
+> No condition may appear in a decision table without evidence that it can, on
+> its own, change an outcome.
+
+A condition that cannot is either dead weight or a defect. In a benefits
+decision it is worse than either: it is **a fact the citizen was asked to supply
+that could never have affected their answer**. Read that way this is not a
+testing requirement at all — it is administrative burden and data minimisation,
+and it is checkable.
+
+**The candidate method is MC/DC**, which is exactly the technique for
+establishing that property: for each condition, a pair of cases differing in
+that condition alone, in which the outcome differs. Submitted as evidence with
+the model, not asserted.
 
 **Conformance is proved by.** A coverage report naming, per condition, the pair
 of cases that demonstrates its independent effect — and a live run of all of
 them.
 
-This is the most demanding of the five, and the one we should be most careful
-about proposing. §6 exists so that we demonstrate it before we require it of
-anyone else.
+**This is the one area of the five we are proposing as a hypothesis.** The
+property we are confident about. Whether MC/DC can establish it on ordinary
+decision tables is an open question, and §6.1 is the experiment that settles it.
+If MC/DC does not survive, the property stands and the method is replaced.
 
 ### 4.5 An interoperability agreement on the interaction dialog
 
@@ -292,6 +306,79 @@ It is the right subject for four reasons, and they are not incidental:
 4. **It is a real entitlement decision** about money paid to people on a low
    income, with a versioned legal source. Nothing about it is a toy.
 
+### 6.1 What the demonstrator actually tests about §4.4
+
+The article 36 table, as it stands today — eight conditions, five rules,
+`hitPolicy=FIRST`, four rules granting entitlement and one wildcard default
+refusing it:
+
+```
+ C1 woonachtig in de gemeente        C5 vermogen op 31-12 vorig jaar
+ C2 leeftijd >= 21                   C6 een schuldregeling
+ C3 uitzicht op inkomensverbetering  C7 gezinssituatie
+ C4 langdurig laag inkomen           C8 partner: uitzicht op inkomensverbetering
+
+ R1  true  >=21  false  true  <=grens   ·    not "met partner"  ·     → true
+ R2  true  >=21  false   ·      ·     true   not "met partner"  ·     → true
+ R3  true  >=21  false  true  <=grens   ·           ·         false   → true
+ R4  true  >=21  false   ·      ·     true          ·         false   → true
+ R5   ·      ·     ·     ·      ·       ·           ·           ·     → false
+```
+
+**What rule coverage gives you: five cases.** One per rule. R1 binds six
+conditions, and one case proves only that _some_ combination makes R1 fire. It
+never shows that C5 matters. If that cell were wrong, or if C5 were satisfied
+whenever C1–C4 are, the case still passes and nothing notices.
+
+**What MC/DC would give you: roughly nine to twelve.** And each additional case
+is an applicant refused **for exactly one reason** — which in a benefits
+decision is the _motivering_, the ground stated in the letter and the thing an
+appeal turns on. That is the argument for §4.4 in one line: can this model
+produce a correct single-ground refusal for every ground there is?
+
+#### Three ways it can fail, all visible in that table
+
+**Masking under FIRST.** R1 and R3 differ only in C6, C7 and C8. To show C7
+independently affects the outcome you need a case where flipping C7 alone
+changes the answer — but flipping it stops R1 firing and **R3 may then fire and
+return the same `true`**. No change in outcome, so no independent effect
+demonstrated. Breaking R3 as well means changing a second condition, which is no
+longer an MC/DC pair. Whether a valid pair exists for every condition in a
+FIRST-hit table is genuinely unknown, and if it does not, the method is
+unsatisfiable.
+
+**MC/DC is defined over boolean conditions, and these are not.** C2 is a range
+test on a computed age, C5 a comparison against a threshold, C7 a string test.
+"Flip the condition" needs a definition the profile would have to supply for
+ranges and enumerations. If that definition turns out arbitrary, it cannot be
+enforced.
+
+**It may be right for some rules and noise for others.** R1 and R3 bind six
+conditions each, where MC/DC earns its cost. Other tables in the evidence base
+bind one condition per rule, where MC/DC collapses into rule coverage and the
+extra cases buy nothing.
+
+#### The three outcomes, fixed in advance
+
+| Outcome            | What §4.4 becomes                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Survives intact    | as written — the property, established by MC/DC, for every decision table                                               |
+| Survives qualified | MC/DC required only for rules binding more than one condition; rule coverage elsewhere                                  |
+| Fails              | the method is dropped, the property stays, and §4.3's reachability requirement carries the load it was already carrying |
+
+We would not predict which. That is the point of running it: mandating a method
+that then proves unachievable under an ordinary hit policy would mean writing an
+unenforceable standard, and writing it for people obliged to comply with it.
+Better to find out on eight conditions of one article.
+
+#### One detail worth knowing before the pass starts
+
+The standalone model of this article carries an output with a `label` and **no
+`name`** — the defect described in §4.3, fixed in the larger model it also
+appears in but never back-ported here. The demonstrator therefore begins with a
+model that already fails the profile, which is a more honest starting point than
+one we had quietly cleaned up first.
+
 ### What the fourth pass would produce
 
 | Deliverable                  | Purpose                                                                                                   |
@@ -314,14 +401,14 @@ fixed in advance:
 - **Does the fourth pass cost less than the third?** The catalogue already made
   each pass cheaper. If a written profile does not continue that, it is
   documentation rather than infrastructure.
-- **Does MC/DC find something rule coverage did not?** If full condition
+- **Does MC/DC find something rule coverage did not?** §6.1 sets out the three
+  outcomes this can return and what each does to §4.4. If full condition
   coverage on an already twice-modelled decision surfaces nothing, that is
-  evidence against §4.4, and we should say so and drop it.
+  evidence against the method, and we should say so.
 
-That last point is the honest one. We are proposing a requirement we have not
-yet met, on the strength of an argument. The fourth pass is where the argument
-gets tested, and the result may be that MC/DC is not worth its cost at this
-scale. Better to find that out on one article than in a mandate.
+That last point is the honest one. We are proposing a method we have not yet
+used, on the strength of an argument, and §6.1 is where the argument gets
+tested.
 
 ---
 
@@ -375,8 +462,8 @@ decision — §4.4 most of all.
 2. Draft DMN-AP NL against the five areas in §4, with the three completed passes
    as the test corpus.
 3. Run the fourth pass on artikel 36 against the draft.
-4. Report: what the profile caught, what it missed, what it cost, and whether
-   §4.4 survives contact with a real decision.
+4. Report: what the profile caught, what it missed, what it cost, and which
+   of §6.1's three outcomes §4.4 returned.
 5. Only then: decide whether to take DMN-AP NL through assessment for the
    comply-or-explain list.
 

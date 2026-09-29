@@ -209,7 +209,7 @@ regels en onbereikbare uitvoer zijn conformiteitsfouten, geen waarschuwingen.
 beslistabellen, plus een live evaluatie die elke gedeclareerde uitkomst
 demonstreert. Een model dat niet aan het ja zeggen te krijgen is, is niet conform.
 
-### 4.4 Testdekking volgens MC/DC
+### 4.4 Elke conditie moet haar plaats verdienen
 
 **Waargenomen, en ronduit gezegd: dit hebben wij niet gedaan.** Alle drie de
 rondes bereikten _regeldekking_ — één eigen testgeval per regel, 100, 121 en 65
@@ -225,17 +225,31 @@ gemaskeerd. Daar is
 precies voor bedoeld, en dat is de maatstaf die al wordt gehanteerd waar falende
 software gevolgen heeft.
 
-**Het profiel moet eisen.** MC/DC over de condities van elke beslistabel: van
-elke conditie wordt met een paar testgevallen aangetoond dat zij de uitkomst
-zelfstandig verandert. Meegeleverd als bewijs bij het model, niet beweerd.
+**Het profiel moet eisen** — geformuleerd als eigenschap, omdat het om de
+eigenschap gaat en de methode om haar aan te tonen nog openstaat:
+
+> Geen enkele conditie mag in een beslistabel voorkomen zonder bewijs dat zij op
+> eigen kracht een uitkomst kan veranderen.
+
+Een conditie die dat niet kan, is ballast of een gebrek. In een
+rechtsbeslissing is zij erger dan beide: het is dan **een gegeven dat de burger
+is gevraagd aan te leveren en dat diens antwoord nooit had kunnen beïnvloeden**.
+Zo gelezen is dit helemaal geen testeis — het gaat over administratieve lasten
+en dataminimalisatie, en het is controleerbaar.
+
+**De kandidaat-methode is MC/DC**, precies de techniek om die eigenschap vast te
+stellen: voor elke conditie een paar testgevallen dat alleen in die conditie
+verschilt en waarbij de uitkomst verschilt. Meegeleverd als bewijs bij het
+model, niet beweerd.
 
 **Conformiteit wordt aangetoond door.** Een dekkingsrapport dat per conditie het
 paar testgevallen benoemt dat het zelfstandige effect aantoont — en een live run
 van alle gevallen.
 
-Dit is de zwaarste van de vijf, en degene waarmee wij het voorzichtigst zouden
-moeten zijn. §6 bestaat opdat wij het demonstreren voordat wij het van een ander
-vragen.
+**Dit is het enige van de vijf gebieden dat wij als hypothese voorleggen.** Over
+de eigenschap zijn wij overtuigd. Of MC/DC haar op gewone beslistabellen kan
+vaststellen is een open vraag, en §6.1 is het experiment dat die beslecht. Houdt
+MC/DC geen stand, dan blijft de eigenschap staan en wordt de methode vervangen.
 
 ### 4.5 Een interoperabiliteitsafspraak over de interactiedialoog
 
@@ -304,6 +318,81 @@ Het is om vier redenen het juiste onderwerp, en die zijn niet toevallig:
    mensen met een laag inkomen, met een geversioneerde juridische bron. Er is
    niets speelgoedachtigs aan.
 
+### 6.1 Wat de demonstrator precies toetst aan §4.4
+
+De tabel van artikel 36 zoals die er vandaag ligt — acht condities, vijf regels,
+`hitPolicy=FIRST`, vier regels die recht toekennen en één wildcardregel die
+afwijst:
+
+```
+ C1 woonachtig in de gemeente        C5 vermogen op 31-12 vorig jaar
+ C2 leeftijd >= 21                   C6 een schuldregeling
+ C3 uitzicht op inkomensverbetering  C7 gezinssituatie
+ C4 langdurig laag inkomen           C8 partner: uitzicht op inkomensverbetering
+
+ R1  true  >=21  false  true  <=grens   ·    not "met partner"  ·     → true
+ R2  true  >=21  false   ·      ·     true   not "met partner"  ·     → true
+ R3  true  >=21  false  true  <=grens   ·           ·         false   → true
+ R4  true  >=21  false   ·      ·     true          ·         false   → true
+ R5   ·      ·     ·     ·      ·       ·           ·           ·     → false
+```
+
+**Wat regeldekking oplevert: vijf testgevallen.** Eén per regel. R1 bindt zes
+condities, en één testgeval bewijst alleen dat _een_ combinatie R1 laat vuren.
+Het toont nooit aan dat C5 ertoe doet. Was die cel onjuist, of is C5 vervuld
+zodra C1 tot en met C4 dat zijn, dan slaagt het testgeval nog steeds en merkt
+niemand iets.
+
+**Wat MC/DC zou opleveren: ruwweg negen tot twaalf.** En elk extra testgeval is
+een aanvrager die wordt afgewezen **op precies één grond** — en dat is in een
+rechtsbeslissing de _motivering_: de grond die in de beschikking staat en
+waarover een bezwaar gaat. Dat is het betoog voor §4.4 in één zin: kan dit model
+voor elke afwijzingsgrond een juiste afwijzing op één grond produceren?
+
+#### Drie manieren waarop het kan mislukken, alle zichtbaar in die tabel
+
+**Maskering onder FIRST.** R1 en R3 verschillen alleen in C6, C7 en C8. Om aan
+te tonen dat C7 de uitkomst zelfstandig beïnvloedt, is een testgeval nodig
+waarin het omzetten van alleen C7 het antwoord verandert — maar door dat om te
+zetten vuurt R1 niet meer en **kan R3 vuren en dezelfde `true` teruggeven**.
+Geen verandering in uitkomst, dus geen zelfstandig effect aangetoond. Ook R3
+breken betekent een tweede conditie wijzigen, en dan is het geen MC/DC-paar
+meer. Of er voor elke conditie in een FIRST-tabel een geldig paar bestaat, is
+werkelijk onbekend; bestaat het niet, dan is de methode onvervulbaar.
+
+**MC/DC is gedefinieerd over booleaanse condities, en deze zijn dat niet.** C2 is
+een bereiktoets op een berekende leeftijd, C5 een vergelijking met een
+grenswaarde, C7 een tekstvergelijking. "De conditie omzetten" vraagt om een
+definitie die het profiel zou moeten leveren voor bereiken en opsommingen. Blijkt
+die definitie willekeurig, dan is zij niet handhaafbaar.
+
+**Het kan voor sommige regels kloppen en voor andere ruis zijn.** R1 en R3 binden
+elk zes condities, en daar is MC/DC zijn prijs waard. Andere tabellen in de
+onderbouwing binden één conditie per regel; daar valt MC/DC samen met
+regeldekking en leveren de extra testgevallen niets op.
+
+#### De drie uitkomsten, vooraf vastgelegd
+
+| Uitkomst                  | Wat §4.4 dan wordt                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| Houdt volledig stand      | zoals geschreven — de eigenschap, vastgesteld met MC/DC, voor elke beslistabel                      |
+| Houdt stand met beperking | MC/DC alleen vereist voor regels die meer dan één conditie binden; elders regeldekking              |
+| Houdt geen stand          | de methode vervalt, de eigenschap blijft, en de bereikbaarheidseis uit §4.3 draagt wat zij al droeg |
+
+Wij zouden niet durven voorspellen welke. Daar gaat het juist om: een methode
+voorschrijven die vervolgens onder een gewone hit policy onhaalbaar blijkt,
+betekent een niet-handhaafbare standaard schrijven — en die schrijven voor
+mensen die eraan moeten voldoen. Beter dat te ontdekken op acht condities van
+één artikel.
+
+#### Eén detail om te weten vóór de ronde begint
+
+Het zelfstandige model van dit artikel draagt een uitvoer met een `label` en
+**zonder `name`** — het gebrek uit §4.3, hersteld in het grotere model waarin het
+ook voorkomt maar hier nooit teruggezet. De demonstrator begint dus met een model
+dat al niet aan het profiel voldoet, en dat is een eerlijker vertrekpunt dan een
+model dat wij eerst stilletjes hadden opgeschoond.
+
 ### Wat de vierde ronde zou opleveren
 
 | Product                        | Doel                                                                                                   |
@@ -326,14 +415,14 @@ vooraf vastgelegd:
 - **Kost de vierde ronde minder dan de derde?** De catalogus maakte elke ronde
   al goedkoper. Zet een geschreven profiel dat niet voort, dan is het
   documentatie en geen infrastructuur.
-- **Vindt MC/DC iets dat regeldekking niet vond?** Levert volledige
-  conditiedekking op een al tweemaal gemodelleerde beslissing niets op, dan is
-  dat bewijs tégen §4.4, en dan moeten wij dat zeggen en het laten vallen.
+- **Vindt MC/DC iets dat regeldekking niet vond?** §6.1 zet de drie uitkomsten
+  uiteen die dit kan opleveren en wat elk daarvan met §4.4 doet. Levert
+  volledige conditiedekking op een al tweemaal gemodelleerde beslissing niets
+  op, dan is dat bewijs tégen de methode, en dan moeten wij dat zeggen.
 
-Dat laatste punt is het eerlijke. Wij stellen een eis voor waaraan wij zelf nog
-niet voldoen, op grond van een redenering. In de vierde ronde wordt die
-redenering getoetst, en de uitkomst kan zijn dat MC/DC op deze schaal zijn prijs
-niet waard is. Beter dat te ontdekken op één artikel dan in een verplichting.
+Dat laatste punt is het eerlijke. Wij stellen een methode voor die wij zelf nog
+niet hebben toegepast, op grond van een redenering, en in §6.1 wordt die
+redenering getoetst.
 
 ---
 
@@ -390,8 +479,8 @@ contact met een echte beslissing hebben doorstaan — §4.4 bovenal.
 2. DMN-AP NL opstellen langs de vijf gebieden uit §4, met de drie afgeronde
    rondes als testcorpus.
 3. De vierde ronde op artikel 36 tegen het concept aan uitvoeren.
-4. Rapporteren: wat het profiel ving, wat het miste, wat het kostte, en of §4.4
-   het contact met een echte beslissing doorstaat.
+4. Rapporteren: wat het profiel ving, wat het miste, wat het kostte, en welke
+   van de drie uitkomsten uit §6.1 §4.4 heeft opgeleverd.
 5. Pas daarna: besluiten of DMN-AP NL ter toetsing voor de "pas toe of leg
    uit"-lijst wordt aangeboden.
 
