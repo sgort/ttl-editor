@@ -61,6 +61,11 @@ chair, that it intends to act on exactly this.
 happen anyway. §6 proposes running the fourth pass _against the draft profile_,
 so the profile is tested by the work rather than in addition to it.
 
+**What it would look like when it works:** a professional reads artikel 36 on
+`wetten.overheid.nl`, clicks once, and is looking at the decision model that
+implements it — and can call that model and get an answer. §6.2 sets out how,
+and why the hard part is already done.
+
 **The one-sentence case:**
 
 > Every one of the three delivered models opened correctly in a modelling tool,
@@ -202,7 +207,7 @@ failures, not warnings.
 tables, plus a live evaluation demonstrating each declared outcome. A model that
 cannot be made to say yes does not conform.
 
-### 4.4 Test coverage using MC/DC
+### 4.4 Every condition must earn its place
 
 **Observed, and stated plainly: we have not done this.** All three passes
 achieved _rule coverage_ — one dedicated case per rule, 100, 121 and 65 cases
@@ -217,17 +222,31 @@ what [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage)
 is for, and it is the standard already used where software failure has
 consequences.
 
-**The profile must require.** MC/DC over the conditions of each decision table:
-every condition shown, by a pair of cases, to independently change the outcome.
-Submitted as evidence with the model, not asserted.
+**The profile must require** — stated as a property, because the property is
+what matters and the method for proving it is still open:
+
+> No condition may appear in a decision table without evidence that it can, on
+> its own, change an outcome.
+
+A condition that cannot is either dead weight or a defect. In a benefits
+decision it is worse than either: it is **a fact the citizen was asked to supply
+that could never have affected their answer**. Read that way this is not a
+testing requirement at all — it is administrative burden and data minimisation,
+and it is checkable.
+
+**The candidate method is MC/DC**, which is exactly the technique for
+establishing that property: for each condition, a pair of cases differing in
+that condition alone, in which the outcome differs. Submitted as evidence with
+the model, not asserted.
 
 **Conformance is proved by.** A coverage report naming, per condition, the pair
 of cases that demonstrates its independent effect — and a live run of all of
 them.
 
-This is the most demanding of the five, and the one we should be most careful
-about proposing. §6 exists so that we demonstrate it before we require it of
-anyone else.
+**This is the one area of the five we are proposing as a hypothesis.** The
+property we are confident about. Whether MC/DC can establish it on ordinary
+decision tables is an open question, and §6.1 is the experiment that settles it.
+If MC/DC does not survive, the property stands and the method is replaced.
 
 ### 4.5 An interoperability agreement on the interaction dialog
 
@@ -249,6 +268,31 @@ with no other knowledge, and evaluating it successfully.
 This is the requirement with the widest reach. The other four make a model
 trustworthy; this one makes it _usable by somebody else_, which is the whole
 point of publishing decisions as services.
+
+### 4.6 The legal link, in a form the law's own infrastructure can index
+
+> **A sixth area, proposed rather than assumed.** The five above are the ones we
+> set out to specify. This one follows from the objective in §6.2, and it is the
+> requirement §2.2 asks for and that §4 otherwise leaves unanswered. Whether to
+> adopt it is a decision, not a foregone conclusion.
+
+**Observed.** §2.2 records that `knowledgeSource` and `authorityRequirement`
+carry whatever an author puts in them: in one model, data provenance rather than
+statute, with no resolvable address. A different model carried cell-level
+grounding in JuriConnect form — and that reference turns out to be **byte-for-byte
+the identifier the national legal-information service already keys on**. The join
+between a decision model and the law exists today, in one model, by accident of
+good practice rather than by requirement.
+
+**The profile must require.** That a model declares which legal provision each
+grounded rule implements, as a JuriConnect (`jci`) reference including the
+version coordinates, at the granularity at which the provision is published. Not
+a document-level "this model concerns the Participatiewet", but provision-level:
+_this rule implements artikel 36 as it stood on this date_.
+
+**Conformance is proved by.** Resolving every declared reference against the
+national legal-information service and getting the provision back — and, once
+§6.2 exists, finding the model again from that provision.
 
 ---
 
@@ -292,6 +336,133 @@ It is the right subject for four reasons, and they are not incidental:
 4. **It is a real entitlement decision** about money paid to people on a low
    income, with a versioned legal source. Nothing about it is a toy.
 
+### 6.1 What the demonstrator actually tests about §4.4
+
+The article 36 table, as it stands today — eight conditions, five rules,
+`hitPolicy=FIRST`, four rules granting entitlement and one wildcard default
+refusing it:
+
+```
+ C1 woonachtig in de gemeente        C5 vermogen op 31-12 vorig jaar
+ C2 leeftijd >= 21                   C6 een schuldregeling
+ C3 uitzicht op inkomensverbetering  C7 gezinssituatie
+ C4 langdurig laag inkomen           C8 partner: uitzicht op inkomensverbetering
+
+ R1  true  >=21  false  true  <=grens   ·    not "met partner"  ·     → true
+ R2  true  >=21  false   ·      ·     true   not "met partner"  ·     → true
+ R3  true  >=21  false  true  <=grens   ·           ·         false   → true
+ R4  true  >=21  false   ·      ·     true          ·         false   → true
+ R5   ·      ·     ·     ·      ·       ·           ·           ·     → false
+```
+
+**What rule coverage gives you: five cases.** One per rule. R1 binds six
+conditions, and one case proves only that _some_ combination makes R1 fire. It
+never shows that C5 matters. If that cell were wrong, or if C5 were satisfied
+whenever C1–C4 are, the case still passes and nothing notices.
+
+**What MC/DC would give you: roughly nine to twelve.** And each additional case
+is an applicant refused **for exactly one reason** — which in a benefits
+decision is the _motivering_, the ground stated in the letter and the thing an
+appeal turns on. That is the argument for §4.4 in one line: can this model
+produce a correct single-ground refusal for every ground there is?
+
+#### Three ways it can fail, all visible in that table
+
+**Masking under FIRST.** R1 and R3 differ only in C6, C7 and C8. To show C7
+independently affects the outcome you need a case where flipping C7 alone
+changes the answer — but flipping it stops R1 firing and **R3 may then fire and
+return the same `true`**. No change in outcome, so no independent effect
+demonstrated. Breaking R3 as well means changing a second condition, which is no
+longer an MC/DC pair. Whether a valid pair exists for every condition in a
+FIRST-hit table is genuinely unknown, and if it does not, the method is
+unsatisfiable.
+
+**MC/DC is defined over boolean conditions, and these are not.** C2 is a range
+test on a computed age, C5 a comparison against a threshold, C7 a string test.
+"Flip the condition" needs a definition the profile would have to supply for
+ranges and enumerations. If that definition turns out arbitrary, it cannot be
+enforced.
+
+**It may be right for some rules and noise for others.** R1 and R3 bind six
+conditions each, where MC/DC earns its cost. Other tables in the evidence base
+bind one condition per rule, where MC/DC collapses into rule coverage and the
+extra cases buy nothing.
+
+#### The three outcomes, fixed in advance
+
+| Outcome            | What §4.4 becomes                                                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Survives intact    | as written — the property, established by MC/DC, for every decision table                                               |
+| Survives qualified | MC/DC required only for rules binding more than one condition; rule coverage elsewhere                                  |
+| Fails              | the method is dropped, the property stays, and §4.3's reachability requirement carries the load it was already carrying |
+
+We would not predict which. That is the point of running it: mandating a method
+that then proves unachievable under an ordinary hit policy would mean writing an
+unenforceable standard, and writing it for people obliged to comply with it.
+Better to find out on eight conditions of one article.
+
+#### One detail worth knowing before the pass starts
+
+The standalone model of this article carries an output with a `label` and **no
+`name`** — the defect described in §4.3, fixed in the larger model it also
+appears in but never back-ported here. The demonstrator therefore begins with a
+model that already fails the profile, which is a more honest starting point than
+one we had quietly cleaned up first.
+
+### 6.2 From the law to the model, in one click
+
+A second objective for the fourth pass, and the one that makes the rest visible
+to people who will never read a profile.
+
+**What exists today.** On `wetten.overheid.nl`, artikel 36 carries a relations
+icon — _Toon relaties in LiDO_ — which opens a panel of external relations held
+at `linkeddata.overheid.nl`, grouped by the kind of thing on the other end:
+jurisprudentie, ministeriële regelingen, officiële publicaties, wetten. Following
+it opens LiDO, where the article's incoming and outgoing relations are listed and
+can be filtered.
+
+Every category is a **legal document**. A professional reading the article can
+reach the case law that interprets it and the regulations that depend on it. What
+they cannot reach is the decision model that executes it — because no such
+category exists.
+
+**What we propose.** Publish the artikel 36 model as linked data conformant to
+DMN-AP NL, register it in LiDO against the provision it implements, and add one
+entry to that panel:
+
+> **Kennismodel**
+
+One click from the text of the law to the executable model of it. Then, as more
+regulations are modelled, the same click from every article that has one.
+
+**Why this is tractable rather than aspirational.** The identifier LiDO uses to
+address the article is
+`jci1.3:c:BWBR0015703&hoofdstuk=4&paragraaf=4.1&artikel=36&z=2026-07-01&g=2026-07-01`.
+That string is **already present, unchanged, in the cell-level grounding of the
+existing Amsterdam model of this very article**. No mapping has to be invented
+and no crosswalk has to be maintained: the key the law's infrastructure indexes
+on is the key the modelling work already writes down. §4.6 is the requirement
+that turns that from a happy accident into a property every conformant model has.
+
+**What it needs from whom.** Three things, and only the first is ours:
+
+| Step                                                                  | Who                                             |
+| --------------------------------------------------------------------- | ----------------------------------------------- |
+| Publish the model as linked data, carrying its JuriConnect references | us, in the fourth pass                          |
+| Accept a decision model as a relatable object and index it            | the operator of LiDO (`linkeddata.overheid.nl`) |
+| Add the _Kennismodel_ entry to the relations panel                    | the operator of `wetten.overheid.nl`            |
+
+This adds a **fourth addressee** to the three in §2 — the legal-information
+infrastructure itself. It is the reason this objective is stated here rather than
+assumed: nothing about it is in our gift, and a profile that produced beautifully
+grounded models nobody could find from the law would have missed the point.
+
+**What it would demonstrate.** That _van wet tot loket_ is not a slogan. The
+route becomes: read the article, click once, see the decision model that
+implements it, and — because §4.3 requires it — call that model and get an
+answer. For a professional at a municipality, that is the difference between
+knowing a rule exists and being able to apply it.
+
 ### What the fourth pass would produce
 
 | Deliverable                  | Purpose                                                                                                   |
@@ -302,6 +473,7 @@ It is the right subject for four reasons, and they are not incidental:
 | An MC/DC suite               | the first true MC/DC coverage in this programme                                                           |
 | A published decision service | linked data, with its legal basis attached                                                                |
 | A findings report            | which requirements the model failed first time, and which of them the profile caught rather than a person |
+| A LiDO registration          | the model discoverable from artikel 36 itself, via a _Kennismodel_ entry (§6.2)                           |
 
 ### How we would know the profile is any good
 
@@ -314,14 +486,14 @@ fixed in advance:
 - **Does the fourth pass cost less than the third?** The catalogue already made
   each pass cheaper. If a written profile does not continue that, it is
   documentation rather than infrastructure.
-- **Does MC/DC find something rule coverage did not?** If full condition
+- **Does MC/DC find something rule coverage did not?** §6.1 sets out the three
+  outcomes this can return and what each does to §4.4. If full condition
   coverage on an already twice-modelled decision surfaces nothing, that is
-  evidence against §4.4, and we should say so and drop it.
+  evidence against the method, and we should say so.
 
-That last point is the honest one. We are proposing a requirement we have not
-yet met, on the strength of an argument. The fourth pass is where the argument
-gets tested, and the result may be that MC/DC is not worth its cost at this
-scale. Better to find that out on one article than in a mandate.
+That last point is the honest one. We are proposing a method we have not yet
+used, on the strength of an argument, and §6.1 is where the argument gets
+tested.
 
 ---
 
@@ -375,8 +547,8 @@ decision — §4.4 most of all.
 2. Draft DMN-AP NL against the five areas in §4, with the three completed passes
    as the test corpus.
 3. Run the fourth pass on artikel 36 against the draft.
-4. Report: what the profile caught, what it missed, what it cost, and whether
-   §4.4 survives contact with a real decision.
+4. Report: what the profile caught, what it missed, what it cost, and which
+   of §6.1's three outcomes §4.4 returned.
 5. Only then: decide whether to take DMN-AP NL through assessment for the
    comply-or-explain list.
 
