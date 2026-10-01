@@ -21,6 +21,13 @@ const FIXTURES = [
   'examples/full-test.ttl',
   'examples/full-test-import-export.ttl',
   'examples/organizations/svb/Bepaling-leeftijd-AOW.ttl',
+  // A real published export, carrying the cell-level grounding layer: cell
+  // resources, minted concepts and citation stubs, all typed `a cprmv:Rule`
+  // without being policy rules. An earlier version of this file was corrupted
+  // by exactly that confusion -- 12 fabricated `incomplete_*` rules written
+  // back on republish -- so a published artefact that cannot survive a round
+  // trip now fails the build.
+  'examples/organizations/amsterdam/Digital-Twin-Inkomensregelingen.ttl',
 ];
 
 // Mirrors importHandler.js's handleTTLImport DMN-preservation branch exactly
