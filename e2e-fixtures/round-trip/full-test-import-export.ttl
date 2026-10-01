@@ -397,6 +397,38 @@
     cprmv:rulesetType "decision-table" .
 
 
+# ============================================================
+#  Cell-level legislative grounding
+#  These are typed `a cprmv:Rule` because cprmv:isBasedOn carries
+#  sh:class cprmv:Rule, NOT because they are Norms & Standards rules.
+#  Only the subject tells them apart from a policy rule, which is
+#  published under https://cprmv.open-regels.nl/rules/ .
+# ============================================================
+
+<https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_1lnxdpr/cell/inputentry_1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1lnxdpr-cell-inputentry_1" ;
+    skos:prefLabel "natuurlijk persoon heeft woonadres" ;
+    dct:type "Juridisch relevant feit" ;
+    dct:source <https://hva.pna-web.com/hva/?type=APT&id=61d1181d-a7e6-4da1-a121-89ca30fcb7b0> ;
+    cprmv:sourceQuote "Woonadres" ;
+    cprmv:isBasedOn <https://lokaleregelgeving.overheid.nl/CVDR645454/12> .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_1lnxdpr/cell/inputentry_2> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1lnxdpr-cell-inputentry_2" ;
+    cprmv:hasPart ( <https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_1lnxdpr/cell/inputentry_2/grounding/1> ) .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/rules/DecisionRule_1lnxdpr/cell/inputentry_2/grounding/1> a cprmv:Rule ;
+    cprmv:id "DecisionRule_1lnxdpr-cell-inputentry_2-grounding-1" ;
+    cprmv:isBasedOn <https://regels.overheid.nl/services/test-comprehensive-service/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30> .
+
+<https://regels.overheid.nl/services/test-comprehensive-service/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30> a cprmv:Rule ;
+    cprmv:id "8bf152a7-22a1-4624-b43b-aa9c9ff68b30" ;
+    dct:source <https://hva.pna-web.com/hva/?type=CPT&id=8bf152a7-22a1-4624-b43b-aa9c9ff68b30> .
+
+<https://lokaleregelgeving.overheid.nl/CVDR645454/12> a cprmv:Rule ;
+    cprmv:id "https://lokaleregelgeving.overheid.nl/CVDR645454/12" .
+
+
 <https://regels.overheid.nl/schemes/dmn-variables> a skos:ConceptScheme ;
     dct:title "DMN Variabelen Begrippenkader"@nl ;
     dct:description "Begrippenkader voor invoer- en uitvoervariabelen van DMN beslisregels in het RONL stelsel."@nl ;
