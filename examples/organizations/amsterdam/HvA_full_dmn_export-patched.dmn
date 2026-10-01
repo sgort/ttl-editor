@@ -2600,7 +2600,9 @@
         <dmn:inputEntry id="_inputentry_145"
                         dct:source="61d1181d-a7e6-4da1-a121-89ca30fcb7b0"
                         cprmv:sourceQuote="Woonadres"
-                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12">
+                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12"
+                        cprmv:conceptName="natuurlijk persoon heeft woonadres"
+                        cprmv:conceptType="Juridisch relevant feit">
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_470">
@@ -2608,33 +2610,46 @@
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_148"
                         dct:source="cf35d84d-bec6-42b7-8491-9208ef44d2c9"
-                        cprmv:isBasedOn="jci1.3:c:BWBR0015703&amp;hoofdstuk=4&amp;paragraaf=4.1&amp;artikel=36&amp;z=2026-07-01&amp;g=2026-07-01">
+                        cprmv:isBasedOn="jci1.3:c:BWBR0015703&amp;hoofdstuk=4&amp;paragraaf=4.1&amp;artikel=36&amp;z=2026-07-01&amp;g=2026-07-01"
+                        cprmv:conceptName="rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"
+                        cprmv:conceptType="Juridisch relevant feit">
           <dmn:text>false</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_149"
                         dct:source="0f0d5140-0624-4aa3-a077-2a26087d1436"
                         cprmv:sourceQuote="hij laag inkomen had"
-                        cprmv:isBasedOn="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=4">
+                        cprmv:isBasedOn="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=4"
+                        cprmv:conceptName="natuurlijke persoon heeft langdurig laag inkomen"
+                        cprmv:conceptType="Juridisch relevant feit">
           <dmn:text>true</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_150"
                         dct:source="6fea33db-8454-4a6c-9e02-db6a1f3417db"
                         cprmv:sourceQuote="een vermogen"
-                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12">
+                        cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR645454/12"
+                        cprmv:conceptName="natuurlijk persoon beschikt over een vermogen"
+                        cprmv:conceptType="Juridisch relevant feit">
           <dmn:text>&lt;= vanToepassingZijndeVermogensgrens</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_151">
           <dmn:text>-</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_152"
-                        dct:source="8bf152a7-22a1-4624-b43b-aa9c9ff68b30">
+                        dct:source="8bf152a7-22a1-4624-b43b-aa9c9ff68b30"
+                        cprmv:conceptName="natuurlijk persoon heeft gezinssituatie"
+                        cprmv:conceptType="Juridisch relevant feit"
+                        cprmv:isBasedOn1="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=1"
+                        cprmv:isBasedOn2="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=4">
           <dmn:text>not("met partner")</dmn:text>
         </dmn:inputEntry>
         <dmn:inputEntry id="_inputentry_153">
           <dmn:text>-</dmn:text>
         </dmn:inputEntry>
         <dmn:outputEntry id="_outputentry_15"
-                         dct:source="4b7157ff-2bc6-4ada-ba36-8123e6038dfe">
+                         dct:source="4b7157ff-2bc6-4ada-ba36-8123e6038dfe"
+                         cprmv:conceptName="aanspraak individuele inkomenstoeslag"
+                         cprmv:conceptType="Rechtsbetrekking"
+                         cprmv:isBasedOn="jci1.31:c:NoBWBnumber&amp;hoofdstuk=ontbrekende nummer&amp;artikel=3">
           <dmn:text>true</dmn:text>
         </dmn:outputEntry>
       </dmn:rule>
