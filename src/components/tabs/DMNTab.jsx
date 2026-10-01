@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { sanitizeIri } from '../../utils';
+import { EMPTY_DMN_DATA, sanitizeIri } from '../../utils';
 import {
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
@@ -145,24 +145,12 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
               </p>
               <button
                 onClick={() => {
-                  setDmnData({
-                    fileName: '',
-                    content: '',
-                    decisionKey: '',
-                    deployed: false,
-                    deploymentId: null,
-                    deployedAt: null,
-                    apiEndpoint: '',
-                    lastTestResult: null,
-                    lastTestTimestamp: null,
-                    testBody: null,
-                    importedDmnBlocks: null,
-                    isImported: false,
-                    validationStatus: 'not-validated',
-                    validatedBy: '',
-                    validatedAt: '',
-                    validationNote: '',
-                  });
+                  setDmnData({ ...EMPTY_DMN_DATA });
+                  // The concepts were generated from the DMN this TTL carried,
+                  // so they go with it -- otherwise the Concepts tab keeps
+                  // describing inputs and outputs the service no longer has,
+                  // and they republish straight into the next export.
+                  setConcepts([]);
                 }}
                 className="mt-4 px-4 py-2 bg-white border border-blue-300 text-blue-700 rounded-md text-sm font-medium hover:bg-blue-50 transition-colors"
               >
@@ -1074,17 +1062,7 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
     setApiConfig((prev) => ({ ...prev, decisionKey: '' }));
     setValidationResult(null);
     setIsValidating(false);
-    setDmnData({
-      fileName: '',
-      content: '',
-      decisionKey: '',
-      deployed: false,
-      deploymentId: null,
-      deployedAt: null,
-      apiEndpoint: '',
-      lastTestResult: null,
-      lastTestTimestamp: null,
-    });
+    setDmnData({ ...EMPTY_DMN_DATA });
     setConcepts([]);
   };
 

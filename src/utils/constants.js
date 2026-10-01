@@ -65,6 +65,31 @@ export const DEFAULT_OUTPUT = {
   type: '',
 };
 
+// The DMN tab reset to empty. Three places clear DMN data -- the Clear button
+// on an uploaded file, the Clear Imported DMN Data button on a TTL that
+// arrived carrying some, and Clear All -- and they had drifted into three
+// different shapes, which is how the imported path came to leave the generated
+// concepts behind. Clear All overrides apiEndpoint, since it returns the tab to
+// its first-run default rather than to blank.
+export const EMPTY_DMN_DATA = {
+  fileName: '',
+  content: '',
+  decisionKey: '',
+  deployed: false,
+  deploymentId: null,
+  deployedAt: null,
+  apiEndpoint: '',
+  lastTestResult: null,
+  lastTestTimestamp: null,
+  testBody: null,
+  importedDmnBlocks: null,
+  isImported: false,
+  validationStatus: 'not-validated',
+  validatedBy: '',
+  validatedAt: '',
+  validationNote: '',
+};
+
 // TTL Namespace declarations
 export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix cv: <http://data.europa.eu/m8g/> .

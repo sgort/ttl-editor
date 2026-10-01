@@ -7,6 +7,7 @@ import {
   DEFAULT_ORGANIZATION,
   DEFAULT_OUTPUT,
   DEFAULT_SERVICE,
+  EMPTY_DMN_DATA,
 } from '../utils';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
 import { loadTriplyDBConfig } from '../utils/triplydbHelper';
@@ -166,18 +167,9 @@ export const useEditorState = () => {
     setCost(DEFAULT_COST);
     setOutput(DEFAULT_OUTPUT);
     setDmnData({
-      fileName: '',
-      content: '',
-      decisionKey: '',
-      deployed: false,
-      deploymentId: null,
-      deployedAt: null,
+      ...EMPTY_DMN_DATA,
+      // Clear All returns the tab to its first-run default rather than blank.
       apiEndpoint: 'https://operaton.open-regels.nl/engine-rest',
-      lastTestResult: null,
-      lastTestTimestamp: null,
-      testBody: null,
-      importedDmnBlocks: null,
-      isImported: false,
     });
     setVendorService({
       selectedVendor: '',
