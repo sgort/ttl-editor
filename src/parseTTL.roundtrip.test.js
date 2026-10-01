@@ -169,3 +169,55 @@ describe('concepts round-trip only when a DMN model is actually attached', () =>
     expect(secondParse.concepts).toEqual([]);
   });
 });
+
+describe('`a cprmv:Rule` is four different things', () => {
+  // A published export types its cell resources, its minted concepts and its
+  // citation stubs `a cprmv:Rule`, because cprmv:isBasedOn carries
+  // sh:class cprmv:Rule and its object must itself be one. Only the subject
+  // separates them from a Norms & Standards rule, which is published under
+  // https://cprmv.open-regels.nl/rules/ .
+  //
+  // Importing them as policy rules was destructive twice over: they arrived in
+  // the Policy tab as rules nobody wrote, and they were lost from the preserved
+  // DMN block, leaving the surviving cprmv:hasPart lists pointing at nothing.
+  // A round-trip equality check could not see it -- both parses agreed on the
+  // same wrong answer -- so these assert the values, not the agreement.
+  const ttl = fs.readFileSync(
+    path.join(__dirname, '..', 'examples/full-test-import-export.ttl'),
+    'utf-8'
+  );
+
+  test('only the subjects under the policy-rule base become cprmvRules', () => {
+    const parsed = parseTTLEnhanced(ttl);
+    expect(parsed.cprmvRules).toHaveLength(6);
+    // every one is a real Artikel 31 rule, not a cell id, concept id or URL
+    parsed.cprmvRules.forEach((rule) => {
+      expect(rule.ruleId).not.toMatch(/-cell-/);
+      expect(rule.ruleId).not.toMatch(/^https?:/);
+      expect(rule.ruleIdPath).toMatch(/Artikel_31/);
+    });
+  });
+
+  test('the grounding resources stay in the preserved DMN block instead', () => {
+    const parsed = parseTTLEnhanced(ttl);
+    const blocks = parsed.importedDmnBlocks || '';
+    const preserved = Array.isArray(blocks) ? blocks.join('\n') : String(blocks);
+
+    expect(preserved).toContain('/cell/inputentry_1');
+    expect(preserved).toContain('cprmv:sourceQuote "Woonadres"');
+    expect(preserved).toContain('/cell/inputentry_2/grounding/1');
+    expect(preserved).toContain('/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30');
+    expect(preserved).toContain(
+      '<https://lokaleregelgeving.overheid.nl/CVDR645454/12> a cprmv:Rule'
+    );
+  });
+
+  test('regenerating invents no policy rule for a grounding resource', () => {
+    const parsed = parseTTLEnhanced(ttl);
+    const regenerated = generateTTL({ ...parsed, dmnData: deriveDmnData(parsed) });
+    const invented = (
+      regenerated.match(/^<https:\/\/cprmv\.open-regels\.nl\/rules\/[^>]*>/gm) || []
+    ).filter((s) => /-cell-|incomplete_|overheid\.nl\/jci|CVDR/.test(s));
+    expect(invented).toEqual([]);
+  });
+});

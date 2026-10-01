@@ -106,6 +106,14 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
 `;
 
+// Where a CPRMV policy rule is published. This is the only thing that tells a
+// Norms & Standards rule apart from the other resources a published export
+// types `a cprmv:Rule`: the cell-grounding layer types its cell resources, its
+// minted concepts and its citation stubs the same way, because
+// cprmv:isBasedOn carries sh:class cprmv:Rule and its object must itself be a
+// cprmv:Rule. Shared with the parser so import and export cannot disagree.
+export const CPRMV_RULE_BASE = 'https://cprmv.open-regels.nl/rules/';
+
 // Base URIs for generated resources
 export const BASE_URIS = {
   services: 'https://regels.overheid.nl/services/',

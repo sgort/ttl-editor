@@ -6,6 +6,7 @@ import {
 } from './dmnHelpers';
 import {
   buildResourceUri,
+  CPRMV_RULE_BASE,
   encodeURIComponentTTL,
   escapeTTLString,
   isValidUri,
@@ -774,7 +775,7 @@ export class TTLGenerator {
       const rulesetId = rule.rulesetId || 'incomplete';
       ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
     }
-    return `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
+    return `${CPRMV_RULE_BASE}${ruleUriIdentifier}`;
   }
 
   /**
