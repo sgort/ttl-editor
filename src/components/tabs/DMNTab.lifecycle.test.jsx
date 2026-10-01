@@ -136,6 +136,19 @@ describe('a TTL that already carried DMN data', () => {
       expect.objectContaining({ isImported: false, content: '', deploymentId: null })
     );
   });
+
+  // The concepts in an imported TTL were generated from the DMN that TTL
+  // carried. Discarding the DMN and keeping them leaves the Concepts tab
+  // describing inputs and outputs the service no longer has -- which then
+  // republish straight back into the next export.
+  test('empties the concepts with it, the same as clearing an uploaded file', () => {
+    mockBackend();
+    const { props } = renderTab({ isImported: true, content: withDecision });
+
+    fireEvent.click(screen.getByRole('button', { name: /Clear Imported DMN Data/ }));
+
+    expect(props.setConcepts).toHaveBeenCalledWith([]);
+  });
 });
 
 describe('content that arrives from outside the tab', () => {
