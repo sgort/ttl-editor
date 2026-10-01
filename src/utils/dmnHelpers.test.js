@@ -286,6 +286,8 @@ describe('extractRulesFromDMN', () => {
       {
         id: '_inputEntry_1',
         text: 'true',
+        conceptName: null,
+        conceptType: null,
         groundings: [
           {
             source: '61d1181d-a7e6-4da1-a121-89ca30fcb7b0',
@@ -294,12 +296,14 @@ describe('extractRulesFromDMN', () => {
           },
         ],
       },
-      { id: '_inputEntry_6', text: '-', groundings: [] },
+      { id: '_inputEntry_6', text: '-', conceptName: null, conceptType: null, groundings: [] },
     ]);
     expect(rules[0].outputEntries).toEqual([
       {
         id: '_outputEntry_1',
         text: 'true',
+        conceptName: null,
+        conceptType: null,
         groundings: [
           { source: '4b7157ff-2bc6-4ada-ba36-8123e6038dfe', sourceQuote: null, isBasedOn: null },
         ],
@@ -486,5 +490,36 @@ describe('evaluateTestCaseExpectation', () => {
     const parsed = [{ hoogte: { value: '250' } }];
     const result = evaluateTestCaseExpectation({ hoogte: 250 }, parsed);
     expect(result.verdict).toBe('pass');
+  });
+});
+
+describe('extractCell concept labelling', () => {
+  test('reads cprmv:conceptName/conceptType alongside the groundings', () => {
+    const xml = `<?xml version="1.0"?>
+      <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+                   xmlns:cprmv="https://standaarden.open-regels.nl/standards/cprmv/0.4.1#"
+                   xmlns:dct="http://purl.org/dc/terms/">
+        <decision id="d1">
+          <decisionTable id="t1">
+            <rule id="r1">
+              <inputEntry id="c1"
+                          dct:source="cpt-1"
+                          cprmv:conceptName="natuurlijk persoon heeft woonadres"
+                          cprmv:conceptType="Juridisch relevant feit">
+                <text>true</text>
+              </inputEntry>
+              <inputEntry id="c2" dct:source="cpt-2"><text>false</text></inputEntry>
+            </rule>
+          </decisionTable>
+        </decision>
+      </definitions>`;
+    const rules = extractRulesFromDMN(xml, 'https://regels.overheid.nl/services/x');
+    const cells = rules[0].inputEntries;
+    expect(cells[0].conceptName).toBe('natuurlijk persoon heeft woonadres');
+    expect(cells[0].conceptType).toBe('Juridisch relevant feit');
+    expect(cells[0].groundings).toHaveLength(1);
+    // a cell without the attributes keeps the existing shape
+    expect(cells[1].conceptName).toBeNull();
+    expect(cells[1].conceptType).toBeNull();
   });
 });

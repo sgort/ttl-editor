@@ -136,7 +136,7 @@ citation before any of this is usable.
 > uses the same well-known property the TTL layer already uses for it, `dct:source`, not
 > a bespoke CPRMV-namespace property.
 
-Three attributes, attached directly to `<inputEntry>` / `<outputEntry>` — the same
+Five attributes, attached directly to `<inputEntry>` / `<outputEntry>` — the same
 foreign-attribute extension mechanism `cprmv:extends`/`cprmv:ruleType`/etc. already use at
 `<rule>` level, so nothing about DMN's schema or Operaton's tolerance for unknown
 namespaces changes:
@@ -146,6 +146,8 @@ namespaces changes:
 | `dct:source`        | the iKnow CPT or APT id (not invented — this is the traceability pass-through back to `HvA_annotaties.xml`), present whenever a concept/textannotation grounds the cell at all, independent of whether a quote or citation also exists | `<concept id>` / `<textannotation id>`                                         |
 | `cprmv:sourceQuote` | the literal quoted text, verbatim                                                                                                                                                                                                      | `<textannotation><text>`                                                       |
 | `cprmv:isBasedOn`   | a legislative citation — a JuriConnect (JCI) string, or a plain citation URL (Amsterdam's own data has both; see "Rule 1, column by column" above) — only present when the source `<textannotation>` actually supplies one             | `<textannotation juriconnect="...">`, or a citation URL in the annotation text |
+| `cprmv:conceptName` | the name of the concept the cell is grounded in — reached through the annotation's `@concept` attribute when `dct:source` holds an APT id, and read directly when it holds a CPT id                                                    | `<concept name>`                                                               |
+| `cprmv:conceptType` | that concept's type, from the knowledge domain's own vocabulary (`Juridisch relevant feit`, `Rechtsbetrekking`, `Delegatiebevoegdheid`, …)                                                                                             | `<concept type>`, `<textannotation type>`                                      |
 
 `dct:source` and `cprmv:isBasedOn` are no longer two readings of the same slot — the
 earlier draft had `isBasedOn` fall back to carrying the bare concept id when no citation
@@ -153,6 +155,31 @@ existed, which meant the same attribute meant two different things depending on 
 available. Splitting them is cleaner: `dct:source` is always the traceability/dedup
 pointer when any grounding exists; `isBasedOn` is always a citation, never a stand-in
 for one.
+
+`cprmv:conceptName` and `cprmv:conceptType` came later than the first three, once the
+`@concept` attribute on `<textannotation>` turned out to make the annotation export
+navigable in **both** directions: an annotation names the concept it annotates, so a cell
+grounded at either end can reach the other. 332 of the export's 358 annotations carry
+`@concept` and every one resolves.
+
+The concept is the authority for the name, not the annotation — all 360 concepts carry a
+`name` where only 38 of the 358 annotations do, and 7 of those 38 disagree with the concept
+they point at. So `cprmv:conceptName` is always the concept's, however the cell happens to
+reference it.
+
+Unlike the other three, these two have no CPRMV-namespace counterpart to be named after, so
+the generator emits them with the standard properties instead — `skos:prefLabel` for the
+name and `dct:type` for the type — on the **cell** resource rather than on an individual
+grounding, since they describe the cell as a whole. On a compound cell they stay on the
+parent. Both pass all three SHACL layers with no errors, warnings or infos.
+
+The same link also supplies citations, but far more sparsely: of the 244 concepts reachable
+from an annotation, 52 resolve to exactly one JuriConnect reference, 3 to conflicting ones
+and 189 to none. Where it conflicts, the numbered attribute family below records every
+citation rather than choosing one. One limit is worth knowing: a numbered `dct:source<n>`
+cannot hold an annotation id unless the matching `cprmv:sourceQuote<n>` is also present,
+because source type is inferred from the presence of a quote — a quoteless annotation id
+would be minted as `?type=CPT&id=<apt-id>`, which does not resolve.
 
 `cprmv:sourceQuote` and `cprmv:isBasedOn` are named directly after the properties already
 defined in the CPRMV vocabulary — and, importantly, both are **already real, shipping

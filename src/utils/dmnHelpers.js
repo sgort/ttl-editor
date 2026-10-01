@@ -320,10 +320,19 @@ function extractCellGroundings(entryEl) {
 /**
  * Extract one <inputEntry>/<outputEntry> cell: its own `id` (the stable per-cell
  * key a published TTL's cell URI is built from), its FEEL condition/value text,
- * and any cprmv groundings (see extractCellGroundings).
+ * any cprmv groundings (see extractCellGroundings), and the name and type of the
+ * concept the cell is grounded in.
+ *
+ * conceptName/conceptType come from the knowledge-domain export
+ * (HvA_annotaties.xml), where a <textannotation> carries @concept pointing at a
+ * <concept>. The concept is the authority for the name -- every concept in that
+ * export has one, where only a tenth of the annotations do -- so both attributes
+ * describe the concept however the cell happens to reference it, and they sit on
+ * the cell rather than on an individual grounding.
  *
  * @param {Element} entryEl - an <inputEntry> or <outputEntry> element
- * @returns {{id: string|null, text: string, groundings: Array}}
+ * @returns {{id: string|null, text: string, groundings: Array,
+ *            conceptName: string|null, conceptType: string|null}}
  */
 function extractCell(entryEl) {
   const textEl = queryLocal(entryEl, 'text');
@@ -331,6 +340,8 @@ function extractCell(entryEl) {
     id: entryEl.getAttribute('id') || null,
     text: textEl ? textEl.textContent : '',
     groundings: extractCellGroundings(entryEl),
+    conceptName: entryEl.getAttribute('cprmv:conceptName') || null,
+    conceptType: entryEl.getAttribute('cprmv:conceptType') || null,
   };
 }
 

@@ -28,7 +28,9 @@ const dmnContent = `<?xml version="1.0"?>
           <inputEntry id="ie1a"
                       dct:source="apt-1"
                       cprmv:sourceQuote="Woonadres"
-                      cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR1/1">
+                      cprmv:isBasedOn="https://lokaleregelgeving.overheid.nl/CVDR1/1"
+                      cprmv:conceptName="natuurlijk persoon heeft woonadres"
+                      cprmv:conceptType="Juridisch relevant feit">
             <text>true</text>
           </inputEntry>
           <inputEntry id="ie1b" dct:source="cpt-shared">
@@ -50,6 +52,8 @@ const dmnContent = `<?xml version="1.0"?>
             <text>true</text>
           </inputEntry>
           <inputEntry id="ie2b"
+                      cprmv:conceptName="natuurlijk persoon heeft leeftijd"
+                      cprmv:conceptType="Rechtsbetrekking"
                       dct:source1="concept-A"
                       cprmv:sourceQuote1="hij is meerderjarig"
                       cprmv:isBasedOn1="https://wetten.overheid.nl/jci1.3:c:BWBR0000001&amp;artikel=1"
@@ -151,7 +155,7 @@ describe('cell-level legislative grounding (Layer 3)', () => {
   test('a compound cell (numbered attribute family) gets a nested hasPart list of per-grounding resources', () => {
     const ttl = gen().generateDmnSection();
     expect(ttl).toContain(
-      `<${SERVICE_URI}/rules/rule2/cell/ie2b> a cprmv:Rule ;\n    cprmv:id "rule2-cell-ie2b" ;\n    cprmv:hasPart ( <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/2> ) .`
+      `<${SERVICE_URI}/rules/rule2/cell/ie2b> a cprmv:Rule ;\n    cprmv:id "rule2-cell-ie2b" ;\n    skos:prefLabel "natuurlijk persoon heeft leeftijd" ;\n    dct:type "Rechtsbetrekking" ;\n    cprmv:hasPart ( <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> <${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/2> ) .`
     );
     // grounding 1: APT-style, direct
     expect(ttl).toContain(`<${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/1> a cprmv:Rule`);
@@ -161,6 +165,33 @@ describe('cell-level legislative grounding (Layer 3)', () => {
     expect(ttl).toContain(`<${SERVICE_URI}/rules/rule2/cell/ie2b/grounding/2> a cprmv:Rule`);
     expect(ttl).toContain(`cprmv:isBasedOn <${SERVICE_URI}/concepts/concept-B>`);
     expect(ttl).toContain(`<${SERVICE_URI}/concepts/concept-B> a cprmv:Rule`);
+  });
+
+  test('a cell carrying cprmv:conceptName/conceptType labels its cell resource', () => {
+    const ttl = gen().generateDmnSection();
+    const cellBlock = ttl.match(/<[^>]*\/rules\/rule1\/cell\/ie1a> a cprmv:Rule[\s\S]*?\.\n\n/)[0];
+    expect(cellBlock).toContain('skos:prefLabel "natuurlijk persoon heeft woonadres"');
+    expect(cellBlock).toContain('dct:type "Juridisch relevant feit"');
+    // the grounding itself is unchanged -- the label names the concept the cell
+    // is grounded in, not the quote that grounds it
+    expect(cellBlock).toContain('cprmv:sourceQuote "Woonadres"');
+  });
+
+  test('on a compound cell the label sits on the parent, not on each grounding', () => {
+    const ttl = gen().generateDmnSection();
+    const parent = ttl.match(/<[^>]*\/rules\/rule2\/cell\/ie2b> a cprmv:Rule[\s\S]*?\.\n\n/)[0];
+    expect(parent).toContain('skos:prefLabel "natuurlijk persoon heeft leeftijd"');
+    expect(parent).toContain('dct:type "Rechtsbetrekking"');
+    expect(parent).toContain('cprmv:hasPart');
+    const g1 = ttl.match(/<[^>]*\/cell\/ie2b\/grounding\/1> a cprmv:Rule[\s\S]*?\.\n\n/)[0];
+    expect(g1).not.toContain('skos:prefLabel');
+  });
+
+  test('a cell with no concept attributes emits no label (shape unchanged)', () => {
+    const ttl = gen().generateDmnSection();
+    const cellBlock = ttl.match(/<[^>]*\/rules\/rule1\/cell\/ie1b> a cprmv:Rule[\s\S]*?\.\n\n/)[0];
+    expect(cellBlock).not.toContain('skos:prefLabel');
+    expect(cellBlock).not.toContain('dct:type');
   });
 
   test('a DMN with no grounded cells at all emits rules with no cprmv:hasPart / no cell resources', () => {
@@ -277,5 +308,45 @@ describe('cell-level legislative grounding against the real Amsterdam DMN', () =
     );
     expect(ttl).toContain('/concepts/8bf152a7-22a1-4624-b43b-aa9c9ff68b30> a cprmv:Rule');
     expect(ttl).toContain('/concepts/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> a cprmv:Rule');
+  });
+  test('every grounded cell now carries its concept name and type', () => {
+    const ttl = realTtl();
+    expect(ttl).toContain('skos:prefLabel "natuurlijk persoon heeft woonadres"');
+    expect(ttl).toContain(
+      'skos:prefLabel "rechthebbende op individuele inkomenstoeslag heeft uitzicht op inkomensverbetering"'
+    );
+    expect(ttl).toContain('skos:prefLabel "natuurlijke persoon heeft langdurig laag inkomen"');
+    expect(ttl).toContain('skos:prefLabel "natuurlijk persoon beschikt over een vermogen"');
+    expect(ttl).toContain('skos:prefLabel "natuurlijk persoon heeft gezinssituatie"');
+    expect(ttl).toContain('skos:prefLabel "aanspraak individuele inkomenstoeslag"');
+    expect(ttl).toContain('dct:type "Rechtsbetrekking"');
+    expect(ttl).toContain('dct:type "Juridisch relevant feit"');
+  });
+
+  test('_152 records both conflicting citations rather than choosing one', () => {
+    const ttl = realTtl();
+    const parent = ttl.match(/<[^>]*\/cell\/_inputentry_152> a cprmv:Rule[\s\S]*?\.\n\n/)[0];
+    expect(parent).toContain('cprmv:hasPart');
+    expect(parent).toContain('skos:prefLabel "natuurlijk persoon heeft gezinssituatie"');
+    // artikel 1 and artikel 4 -- the annotation file holds both, and the model
+    // does not decide between them
+    expect(ttl).toContain(
+      'cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=1>'
+    );
+    expect(ttl).toContain(
+      'cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=4>'
+    );
+  });
+
+  test('the output cell gained the citation the concept-annotation link supplies', () => {
+    const ttl = realTtl();
+    // 4b7157ff "aanspraak individuele inkomenstoeslag" carried no citation
+    // before; its single annotation (2823e65b) supplies artikel 3
+    const concept = ttl.match(
+      /<[^>]*\/concepts\/4b7157ff-2bc6-4ada-ba36-8123e6038dfe> a cprmv:Rule[\s\S]*?\.\n\n/
+    )[0];
+    expect(concept).toContain(
+      'cprmv:isBasedOn <https://wetten.overheid.nl/jci1.31:c:NoBWBnumber&hoofdstuk=ontbrekende_nummer&artikel=3>'
+    );
   });
 });
