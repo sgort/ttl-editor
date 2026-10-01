@@ -2,6 +2,187 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.10.0",
+      "status": "Released",
+      "date": "1 oct 2026",
+      "commits": [
+        {
+          "sha": "06ac5e7",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "A published export now survives import, export, import, end to end",
+          "details": [
+            "A new end-to-end journey imports the published Amsterdam export, writes it back, imports that and writes it back again. It needs neither Operaton nor the backend. It asserts what the cprmv:Rule defect below would have broken: the Policy tab stays empty, the cell grounding comes back out with the file, no rules/incomplete_* subject is invented, and the second export equals the first, with export timestamps blanked so that comparison is strict without being flaky.",
+            "That last assertion caught a regression from the fix below. Re-typing grounding resources as DMN entities kept the DMN section open past them, so the skos:ConceptScheme block that followed was swallowed into the preserved block while the generator emitted its own copy too: one extra scheme per round trip, compounding on every republish. The hole underneath was older: detectEntityType returned null for skos:ConceptScheme, so it never closed a DMN section. It now has a type of its own.",
+            "The regenerated Amsterdam export is pinned under e2e-fixtures/round-trip/ and registered in the unit round-trip suite, so a published artefact that cannot survive a round trip fails the build. The full-test fixture's pinned twin is re-synced. Both changes are recorded in e2e-fixtures/manifest.json."
+          ]
+        },
+        {
+          "sha": "43aa054",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Only subjects under the CPRMV rule base are imported as policy rules",
+          "details": [
+            "In a published export, `a cprmv:Rule` types four different things: policy rules, but also DMN cell resources, minted concepts and citation stubs, because cprmv:isBasedOn requires its object to be a cprmv:Rule. The importer treated all four as Norms & Standards rules. Importing the Amsterdam export turned 24 grounding resources into 24 empty Policy-tab rules and dropped them from the preserved DMN block, while the cprmv:hasPart lists that reference them survived. A republish then wrote them back as rules/incomplete_<id>, compounding on every cycle.",
+            "The parser now re-types anything typed cprmv:Rule that is not under the rule base as a DMN entity, so it is preserved verbatim with the rest of the export. CPRMV_RULE_BASE lives in utils/constants.js and is shared by the generator and the parser, so import and export cannot drift apart. The round-trip fixture gains the five kinds of grounded resource, and three new tests assert values rather than parse-to-parse agreement. That agreement was the blind spot: both parses had agreed on the same wrong answer."
+          ]
+        },
+        {
+          "sha": "3a010da",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Clear Imported DMN Data also clears the concepts it generated",
+          "details": [
+            "After importing a TTL that carries DMN data, \"Clear Imported DMN Data\" reset the DMN but left the Concepts tab populated with inputs and outputs the service no longer had, ready to be republished into the next export.",
+            "There were three reset sites, each holding its own copy of the cleared-dmnData shape, and they had drifted apart: 9, 16 and 12 fields, and only two of them cleared the concepts. One EMPTY_DMN_DATA constant now serves all three. As a consequence, both Clear and Clear All now also reset the validation status, validator, timestamp and note."
+          ]
+        },
+        {
+          "sha": "031c0f3",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react updated to 1.47.0",
+          "details": ["The icon library, from 1.46.0. A single lockfile entry."]
+        },
+        {
+          "sha": "37822ab",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Extending cell grounding across the Amsterdam DRD is surveyed, and left to a work list",
+          "details": [
+            "The DMN names facts as camelCase variables and the annotation export names them as Dutch phrases, and nothing in the material records how the two correspond. Of 762 cells, 385 are groundable, under 80 columns. Matching gives 0 exact matches and 10 clear winners. The other columns are ambiguous or have no candidate, which leaves roughly 70% of groundable cells with no defensible automatic answer, and even the clear winners include wrong matches.",
+            "So this adds a work list rather than a patch: concept-grounding-worklist.csv has one row per column, with up to three ranked candidates and an empty confirmed_concept_id column, alongside the reasoning and the script that regenerates both. No grounding was applied, because a wrong citation is worse than none."
+          ]
+        },
+        {
+          "sha": "4845f80",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Amsterdam cell grounding is enriched from the concept-annotation link",
+          "details": [
+            "HvA_annotaties.xml links annotations to concepts, so a cell grounded at either end can reach the other. All six grounded cells on Rule 1 gain a concept name and type, emitted as skos:prefLabel and dct:type. The concept is the authority for the name. _outputentry_15 gains a citation it never had, existing hand-added citations are never overwritten, and _inputentry_152's two conflicting citations are both recorded, left for the modellers to settle.",
+            "Two findings are recorded: HvA_annotaties.xml is not well-formed XML (eight unescaped double quotes), and a numbered dct:source<n> cannot carry an annotation id without a matching sourceQuote<n>. The enriched model deploys with all 25 decisions, passes 100 of 100 test cases, and validates against all three SHACL layers with nothing reported."
+          ]
+        },
+        {
+          "sha": "9bd4606",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Lock file maintenance",
+          "details": [
+            "Renovate's scheduled refresh of package-lock.json, moving transitive dependencies within their existing ranges."
+          ]
+        },
+        {
+          "sha": "70532f5",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite updated to 8.3.0",
+          "details": ["The build tool, from 8.2.2."]
+        },
+        {
+          "sha": "d190827",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "prettier updated to 3.9.7",
+          "details": ["The formatter, from 3.9.6."]
+        },
+        {
+          "sha": "42a702d",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@testing-library/dom updated to 10.4.2",
+          "details": ["A test dependency, from 10.4.1."]
+        },
+        {
+          "sha": "b7ae4d1",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser updated to 8.0.5",
+          "details": ["From 8.0.4."]
+        },
+        {
+          "sha": "c65c698",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Node.js updated to 24.21.0",
+          "details": [
+            "From 24.20.0, in .nvmrc and in the dependency-audit, SBOM and zizmor workflows together."
+          ]
+        },
+        {
+          "sha": "79475ce",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The supply-chain register moved to zizmor-action v0.6.4 alongside the bump",
+          "details": [
+            "Renovate's bump moves the workflow pin to cc914d7f (v0.6.4). The register row in SECURITY-PIPELINE.md has to follow by hand, or check-supply-chain fails the audit job, as it did on that pull request."
+          ]
+        },
+        {
+          "sha": "10b6805",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "zizmor-action updated to v0.6.4",
+          "details": [
+            "The supply-chain audit's action, pinned by digest. Its pull request passed the audit once the register moved to the new digest on the same branch, listed above."
+          ]
+        },
+        {
+          "sha": "f9e8a38",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react updated to 1.46.0",
+          "details": ["The icon library, from 1.41.0."]
+        },
+        {
+          "sha": "8f1700c",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lint-staged updated to 17.5.1",
+          "details": ["The pre-commit runner, from 17.5.0."]
+        },
+        {
+          "sha": "7b0371b",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "autoprefixer updated to 10.6.1",
+          "details": ["From 10.5.5."]
+        },
+        {
+          "sha": "14d8c7c",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-AP NL gains the LiDO objective, and a sixth conformance area it needs",
+          "details": [
+            "A second objective for the fourth modelling pass: publish the article 36 model as linked data, register it in LiDO, and add a Kennismodel entry to the relations panel wetten.overheid.nl already shows on that article. That puts the law one click from its executable model. It is tractable because the JCI identifier LiDO uses for the article is already present, byte for byte, in the existing Amsterdam model's cell-level grounding.",
+            "The objective exposed a gap: §4 never required a model to declare which provision it implements. A proposed §4.6 fills it with JuriConnect references at provision level, including version coordinates, and is flagged as proposed rather than assumed. §2 gains a fourth addressee, the legal-information infrastructure itself. Both languages are kept in step."
+          ]
+        },
+        {
+          "sha": "c7b8606",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-AP NL §4.4 restated as a property, with what the demonstrator tests",
+          "details": [
+            "§4.4 was the only conformance area written as a technique. It now states a property: no condition may appear in a decision table without evidence that it can, on its own, change an outcome. MC/DC becomes a candidate method, so it can fail without taking the requirement with it, and the requirement now reads as administrative burden and data minimisation rather than as testing.",
+            "A new §6.1 works through the real article 36 table. It covers what rule coverage misses, three ways MC/DC can fail there (masking under FIRST, non-boolean conditions, and collapse into rule coverage), and three outcomes fixed in advance. Both languages are kept in step."
+          ]
+        },
+        {
+          "sha": "8e15e33",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-AP NL is proposed to Forum Standaardisatie, in Dutch and English",
+          "details": [
+            "Three questions from modelling three regulations as executable decision services cannot be settled by an implementer, because each is about what the standard should require. This proposes a Dutch application profile on OMG DMN that settles them. A profile constrains the standard without changing it, the way DCAT-AP profiles DCAT. The proposal covers five conformance areas and a fourth modelling pass, on Participatiewet article 36, to test the profile before anyone is asked to adopt it.",
+            "The proposal says plainly that all three passes achieved rule coverage, not MC/DC. docs/dmn-ap-nl-voorstel.md (Dutch, primary) and docs/dmn-ap-nl-proposal.md (English) share their section numbering and are cross-linked."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.09.7",
       "status": "Released",
       "date": "26 sep 2026",
