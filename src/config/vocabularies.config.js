@@ -154,6 +154,16 @@ export const detectEntityType = (line) => {
     return 'ruleMethod';
   }
 
+  // A ConceptScheme is not a Concept, and until it was given a type of its own
+  // it returned null -- which meant that inside a DMN section it was swallowed
+  // as a continuation line and preserved verbatim, while the generator emitted
+  // its own copy as well. One extra scheme block per round trip, compounding.
+  // Naming it closes the DMN section instead, which is what any non-DMN entity
+  // should do.
+  if (line.includes('a skos:ConceptScheme')) {
+    return 'conceptScheme';
+  }
+
   // Concept detection - exclude ConceptScheme
   if (line.includes('a skos:Concept') && !line.includes('skos:ConceptScheme')) {
     return 'concept';

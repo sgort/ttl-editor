@@ -6,6 +6,7 @@ import {
 } from './dmnHelpers';
 import {
   buildResourceUri,
+  CPRMV_RULE_BASE,
   encodeURIComponentTTL,
   escapeTTLString,
   isValidUri,
@@ -774,7 +775,7 @@ export class TTLGenerator {
       const rulesetId = rule.rulesetId || 'incomplete';
       ruleUriIdentifier = `${encodeURIComponentTTL(rulesetId)}_${encodeURIComponentTTL(ruleId)}`;
     }
-    return `https://cprmv.open-regels.nl/rules/${ruleUriIdentifier}`;
+    return `${CPRMV_RULE_BASE}${ruleUriIdentifier}`;
   }
 
   /**
@@ -1341,14 +1342,27 @@ export class TTLGenerator {
           // generateCprmvRulesSection() precedent above for the same rule.
           const identifierLine = `cprmv:id "${escapeTTLString(`${rule.id}-cell-${cell.id}`)}"`;
 
+          // The concept the cell is grounded in, named and typed from the
+          // knowledge-domain export (see extractCell). These describe the cell
+          // as a whole, so on a compound cell they stay on the parent rather
+          // than being repeated across its groundings.
+          const headLines = [identifierLine];
+          if (cell.conceptName) {
+            headLines.push(`skos:prefLabel "${escapeTTLString(cell.conceptName)}"`);
+          }
+          if (cell.conceptType) {
+            headLines.push(`dct:type "${escapeTTLString(cell.conceptType)}"`);
+          }
+          const headTtl = headLines.join(' ;\n    ');
+
           if (cell.groundings.length === 1) {
             const propLines = groundingPropLines(cell.groundings[0]);
             if (propLines.length === 0) return null;
-            cellResourcesTtl += `<${cellUri}> a cprmv:Rule ;\n    ${identifierLine} ;\n    ${propLines.join(' ;\n    ')} .\n\n`;
+            cellResourcesTtl += `<${cellUri}> a cprmv:Rule ;\n    ${headTtl} ;\n    ${propLines.join(' ;\n    ')} .\n\n`;
           } else {
             const groundingUris = cell.groundings.map((_, i) => `${cellUri}/grounding/${i + 1}`);
             const listItems = groundingUris.map((u) => `<${u}>`).join(' ');
-            cellResourcesTtl += `<${cellUri}> a cprmv:Rule ;\n    ${identifierLine} ;\n    cprmv:hasPart ( ${listItems} ) .\n\n`;
+            cellResourcesTtl += `<${cellUri}> a cprmv:Rule ;\n    ${headTtl} ;\n    cprmv:hasPart ( ${listItems} ) .\n\n`;
             cell.groundings.forEach((grounding, i) => {
               const propLines = groundingPropLines(grounding);
               if (propLines.length === 0) return;

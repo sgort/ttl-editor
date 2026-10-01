@@ -65,6 +65,31 @@ export const DEFAULT_OUTPUT = {
   type: '',
 };
 
+// The DMN tab reset to empty. Three places clear DMN data -- the Clear button
+// on an uploaded file, the Clear Imported DMN Data button on a TTL that
+// arrived carrying some, and Clear All -- and they had drifted into three
+// different shapes, which is how the imported path came to leave the generated
+// concepts behind. Clear All overrides apiEndpoint, since it returns the tab to
+// its first-run default rather than to blank.
+export const EMPTY_DMN_DATA = {
+  fileName: '',
+  content: '',
+  decisionKey: '',
+  deployed: false,
+  deploymentId: null,
+  deployedAt: null,
+  apiEndpoint: '',
+  lastTestResult: null,
+  lastTestTimestamp: null,
+  testBody: null,
+  importedDmnBlocks: null,
+  isImported: false,
+  validationStatus: 'not-validated',
+  validatedBy: '',
+  validatedAt: '',
+  validationNote: '',
+};
+
 // TTL Namespace declarations
 export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix cv: <http://data.europa.eu/m8g/> .
@@ -80,6 +105,14 @@ export const TTL_NAMESPACES = `@prefix cpsv: <http://purl.org/vocab/cpsv#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix cprmv: <https://standaarden.open-regels.nl/standards/cprmv/0.4.1#> .
 `;
+
+// Where a CPRMV policy rule is published. This is the only thing that tells a
+// Norms & Standards rule apart from the other resources a published export
+// types `a cprmv:Rule`: the cell-grounding layer types its cell resources, its
+// minted concepts and its citation stubs the same way, because
+// cprmv:isBasedOn carries sh:class cprmv:Rule and its object must itself be a
+// cprmv:Rule. Shared with the parser so import and export cannot disagree.
+export const CPRMV_RULE_BASE = 'https://cprmv.open-regels.nl/rules/';
 
 // Base URIs for generated resources
 export const BASE_URIS = {

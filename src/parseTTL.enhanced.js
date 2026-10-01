@@ -2,6 +2,21 @@
 // Enhanced TTL parser with DMN block capture for round-trip preservation
 
 import { detectEntityType, validatePrefixes } from './config/vocabularies.config.js';
+import { CPRMV_RULE_BASE } from './utils/constants';
+
+/**
+ * Is this subject a CPRMV policy rule, as opposed to one of the other
+ * resources a published export types `a cprmv:Rule`?
+ *
+ * Only the publication base tells them apart. generateCprmvRulesSection emits
+ * every policy rule under CPRMV_RULE_BASE (with an `_<n>` suffix where two
+ * rules share a rule-id path, still under the same base). Cell resources sit
+ * under the service's own `/rules/<id>/cell/...`, minted concepts under
+ * `/concepts/...`, and citation stubs are external URLs entirely.
+ */
+function isCprmvPolicyRule(subject) {
+  return typeof subject === 'string' && subject.startsWith(CPRMV_RULE_BASE);
+}
 
 /**
  * Enhanced TTL Parser with DMN block preservation
@@ -168,15 +183,29 @@ export const parseTTLEnhanced = (ttlContent) => {
       if (line.startsWith('#') || line === '') continue;
 
       // Detect entity type using configuration
-      const detectedType = detectEntityType(line);
+      let detectedType = detectEntityType(line);
       if (detectedType) {
-        currentSection = detectedType;
-
         // Extract subject URI
         const subjectMatch = line.match(/<([^>]+)>/);
         if (subjectMatch) {
           currentSubject = subjectMatch[1];
         }
+
+        // `a cprmv:Rule` does not mean "a Norms & Standards rule". The
+        // cell-level grounding layer types its cell resources, its minted
+        // concepts and its citation stubs the same way, because
+        // cprmv:isBasedOn carries sh:class cprmv:Rule and its object must
+        // itself be one. Only the subject separates them, and getting this
+        // wrong is destructive in both directions: the grounding resources
+        // land in the Policy tab as rules nobody wrote, and they are lost
+        // from the preserved DMN block they belong to -- leaving the
+        // surviving cprmv:hasPart lists pointing at nothing. Re-typing them
+        // as DMN entities preserves them verbatim, which is what they are.
+        if (detectedType === 'cprmvRule' && !isCprmvPolicyRule(currentSubject)) {
+          detectedType = 'dmnRule';
+        }
+
+        currentSection = detectedType;
 
         // ========================================
         // DMN ENTITY DETECTION & CAPTURE (Option 3)
