@@ -108,7 +108,18 @@ pull request would have waited forever. The filter moved into a `changes` job
 (#162): the build is skipped on a documentation-only pull request, a skipped job
 counts as passed, and if `changes` fails the build runs anyway. Required checks
 match by job name, so renaming this job means updating the ruleset in the same
-change. `main` still requires nothing, as decided in #131.
+change.
+
+`main promotion gate` (ruleset `24227117`, enforcement `active`, scoped to
+`refs/heads/main`) has gated `main` since 30 September 2026. It requires a pull
+request, merge commits only, with zero approvals; requires `audit` and `scan`;
+and blocks deletion and non-fast-forward pushes. It has no bypass actors either.
+It does not require `Build and deploy ACC` or the production deploy: those are
+path-filtered on a promotion, and a required check that never reports wedges the
+pull request — the reasoning of #131, which turned out to hold for the deploy
+job but not for `audit` and `scan`, whose workflows run on every pull request
+with no path filter. Classic branch protection is gone on both branches (the protection API
+answers 404 for each), so the two rulesets are the whole gate.
 
 `scan` was added on 11 September 2026, once the finding backlog was clean —
 see issues #112 and #113 for the triage and the reasoning. It covers what
@@ -120,7 +131,7 @@ Two things to know before they surprise you:
 
 - **`bypass_actors` is empty.** There is no administrator override. If
   semgrep.dev is unreachable or `SEMGREP_APP_TOKEN` is revoked, merges to `acc`
-  stop until the ruleset is edited. That is a minute's work for the repository
+  and promotions to `main` stop until the rulesets are edited. That is a minute's work for the repository
   owner, and worth knowing now rather than diagnosing under pressure.
 - **Forked pull requests cannot pass `scan`.** Secrets are not passed to fork
   runs, so the scan cannot start. Accepted knowingly; issue #128 tracks it.

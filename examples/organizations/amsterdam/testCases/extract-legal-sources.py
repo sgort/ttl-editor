@@ -20,10 +20,12 @@ Usage:
         --annotations ../HvA_annotaties.xml \
         --json legal-sources-hva.json --markdown legal-sources-hva.md
 
-Requires: lxml (HvA_annotaties.xml is not well-formed XML — a handful of
-attribute values contain unescaped nested quotes — so this uses lxml's
-recovering parser rather than the stdlib xml.etree, which refuses the file
-outright).
+Requires: lxml. HvA_annotaties.xml as exported was not well-formed XML — four
+<property> values held 14 unescaped double quotes — which is why this uses
+lxml's recovering parser rather than the stdlib xml.etree. Those quotes were
+escaped as &quot; on 2026-10-03 (ttl-editor#190), the file's only edit, and it
+now parses strictly; the recovering parser is kept as tolerance for a future
+re-export.
 """
 import argparse
 import json
@@ -287,11 +289,11 @@ def render_markdown(mapping, stats, documents, unresolved):
     lines.append("## Known data-quality caveats")
     lines.append("")
     lines.append(
-        "- **`HvA_annotaties.xml` is not well-formed XML** — a handful of `<property>` "
-        "attribute values contain unescaped nested double quotes. Parsed with lxml's "
-        "recovering parser, which drops only the malformed fragment, not the surrounding "
-        "document; one `<textannotation>` out of the file's 359 was lost this way (358 "
-        "recovered here). Not something this script can fix — it's a defect in the "
+        "- **`HvA_annotaties.xml` was not well-formed XML as exported** — four `<property>` "
+        "attribute values contained 14 unescaped double quotes. They were escaped as "
+        "`&quot;` on 2026-10-03, the file's only edit, and it now parses strictly. The "
+        "recovering parser had lost no element even before: all 358 `<textannotation>` "
+        "elements and 360 `<concept>` elements were read either way. A defect in the "
         "source export, independent of the FEEL-evaluation fix in "
         "`HvA_full_dmn_export-patched.dmn`."
     )
