@@ -74,9 +74,10 @@ def local(el):
 
 
 def load_annotations(path):
-    """The export is not well-formed XML -- eight attribute values carry an
-    unescaped double quote, all inside <property> elements. A recovering parser
-    reads the concept/annotation graph cleanly regardless."""
+    """The export as delivered was not well-formed XML -- four <property>
+    values held 14 unescaped double quotes. They were escaped on 2026-10-03
+    (ttl-editor#190) and the file now parses strictly; the recovering parser is
+    kept so a future re-export with the same defect still reads."""
     root = etree.parse(path, etree.XMLParser(recover=True, huge_tree=True)).getroot()
     concepts = [(c.get("id"), c.get("name"), c.get("type"))
                 for c in root.iter("concept") if c.get("id") and c.get("name")]

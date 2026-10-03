@@ -358,7 +358,7 @@ hiervoor wordt de ITT  en studie toeslag niet gebruikt (zie art 5.1.1 Beleidsreg
 art. 4.3.2 lid 2 sub a definieert bescheiden vermogen als het vermogen dat de grenzen van art. 34 Pw niet te boven gaat"/>
 		   	<property name = "Interpretatie" 
 					  type = "value"
-					  value = "Het "bescheiden vermogen" verwijst naar de vermogensgrenzen zoals vastgesteld in artikel 34, derde lid van de Participatiewet. Hieruit volgt dat het gaat om het maximaal toegestane vermogen voor bijstandsverlening. Op basis daarvan kan "bescheiden vermogen" als volgt geïnterpreteerd worden: Een persoon beschikt over een bescheiden vermogen als het vermogen, zoals bedoeld in artikel 34, eerste lid, van de Participatiewet:
+					  value = "Het &quot;bescheiden vermogen&quot; verwijst naar de vermogensgrenzen zoals vastgesteld in artikel 34, derde lid van de Participatiewet. Hieruit volgt dat het gaat om het maximaal toegestane vermogen voor bijstandsverlening. Op basis daarvan kan &quot;bescheiden vermogen&quot; als volgt geïnterpreteerd worden: Een persoon beschikt over een bescheiden vermogen als het vermogen, zoals bedoeld in artikel 34, eerste lid, van de Participatiewet:
 
 – niet meer bedraagt dan de toepasselijke vermogensgrens zoals genoemd in het derde lid van dat artikel, namelijk:
  • € 7.770 voor een alleenstaande,
@@ -429,7 +429,7 @@ De OV-chipkaart moet persoonlijke en geldig zijn. Indien wel aan overige voorwaa
          <customproperties>
 		   	<property name = "Interpretatie" 
 					  type = "value"
-					  value = "Wat bijzondere omstandigheden zijn wordt o.a. uitgewerkt onder "kostensoorten" Beleidsregel Bijzondere Bijstand Gemeente Amsterdm"/>
+					  value = "Wat bijzondere omstandigheden zijn wordt o.a. uitgewerkt onder &quot;kostensoorten&quot; Beleidsregel Bijzondere Bijstand Gemeente Amsterdm"/>
            	<property name= "Juridisch relevante feiten"
 			          type = "reference"
                       reference = "79f99ead-e348-4d3c-a0ed-d5308ee1644e"/>
@@ -4540,7 +4540,7 @@ Art. 4 lid 1 subs d en e zijn zo geschreven alsof schuldregeling/Voedselbank lei
 					  value = "Afwijking van artikel 4 Pw"/>
 		   	<property name = "Interpretatie" 
 					  type = "value"
-					  value = "Artikel 2 beleidsregel "alleenstaande"-definitie verschilt t.o.v. artikel 4 Pw omdat voor de Pw een alleenstaande met kinderen ook onder "gezin" valt  "/>
+					  value = "Artikel 2 beleidsregel &quot;alleenstaande&quot;-definitie verschilt t.o.v. artikel 4 Pw omdat voor de Pw een alleenstaande met kinderen ook onder &quot;gezin&quot; valt  "/>
 		   	<property name = "Specialisatie of instantie " 
 					  type = "value"
 					  value = "Specialisatie"/>
@@ -4606,7 +4606,7 @@ Art. 4 lid 1 subs d en e zijn zo geschreven alsof schuldregeling/Voedselbank lei
 					  value = "Afwijking artike 4 Pw"/>
 		   	<property name = "Interpretatie" 
 					  type = "value"
-					  value = "Artikel 2 beleidsregel "alleenstaande"-definitie verschilt t.o.v. artikel 4 Pw omdat voor de Pw een alleenstaande met kinderen ook onder "gezin" valt  "/>
+					  value = "Artikel 2 beleidsregel &quot;alleenstaande&quot;-definitie verschilt t.o.v. artikel 4 Pw omdat voor de Pw een alleenstaande met kinderen ook onder &quot;gezin&quot; valt  "/>
 		   	<property name = "Specialisatie of instantie " 
 					  type = "value"
 					  value = "Specialisatie"/>
