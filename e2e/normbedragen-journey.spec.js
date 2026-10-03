@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { expect, test } from '@playwright/test';
+import { expect, test } from './stack.js';
 
 /**
  * The normbedragen journey: one deployment, four evaluations, four different
@@ -31,7 +31,7 @@ import { expect, test } from '@playwright/test';
  * A single evaluation could pass with the chain hardwired to one termijn, or one
  * column, and nobody would know. That is the failure this guards against.
  *
- * Same live-stack requirements as the other journeys; see e2e/global-setup.js,
+ * Same live-stack requirements as the other journeys; see e2e/stack.js,
  * which refuses to run any of them without a backend and an Operaton.
  *
  * Every run leaves a deployment on that engine, versioned rather than rejected,

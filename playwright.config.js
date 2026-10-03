@@ -29,6 +29,14 @@ const deployedTarget = process.env.E2E_BASE_URL;
  * which is a much larger piece of work than this. Adding a workflow now would
  * only ever be red, so there isn't one.
  *
+ * One journey is the exception: e2e/amsterdam-reimport-journey.spec.js needs
+ * neither service, and run on its own it probes neither —
+ *
+ *   npx playwright test e2e/amsterdam-reimport-journey.spec.js
+ *
+ * — so it is the one that could be wired into CI first. A CI run would also
+ * have to override the html reporter's `open: 'always'`, noted below.
+ *
  * Run it locally, with both services up:
  *
  *   npm run test:e2e            drive the default SVB example, headless
@@ -77,7 +85,7 @@ const deployedTarget = process.env.E2E_BASE_URL;
  * UI mode does NOT run anything on startup, and that is not a hang. It opens,
  * discovers the tests, and waits for you to press play — the green ▶ at the top
  * of the TESTS panel, the ▶ that appears on hovering a test row, or F5. Until
- * then no dev server starts, the preflight below has not run, and nothing has
+ * then no dev server starts, the preflight has not run, and nothing has
  * touched the backend, so an idle window with an empty trace pane is exactly
  * what it should look like. It stays open and re-runs on save; Ctrl-C exits.
  *
@@ -86,11 +94,11 @@ const deployedTarget = process.env.E2E_BASE_URL;
 export default defineConfig({
   testDir: './e2e',
 
-  // Checks the live stack before anything is driven, and fails with a message
-  // naming what is missing. Without it, a backend that is down surfaces as a
-  // Playwright timeout on a button — true, but several steps removed from the
-  // cause. See e2e/global-setup.js.
-  globalSetup: './e2e/global-setup.js',
+  // No globalSetup. The live-stack preflight is a fixture in e2e/stack.js, which
+  // only the journeys that need the stack import, so selecting just the
+  // stack-free Amsterdam re-import journey probes nothing (#190). It still
+  // checks before anything is driven and names what is missing — without it, a
+  // backend that is down surfaces as a Playwright timeout on a button.
 
   // Kept out of src/ on purpose: vite.config.mjs points Vitest at
   // 'src/**/*.test.{js,jsx}', and a Playwright spec picked up by Vitest fails in

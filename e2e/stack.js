@@ -1,8 +1,16 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+import { test as base } from '@playwright/test';
+
 /**
- * Preflight for the end-to-end journey.
+ * Preflight for the journeys that drive a live stack.
+ *
+ * Import `test` from here, not from @playwright/test, in any spec that needs the
+ * LDE backend or Operaton. A spec that needs neither — the Amsterdam re-import
+ * journey — imports the plain one, and running it alone probes nothing, so it
+ * can run where no stack exists, CI included (#190). This used to be the
+ * suite's globalSetup, which probed for every run whatever was selected.
  *
  * The suite drives a live stack, and when part of it is down the failure arrives
  * disguised: a connection refused inside the app surfaces as an amber
@@ -57,7 +65,7 @@ const probe = async (url) => {
   }
 };
 
-export default async function globalSetup() {
+const requireStack = async () => {
   const backend = backendUrl();
   const operaton = operatonUrl();
 
@@ -92,9 +100,9 @@ export default async function globalSetup() {
 
   if (problems.length) {
     throw new Error(
-      `\nThe end-to-end journey needs a live stack, and it is not ready:\n\n` +
+      `\nThis journey needs a live stack, and it is not ready:\n\n` +
         problems.join('\n\n') +
-        `\n\nNothing was run.\n`
+        `\n\nNone of its steps were run.\n`
     );
   }
 
@@ -102,4 +110,29 @@ export default async function globalSetup() {
     `  preflight ok — backend ${backend} (${backendResult.detail}), ` +
       `Operaton ${operaton} (${operatonResult.detail})`
   );
-}
+};
+
+/**
+ * Worker-scoped and automatic: the probe runs once per worker, before the first
+ * test that imported this `test`, without any spec having to ask for it. A
+ * failure fails that spec's tests with the message above rather than a timeout.
+ *
+ * Playwright replaces a worker after a failed test, and the new worker probes
+ * again — at worst ten seconds per stack journey with the stack down, which buys
+ * the same named cause on every one of them. A stack-free spec in the same run
+ * still runs and reports on its own.
+ */
+export const test = base.extend({
+  stack: [
+    // Playwright requires a fixture's first argument to be a destructuring
+    // pattern, even when it uses no other fixture.
+    // eslint-disable-next-line no-empty-pattern
+    async ({}, use) => {
+      await requireStack();
+      await use();
+    },
+    { scope: 'worker', auto: true },
+  ],
+});
+
+export { expect } from '@playwright/test';
