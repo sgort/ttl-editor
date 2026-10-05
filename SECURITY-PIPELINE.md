@@ -317,7 +317,7 @@ Two places it does not reach, both measured on 19 September 2026:
 
 - **`npm ci`** ignores it on purpose (npm/cli#9281). CI only runs `npm ci`, so
   it cannot fail on it, and is not protected by it.
-- **npm older than 11.10** ignores it without a warning. Node 24.20.0, which
+- **npm older than 11.10** ignores it without a warning. Node 24.21.0, which
   `.nvmrc` names, bundles npm 11.19, so this repository's own toolchain is
   covered; `scripts/check-deps.sh` warns at every dev-server start and push when
   a machine runs something older.
