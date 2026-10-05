@@ -43,7 +43,8 @@
     "check-supply-chain": "node scripts/check-supply-chain.mjs",
     "check-mirror": "bash scripts/check-mirror.sh",
     "check-previews": "bash scripts/check-previews.sh",
-    "sbom": "node scripts/write-sbom.mjs"
+    "sbom": "node scripts/write-sbom.mjs",
+    "sbom:check": "node scripts/write-sbom.mjs --check"
   },
   "browserslist": {
     "production": [
