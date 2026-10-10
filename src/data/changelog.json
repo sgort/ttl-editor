@@ -2,6 +2,140 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.10.1",
+      "status": "Released",
+      "date": "10 oct 2026",
+      "commits": [
+        {
+          "sha": "c8f8804",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Release SBOMs list every production package",
+          "details": [
+            "npm sbom --omit=dev dropped production packages: react, react-dom and scheduler were missing from every repository's SBOM, and this release's first came out with one component. The SBOM now lists the whole tree and keeps exactly what the lockfile does not mark dev, with a test in sbom.yml; a production package npm does not list stops the generation instead of writing an incomplete document. The same fix landed in linked-data-explorer and ronl-business-api."
+          ]
+        },
+        {
+          "sha": "e4af5e6",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Dependency criteria, a checklist for every new dependency, and a quarterly review",
+          "details": [
+            "ICTU recommendations 1 and 11, shared with linked-data-explorer and ronl-business-api (sgort/linked-data-explorer#250). The criteria live in linked-data-explorer's docs/dependency-criteria.md: maintained, maintainers, licence (the lockfile-review allow-list), release policy, footprint and needed.",
+            "When a pull request adds a direct dependency, the lockfile-review comment lists it with a checklist of those criteria. dependency-review.yml runs on the second day of each quarter and opens the quarter's review issue from the registry and GitHub evidence for every direct dependency. The first review (2026-Q4, #210) flagged 7 of 30 and recorded an outcome for each."
+          ]
+        },
+        {
+          "sha": "cc9936a",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Testing-library packages are dev dependencies",
+          "details": [
+            "@testing-library/dom, jest-dom and react had been in dependencies since the initial commit, though only the test setup uses them. jest-dom's optional vitest peer made npm audit --omit=dev count the whole vitest, vite and postcss tree as production, so the daily audit failed from 6 October on a high advisory in source-map-js, a build-time package (#202). Moved to devDependencies; the lockfile changes only its dev and production flags."
+          ]
+        },
+        {
+          "sha": "3fcdbbd",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Registry signatures and provenance verified on every pull request",
+          "details": [
+            "ICTU recommendation 5, the provenance half (sgort/linked-data-explorer#249). The required audit job runs npm audit signatures over the installed tree: it fails on an invalid or missing signature, and on a registry gap, an advertised attestation the registry serves as 404. A package without an attestation passes.",
+            "whatwg-url moved from 17.1.1, the one version with such a gap, to 17.1.2; before that, the check aborted in this repository."
+          ]
+        },
+        {
+          "sha": "cf492c0",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Thuisbatterij examples store DMN results as plain variables",
+          "details": [
+            "A business rule task with mapDecisionResult=\"singleResult\" stored a multi-output result as a serialised Java map, which concurrent REST reads can collide on with ENGINE-03005. The Thuisbatterij main and subprocess now map each output straight into a plain variable from the transient decisionResult, as linked-data-explorer's examples do (sgort/linked-data-explorer#273)."
+          ]
+        },
+        {
+          "sha": "7a35934",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "SBOM checks read the committed file, before generation overwrites it",
+          "details": [
+            "The SBOM workflow generated the file first and then checked it, comparing a fresh generation with itself, so neither check could fail. Both now run before generation (sgort/linked-data-explorer#274)."
+          ]
+        },
+        {
+          "sha": "68bac82",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Lockfile review: fixes from the final review",
+          "details": [
+            "Unusable input still writes a marked \"could not run\" report, so a red check never sits beside an earlier \"No blocking findings\". Downgrades are judged within a version line, a cut comment keeps its pointer to the full report, registry text cannot write its own lines into the comment, and a superseded run cannot overwrite a newer report."
+          ]
+        },
+        {
+          "sha": "8bf8d50",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Lockfile review on dependency pull requests",
+          "details": [
+            "Ported from linked-data-explorer (sgort/linked-data-explorer#248). On every pull request that changes package-lock.json, a comment lists added, removed, updated and downgraded packages, licence changes, new packages whose licence is not on the allow-list, and new install scripts. The required lockfile-review check fails only for an origin outside the npm registry or a missing integrity."
+          ]
+        },
+        {
+          "sha": "8417da0",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "The release pull request checks its SBOM strictly",
+          "details": [
+            "npm run sbom:check confirms the committed SBOM matches the lockfile, and sbom.yml runs it on the pull request that changes this version's file. On a promotion it only asserts the file exists (sgort/linked-data-explorer#255)."
+          ]
+        },
+        {
+          "sha": "921b41a",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Vitest 5",
+          "details": ["vitest and @vitest/coverage-v8 from 4.1 to 5.0."]
+        },
+        {
+          "sha": "b874803",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "The .npmrc cooldown caveat names Node 24.21.0",
+          "details": [
+            ".nvmrc has named 24.21.0 for a while; the .npmrc comment and SECURITY-PIPELINE.md still said 24.20.0. Both bundle npm 11.19, so the claim itself held (#194)."
+          ]
+        },
+        {
+          "sha": "84be486",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Four statements corrected to match the repository",
+          "details": [
+            "SECURITY-PIPELINE.md now describes the main promotion gate ruleset. HvA_annotaties.xml parses strictly, and the claim that one annotation was dropped is corrected: none were. The Amsterdam test suite is described as rule coverage, not MC/DC (#190)."
+          ]
+        },
+        {
+          "sha": "0bf8e46",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "E2E: the live-stack preflight runs only for the journeys that need it",
+          "details": [
+            "The preflight probed the LDE backend and Operaton on every run. It is now a fixture used by the authoring, normbedragen and round-trip journeys, so the Amsterdam re-import journey runs without a stack, in CI too (#190)."
+          ]
+        },
+        {
+          "sha": "1997053",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "README: run npm ci in a new worktree before committing",
+          "details": [
+            "Husky's hooks live in a generated directory, so a worktree without an install commits and pushes with no hooks and no warning. The README says so under Getting started, and that CI repeats every hook's check (#159)."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.10.0",
       "status": "Released",
       "date": "1 oct 2026",
