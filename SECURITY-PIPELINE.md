@@ -108,7 +108,18 @@ pull request would have waited forever. The filter moved into a `changes` job
 (#162): the build is skipped on a documentation-only pull request, a skipped job
 counts as passed, and if `changes` fails the build runs anyway. Required checks
 match by job name, so renaming this job means updating the ruleset in the same
-change. `main` still requires nothing, as decided in #131.
+change.
+
+`main promotion gate` (ruleset `24227117`, enforcement `active`, scoped to
+`refs/heads/main`) has gated `main` since 30 September 2026. It requires a pull
+request, merge commits only, with zero approvals; requires `audit` and `scan`;
+and blocks deletion and non-fast-forward pushes. It has no bypass actors either.
+It does not require `Build and deploy ACC` or the production deploy: those are
+path-filtered on a promotion, and a required check that never reports wedges the
+pull request — the reasoning of #131, which turned out to hold for the deploy
+job but not for `audit` and `scan`, whose workflows run on every pull request
+with no path filter. Classic branch protection is gone on both branches (the protection API
+answers 404 for each), so the two rulesets are the whole gate.
 
 `scan` was added on 11 September 2026, once the finding backlog was clean —
 see issues #112 and #113 for the triage and the reasoning. It covers what
@@ -120,7 +131,7 @@ Two things to know before they surprise you:
 
 - **`bypass_actors` is empty.** There is no administrator override. If
   semgrep.dev is unreachable or `SEMGREP_APP_TOKEN` is revoked, merges to `acc`
-  stop until the ruleset is edited. That is a minute's work for the repository
+  and promotions to `main` stop until the rulesets are edited. That is a minute's work for the repository
   owner, and worth knowing now rather than diagnosing under pressure.
 - **Forked pull requests cannot pass `scan`.** Secrets are not passed to fork
   runs, so the scan cannot start. Accepted knowingly; issue #128 tracks it.
@@ -193,6 +204,30 @@ daily audit exists to avoid.
 **A run that cannot audit exits 2, and is treated like a finding.** A tool that
 fails to run must not report a clean tree — the same rule `--no-suppress-errors`
 enforces for Semgrep.
+
+## Dependency review, quarterly
+
+An abandoned package raises no advisory and opens no Renovate pull request, so
+neither the daily audit nor Renovate notices one. ICTU recommendation 11; the
+criteria, shared by the three repositories, are in linked-data-explorer's
+[`docs/dependency-criteria.md`](https://github.com/sgort/linked-data-explorer/blob/acc/docs/dependency-criteria.md) (sgort/linked-data-explorer#250).
+
+`.github/workflows/dependency-review.yml` runs at 06:23 UTC on the second day of
+each quarter, and on demand. `scripts/dependency-review.mjs` (the same file in
+all three) reads every direct dependency from `package-lock.json`, and asks the
+npm registry and the GitHub API for its last release, deprecation, maintainers,
+licence and whether its repository is archived. It installs nothing.
+
+|                     |                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------- |
+| Job / check context | `dependency-review` — not `audit`, for the same reason as the daily audit          |
+| Fails on            | nothing: a finding is for a person, and the run stays green                        |
+| Where it reports    | the run's step summary, and one issue per quarter that records the outcomes        |
+| Re-run in a quarter | adds the fresh evidence as a comment; the issue body, with its outcomes, stays put |
+| Node                | an exact literal, like the daily audit                                             |
+
+The same criteria are applied when a dependency is added: the `lockfile-review`
+comment lists each new **direct** dependency with a checklist of them.
 
 ## Exceptions
 
@@ -306,7 +341,7 @@ Two places it does not reach, both measured on 19 September 2026:
 
 - **`npm ci`** ignores it on purpose (npm/cli#9281). CI only runs `npm ci`, so
   it cannot fail on it, and is not protected by it.
-- **npm older than 11.10** ignores it without a warning. Node 24.20.0, which
+- **npm older than 11.10** ignores it without a warning. Node 24.21.0, which
   `.nvmrc` names, bundles npm 11.19, so this repository's own toolchain is
   covered; `scripts/check-deps.sh` warns at every dev-server start and push when
   a machine runs something older.

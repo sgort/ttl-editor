@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { expect, test } from '@playwright/test';
+import { expect, test } from './stack.js';
 
 /**
  * The round-trip journey: import an existing service, swap its decision model,
@@ -19,7 +19,7 @@ import { expect, test } from '@playwright/test';
  * that parses but never regenerates.
  *
  * Same live-stack requirements as the authoring journey; see
- * e2e/global-setup.js, which refuses to run either without them.
+ * e2e/stack.js, which refuses to run either without them.
  */
 
 // Pinned copies under e2e-fixtures/, not the examples/ corpus: editing an

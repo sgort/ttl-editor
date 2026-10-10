@@ -23,7 +23,7 @@ verified counterpart:
   export's own cell ids (`_inputentry_145` etc., not `_inputEntry_1` etc.).
   `xmlns:cprmv`/`xmlns:dct` are declared on `<dmn:definitions>`. Confirmed to
   still deploy cleanly to Operaton and to not regress the DRD's 100-case
-  MC/DC test suite (still 100/100).
+  rule-coverage test suite (still 100/100).
 - **Layer 2** — `src/utils/dmnHelpers.js`'s `extractRulesFromDMN()` reads
   every cell's `id`, FEEL text, and groundings (including the numbered
   attribute family for compound cells) into `rule.inputEntries`/

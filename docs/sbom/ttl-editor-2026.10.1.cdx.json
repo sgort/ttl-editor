@@ -1,0 +1,173 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:333af20f-dd21-46f1-8be0-354ccccce684",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-10-10T17:17:17.120Z",
+    "lifecycles": [
+      {
+        "phase": "pre-build"
+      }
+    ],
+    "tools": [
+      {
+        "vendor": "npm",
+        "name": "cli",
+        "version": "11.19.0"
+      }
+    ],
+    "component": {
+      "bom-ref": "ttl-editor@2026.10.1",
+      "type": "library",
+      "name": "ttl-editor",
+      "version": "2026.10.1",
+      "scope": "required",
+      "purl": "pkg:npm/ttl-editor@2026.10.1",
+      "properties": [
+        {
+          "name": "cdx:npm:package:private",
+          "value": "true"
+        }
+      ],
+      "externalReferences": []
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "lucide-react@1.47.0",
+      "type": "library",
+      "name": "lucide-react",
+      "version": "1.47.0",
+      "scope": "required",
+      "purl": "pkg:npm/lucide-react@1.47.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/lucide-react/-/lucide-react-1.47.0.tgz"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "a3c0b6dda5e9350ca9458ef75bb7d6d36132bd62629c431780a7868c5a0aca6d338f743bde10fdec0d48429b3583c0b5e074c6b0ea592f4026fb18df8056406e"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "ISC"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "react@19.3.0",
+      "type": "library",
+      "name": "react",
+      "version": "19.3.0",
+      "scope": "required",
+      "purl": "pkg:npm/react@19.3.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/react/-/react-19.3.0.tgz"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "13c2d471bb415addb46db9766281dfc7864305dc554df38ab42667f5c0d227897afe7ba8029729201723e3bb76c19a155fc836647b8c1db892860091d53e52a2"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "react-dom@19.3.0",
+      "type": "library",
+      "name": "react-dom",
+      "version": "19.3.0",
+      "scope": "required",
+      "purl": "pkg:npm/react-dom@19.3.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "24393c76089fe753a31680c4ef4f8e4fd202c98afeebd1e59a284dc29d7e36c7db9dadede6c22209af59264b43990e3fd5bfeb9f6ea1200476b985c332be6bd1"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "scheduler@0.28.0",
+      "type": "library",
+      "name": "scheduler",
+      "version": "0.28.0",
+      "scope": "required",
+      "purl": "pkg:npm/scheduler@0.28.0",
+      "properties": [],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/scheduler/-/scheduler-0.28.0.tgz"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "8eea2b7c2988908c3cb53fa9e415d29ba3c98d017fc9c11898acb3511088b7f45a64884bf8fba56d0f58bb6cf51dd3890dda834e5c40d7ec4a0661d726c73303"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "ttl-editor@2026.10.1",
+      "dependsOn": ["lucide-react@1.47.0", "react@19.3.0", "react-dom@19.3.0"]
+    },
+    {
+      "ref": "lucide-react@1.47.0",
+      "dependsOn": ["react@19.3.0"]
+    },
+    {
+      "ref": "react@19.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "react-dom@19.3.0",
+      "dependsOn": ["react@19.3.0", "scheduler@0.28.0"]
+    },
+    {
+      "ref": "scheduler@0.28.0",
+      "dependsOn": []
+    }
+  ]
+}

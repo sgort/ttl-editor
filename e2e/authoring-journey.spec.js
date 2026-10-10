@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 
-import { expect, test } from '@playwright/test';
+import { expect, test } from './stack.js';
 
 /**
  * The full authoring journey, against a live stack.
