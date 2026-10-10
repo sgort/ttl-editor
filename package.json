@@ -36,6 +36,7 @@
     "prepare": "husky",
     "postinstall": "node scripts/write-deps-marker.mjs",
     "deps:check": "bash scripts/check-deps.sh",
+    "audit:signatures": "bash scripts/audit-signatures.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
