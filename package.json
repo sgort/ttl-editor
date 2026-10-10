@@ -1,6 +1,6 @@
 {
   "name": "ttl-editor",
-  "version": "2026.10.0",
+  "version": "2026.10.1",
   "private": true,
   "dependencies": {
     "lucide-react": "^1.0.0",
