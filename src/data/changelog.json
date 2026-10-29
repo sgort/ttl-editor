@@ -2,6 +2,72 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.10.2",
+      "status": "Released",
+      "date": "29 oct 2026",
+      "commits": [
+        {
+          "sha": "f178027",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "jsdom 30.1.3",
+          "details": [
+            "Test environment only. Against vitest 5.0.1 it failed App.download.test.jsx (URL.createObjectURL read an undefined Blob buffer); with vitest 5.0.4 from 03d5df6 the suite passes."
+          ]
+        },
+        {
+          "sha": "03d5df6",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Refresh for the open supply-chain advisories",
+          "details": [
+            "All dev-only; the repository's audit reported no production advisories before this and none of any kind after. undici 8.12.3 (eight CVEs, four high), zod 4.6.7 (GHSA-mrhx-c7xc-m3w5), vitest and @vitest/coverage-v8 5.0.4 (@vitest/mocker CVE-2026-112949 and -112950, ranges raised to ^5.0.4), postcss-selector-parser 6.1.5 and source-map-js 1.2.2.",
+            "Several fixes were younger than the 14-day cooldown, so the update ran as the urgent-security exception .npmrc describes, on the command line only: --min-release-age=6."
+          ]
+        },
+        {
+          "sha": "9537af4",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Node moves to 24.22.1, the release that fixes CVE-2026-111497",
+          "details": [
+            "Semgrep flagged .nvmrc at 24.21.0 for the Brotli decoder out-of-bounds write. This site ships no Node runtime, so the change puts CI and development on the fixed release without closing any live exposure. .nvmrc and the literals in the dependency-audit, dependency-review, sbom and zizmor workflows move together."
+          ]
+        },
+        {
+          "sha": "b970427",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react 1.57.0",
+          "details": ["The icon set, from 1.47.0. The only runtime change in this release."]
+        },
+        {
+          "sha": "5d0f817",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "prettier 3.9.10",
+          "details": ["Formatting only, from 3.9.7; no file changed under it."]
+        },
+        {
+          "sha": "ed4e364",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite 8.3.3",
+          "details": [
+            "Six advisories against vite 8.3.0, among them OS command injection through launch-editor in the dev server (CVE-2026-112942). Build and dev server only; nothing in the shipped bundle."
+          ]
+        },
+        {
+          "sha": "29508e7",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser 8.0.7",
+          "details": ["Development only."]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.10.1",
       "status": "Released",
       "date": "10 oct 2026",
