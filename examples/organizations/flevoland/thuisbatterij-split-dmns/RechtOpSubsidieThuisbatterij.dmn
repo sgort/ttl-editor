@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" id="Definitions_RechtOpSubsidieThuisbatterij" name="Recht op subsidie thuisbatterij" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.46.1">
+  <decision id="RechtOpSubsidieThuisbatterij" name="Recht op subsidie thuisbatterij" camunda:historyTimeToLive="0">
+    <informationRequirement id="InformationRequirement_AanvragerFailliet">
+      <requiredInput href="#InputData_AanvragerFailliet" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_ProvincieWoning">
+      <requiredInput href="#InputData_ProvincieWoning" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_RelatieTotWoning">
+      <requiredInput href="#InputData_RelatieTotWoning" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_ToestemmingEigenaar">
+      <requiredInput href="#InputData_ToestemmingEigenaar" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_RekeningNaamKomtOvereen">
+      <requiredInput href="#InputData_RekeningNaamKomtOvereen" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_RechtOpSubsidieThuisbatterij" hitPolicy="FIRST">
+      <input id="Input_AanvragerFailliet" label="Aanvrager is failliet">
+        <inputExpression id="InputExpression_AanvragerFailliet" typeRef="boolean" expressionLanguage="feel">
+          <text>aanvragerFailliet</text>
+        </inputExpression>
+      </input>
+      <input id="Input_ProvincieWoning" label="Provincie woning">
+        <inputExpression id="InputExpression_ProvincieWoning" typeRef="string" expressionLanguage="feel">
+          <text>provincieWoning</text>
+        </inputExpression>
+      </input>
+      <input id="Input_RelatieTotWoning" label="Relatie tot woning">
+        <inputExpression id="InputExpression_RelatieTotWoning" typeRef="string" expressionLanguage="feel">
+          <text>relatieTotWoning</text>
+        </inputExpression>
+      </input>
+      <input id="Input_ToestemmingEigenaar" label="Toestemming eigenaar">
+        <inputExpression id="InputExpression_ToestemmingEigenaar" typeRef="boolean" expressionLanguage="feel">
+          <text>toestemmingEigenaar</text>
+        </inputExpression>
+      </input>
+      <input id="Input_RekeningNaamKomtOvereen" label="Naam op energierekening komt overeen">
+        <inputExpression id="InputExpression_RekeningNaamKomtOvereen" typeRef="boolean" expressionLanguage="feel">
+          <text>rekeningNaamKomtOvereen</text>
+        </inputExpression>
+      </input>
+      <output id="Output_RechtOpSubsidie" label="Recht op subsidie" name="rechtOpSubsidie" typeRef="boolean" />
+      <output id="Output_Reden" label="Reden" name="reden" typeRef="string" />
+      <rule id="Rule_Afwijzing_AanvragerFailliet">
+        <description>De aanvrager heeft geen recht op subsidie als de aanvrager failliet is.</description>
+        <inputEntry id="UnaryTests_AanvragerFailliet_Failliet">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_AanvragerFailliet_Provincie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_AanvragerFailliet_Relatie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_AanvragerFailliet_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_AanvragerFailliet_Rekening">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_AanvragerFailliet_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_AanvragerFailliet_Reden" expressionLanguage="feel">
+          <text>"Aanvrager is failliet"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Afwijzing_NietInFlevoland">
+        <description>De woning moet in Flevoland liggen.</description>
+        <inputEntry id="UnaryTests_NietInFlevoland_Failliet">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NietInFlevoland_Provincie">
+          <text>not("Flevoland")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NietInFlevoland_Relatie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NietInFlevoland_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NietInFlevoland_Rekening">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_NietInFlevoland_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_NietInFlevoland_Reden" expressionLanguage="feel">
+          <text>"Woning ligt niet in Flevoland"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Afwijzing_GeenEigenaarOfHuurder">
+        <description>De aanvrager moet eigenaar of huurder van de woning zijn.</description>
+        <inputEntry id="UnaryTests_GeenEigenaarOfHuurder_Failliet">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_GeenEigenaarOfHuurder_Provincie">
+          <text>"Flevoland"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_GeenEigenaarOfHuurder_Relatie">
+          <text>not("eigenaar", "huurder")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_GeenEigenaarOfHuurder_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_GeenEigenaarOfHuurder_Rekening">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_GeenEigenaarOfHuurder_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_GeenEigenaarOfHuurder_Reden" expressionLanguage="feel">
+          <text>"Aanvrager is geen eigenaar of huurder"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Afwijzing_HuurderZonderToestemming">
+        <description>Als de aanvrager huurder is, is toestemming van de eigenaar vereist.</description>
+        <inputEntry id="UnaryTests_HuurderZonderToestemming_Failliet">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_HuurderZonderToestemming_Provincie">
+          <text>"Flevoland"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_HuurderZonderToestemming_Relatie">
+          <text>"huurder"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_HuurderZonderToestemming_Toestemming">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_HuurderZonderToestemming_Rekening">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_HuurderZonderToestemming_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_HuurderZonderToestemming_Reden" expressionLanguage="feel">
+          <text>"Huurder heeft geen toestemming van eigenaar"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Afwijzing_NaamNietOpEnergierekening">
+        <description>De aanvrager moet ook de naam op de rekening van de energiemaatschappij zijn.</description>
+        <inputEntry id="UnaryTests_NaamNietOpEnergierekening_Failliet">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NaamNietOpEnergierekening_Provincie">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NaamNietOpEnergierekening_Relatie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NaamNietOpEnergierekening_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_NaamNietOpEnergierekening_Rekening">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_NaamNietOpEnergierekening_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_NaamNietOpEnergierekening_Reden" expressionLanguage="feel">
+          <text>"Aanvrager staat niet op de energierekening"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Toekenning_Eigenaar">
+        <description>Eigenaar voldoet aan alle voorwaarden.</description>
+        <inputEntry id="UnaryTests_Eigenaar_Failliet">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Eigenaar_Provincie">
+          <text>"Flevoland"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Eigenaar_Relatie">
+          <text>"eigenaar"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Eigenaar_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Eigenaar_Rekening">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Eigenaar_Recht" expressionLanguage="feel">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Eigenaar_Reden" expressionLanguage="feel">
+          <text>"Aanvrager heeft recht op subsidie"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Toekenning_Huurder">
+        <description>Huurder voldoet aan alle voorwaarden, inclusief toestemming van de eigenaar.</description>
+        <inputEntry id="UnaryTests_Huurder_Failliet">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Huurder_Provincie">
+          <text>"Flevoland"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Huurder_Relatie">
+          <text>"huurder"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Huurder_Toestemming">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Huurder_Rekening">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Huurder_Recht" expressionLanguage="feel">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Huurder_Reden" expressionLanguage="feel">
+          <text>"Aanvrager heeft recht op subsidie; huurder met toestemming eigenaar"</text>
+        </outputEntry>
+      </rule>
+      <rule id="Rule_Afwijzing_Standaard">
+        <description>Vangnetregel: niet alle voorwaarden zijn vervuld of gegevens ontbreken.</description>
+        <inputEntry id="UnaryTests_Standaard_Failliet">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Standaard_Provincie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Standaard_Relatie">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Standaard_Toestemming">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_Standaard_Rekening">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_Standaard_Recht" expressionLanguage="feel">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_Standaard_Reden" expressionLanguage="feel">
+          <text>"Niet alle voorwaarden zijn vervuld"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_AanvragerFailliet" name="Aanvrager is failliet" />
+  <inputData id="InputData_ProvincieWoning" name="Provincie woning" />
+  <inputData id="InputData_RelatieTotWoning" name="Relatie tot woning" />
+  <inputData id="InputData_ToestemmingEigenaar" name="Toestemming eigenaar" />
+  <inputData id="InputData_RekeningNaamKomtOvereen" name="Naam op energierekening komt overeen" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_RechtOpSubsidieThuisbatterij" name="Recht op subsidie thuisbatterij">
+      <dmndi:DMNShape id="DMNShape_RechtOpSubsidieThuisbatterij" dmnElementRef="RechtOpSubsidieThuisbatterij">
+        <dc:Bounds height="80" width="280" x="600" y="160" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_AanvragerFailliet" dmnElementRef="InputData_AanvragerFailliet">
+        <dc:Bounds height="45" width="170" x="180" y="60" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_ProvincieWoning" dmnElementRef="InputData_ProvincieWoning">
+        <dc:Bounds height="45" width="170" x="180" y="130" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_RelatieTotWoning" dmnElementRef="InputData_RelatieTotWoning">
+        <dc:Bounds height="45" width="170" x="180" y="200" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_ToestemmingEigenaar" dmnElementRef="InputData_ToestemmingEigenaar">
+        <dc:Bounds height="45" width="170" x="180" y="270" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_RekeningNaamKomtOvereen" dmnElementRef="InputData_RekeningNaamKomtOvereen">
+        <dc:Bounds height="45" width="240" x="150" y="340" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_AanvragerFailliet" dmnElementRef="InformationRequirement_AanvragerFailliet">
+        <di:waypoint x="350" y="83" />
+        <di:waypoint x="600" y="180" />
+        <di:waypoint x="600" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ProvincieWoning" dmnElementRef="InformationRequirement_ProvincieWoning">
+        <di:waypoint x="350" y="153" />
+        <di:waypoint x="600" y="190" />
+        <di:waypoint x="600" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_RelatieTotWoning" dmnElementRef="InformationRequirement_RelatieTotWoning">
+        <di:waypoint x="350" y="223" />
+        <di:waypoint x="600" y="210" />
+        <di:waypoint x="600" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ToestemmingEigenaar" dmnElementRef="InformationRequirement_ToestemmingEigenaar">
+        <di:waypoint x="350" y="293" />
+        <di:waypoint x="600" y="220" />
+        <di:waypoint x="600" y="200" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_RekeningNaamKomtOvereen" dmnElementRef="InformationRequirement_RekeningNaamKomtOvereen">
+        <di:waypoint x="390" y="363" />
+        <di:waypoint x="600" y="230" />
+        <di:waypoint x="600" y="200" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
