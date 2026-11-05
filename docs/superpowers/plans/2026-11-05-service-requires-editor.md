@@ -5,6 +5,7 @@
 **Goal:** A public service in the TTL editor can list the services it requires, and that list is published as `dct:requires` and survives an import/export round trip.
 
 **Architecture:**
+
 - `service.requires` is a `string[]` of service URIs.
 - **Generator:** emits it inside the `cpsv:PublicService` block, plus a `<uri> a cpsv:PublicService .` type stub per entry for file-local SHACL.
 - **Parser:** reads it back and ignores the stubs.
@@ -47,11 +48,13 @@
 ### Task 1: Data model and generator
 
 **Files:**
+
 - Modify: `src/utils/constants.js:4-14`: add `requires: []` to `DEFAULT_SERVICE`.
 - Modify: `src/utils/ttlGenerator.js`, `generateServiceSection()` (~l.241–334).
 - Create test: `src/utils/ttlGenerator.requires.test.js`.
 
 **Interfaces:**
+
 - Produces: `state.service.requires: string[]`, read by every later task.
 - Produces: the generated TTL format that Task 2 parses:
   - one property line per entry, `    dct:requires <URI> ;`, placed right before the `cprmv:hasDecisionModel` line (or before the block close when there is no DMN);
@@ -98,6 +101,7 @@
 ### Task 2: Parser and import mapping
 
 **Files:**
+
 - Modify: `src/parseTTL.enhanced.js`:
   - the initial `parsed.service` object (~l.33–41): add `requires: []`;
   - the type-detection block (~l.186–208);
@@ -107,6 +111,7 @@
 - Modify test: `src/utils/importHandler.test.js`, extending the existing "passes every field through" and "substitutes a default" tests.
 
 **Interfaces:**
+
 - Consumes: Task 1's TTL format and `generateTTL` (`src/utils/ttlGenerator.js`).
 - Produces: `parseTTLEnhanced(ttl).service.requires: string[]` and `parseTTL(ttl).service.requires: string[]` (importHandler, default `[]`).
 
@@ -131,7 +136,7 @@
 - [ ] **Step 3: Implement**
   - **Stubs:** when a detected `service` type line is a bare stub (the trimmed line matches `^<[^>]+>\s+a\s+(cpsv|cpsv-ap):PublicService\s*\.$`), do not change `currentSubject`/`currentSection`, and `continue`. The real service block always has `;` after the type, so it never matches.
   - **`dct:requires`:** in the service branch, test for it **first**. Collect `[...line.matchAll(/<([^>]+)>/g)]` into `parsed.service.requires`, skipping duplicates, then `continue` so the loose `includes` checks below never see the line.
-  - **Continuation lines:** a comma list may wrap onto a continuation line that contains only `<…>`. If the previous service line was a `dct:requires` line ending in `,`, treat the next line the same way. *(Builder: implement this only if `generateTTL` or real files produce wrapped lists; Task 1 emits one per line.)*
+  - **Continuation lines:** a comma list may wrap onto a continuation line that contains only `<…>`. If the previous service line was a `dct:requires` line ending in `,`, treat the next line the same way. _(Builder: implement this only if `generateTTL` or real files produce wrapped lists; Task 1 emits one per line.)_
   - **importHandler:** add the mapping line.
 
 - [ ] **Step 4: Run the tests to verify they pass, plus the round-trip and parser suites**
@@ -146,10 +151,12 @@
 ### Task 3: Published-services helper
 
 **Files:**
+
 - Create: `src/utils/serviceCatalogHelper.js`.
 - Create test: `src/utils/serviceCatalogHelper.test.js`.
 
 **Interfaces:**
+
 - Produces:
   - `buildDatasetSparqlUrl(config: {baseUrl, account, dataset}) -> string | null`. Returns `null` when any of the three is empty.
   - `fetchPublishedServices(config) -> Promise<Array<{ uri: string, title: string }>>`. Throws `Error` on an HTTP error or a malformed response. Resolves `[]` when `buildDatasetSparqlUrl` returns `null`, without calling `fetch`.
@@ -171,6 +178,7 @@
 - [ ] **Step 3: Implement**
 
   Use the spec's query verbatim:
+
   ```sparql
   PREFIX cpsv: <http://purl.org/vocab/cpsv#>
   PREFIX dct:  <http://purl.org/dc/terms/>
@@ -178,6 +186,7 @@
     ?service a cpsv:PublicService ; dct:title ?title .
   } ORDER BY LCASE(STR(?title))
   ```
+
   Use the fetch and error shape of `fetchRonlConcepts`. Multilingual titles may produce several rows per service: keep the first row per `uri`.
 
 - [ ] **Step 4: Run to verify they pass**
@@ -192,12 +201,14 @@
 ### Task 4: Service tab "Required services" field
 
 **Files:**
+
 - Modify: `src/components/tabs/ServiceTab.jsx`. Add the field after Language, before `<CostSection>`, and an optional prop `triplyDBConfig`.
 - Modify: `src/App.jsx:1025-1032`: pass `triplyDBConfig={triplyDBConfig}` (already destructured at ~l.102).
 - Modify test: `src/components/tabs/ServiceTab.test.jsx`.
 - Check: `src/components/accessible-names.test.jsx` (the `ServiceTab` case must keep passing; it renders without `triplyDBConfig`).
 
 **Interfaces:**
+
 - Consumes:
   - `fetchPublishedServices(config)` from Task 3, imported from `../../utils/serviceCatalogHelper`;
   - `sanitizeServiceIdentifier` from `src/utils/dmnHelpers.js`;
@@ -205,6 +216,7 @@
 - Produces: `setService({ ...service, requires: string[] })`. This is the same whole-object contract as `updateField`.
 
 **Behaviour** (spec, "Service tab"):
+
 - **Heading:** "Required services (dct:requires)", with a one-line hint: "Services this service makes use of. Context only; order lives in the BPMN."
 - **List:** the selected entries (title when it is known from the fetched list, otherwise the URI), each with a remove button labelled `Remove <title or URI>`.
 - **Select** (`id="service-tab-required-service-select"`, labelled): the fetched services, excluding the own URI and already-selected ones, plus an "Add" button.
@@ -250,6 +262,7 @@
 ### Task 5: SHACL check, user acceptance, example
 
 **Files:**
+
 - Modify (by the user, through the editor): `examples/organizations/flevoland/thuisbatterij-split-dmns/hoogte-subsidie-thuisbatterij-Flevoland.ttl`.
 
 - [ ] **Step 1: Validate generated output against the shapes.**

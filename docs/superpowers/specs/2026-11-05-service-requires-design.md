@@ -7,8 +7,8 @@ pull requests: ttl-editor first, then LDE.
 
 Splitting a combined DMN into separate models (PR #222, thuisbatterij) makes
 each decision independently publishable and linkable in BPMN, but the published
-data no longer says the parts belong together. The *hoogte* service is computed
-"under the assumption of *recht*", and nothing records that.
+data no longer says the parts belong together. The _hoogte_ service is computed
+"under the assumption of _recht_", and nothing records that.
 
 This feature lets a public service state, in its published TTL, that it
 requires another public service, and lets LDE show that link. It is **context
@@ -39,7 +39,7 @@ they run or under which condition. Order and conditions stay in the BPMN
   service).
 - **Public datasets only** for the editor's dropdown. LDE's query proxy passes no
   API token, and it stays that way. For a private dataset the list doesn't load,
-  and pasting a URI is the way to add a link. *(User decision.)*
+  and pasting a URI is the way to add a link. _(User decision.)_
 - **"Required by" covers one dataset.** LDE builds its DMN list from one endpoint
   at a time, so "required by" shows only when the dependent service is in the
   same dataset.
@@ -47,7 +47,7 @@ they run or under which condition. Order and conditions stay in the BPMN
     A, and P on its own instance), with related services published together into
     the same one.
   - A `dct:requires` that points into another dataset still shows as "Requires"
-    on the dependent service's DMN. *(User decision.)*
+    on the dependent service's DMN. _(User decision.)_
 
 ## Anti-goals
 
@@ -68,7 +68,7 @@ they run or under which condition. Order and conditions stay in the BPMN
   `<…/hoogte-subsidie-thuisbatterij-flevoland> dct:requires <…/recht-op-subsidie-thuisbatterij-flevoland>`.
 - **Shapes:** `PublicServiceShape` is `sh:closed false`. The CPRMV 0.4.1 shapes
   do not target `cpsv:PublicService`. An extra `dct:requires` violates nothing,
-  *provided* the object is typed `cpsv:PublicService` in the file being
+  _provided_ the object is typed `cpsv:PublicService` in the file being
   validated (see Generator).
 
 ## Editor (PR 1, ttl-editor)
@@ -96,7 +96,7 @@ they run or under which condition. Order and conditions stay in the BPMN
     own URI.
     - The service's own URI is the one the generator builds
       (`https://regels.overheid.nl/services/{sanitized identifier}`,
-      `ttlGenerator.js` ~l.78). Compare against that. *(My call.)*
+      `ttlGenerator.js` ~l.78). Compare against that. _(My call.)_
   - Reject duplicates.
   - Accept only `http(s)` URIs.
 - **When the list can't load** (no dataset configured, network error): show a
