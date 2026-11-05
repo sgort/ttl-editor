@@ -82,8 +82,8 @@ they run or under which condition. Order and conditions stay in the BPMN
 
 ### Service tab
 
-- In `src/components/tabs/ServiceTab.jsx`, add a "Requires" field (Dutch UI label
-  to match the tab's other labels; builder's call) with a list of the selected
+- In `src/components/tabs/ServiceTab.jsx`, add a "Requires" field (English label,
+  like the tab's other labels) with a list of the selected
   required services, each removable.
 - **Adding:**
   - A dropdown of public services already published to the current Triply
@@ -125,8 +125,9 @@ they run or under which condition. Order and conditions stay in the BPMN
     `…/datasets/stevengort/PublishTest/services/PublishTest/sparql`.
   - The editor today only builds `{baseUrl}/datasets/{account}/{dataset}/sparql`
     (`triplydbHelper.js` ~l.268).
-  - **Builder:** confirm which form the proxy accepts for these datasets, and use
-    that one.
+  - **Checked on 2026-11-05:** both forms answer SELECT queries for
+    `stevengort/PublishTest`. Use the dataset-level `…/sparql` form, which the
+    editor already builds.
 - Fetch the list when the Service tab is opened and on demand (a refresh
   control). Caching beyond that is the builder's call.
 
