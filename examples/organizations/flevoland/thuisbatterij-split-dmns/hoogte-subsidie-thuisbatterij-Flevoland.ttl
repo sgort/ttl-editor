@@ -26,6 +26,7 @@
     dct:language <https://publications.europa.eu/resource/authority/language/NL> ;
     cv:hasCompetentAuthority <https://organisaties.overheid.nl/14866/Provincie_Flevoland> ;
     cv:hasLegalResource <https://lokaleregelgeving.overheid.nl/CVDR750157/1> ;
+    dct:requires <https://regels.overheid.nl/services/recht-op-subsidie-thuisbatterij-flevoland> ;
     cprmv:hasDecisionModel <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn>  .
 
 <https://publications.europa.eu/resource/authority/language/NL> a dct:LinguisticSystem .
@@ -95,10 +96,10 @@
     dct:title "HoogteSubsidieThuisbatterij.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland> ;
     dct:source <https://regels.overheid.nl/services/hoogte-subsidie-thuisbatterij-flevoland/dmn/file> ;
-    cprmv:deploymentId "6676d828-d8e9-11f1-ba02-d6ac4a3b5446" ;
-    cprmv:deployedAt "2026-11-05T07:20:38.373Z"^^xsd:dateTime ;
+    cprmv:deploymentId "e3dbb03e-d907-11f1-ba02-d6ac4a3b5446" ;
+    cprmv:deployedAt "2026-11-05T10:58:53.649Z"^^xsd:dateTime ;
     cprmv:implementedBy <http://localhost:8081/engine-rest/decision-definition/key/BehaalbareHoogteSubsidie/evaluate> ;
-    cprmv:lastTested "2026-11-05T07:20:51.885Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-11-05T10:59:06.685Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 

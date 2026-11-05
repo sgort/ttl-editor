@@ -86,10 +86,10 @@
     dct:title "RechtOpSubsidieThuisbatterij.dmn"@nl ;
     cprmv:implements <https://regels.overheid.nl/services/recht-op-subsidie-thuisbatterij-flevoland> ;
     dct:source <https://regels.overheid.nl/services/recht-op-subsidie-thuisbatterij-flevoland/dmn/file> ;
-    cprmv:deploymentId "29bbd0c4-d8e9-11f1-ba02-d6ac4a3b5446" ;
-    cprmv:deployedAt "2026-11-05T07:18:56.510Z"^^xsd:dateTime ;
+    cprmv:deploymentId "9bb2a35a-d907-11f1-ba02-d6ac4a3b5446" ;
+    cprmv:deployedAt "2026-11-05T10:56:52.707Z"^^xsd:dateTime ;
     cprmv:implementedBy <http://localhost:8081/engine-rest/decision-definition/key/RechtOpSubsidieThuisbatterij/evaluate> ;
-    cprmv:lastTested "2026-11-05T07:19:08.646Z"^^xsd:dateTime ;
+    cprmv:lastTested "2026-11-05T10:57:05.705Z"^^xsd:dateTime ;
     cprmv:testStatus "passed" ;
     dct:description "DMN decision model for service evaluation"@nl .
 
