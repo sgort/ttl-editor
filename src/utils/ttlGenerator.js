@@ -320,12 +320,12 @@ export class TTLGenerator {
     // Close statement
     ttl = ttl.slice(0, -2) + ' .\n\n';
 
-    // dct:requires carries sh:class cpsv:PublicService, and the file-local SHACL
-    // check runs without entailment: type each required service here, as the
-    // language and sector stubs below do for their references.
-    requires.forEach((uri) => {
-      ttl += `<${uri}> a cpsv:PublicService .\n\n`;
-    });
+    // Deliberately no `<uri> a cpsv:PublicService .` stub for the required
+    // services, unlike the language and sector stubs below. PublicServiceShape
+    // targets that class, so a bare stub fails four minCount checks, and it would
+    // publish an untitled service into the dataset. The required service is
+    // described in its own graph; the one file-local SHACL-CLASS error on
+    // dct:requires is accepted for now (linked-data-explorer#315).
 
     // Type the controlled-vocabulary references the PublicService points at, so the
     // file-local SHACL sh:class checks (no entailment) pass: language →

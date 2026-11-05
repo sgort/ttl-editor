@@ -2,6 +2,20 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Revision, 5 November 2026 (during Task 5):** the generator emits **no**
+> `<uri> a cpsv:PublicService .` type stub for required services. The SHACL
+> check against the vendored shapes showed that `PublicServiceShape` targets
+> that class:
+>
+> - a bare stub fails four `minCount` checks (`dct:identifier`, `dct:title`,
+>   `dct:description`, `cv:hasCompetentAuthority`);
+> - it would publish an untitled service into the dataset;
+> - without it, one `SHACL-CLASS` error on `dct:requires` remains.
+>
+> That error is accepted for now (user decision; linked-data-explorer#315). The
+> parser still skips such stubs, so older or hand-edited files import correctly.
+> Passages below that describe emitting the stub are superseded.
+
 **Goal:** A public service in the TTL editor can list the services it requires, and that list is published as `dct:requires` and survives an import/export round trip.
 
 **Architecture:**
@@ -268,14 +282,14 @@
 - [ ] **Step 1: Validate generated output against the shapes.**
   - Produce a TTL with `requires: [RECHT]` by running `generateTTL` in a throwaway Vitest file or a node script in the scratchpad.
   - POST it to the user's already-running LDE backend: `curl -s -X POST http://localhost:3001/v1/shacl/validate -H 'Content-Type: application/json' -d '{"content": …}'`.
-  - Expected: `data.valid === true` for both layers, with no violation on `dct:requires`.
+  - Expected (revised): exactly one CPSV-AP `SHACL-CLASS` error, on `dct:requires`, and nothing else. **Result:** as expected, after dropping the stub.
   - If the backend isn't running, **ask the user**; never start it.
 
 - [ ] **Step 2: Hand off to the user for the full suite and UI check.**
   - Give them `npm run test:ci` and ask for the result (expected: all green, coverage thresholds met).
   - Ask them to open the Service tab on their running editor and confirm:
     - the picker lists the `PublishTest` services;
-    - adding one shows the `dct:requires` line and stub in the preview;
+    - adding one shows the `dct:requires` line in the preview, with no stub line;
     - re-importing the exported TTL keeps the entry.
 
 - [ ] **Step 3: Republish and re-export the example (the user does this).**
@@ -283,7 +297,7 @@
   - **Republish** hoogte to `PublishTest`. This is what puts the `dct:requires` triple in Triply, and LDE (PR 2) reads it from there. Saving the file alone is not enough.
   - Then save over the example file.
   - Republishing to ACC and the target Triply dataset happens after this PR merges. It is not part of this task.
-  - Then check that the file contains exactly one `dct:requires` line and its stub, and that the other sections are unchanged (`git diff`).
+  - Then check that the file contains exactly one `dct:requires` line and no stub, and that the other sections are unchanged (`git diff`).
   - Optionally confirm the triple is live with a read-only query on the `PublishTest` SPARQL endpoint (`SELECT ?s ?o WHERE { ?s <http://purl.org/dc/terms/requires> ?o }`).
 
 - [ ] **Step 4: Commit** (ask the user first): `docs(examples): hoogte requires recht in the thuisbatterij split example (#223)`

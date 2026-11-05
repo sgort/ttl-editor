@@ -3,6 +3,20 @@
 Issue: #223. Spans ttl-editor and linked-data-explorer (LDE). Delivered as two
 pull requests: ttl-editor first, then LDE.
 
+> **Revision, 5 November 2026 (during Task 5):** the generator emits **no**
+> `<uri> a cpsv:PublicService .` type stub for required services. The SHACL
+> check against the vendored shapes showed that `PublicServiceShape` targets
+> that class:
+>
+> - a bare stub fails four `minCount` checks (`dct:identifier`, `dct:title`,
+>   `dct:description`, `cv:hasCompetentAuthority`);
+> - it would publish an untitled service into the dataset;
+> - without it, one `SHACL-CLASS` error on `dct:requires` remains.
+>
+> That error is accepted for now (user decision; linked-data-explorer#315). The
+> parser still skips such stubs, so older or hand-edited files import correctly.
+> Passages below that describe emitting the stub are superseded.
+
 ## Intent
 
 Splitting a combined DMN into separate models (PR #222, thuisbatterij) makes
@@ -138,13 +152,9 @@ In `generateServiceSection()` (`src/utils/ttlGenerator.js` ~l.241–334):
 - Emit `dct:requires <uri>` for each entry. Put them among the relationship
   properties, before `cprmv:hasDecisionModel`. One triple per line or a comma
   list is the builder's call, but it must match what the parser reads.
-- **After the service block**, emit `<uri> a cpsv:PublicService .` for each
-  required URI.
-  - Same reason as the existing `dct:LinguisticSystem` and `skos:Concept` stubs
-    (l.314–332): file-local SHACL `sh:class` checks run without entailment.
-  - In Triply the stub merges harmlessly with the required service's own data.
-    If that service is never published, the stub is an untitled
-    `cpsv:PublicService` (hence the `dct:title` filter above).
+- **No type stub** for the required services (see the revision note at the
+  top). The `dct:title` filter above still keeps untitled stubs, from older
+  files or other tools, out of the picker.
 
 ### Parser
 
@@ -184,13 +194,14 @@ the PublicService case specifically, because it is the type the parser treats as
   - Reject self, duplicates and invalid URIs.
   - Remove an entry.
   - When the list fails to load, the paste input still works.
-- **SHACL:** a generated TTL with `requires` and its stubs validates clean
-  against CPSV-AP 3.2.0 and CPRMV 0.4.1. Use the existing shaclHelper path or an
+- **SHACL:** a generated TTL with `requires` gives exactly one CPSV-AP
+  `SHACL-CLASS` error on `dct:requires` and nothing else, against CPSV-AP 3.2.0
+  and CPRMV 0.4.1 (accepted, linked-data-explorer#315). Use the existing shaclHelper path or an
   LDE-side fixture, whichever the suites already support.
 
 ### Example
 
-- Add `dct:requires <…/recht-op-subsidie-thuisbatterij-flevoland>` and its stub
+- Add `dct:requires <…/recht-op-subsidie-thuisbatterij-flevoland>`
   to `examples/organizations/flevoland/thuisbatterij-split-dmns/hoogte-subsidie-thuisbatterij-Flevoland.ttl`.
   Do this by re-exporting from the editor once the feature works, not by hand,
   so the example reflects real output.

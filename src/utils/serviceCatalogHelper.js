@@ -9,8 +9,8 @@ const BACKEND_URL =
   import.meta.env.VITE_BACKEND_URL || 'https://acc.backend.linkeddata.open-regels.nl';
 const API_VERSION = 'v1';
 
-// Requiring dct:title leaves out the untitled `<uri> a cpsv:PublicService .`
-// stubs that services publish for the services they require.
+// Requiring dct:title leaves out untitled `<uri> a cpsv:PublicService .`
+// type stubs (from older files or other tools) that are not real services.
 const PUBLISHED_SERVICES_QUERY = `
 PREFIX cpsv: <http://purl.org/vocab/cpsv#>
 PREFIX dct:  <http://purl.org/dc/terms/>

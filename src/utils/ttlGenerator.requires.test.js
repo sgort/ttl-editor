@@ -5,10 +5,12 @@ import { TTLGenerator } from './ttlGenerator';
  * sh:class cpsv:PublicService), issue #223.
  *
  * The generator emits one property line per required service inside the
- * service block, and a `<uri> a cpsv:PublicService .` stub per entry after it.
- * File-local SHACL runs without entailment, so the object must be typed in the
- * same file — the same reason the language and sector stubs exist. A service
- * that requires nothing must generate exactly what it did before this feature.
+ * service block, and deliberately no `<uri> a cpsv:PublicService .` type stub:
+ * PublicServiceShape targets that class, so a bare stub fails four minCount
+ * checks, and it would publish an untitled service into the dataset. The
+ * required service is described in its own graph; the single file-local
+ * SHACL-CLASS error that remains is accepted (linked-data-explorer#315).
+ * A service that requires nothing must generate exactly what it did before.
  */
 
 const RECHT = 'https://regels.overheid.nl/services/recht-op-subsidie-thuisbatterij-flevoland';
@@ -60,11 +62,13 @@ describe('dct:requires on the public service', () => {
     expect(block).toMatch(new RegExp(`    dct:requires <${OTHER}>\\s+\\.\\n$`));
   });
 
-  test('types each required service with a cpsv:PublicService stub', () => {
+  test('emits no cpsv:PublicService type stub for a required service', () => {
     const ttl = new TTLGenerator(baseState({ requires: [RECHT, OTHER] })).generate();
 
-    expect(ttl).toContain(`<${RECHT}> a cpsv:PublicService .\n`);
-    expect(ttl).toContain(`<${OTHER}> a cpsv:PublicService .\n`);
+    expect(ttl).not.toContain(`<${RECHT}> a cpsv:PublicService`);
+    expect(ttl).not.toContain(`<${OTHER}> a cpsv:PublicService`);
+    // The service itself is still the one and only PublicService in the file.
+    expect(ttl.match(/ a cpsv:PublicService/g)).toHaveLength(1);
   });
 
   test('empty requires generates exactly what it did before', () => {
@@ -88,9 +92,7 @@ describe('dct:requires on the public service', () => {
     const ttl = new TTLGenerator(baseState({ requires: [OWN, RECHT] })).generate();
 
     expect(ttl).not.toContain(`dct:requires <${OWN}>`);
-    expect(ttl).not.toContain(`<${OWN}> a cpsv:PublicService .`);
     expect(ttl).toContain(`dct:requires <${RECHT}>`);
-    expect(ttl).toContain(`<${RECHT}> a cpsv:PublicService .`);
   });
 
   test('the closing line stays valid when requires is the last property', () => {
