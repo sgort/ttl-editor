@@ -118,6 +118,8 @@ export const parseTTLEnhanced = (ttlContent) => {
     let currentCprmvRule = null;
     let currentConcept = null;
     let currentSubject = null;
+    // True while a dct:requires object list continues onto the next line(s).
+    let inRequiresList = false;
     let inContactPoint = false;
 
     // NEW: DMN block tracking
@@ -186,10 +188,11 @@ export const parseTTLEnhanced = (ttlContent) => {
       // Detect entity type using configuration
       let detectedType = detectEntityType(line);
 
-      // `<uri> a cpsv:PublicService .` on its own is a type stub for a service
-      // this one dct:requires (the generator writes it so the file-local SHACL
-      // sh:class check passes). It is not the service being edited: never let it
-      // take over the service section or lend the service its identifier.
+      // `<uri> a cpsv:PublicService .` on its own is a bare type stub, as older
+      // files, hand edits and other tools write for a service this one
+      // dct:requires (this generator no longer does; see linked-data-explorer#315).
+      // It is not the service being edited: never let it take over the service
+      // section or lend the service its identifier.
       if (
         detectedType === 'service' &&
         /^<[^>]+>\s+a\s+(cpsv|cpsv-ap):PublicService\s*\.$/.test(line)
@@ -484,11 +487,14 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         // dct:requires first, and nothing else on its line: the checks below
-        // match field names loosely, and a required URI may contain one.
-        if (line.includes('dct:requires')) {
+        // match field names loosely, and a required URI may contain one. An
+        // object list may continue onto the next lines (`<a> ,` then `<b> ;`);
+        // those lines are read here too, until one no longer ends in a comma.
+        if (inRequiresList || line.includes('dct:requires')) {
           for (const [, uri] of line.matchAll(/<([^>]+)>/g)) {
             if (!parsed.service.requires.includes(uri)) parsed.service.requires.push(uri);
           }
+          inRequiresList = line.endsWith(',');
           continue;
         }
 

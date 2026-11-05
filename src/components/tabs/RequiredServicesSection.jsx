@@ -57,14 +57,20 @@ export default function RequiredServicesSection({ service, setService, triplyDBC
 
   // Returns why a URI cannot be added, or '' when it can.
   const rejectionFor = (uri) => {
-    if (!/^https?:\/\/\S+$/i.test(uri)) return 'Enter an http(s) URI.';
+    // Exclude the characters Turtle's IRIREF does not allow: they would be
+    // written into `dct:requires <…>` and break the file.
+    if (!/^https?:\/\/[^\s<>"{}|\\^`]+$/i.test(uri)) return 'Enter an http(s) URI.';
     if (uri === ownUri) return 'A service cannot require itself.';
     if (requires.includes(uri)) return 'That service is already listed.';
     return '';
   };
 
   const add = (rawUri) => {
-    const uri = rawUri.trim();
+    // A URI copied out of Turtle brings its angle brackets along.
+    const uri = rawUri
+      .trim()
+      .replace(/^<(.*)>$/, '$1')
+      .trim();
     const rejection = rejectionFor(uri);
     setMessage(rejection);
     if (rejection) return false;

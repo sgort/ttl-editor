@@ -66,6 +66,20 @@ describe('parsing dct:requires', () => {
     expect(parsed.service.requires).toEqual([RECHT, OTHER]);
   });
 
+  test('reads an object list that continues on the next lines', () => {
+    // The layout Turtle serialisers and hand edits use. The continuation lines
+    // must be read as requires too, never by the loose field checks.
+    const tricky = 'https://example.org/services/sector-thematicArea-dct:title';
+    const parsed = parseTTLEnhanced(
+      ttl(`    dct:requires <${RECHT}> ,\n        <${OTHER}> ,\n        <${tricky}> ;`)
+    );
+
+    expect(parsed.service.requires).toEqual([RECHT, OTHER, tricky]);
+    expect(parsed.service.sector).toBe('https://example.org/classification/REGIONAL');
+    expect(parsed.service.thematicArea).toBe('https://example.org/theme/energy');
+    expect(parsed.service.name).toBe('hoogte subsidie thuisbatterij Flevoland');
+  });
+
   test('a service without dct:requires parses to an empty list', () => {
     const parsed = parseTTLEnhanced(ttl(''));
 

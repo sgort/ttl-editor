@@ -208,6 +208,28 @@ describe('ServiceTab required services', () => {
     expect(props.setService).not.toHaveBeenCalled();
   });
 
+  test('rejects a URI with characters Turtle does not allow in an IRI', async () => {
+    const { props } = renderTab({ service: hoogte, triplyDBConfig: CONFIG });
+    await screen.findByRole('option', { name: 'Recht op subsidie' });
+
+    // Would be written as `dct:requires <https://x.org/y>> ;` — invalid Turtle.
+    for (const bad of ['https://x.org/y>', 'https://x.org/"y"', 'https://x.org/{y}']) {
+      pasteUri(bad);
+      expect(screen.getByText(/http\(s\) URI/i)).toBeInTheDocument();
+    }
+
+    expect(props.setService).not.toHaveBeenCalled();
+  });
+
+  test('accepts a URI pasted with its Turtle angle brackets', async () => {
+    const { props } = renderTab({ service: hoogte, triplyDBConfig: CONFIG });
+    await screen.findByRole('option', { name: 'Recht op subsidie' });
+
+    pasteUri(`<${RECHT}>`);
+
+    expect(props.setService).toHaveBeenCalledWith({ ...hoogte, requires: [RECHT] });
+  });
+
   test('removes an entry, naming it by its title when known', async () => {
     const { props } = renderTab({
       service: { ...hoogte, requires: [RECHT] },

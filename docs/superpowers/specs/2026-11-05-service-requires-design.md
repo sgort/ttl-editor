@@ -180,11 +180,13 @@ the PublicService case specifically, because it is the type the parser treats as
 
 - **Generator:**
   - `dct:requires` is emitted for 0, 1 and 2 entries.
-  - The stubs are emitted.
+  - No type stub is emitted (revision note).
   - Nothing is emitted when `requires` is empty, so the output is byte-identical
     to today.
-- **Parser:** a service with two requires, written both as two lines and as a
-  comma list. The stubs don't disturb the service or the following sections.
+- **Parser:** a service with two requires, written as two lines, as a comma list
+  on one line, and as an object list continuing over several lines. Stubs in
+  older or hand-edited files don't disturb the service or the following
+  sections.
 - **Round trip** (`src/parseTTL.roundtrip.test.js` pattern): `requires` survives
   parse → generate → parse.
 - **importHandler:** `requires` passes through, with a default of `[]`.
