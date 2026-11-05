@@ -35,6 +35,7 @@ const fullParse = {
     sector: 'https://example.org/NATIONAL',
     keywords: 'zorg, toeslag',
     language: 'en',
+    requires: ['https://example.org/services/required'],
   },
   organization: {
     identifier: 'svb',
@@ -150,6 +151,7 @@ describe('parseTTL', () => {
       sector: '',
       keywords: '',
       language: 'nl',
+      requires: [],
     });
     expect(result.organization).toEqual({
       identifier: '',
