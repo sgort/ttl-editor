@@ -11,6 +11,7 @@ export const DEFAULT_SERVICE = {
   thematicArea: '',
   keywords: '',
   language: 'nl',
+  requires: [], // service URIs this service makes use of (dct:requires)
 };
 
 export const DEFAULT_ORGANIZATION = {

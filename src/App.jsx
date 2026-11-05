@@ -1029,6 +1029,7 @@ function App() {
                   setCost={setCost}
                   output={output}
                   setOutput={setOutput}
+                  triplyDBConfig={triplyDBConfig}
                 />
               )}{' '}
               {activeTab === 'organization' && (

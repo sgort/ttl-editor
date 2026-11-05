@@ -1,12 +1,21 @@
 import { LANGUAGE_OPTIONS, SECTOR_OPTIONS } from '../../utils';
 import CostSection from './CostSection';
 import OutputSection from './OutputSection';
+import RequiredServicesSection from './RequiredServicesSection';
 
 /**
  * ServiceTab - Form for editing public service metadata
  * Maps to cpsv:PublicService in CPSV-AP 3.2.0
  */
-export default function ServiceTab({ service, setService, cost, setCost, output, setOutput }) {
+export default function ServiceTab({
+  service,
+  setService,
+  cost,
+  setCost,
+  output,
+  setOutput,
+  triplyDBConfig,
+}) {
   // Helper to update a single field
   const updateField = (field, value) => {
     setService({ ...service, [field]: value });
@@ -182,6 +191,11 @@ export default function ServiceTab({ service, setService, cost, setCost, output,
           ))}
         </select>
       </div>
+      <RequiredServicesSection
+        service={service}
+        setService={setService}
+        triplyDBConfig={triplyDBConfig}
+      />
       <CostSection cost={cost} setCost={setCost} />
       <OutputSection output={output} setOutput={setOutput} />
     </div>
