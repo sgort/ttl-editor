@@ -303,6 +303,15 @@ export class TTLGenerator {
       ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
     }
 
+    // Services this one makes use of (CPSV-AP PublicService.requires). Context
+    // only: execution order lives in the BPMN. A service never requires itself.
+    const requires = (this.service.requires || [])
+      .map((uri) => uri.trim())
+      .filter((uri) => uri && uri !== this.serviceUri);
+    requires.forEach((uri) => {
+      ttl += `    dct:requires <${uri}> ;\n`;
+    });
+
     // DMN reference
     if (this.hasDMN()) {
       ttl += `    cprmv:hasDecisionModel <${this.serviceUri}/dmn> ;\n`;
@@ -310,6 +319,13 @@ export class TTLGenerator {
 
     // Close statement
     ttl = ttl.slice(0, -2) + ' .\n\n';
+
+    // dct:requires carries sh:class cpsv:PublicService, and the file-local SHACL
+    // check runs without entailment: type each required service here, as the
+    // language and sector stubs below do for their references.
+    requires.forEach((uri) => {
+      ttl += `<${uri}> a cpsv:PublicService .\n\n`;
+    });
 
     // Type the controlled-vocabulary references the PublicService points at, so the
     // file-local SHACL sh:class checks (no entailment) pass: language →
