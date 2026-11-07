@@ -26,7 +26,7 @@ mechanisms above to actually run:
 | Dependency                     | Pin                                                 | Version           | Maintained by                                                      |
 | ------------------------------ | --------------------------------------------------- | ----------------- | ------------------------------------------------------------------ |
 | `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                           |
-| `actions/setup-node`           | `820762786026740c76f36085b0efc47a31fe5020`          | v7.0.0            | Renovate                                                           |
+| `actions/setup-node`           | `949feb2413d6458794dcd2491c4babbbce0c15c1`          | v7.1.0            | Renovate                                                           |
 | `actions/upload-artifact`      | `cf430e030ddbb5b0abf93d22962f4752f3646cd9`          | v7.0.2            | Renovate                                                           |
 | `zizmorcore/zizmor-action`     | `cc914d7f3750a2d13d75c7f184a1060aa0e9d482`          | v0.6.4            | Renovate                                                           |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below |
