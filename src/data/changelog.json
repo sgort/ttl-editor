@@ -2,6 +2,112 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.11.0",
+      "status": "Released",
+      "date": "5 nov 2026",
+      "commits": [
+        {
+          "sha": "981327d",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Required services: multi-line lists and invalid IRIs",
+          "details": [
+            "A dct:requires object list continuing onto the next lines (`<a> ,` then `<b> ;`, the layout serialisers and hand edits use) lost every entry after the first, and the continuation line overwrote service.sector. Continuation lines are now read as required services until one no longer ends in a comma.",
+            "The Service tab's URI check accepted characters Turtle's IRIREF excludes, so pasting `https://x/y>` wrote invalid Turtle. Those characters are now rejected. A URI pasted with its angle brackets, as copied from TTL, is accepted with the brackets stripped."
+          ]
+        },
+        {
+          "sha": "1a12766",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Thuisbatterij example: hoogte requires recht",
+          "details": [
+            "The hoogte service now states dct:requires on the recht service, because hoogte is computed under the assumption of recht. Recht requires nothing; the Linked Data Explorer derives the \"required by\" side. Both files were re-exported after a fresh deploy, test run and publish, so their deployment metadata is new as well."
+          ]
+        },
+        {
+          "sha": "5b52b54",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "No cpsv:PublicService type stub for required services",
+          "details": [
+            "A bare `<uri> a cpsv:PublicService .` stub failed four minCount checks of PublicServiceShape (dct:identifier, dct:title, dct:description, cv:hasCompetentAuthority), and would publish an untitled service into the dataset when the required service is missing. The generator no longer writes it.",
+            "One SHACL-CLASS error on dct:requires remains, because the required service is described in its own graph. It is accepted for now (linked-data-explorer#315); the check is advisory and does not block publishing. The parser still skips such stubs, so older or hand-edited files import correctly."
+          ]
+        },
+        {
+          "sha": "e19d11f",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Required services on the Service tab",
+          "details": [
+            "A \"Required services (dct:requires)\" field lists the services this service relies on, by title where known, each removable. A picker offers the public services published to the configured Triply dataset, without this service or those already listed, with Add and Refresh list. A URI paste box covers services that are not published yet; the value must be http(s) and cannot be the service itself or a duplicate.",
+            "When the dataset is not configured or the list cannot load, a note says so and pasting still works. The relation is context only: order and conditions stay in the BPMN."
+          ]
+        },
+        {
+          "sha": "9fcd5dd",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "List the public services published to the Triply dataset",
+          "details": [
+            "serviceCatalogHelper builds the configured dataset's /datasets/{account}/{dataset}/sparql endpoint and lists its cpsv:PublicService resources that have a dct:title, one entry per service, through the Linked Data Explorer backend's /v1/triplydb/query proxy. The proxy forwards no credentials and the API token is never sent, so only public datasets can be listed."
+          ]
+        },
+        {
+          "sha": "6cca44b",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Import reads dct:requires back",
+          "details": [
+            "The parser fills service.requires from dct:requires, taking every <uri> on the line (one per line or a comma list) and skipping duplicates. A bare `<uri> a cpsv:PublicService .` type stub is skipped before section detection, so it can never take over the service section or lend the service its identifier."
+          ]
+        },
+        {
+          "sha": "9b4ba75",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Generator emits dct:requires",
+          "details": [
+            "generateServiceSection() writes one `dct:requires <uri>` line per required service, before cprmv:hasDecisionModel. Entries are trimmed, empty ones dropped, and the service's own URI is never emitted. A service that requires nothing generates byte-identical TTL to before.",
+            "This commit also wrote a cpsv:PublicService type stub per required service; 5b52b54 removed it again."
+          ]
+        },
+        {
+          "sha": "f039f9d",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Thuisbatterij example split into recht and hoogte models",
+          "details": [
+            "RechtEnHoogteSubsidieThuisbatterij.dmn holds two unconnected roots, and the editor publishes one cprmv:DecisionModel per service, so only one of the two reached the Linked Data Explorer and the BPMN canvas could link only one of its two business rule tasks.",
+            "The new thuisbatterij-split-dmns folder holds each root as its own model with its own test cases and service TTL: RechtOpSubsidieThuisbatterij.dmn (9 test cases) and HoogteSubsidieThuisbatterij.dmn (the DRD, 32 test cases). Decision and input ids, rules and test-case bodies are copied verbatim, so existing decisionRefs keep resolving. The thuisbatterij folder is unchanged."
+          ]
+        },
+        {
+          "sha": "66cf589",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite 8.3.4",
+          "details": ["Build and dev server only, from 8.3.3; nothing in the shipped bundle."]
+        },
+        {
+          "sha": "8a78c34",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "eslint-plugin-prettier 5.5.7",
+          "details": ["Development only, from 5.5.6."]
+        },
+        {
+          "sha": "a2159ca",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "postcss 8.5.31",
+          "details": ["Build only, from 8.5.28."]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.10.2",
       "status": "Released",
       "date": "29 oct 2026",

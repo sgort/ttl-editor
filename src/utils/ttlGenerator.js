@@ -303,6 +303,15 @@ export class TTLGenerator {
       ttl += `    cpsv:produces <https://regels.overheid.nl/outputs/${encodedOutputId}> ;\n`;
     }
 
+    // Services this one makes use of (CPSV-AP PublicService.requires). Context
+    // only: execution order lives in the BPMN. A service never requires itself.
+    const requires = (this.service.requires || [])
+      .map((uri) => uri.trim())
+      .filter((uri) => uri && uri !== this.serviceUri);
+    requires.forEach((uri) => {
+      ttl += `    dct:requires <${uri}> ;\n`;
+    });
+
     // DMN reference
     if (this.hasDMN()) {
       ttl += `    cprmv:hasDecisionModel <${this.serviceUri}/dmn> ;\n`;
@@ -310,6 +319,13 @@ export class TTLGenerator {
 
     // Close statement
     ttl = ttl.slice(0, -2) + ' .\n\n';
+
+    // Deliberately no `<uri> a cpsv:PublicService .` stub for the required
+    // services, unlike the language and sector stubs below. PublicServiceShape
+    // targets that class, so a bare stub fails four minCount checks, and it would
+    // publish an untitled service into the dataset. The required service is
+    // described in its own graph; the one file-local SHACL-CLASS error on
+    // dct:requires is accepted for now (linked-data-explorer#315).
 
     // Type the controlled-vocabulary references the PublicService points at, so the
     // file-local SHACL sh:class checks (no entailment) pass: language →

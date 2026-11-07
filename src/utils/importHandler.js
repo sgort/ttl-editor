@@ -20,6 +20,7 @@ export const parseTTL = (ttlContent) => {
       sector: parsed.service?.sector || '',
       keywords: parsed.service?.keywords || '',
       language: parsed.service?.language || 'nl',
+      requires: parsed.service?.requires || [],
     },
     organization: {
       identifier: parsed.organization?.identifier || '',
