@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 
+import { signIn } from './signIn.js';
 import { expect, test } from './stack.js';
 
 /**
@@ -110,6 +111,8 @@ test.describe('authoring journey', () => {
       delete window.showSaveFilePicker;
     });
     await page.goto('/');
+    // Deploy needs an lde-author (#163 in linked-data-explorer).
+    await signIn(page);
   });
 
   test(`drives ${DMN_NAME} from empty form to exported TTL`, async ({ page }) => {

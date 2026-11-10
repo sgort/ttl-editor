@@ -22,6 +22,13 @@ import { test as base } from '@playwright/test';
  * Both services are checked, not only the backend. Everything the app calls goes
  * through the LDE backend, but the deploy step fails if THAT cannot reach
  * Operaton — so checking one and not the other would give false confidence.
+ *
+ * Environment for the stack journeys:
+ *   E2E_BACKEND_URL    default: VITE_BACKEND_URL in .env.development
+ *   E2E_OPERATON_URL   default: http://localhost:8081
+ *   E2E_LDE_PASSWORD   required: the journeys sign in before deploying (#163 in
+ *                      linked-data-explorer); see signIn.js
+ *   E2E_LDE_USERNAME   default: lde-e2e
  */
 
 const TIMEOUT_MS = 5_000;
