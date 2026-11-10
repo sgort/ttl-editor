@@ -49,3 +49,16 @@ vi.mock('./utils/ronlHelper', async (importOriginal) => ({
   ...(await importOriginal()),
   fetchAllRonlConcepts: vi.fn().mockResolvedValue({ analysisConcepts: [], methodConcepts: [] }),
 }));
+
+/**
+ * No test reaches Keycloak (#163 in linked-data-explorer).
+ *
+ * Every suite runs signed in as an author, so Publish and Deploy behave as they
+ * did before sign-in existed. A test about the signed-out states calls
+ * setAuthState from src/testing/authState.js; each test starts as an author
+ * again. auth.test.js unmocks this to test the real module.
+ */
+vi.mock('./utils/auth', async () => (await import('./testing/authState')).authMock);
+afterEach(async () => {
+  (await import('./testing/authState')).resetAuthState();
+});
