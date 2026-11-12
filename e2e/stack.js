@@ -26,9 +26,9 @@ import { test as base } from '@playwright/test';
  * Environment for the stack journeys:
  *   E2E_BACKEND_URL    default: VITE_BACKEND_URL in .env.development
  *   E2E_OPERATON_URL   default: http://localhost:8081
- *   E2E_LDE_PASSWORD   required: the journeys sign in before deploying (#163 in
+ *   LDE_E2E_PASSWORD   required: the journeys sign in before deploying (#163 in
  *                      linked-data-explorer); see signIn.js
- *   E2E_LDE_USERNAME   default: lde-e2e
+ *   LDE_E2E_USERNAME   default: lde-e2e
  */
 
 const TIMEOUT_MS = 5_000;
