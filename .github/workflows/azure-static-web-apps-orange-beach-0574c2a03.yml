@@ -131,6 +131,9 @@ jobs:
           # loads -- do not remove it expecting .env.acceptance to take over,
           # because nothing loads that file without --mode acceptance.
           VITE_BACKEND_URL: https://acc.backend.linkeddata.open-regels.nl
+          # The same reason applies to sign-in (linked-data-explorer #163):
+          # without this, .env.production points ACC at the PROD Keycloak.
+          VITE_KEYCLOAK_URL: https://acc.keycloak.open-regels.nl
           # Build provenance, surfaced in the Changelog tab. The version
           # there is bumped by hand and identifies a release, not a build of
           # it: ACC and PROD can serve different builds of the same version,
