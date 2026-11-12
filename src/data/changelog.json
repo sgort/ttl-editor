@@ -2,6 +2,130 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.11.1",
+      "status": "Released",
+      "date": "12 nov 2026",
+      "commits": [
+        {
+          "sha": "d1a2249",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react 1.64.0",
+          "details": ["The icon library, within its declared range (#245)."]
+        },
+        {
+          "sha": "bb71545",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Node 24.22.2",
+          "details": [
+            "`.nvmrc` and the Node literals in the dependency-audit, dependency-review, sbom and zizmor workflows move from 24.22.1 to 24.22.2. It bundles the same npm 11.19.1, so the release SBOM is generated with the same npm as before. Not a security release (#244)."
+          ]
+        },
+        {
+          "sha": "2241750",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser 8.0.10",
+          "details": ["Development only, with @babel/types (#236)."]
+        },
+        {
+          "sha": "e8749d5",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Publish through the LDE backend as the signed-in author; the dialog keeps only the dataset",
+          "details": [
+            "Publishing is one call to the LDE backend's `POST /v1/triplydb/publish`, made with the signed-in author's token. The backend holds the TriplyDB instance, account and token, uploads the TTL and the logos, syncs the service and logs who published.",
+            "The Publish dialog asks only for the dataset name: Base URL, Account, API Token and the token reminder are gone. Test connection checks the dataset through the backend. The stored config is only `{ dataset }`, and an old token in localStorage is removed the first time the editor loads. The required-services picker gets base URL and account from the backend's publish-target, and shows as unconfigured when publishing is not (#234)."
+          ]
+        },
+        {
+          "sha": "4b2cc12",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "The ACC build signs in at the ACC Keycloak",
+          "details": [
+            "The ACC build runs `vite build` without `--mode acceptance`, so it loads `.env.production`. `VITE_BACKEND_URL` was already overridden in the workflow, `VITE_KEYCLOAK_URL` was not, and ACC sent its sign-in to the PROD Keycloak (\"Client niet gevonden\") (linked-data-explorer#163)."
+          ]
+        },
+        {
+          "sha": "836d9fa",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "One name for the lde-e2e password: LDE_E2E_PASSWORD",
+          "details": [
+            "The journeys read `LDE_E2E_PASSWORD` and `LDE_E2E_USERNAME`, the names linked-data-explorer's fixtures script already uses for the same account. A missing password now says where to set it, and the README gains an End-to-end journeys section: the local stack, the command and the variables, which belong to the test run, not to the LDE backend (linked-data-explorer#163)."
+          ]
+        },
+        {
+          "sha": "57e995b",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite 8.3.5 and its build dependencies",
+          "details": [
+            "Development only: the rolldown bindings and @oxc-project/types move with it (#231)."
+          ]
+        },
+        {
+          "sha": "49cfbbb",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Lock file maintenance",
+          "details": [
+            "All locks refreshed under the 14-day release-age rule: 65 updates, 3 of them runtime (react and react-dom 19.3.1, lucide-react 1.63.0), no additions and no downgrades. It also covered the react, @babel/parser, @vitest/eslint-plugin and vite pull requests, which Renovate then closed or moved on to newer versions (#196)."
+          ]
+        },
+        {
+          "sha": "0bab92e",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "The stack journeys sign in as lde-e2e before deploying",
+          "details": [
+            "The three stack journeys sign in through the header's \"Medewerker\" popup right after the page loads, as lde-e2e by default, so Deploy is the author's deploy. A missing password or an account without lde-author fails at sign-in with that reason. stack.js lists the e2e environment variables (linked-data-explorer#163)."
+          ]
+        },
+        {
+          "sha": "4334a55",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Deploy, test deploy and publish follow sign-in",
+          "details": [
+            "The DMN tab's Deploy has three states: an author deploys to Operaton as before, with a token; anyone else gets \"Test deploy to Operaton\" to the tenant TestOnly where the backend offers it (`GET /v1/dmns/deploy/options`), removed after 48 hours, and a locked button where it does not. After a test deploy every evaluation goes to that tenant. A refused deploy (key exists, too many test deploys) shows right under the Deploy button.",
+            "Publish is locked without lde-author, and the TriplyDB service update sends the token. The \"Deployed — ID\" line now reads deploymentId. Also fixes Clear All leaving the DMN tab filled (#87): the tab stays mounted while hidden, so Clear All now remounts it empty (linked-data-explorer#163)."
+          ]
+        },
+        {
+          "sha": "dd7e87f",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "Sign in with the ronl realm",
+          "details": [
+            "Signing in is optional. A header sign-in offers \"Flevoland-account\" (straight to Entra) and \"Medewerker\" (the employee password page), as on RBA's landing pages, and runs in a centred popup so the page keeps the service being edited; a blocked popup falls back to the full-page redirect. A silent check-sso in a hidden frame restores a returning user's session.",
+            "Without the lde-author role the header shows \"View only\" with a dismissible note. LockedAction and useAuth are the building blocks for locking deploy and publish; every test runs as an author through a test double in setupTests (linked-data-explorer#163)."
+          ]
+        },
+        {
+          "sha": "8a0ab12",
+          "author": "renovate[bot]",
+          "type": "ci",
+          "subject": "actions/setup-node v7.1.0",
+          "details": [
+            "Digest-pinned across the workflows; the pin register follows in its own commit."
+          ]
+        },
+        {
+          "sha": "bada070",
+          "author": "renovate[bot]",
+          "type": "ci",
+          "subject": "actions/upload-artifact v7.0.2",
+          "details": [
+            "Digest-pinned in the SBOM workflow; the pin register follows in its own commit."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.11.0",
       "status": "Released",
       "date": "5 nov 2026",

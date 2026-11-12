@@ -5,7 +5,10 @@ import { testTriplyDBConnection } from '../utils/triplydbHelper';
 import PublishDialog from './PublishDialog';
 
 vi.mock('../utils/shaclHelper');
-vi.mock('../utils/triplydbHelper');
+vi.mock('../utils/triplydbHelper', async (importOriginal) => ({
+  ...(await importOriginal()),
+  testTriplyDBConnection: vi.fn(),
+}));
 
 /**
  * The dialog's states: SHACL advice, connection testing, and publishing.
@@ -19,12 +22,7 @@ vi.mock('../utils/triplydbHelper');
  * deliberate product decision rather than an oversight, so it is pinned here.
  */
 
-const config = {
-  baseUrl: 'https://api.example.org',
-  account: 'acme',
-  dataset: 'services',
-  apiToken: 'secret-token',
-};
+const config = { dataset: 'services' };
 
 const TTL = '@prefix ex: <https://example.org/> .\nex:s a ex:T .\n';
 
@@ -181,26 +179,13 @@ describe('connection testing', () => {
 });
 
 describe('publishing', () => {
-  test('an incomplete configuration disables publishing rather than warning about it', () => {
-    // handlePublish carries an alert() for a missing account, dataset or token,
-    // but the button is disabled on exactly that condition, so the guard cannot
-    // be reached through the UI. The disabled button is the real behaviour.
-    const { props } = renderDialog({ config: { ...config, apiToken: '' } });
-
-    const publish = screen.getByRole('button', { name: /Publish to TriplyDB/ });
-    expect(publish).toBeDisabled();
-
-    fireEvent.click(publish);
-    expect(props.onPublish).not.toHaveBeenCalled();
-  });
-
-  test('each required field on its own disables publishing', () => {
-    for (const missing of ['baseUrl', 'account', 'dataset', 'apiToken']) {
+  test('an invalid dataset name disables publishing and the connection test (#234)', () => {
+    for (const dataset of ['', 'a/b', '../x']) {
       const { unmount } = render(
         <PublishDialog
           onClose={vi.fn()}
           onPublish={vi.fn()}
-          config={{ ...config, [missing]: '' }}
+          config={{ dataset }}
           onConfigChange={vi.fn()}
           publishingState={null}
           ttlContent=""
@@ -209,14 +194,23 @@ describe('publishing', () => {
 
       expect(
         screen.getByRole('button', { name: /Publish to TriplyDB/ }),
-        `missing ${missing} should disable publishing`
+        `dataset ${JSON.stringify(dataset)} should disable publishing`
       ).toBeDisabled();
+      expect(screen.getByRole('button', { name: /Test Connection/i })).toBeDisabled();
 
       unmount();
     }
   });
 
-  test('publishes a complete configuration', () => {
+  test('says what is wrong with an invalid dataset name', () => {
+    renderDialog({ config: { dataset: 'a/b' } });
+
+    expect(
+      screen.getByText('Dataset name may contain only letters, digits and hyphens (at most 40)')
+    ).toBeInTheDocument();
+  });
+
+  test('publishes a valid configuration', () => {
     const { props } = renderDialog();
 
     fireEvent.click(screen.getByRole('button', { name: /Publish to TriplyDB/ }));

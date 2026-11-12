@@ -2,13 +2,19 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 
 import { iknowMappings } from '../config/iknow-mappings';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
+import { fetchPublishTarget } from '../utils/triplydbHelper';
 import { useEditorState } from './useEditorState';
 
 vi.mock('../utils/ronlHelper');
+vi.mock('../utils/triplydbHelper', async (importOriginal) => ({
+  ...(await importOriginal()),
+  fetchPublishTarget: vi.fn(),
+}));
 
 beforeEach(() => {
   localStorage.clear();
   fetchAllRonlConcepts.mockResolvedValue({ analysisConcepts: [], methodConcepts: [] });
+  fetchPublishTarget.mockResolvedValue(null);
 });
 
 afterEach(() => {
@@ -109,12 +115,12 @@ describe('useEditorState — clearAllData', () => {
     await waitFor(() => expect(result.current.ronlConceptsLoading).toBe(false));
 
     act(() => {
-      result.current.setTriplyDBConfig((prev) => ({ ...prev, apiToken: 'kept-across-clear' }));
+      result.current.setTriplyDBConfig({ dataset: 'kept-across-clear' });
     });
 
     act(() => result.current.clearAllData());
 
-    expect(result.current.triplyDBConfig.apiToken).toBe('kept-across-clear');
+    expect(result.current.triplyDBConfig.dataset).toBe('kept-across-clear');
   });
 });
 
@@ -168,5 +174,47 @@ describe('useEditorState — the concepts fetch is cancelled on unmount', () => 
     });
 
     expect(fetchAllRonlConcepts).toHaveBeenCalled();
+  });
+});
+
+describe('useEditorState — the required-services picker config (#234)', () => {
+  test("combines the backend's publish target with the stored dataset", async () => {
+    localStorage.setItem('triplydb_config', JSON.stringify({ dataset: 'Mine' }));
+    fetchPublishTarget.mockResolvedValue({
+      baseUrl: 'https://api.open-regels.triply.cc',
+      account: 'stevengort',
+    });
+
+    const { result } = renderHook(() => useEditorState());
+
+    await waitFor(() =>
+      expect(result.current.pickerConfig).toEqual({
+        baseUrl: 'https://api.open-regels.triply.cc',
+        account: 'stevengort',
+        dataset: 'Mine',
+      })
+    );
+    expect(fetchPublishTarget).toHaveBeenCalledTimes(1);
+  });
+
+  test('has only the dataset while publishing is not configured, so the picker shows unconfigured', async () => {
+    const { result } = renderHook(() => useEditorState());
+
+    await waitFor(() => expect(fetchPublishTarget).toHaveBeenCalled());
+    expect(result.current.pickerConfig).toEqual({ dataset: 'DMN-discovery' });
+  });
+
+  test('follows a dataset the user changes', async () => {
+    fetchPublishTarget.mockResolvedValue({ baseUrl: 'https://b', account: 'a' });
+    const { result } = renderHook(() => useEditorState());
+    await waitFor(() => expect(result.current.pickerConfig.account).toBe('a'));
+
+    act(() => result.current.setTriplyDBConfig({ dataset: 'Other' }));
+
+    expect(result.current.pickerConfig).toEqual({
+      baseUrl: 'https://b',
+      account: 'a',
+      dataset: 'Other',
+    });
   });
 });

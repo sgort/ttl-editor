@@ -59,12 +59,10 @@ export {
 
 // TriplyDB helpers
 export {
-  getDefaultTriplyDBConfig,
+  fetchPublishTarget,
   loadTriplyDBConfig,
   publishToTriplyDB,
   saveTriplyDBConfig,
   testTriplyDBConnection,
-  updateTriplyDBService,
-  uploadLogoAsset,
   validateTriplyDBConfig,
 } from './triplydbHelper';
