@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { iknowMappings } from '../config/iknow-mappings';
 import {
@@ -10,7 +10,7 @@ import {
   EMPTY_DMN_DATA,
 } from '../utils';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
-import { loadTriplyDBConfig } from '../utils/triplydbHelper';
+import { fetchPublishTarget, loadTriplyDBConfig } from '../utils/triplydbHelper';
 
 const RONL_ENDPOINT =
   'https://api.open-regels.triply.cc/datasets/stevengort/ronl/services/ronl/sparql';
@@ -105,6 +105,28 @@ export const useEditorState = () => {
 
   // TriplyDB configuration state (NEW)
   const [triplyDBConfig, setTriplyDBConfig] = useState(() => loadTriplyDBConfig());
+
+  // Where the LDE backend publishes to, without the token (#234). The editor
+  // keeps only the dataset name; the "required services" picker needs the base
+  // URL and account too, to build its SPARQL URL. Null while unknown, or when
+  // the backend has no publish target: the picker then shows unconfigured.
+  const [publishTarget, setPublishTarget] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetchPublishTarget().then((target) => {
+      if (!cancelled) setPublishTarget(target);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  const pickerConfig = useMemo(
+    () =>
+      publishTarget
+        ? { ...publishTarget, dataset: triplyDBConfig.dataset }
+        : { dataset: triplyDBConfig.dataset },
+    [publishTarget, triplyDBConfig.dataset]
+  );
 
   // RONL concepts — fetched once on App mount, consumed by LegalTab and VendorTab
   const [ronlAnalysisConcepts, setRonlAnalysisConcepts] = useState([]);
@@ -244,6 +266,7 @@ export const useEditorState = () => {
     // TriplyDB (NEW)
     triplyDBConfig,
     setTriplyDBConfig,
+    pickerConfig,
     // RONL concepts
     ronlAnalysisConcepts,
     ronlMethodConcepts,

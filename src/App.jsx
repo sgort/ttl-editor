@@ -43,13 +43,7 @@ import { sanitizeFilename, validateForm } from './utils';
 import { flattenCprmvRules } from './utils/cprmvImport';
 import { validateDMNData } from './utils/dmnHelpers';
 import { handleTTLImport } from './utils/importHandler';
-import {
-  buildGraphIRI,
-  publishToTriplyDB,
-  saveTriplyDBConfig,
-  updateTriplyDBService,
-  uploadLogoAsset,
-} from './utils/triplydbHelper';
+import { buildGraphIRI, publishToTriplyDB, saveTriplyDBConfig } from './utils/triplydbHelper';
 import { generateTTL } from './utils/ttlGenerator';
 
 // Heavy tabs, fetched on first use rather than shipped in the entry chunk.
@@ -103,6 +97,7 @@ function App() {
     // setAvailableIKnowMappings! ← Not needed in App.js
     triplyDBConfig,
     setTriplyDBConfig,
+    pickerConfig,
     ronlAnalysisConcepts,
     ronlMethodConcepts,
     ronlConceptsLoading,
@@ -559,114 +554,55 @@ function App() {
 
       const filename = sanitizeFilename(service.identifier || service.name || 'service');
 
-      // Step 3: Upload to TriplyDB (40-70%)
-      setPublishingState({
-        isPublishing: true,
-        currentStep: 'Uploading to TriplyDB...',
-        progress: 50,
-        stepStatus: 'loading',
-        error: null,
-      });
-
-      console.log('Publishing with filename:', filename);
-
+      // Step 3: Publish through the LDE backend (40-100%). Since #234 this is
+      // one call, made as the signed-in author: the backend uploads the TTL and
+      // the logos, syncs the service and logs who published. The editor holds
+      // no TriplyDB token; it sends only the dataset the user chose.
       const graphIRI = buildGraphIRI({
         organizationIdentifier: organization.identifier,
         serviceIdentifier: service.identifier,
       });
 
-      const publishResult = await publishToTriplyDB(ttlContent, config, filename, graphIRI);
-
-      console.log('Publish successful:', publishResult);
-
-      setPublishingState({
-        isPublishing: true,
-        currentStep: 'Upload successful ✓',
-        progress: 70,
-        stepStatus: 'success',
-        error: null,
-      });
-
-      // Step 3.5: Upload logo if present (70-75%)
+      const logos = [];
       if (organization.logo && organization.logo.startsWith('data:')) {
-        try {
-          setPublishingState({
-            isPublishing: true,
-            currentStep: 'Uploading logo...',
-            progress: 72,
-            stepStatus: 'loading',
-            error: null,
-          });
-
-          const orgId = organization.identifier.startsWith('http')
-            ? organization.identifier.split('/').pop()
-            : organization.identifier;
-          const logoFileName = `${orgId}_logo.png`;
-
-          await uploadLogoAsset(organization.logo, logoFileName, config);
-          console.log('Logo uploaded successfully');
-
-          setPublishingState({
-            isPublishing: true,
-            currentStep: 'Logo uploaded ✓',
-            progress: 75,
-            stepStatus: 'success',
-            error: null,
-          });
-        } catch (logoError) {
-          console.warn('Logo upload failed (continuing):', logoError);
-          // Don't fail the entire publish if logo upload fails
-        }
+        const orgId = organization.identifier.startsWith('http')
+          ? organization.identifier.split('/').pop()
+          : organization.identifier;
+        logos.push({ fileName: `${orgId}_logo.png`, dataUrl: organization.logo });
       }
-
-      // Step 3.6: Upload vendor logo if present (75-78%)
       if (vendorService.contact.logo && vendorService.contact.logo.startsWith('data:')) {
-        try {
-          setPublishingState({
-            isPublishing: true,
-            currentStep: 'Uploading vendor logo...',
-            progress: 76,
-            stepStatus: 'loading',
-            error: null,
-          });
-
-          // Extract vendor name from URI for filename
-          const vendorUri = vendorService.selectedVendor;
-          const vendorName = vendorUri.split('/').pop(); // e.g., "Blueriq"
-          const vendorLogoFileName = `${vendorName}_vendor_logo.png`;
-
-          await uploadLogoAsset(vendorService.contact.logo, vendorLogoFileName, config);
-          console.log('Vendor logo uploaded successfully');
-
-          setPublishingState({
-            isPublishing: true,
-            currentStep: 'Vendor logo uploaded ✓',
-            progress: 78,
-            stepStatus: 'success',
-            error: null,
-          });
-        } catch (logoError) {
-          console.warn('Vendor logo upload failed (continuing):', logoError);
-          // Don't fail the entire publish if vendor logo upload fails
-        }
+        // Vendor name from its URI, e.g. "Blueriq"
+        const vendorName = vendorService.selectedVendor.split('/').pop();
+        logos.push({
+          fileName: `${vendorName}_vendor_logo.png`,
+          dataUrl: vendorService.contact.logo,
+        });
       }
 
-      // Step 4: Update service (70-100%)
       setPublishingState({
         isPublishing: true,
-        currentStep: 'Updating service...',
-        progress: 85,
+        currentStep: 'Publishing to TriplyDB...',
+        progress: 60,
         stepStatus: 'loading',
         error: null,
       });
 
-      try {
-        const serviceName = config.dataset;
-        await updateTriplyDBService(config, serviceName, graphIRI);
+      const publishResult = await publishToTriplyDB({
+        dataset: config.dataset,
+        graph: graphIRI,
+        filename,
+        ttl: ttlContent,
+        organization: organization.identifier,
+        service: service.identifier,
+        logos,
+      });
 
-        console.log('Service updated successfully');
+      // The publish worked, so the dataset choice is worth keeping.
+      const keptConfig = { dataset: config.dataset };
+      saveTriplyDBConfig(keptConfig);
+      setTriplyDBConfig(keptConfig);
 
-        // Step 5: Complete success!
+      if (publishResult.serviceUpdated) {
         setPublishingState({
           isPublishing: false,
           currentStep: 'Published successfully! ✓',
@@ -674,10 +610,6 @@ function App() {
           stepStatus: 'success',
           error: null,
         });
-
-        // Save config
-        saveTriplyDBConfig(config);
-        setTriplyDBConfig(config);
 
         // Set success message under title (GREEN)
         setMessage(`Published successfully! View at: ${publishResult.url || 'TriplyDB'}`);
@@ -694,25 +626,20 @@ function App() {
           setMessage('');
           setMessageType('');
         }, 10000);
-      } catch (updateError) {
-        console.warn('Service update failed:', updateError.message);
-
-        // Upload succeeded, but service update failed - this is a WARNING, not error
+      } else {
+        // The graph is in TriplyDB; only the service pointing at it is stale.
+        // That is a WARNING, not an error: re-publishing would not help.
         setPublishingState({
           isPublishing: false,
           currentStep: 'Published with warning',
           progress: 100,
           stepStatus: 'warning',
-          error: `Service update failed: ${updateError.message}`,
+          error: `Service update failed: ${publishResult.serviceError}`,
         });
-
-        // Save config anyway since publish succeeded
-        saveTriplyDBConfig(config);
-        setTriplyDBConfig(config);
 
         // Set warning message under title (YELLOW/ORANGE)
         setMessage(
-          `Published successfully! Service update failed: ${updateError.message}. View at: ${publishResult.url || 'TriplyDB'}`
+          `Published successfully! Service update failed: ${publishResult.serviceError}. View at: ${publishResult.url || 'TriplyDB'}`
         );
         setMessageType('warning');
 
@@ -1042,7 +969,7 @@ function App() {
                   setCost={setCost}
                   output={output}
                   setOutput={setOutput}
-                  triplyDBConfig={triplyDBConfig}
+                  triplyDBConfig={pickerConfig}
                 />
               )}{' '}
               {activeTab === 'organization' && (

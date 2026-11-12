@@ -1,4 +1,9 @@
-// triplydbHelper.js - TriplyDB API integration for publishing TTL files
+// triplydbHelper.js - publishing to TriplyDB through the LDE backend.
+//
+// Since #234 the editor never talks to TriplyDB for a write and never holds a
+// TriplyDB token. The LDE backend holds the instance, account and token; the
+// editor sends the signed-in author's ronl token and the dataset name, which
+// is the only TriplyDB setting left with the user.
 import { authHeaders } from './auth';
 import { sanitizeServiceIdentifier } from './dmnHelpers';
 import { getProblemDetail } from './problem';
@@ -9,29 +14,11 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 // API version for compliance with API-57 (versioned APIs)
 const API_VERSION = 'v1';
 
-/**
- * TriplyDB API Configuration
- * Based on: https://docs.triply.cc/triply-api
- */
+const STORAGE_KEY = 'triplydb_config';
+const DEFAULT_DATASET = 'DMN-discovery';
 
-const DEFAULT_CONFIG = {
-  baseUrl: 'https://api.open-regels.triply.cc',
-  account: 'stevengort',
-  dataset: 'DMN-discovery',
-  apiToken: '', // Should be set by user
-};
-
-/**
- * Ensure filename has .ttl extension
- * @param {string} filename - Filename to check
- * @returns {string} Filename with .ttl extension
- */
-const ensureTTLExtension = (filename) => {
-  if (!filename || filename.trim() === '') {
-    return 'service.ttl';
-  }
-  return filename.endsWith('.ttl') ? filename : `${filename}.ttl`;
-};
+/** TriplyDB's rule for dataset names; the LDE backend applies the same one. */
+const DATASET_NAME = /^[A-Za-z0-9-]{1,40}$/;
 
 // Use proper IRI for graph name
 // TriplyDB requires a full URI, not just "default"
@@ -50,458 +37,93 @@ export const buildGraphIRI = ({ organizationIdentifier, serviceIdentifier }) => 
     : `https://regels.overheid.nl/graphs/${svc}`;
 };
 
-/**
- * Upload TTL content to TriplyDB with proper graph IRI
- * @param {string} ttlContent - The TTL content to upload
- * @param {Object} config - TriplyDB configuration
- * @param {string} filename - Optional filename
- * @param {string} graphIRI - Target graph IRI (default: https://regels.overheid.nl/graphs/default)
- * @returns {Promise<Object>} Upload result
- */
-export const publishToTriplyDB = async (
-  ttlContent,
-  config,
-  filename = 'service.ttl',
-  graphIRI = 'https://regels.overheid.nl/graphs/default'
-) => {
-  const validFilename = ensureTTLExtension(filename);
-
-  const uploadUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/jobs?defaultGraphName=${encodeURIComponent(graphIRI)}`;
-
-  console.log('=== TriplyDB Upload Debug Info ===');
-  console.log('Upload URL:', uploadUrl);
-  console.log('Target graph IRI:', graphIRI);
-  console.log('Filename:', validFilename);
-  console.log('Content length:', ttlContent.length, 'characters');
-
+/** Reads a JSON body, or null when there is none. */
+const readJson = async (response) => {
   try {
-    // Create File object
-    const file = new File([ttlContent], validFilename, {
-      type: 'text/turtle;charset=utf-8',
-    });
-
-    console.log('Created File object:', {
-      name: file.name,
-      size: file.size,
-      type: file.type,
-    });
-
-    if (file.size === 0) {
-      throw new Error('Generated file is empty');
-    }
-
-    // Create FormData with proper graph IRI
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('defaultGraphName', graphIRI); // <-- Use full IRI
-
-    console.log('FormData created');
-    console.log('FormData has file:', formData.has('file'));
-    console.log('FormData has defaultGraphName:', formData.has('defaultGraphName'));
-
-    console.log('Making request to:', uploadUrl);
-
-    // Make the API request
-    const response = await fetch(uploadUrl, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.apiToken}`,
-      },
-      body: formData,
-    });
-
-    console.log('Response received:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-    });
-
-    const responseText = await response.text();
-    console.log('Response text:', responseText);
-
-    let responseData;
-    try {
-      responseData = JSON.parse(responseText);
-      console.log('Parsed JSON response:', responseData);
-    } catch {
-      console.log('Response is not JSON');
-      responseData = { message: responseText };
-    }
-
-    if (!response.ok) {
-      const errorMessage =
-        responseData.message ||
-        responseData.error ||
-        responseData.detail ||
-        responseText ||
-        `HTTP ${response.status}: ${response.statusText}`;
-
-      console.error('Upload failed:', errorMessage);
-      throw new Error(errorMessage);
-    }
-
-    // Success!
-    console.log('Upload successful to graph:', graphIRI);
-
-    // Log graph information if available
-    if (responseData.graphNames) {
-      console.log('Graph names in response:', responseData.graphNames);
-    }
-
-    const datasetUrl = `${config.baseUrl.replace('api.', '')}/datasets/${config.account}/${config.dataset}`;
-
-    return {
-      success: true,
-      message: 'Successfully published to TriplyDB',
-      data: responseData,
-      url: datasetUrl,
-      graphName: graphIRI,
-    };
-  } catch (error) {
-    console.error('TriplyDB upload error:', error);
-
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-      throw new Error('Network error: Could not connect to TriplyDB.');
-    }
-
-    throw new Error(`TriplyDB upload failed: ${error.message}`);
+    return await response.json();
+  } catch {
+    return null;
   }
 };
 
 /**
- * Update TriplyDB service via backend proxy
- * Routes through Node.js backend package from Linked Data Explorer to avoid CORS issues
+ * Publish a service description as the signed-in author (#234). One call: the
+ * backend uploads the TTL and the logos, syncs the service, and logs who did it.
  *
- * @param {Object} config - TriplyDB configuration
- * @param {string} serviceName - Service name to update
- * @param {string} graphName - Target graph IRI (optional; backend may use this to scope the re-index)
- * @returns {Promise<Object>} Update result
+ * @param {{dataset: string, graph: string, filename: string, ttl: string,
+ *   organization?: string, service?: string,
+ *   logos?: Array<{fileName: string, dataUrl: string}>}} publish
+ * @returns {Promise<{url: string, graph: string, serviceUpdated: boolean,
+ *   serviceError?: string, logos: Array<{fileName: string, ok: boolean}>}>}
  */
-export const updateTriplyDBService = async (config, serviceName = null, graphName = null) => {
-  // Validate configuration
-  const configValidation = validateTriplyDBConfig(config);
-  if (!configValidation.valid) {
-    throw new Error(configValidation.error);
-  }
-
-  const targetService = serviceName || config.dataset;
-
-  console.log('=== TriplyDB Service Update (via Backend) ===');
-  console.log('Backend URL:', BACKEND_URL);
-  console.log('API Version:', API_VERSION);
-  console.log('Service name:', targetService);
-  console.log('Graph name:', graphName || '(not specified)');
-
+export const publishToTriplyDB = async (publish) => {
+  let response;
   try {
-    // The LDE backend accepts this only from an lde-author (#163 in
-    // linked-data-explorer); Publish is locked for anyone else.
-    const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/update-service`, {
+    response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/publish`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(await authHeaders()),
-      },
-      body: JSON.stringify({
-        config: config,
-        serviceName: targetService,
-        graphName: graphName, // ← new field; backend ignores it harmlessly if not yet handled
-      }),
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify(publish),
     });
-
-    console.log('Backend response:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-      apiVersion: response.headers.get('API-Version'),
-    });
-
-    const result = await response.json();
-    console.log('Backend result:', result);
-
-    if (!response.ok || !result.success) {
-      throw new Error(getProblemDetail(result, `Backend error: ${response.status}`));
-    }
-
-    console.log('✅ Service updated successfully via backend!');
-
-    return {
-      success: true,
-      message: result.message,
-      graphCount: result.graphCount,
-    };
   } catch (error) {
-    console.error('Service update error:', error);
-
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+    if (error instanceof TypeError) {
       throw new Error('Network error: Could not connect to backend.');
     }
-
-    throw new Error(`Service update failed: ${error.message}`);
-  }
-};
-
-/**
- * Upload TTL content to TriplyDB using SPARQL UPDATE
- * Properly handles @prefix declarations by converting them to SPARQL PREFIX
- *
- * @param {string} ttlContent - The TTL content to upload
- * @param {Object} config - TriplyDB configuration
- * @param {string} filename - Filename (for logging only)
- * @param {string} graphIRI - Target graph IRI (default: https://regels.overheid.nl/graphs/default)
- * @returns {Promise<Object>} Upload result
- */
-export const publishToTriplyDB_SPARQL = async (
-  ttlContent,
-  config,
-  filename = 'service.ttl',
-  graphIRI = 'https://regels.overheid.nl/graphs/default'
-) => {
-  // Validate configuration
-  const configValidation = validateTriplyDBConfig(config);
-  if (!configValidation.valid) {
-    throw new Error(configValidation.error);
+    throw error;
   }
 
-  // Validate TTL content
-  const contentValidation = validateTTLContent(ttlContent);
-  if (!contentValidation.valid) {
-    throw new Error(contentValidation.error);
+  if (response.status === 401 || response.status === 403) {
+    throw new Error('Sign in as an author to publish.');
   }
 
-  // Use SPARQL endpoint (not /update which is deprecated)
-  const sparqlUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/sparql`;
-
-  console.log('=== TriplyDB SPARQL UPDATE ===');
-  console.log('SPARQL URL:', sparqlUrl);
-  console.log('Target graph:', graphIRI);
-  console.log('Filename:', filename);
-  console.log('Content length:', ttlContent.length, 'characters');
-
-  try {
-    // IMPORTANT: Extract @prefix declarations and convert to SPARQL PREFIX
-    // SPARQL doesn't allow @prefix inside INSERT DATA blocks
-
-    const lines = ttlContent.split('\n');
-    const prefixLines = [];
-    const dataLines = [];
-
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (trimmed.startsWith('@prefix')) {
-        // Convert @prefix to PREFIX (SPARQL syntax)
-        // @prefix cpsv: <http://...> . → PREFIX cpsv: <http://...>
-        const sparqlPrefix = trimmed.replace('@prefix', 'PREFIX').replace(/\s*\.\s*$/, '');
-        prefixLines.push(sparqlPrefix);
-      } else if (trimmed.length > 0) {
-        dataLines.push(line);
-      }
-    }
-
-    console.log('Extracted', prefixLines.length, 'prefix declarations');
-    console.log('Data lines:', dataLines.length);
-
-    // Build SPARQL INSERT DATA query
-    // PREFIX declarations go OUTSIDE the INSERT DATA block
-    const sparqlUpdate = `
-${prefixLines.join('\n')}
-
-INSERT DATA {
-  GRAPH <${graphIRI}> {
-${dataLines.join('\n')}
-  }
-}
-`.trim();
-
-    console.log('SPARQL query length:', sparqlUpdate.length, 'characters');
-    console.log('SPARQL query preview (first 500 chars):');
-    console.log(sparqlUpdate.substring(0, 500));
-
-    // Execute SPARQL UPDATE
-    const response = await fetch(sparqlUrl, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${config.apiToken}`,
-        'Content-Type': 'application/sparql-update',
-      },
-      body: sparqlUpdate,
-    });
-
-    console.log('Response received:', {
-      status: response.status,
-      statusText: response.statusText,
-      ok: response.ok,
-    });
-
-    // Get response
-    const responseText = await response.text();
-    console.log('Response text:', responseText || '(empty - success)');
-
-    if (!response.ok) {
-      // Try to parse error message
-      let errorMessage = responseText;
-      try {
-        const errorData = JSON.parse(responseText);
-        errorMessage = errorData.message || errorData.error || responseText;
-      } catch {
-        // Not JSON, use as is
-      }
-
-      console.error('SPARQL UPDATE failed:', errorMessage);
-      throw new Error(errorMessage || `HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    // Success!
-    console.log('✅ SPARQL UPDATE successful! Data inserted into graph:', graphIRI);
-
-    const datasetUrl = `${config.baseUrl.replace('api.', '')}/datasets/${config.account}/${config.dataset}`;
-
-    return {
-      success: true,
-      message: `Successfully inserted into graph: ${graphIRI}`,
-      url: datasetUrl,
-      graphName: graphIRI,
-    };
-  } catch (error) {
-    console.error('TriplyDB SPARQL UPDATE error:', error);
-
-    if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-      throw new Error('Network error: Could not connect to TriplyDB.');
-    }
-
-    throw new Error(`SPARQL UPDATE failed: ${error.message}`);
-  }
-};
-
-/**
- * Upload logo image as asset to TriplyDB
- * @param {string} base64Data - Base64 data URL
- * @param {string} fileName - Asset filename
- * @param {Object} config - TriplyDB configuration
- * @returns {Promise<Object>} Upload result
- */
-export const uploadLogoAsset = async (base64Data, fileName, config) => {
-  if (!base64Data || !base64Data.startsWith('data:image/')) {
-    throw new Error('Invalid base64 image data');
-  }
-
-  // Extract base64 content
-  const base64Content = base64Data.split(',')[1];
-  const mimeType = base64Data.match(/data:([^;]+);/)[1];
-
-  // Convert base64 to Blob
-  const byteCharacters = atob(base64Content);
-  const byteArrays = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    const slice = byteCharacters.slice(offset, offset + 512);
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-
-  const blob = new Blob(byteArrays, { type: mimeType });
-
-  // Create File object
-  const file = new File([blob], fileName, { type: mimeType });
-
-  // Upload to TriplyDB assets
-  const assetUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}/assets`;
-
-  const formData = new FormData();
-  formData.append('file', file);
-
-  const response = await fetch(assetUrl, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${config.apiToken}`,
-    },
-    body: formData,
-  });
-
+  const body = await readJson(response);
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Failed to upload logo: ${errorText}`);
+    throw new Error(getProblemDetail(body, `Publishing failed: HTTP ${response.status}`));
   }
 
-  return { success: true, assetUrl: `${assetUrl}/${fileName}` };
+  const { url, graph, serviceUpdated, serviceError, logos } = body;
+  return { url, graph, serviceUpdated, ...(serviceError ? { serviceError } : {}), logos };
 };
 
 /**
- * Validate TriplyDB configuration
- * @param {Object} config - TriplyDB configuration
- * @returns {Object} { valid: boolean, error?: string }
+ * Where the backend publishes to, without the token: `{ baseUrl, account }`,
+ * or null when publishing is not configured or the backend cannot be reached.
+ * The "required services" picker builds its SPARQL URL from it.
+ */
+export const fetchPublishTarget = async () => {
+  try {
+    const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/publish-target`);
+    if (!response.ok) return null;
+    const body = await readJson(response);
+    if (!body?.baseUrl || !body?.account) return null;
+    return { baseUrl: body.baseUrl, account: body.account };
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Validate the TriplyDB setting the user keeps: the dataset name.
+ * @param {{dataset?: string}} config
+ * @returns {{valid: boolean, error?: string}}
  */
 export const validateTriplyDBConfig = (config) => {
-  if (!config.baseUrl) {
-    return { valid: false, error: 'Base URL is required' };
-  }
-
-  if (!config.account) {
-    return { valid: false, error: 'Account name is required' };
-  }
-
-  if (!config.dataset) {
+  const dataset = config?.dataset;
+  if (!dataset) {
     return { valid: false, error: 'Dataset name is required' };
   }
-
-  if (!config.apiToken || config.apiToken.trim() === '') {
-    return { valid: false, error: 'API Token is required' };
+  if (!DATASET_NAME.test(dataset)) {
+    return {
+      valid: false,
+      error: 'Dataset name may contain only letters, digits and hyphens (at most 40)',
+    };
   }
-
-  // Validate URL format
-  try {
-    new URL(config.baseUrl);
-  } catch {
-    return { valid: false, error: 'Invalid Base URL format' };
-  }
-
   return { valid: true };
 };
 
 /**
- * Validate TTL content before upload
- * @param {string} ttlContent - The TTL content to validate
- * @returns {Object} { valid: boolean, error?: string }
- */
-const validateTTLContent = (ttlContent) => {
-  if (!ttlContent || typeof ttlContent !== 'string') {
-    return { valid: false, error: 'TTL content is empty or invalid' };
-  }
-
-  const trimmed = ttlContent.trim();
-  if (trimmed.length === 0) {
-    return { valid: false, error: 'TTL content is empty' };
-  }
-
-  // Check minimum length (should have more than just prefixes)
-  if (trimmed.length < 100) {
-    return {
-      valid: false,
-      error: 'TTL content is too short - please fill in service details',
-    };
-  }
-
-  // Check if it looks like TTL (has at least one triple or prefix declaration)
-  const hasPrefix = /@prefix\s+\w+:\s+<[^>]+>\s+\./.test(trimmed);
-  const hasTriple = /<[^>]+>\s+<[^>]+>\s+[^.]+\./.test(trimmed) || /<[^>]+>\s+a\s+/.test(trimmed);
-
-  if (!hasPrefix && !hasTriple) {
-    return {
-      valid: false,
-      error: 'TTL content does not appear to contain valid RDF statements',
-    };
-  }
-
-  return { valid: true };
-};
-
-/**
- * Test TriplyDB connection by attempting to access the dataset
- * @param {Object} config - TriplyDB configuration
- * @returns {Promise<Object>} Connection test result
+ * Check, through the backend, that the dataset exists in the publishing account.
+ * @param {{dataset: string}} config
+ * @returns {Promise<{success: boolean, message?: string, error?: string}>}
  */
 export const testTriplyDBConnection = async (config) => {
   const validation = validateTriplyDBConfig(config);
@@ -509,83 +131,66 @@ export const testTriplyDBConnection = async (config) => {
     return { success: false, error: validation.error };
   }
 
-  const testUrl = `${config.baseUrl}/datasets/${config.account}/${config.dataset}`;
-
-  console.log('Testing connection to:', testUrl);
-
   try {
-    const response = await fetch(testUrl, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${config.apiToken}`,
-        Accept: 'application/json',
-      },
+    const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/test-connection`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(await authHeaders()) },
+      body: JSON.stringify({ dataset: config.dataset }),
     });
 
-    console.log('Connection test response:', response.status, response.statusText);
-
     if (response.ok) {
-      return {
-        success: true,
-        message: 'Successfully connected to TriplyDB',
-      };
-    } else if (response.status === 404) {
-      return {
-        success: false,
-        error: 'Dataset not found. Please check account and dataset names.',
-      };
-    } else if (response.status === 401 || response.status === 403) {
-      return {
-        success: false,
-        error: 'Authentication failed. Please check your API token.',
-      };
-    } else {
-      return {
-        success: false,
-        error: `Connection failed: HTTP ${response.status}`,
-      };
+      return { success: true, message: `Dataset ${config.dataset} is available` };
     }
-  } catch (error) {
-    console.error('Connection test error:', error);
+    if (response.status === 404) {
+      return { success: false, error: 'Dataset not found. Please check the dataset name.' };
+    }
+    if (response.status === 401 || response.status === 403) {
+      return { success: false, error: 'Sign in as an author to check the dataset.' };
+    }
+    const body = await readJson(response);
     return {
       success: false,
-      error: `Connection error: ${error.message}`,
+      error: getProblemDetail(body, `Connection failed: HTTP ${response.status}`),
     };
+  } catch (error) {
+    return { success: false, error: `Connection error: ${error.message}` };
   }
 };
 
 /**
- * Load TriplyDB configuration from localStorage
- * @returns {Object} Saved configuration or default values
+ * Load the TriplyDB setting from localStorage: only the dataset. A value an
+ * older editor stored, with base URL, account and API token, is cleaned and
+ * written back, so the old token leaves the browser on first load (#234).
+ * @returns {{dataset: string}}
  */
 export const loadTriplyDBConfig = () => {
   try {
-    const saved = localStorage.getItem('triplydb_config');
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
-      return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+      const parsed = JSON.parse(saved);
+      const config = {
+        dataset:
+          typeof parsed?.dataset === 'string' && parsed.dataset ? parsed.dataset : DEFAULT_DATASET,
+      };
+      if (JSON.stringify(parsed) !== JSON.stringify(config)) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+      }
+      return config;
     }
   } catch (error) {
     console.warn('Failed to load TriplyDB config from localStorage:', error);
   }
-  return { ...DEFAULT_CONFIG };
+  return { dataset: DEFAULT_DATASET };
 };
 
 /**
- * Save TriplyDB configuration to localStorage
- * @param {Object} config - Configuration to save
+ * Save the TriplyDB setting to localStorage: only the dataset.
+ * @param {{dataset: string}} config
  */
 export const saveTriplyDBConfig = (config) => {
   try {
-    localStorage.setItem('triplydb_config', JSON.stringify(config));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ dataset: config?.dataset }));
   } catch (error) {
     console.warn('Failed to save TriplyDB config to localStorage:', error);
   }
-};
-
-/**
- * Get default TriplyDB configuration
- * @returns {Object} Default configuration
- */
-export const getDefaultTriplyDBConfig = () => {
-  return { ...DEFAULT_CONFIG };
 };

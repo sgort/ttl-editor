@@ -94,13 +94,9 @@ describe('the pre-publish check', () => {
 
   const publishNow = async () => {
     openPublish();
-    // The dialog needs a complete configuration before its button is enabled;
-    // loadTriplyDBConfig supplies account and dataset defaults, so only the
-    // token is missing.
-    fireEvent.change(await screen.findByPlaceholderText('Enter your TriplyDB API token'), {
-      target: { value: 'a-token' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /Publish to TriplyDB/ }));
+    // loadTriplyDBConfig supplies a valid dataset, the only setting the dialog
+    // asks for since #234, so its button is enabled straight away.
+    fireEvent.click(await screen.findByRole('button', { name: /Publish to TriplyDB/ }));
   };
 
   test('refuses to publish when the form is invalid', async () => {

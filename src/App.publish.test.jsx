@@ -6,18 +6,16 @@ import { validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import {
   buildGraphIRI,
+  fetchPublishTarget,
   publishToTriplyDB,
   saveTriplyDBConfig,
-  updateTriplyDBService,
-  uploadLogoAsset,
 } from './utils/triplydbHelper';
 
 vi.mock('./utils/triplydbHelper', async (importOriginal) => ({
   ...(await importOriginal()),
   buildGraphIRI: vi.fn(),
+  fetchPublishTarget: vi.fn(),
   publishToTriplyDB: vi.fn(),
-  updateTriplyDBService: vi.fn(),
-  uploadLogoAsset: vi.fn(),
   saveTriplyDBConfig: vi.fn(),
 }));
 vi.mock('./utils', async (importOriginal) => ({
@@ -32,45 +30,52 @@ vi.mock('./utils/dmnHelpers', async (importOriginal) => ({
 /**
  * Publishing to TriplyDB, and importing CPRMV rules from JSON.
  *
- * The publish flow is a sequence of awaited steps that each report progress into
- * the dialog, and any of them can fail. What is worth pinning is not the happy
- * path's wording but which failures are fatal and which are survivable: a failed
- * graph upload stops everything, while a failed service update leaves the data
- * uploaded and is reported as a warning rather than an error — the graph is in
- * TriplyDB either way, and telling the user it failed outright would be wrong.
+ * Since #234 a publish is one call to the LDE backend, which uploads the
+ * graph, the logos and syncs the service as the signed-in author. What is
+ * worth pinning is how App reports the three outcomes: published; published
+ * with a warning when only the service sync failed (the graph is in TriplyDB
+ * either way, so an outright failure would be wrong); and failed.
  *
  * The TriplyDB helpers are mocked. Their own behaviour is covered in
- * triplydbHelper.test.js; what is under test here is how App sequences them.
+ * triplydbHelper.test.js; what is under test here is how App uses them.
  */
 
 const openPublishAndSubmit = async () => {
   fireEvent.click(screen.getByRole('button', { name: /^Publish$/ }));
-  fireEvent.change(await screen.findByPlaceholderText('Enter your TriplyDB API token'), {
-    target: { value: 'a-token' },
-  });
-  fireEvent.click(screen.getByRole('button', { name: /Publish to TriplyDB/ }));
+  fireEvent.click(await screen.findByRole('button', { name: /Publish to TriplyDB/ }));
 };
 
 beforeEach(() => {
   vi.clearAllMocks();
-  buildGraphIRI.mockReturnValue('https://example.org/graphs/service');
-  publishToTriplyDB.mockResolvedValue({ success: true, url: 'https://example.org/graph' });
-  updateTriplyDBService.mockResolvedValue({ success: true });
-  uploadLogoAsset.mockResolvedValue({ success: true });
+  buildGraphIRI.mockReturnValue('https://regels.overheid.nl/graphs/service');
+  fetchPublishTarget.mockResolvedValue(null);
+  publishToTriplyDB.mockResolvedValue({
+    url: 'https://example.org/dataset',
+    graph: 'https://regels.overheid.nl/graphs/service',
+    serviceUpdated: true,
+    logos: [],
+  });
   validateForm.mockReturnValue({ isValid: true, errors: [] });
   validateDMNData.mockReturnValue({ valid: true, errors: [] });
 });
 
 describe('publishing', () => {
-  test('uploads the graph, updates the service and remembers the configuration', async () => {
+  test('publishes in one backend call with the dataset, graph and TTL, and remembers the dataset', async () => {
     render(<App />);
     await openPublishAndSubmit();
 
-    await waitFor(() => expect(publishToTriplyDB).toHaveBeenCalled());
-    await waitFor(() => expect(updateTriplyDBService).toHaveBeenCalled());
-    // The token is only persisted once a publish has actually worked.
-    expect(saveTriplyDBConfig).toHaveBeenCalledWith(
-      expect.objectContaining({ apiToken: 'a-token' })
+    await waitFor(() => expect(publishToTriplyDB).toHaveBeenCalledTimes(1));
+    const publish = publishToTriplyDB.mock.calls[0][0];
+    expect(publish).toMatchObject({
+      dataset: 'DMN-discovery',
+      graph: 'https://regels.overheid.nl/graphs/service',
+      logos: [],
+    });
+    expect(typeof publish.ttl).toBe('string');
+    expect(publish.ttl.length).toBeGreaterThan(0);
+    expect(publish).not.toHaveProperty('apiToken');
+    await waitFor(() =>
+      expect(saveTriplyDBConfig).toHaveBeenCalledWith({ dataset: 'DMN-discovery' })
     );
   });
 
@@ -83,31 +88,30 @@ describe('publishing', () => {
     expect(await screen.findAllByText(/Published successfully/)).not.toHaveLength(0);
   });
 
-  test('a failed upload is caught, and stops the sequence before the service update', async () => {
-    // publishToTriplyDB reports failure by throwing — on an empty file, an
-    // invalid configuration or invalid content — rather than by returning a
-    // success flag, which is why App does not inspect its return value.
+  test('a failed publish is caught and reported, and the dataset is not saved', async () => {
     publishToTriplyDB.mockRejectedValue(new Error('network down'));
 
     render(<App />);
     await openPublishAndSubmit();
 
-    await waitFor(() => expect(publishToTriplyDB).toHaveBeenCalled());
     expect(await screen.findAllByText(/network down/)).not.toHaveLength(0);
-    expect(updateTriplyDBService).not.toHaveBeenCalled();
+    expect(saveTriplyDBConfig).not.toHaveBeenCalled();
   });
 
-  test('a failed service update is a warning, because the graph did upload', async () => {
-    // The data reached TriplyDB; only the service pointing at it is stale.
-    // Reporting this as an outright failure would send the user to re-publish
-    // something that is already there.
-    updateTriplyDBService.mockRejectedValue(new Error('service unreachable'));
+  test('a failed service sync is a warning, because the graph did upload', async () => {
+    publishToTriplyDB.mockResolvedValue({
+      url: 'https://example.org/dataset',
+      graph: 'https://regels.overheid.nl/graphs/service',
+      serviceUpdated: false,
+      serviceError: 'service unreachable',
+      logos: [],
+    });
 
     render(<App />);
     await openPublishAndSubmit();
 
     expect(await screen.findAllByText(/service unreachable/)).not.toHaveLength(0);
-    expect(saveTriplyDBConfig).toHaveBeenCalled();
+    expect(saveTriplyDBConfig).toHaveBeenCalledWith({ dataset: 'DMN-discovery' });
   });
 });
 

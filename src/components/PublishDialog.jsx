@@ -1,10 +1,10 @@
 // src/components/PublishDialog.jsx
 // Merged version: Beautiful UX from original + Working progress tracking logic
-import { AlertCircle, CheckCircle, Cloud, Eye, EyeOff, Loader, Upload, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Cloud, Loader, Upload, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { validateTtl } from '../utils/shaclHelper';
-import { testTriplyDBConnection } from '../utils/triplydbHelper';
+import { testTriplyDBConnection, validateTriplyDBConfig } from '../utils/triplydbHelper';
 
 const PublishDialog = ({
   onClose,
@@ -14,7 +14,6 @@ const PublishDialog = ({
   publishingState, // ← Progress tracking support
   ttlContent, // ← Turtle to SHACL-validate before publishing (advisory)
 }) => {
-  const [showToken, setShowToken] = useState(false);
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState(null);
 
@@ -80,16 +79,13 @@ const PublishDialog = ({
     }
   };
 
-  const handlePublish = () => {
-    // Validate config before publishing
-    if (!config.account || !config.dataset || !config.apiToken) {
-      alert('Please fill in all required fields (Account, Dataset, API Token)');
-      return;
-    }
-    onPublish(config);
-  };
+  // Since #234 the dataset is the only TriplyDB setting the user keeps; the
+  // LDE backend holds the instance, account and token. The button is disabled
+  // while the name is invalid, so no guard is needed in the handler.
+  const handlePublish = () => onPublish(config);
 
-  const isConfigValid = config.baseUrl && config.account && config.dataset && config.apiToken;
+  const configCheck = validateTriplyDBConfig(config);
+  const isConfigValid = configCheck.valid;
   const isPublishing = publishingState?.isPublishing;
 
   // Get step color based on status
@@ -377,52 +373,8 @@ const PublishDialog = ({
               {/* Info Banner */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="text-sm text-blue-800">
-                  <strong>Note:</strong> Configure your TriplyDB connection settings below. Your API
-                  token will be stored locally in your browser.
-                </p>
-              </div>
-
-              {/* Base URL */}
-              <div>
-                <label
-                  htmlFor="publish-dialog-triply-db-base-url"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  TriplyDB Base URL <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="publish-dialog-triply-db-base-url"
-                  type="text"
-                  value={config.baseUrl}
-                  onChange={(e) => updateField('baseUrl', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="https://api.open-regels.triply.cc"
-                  disabled={isPublishing}
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  The base URL of your TriplyDB instance API
-                </p>
-              </div>
-
-              {/* Account */}
-              <div>
-                <label
-                  htmlFor="publish-dialog-account-name"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Account Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="publish-dialog-account-name"
-                  type="text"
-                  value={config.account}
-                  onChange={(e) => updateField('account', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="stevengort"
-                  disabled={isPublishing}
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Your TriplyDB account or organization name
+                  <strong>Note:</strong> You publish as yourself, signed in as an author. The
+                  backend holds the TriplyDB connection; you only choose the dataset.
                 </p>
               </div>
 
@@ -437,44 +389,19 @@ const PublishDialog = ({
                 <input
                   id="publish-dialog-dataset-name"
                   type="text"
-                  value={config.dataset}
+                  value={config.dataset ?? ''}
                   onChange={(e) => updateField('dataset', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="PublishTest"
                   disabled={isPublishing}
+                  aria-invalid={!isConfigValid}
+                  aria-describedby="publish-dialog-dataset-help"
                 />
-                <p className="text-xs text-gray-500 mt-1">The target dataset for publishing</p>
-              </div>
-
-              {/* API Token */}
-              <div>
-                <label
-                  htmlFor="publish-dialog-api-token"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                <p
+                  id="publish-dialog-dataset-help"
+                  className={`text-xs mt-1 ${isConfigValid ? 'text-gray-500' : 'text-red-600'}`}
                 >
-                  API Token <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <input
-                    id="publish-dialog-api-token"
-                    type={showToken ? 'text' : 'password'}
-                    value={config.apiToken}
-                    onChange={(e) => updateField('apiToken', e.target.value)}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter your TriplyDB API token"
-                    disabled={isPublishing}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowToken(!showToken)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    aria-label={showToken ? 'Hide token' : 'Show token'}
-                  >
-                    {showToken ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Create a token in TriplyDB: User Settings → API Tokens → Create Token
+                  {isConfigValid ? 'The target dataset for publishing' : configCheck.error}
                 </p>
               </div>
 
@@ -520,21 +447,6 @@ const PublishDialog = ({
                     )}
                   </div>
                 )}
-              </div>
-
-              {/* Security Warning */}
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex items-start gap-2">
-                  <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-800">
-                    <p className="font-medium mb-1">Security Reminder:</p>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>Never share your API token with others</li>
-                      <li>Do not commit tokens to version control</li>
-                      <li>Rotate tokens regularly for security</li>
-                    </ul>
-                  </div>
-                </div>
               </div>
             </>
           )}

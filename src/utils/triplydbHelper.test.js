@@ -1,22 +1,32 @@
 import {
   buildGraphIRI,
-  getDefaultTriplyDBConfig,
+  fetchPublishTarget,
   loadTriplyDBConfig,
   publishToTriplyDB,
-  publishToTriplyDB_SPARQL,
   saveTriplyDBConfig,
   testTriplyDBConnection,
-  updateTriplyDBService,
-  uploadLogoAsset,
   validateTriplyDBConfig,
 } from './triplydbHelper';
 
-const VALID_CONFIG = {
-  baseUrl: 'https://api.open-regels.triply.cc',
-  account: 'stevengort',
+const PUBLISH = {
   dataset: 'DMN-discovery',
-  apiToken: 'test-token',
+  graph: 'https://regels.overheid.nl/graphs/svb/aow',
+  filename: 'aow',
+  ttl: '@prefix cpsv: <http://purl.org/vocab/cpsv#> .',
+  organization: 'https://identifier.overheid.nl/tooi/id/oorg/oorg10103',
+  service: 'aow',
+  logos: [{ fileName: 'svb_logo.png', dataUrl: 'data:image/png;base64,cG5n' }],
 };
+
+/** A fetch answer as the LDE backend gives it. */
+function answer(status, body) {
+  return {
+    ok: status >= 200 && status < 300,
+    status,
+    statusText: '',
+    json: async () => body,
+  };
+}
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -44,325 +54,242 @@ describe('buildGraphIRI', () => {
   });
 });
 
-describe('validateTriplyDBConfig', () => {
-  test('passes with a fully valid config', () => {
-    expect(validateTriplyDBConfig(VALID_CONFIG)).toEqual({ valid: true });
+describe('validateTriplyDBConfig (#234: only the dataset name)', () => {
+  test('passes a dataset of letters, digits and hyphens', () => {
+    expect(validateTriplyDBConfig({ dataset: 'DMN-discovery-2' })).toEqual({ valid: true });
   });
 
   test.each([
-    [{ ...VALID_CONFIG, baseUrl: '' }, 'Base URL is required'],
-    [{ ...VALID_CONFIG, account: '' }, 'Account name is required'],
-    [{ ...VALID_CONFIG, dataset: '' }, 'Dataset name is required'],
-    [{ ...VALID_CONFIG, apiToken: '' }, 'API Token is required'],
-    [{ ...VALID_CONFIG, apiToken: '   ' }, 'API Token is required'],
-    [{ ...VALID_CONFIG, baseUrl: 'not a url' }, 'Invalid Base URL format'],
-  ])('flags %p as %p', (config, expectedError) => {
-    expect(validateTriplyDBConfig(config)).toEqual({ valid: false, error: expectedError });
+    ['', 'Dataset name is required'],
+    [undefined, 'Dataset name is required'],
+    ['a/b', 'Dataset name may contain only letters, digits and hyphens (at most 40)'],
+    ['../x', 'Dataset name may contain only letters, digits and hyphens (at most 40)'],
+    ['a'.repeat(41), 'Dataset name may contain only letters, digits and hyphens (at most 40)'],
+  ])('flags %p', (dataset, error) => {
+    expect(validateTriplyDBConfig({ dataset })).toEqual({ valid: false, error });
   });
 });
 
-describe('publishToTriplyDB', () => {
-  test('uploads the file and reports success on a 200 JSON response', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      text: async () => JSON.stringify({ graphNames: ['g1'] }),
-    });
-
-    const result = await publishToTriplyDB(
-      '@prefix cpsv: <http://purl.org/vocab/cpsv#> .',
-      VALID_CONFIG,
-      'service.ttl',
-      'https://regels.overheid.nl/graphs/my-service'
-    );
-
-    expect(result.success).toBe(true);
-    expect(result.graphName).toBe('https://regels.overheid.nl/graphs/my-service');
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/jobs?defaultGraphName='),
-      expect.objectContaining({
-        method: 'POST',
-        headers: { Authorization: 'Bearer test-token' },
+describe('publishToTriplyDB (#234: one call to the LDE backend)', () => {
+  test("posts the publish to the backend with the signed-in author's token", async () => {
+    global.fetch = vi.fn().mockResolvedValue(
+      answer(200, {
+        success: true,
+        url: 'https://open-regels.triply.cc/datasets/stevengort/DMN-discovery',
+        graph: PUBLISH.graph,
+        serviceUpdated: true,
+        logos: [{ fileName: 'svb_logo.png', ok: true }],
       })
     );
-  });
 
-  test('rejects empty content before making any request', async () => {
-    global.fetch = vi.fn();
-    await expect(publishToTriplyDB('', VALID_CONFIG)).rejects.toThrow('Generated file is empty');
-    expect(global.fetch).not.toHaveBeenCalled();
-  });
+    const result = await publishToTriplyDB(PUBLISH);
 
-  test('surfaces the backend error message on a non-ok JSON response', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 400,
-      statusText: 'Bad Request',
-      text: async () => JSON.stringify({ message: 'Invalid graph name' }),
+    expect(result).toEqual({
+      url: 'https://open-regels.triply.cc/datasets/stevengort/DMN-discovery',
+      graph: PUBLISH.graph,
+      serviceUpdated: true,
+      logos: [{ fileName: 'svb_logo.png', ok: true }],
     });
-
-    await expect(publishToTriplyDB('some ttl content here', VALID_CONFIG)).rejects.toThrow(
-      'Invalid graph name'
-    );
-  });
-
-  test('falls back to raw response text when the error body is not JSON', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 500,
-      statusText: 'Internal Server Error',
-      text: async () => 'plain text error',
-    });
-
-    await expect(publishToTriplyDB('some ttl content', VALID_CONFIG)).rejects.toThrow(
-      'plain text error'
-    );
-  });
-
-  test('translates a fetch TypeError into a friendly network-error message', async () => {
-    global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
-
-    await expect(publishToTriplyDB('some ttl content', VALID_CONFIG)).rejects.toThrow(
-      'Network error: Could not connect to TriplyDB.'
-    );
-  });
-});
-
-describe('updateTriplyDBService', () => {
-  test('throws before fetching when the config is invalid', async () => {
-    global.fetch = vi.fn();
-    await expect(updateTriplyDBService({ ...VALID_CONFIG, apiToken: '' })).rejects.toThrow(
-      'API Token is required'
-    );
-    expect(global.fetch).not.toHaveBeenCalled();
-  });
-
-  test('posts to the backend proxy and reports success', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: { get: () => '1' },
-      json: async () => ({ success: true, message: 'updated', graphCount: 3 }),
-    });
-
-    const result = await updateTriplyDBService(VALID_CONFIG, 'my-service', 'graph-1');
-
-    expect(result).toEqual({ success: true, message: 'updated', graphCount: 3 });
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/v1/triplydb/update-service'),
-      expect.objectContaining({ method: 'POST' })
-    );
-  });
-
-  test("sends the signed-in author's token: the backend route needs lde-author (#163)", async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      status: 200,
-      statusText: 'OK',
-      headers: { get: () => '1' },
-      json: async () => ({ success: true }),
-    });
-
-    await updateTriplyDBService(VALID_CONFIG, 'my-service');
-
-    expect(global.fetch.mock.calls[0][1].headers).toMatchObject({
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    const [url, init] = global.fetch.mock.calls[0];
+    expect(url).toMatch(/\/v1\/triplydb\/publish$/);
+    expect(url).not.toContain('triply.cc');
+    expect(init.method).toBe('POST');
+    expect(init.headers).toMatchObject({
       'Content-Type': 'application/json',
       Authorization: 'Bearer test-token',
     });
+    expect(JSON.parse(init.body)).toEqual(PUBLISH);
   });
 
-  test('throws the backend error when the update fails', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 502,
-      statusText: 'Bad Gateway',
-      headers: { get: () => null },
-      json: async () => ({ success: false, error: 'upstream unreachable' }),
-    });
-
-    await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow('upstream unreachable');
-  });
-
-  test('throws the detail of an RFC 9457 problem response', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 400,
-      statusText: 'Bad Request',
-      headers: { get: () => null },
-      json: async () => ({
-        type: 'about:blank',
-        status: 400,
-        title: 'Bad Request',
-        detail: 'TriplyDB host not allowed: evil.example',
-        instance: '/v1/triplydb/update-service',
-        code: 'INVALID_INPUT',
-      }),
-    });
-
-    await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow(
-      'TriplyDB host not allowed: evil.example'
+  test('passes on the warning when only the service sync failed', async () => {
+    global.fetch = vi.fn().mockResolvedValue(
+      answer(200, {
+        success: true,
+        url: 'u',
+        graph: PUBLISH.graph,
+        serviceUpdated: false,
+        serviceError: 'sync failed',
+        logos: [],
+      })
     );
+
+    const result = await publishToTriplyDB(PUBLISH);
+
+    expect(result.serviceUpdated).toBe(false);
+    expect(result.serviceError).toBe('sync failed');
   });
 
-  test('translates a fetch TypeError into a friendly network-error message', async () => {
+  test.each([401, 403])('a %i asks the user to sign in as an author', async (status) => {
+    global.fetch = vi.fn().mockResolvedValue(answer(status, { detail: 'whatever' }));
+
+    await expect(publishToTriplyDB(PUBLISH)).rejects.toThrow('Sign in as an author to publish.');
+  });
+
+  test("throws the backend's problem detail on any other failure", async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValue(answer(502, { status: 502, detail: 'TriplyDB upload failed: 500' }));
+
+    await expect(publishToTriplyDB(PUBLISH)).rejects.toThrow('TriplyDB upload failed: 500');
+  });
+
+  test('falls back to the status when the failure carries no detail', async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: '',
+      json: async () => {
+        throw new Error('not JSON');
+      },
+    });
+
+    await expect(publishToTriplyDB(PUBLISH)).rejects.toThrow('Publishing failed: HTTP 500');
+  });
+
+  test('translates a network failure into a friendly message', async () => {
     global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
-    await expect(updateTriplyDBService(VALID_CONFIG)).rejects.toThrow(
+
+    await expect(publishToTriplyDB(PUBLISH)).rejects.toThrow(
       'Network error: Could not connect to backend.'
     );
   });
 });
 
-describe('publishToTriplyDB_SPARQL', () => {
-  test('throws before fetching when the config is invalid', async () => {
+describe('testTriplyDBConnection (#234: through the backend)', () => {
+  test('checks the dataset through the backend, as the signed-in author', async () => {
+    global.fetch = vi.fn().mockResolvedValue(answer(200, { success: true }));
+
+    const result = await testTriplyDBConnection({ dataset: 'DMN-discovery' });
+
+    expect(result).toEqual({ success: true, message: 'Dataset DMN-discovery is available' });
+    const [url, init] = global.fetch.mock.calls[0];
+    expect(url).toMatch(/\/v1\/triplydb\/test-connection$/);
+    expect(init.headers).toMatchObject({ Authorization: 'Bearer test-token' });
+    expect(JSON.parse(init.body)).toEqual({ dataset: 'DMN-discovery' });
+  });
+
+  test('refuses an invalid dataset name without a request', async () => {
     global.fetch = vi.fn();
-    await expect(
-      publishToTriplyDB_SPARQL('a valid enough ttl body over 100 chars long padding padding', {
-        ...VALID_CONFIG,
-        apiToken: '',
-      })
-    ).rejects.toThrow('API Token is required');
+
+    const result = await testTriplyDBConnection({ dataset: 'a/b' });
+
+    expect(result.success).toBe(false);
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
-  test('throws before fetching when the TTL content is too short', async () => {
-    global.fetch = vi.fn();
-    await expect(publishToTriplyDB_SPARQL('short', VALID_CONFIG)).rejects.toThrow(
-      'TTL content is too short'
-    );
-    expect(global.fetch).not.toHaveBeenCalled();
-  });
+  test('reports a dataset that does not exist', async () => {
+    global.fetch = vi.fn().mockResolvedValue(answer(404, { detail: 'not found' }));
 
-  test('converts @prefix declarations to SPARQL PREFIX and wraps data in INSERT DATA / GRAPH', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: true, text: async () => '' });
-
-    const ttl =
-      '@prefix cpsv: <http://purl.org/vocab/cpsv#> .\n' +
-      '<https://example.com/svc> a cpsv:PublicService ;\n' +
-      '    dct:identifier "my-service" ;\n' +
-      '    dct:title "My Service"@nl .';
-    await publishToTriplyDB_SPARQL(ttl, VALID_CONFIG, 'service.ttl', 'https://example.com/graph');
-
-    const [, requestInit] = global.fetch.mock.calls[0];
-    expect(requestInit.headers['Content-Type']).toBe('application/sparql-update');
-    expect(requestInit.body).toContain('PREFIX cpsv: <http://purl.org/vocab/cpsv#>');
-    expect(requestInit.body).toContain('INSERT DATA {');
-    expect(requestInit.body).toContain('GRAPH <https://example.com/graph> {');
-    expect(requestInit.body).toContain('<https://example.com/svc> a cpsv:PublicService ;');
-  });
-
-  test('surfaces the backend error message on a non-ok response', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: false,
-      status: 400,
-      statusText: 'Bad Request',
-      text: async () => JSON.stringify({ message: 'bad SPARQL' }),
-    });
-
-    const ttl =
-      '@prefix cpsv: <http://purl.org/vocab/cpsv#> .\n<https://example.com/svc> a cpsv:PublicService padding padding.';
-    await expect(publishToTriplyDB_SPARQL(ttl, VALID_CONFIG)).rejects.toThrow('bad SPARQL');
-  });
-});
-
-describe('uploadLogoAsset', () => {
-  test('rejects data that is not a base64 image data URL', async () => {
-    await expect(uploadLogoAsset('not-a-data-url', 'logo.png', VALID_CONFIG)).rejects.toThrow(
-      'Invalid base64 image data'
-    );
-  });
-
-  test('converts a base64 image and uploads it as an asset', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: true });
-    const base64 = `data:image/png;base64,${Buffer.from('fake-png-bytes').toString('base64')}`;
-
-    const result = await uploadLogoAsset(base64, 'logo.png', VALID_CONFIG);
+    const result = await testTriplyDBConnection({ dataset: 'Missing' });
 
     expect(result).toEqual({
-      success: true,
-      assetUrl: expect.stringContaining('/assets/logo.png'),
+      success: false,
+      error: 'Dataset not found. Please check the dataset name.',
     });
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/assets'),
-      expect.objectContaining({ method: 'POST' })
-    );
   });
 
-  test('throws when the upload fails', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: false, text: async () => 'upload rejected' });
-    const base64 = `data:image/png;base64,${Buffer.from('fake-png-bytes').toString('base64')}`;
+  test.each([401, 403])('a %i asks the user to sign in as an author', async (status) => {
+    global.fetch = vi.fn().mockResolvedValue(answer(status, {}));
 
-    await expect(uploadLogoAsset(base64, 'logo.png', VALID_CONFIG)).rejects.toThrow(
-      'Failed to upload logo: upload rejected'
-    );
-  });
-});
+    const result = await testTriplyDBConnection({ dataset: 'DMN-discovery' });
 
-describe('testTriplyDBConnection', () => {
-  test('returns invalid config error without making a request', async () => {
-    global.fetch = vi.fn();
-    const result = await testTriplyDBConnection({ ...VALID_CONFIG, apiToken: '' });
-    expect(result).toEqual({ success: false, error: 'API Token is required' });
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(result).toEqual({ success: false, error: 'Sign in as an author to check the dataset.' });
   });
 
-  test('reports success on a 200 response', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: true, status: 200, statusText: 'OK' });
-    const result = await testTriplyDBConnection(VALID_CONFIG);
-    expect(result).toEqual({ success: true, message: 'Successfully connected to TriplyDB' });
-  });
-
-  test('reports a dataset-not-found error on 404', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 404, statusText: 'Not Found' });
-    const result = await testTriplyDBConnection(VALID_CONFIG);
-    expect(result.success).toBe(false);
-    expect(result.error).toContain('Dataset not found');
-  });
-
-  test.each([401, 403])('reports an auth error on %i', async (status) => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: false, status, statusText: 'Unauthorized' });
-    const result = await testTriplyDBConnection(VALID_CONFIG);
-    expect(result.error).toContain('Authentication failed');
-  });
-
-  test('reports a generic error on any other status', async () => {
+  test("reports the backend's problem detail on any other status", async () => {
     global.fetch = vi
       .fn()
-      .mockResolvedValue({ ok: false, status: 503, statusText: 'Service Unavailable' });
-    const result = await testTriplyDBConnection(VALID_CONFIG);
-    expect(result.error).toBe('Connection failed: HTTP 503');
+      .mockResolvedValue(answer(503, { detail: 'Publishing is not configured on this backend' }));
+
+    const result = await testTriplyDBConnection({ dataset: 'DMN-discovery' });
+
+    expect(result).toEqual({
+      success: false,
+      error: 'Publishing is not configured on this backend',
+    });
   });
 
-  test('catches a network failure and reports it as a connection error', async () => {
+  test('reports a network failure as a connection error', async () => {
     global.fetch = vi.fn().mockRejectedValue(new Error('DNS failure'));
-    const result = await testTriplyDBConnection(VALID_CONFIG);
+
+    const result = await testTriplyDBConnection({ dataset: 'DMN-discovery' });
+
     expect(result).toEqual({ success: false, error: 'Connection error: DNS failure' });
   });
 });
 
-describe('TriplyDB config persistence (localStorage)', () => {
-  test('loadTriplyDBConfig returns the default config when nothing is saved', () => {
-    expect(loadTriplyDBConfig()).toEqual(getDefaultTriplyDBConfig());
-  });
+describe('fetchPublishTarget (#234)', () => {
+  test("answers the backend's base URL and account", async () => {
+    global.fetch = vi
+      .fn()
+      .mockResolvedValue(
+        answer(200, { baseUrl: 'https://api.open-regels.triply.cc', account: 'stevengort' })
+      );
 
-  test('saveTriplyDBConfig persists, and loadTriplyDBConfig reads it back merged with defaults', () => {
-    saveTriplyDBConfig({ apiToken: 'saved-token' });
-    expect(loadTriplyDBConfig()).toEqual({
-      ...getDefaultTriplyDBConfig(),
-      apiToken: 'saved-token',
+    await expect(fetchPublishTarget()).resolves.toEqual({
+      baseUrl: 'https://api.open-regels.triply.cc',
+      account: 'stevengort',
     });
+    expect(global.fetch.mock.calls[0][0]).toMatch(/\/v1\/triplydb\/publish-target$/);
   });
 
-  test('loadTriplyDBConfig falls back to defaults when localStorage holds invalid JSON', () => {
+  test('answers null when publishing is not configured', async () => {
+    global.fetch = vi.fn().mockResolvedValue(answer(503, { detail: 'not configured' }));
+
+    await expect(fetchPublishTarget()).resolves.toBeNull();
+  });
+
+  test('answers null when the backend cannot be reached', async () => {
+    global.fetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+
+    await expect(fetchPublishTarget()).resolves.toBeNull();
+  });
+
+  test('answers null for an answer without base URL or account', async () => {
+    global.fetch = vi.fn().mockResolvedValue(answer(200, { baseUrl: 'x' }));
+
+    await expect(fetchPublishTarget()).resolves.toBeNull();
+  });
+});
+
+describe('TriplyDB config persistence (#234: only the dataset)', () => {
+  test('defaults to the DMN-discovery dataset when nothing is saved', () => {
+    expect(loadTriplyDBConfig()).toEqual({ dataset: 'DMN-discovery' });
+  });
+
+  test('saveTriplyDBConfig keeps only the dataset', () => {
+    saveTriplyDBConfig({ dataset: 'Mine', apiToken: 'secret', account: 'x' });
+
+    expect(JSON.parse(localStorage.getItem('triplydb_config'))).toEqual({ dataset: 'Mine' });
+  });
+
+  test('an old browser loses its token, base URL and account on first load', () => {
+    localStorage.setItem(
+      'triplydb_config',
+      JSON.stringify({
+        baseUrl: 'https://api.open-regels.triply.cc',
+        account: 'stevengort',
+        dataset: 'X',
+        apiToken: 'secret',
+      })
+    );
+
+    expect(loadTriplyDBConfig()).toEqual({ dataset: 'X' });
+    expect(localStorage.getItem('triplydb_config')).toBe(JSON.stringify({ dataset: 'X' }));
+    expect(localStorage.getItem('triplydb_config')).not.toContain('secret');
+  });
+
+  test('falls back to the default when localStorage holds invalid JSON', () => {
     localStorage.setItem('triplydb_config', 'not json');
-    expect(loadTriplyDBConfig()).toEqual(getDefaultTriplyDBConfig());
+
+    expect(loadTriplyDBConfig()).toEqual({ dataset: 'DMN-discovery' });
   });
 
-  test('getDefaultTriplyDBConfig returns a fresh copy each time (not a shared reference)', () => {
-    const a = getDefaultTriplyDBConfig();
-    const b = getDefaultTriplyDBConfig();
-    expect(a).toEqual(b);
-    expect(a).not.toBe(b);
+  test('a stored config without a dataset gets the default one', () => {
+    localStorage.setItem('triplydb_config', JSON.stringify({ apiToken: 'secret' }));
+
+    expect(loadTriplyDBConfig()).toEqual({ dataset: 'DMN-discovery' });
+    expect(localStorage.getItem('triplydb_config')).not.toContain('secret');
   });
 });
