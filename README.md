@@ -147,6 +147,29 @@ pulling a lockfile change, for example. `npm ci` rather than `npm install`:
 `npm install` re-resolves the version ranges and can pull a transitive release
 published that morning. Use `npm install <package>` only to add or upgrade one.
 
+### End-to-end journeys
+
+`npm run test:e2e` drives the editor in a browser against a live local stack:
+the Linked Data Explorer backend (`http://localhost:3001`), Operaton
+(`http://localhost:8081`) and Keycloak (`http://localhost:8080`, realm `ronl`).
+The journeys that deploy sign in first, as the `lde-e2e` account, so the shell
+that runs them needs its password:
+
+```bash
+LDE_E2E_PASSWORD='<password>' npm run test:e2e
+```
+
+| Variable           | Default                                  | Purpose                                                                                                          |
+| ------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `LDE_E2E_PASSWORD` | required                                 | password of `lde-e2e`, set when `keycloak-add-lde-clients.sh --with-e2e` (ronl-business-api) created the account |
+| `LDE_E2E_USERNAME` | `lde-e2e`                                | another account holding `lde-author`                                                                             |
+| `E2E_BACKEND_URL`  | `VITE_BACKEND_URL` in `.env.development` | the LDE backend                                                                                                  |
+| `E2E_OPERATON_URL` | `http://localhost:8081`                  | Operaton, for the preflight check                                                                                |
+
+These are environment variables of the test run, not settings of the LDE
+backend: Playwright loads no `.env` file. linked-data-explorer's
+`scripts/deploy-e2e-fixtures.mjs` uses the same `LDE_E2E_*` names.
+
 **In a new `git worktree`, run `npm ci` before committing.** Without it the
 pre-commit and pre-push hooks do not run, and nothing says so: husky sets
 `core.hooksPath` to `.husky/_`, a relative path that git resolves in each

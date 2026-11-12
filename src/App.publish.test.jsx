@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import App from './App';
+import { setAuthState } from './testing/authState';
 import { validateForm } from './utils';
 import { validateDMNData } from './utils/dmnHelpers';
 import {
@@ -107,6 +108,22 @@ describe('publishing', () => {
 
     expect(await screen.findAllByText(/service unreachable/)).not.toHaveLength(0);
     expect(saveTriplyDBConfig).toHaveBeenCalled();
+  });
+});
+
+describe('publishing follows sign-in (#163 in linked-data-explorer)', () => {
+  test('signed out, Publish is locked: "Sign in to publish"', () => {
+    setAuthState({ ready: true, signedIn: false, isAuthor: false });
+    render(<App />);
+    expect(screen.getByRole('button', { name: /Publish/ })).toBeDisabled();
+    expect(screen.getByText('Sign in to publish')).toBeInTheDocument();
+  });
+
+  test('signed in without the role: "You need permission to publish"', () => {
+    setAuthState({ ready: true, signedIn: true, isAuthor: false, name: 'Viewer' });
+    render(<App />);
+    expect(screen.getByRole('button', { name: /Publish/ })).toBeDisabled();
+    expect(screen.getByText('You need permission to publish')).toBeInTheDocument();
   });
 });
 

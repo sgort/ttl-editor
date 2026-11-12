@@ -19,8 +19,10 @@ import {
 } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 
+import LockedAction from './components/LockedAction';
 import PreviewPanel from './components/PreviewPanel';
 import PublishDialog from './components/PublishDialog';
+import SignInMenu from './components/SignInMenu';
 import {
   ConceptsTab,
   LegalTab,
@@ -186,6 +188,8 @@ function App() {
 
   // state variables for Publish dialog
   const [showPublishDialog, setShowPublishDialog] = useState(false);
+  // Bumped by Clear All to remount the DMN tab (see handleClearAll).
+  const [dmnTabGeneration, setDmnTabGeneration] = useState(0);
 
   // Consume the DSO → DMN deep-link handoff from the Linked Data Explorer.
   // Prefills DMN/Service/Organization tabs from ?dsoImport=dmn&… and reuses the
@@ -408,6 +412,10 @@ function App() {
   const handleClearAll = () => {
     // 1. Clear data (delegated to hook)
     clearAllData();
+    // The DMN tab stays mounted while hidden and keeps the loaded file in its
+    // own state, so clearing dmnData alone leaves it showing. A new key
+    // remounts it empty.
+    setDmnTabGeneration((n) => n + 1);
 
     // 2. UI updates (stays in App.js)
     setShowClearDialog(false);
@@ -758,6 +766,11 @@ function App() {
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Header */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            {/* Sign-in on its own line (#163 in linked-data-explorer), so the
+                toolbar below keeps its width whatever the sign-in state. */}
+            <div className="flex justify-end -mt-2 mb-2">
+              <SignInMenu />
+            </div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 {/* Replace FileText icon with turtle SVG */}
@@ -1099,7 +1112,12 @@ function App() {
               {visitedTabs.has('dmn') && (
                 <div className={activeTab === 'dmn' ? '' : 'hidden'}>
                   <Suspense fallback={null}>
-                    <DMNTab dmnData={dmnData} setDmnData={setDmnData} setConcepts={setConcepts} />
+                    <DMNTab
+                      key={dmnTabGeneration}
+                      dmnData={dmnData}
+                      setDmnData={setDmnData}
+                      setConcepts={setConcepts}
+                    />
                   </Suspense>
                 </div>
               )}
@@ -1147,14 +1165,15 @@ function App() {
               Validate
             </button>
 
-            {/* Publish Button */}
-            <button
+            {/* Publish Button: needs lde-author (#163 in linked-data-explorer) */}
+            <LockedAction
+              verb="publish"
               onClick={() => setShowPublishDialog(true)}
               className="flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               <Cloud size={20} />
               Publish
-            </button>
+            </LockedAction>
 
             {/* Download Button */}
             <button

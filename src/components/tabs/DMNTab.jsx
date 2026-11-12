@@ -17,7 +17,9 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useAuth } from '../../hooks/useAuth';
 import { EMPTY_DMN_DATA, sanitizeIri } from '../../utils';
+import { authHeaders } from '../../utils/auth';
 import {
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
@@ -30,6 +32,9 @@ import {
   generateConceptUri,
 } from '../../utils/dmnHelpers';
 import { getProblemDetail } from '../../utils/problem';
+import LockedAction from '../LockedAction';
+
+const BACKEND_URL = () => import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -38,6 +43,30 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [deploymentStatus, setDeploymentStatus] = useState(null);
+
+  // #163 in linked-data-explorer: an author deploys as before; anyone else gets
+  // an anonymous test deploy to the tenant the backend names, where it offers
+  // one (GET /v1/dmns/deploy/options), and a locked Deploy where it does not.
+  const { isAuthor } = useAuth();
+  const [testDeploy, setTestDeploy] = useState(null);
+  useEffect(() => {
+    if (isAuthor || testDeploy) return undefined;
+    let cancelled = false;
+    fetch(`${BACKEND_URL()}/v1/dmns/deploy/options`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((body) => {
+        if (!cancelled && body?.data?.testDeploy?.enabled) setTestDeploy(body.data.testDeploy);
+      })
+      .catch(() => {
+        // Options unavailable: Deploy stays locked for this visitor.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthor, testDeploy]);
+  const isTestDeploy = !isAuthor && Boolean(testDeploy);
+  // The tenant a test deploy went to; evaluations must go there too.
+  const deployedTenant = deploymentStatus?.data?.tenantId;
 
   // Intermediate decision test state
   const [decisions, setDecisions] = useState([]);
@@ -693,10 +722,15 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       // server-to-server on the LDE side and CORS-immune by construction.
       // Same pattern runBackendValidation() above already uses for
       // /v1/dmns/validate.
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
-      const response = await fetch(`${backendUrl}/v1/dmns/deploy`, {
+      // An author's token makes it a normal deploy; without one the backend
+      // makes it a test deploy to TestOnly. A non-author's token would be
+      // refused (403), so only an author sends one.
+      const response = await fetch(`${BACKEND_URL()}/v1/dmns/deploy`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(isAuthor ? await authHeaders() : {}),
+        },
         body: JSON.stringify({
           xml: uploadedFile.content,
           deploymentName: apiConfig.decisionKey || uploadedFile.name,
@@ -704,6 +738,9 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         }),
       });
 
+      if (response.status === 429) {
+        throw new Error('Too many test deploys from this address; try again later.');
+      }
       const data = await response.json();
       if (!response.ok || !data.success) {
         throw new Error(getProblemDetail(data, `Deployment failed: ${response.statusText}`));
@@ -717,7 +754,8 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
         deployedAt: new Date().toISOString(),
       });
     } catch (err) {
-      setError(err.message);
+      // Shown right under the Deploy button, where the eye is after clicking;
+      // not in the general error box at the bottom of the tab.
       setDeploymentStatus({ success: false, error: err.message });
     } finally {
       setIsLoading(false);
@@ -732,9 +770,11 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   // reading/parsing the response exactly as it did calling Operaton directly
   // -- bodyStr is already the `{variables: {...}}` shape Operaton itself
   // expects, so it's forwarded unchanged.
+  // A test deploy lives in its tenant: without ?tenantId the engine only
+  // matches untenanted definitions and would not find it (#163).
   const evaluateViaBackend = (decisionKey, bodyStr) => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
-    return fetch(`${backendUrl}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}`, {
+    const tenant = deployedTenant ? `?tenantId=${encodeURIComponent(deployedTenant)}` : '';
+    return fetch(`${BACKEND_URL()}/v1/dmns/evaluate/${encodeURIComponent(decisionKey)}${tenant}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: bodyStr,
@@ -1386,34 +1426,63 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
               </div>
             )}
 
-            {/* Deployment Button */}
+            {/* Deployment Button: author, test deploy, or locked (#163) */}
             <div className="mt-4 pt-4 border-t border-green-200">
-              <button
-                onClick={handleDeployDMN}
-                disabled={isLoading || deploymentStatus?.success}
-                className={`w-full px-4 py-2 rounded-md font-medium flex items-center justify-center gap-2 ${
-                  deploymentStatus?.success
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50'
-                }`}
-              >
-                {isLoading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                    Deploying...
-                  </>
-                ) : deploymentStatus?.success ? (
-                  <>
-                    <CheckCircle size={16} />
-                    Deployed — ID: {deploymentStatus.data?.id?.slice(0, 8)}…
-                  </>
-                ) : (
-                  <>
-                    <Upload size={16} />
-                    Deploy to Operaton
-                  </>
-                )}
-              </button>
+              {isAuthor || isTestDeploy ? (
+                <>
+                  <button
+                    onClick={handleDeployDMN}
+                    disabled={isLoading || deploymentStatus?.success}
+                    className={`w-full px-4 py-2 rounded-md font-medium flex items-center justify-center gap-2 ${
+                      deploymentStatus?.success
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50'
+                    }`}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                        Deploying...
+                      </>
+                    ) : deploymentStatus?.success ? (
+                      <>
+                        <CheckCircle size={16} />
+                        {deployedTenant
+                          ? `Test deploy — ID: ${deploymentStatus.data?.deploymentId?.slice(0, 8)}…, removed after ${testDeploy?.ttlHours ?? 48} hours`
+                          : `Deployed — ID: ${(deploymentStatus.data?.deploymentId ?? deploymentStatus.data?.id)?.slice(0, 8)}…`}
+                      </>
+                    ) : (
+                      <>
+                        <Upload size={16} />
+                        {isTestDeploy ? 'Test deploy to Operaton' : 'Deploy to Operaton'}
+                      </>
+                    )}
+                  </button>
+                  {deploymentStatus && !deploymentStatus.success && (
+                    <div
+                      role="alert"
+                      className="mt-3 flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"
+                    >
+                      <AlertCircle size={16} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+                      <span>{deploymentStatus.error}</span>
+                    </div>
+                  )}
+                  {isTestDeploy && !deploymentStatus?.success && (
+                    <p className="text-xs text-gray-600 mt-2">
+                      Deploys to the test tenant {testDeploy.tenantId}, removed automatically after{' '}
+                      {testDeploy.ttlHours} hours. Refused if a decision key already exists in the
+                      engine.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <LockedAction
+                  verb="deploy"
+                  className="w-full px-4 py-2 rounded-md font-medium flex items-center justify-center gap-2 bg-blue-600 text-white"
+                >
+                  Deploy to Operaton
+                </LockedAction>
+              )}
             </div>
           </div>
         )}

@@ -156,6 +156,23 @@ describe('updateTriplyDBService', () => {
     );
   });
 
+  test("sends the signed-in author's token: the backend route needs lde-author (#163)", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      headers: { get: () => '1' },
+      json: async () => ({ success: true }),
+    });
+
+    await updateTriplyDBService(VALID_CONFIG, 'my-service');
+
+    expect(global.fetch.mock.calls[0][1].headers).toMatchObject({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer test-token',
+    });
+  });
+
   test('throws the backend error when the update fails', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,

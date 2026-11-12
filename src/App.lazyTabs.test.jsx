@@ -90,6 +90,47 @@ describe('lazy-loaded tabs', () => {
     expect(screen.getByText(DMN_HEADING)).toBeInTheDocument();
   });
 
+  describe('Clear All', () => {
+    const originalFetch = global.fetch;
+
+    afterEach(() => {
+      global.fetch = originalFetch;
+    });
+
+    test('also clears the DMN tab, which stays mounted while hidden', async () => {
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        json: async () => ({ success: true, data: { valid: true, layers: {}, summary: {} } }),
+        text: async () => '',
+      });
+      render(<App />);
+      openTab('DMN');
+      await screen.findByText(DMN_HEADING, undefined, LAZY_CHUNK_TIMEOUT);
+      fireEvent.change(screen.getByLabelText('Choose a file'), {
+        target: {
+          files: [
+            new File(
+              [
+                '<?xml version="1.0"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"><decision id="d1" name="d1"/></definitions>',
+              ],
+              'kept.dmn',
+              { type: 'text/xml' }
+            ),
+          ],
+        },
+      });
+      await screen.findByText('kept.dmn');
+
+      fireEvent.click(screen.getByRole('button', { name: /Clear All$/ }));
+      fireEvent.click(screen.getByRole('button', { name: /Clear All Data/ }));
+
+      expect(await screen.findByText(DMN_HEADING)).toBeInTheDocument();
+      expect(screen.queryByText('kept.dmn')).not.toBeInTheDocument();
+      expect(screen.getByLabelText('Choose a file')).toBeInTheDocument();
+    });
+  });
+
   describe('opened by the DSO deep link', () => {
     const originalFetch = global.fetch;
 
