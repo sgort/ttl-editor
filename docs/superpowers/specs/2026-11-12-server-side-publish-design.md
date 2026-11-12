@@ -43,11 +43,11 @@ PROD will later move to its own, new TriplyDB instance. That move is a direction
 
 **Configuration** (`src/utils/config.ts`, `.env.example`, and the docs listing environment variables):
 
-| Setting | Meaning | Default |
-|---|---|---|
-| `TRIPLYDB_BASE_URL` | the TriplyDB API to publish to | `https://api.open-regels.triply.cc` |
-| `TRIPLYDB_ACCOUNT` | the shared account: `stevengort` on ACC and PROD, the account every read path uses today | none |
-| `TRIPLYDB_API_TOKEN` | its API token, a secret | none |
+| Setting              | Meaning                                                                                  | Default                             |
+| -------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------- |
+| `TRIPLYDB_BASE_URL`  | the TriplyDB API to publish to                                                           | `https://api.open-regels.triply.cc` |
+| `TRIPLYDB_ACCOUNT`   | the shared account: `stevengort` on ACC and PROD, the account every read path uses today | none                                |
+| `TRIPLYDB_API_TOKEN` | its API token, a secret                                                                  | none                                |
 
 - `TRIPLYDB_BASE_URL` must pass the existing `checkTriplyDbBaseUrl`: https, and the host must be in `TRIPLYDB_ALLOWED_HOSTS`.
 - If the account or the token is missing, **the backend still starts**. The publish routes then answer `503` with "Publishing is not configured on this backend". Everything else in the LDE works without TriplyDB writes, unlike without `KEYCLOAK_URL`.
@@ -67,6 +67,7 @@ PROD will later move to its own, new TriplyDB instance. That move is a direction
 ```
 
 The route does, in order:
+
 1. **Validate.**
    - `dataset` must match TriplyDB's dataset-name rule: letters, digits and `-`, 1 to 40 characters.
    - `graph` must be an absolute `https://regels.overheid.nl/graphs/...` IRI, the scheme `buildGraphIRI` produces.
@@ -86,6 +87,7 @@ Response on success: `{ success: true, url: <dataset page>, graph, serviceUpdate
 **New route `GET /v1/triplydb/publish-target`**, open like the other read routes. It returns the non-secret part of the write target, `{ baseUrl, account }`, or `503` when publishing is not configured. Never the token. The editor needs it for the "required services" picker (see below).
 
 **Existing routes** keep their paths, so the published API is not broken. All three move behind `requireAuthor` and use the server credential, ignoring any `apiToken` the caller sends:
+
 - `update-service` takes `config.dataset` from the body, or a top-level `dataset`;
 - `list-graphs`, likewise;
 - `test-connection` becomes a dataset-existence check for the given dataset.
@@ -120,6 +122,7 @@ The OpenAPI document and the route doc comments drop `apiToken` from the request
 ### Rollout
 
 The order is the same as #163:
+
 1. Set `TRIPLYDB_ACCOUNT` and `TRIPLYDB_API_TOKEN` on `ronl-linkeddata-backend-acc` and `-prod`. The owner does this, from a handed script.
 2. Merge the LDE pull request, then the ttl-editor one straight after.
 
@@ -128,6 +131,7 @@ Between the two deploys, the old editor still publishes directly to `stevengort`
 ## Follow-ups (not in this work)
 
 These read paths hardcode the open-regels host or the `stevengort` account. They have to become configurable before PROD moves to its own TriplyDB instance:
+
 - **LDE frontend:** `utils/constants.ts`, `defaultTestCases.ts`, `RopaRecordEditor.tsx`, and `logoResolver.ts`, which takes the account from the endpoint;
 - **LDE backend:** `GET /v1/triplydb/assets`, which hardcodes the base URL;
 - **ttl-editor:** the default SPARQL endpoint in `useEditorState.js`.

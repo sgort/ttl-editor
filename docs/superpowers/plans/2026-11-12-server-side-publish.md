@@ -5,11 +5,13 @@
 **Goal:** The editor publishes through one LDE backend call, made as the signed-in `lde-author`. The TriplyDB base URL, account and token live only on the backend, and each publish is logged.
 
 **Architecture:**
+
 - **LDE backend:** reads the TriplyDB write target from settings, and gains `POST /v1/triplydb/publish` (TTL upload, logo assets, service sync, one log line) and `GET /v1/triplydb/publish-target`.
 - **Existing TriplyDB routes:** use the server credential and require `lde-author`.
 - **ttl-editor:** keeps only the dataset name, calls the backend, and builds the "required services" picker URL from `publish-target`.
 
 **Tech Stack:**
+
 - LDE backend: Express 5, TypeScript, axios through `createOutboundClient`, Jest with supertest.
 - ttl-editor: React with Vite, Vitest with Testing Library.
 
@@ -49,10 +51,12 @@
 ### Task 1: Backend: the publish target in config, and `GET /v1/triplydb/publish-target`
 
 **Files:**
+
 - Modify: `linked-data-explorer/packages/backend/src/utils/config.ts`, `src/routes/triplydb.routes.ts`, `.env.example`
 - Test: `src/routes/triplydb.routes.test.ts`, `src/utils/config.test.ts` (if present; otherwise in the routes test)
 
 **Interfaces:**
+
 - Produces:
   - `config.triplydb.publish: { baseUrl: string; account: string; apiToken: string }`. The strings are empty when unset.
   - `publishTarget(): { baseUrl: string; account: string } | null`, exported from `src/services/triplydb.service.ts`. It returns null when the account or token is empty, or when the base URL fails `checkTriplyDbBaseUrl`.
@@ -74,10 +78,12 @@
 ### Task 2: Backend: service functions that use the server credential
 
 **Files:**
+
 - Modify: `src/services/triplydb.service.ts`
 - Test: `src/services/triplydb.service.test.ts`
 
 **Interfaces:**
+
 - Consumes: `publishTarget()` (Task 1).
 - Produces:
   - `serverConfig(dataset: string): TriplyDBConfig`. Builds the config from `config.triplydb.publish` and the dataset; throws if not configured.
@@ -99,10 +105,12 @@
 ### Task 3: Backend: `POST /v1/triplydb/publish`
 
 **Files:**
+
 - Modify: `src/routes/triplydb.routes.ts`
 - Test: `src/routes/triplydb.routes.test.ts`, `src/routes/write-auth.test.ts`
 
 **Interfaces:**
+
 - Consumes: `requireAuthor`, `res.locals.user: AuthUser` (`sub`, `username?`), `requirePublishTarget`, `serverConfig`, `uploadTtl`, `uploadAsset`, `updateService`.
 - Request body: `{ dataset, graph, filename, ttl, organization, service, logos?: [{ fileName, dataUrl }] }`.
 - Responses:
@@ -135,10 +143,12 @@
 ### Task 4: Backend: the existing routes on the server credential; OpenAPI and docs
 
 **Files:**
+
 - Modify: `src/routes/triplydb.routes.ts`, `openapi/openapi.yaml`, the LDE docs listing environment variables (find them with `grep -rln TRIPLYDB_TIMEOUT docs packages/backend --include=*.md`), and `docs/sign-in-rollout.md` if it lists backend settings
 - Test: `src/routes/triplydb.routes.test.ts`, `src/routes/write-auth.test.ts`, `src/openapi/*.test.ts` (existing)
 
 **Interfaces:**
+
 - `update-service`, `list-graphs` and `test-connection` use `requireAuthor` and then `requirePublishTarget`.
 - The dataset comes from `body.dataset ?? body.config?.dataset` and is checked against the dataset name rule (400 otherwise).
 - They call the service with `serverConfig(dataset)`. `body.config.apiToken`, `baseUrl` and `account` are ignored.
@@ -162,10 +172,12 @@
 ### Task 5: Editor: the helper calls the backend
 
 **Files:**
+
 - Modify: `ttl-editor/src/utils/triplydbHelper.js`, `src/utils/index.js`
 - Test: `src/utils/triplydbHelper.test.js`
 
 **Interfaces:**
+
 - Produces:
   - `loadTriplyDBConfig(): { dataset: string }`. Reads `triplydb_config`, keeps only `dataset` (default `'DMN-discovery'`), and writes `{ dataset }` back whenever the stored value had any other key.
   - `saveTriplyDBConfig({ dataset })`.
@@ -190,10 +202,12 @@
 ### Task 6: Editor: dialog, publish flow and picker
 
 **Files:**
+
 - Modify: `src/components/PublishDialog.jsx`, `src/App.jsx` (`handlePublish`, the picker's `triplyDBConfig` prop), `src/hooks/useEditorState.js`
 - Test: `src/components/PublishDialog.test.jsx`, `PublishDialog.states.test.jsx`, a test for the picker config (`src/components/tabs/RequiredServicesSection.test.jsx` or the `App` test that renders it), and the App publish test if one exists
 
 **Interfaces:**
+
 - Consumes: Task 5's helpers.
 - `useEditorState` adds `publishTarget` (state, initially null, filled once by `fetchPublishTarget()` in an effect) and exposes `pickerConfig = publishTarget ? { ...publishTarget, dataset: triplyDBConfig.dataset } : { dataset: triplyDBConfig.dataset }`. The `RequiredServicesSection` receives `pickerConfig` as `triplyDBConfig`.
 - `PublishDialog` shows only the Dataset Name field, "Test connection", and the existing progress and outcome area. Publish is enabled when `validateTriplyDBConfig(config).valid`.
@@ -222,6 +236,7 @@
 ### Task 7: Docs, rollout and the follow-up issue
 
 **Files:**
+
 - Modify: ttl-editor `README.md` (the publish section, if it mentions the token) and the ttl-editor docs that describe publishing (find them with `grep -rli "api token" docs README.md`).
 
 - [ ] **Step 1:** Update the docs: publishing needs sign-in as `lde-author`, the dataset is the only setting, and no TriplyDB token is needed.
