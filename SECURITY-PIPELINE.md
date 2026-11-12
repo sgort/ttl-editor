@@ -28,7 +28,7 @@ mechanisms above to actually run:
 | `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                           |
 | `actions/setup-node`           | `949feb2413d6458794dcd2491c4babbbce0c15c1`          | v7.1.0            | Renovate                                                           |
 | `actions/upload-artifact`      | `cf430e030ddbb5b0abf93d22962f4752f3646cd9`          | v7.0.2            | Renovate                                                           |
-| `zizmorcore/zizmor-action`     | `cc914d7f3750a2d13d75c7f184a1060aa0e9d482`          | v0.6.4            | Renovate                                                           |
+| `zizmorcore/zizmor-action`     | `53290badfa369cb0bf7ad16342cb62c2fa47ac7b`          | v0.8.0            | Renovate                                                           |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | Renovate, as Docker image `ghcr.io/zizmorcore/zizmor` — see below  |
 | semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block   |
