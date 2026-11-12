@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+import { signIn } from './signIn.js';
 import { expect, test } from './stack.js';
 
 /**
@@ -137,6 +138,8 @@ test.describe('normbedragen journey', () => {
       delete window.showSaveFilePicker;
     });
     await page.goto('/');
+    // Deploy needs an lde-author (#163 in linked-data-explorer).
+    await signIn(page);
   });
 
   test('drives a chained DRD through four evaluations and exports it', async ({ page }) => {

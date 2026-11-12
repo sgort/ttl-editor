@@ -1,4 +1,5 @@
 // triplydbHelper.js - TriplyDB API integration for publishing TTL files
+import { authHeaders } from './auth';
 import { sanitizeServiceIdentifier } from './dmnHelpers';
 import { getProblemDetail } from './problem';
 
@@ -192,10 +193,13 @@ export const updateTriplyDBService = async (config, serviceName = null, graphNam
   console.log('Graph name:', graphName || '(not specified)');
 
   try {
+    // The LDE backend accepts this only from an lde-author (#163 in
+    // linked-data-explorer); Publish is locked for anyone else.
     const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/update-service`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(await authHeaders()),
       },
       body: JSON.stringify({
         config: config,

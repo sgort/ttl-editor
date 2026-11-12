@@ -98,7 +98,7 @@ jobs:
           lfs: false
           persist-credentials: false
       - name: Setup Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           # Read from .nvmrc, an exact version, so there is one place this
           # repository states its Node. Until sgort/linked-data-explorer#119
@@ -131,6 +131,9 @@ jobs:
           # loads -- do not remove it expecting .env.acceptance to take over,
           # because nothing loads that file without --mode acceptance.
           VITE_BACKEND_URL: https://acc.backend.linkeddata.open-regels.nl
+          # The same reason applies to sign-in (linked-data-explorer #163):
+          # without this, .env.production points ACC at the PROD Keycloak.
+          VITE_KEYCLOAK_URL: https://acc.keycloak.open-regels.nl
           # Build provenance, surfaced in the Changelog tab. The version
           # there is bumped by hand and identifies a release, not a build of
           # it: ACC and PROD can serve different builds of the same version,
