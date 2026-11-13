@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+             xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/"
+             xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/"
+             xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/"
+             xmlns:modeler="http://operaton.org/schema/modeler/1.0"
+             xmlns:operaton="http://operaton.org/schema/1.0/dmn"
+             id="Definitions_Ingezetene"
+             name="Ingezetene - uitgebreid voorbeeld"
+             namespace="http://open-regels.nl/dmn/ingezetene"
+             exporter="Operaton Modeler"
+             exporterVersion="1.0.0"
+             modeler:executionPlatform="Operaton"
+             modeler:executionPlatformVersion="1.0.0">
+  <decision id="Ingezetene" name="Ingezetene" operaton:historyTimeToLive="0">
+    <description>Een van de vijf positieve indicatoren is voldoende, tenzij een uitsluiting van toepassing is.</description>
+    <informationRequirement id="InformationRequirement_persoonWoontInBES">
+      <requiredInput href="#InputData_persoonWoontInBES" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_hoofdverblijfInBES">
+      <requiredInput href="#InputData_hoofdverblijfInBES" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_ingeschrevenInPIVA">
+      <requiredInput href="#InputData_ingeschrevenInPIVA" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_rechtmatigVerblijf">
+      <requiredInput href="#InputData_rechtmatigVerblijf" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_duurzameBandMetBES">
+      <requiredInput href="#InputData_duurzameBandMetBES" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_uitsluitingVanToepassing">
+      <requiredInput href="#InputData_uitsluitingVanToepassing" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_Ingezetene" hitPolicy="FIRST">
+      <input id="InputClause_Woont" label="Woont in de BES">
+        <inputExpression id="InputExpression_Woont" typeRef="boolean"><text>persoonWoontInBES</text></inputExpression>
+      </input>
+      <input id="InputClause_Hoofdverblijf" label="Hoofdverblijf in de BES">
+        <inputExpression id="InputExpression_Hoofdverblijf" typeRef="boolean"><text>hoofdverblijfInBES</text></inputExpression>
+      </input>
+      <input id="InputClause_PIVA" label="Ingeschreven in PIVA">
+        <inputExpression id="InputExpression_PIVA" typeRef="boolean"><text>ingeschrevenInPIVA</text></inputExpression>
+      </input>
+      <input id="InputClause_Rechtmatig" label="Rechtmatig verblijf">
+        <inputExpression id="InputExpression_Rechtmatig" typeRef="boolean"><text>rechtmatigVerblijf</text></inputExpression>
+      </input>
+      <input id="InputClause_DuurzameBand" label="Duurzame band met de BES">
+        <inputExpression id="InputExpression_DuurzameBand" typeRef="boolean"><text>duurzameBandMetBES</text></inputExpression>
+      </input>
+      <input id="InputClause_Uitsluiting" label="Uitsluiting van toepassing">
+        <inputExpression id="InputExpression_Uitsluiting" typeRef="boolean"><text>uitsluitingVanToepassing</text></inputExpression>
+      </input>
+      <output id="OutputClause_Ingezetene" label="Persoon is ingezetene" name="persoonIngezetene" typeRef="boolean" />
+      <rule id="DecisionRule_Uitsluiting">
+        <description>Een uitsluiting heeft altijd voorrang.</description>
+        <inputEntry id="InputEntry_Uitsluiting_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Uitsluiting_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Uitsluiting_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Uitsluiting_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Uitsluiting_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Uitsluiting_6"><text>true</text></inputEntry>
+        <outputEntry id="OutputEntry_Uitsluiting"><text>false</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_Woont">
+        <inputEntry id="InputEntry_Woont_1"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_Woont_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Woont_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Woont_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Woont_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Woont_6"><text>false</text></inputEntry>
+        <outputEntry id="OutputEntry_Woont"><text>true</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_Hoofdverblijf">
+        <inputEntry id="InputEntry_Hoofdverblijf_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Hoofdverblijf_2"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_Hoofdverblijf_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Hoofdverblijf_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Hoofdverblijf_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Hoofdverblijf_6"><text>false</text></inputEntry>
+        <outputEntry id="OutputEntry_Hoofdverblijf"><text>true</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_PIVA">
+        <inputEntry id="InputEntry_PIVA_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_PIVA_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_PIVA_3"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_PIVA_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_PIVA_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_PIVA_6"><text>false</text></inputEntry>
+        <outputEntry id="OutputEntry_PIVA"><text>true</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_Rechtmatig">
+        <inputEntry id="InputEntry_Rechtmatig_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Rechtmatig_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Rechtmatig_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Rechtmatig_4"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_Rechtmatig_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_Rechtmatig_6"><text>false</text></inputEntry>
+        <outputEntry id="OutputEntry_Rechtmatig"><text>true</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_DuurzameBand">
+        <inputEntry id="InputEntry_DuurzameBand_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_DuurzameBand_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_DuurzameBand_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_DuurzameBand_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_DuurzameBand_5"><text>true</text></inputEntry>
+        <inputEntry id="InputEntry_DuurzameBand_6"><text>false</text></inputEntry>
+        <outputEntry id="OutputEntry_DuurzameBand"><text>true</text></outputEntry>
+      </rule>
+      <rule id="DecisionRule_GeenPositieveIndicator">
+        <inputEntry id="InputEntry_GeenPositief_1"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_GeenPositief_2"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_GeenPositief_3"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_GeenPositief_4"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_GeenPositief_5"><text>-</text></inputEntry>
+        <inputEntry id="InputEntry_GeenPositief_6"><text>-</text></inputEntry>
+        <outputEntry id="OutputEntry_GeenPositief"><text>false</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_persoonWoontInBES" name="persoonWoontInBES">
+    <variable id="Variable_persoonWoontInBES" name="persoonWoontInBES" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_hoofdverblijfInBES" name="hoofdverblijfInBES">
+    <variable id="Variable_hoofdverblijfInBES" name="hoofdverblijfInBES" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_ingeschrevenInPIVA" name="ingeschrevenInPIVA">
+    <variable id="Variable_ingeschrevenInPIVA" name="ingeschrevenInPIVA" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_rechtmatigVerblijf" name="rechtmatigVerblijf">
+    <variable id="Variable_rechtmatigVerblijf" name="rechtmatigVerblijf" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_duurzameBandMetBES" name="duurzameBandMetBES">
+    <variable id="Variable_duurzameBandMetBES" name="duurzameBandMetBES" typeRef="boolean" />
+  </inputData>
+  <inputData id="InputData_uitsluitingVanToepassing" name="uitsluitingVanToepassing">
+    <variable id="Variable_uitsluitingVanToepassing" name="uitsluitingVanToepassing" typeRef="boolean" />
+  </inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_Ingezetene">
+      <dmndi:DMNShape id="DMNShape_Ingezetene" dmnElementRef="Ingezetene">
+        <dc:Bounds x="355" y="80" width="220" height="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_persoonWoontInBES" dmnElementRef="InputData_persoonWoontInBES">
+        <dc:Bounds x="20" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_hoofdverblijfInBES" dmnElementRef="InputData_hoofdverblijfInBES">
+        <dc:Bounds x="170" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_ingeschrevenInPIVA" dmnElementRef="InputData_ingeschrevenInPIVA">
+        <dc:Bounds x="320" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_rechtmatigVerblijf" dmnElementRef="InputData_rechtmatigVerblijf">
+        <dc:Bounds x="470" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_duurzameBandMetBES" dmnElementRef="InputData_duurzameBandMetBES">
+        <dc:Bounds x="620" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_uitsluitingVanToepassing" dmnElementRef="InputData_uitsluitingVanToepassing">
+        <dc:Bounds x="770" y="260" width="135" height="45" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_persoonWoontInBES" dmnElementRef="InformationRequirement_persoonWoontInBES">
+        <di:waypoint x="87" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_hoofdverblijfInBES" dmnElementRef="InformationRequirement_hoofdverblijfInBES">
+        <di:waypoint x="237" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_ingeschrevenInPIVA" dmnElementRef="InformationRequirement_ingeschrevenInPIVA">
+        <di:waypoint x="387" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_rechtmatigVerblijf" dmnElementRef="InformationRequirement_rechtmatigVerblijf">
+        <di:waypoint x="537" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_duurzameBandMetBES" dmnElementRef="InformationRequirement_duurzameBandMetBES">
+        <di:waypoint x="687" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_uitsluitingVanToepassing" dmnElementRef="InformationRequirement_uitsluitingVanToepassing">
+        <di:waypoint x="837" y="260" />
+        <di:waypoint x="465" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

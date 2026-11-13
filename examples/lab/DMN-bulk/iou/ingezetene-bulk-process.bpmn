@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+                  xmlns:modeler="http://camunda.org/schema/modeler/1.0"
+                  id="Definitions_IngezeteneBulk"
+                  targetNamespace="http://open-regels.nl/bpmn/ingezetene-bulk"
+                  exporter="Camunda Modeler"
+                  exporterVersion="5.43.1"
+                  modeler:executionPlatform="Camunda Platform"
+                  modeler:executionPlatformVersion="7.24.0">
+  <bpmn:process id="IngezeteneBulkProcess" name="Ingezetenecriteria voor een lijst gevallen" isExecutable="true" camunda:historyTimeToLive="180">
+    <bpmn:startEvent id="StartEvent_Start" name="Start">
+      <bpmn:outgoing>Flow_Start_To_Init</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_Init" name="Initialiseer invoer en teller">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="aantalIngezetenen">${0}</camunda:outputParameter>
+          <camunda:outputParameter name="gevallen">${JSON('[{"kenmerk":"Geval 1","persoonWoontInBES":false,"hoofdverblijfInBES":false,"ingeschrevenInPIVA":false,"rechtmatigVerblijf":false,"duurzameBandMetBES":false,"uitsluitingVanToepassing":false}]')}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_Start_To_Init</bpmn:incoming>
+      <bpmn:outgoing>Flow_Init_To_Input</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:userTask id="UserTask_Input" name="Voer de gevallen in" camunda:formRef="ingezetene-bulk-input" camunda:formRefBinding="deployment">
+      <bpmn:incoming>Flow_Init_To_Input</bpmn:incoming>
+      <bpmn:outgoing>Flow_Input_To_Loop</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:subProcess id="SubProcess_EvaluateCases" name="Beoordeel ieder geval">
+      <bpmn:incoming>Flow_Input_To_Loop</bpmn:incoming>
+      <bpmn:outgoing>Flow_Loop_To_Result</bpmn:outgoing>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${gevallen.elements()}" camunda:elementVariable="geval" />
+      <bpmn:startEvent id="StartEvent_Case">
+        <bpmn:outgoing>Flow_CaseStart_To_Decision</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:businessRuleTask id="BusinessRuleTask_Ingezetene"
+                             name="Beoordeel ingezetene"
+                             camunda:decisionRef="Ingezetene"
+                             camunda:decisionRefBinding="latest"
+                             camunda:decisionRefTenantId="${null}"
+                             camunda:mapDecisionResult="singleEntry"
+                             camunda:resultVariable="persoonIngezetene">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="persoonWoontInBES">${geval.prop("persoonWoontInBES").boolValue()}</camunda:inputParameter>
+            <camunda:inputParameter name="hoofdverblijfInBES">${geval.prop("hoofdverblijfInBES").boolValue()}</camunda:inputParameter>
+            <camunda:inputParameter name="ingeschrevenInPIVA">${geval.prop("ingeschrevenInPIVA").boolValue()}</camunda:inputParameter>
+            <camunda:inputParameter name="rechtmatigVerblijf">${geval.prop("rechtmatigVerblijf").boolValue()}</camunda:inputParameter>
+            <camunda:inputParameter name="duurzameBandMetBES">${geval.prop("duurzameBandMetBES").boolValue()}</camunda:inputParameter>
+            <camunda:inputParameter name="uitsluitingVanToepassing">${geval.prop("uitsluitingVanToepassing").boolValue()}</camunda:inputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_CaseStart_To_Decision</bpmn:incoming>
+        <bpmn:outgoing>Flow_Decision_To_Count</bpmn:outgoing>
+      </bpmn:businessRuleTask>
+      <bpmn:task id="Task_IncrementCount" name="Werk teller bij">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:outputParameter name="aantalIngezetenen">${persoonIngezetene ? aantalIngezetenen + 1 : aantalIngezetenen}</camunda:outputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_Decision_To_Count</bpmn:incoming>
+        <bpmn:outgoing>Flow_Count_To_CaseEnd</bpmn:outgoing>
+      </bpmn:task>
+      <bpmn:endEvent id="EndEvent_Case">
+        <bpmn:incoming>Flow_Count_To_CaseEnd</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_CaseStart_To_Decision" sourceRef="StartEvent_Case" targetRef="BusinessRuleTask_Ingezetene" />
+      <bpmn:sequenceFlow id="Flow_Decision_To_Count" sourceRef="BusinessRuleTask_Ingezetene" targetRef="Task_IncrementCount" />
+      <bpmn:sequenceFlow id="Flow_Count_To_CaseEnd" sourceRef="Task_IncrementCount" targetRef="EndEvent_Case" />
+    </bpmn:subProcess>
+    <bpmn:userTask id="UserTask_Result" name="Bekijk het resultaat" camunda:formRef="ingezetene-bulk-result" camunda:formRefBinding="deployment">
+      <bpmn:incoming>Flow_Loop_To_Result</bpmn:incoming>
+      <bpmn:outgoing>Flow_Result_To_End</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="EndEvent_Done" name="Klaar">
+      <bpmn:incoming>Flow_Result_To_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_To_Init" sourceRef="StartEvent_Start" targetRef="Task_Init" />
+    <bpmn:sequenceFlow id="Flow_Init_To_Input" sourceRef="Task_Init" targetRef="UserTask_Input" />
+    <bpmn:sequenceFlow id="Flow_Input_To_Loop" sourceRef="UserTask_Input" targetRef="SubProcess_EvaluateCases" />
+    <bpmn:sequenceFlow id="Flow_Loop_To_Result" sourceRef="SubProcess_EvaluateCases" targetRef="UserTask_Result" />
+    <bpmn:sequenceFlow id="Flow_Result_To_End" sourceRef="UserTask_Result" targetRef="EndEvent_Done" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_IngezeteneBulk">
+    <bpmndi:BPMNPlane id="BPMNPlane_IngezeteneBulk" bpmnElement="IngezeteneBulkProcess">
+      <bpmndi:BPMNShape id="Shape_Start" bpmnElement="StartEvent_Start"><dc:Bounds x="120" y="212" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Init" bpmnElement="Task_Init"><dc:Bounds x="210" y="190" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Input" bpmnElement="UserTask_Input"><dc:Bounds x="410" y="190" width="120" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Loop" bpmnElement="SubProcess_EvaluateCases" isExpanded="true"><dc:Bounds x="590" y="100" width="500" height="260" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CaseStart" bpmnElement="StartEvent_Case"><dc:Bounds x="630" y="212" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Decision" bpmnElement="BusinessRuleTask_Ingezetene"><dc:Bounds x="720" y="190" width="120" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Count" bpmnElement="Task_IncrementCount"><dc:Bounds x="890" y="190" width="120" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CaseEnd" bpmnElement="EndEvent_Case"><dc:Bounds x="1030" y="212" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Result" bpmnElement="UserTask_Result"><dc:Bounds x="1150" y="190" width="120" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End" bpmnElement="EndEvent_Done"><dc:Bounds x="1330" y="212" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Start_To_Init" bpmnElement="Flow_Start_To_Init"><di:waypoint x="156" y="230" /><di:waypoint x="210" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Init_To_Input" bpmnElement="Flow_Init_To_Input"><di:waypoint x="350" y="230" /><di:waypoint x="410" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Input_To_Loop" bpmnElement="Flow_Input_To_Loop"><di:waypoint x="530" y="230" /><di:waypoint x="590" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_CaseStart_To_Decision" bpmnElement="Flow_CaseStart_To_Decision"><di:waypoint x="666" y="230" /><di:waypoint x="720" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Decision_To_Count" bpmnElement="Flow_Decision_To_Count"><di:waypoint x="840" y="230" /><di:waypoint x="890" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Count_To_CaseEnd" bpmnElement="Flow_Count_To_CaseEnd"><di:waypoint x="1010" y="230" /><di:waypoint x="1030" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Loop_To_Result" bpmnElement="Flow_Loop_To_Result"><di:waypoint x="1090" y="230" /><di:waypoint x="1150" y="230" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Result_To_End" bpmnElement="Flow_Result_To_End"><di:waypoint x="1270" y="230" /><di:waypoint x="1330" y="230" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

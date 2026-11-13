@@ -1,0 +1,76 @@
+# DMN-bulk, adapted for TTL and the LDE
+
+The files one level up are the concept as delivered. This folder holds the
+same Ingezetene example adapted so it can travel through the IOU tools as they
+exist today: the DMN through TTL (the CPSV Editor), the forms through the LDE
+Form Editor, the process through the LDE BPMN Modeler.
+
+Only the example files are adapted, not the tools. Every adaptation below is
+something a generic bulk feature would have to do, or make unnecessary.
+
+## What changed, and why
+
+| File                                                        | Change                                                                                                                                                                                  | Why                                                                                                                                                                          |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ingezetene-single-case.dmn`                                | Added six `<inputData>` elements, one per input, each wired to the decision with an `<informationRequirement>`, plus their DRD shapes. Decision id, rules and hit policy are untouched. | TTL's import check (`INT-007`) requires every input variable to be declared. With these the LDE validator reports 0 errors and 0 warnings (one optional CPRMV info remains). |
+| `ingezetene-counter.dmn`                                    | **Dropped.**                                                                                                                                                                            | Counting is plumbing, not law; in IOU a DMN is published as part of a public service. The count now lives in the BPMN (decision of 13 November 2026).                        |
+| `ingezetene-bulk-process.bpmn`                              | `operaton:` prefix replaced by `camunda:`.                                                                                                                                              | The LDE Modeler, its properties panel and its deploy bundle read `camunda:` only. Operaton accepts that prefix; every seeded LDE example uses it.                            |
+|                                                             | Init step is now a plain task with two output parameters: `aantalIngezetenen = ${0}` and `gevallen = ${JSON('[…]')}`.                                                                   | Replaces the call to `InitialiseerAantalIngezetenen`.                                                                                                                        |
+|                                                             | Counter step is now a plain task with output parameter `${persoonIngezetene ? aantalIngezetenen + 1 : aantalIngezetenen}`.                                                              | Replaces the call to `VerhoogAantalIngezetenen`. Still sequential, so each iteration sees the previous count.                                                                |
+|                                                             | `camunda:formRefBinding="deployment"` on both user tasks.                                                                                                                               | Modeler convention: the form is taken from the process's own deployment, which the deploy modal ships with the BPMN.                                                         |
+|                                                             | `camunda:decisionRefTenantId="${null}"` on the business rule task.                                                                                                                      | Lets a process deployed under an organisation reach the shared, tenant-less `Ingezetene` decision.                                                                           |
+| `ingezetene-bulk-input.form`, `ingezetene-bulk-result.form` | **Unchanged** — use the files one level up.                                                                                                                                             | Their ids already match the BPMN's `formRef`s.                                                                                                                               |
+
+One behavioural difference: `aantalIngezetenen` is now a `Long` instead of an
+`Integer`, because the EL expression produces a `Long`. The result form's number
+field shows it the same way.
+
+## Verified on local Operaton (13 November 2026)
+
+- `iou/ingezetene-single-case.dmn` validated through the LDE backend
+  (`POST /v1/dmns/validate`): valid, 0 errors, 0 warnings.
+- `iou/ingezetene-bulk-process.bpmn` with both forms deployed to the local
+  engine (`localhost:8081`) and run with three cases: Geval 1 true (one
+  indicator), Geval 2 false (exclusion wins), Geval 3 true (two indicators).
+  The instance reached the result task with `aantalIngezetenen = 2` and no
+  incidents.
+
+## Walk-through in the tools
+
+**TTL (CPSV Editor)**
+
+1. Create a service for Ingezetene (BES) and fill in the required tabs.
+2. DMN tab: upload `iou/ingezetene-single-case.dmn`. Expect a green _Syntax
+   valid_ badge.
+3. Deploy to Operaton (signed in as `lde-author`).
+4. Add a test case per rule: the exclusion alone, each positive indicator
+   alone, no indicators, and an indicator combined with the exclusion.
+5. Publish to TriplyDB **from acceptance, not from localhost**: a local session
+   records `localhost:8081` as the decision's `cprmv:implementedBy`. The local
+   walk-through can stop before this step; the Modeler finds the decision on
+   the engine by key and does not need it in the catalogue.
+
+**LDE**
+
+6. Form Editor: import `../ingezetene-bulk-input.form` and
+   `../ingezetene-bulk-result.form`.
+7. BPMN Modeler: import `iou/ingezetene-bulk-process.bpmn`. Check that the
+   properties panel shows both forms and the decision on their tasks.
+8. Deploy. The deploy modal should list the BPMN and both forms, and not the
+   DMN (decisions are not part of a Modeler bundle).
+
+**Run**
+
+9. Start `IngezeteneBulkProcess` (Tasklist or RBA), add rows, complete, and
+   read the count on the result form.
+
+## Questions for the generic feature
+
+Record here what the walk-through shows.
+
+- Which steps above could the tools derive from the DMN's inputs alone? (The
+  form row, the JSON seed, the loop and the input mappings are all mechanical.)
+- Per-case outcomes are still lost: `persoonIngezetene` is overwritten on every
+  iteration, so the result form shows inputs and a total, not which case passed.
+- Does the form renderer in RBA return a dynamic list as `Json`, as Tasklist
+  does after the seed?
