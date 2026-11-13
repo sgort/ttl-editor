@@ -43,8 +43,12 @@ field shows it the same way.
 2. DMN tab: upload `iou/ingezetene-single-case.dmn`. Expect a green _Syntax
    valid_ badge.
 3. Deploy to Operaton (signed in as `lde-author`).
-4. Add a test case per rule: the exclusion alone, each positive indicator
-   alone, no indicators, and an indicator combined with the exclusion.
+4. Upload `iou/testCases/ingezetene-test-cases.json` and run all test cases.
+   Expect 11 PASS: one case per rule (7), plus four combinations: an
+   indicator with the exclusion, all five indicators, all six inputs true,
+   and two indicators together. Expected answers come from the concept
+   document's formula, not from the DMN, and each case names the rule it
+   exercises.
 5. Publish to TriplyDB **from acceptance, not from localhost**: a local session
    records `localhost:8081` as the decision's `cprmv:implementedBy`. The local
    walk-through can stop before this step; the Modeler finds the decision on
