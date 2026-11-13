@@ -28,13 +28,13 @@ flowchart TD
 
 The implementation consists of five artifacts:
 
-| Artifact | Responsibility |
-| --- | --- |
-| Single-case DMN | Evaluates one case and returns one result |
-| Counter DMN | Initializes and updates the aggregate count using FEEL |
-| BPMN process | Iterates over the JSON array and calls both DMNs |
-| Input Form | Creates and edits the array of case objects |
-| Result Form | Shows the aggregate count and the submitted cases |
+| Artifact        | Responsibility                                         |
+| --------------- | ------------------------------------------------------ |
+| Single-case DMN | Evaluates one case and returns one result              |
+| Counter DMN     | Initializes and updates the aggregate count using FEEL |
+| BPMN process    | Iterates over the JSON array and calls both DMNs       |
+| Input Form      | Creates and edits the array of case objects            |
+| Result Form     | Shows the aggregate count and the submitted cases      |
 
 ## 1. Preserve the original single-case DMN
 
@@ -42,18 +42,18 @@ Do not copy the original decision table for every possible case. The original DM
 
 For example, a single-case decision might expect:
 
-| DMN input | Type |
-| --- | --- |
-| `criterionA` | boolean |
-| `criterionB` | boolean |
-| `category` | string |
-| `amount` | number |
+| DMN input          | Type    |
+| ------------------ | ------- |
+| `criterionA`       | boolean |
+| `criterionB`       | boolean |
+| `category`         | string  |
+| `amount`           | number  |
 | `exclusionApplies` | boolean |
 
 and return:
 
-| DMN output | Type |
-| --- | --- |
+| DMN output          | Type    |
+| ------------------- | ------- |
 | `caseMeetsCriteria` | boolean |
 
 The BPMN wrapper is responsible for repeatedly providing these inputs. The DMN itself does not need to know that other cases exist.
@@ -70,7 +70,7 @@ Use one JSON array process variable. In this example its name is `cases`.
       "criterionA": true,
       "criterionB": false,
       "category": "example",
-      "amount": 125.50,
+      "amount": 125.5,
       "exclusionApplies": false
     },
     {
@@ -258,13 +258,13 @@ The mapping name must equal the variable name used by the DMN input expression.
 
 Common JSON conversions are:
 
-| JSON value | Spin access |
-| --- | --- |
-| boolean | `.boolValue()` |
-| string | `.stringValue()` |
-| number | `.numberValue()` |
+| JSON value      | Spin access                                           |
+| --------------- | ----------------------------------------------------- |
+| boolean         | `.boolValue()`                                        |
+| string          | `.stringValue()`                                      |
+| number          | `.numberValue()`                                      |
 | nested property | `.prop("child")` followed by the appropriate accessor |
-| array | `.elements()` |
+| array           | `.elements()`                                         |
 
 Dates are normally transported as ISO-formatted strings and converted in FEEL or before the decision call, depending on the contract used by the original DMN.
 
@@ -304,8 +304,8 @@ else matchingCaseCount
 
 The update decision accepts:
 
-| Input | Type |
-| --- | --- |
+| Input               | Type    |
+| ------------------- | ------- |
 | `matchingCaseCount` | integer |
 | `caseMeetsCriteria` | boolean |
 
@@ -347,14 +347,14 @@ Ingezetene
 
 It accepts six boolean inputs:
 
-| Input | Meaning |
-| --- | --- |
-| `persoonWoontInBES` | Person lives in the BES |
-| `hoofdverblijfInBES` | Main residence is in the BES |
-| `ingeschrevenInPIVA` | Person is registered in PIVA |
-| `rechtmatigVerblijf` | Residence is lawful |
-| `duurzameBandMetBES` | Person has a durable connection with the BES |
-| `uitsluitingVanToepassing` | An exclusion applies |
+| Input                      | Meaning                                      |
+| -------------------------- | -------------------------------------------- |
+| `persoonWoontInBES`        | Person lives in the BES                      |
+| `hoofdverblijfInBES`       | Main residence is in the BES                 |
+| `ingeschrevenInPIVA`       | Person is registered in PIVA                 |
+| `rechtmatigVerblijf`       | Residence is lawful                          |
+| `duurzameBandMetBES`       | Person has a durable connection with the BES |
+| `uitsluitingVanToepassing` | An exclusion applies                         |
 
 It returns:
 
@@ -630,18 +630,18 @@ The version suffix belongs to the resource filename, not to the decision key, pr
 
 # Common mistakes
 
-| Mistake | Consequence | Correction |
-| --- | --- | --- |
-| Copying the DMN once per possible case | Model size grows with the maximum case count | Keep one single-case DMN and iterate in BPMN |
-| Creating separate BPMN branches for Case 1, Case 2, etc. | BPMN must change whenever the maximum changes | Use a multi-instance subprocess |
-| Submitting an untyped array from the Form | Save/Complete or `.elements()` may fail | Initialize the variable as native JSON |
-| Form key differs from JSON property | The mapping reads a missing property | Use one shared naming contract |
-| Mapping omitted for a DMN input | Evaluation fails or uses an unintended value | Add one mapping per original input |
-| Wrong Spin accessor | Type mismatch during DMN evaluation | Match accessor to JSON/DMN type |
-| Using `singleEntry` for multiple outputs | Result mapping fails | Use a result map or a wrapper decision |
-| Parallel loop updates one counter | Lost increments are possible | Use sequential execution or aggregate afterwards |
-| Checkbox has no explicit default | Missing/null values can reach the DMN | Set `defaultValue` to `false` |
-| Version suffix added to internal IDs | References break on every deployment | Version filenames only; keep IDs stable |
+| Mistake                                                  | Consequence                                   | Correction                                       |
+| -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------ |
+| Copying the DMN once per possible case                   | Model size grows with the maximum case count  | Keep one single-case DMN and iterate in BPMN     |
+| Creating separate BPMN branches for Case 1, Case 2, etc. | BPMN must change whenever the maximum changes | Use a multi-instance subprocess                  |
+| Submitting an untyped array from the Form                | Save/Complete or `.elements()` may fail       | Initialize the variable as native JSON           |
+| Form key differs from JSON property                      | The mapping reads a missing property          | Use one shared naming contract                   |
+| Mapping omitted for a DMN input                          | Evaluation fails or uses an unintended value  | Add one mapping per original input               |
+| Wrong Spin accessor                                      | Type mismatch during DMN evaluation           | Match accessor to JSON/DMN type                  |
+| Using `singleEntry` for multiple outputs                 | Result mapping fails                          | Use a result map or a wrapper decision           |
+| Parallel loop updates one counter                        | Lost increments are possible                  | Use sequential execution or aggregate afterwards |
+| Checkbox has no explicit default                         | Missing/null values can reach the DMN         | Set `defaultValue` to `false`                    |
+| Version suffix added to internal IDs                     | References break on every deployment          | Version filenames only; keep IDs stable          |
 
 # Summary
 
