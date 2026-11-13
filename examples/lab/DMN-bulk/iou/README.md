@@ -68,10 +68,33 @@ field shows it the same way.
 9. Start `IngezeteneBulkProcess` (Tasklist or RBA), add rows, complete, and
    read the count on the result form.
 
+## Walk-through results (13 November 2026, localhost)
+
+| Step                           | Result                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TTL: upload DMN                | Valid, no warnings, thanks to the added `<inputData>`.                                                                                                                                                                                                                                                                 |
+| TTL: deploy                    | `Ingezetene` v1 on the engine, **without a tenant**.                                                                                                                                                                                                                                                                   |
+| TTL: test cases                | 11/11 PASS with `testCases/ingezetene-test-cases.json`.                                                                                                                                                                                                                                                                |
+| LDE Form Editor                | Both forms imported without complaint, `operaton` platform markers and all.                                                                                                                                                                                                                                            |
+| LDE Modeler, **original** BPMN | Imported, but every link was gone: no form badges, no decision badge, empty "Link to Form" dropdowns. The Modeler reads only `camunda:formRef` / `camunda:decisionRef`; the file has `operaton:`. Nothing warned.                                                                                                      |
+| LDE Modeler, `iou/` BPMN       | All three badges present without manual linking.                                                                                                                                                                                                                                                                       |
+| LDE deploy                     | Organisation `BES`, board Caseworker. Bundle: the BPMN and both forms, no DMN. One amber warning: no `ronl:ropaRef`. Deployed under tenant `BES`. The re-exported XML kept the output parameters, the loop and `decisionRefTenantId="${null}"`; it dropped `decisionRefBinding="latest"`, which is the default anyway. |
+| Run (REST, three cases)        | Result task reached, `aantalIngezetenen = 2`, no incidents. The `BES` process reaches the tenant-less decision.                                                                                                                                                                                                        |
+
 ## Questions for the generic feature
 
 Record here what the walk-through shows.
 
+- A BPMN exported from the Operaton Modeler loses all its links in the LDE
+  Modeler without a warning. Convert `operaton:` to `camunda:` on import, or at
+  least warn?
+- The user tasks have no candidate groups. RBA lists caseworker tasks by
+  candidate group (`operaton.service.ts`), so these tasks would not appear in
+  the caseworker dashboard; only Tasklist shows them. Choosing board
+  Caseworker in the deploy modal does not set them.
+- TTL needs `<inputData>` declarations that a decision exported from a modeller
+  often lacks. Should TTL offer to add them, since the input expressions
+  already name every variable?
 - Which steps above could the tools derive from the DMN's inputs alone? (The
   form row, the JSON seed, the loop and the input mappings are all mechanical.)
 - Per-case outcomes are still lost: `persoonIngezetene` is overwritten on every
