@@ -25,7 +25,7 @@
       <bpmn:incoming>Flow_Start_To_Init</bpmn:incoming>
       <bpmn:outgoing>Flow_Init_To_Input</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:userTask id="UserTask_Input" name="Voer de gevallen in" camunda:formRef="ingezetene-bulk-input" camunda:formRefBinding="deployment">
+    <bpmn:userTask id="UserTask_Input" name="Voer de gevallen in" camunda:formRef="ingezetene-bulk-input" camunda:formRefBinding="deployment" camunda:candidateGroups="caseworker">
       <bpmn:incoming>Flow_Init_To_Input</bpmn:incoming>
       <bpmn:outgoing>Flow_Input_To_Loop</bpmn:outgoing>
     </bpmn:userTask>
@@ -72,7 +72,7 @@
       <bpmn:sequenceFlow id="Flow_Decision_To_Count" sourceRef="BusinessRuleTask_Ingezetene" targetRef="Task_IncrementCount" />
       <bpmn:sequenceFlow id="Flow_Count_To_CaseEnd" sourceRef="Task_IncrementCount" targetRef="EndEvent_Case" />
     </bpmn:subProcess>
-    <bpmn:userTask id="UserTask_Result" name="Bekijk het resultaat" camunda:formRef="ingezetene-bulk-result" camunda:formRefBinding="deployment">
+    <bpmn:userTask id="UserTask_Result" name="Bekijk het resultaat" camunda:formRef="ingezetene-bulk-result" camunda:formRefBinding="deployment" camunda:candidateGroups="caseworker">
       <bpmn:incoming>Flow_Loop_To_Result</bpmn:incoming>
       <bpmn:outgoing>Flow_Result_To_End</bpmn:outgoing>
     </bpmn:userTask>
