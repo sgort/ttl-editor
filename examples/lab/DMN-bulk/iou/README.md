@@ -60,14 +60,18 @@ field shows it the same way.
 6. Form Editor: import `iou/ingezetene-bulk-input.form` and
    `iou/ingezetene-bulk-result.form`.
 7. BPMN Modeler: import `iou/ingezetene-bulk-process.bpmn`. Check that the
-   properties panel shows both forms and the decision on their tasks.
-8. Deploy. The deploy modal should list the BPMN and both forms, and not the
-   DMN (decisions are not part of a Modeler bundle).
+   properties panel shows the input form on the start event, the result form
+   on _Bekijk het resultaat_, the decision on _Beoordeel ingezetene_, and
+   `caseworker` under _Candidate starter → Candidate starter groups_.
+8. Deploy under organisation `bes`. The deploy modal should list the BPMN and
+   both forms, and not the DMN (decisions are not part of a Modeler bundle).
 
-**Run**
+**Run (RBA)**
 
-9. Start `IngezeteneBulkProcess` (Tasklist or RBA), add rows, complete, and
-   read the count on the result form.
+9. Sign in as `test-caseworker-bes`. Open _Werk → Proces starten_, choose
+   _Ingezetenecriteria voor een lijst gevallen_, enter the cases on the start
+   form and submit. _Bekijk het resultaat_ appears under _Taken_, with the
+   count and the submitted cases.
 
 ## Walk-through results (13 November 2026, localhost)
 
@@ -81,6 +85,19 @@ field shows it the same way.
 | LDE Modeler, `iou/` BPMN       | All three badges present without manual linking.                                                                                                                                                                                                                                                                       |
 | LDE deploy                     | Organisation `BES`, board Caseworker. Bundle: the BPMN and both forms, no DMN. One amber warning: no `ronl:ropaRef`. Deployed under tenant `BES`. The re-exported XML kept the output parameters, the loop and `decisionRefTenantId="${null}"`; it dropped `decisionRefBinding="latest"`, which is the default anyway. |
 | Run (REST, three cases)        | Result task reached, `aantalIngezetenen = 2`, no incidents. The `BES` process reaches the tenant-less decision.                                                                                                                                                                                                        |
+
+## Through RBA (14 November 2026)
+
+| Finding                                                                                                                        | Outcome                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| The forms had no submit button. Tasklist supplies its own Complete; RBA completes only on the form's own `submit`.             | Submit buttons added to the `iou/` forms.                                                                                                                                                                                                                                                                                                                                                        |
+| A dynamic list failed to save in RBA, and a form showing one saw no rows and wrote an empty row back over the cases on submit. | Fixed in RBA (`ronl-business-api` #449): `Json` variables are written and read as JSON text.                                                                                                                                                                                                                                                                                                     |
+| RBA had no organisation for BES, so no caseworker could start a process deployed under it.                                     | Tenant `bes` added to RBA (#448); the process is deployed under `bes` (lowercase: RBA compares the Operaton tenant with the `municipality` claim exactly).                                                                                                                                                                                                                                       |
+| A caseworker could not start the process from RBA at all.                                                                      | A generic _Proces starten_ section (RBA, `feature/caseworker-process-start`): it lists every process whose `camunda:candidateStarterGroups` matches one of the caseworker's roles, and _Start process_ starts it. Without a start form, as here, the instance starts at once and the first task appears under _Taken_, as HR onboarding does; a process with a start form shows that form first. |
+
+The process file is the one deployed from the LDE (phases, `camunda:candidateStarterGroups="caseworker"`, organisation `bes`). _Voer de gevallen in_ stays the first task, so a caseworker starts the process and then enters the cases from _Taken_. Moving the input form onto the start event was tried and dropped: it made starting and entering one step on the start page, which is not where caseworkers expect to work.
+
+The process also got a pool with two lanes: `Behandelaar` (the caseworker: the input task and the result task) and `Systeem` (the start, the initialisation, the assessment loop and the end). RBA shows its phase stepper and the process overlay only for a model with lanes; without them the task page falls back to a flat list of steps.
 
 ## Questions for the generic feature
 
@@ -100,5 +117,5 @@ Record here what the walk-through shows.
   form row, the JSON seed, the loop and the input mappings are all mechanical.)
 - Per-case outcomes are still lost: `persoonIngezetene` is overwritten on every
   iteration, so the result form shows inputs and a total, not which case passed.
-- Does the form renderer in RBA return a dynamic list as `Json`, as Tasklist
-  does after the seed?
+- ~~Does the form renderer in RBA return a dynamic list as `Json`, as Tasklist
+  does after the seed?~~ Yes, after RBA #449; see "Through RBA" above.
