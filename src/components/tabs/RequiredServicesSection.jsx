@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { sanitizeServiceIdentifier } from '../../utils/dmnHelpers';
-import { buildDatasetSparqlUrl, fetchPublishedServices } from '../../utils/serviceCatalogHelper';
+import { buildDatasetSparqlUrl, fetchPublishedServicesAt } from '../../utils/serviceCatalogHelper';
 
 /**
  * RequiredServicesSection - the services this one makes use of (dct:requires,
@@ -16,42 +16,46 @@ export default function RequiredServicesSection({ service, setService, triplyDBC
     ? `https://regels.overheid.nl/services/${sanitizeServiceIdentifier(service.identifier)}`
     : null;
 
-  const configured = Boolean(buildDatasetSparqlUrl(triplyDBConfig));
-  const [published, setPublished] = useState([]);
-  const [listState, setListState] = useState('loading'); // loading | ready | error
+  // The list is keyed to the endpoint it was loaded from (#227): after a
+  // dataset change the previous dataset's services are not shown while the new
+  // request is in flight, and fields the query does not use (the API token)
+  // neither refetch nor reset it.
+  const endpoint = buildDatasetSparqlUrl(triplyDBConfig);
+  const [loaded, setLoaded] = useState(null); // { endpoint, services, state: 'ready' | 'error' }
   const [refreshCount, setRefreshCount] = useState(0);
   const [selected, setSelected] = useState('');
   const [pasted, setPasted] = useState('');
   const [message, setMessage] = useState('');
 
   // State is only set once the request settles, never synchronously in the
-  // effect; a superseded request (config change, refresh, unmount) is ignored.
+  // effect; a superseded request (endpoint change, refresh, unmount) is ignored.
   useEffect(() => {
-    if (!configured) return undefined;
+    if (!endpoint) return undefined;
     let current = true;
-    fetchPublishedServices(triplyDBConfig)
+    fetchPublishedServicesAt(endpoint)
       .then((services) => {
-        if (!current) return;
-        setPublished(services);
-        setListState('ready');
+        if (current) setLoaded({ endpoint, services, state: 'ready' });
       })
       .catch((err) => {
         if (!current) return;
         console.warn('[RequiredServices] Could not load published services:', err.message);
-        setPublished([]);
-        setListState('error');
+        setLoaded({ endpoint, services: [], state: 'error' });
       });
     return () => {
       current = false;
     };
-  }, [configured, triplyDBConfig, refreshCount]);
+  }, [endpoint, refreshCount]);
 
   const refresh = useCallback(() => {
-    setListState('loading');
+    setLoaded(null);
     setRefreshCount((n) => n + 1);
   }, []);
 
-  const shownState = configured ? listState : 'unconfigured';
+  const isCurrent = Boolean(endpoint) && loaded?.endpoint === endpoint;
+  const published = isCurrent ? loaded.services : [];
+  let shownState = 'loading';
+  if (!endpoint) shownState = 'unconfigured';
+  else if (isCurrent) shownState = loaded.state;
 
   const titleOf = (uri) => published.find((s) => s.uri === uri)?.title || uri;
 
@@ -79,6 +83,8 @@ export default function RequiredServicesSection({ service, setService, triplyDBC
   };
 
   const remove = (uri) => {
+    // A rejection such as "already listed" no longer applies once the list changes (#228).
+    setMessage('');
     setService({ ...service, requires: requires.filter((u) => u !== uri) });
   };
 
@@ -141,15 +147,17 @@ export default function RequiredServicesSection({ service, setService, triplyDBC
         </select>
         <button
           type="button"
-          onClick={() => selected && add(selected) && setSelected('')}
-          className="px-3 py-2 bg-blue-600 text-white rounded-md text-sm"
+          onClick={() => add(selected) && setSelected('')}
+          disabled={shownState !== 'ready' || !selected}
+          className="px-3 py-2 bg-blue-600 text-white rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Add
         </button>
         <button
           type="button"
           onClick={refresh}
-          className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+          disabled={!endpoint}
+          className="px-3 py-2 border border-gray-300 rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Refresh list
         </button>
@@ -171,7 +179,10 @@ export default function RequiredServicesSection({ service, setService, triplyDBC
           id="service-tab-required-service-uri"
           type="text"
           value={pasted}
-          onChange={(e) => setPasted(e.target.value)}
+          onChange={(e) => {
+            setPasted(e.target.value);
+            setMessage('');
+          }}
           className="flex-1 px-3 py-2 border border-gray-300 rounded-md"
           placeholder="https://…/services/…"
         />
