@@ -1,6 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 
 import { iknowMappings } from '../config/iknow-mappings';
+import { DEFAULT_SERVICE } from '../utils/constants';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
 import { fetchPublishTarget } from '../utils/triplydbHelper';
 import { useEditorState } from './useEditorState';
@@ -108,6 +109,22 @@ describe('useEditorState — clearAllData', () => {
     expect(result.current.ronlAnalysis).toBe('');
     expect(result.current.temporalRules).toEqual([]);
     expect(result.current.dmnData).toMatchObject({ isImported: false, fileName: '' });
+  });
+
+  test('each reset gets its own requires array, never the shared default (#229)', async () => {
+    const { result } = renderHook(() => useEditorState());
+    await waitFor(() => expect(result.current.ronlConceptsLoading).toBe(false));
+
+    const initial = result.current.service.requires;
+    act(() => result.current.clearAllData());
+    const afterClear = result.current.service.requires;
+
+    expect(initial).toEqual([]);
+    expect(afterClear).toEqual([]);
+    // A later in-place push must not leak into the next reset.
+    expect(initial).not.toBe(DEFAULT_SERVICE.requires);
+    expect(afterClear).not.toBe(DEFAULT_SERVICE.requires);
+    expect(afterClear).not.toBe(initial);
   });
 
   test('does NOT reset the TriplyDB config — intentional, per the code comment', async () => {

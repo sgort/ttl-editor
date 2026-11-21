@@ -28,9 +28,11 @@ export default function LegalTab({
   const lowerIdentifier = legalResource.bwbId?.toLowerCase() || '';
   const isFullUri = lowerIdentifier.startsWith('http://') || lowerIdentifier.startsWith('https://');
 
-  // Detect legal resource type
-  const isBWB = legalResource.bwbId?.match(/BWB[A-Z]?\d+/i) !== null;
-  const isCVDR = legalResource.bwbId?.match(/CVDR\d+/i) !== null;
+  // Detect legal resource type. `.test()` on a defaulted string, as CPRMVTab
+  // does: `undefined?.match(…) !== null` is true, which made a missing
+  // identifier read as both BWB and CVDR (#98).
+  const isBWB = /BWB[A-Z]?\d+/i.test(legalResource.bwbId ?? '');
+  const isCVDR = /CVDR\d+/i.test(legalResource.bwbId ?? '');
 
   // Check if it's a valid identifier
   const isValidIdentifier = isBWB || isCVDR || isFullUri;

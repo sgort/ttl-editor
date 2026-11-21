@@ -46,6 +46,19 @@ describe('LegalTab identifier detection', () => {
     expect(screen.queryByText(/Detected format:/)).not.toBeInTheDocument();
   });
 
+  test('a missing identifier renders like an empty one, not as a BWB claim (#98)', () => {
+    // A legal resource built without the key: a partial spread, an older
+    // stored draft. `undefined?.match(…) !== null` used to be true, so the tab
+    // claimed a detected BWB format and a repository for a field never filled.
+    const { bwbId: _omitted, ...withoutId } = base;
+    renderWith(withoutId);
+
+    expect(screen.queryByText(/Detected format:/)).not.toBeInTheDocument();
+    expect(screen.queryByText('BWB National Legislation')).not.toBeInTheDocument();
+    expect(screen.queryByText('National Legislation (BWB)')).not.toBeInTheDocument();
+    expect(screen.queryByText(INVALID_HINT)).not.toBeInTheDocument();
+  });
+
   test('a BWB id is detected as national legislation and badged', () => {
     renderWith({ ...base, bwbId: 'BWBR0011353' });
 
