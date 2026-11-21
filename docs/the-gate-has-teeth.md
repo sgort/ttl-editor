@@ -129,9 +129,11 @@ Three inputs are deliberate:
 
 - **`version: '1.29.0'`** — the action's `version` input defaults to `latest`. A
   supply-chain gate that pulls an unpinned tool on every run would defeat itself.
-  The action resolves this version through an internal digest table and runs
-  `ghcr.io/zizmorcore/zizmor:1.29.0@sha256:863026d5…`, so this is a genuine
-  container digest pin.
+  The action installs this version from the lock file it ships for it
+  (`support/locks/zizmor-1.29.0.txt`), with `pip download --require-hashes`
+  against the `sha256` of every zizmor wheel, so this is a genuine hash pin.
+  Until v0.8.0 the action ran a digest-pinned container instead; see
+  `SECURITY-PIPELINE.md`.
 - **`advanced-security: false`** — the default `true` uploads SARIF and requires
   `security-events: write`. This job is `contents: read` only. It also means **fork
   PRs work**, since there is no upload step to fail.
