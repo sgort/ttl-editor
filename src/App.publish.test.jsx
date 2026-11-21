@@ -113,6 +113,41 @@ describe('publishing', () => {
     expect(await screen.findAllByText(/service unreachable/)).not.toHaveLength(0);
     expect(saveTriplyDBConfig).toHaveBeenCalledWith({ dataset: 'DMN-discovery' });
   });
+
+  test('a logo the backend could not upload is a warning that names it (#249)', async () => {
+    publishToTriplyDB.mockResolvedValue({
+      url: 'https://example.org/dataset',
+      graph: 'https://regels.overheid.nl/graphs/service',
+      serviceUpdated: true,
+      logos: [
+        { fileName: 'svb_logo.png', ok: false },
+        { fileName: 'Blueriq_vendor_logo.png', ok: true },
+      ],
+    });
+
+    render(<App />);
+    await openPublishAndSubmit();
+
+    expect(await screen.findAllByText(/Logo not uploaded: svb_logo\.png/)).not.toHaveLength(0);
+    expect(screen.queryByText(/Blueriq_vendor_logo/)).not.toBeInTheDocument();
+    expect(screen.getAllByText(/Published with warning/)).not.toHaveLength(0);
+  });
+
+  test('a failed service sync and a failed logo are reported together', async () => {
+    publishToTriplyDB.mockResolvedValue({
+      url: 'https://example.org/dataset',
+      graph: 'https://regels.overheid.nl/graphs/service',
+      serviceUpdated: false,
+      serviceError: 'service unreachable',
+      logos: [{ fileName: 'svb_logo.png', ok: false }],
+    });
+
+    render(<App />);
+    await openPublishAndSubmit();
+
+    expect(await screen.findAllByText(/service unreachable/)).not.toHaveLength(0);
+    expect(screen.getAllByText(/Logo not uploaded: svb_logo\.png/)).not.toHaveLength(0);
+  });
 });
 
 describe('publishing follows sign-in (#163 in linked-data-explorer)', () => {

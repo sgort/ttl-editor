@@ -232,6 +232,32 @@ describe('auth', () => {
     expect(auth.getAuthState()).toMatchObject({ signedIn: true });
   });
 
+  test('a report arriving just after the poll saw the popup close starts no second check (#240)', async () => {
+    const { auth } = await load();
+    await auth.initAuth();
+    const { popup } = openPopup();
+    kc.prepare = (f) => signInFake(f);
+
+    const done = auth.signIn('medewerker');
+    popup.closed = true;
+    await settle(500);
+    await done;
+    // One instance on load, one for the session check after the popup.
+    expect(kc.instances).toHaveLength(2);
+
+    // The callback page's message lands after the poll already finished the
+    // wait; it is this tab's own sign-in, already picked up.
+    bus.post('ttl-auth', 'done');
+    await settle();
+    expect(kc.instances).toHaveLength(2);
+
+    // Later messages are another tab's sign-in or sign-out, and are checked.
+    await settle(1500);
+    bus.post('ttl-auth', 'done');
+    await settle();
+    expect(kc.instances).toHaveLength(3);
+  });
+
   test('a popup closed without signing in leaves the user signed out', async () => {
     const { auth } = await load();
     await auth.initAuth();

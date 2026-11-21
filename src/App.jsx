@@ -602,7 +602,19 @@ function App() {
       saveTriplyDBConfig(keptConfig);
       setTriplyDBConfig(keptConfig);
 
-      if (publishResult.serviceUpdated) {
+      // The graph is in TriplyDB once the call returns. What can still have
+      // gone wrong is reported per part: the service sync, and each logo the
+      // backend could not upload (#249). Each is a WARNING, not an error:
+      // re-publishing the graph would not help.
+      const failedLogos = (publishResult.logos ?? []).filter((logo) => !logo.ok);
+      const warnings = [
+        ...(publishResult.serviceUpdated
+          ? []
+          : [`Service update failed: ${publishResult.serviceError}`]),
+        ...failedLogos.map((logo) => `Logo not uploaded: ${logo.fileName}`),
+      ];
+
+      if (warnings.length === 0) {
         setPublishingState({
           isPublishing: false,
           currentStep: 'Published successfully! ✓',
@@ -627,19 +639,18 @@ function App() {
           setMessageType('');
         }, 10000);
       } else {
-        // The graph is in TriplyDB; only the service pointing at it is stale.
-        // That is a WARNING, not an error: re-publishing would not help.
+        const warningText = warnings.join('. ');
         setPublishingState({
           isPublishing: false,
           currentStep: 'Published with warning',
           progress: 100,
           stepStatus: 'warning',
-          error: `Service update failed: ${publishResult.serviceError}`,
+          error: warningText,
         });
 
         // Set warning message under title (YELLOW/ORANGE)
         setMessage(
-          `Published successfully! Service update failed: ${publishResult.serviceError}. View at: ${publishResult.url || 'TriplyDB'}`
+          `Published successfully! ${warningText}. View at: ${publishResult.url || 'TriplyDB'}`
         );
         setMessageType('warning');
 
