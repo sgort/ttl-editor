@@ -45,6 +45,20 @@ on:
 permissions:
   contents: read
 
+# One deploy at a time per branch or pull request. Without this, merges that
+# land minutes apart deploy in parallel, and Azure cancels the older upload
+# when the newer one starts; the action reports that as "Deployment Failed"
+# and the run turns red although nothing broke (21 November 2026, four
+# Renovate merges in a row).
+#
+# cancel-in-progress stays false: a deploy that has started always finishes,
+# for the reason semgrep.yml gives. Only a run still waiting is replaced by a
+# newer one, which GitHub shows as cancelled, not failed. The newest commit
+# is always the one deployed. Keep identical in the ACC workflow.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build_and_deploy_job:
     permissions:
