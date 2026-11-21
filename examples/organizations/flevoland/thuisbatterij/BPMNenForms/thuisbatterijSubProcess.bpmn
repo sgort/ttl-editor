@@ -99,7 +99,7 @@ execution.setVariable("Provincie woning", provincie);
 
 execution.setVariable("dmnInputPrepared", true);</bpmn:script>
     </bpmn:scriptTask>
-    <bpmn:businessRuleTask id="Sub_AssessRight" name="DMN: Beoordeel recht op subsidie" camunda:decisionRef="RechtOpSubsidieThuisbatterij" camunda:decisionRefTenantId="46">
+    <bpmn:businessRuleTask id="Sub_AssessRight" name="DMN: Beoordeel recht op subsidie" camunda:decisionRef="RechtOpSubsidieThuisbatterij" camunda:decisionRefTenantId="${null}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:outputParameter name="rechtOpSubsidie">${decisionResult.getSingleResult().getEntry("rechtOpSubsidie")}</camunda:outputParameter>
@@ -141,7 +141,7 @@ execution.setVariable("rechtOpSubsidie", java.lang.Boolean.valueOf(eligible));</
       <bpmn:outgoing>Flow_Sub_Eligible_No</bpmn:outgoing>
       <bpmn:outgoing>Flow_1ecxeub</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:businessRuleTask id="Sub_CalculateAmount" name="DMN: Bereken hoogte subsidie" camunda:resultVariable="behaalbareHoogteSubsidieResult" camunda:decisionRef="BehaalbareHoogteSubsidie" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="46">
+    <bpmn:businessRuleTask id="Sub_CalculateAmount" name="DMN: Bereken hoogte subsidie" camunda:resultVariable="behaalbareHoogteSubsidieResult" camunda:decisionRef="BehaalbareHoogteSubsidie" camunda:mapDecisionResult="singleEntry" camunda:decisionRefTenantId="${null}">
       <bpmn:incoming>Flow_1ecxeub</bpmn:incoming>
       <bpmn:outgoing>Flow_Sub_Amount_Extract</bpmn:outgoing>
     </bpmn:businessRuleTask>
