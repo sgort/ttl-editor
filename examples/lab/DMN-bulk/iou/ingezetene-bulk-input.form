@@ -1,0 +1,131 @@
+{
+  "components": [
+    {
+      "text": "# Gevallen beoordelen\nVoeg één of meer gevallen toe. Elk geval wordt met dezelfde uitgebreide **Ingezetene**-DMN beoordeeld. Het kenmerk wordt automatisch bepaald.",
+      "type": "text",
+      "layout": {
+        "row": "Row_intro",
+        "columns": null
+      },
+      "id": "Field_intro"
+    },
+    {
+      "label": "Gevallen",
+      "type": "dynamiclist",
+      "path": "gevallen",
+      "components": [
+        {
+          "type": "expression",
+          "key": "kenmerk",
+          "expression": "=\"Geval \" + string(i[1])",
+          "computeOn": "change",
+          "id": "Field_kenmerk_generator"
+        },
+        {
+          "text": "### {{ this.kenmerk }}",
+          "type": "text",
+          "layout": {
+            "row": "Row_case_heading",
+            "columns": null
+          },
+          "id": "Field_kenmerk_readonly"
+        },
+        {
+          "label": "De persoon woont in de BES",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_1",
+            "columns": 4
+          },
+          "id": "Field_persoonWoontInBES",
+          "key": "persoonWoontInBES",
+          "defaultValue": false
+        },
+        {
+          "label": "De persoon heeft het hoofdverblijf in de BES",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_1",
+            "columns": 4
+          },
+          "id": "Field_hoofdverblijfInBES",
+          "key": "hoofdverblijfInBES",
+          "defaultValue": false
+        },
+        {
+          "label": "De persoon is ingeschreven in PIVA",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_1",
+            "columns": 4
+          },
+          "id": "Field_ingeschrevenInPIVA",
+          "key": "ingeschrevenInPIVA",
+          "defaultValue": false
+        },
+        {
+          "label": "De persoon verblijft rechtmatig",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_2",
+            "columns": 4
+          },
+          "id": "Field_rechtmatigVerblijf",
+          "key": "rechtmatigVerblijf",
+          "defaultValue": false
+        },
+        {
+          "label": "De persoon heeft een duurzame band met de BES",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_2",
+            "columns": 4
+          },
+          "id": "Field_duurzameBandMetBES",
+          "key": "duurzameBandMetBES",
+          "defaultValue": false
+        },
+        {
+          "label": "Een uitsluiting is van toepassing",
+          "type": "checkbox",
+          "layout": {
+            "row": "Row_case_2",
+            "columns": 4
+          },
+          "id": "Field_uitsluitingVanToepassing",
+          "key": "uitsluitingVanToepassing",
+          "defaultValue": false
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": true,
+      "defaultRepetitions": 1,
+      "nonCollapsedItems": 5,
+      "layout": {
+        "row": "Row_cases",
+        "columns": null
+      },
+      "id": "Field_gevallen"
+    },
+    {
+      "label": "Gevallen beoordelen",
+      "type": "button",
+      "action": "submit",
+      "id": "Button_Submit_Input",
+      "layout": {
+        "row": "Row_submit",
+        "columns": null
+      }
+    }
+  ],
+  "type": "default",
+  "id": "ingezetene-bulk-input",
+  "executionPlatform": "Operaton",
+  "executionPlatformVersion": "1.0.0",
+  "exporter": {
+    "name": "Operaton Modeler",
+    "version": "1.0.0"
+  },
+  "schemaVersion": 18
+}

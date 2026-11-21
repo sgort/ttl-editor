@@ -150,6 +150,31 @@ export const parseTTLEnhanced = (ttlContent) => {
       return '';
     };
 
+    // The object part of a predicate line whose predicate is `prefix:<name>`
+    // for one of `localNames` (any prefix), or null when it is not. The
+    // predicate is matched where it stands, at the start of the line, rather
+    // than as a substring anywhere on it: a bare name such as `sector` or
+    // `extends` also occurs inside URIs and descriptions, and splitting at that
+    // occurrence read a fragment of the value as the field (#225).
+    const predicateObject = (line, localNames) => {
+      const match = line.match(/^[A-Za-z][\w.-]*:([A-Za-z][\w-]*)\s+(.*)$/);
+      return match && localNames.includes(match[1]) ? match[2] : null;
+    };
+
+    // Whether this line ends its statement: with string literals and IRIs
+    // blanked out, and a trailing comment dropped, the last character is the
+    // full stop. Looking at the whole line instead dropped an entity whose
+    // closing literal contains ";" and closed one early on `<https://x.nl/a> ,`
+    // (#258).
+    const endsStatement = (line) =>
+      /\.$/.test(
+        line
+          .replace(/"(?:[^"\\]|\\.)*"/g, '""')
+          .replace(/<[^>\s]*>/g, '<>')
+          .replace(/#.*$/, '')
+          .trimEnd()
+      );
+
     // Helper function to unescape TTL strings
     const unescapeTTLString = (str) => {
       if (!str) return '';
@@ -505,12 +530,13 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.service.description =
             extractValue(line.split('dct:description')[1]) || parsed.service.description;
         }
-        if (line.includes('thematicArea')) {
-          parsed.service.thematicArea =
-            extractValue(line.split('thematicArea')[1]) || parsed.service.thematicArea;
+        const thematicArea = predicateObject(line, ['thematicArea']);
+        if (thematicArea !== null) {
+          parsed.service.thematicArea = extractValue(thematicArea) || parsed.service.thematicArea;
         }
-        if (line.includes('sector')) {
-          parsed.service.sector = extractValue(line.split('sector')[1]) || parsed.service.sector;
+        const sector = predicateObject(line, ['sector']);
+        if (sector !== null) {
+          parsed.service.sector = extractValue(sector) || parsed.service.sector;
         }
         if (line.includes('dcat:keyword')) {
           parsed.service.keywords =
@@ -626,20 +652,24 @@ export const parseTTLEnhanced = (ttlContent) => {
         // dropped the relationship. isBasedOn is checked first since it's
         // what the generator actually emits today; extends is kept for
         // historical exports predating the rename (e.g. examples/full-test.ttl).
-        if (line.includes('isBasedOn') || line.includes('extends')) {
-          const token = line.includes('isBasedOn') ? 'isBasedOn' : 'extends';
-          currentRule.extends = extractValue(line.split(token)[1]) || currentRule.extends;
+        // Bare names, so matched in the predicate position (#225); `extends`
+        // and `confidence` are ordinary words in a rule's description.
+        const basedOn = predicateObject(line, ['isBasedOn', 'extends']);
+        if (basedOn !== null) {
+          currentRule.extends = extractValue(basedOn) || currentRule.extends;
         }
-        if (line.includes('validFrom')) {
-          currentRule.validFrom = extractValue(line.split('validFrom')[1]) || currentRule.validFrom;
+        const ruleValidFrom = predicateObject(line, ['validFrom']);
+        if (ruleValidFrom !== null) {
+          currentRule.validFrom = extractValue(ruleValidFrom) || currentRule.validFrom;
         }
-        if (line.includes('validUntil')) {
-          currentRule.validUntil =
-            extractValue(line.split('validUntil')[1]) || currentRule.validUntil;
+        const ruleValidUntil = predicateObject(line, ['validUntil']);
+        if (ruleValidUntil !== null) {
+          currentRule.validUntil = extractValue(ruleValidUntil) || currentRule.validUntil;
         }
-        if (line.includes('confidenceLevel') || line.includes('confidence')) {
-          currentRule.confidenceLevel =
-            extractValue(line.split(/confidence/)[1]) || currentRule.confidenceLevel;
+        // cprmv:confidence is the legacy name of cprmv:confidenceLevel.
+        const confidence = predicateObject(line, ['confidenceLevel', 'confidence']);
+        if (confidence !== null) {
+          currentRule.confidenceLevel = extractValue(confidence) || currentRule.confidenceLevel;
         }
         if (line.includes('dct:description')) {
           currentRule.description =
@@ -653,7 +683,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.temporalRules.push(currentRule);
           currentRule = null;
           currentSection = null;
@@ -682,16 +712,17 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentParameter.description =
             extractValue(line.split('dct:description')[1]) || currentParameter.description;
         }
-        if (line.includes('validFrom')) {
-          currentParameter.validFrom =
-            extractValue(line.split('validFrom')[1]) || currentParameter.validFrom;
+        const paramValidFrom = predicateObject(line, ['validFrom']);
+        if (paramValidFrom !== null) {
+          currentParameter.validFrom = extractValue(paramValidFrom) || currentParameter.validFrom;
         }
-        if (line.includes('validUntil')) {
+        const paramValidUntil = predicateObject(line, ['validUntil']);
+        if (paramValidUntil !== null) {
           currentParameter.validUntil =
-            extractValue(line.split('validUntil')[1]) || currentParameter.validUntil;
+            extractValue(paramValidUntil) || currentParameter.validUntil;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.parameters.push(currentParameter);
           currentParameter = null;
           currentSection = null;
@@ -732,7 +763,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         // End of concept definition
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.concepts.push(currentConcept);
           currentConcept = null;
           currentSection = null;
@@ -754,7 +785,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.cost.description = extractValue(line.split('dct:description')[1]);
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           currentSection = null;
         }
       }
@@ -774,7 +805,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.output.type = extractValue(line.split('dct:type')[1]);
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           currentSection = null;
         }
       }
@@ -806,7 +837,7 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('cprmv:ruleIdPath')[1]) || currentCprmvRule.ruleIdPath;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.cprmvRules.push(currentCprmvRule);
           currentCprmvRule = null;
           currentSection = null;

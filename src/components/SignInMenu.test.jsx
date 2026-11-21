@@ -1,8 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { setAuthState } from '../testing/authState';
 import { signIn, signOut } from '../utils/auth';
+import { fetchTestDeployOffer } from '../utils/deployOptions';
 import SignInMenu from './SignInMenu';
+
+vi.mock('../utils/deployOptions', () => ({ fetchTestDeployOffer: vi.fn() }));
 
 describe('SignInMenu', () => {
   beforeEach(() => {
@@ -10,6 +13,8 @@ describe('SignInMenu', () => {
     sessionStorage.clear();
     signIn.mockClear();
     signOut.mockClear();
+    fetchTestDeployOffer.mockReset();
+    fetchTestDeployOffer.mockResolvedValue(null);
   });
 
   test('signed out, "Sign in" opens the two routes', () => {
@@ -37,6 +42,38 @@ describe('SignInMenu', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'Your account does not have the lde-author role'
     );
+  });
+
+  test('where test deploys are off, the note says deploying is locked', async () => {
+    setAuthState({ ready: true, signedIn: true, isAuthor: false, name: 'Viewer' });
+    render(<SignInMenu />);
+
+    await waitFor(() => expect(fetchTestDeployOffer).toHaveBeenCalled());
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'deploying to Operaton and publishing to TriplyDB are locked'
+    );
+    expect(screen.getByRole('status')).not.toHaveTextContent(/test deploy/i);
+  });
+
+  test('where the backend offers test deploys, the note says so (#240)', async () => {
+    fetchTestDeployOffer.mockResolvedValue({ enabled: true, tenantId: 'TestOnly', ttlHours: 48 });
+    setAuthState({ ready: true, signedIn: true, isAuthor: false, name: 'Viewer' });
+    render(<SignInMenu />);
+
+    const note = screen.getByRole('status');
+    await waitFor(() =>
+      expect(note).toHaveTextContent(
+        'You can edit and test-deploy a DMN to the TestOnly tenant (removed after 48 hours)'
+      )
+    );
+    expect(note).toHaveTextContent('deploying to Operaton and publishing to TriplyDB are locked');
+  });
+
+  test('an author never asks for the test-deploy options', () => {
+    setAuthState({ ready: true, signedIn: true, isAuthor: true, name: 'Author' });
+    render(<SignInMenu />);
+
+    expect(fetchTestDeployOffer).not.toHaveBeenCalled();
   });
 
   test('the note can be dismissed; "View only" stays', () => {

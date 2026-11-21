@@ -28,7 +28,7 @@ mechanisms above to actually run:
 | `actions/checkout`             | `3d3c42e5aac5ba805825da76410c181273ba90b1`          | v7.0.1            | Renovate                                                           |
 | `actions/setup-node`           | `949feb2413d6458794dcd2491c4babbbce0c15c1`          | v7.1.0            | Renovate                                                           |
 | `actions/upload-artifact`      | `cf430e030ddbb5b0abf93d22962f4752f3646cd9`          | v7.0.2            | Renovate                                                           |
-| `zizmorcore/zizmor-action`     | `cc914d7f3750a2d13d75c7f184a1060aa0e9d482`          | v0.6.4            | Renovate                                                           |
+| `zizmorcore/zizmor-action`     | `45d7276c9ca790aabd705e31ca99c6185c3e76dd`          | v0.8.1            | Renovate                                                           |
 | `Azure/static-web-apps-deploy` | `4d27395796ac319302594769cfe812bd207490b1`          | v1                | manual — Renovate disabled for it, see "The `@v1` ambiguity" below |
 | zizmor (the audit tool itself) | `version: '1.29.0'` input, not `latest`             | 1.29.0            | Renovate, as Docker image `ghcr.io/zizmorcore/zizmor` — see below  |
 | semgrep (the scanner itself)   | `semgrep==1.176.1` in `semgrep.yml`                 | 1.176.1           | manual — Renovate does not parse a version out of a `run:` block   |
@@ -46,24 +46,36 @@ lockfile cannot tell you that a legitimately published version is
 malicious.
 
 The zizmor pin is stronger than the two rows above suggest in
-isolation. `zizmor-action`'s `action.sh` looks the requested `version`
-up in a digest table and runs the audit as
-`ghcr.io/zizmorcore/zizmor:1.29.0@sha256:863026d54f91271b10b60b67ad8054cb37120167e162482597db102b3026a284`
-— a genuine container digest pin, not just a version string.
+isolation. Since v0.8.0, `zizmor-action` no longer runs zizmor from a
+container. Its `action.sh` reads the lock file the action ships for the
+requested `version` (`support/locks/zizmor-1.29.0.txt`), which pins every
+zizmor wheel for that release by `sha256` hash, and installs it with
+`pip download --require-hashes`. pip picks the wheel for the runner and refuses
+it unless its hash is in that list — the same guarantee the container digest
+pin gave before, and more than a version string. The lock files live in the
+action's own repository, so the `zizmor-action` pin above is what fixes them.
+
+This section described a container digest pin
+(`ghcr.io/zizmorcore/zizmor:1.29.0@sha256:…`) until November 2026, for over a
+release after the action had dropped it. Nothing failed, because nothing reads
+this prose; the v0.8.1 update was the first to look.
 
 Renovate maintains that `version` input, although this table said otherwise
 until September 2026. Its github-actions manager maps `zizmor-action` to the
 Docker image `ghcr.io/zizmorcore/zizmor` (`known-actions.ts` in Renovate), so a
-zizmor release arrives as its own pull request. Two things follow from that:
+zizmor release arrives as its own pull request. That mapping is only how
+Renovate notices a release; the action installs the wheel, not the image. Two
+things follow from it:
 
-- **Merge the `zizmor-action` bump first.** The action runs only versions its
-  own digest table lists: zizmor 1.30.1 is in `zizmor-action` v0.6.4's table
-  and not v0.6.3's. A zizmor bump merged ahead of the action fails the audit at
-  "Run zizmor" — loudly, but on a required check.
-- **Update this row and the container digest above by hand, on that pull
+- **Merge the `zizmor-action` bump first.** The action runs only versions it
+  ships a lock file for: zizmor 1.32.0 is in `zizmor-action` v0.8.1's
+  `support/locks/` and not v0.8.0's. A zizmor bump merged ahead of the action
+  fails the audit at "Run zizmor" ("Unknown version …; was it released after
+  this action?") — loudly, but on a required check.
+- **Update this row and the lock file name above by hand, on that pull
   request's branch.** `check-supply-chain` reads only `uses:` lines, so nothing
-  fails when these two go stale. That is how this row came to claim "manual"
-  while Renovate had a 1.30.1 update queued.
+  fails when these go stale. That is how this row came to claim "manual" while
+  Renovate had a 1.30.1 update queued.
 
 ## Keeping this register true
 

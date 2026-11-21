@@ -34,10 +34,9 @@ on:
       - acc
       - main
 
-# The only workflow here that sets concurrency, and deliberately so. This is
-# the slowest read-only job on an unfiltered pull_request trigger, so a branch
-# pushed three times in a minute otherwise runs three full scans of which two
-# are already stale.
+# Sets concurrency deliberately. This is the slowest read-only job on an
+# unfiltered pull_request trigger, so a branch pushed three times in a minute
+# otherwise runs three full scans of which two are already stale.
 #
 # cancel-in-progress is conditional rather than `true`, which is the part that
 # matters. The push runs on acc and main are what write the Semgrep Cloud
@@ -45,10 +44,9 @@ on:
 # that never finished, and nothing would re-run to correct it. Pull-request
 # runs write nothing durable, so superseding them is free.
 #
-# Not copied into the other three workflows. For the deploy pair that is a
-# real decision rather than an oversight -- cancelling a half-finished
-# deployment is not obviously safer than letting it complete -- and it should
-# be taken on its own merits, not inherited from here.
+# Not copied as-is into the deploy pair. Cancelling a half-finished deployment
+# is not obviously safer than letting it complete, so those two set their own
+# concurrency with cancel-in-progress false: they queue rather than cancel.
 concurrency:
   group: semgrep-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}

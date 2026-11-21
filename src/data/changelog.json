@@ -2,6 +2,220 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.11.2",
+      "status": "Released",
+      "date": "21 nov 2026",
+      "commits": [
+        {
+          "sha": "69be5ac",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Pin register: zizmor-action v0.8.1, and how it pins zizmor now",
+          "details": [
+            "The Pinned table in `SECURITY-PIPELINE.md` records `zizmorcore/zizmor-action` at `45d7276c` (v0.8.1), the digest the workflow pins, so the register check in the required `audit` job passes.",
+            "Since v0.8.0 the action no longer runs zizmor from a digest-pinned container: it installs the wheel from the lock file it ships per version (`support/locks/zizmor-<version>.txt`) with `pip download --require-hashes`. The register and `docs/the-gate-has-teeth.md` still described the container; both now describe the lock files, and the steps for a zizmor bump name the lock file instead of a container digest (#263)."
+          ]
+        },
+        {
+          "sha": "06a4672",
+          "author": "Steven Gort",
+          "type": "ci",
+          "subject": "Deploys queue per branch instead of racing",
+          "details": [
+            "Merges that landed minutes apart deployed in parallel, and Azure cancelled the older upload when the newer one started. The deploy action reports that as \"Deployment Failed\", so a run turned red although nothing broke.",
+            "Both deploy workflows (ACC and PROD) now set `concurrency` per ref with `cancel-in-progress: false`: a started deploy always finishes, and a waiting run is replaced by a newer one, which GitHub shows as cancelled. Pull requests keep their own group, so previews still run side by side (#264)."
+          ]
+        },
+        {
+          "sha": "3eb6566",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "zizmor-action v0.8.1",
+          "details": [
+            "The workflow-audit action, pinned by digest; it adds the lock files for zizmor 1.32.0. zizmor itself stays at 1.29.0 (#263)."
+          ]
+        },
+        {
+          "sha": "13ea5be",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite 8.3.6",
+          "details": ["The build tool, within its declared range (#262)."]
+        },
+        {
+          "sha": "c6de612",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Import no longer drops a rule whose last line contains a semicolon",
+          "details": [
+            "The importer closed a temporal rule, parameter, concept, cost, output or CPRMV rule on the first line containing a \".\" and no \";\", wherever they stood. A closing literal containing \";\" therefore never closed its block, and the entity was silently dropped; a continuation line with a \".\" only inside an IRI (`<https://x.nl/a> ,`) closed its block early.",
+            "A statement now ends where its full stop stands outside string literals and IRIs, ignoring a trailing comment. Parsing every example TTL before and after gives identical results (#258, #261)."
+          ]
+        },
+        {
+          "sha": "f2f7169",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Sign-in and publish follow-ups",
+          "details": [
+            "An author whose session lapsed at click time is told to sign in again, instead of the deploy going out anonymous and becoming a test deploy. The \"View only\" note says a DMN can be test-deployed where the backend offers it, instead of calling deploying locked outright. After a popup sign-in, a late report from this tab's own popup no longer starts a second session check (#240).",
+            "The publish dialog's steps follow what publishing actually does since it became one backend call (Validating, Generating, Publishing), and a logo the backend could not upload is reported as a warning that names it. The e2e preflight checks that Keycloak's realm `ronl` answers, and the README notes that sign-in works from one exact origin (#249, #260)."
+          ]
+        },
+        {
+          "sha": "3b72bb8",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Import reads bare-named fields only from their own predicate; Thuisbatterij subprocess untenanted",
+          "details": [
+            "`sector`, `thematicArea`, `isBasedOn`/`extends`, `validFrom`, `validUntil` and `confidenceLevel` were read from any line containing the name, so a URI path or a description mentioning \"sector\" became the sector, and the next export wrote `cv:sector <in>`. They are now matched in the predicate position only, under any prefix; legacy `ronl:` forms are still read (#225).",
+            "The Thuisbatterij example subprocess pinned its decisions to tenant 46, which has none; it now uses `${null}` and resolves the shared, untenanted decisions (#205, #259)."
+          ]
+        },
+        {
+          "sha": "8f9a3d9",
+          "author": "Steven Gort",
+          "type": "test",
+          "subject": "Every test file belongs to a phase script, and a test guards it",
+          "details": [
+            "Eighteen test files ran in `test:ci` but in no scoped script. `test:roundtrip` now also selects the parser and import tests, a new `test:app` runs the `src/App.*` suites, and `test:p2`, `test:p4` and `test:p5` gain the rest.",
+            "`src/testing/phaseScripts.test.js` fails, naming the file, when a test file matches no phase script or a `:watch` script differs from its run script (#238, #257)."
+          ]
+        },
+        {
+          "sha": "27449c8",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Required-services picker states, and two latent defaults",
+          "details": [
+            "The picker no longer shows the previous dataset's services while a new dataset loads, and a token-only edit no longer refetches (#227). Add is disabled until a service is chosen, a rejection message clears on Remove and on typing (#228), and Refresh list is disabled without a configured dataset (#238).",
+            "The Legal tab no longer reports a BWB identifier when none was entered (#98), and each reset gets its own default `requires` array instead of a shared one (#229, #256)."
+          ]
+        },
+        {
+          "sha": "93866ca",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react 1.70.0",
+          "details": ["The icon library, within its declared range (#250)."]
+        },
+        {
+          "sha": "d97dc1e",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Vitest 5.1.0",
+          "details": [
+            "The test runner and its coverage provider, within their declared range (#255)."
+          ]
+        },
+        {
+          "sha": "2b7113f",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser 8.1.0",
+          "details": ["A development dependency, within its declared range (#254)."]
+        },
+        {
+          "sha": "6c7c963",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "globals 17.14.0",
+          "details": ["The ESLint globals list, within its declared range (#252)."]
+        },
+        {
+          "sha": "7e40fdf",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: run the bulk process from RBA's Proces starten, with lanes",
+          "details": [
+            "The `iou/` process is now the version deployed from the LDE, with a pool and two lanes (Behandelaar for the input and result tasks, Systeem for the rest); RBA shows its phase stepper and process overlay only for a model with lanes. A caseworker starts it from RBA's Proces starten, and the README records the RBA findings (#251)."
+          ]
+        },
+        {
+          "sha": "4ef621d",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: submit buttons on the bulk forms for RBA",
+          "details": [
+            "RBA completes a task only on form-js's submit event, which only a submit button inside the form fires. The `iou/` copies of both forms gain one; ids, keys and the dynamic list are unchanged (#251)."
+          ]
+        },
+        {
+          "sha": "322927e",
+          "author": "Steven Gort",
+          "type": "other",
+          "subject": "DMN-bulk lab: concept document formatted with Prettier",
+          "details": [
+            "The repository-wide format check rejected the concept document as delivered. Table padding and one number in an example JSON block change; the text and meaning do not (#251)."
+          ]
+        },
+        {
+          "sha": "6e4ddda",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: caseworker candidate group on the bulk process user tasks",
+          "details": [
+            "RBA lists caseworker tasks by candidate group, so tasks without one appeared only in Operaton Tasklist. Both user tasks of the `iou/` bulk process now carry `camunda:candidateGroups=\"caseworker\"` (#251)."
+          ]
+        },
+        {
+          "sha": "b084644",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: TTL and LDE walk-through results",
+          "details": [
+            "A results table for the TTL upload, deploy and 11/11 test cases, the Form Editor and Modeler imports, and a three-case run under tenant BES, plus the open questions the walk-through raised for a generic bulk feature (#251)."
+          ]
+        },
+        {
+          "sha": "fdc0aeb",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: test cases for the Ingezetene decision",
+          "details": [
+            "Eleven cases in the DMN tab's test-case format: one per rule of the FIRST hit-policy table plus four combinations, with expected answers computed from the concept document's formula rather than the DMN (#251)."
+          ]
+        },
+        {
+          "sha": "5cdf830",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab: example adapted for TTL and the LDE",
+          "details": [
+            "`examples/lab/DMN-bulk/iou/` holds the Ingezetene example adapted to travel through the IOU tools as they are today: the single-case DMN gains `inputData` declarations so TTL's import check passes, and the bulk BPMN follows the LDE Modeler's conventions. The delivered concept files stay untouched (#251)."
+          ]
+        },
+        {
+          "sha": "6191e54",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "DMN-bulk lab concept as the starting point for lab features",
+          "details": [
+            "`examples/lab/` is the new home for lab-like concepts, starting with DMN-bulk: reusing a single-case DMN for any number of cases, with a sequential multi-instance subprocess over a JSON array and a small FEEL counter DMN that aggregates the outcomes (#251)."
+          ]
+        },
+        {
+          "sha": "7626a4d",
+          "author": "Steven Gort",
+          "type": "docs",
+          "subject": "Pin register: zizmor-action v0.8.0",
+          "details": [
+            "Renovate moved `zizmorcore/zizmor-action` to v0.8.0 but left `SECURITY-PIPELINE.md` behind, so the register check failed the required `audit` job. The row is updated on the bump's own branch (#247)."
+          ]
+        },
+        {
+          "sha": "8e34103",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "zizmor-action v0.8.0",
+          "details": [
+            "The workflow-audit action, pinned by digest; zizmor itself stays at 1.29.0 (#247)."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.11.1",
       "status": "Released",
       "date": "12 nov 2026",

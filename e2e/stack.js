@@ -22,10 +22,12 @@ import { test as base } from '@playwright/test';
  * Both services are checked, not only the backend. Everything the app calls goes
  * through the LDE backend, but the deploy step fails if THAT cannot reach
  * Operaton — so checking one and not the other would give false confidence.
+ * Keycloak's realm is checked too: every journey signs in first (#249).
  *
  * Environment for the stack journeys:
  *   E2E_BACKEND_URL    default: VITE_BACKEND_URL in .env.development
  *   E2E_OPERATON_URL   default: http://localhost:8081
+ *   E2E_KEYCLOAK_URL   default: VITE_KEYCLOAK_URL in .env.development
  *   LDE_E2E_PASSWORD   required: the journeys sign in before deploying (#163 in
  *                      linked-data-explorer); see signIn.js
  *   LDE_E2E_USERNAME   default: lde-e2e
@@ -41,17 +43,30 @@ const TIMEOUT_MS = 5_000;
  * app sends its requests. Reading it here means the preflight checks the same
  * host the journey will, even if someone repoints it.
  */
-const backendUrl = () => {
-  if (process.env.E2E_BACKEND_URL) return process.env.E2E_BACKEND_URL;
-
+const fromDevelopmentEnv = (name) => {
   const envFile = resolve(process.cwd(), '.env.development');
-  if (existsSync(envFile)) {
-    const match = readFileSync(envFile, 'utf8').match(/^\s*VITE_BACKEND_URL\s*=\s*(.+?)\s*$/m);
-    if (match) return match[1];
-  }
-  // The same fallback the source uses when the variable is absent.
-  return 'http://localhost:3001';
+  if (!existsSync(envFile)) return undefined;
+  const match = readFileSync(envFile, 'utf8').match(
+    new RegExp(`^\\s*${name}\\s*=\\s*(.+?)\\s*$`, 'm')
+  );
+  return match?.[1];
 };
+
+const backendUrl = () =>
+  process.env.E2E_BACKEND_URL ||
+  fromDevelopmentEnv('VITE_BACKEND_URL') ||
+  // The same fallback the source uses when the variable is absent.
+  'http://localhost:3001';
+
+/**
+ * The Keycloak the app signs in against, read the same way (#249): every stack
+ * journey signs in first, and with Keycloak down that used to surface as a
+ * 30-second timeout waiting for "Sign out" in signIn.js.
+ */
+const keycloakUrl = () =>
+  process.env.E2E_KEYCLOAK_URL ||
+  fromDevelopmentEnv('VITE_KEYCLOAK_URL') ||
+  'http://localhost:8080';
 
 const operatonUrl = () => process.env.E2E_OPERATON_URL ?? 'http://localhost:8081';
 
@@ -61,7 +76,7 @@ const probe = async (url) => {
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
     const response = await fetch(url, { signal: controller.signal });
-    return { up: true, detail: `HTTP ${response.status}` };
+    return { up: true, ok: response.ok, detail: `HTTP ${response.status}` };
   } catch (error) {
     return {
       up: false,
@@ -75,10 +90,12 @@ const probe = async (url) => {
 const requireStack = async () => {
   const backend = backendUrl();
   const operaton = operatonUrl();
+  const keycloakRealm = `${keycloakUrl()}/realms/ronl`;
 
-  const [backendResult, operatonResult] = await Promise.all([
+  const [backendResult, operatonResult, keycloakResult] = await Promise.all([
     probe(backend),
     probe(`${operaton}/engine-rest/version`),
+    probe(`${keycloakRealm}/.well-known/openid-configuration`),
   ]);
 
   const problems = [];
@@ -105,6 +122,18 @@ const requireStack = async () => {
     );
   }
 
+  // Answering is not enough here: a Keycloak without the realm answers 404,
+  // and the sign-in would fail just the same.
+  if (!keycloakResult.up || !keycloakResult.ok) {
+    problems.push(
+      `  Keycloak realm ronl is not available at ${keycloakRealm}\n` +
+        `    (${keycloakResult.detail})\n` +
+        `    Every stack journey signs in before deploying. Start Keycloak (the\n` +
+        `    ronl-business-api stack), then retry. Override the URL with\n` +
+        `    E2E_KEYCLOAK_URL, or edit VITE_KEYCLOAK_URL in .env.development.`
+    );
+  }
+
   if (problems.length) {
     throw new Error(
       `\nThis journey needs a live stack, and it is not ready:\n\n` +
@@ -115,7 +144,8 @@ const requireStack = async () => {
 
   console.log(
     `  preflight ok — backend ${backend} (${backendResult.detail}), ` +
-      `Operaton ${operaton} (${operatonResult.detail})`
+      `Operaton ${operaton} (${operatonResult.detail}), ` +
+      `Keycloak ${keycloakRealm} (${keycloakResult.detail})`
   );
 };
 

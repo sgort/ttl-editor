@@ -2,11 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { iknowMappings } from '../config/iknow-mappings';
 import {
+  createDefaultService,
   DEFAULT_COST,
   DEFAULT_LEGAL_RESOURCE,
   DEFAULT_ORGANIZATION,
   DEFAULT_OUTPUT,
-  DEFAULT_SERVICE,
   EMPTY_DMN_DATA,
 } from '../utils';
 import { fetchAllRonlConcepts } from '../utils/ronlHelper';
@@ -17,10 +17,7 @@ const RONL_ENDPOINT =
 
 export const useEditorState = () => {
   // Service state
-  const [service, setService] = useState({
-    ...DEFAULT_SERVICE,
-    customSector: '',
-  });
+  const [service, setService] = useState(createDefaultService);
 
   // Organization state
   const [organization, setOrganization] = useState(DEFAULT_ORGANIZATION);
@@ -174,10 +171,7 @@ export const useEditorState = () => {
 
   // Clear all data
   const clearAllData = () => {
-    setService({
-      ...DEFAULT_SERVICE,
-      customSector: '',
-    });
+    setService(createDefaultService());
     setOrganization(DEFAULT_ORGANIZATION);
     setLegalResource(DEFAULT_LEGAL_RESOURCE);
     setRonlAnalysis('');

@@ -20,6 +20,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { EMPTY_DMN_DATA, sanitizeIri } from '../../utils';
 import { authHeaders } from '../../utils/auth';
+import { fetchTestDeployOffer } from '../../utils/deployOptions';
 import {
   evaluateTestCaseExpectation,
   extractInputsFromTestResult,
@@ -52,14 +53,10 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
   useEffect(() => {
     if (isAuthor || testDeploy) return undefined;
     let cancelled = false;
-    fetch(`${BACKEND_URL()}/v1/dmns/deploy/options`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((body) => {
-        if (!cancelled && body?.data?.testDeploy?.enabled) setTestDeploy(body.data.testDeploy);
-      })
-      .catch(() => {
-        // Options unavailable: Deploy stays locked for this visitor.
-      });
+    // null (off, or options unavailable): Deploy stays locked for this visitor.
+    fetchTestDeployOffer().then((offer) => {
+      if (!cancelled && offer) setTestDeploy(offer);
+    });
     return () => {
       cancelled = true;
     };
@@ -725,11 +722,18 @@ const DMNTab = ({ dmnData, setDmnData, setConcepts }) => {
       // An author's token makes it a normal deploy; without one the backend
       // makes it a test deploy to TestOnly. A non-author's token would be
       // refused (403), so only an author sends one.
+      const tokenHeaders = isAuthor ? await authHeaders() : {};
+      // An author whose session lapsed gets {} back (the refresh failed). Sent
+      // on, that request would silently become an anonymous test deploy
+      // instead of the deploy the author asked for (#240).
+      if (isAuthor && !tokenHeaders.Authorization) {
+        throw new Error('Your session has expired. Sign in again to deploy.');
+      }
       const response = await fetch(`${BACKEND_URL()}/v1/dmns/deploy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(isAuthor ? await authHeaders() : {}),
+          ...tokenHeaders,
         },
         body: JSON.stringify({
           xml: uploadedFile.content,

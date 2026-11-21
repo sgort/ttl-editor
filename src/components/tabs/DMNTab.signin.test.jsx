@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { setAuthState } from '../../testing/authState';
+import { authHeaders } from '../../utils/auth';
 import DMNTab from './DMNTab';
 
 /**
@@ -120,6 +121,21 @@ describe('an author', () => {
     });
     // An author needs no test deploy options.
     expect(fetchMock.mock.calls.some(([u]) => String(u).includes('/deploy/options'))).toBe(false);
+  });
+
+  test('whose session lapsed at click time is asked to sign in again, not test-deployed (#240)', async () => {
+    // authHeaders() answers {} when the token refresh fails. Sent on, the
+    // request went out anonymous and the ACC backend made a TestOnly test
+    // deploy instead of the deploy the author asked for.
+    authHeaders.mockResolvedValueOnce({});
+    const { fetchMock } = mockBackend();
+    renderTab();
+    await uploadDmn();
+
+    fireEvent.click(screen.getByRole('button', { name: /Deploy to Operaton/ }));
+
+    expect(await screen.findByText(/Sign in again to deploy/)).toBeInTheDocument();
+    expect(deployCall(fetchMock)).toBeUndefined();
   });
 });
 

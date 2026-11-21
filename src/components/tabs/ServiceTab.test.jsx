@@ -130,7 +130,7 @@ describe('ServiceTab custom sector', () => {
 // only the network call is mocked.
 vi.mock('../../utils/serviceCatalogHelper', async (importOriginal) => ({
   ...(await importOriginal()),
-  fetchPublishedServices: vi.fn(),
+  fetchPublishedServicesAt: vi.fn(),
 }));
 
 describe('ServiceTab required services', () => {
@@ -145,7 +145,9 @@ describe('ServiceTab required services', () => {
 
   let fetchPublishedServices;
   beforeEach(async () => {
-    ({ fetchPublishedServices } = await import('../../utils/serviceCatalogHelper'));
+    // The section fetches by endpoint URL, so only a dataset change refetches.
+    ({ fetchPublishedServicesAt: fetchPublishedServices } =
+      await import('../../utils/serviceCatalogHelper'));
     fetchPublishedServices.mockReset();
     fetchPublishedServices.mockResolvedValue([
       { uri: RECHT, title: 'Recht op subsidie' },
@@ -266,6 +268,72 @@ describe('ServiceTab required services', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Refresh list' }));
 
     await waitFor(() => expect(fetchPublishedServices).toHaveBeenCalledTimes(2));
+  });
+
+  test('Refresh list is disabled without a configured dataset (#238)', () => {
+    renderTab({ service: hoogte });
+
+    expect(screen.getByRole('button', { name: 'Refresh list' })).toBeDisabled();
+  });
+
+  test('Add is disabled until a published service is chosen (#228)', async () => {
+    renderTab({ service: hoogte, triplyDBConfig: CONFIG });
+    const add = screen.getByRole('button', { name: 'Add' });
+    // While the list loads nothing can be chosen.
+    expect(add).toBeDisabled();
+
+    await screen.findByRole('option', { name: 'Recht op subsidie' });
+    expect(add).toBeDisabled();
+
+    fireEvent.change(screen.getByLabelText('Published service'), { target: { value: RECHT } });
+    expect(add).toBeEnabled();
+  });
+
+  test('a rejection message clears on Remove and when the pasted URI changes (#228)', async () => {
+    renderTab({ service: { ...hoogte, requires: [RECHT] }, triplyDBConfig: CONFIG });
+    await screen.findByRole('button', { name: 'Remove Recht op subsidie' });
+
+    pasteUri(RECHT);
+    expect(screen.getByText(/already listed/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Remove Recht op subsidie' }));
+    expect(screen.queryByText(/already listed/i)).not.toBeInTheDocument();
+
+    pasteUri('urn:x');
+    expect(screen.getByText(/http\(s\) URI/i)).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Required service URI'), {
+      target: { value: 'https://x.org/' },
+    });
+    expect(screen.queryByText(/http\(s\) URI/i)).not.toBeInTheDocument();
+  });
+
+  test('switching dataset hides the previous list until the new one loads (#227)', async () => {
+    const { props, rerender } = renderTab({ service: hoogte, triplyDBConfig: CONFIG });
+    await screen.findByRole('option', { name: 'Recht op subsidie' });
+
+    let resolveNext;
+    fetchPublishedServices.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveNext = resolve;
+      })
+    );
+    rerender(<ServiceTab {...props} triplyDBConfig={{ ...CONFIG, dataset: 'Other' }} />);
+
+    expect(screen.queryByRole('option', { name: 'Recht op subsidie' })).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Published service')).toBeDisabled();
+    expect(screen.getByRole('option', { name: /Loading published services/ })).toBeInTheDocument();
+
+    resolveNext([{ uri: 'https://x.org/services/other', title: 'Other service' }]);
+    expect(await screen.findByRole('option', { name: 'Other service' })).toBeInTheDocument();
+  });
+
+  test('changing only the API token does not refetch the list (#227)', async () => {
+    const { props, rerender } = renderTab({ service: hoogte, triplyDBConfig: CONFIG });
+    await screen.findByRole('option', { name: 'Recht op subsidie' });
+
+    rerender(<ServiceTab {...props} triplyDBConfig={{ ...CONFIG, apiToken: 'new-token' }} />);
+
+    expect(screen.getByRole('option', { name: 'Recht op subsidie' })).toBeInTheDocument();
+    expect(fetchPublishedServices).toHaveBeenCalledTimes(1);
   });
 
   test('a service without a requires key renders an empty list', () => {

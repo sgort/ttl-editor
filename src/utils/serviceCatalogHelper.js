@@ -36,8 +36,18 @@ export const buildDatasetSparqlUrl = (config) => {
  * @returns {Promise<Array<{uri: string, title: string}>>} one entry per service
  * @throws {Error} when the request fails or the response is malformed
  */
-export const fetchPublishedServices = async (config) => {
-  const endpoint = buildDatasetSparqlUrl(config);
+export const fetchPublishedServices = async (config) =>
+  fetchPublishedServicesAt(buildDatasetSparqlUrl(config));
+
+/**
+ * List the public services published at a dataset's SPARQL endpoint. Taking
+ * the URL rather than the whole config lets a caller refetch only when the
+ * dataset changes, not when an unrelated field such as the API token does.
+ * @param {string|null} endpoint from buildDatasetSparqlUrl
+ * @returns {Promise<Array<{uri: string, title: string}>>} one entry per service
+ * @throws {Error} when the request fails or the response is malformed
+ */
+export const fetchPublishedServicesAt = async (endpoint) => {
   if (!endpoint) return [];
 
   const response = await fetch(`${BACKEND_URL}/${API_VERSION}/triplydb/query`, {

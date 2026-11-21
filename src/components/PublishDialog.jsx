@@ -6,6 +6,17 @@ import { useEffect, useState } from 'react';
 import { validateTtl } from '../utils/shaclHelper';
 import { testTriplyDBConnection, validateTriplyDBConfig } from '../utils/triplydbHelper';
 
+// The steps handlePublish in App.jsx reports, keyed on the start of its
+// currentStep text and the progress it sets when the step begins. A step is
+// done once progress has moved past its start. Since #234 publishing is one
+// backend call (TTL, logos and the service sync together), so it is one step
+// here; the old "Uploading" and "Updating service" steps never matched (#249).
+const PUBLISH_STEPS = [
+  { label: 'Validating form', reports: 'Validating', startsAt: 10 },
+  { label: 'Generating TTL', reports: 'Generating', startsAt: 30 },
+  { label: 'Publishing to TriplyDB', reports: 'Publishing', startsAt: 60 },
+];
+
 const PublishDialog = ({
   onClose,
   onPublish,
@@ -162,42 +173,19 @@ const PublishDialog = ({
 
               {/* Step Indicators */}
               <div className="text-xs text-gray-600 space-y-1">
-                <div
-                  className={
-                    publishingState.currentStep.includes('Validating')
-                      ? 'font-bold text-blue-600'
-                      : ''
-                  }
-                >
-                  {publishingState.progress >= 10 ? '✓' : '○'} Validating form
-                </div>
-                <div
-                  className={
-                    publishingState.currentStep.includes('Generating')
-                      ? 'font-bold text-blue-600'
-                      : ''
-                  }
-                >
-                  {publishingState.progress >= 30 ? '✓' : '○'} Generating TTL
-                </div>
-                <div
-                  className={
-                    publishingState.currentStep.includes('Uploading')
-                      ? 'font-bold text-blue-600'
-                      : ''
-                  }
-                >
-                  {publishingState.progress >= 50 ? '✓' : '○'} Uploading to TriplyDB
-                </div>
-                <div
-                  className={
-                    publishingState.currentStep.includes('Updating service')
-                      ? 'font-bold text-blue-600'
-                      : ''
-                  }
-                >
-                  {publishingState.progress >= 85 ? '✓' : '○'} Updating service
-                </div>
+                {PUBLISH_STEPS.map((step) => {
+                  const current = publishingState.currentStep.startsWith(step.reports);
+                  const done = !current && publishingState.progress > step.startsAt;
+                  return (
+                    <div
+                      key={step.label}
+                      aria-current={current ? 'step' : undefined}
+                      className={current ? 'font-bold text-blue-600' : ''}
+                    >
+                      {done ? '✓' : current ? '●' : '○'} {step.label}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Error Display During Progress */}

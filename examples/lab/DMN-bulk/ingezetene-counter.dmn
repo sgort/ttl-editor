@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://operaton.org/schema/modeler/1.0" xmlns:operaton="http://operaton.org/schema/1.0/dmn" id="Definitions_IngezeteneCounter" name="Ingezetene teller" namespace="http://open-regels.nl/dmn/ingezetene-counter" exporter="Camunda Modeler" exporterVersion="5.46.1">
+  <decision id="InitialiseerAantalIngezetenen" name="Initialiseer aantal ingezetenen" operaton:historyTimeToLive="0">
+    <variable id="Variable_InitAantal" name="aantalIngezetenen" typeRef="integer" />
+    <literalExpression id="LiteralExpression_InitAantal" typeRef="integer">
+      <text>0</text>
+    </literalExpression>
+  </decision>
+  <decision id="VerhoogAantalIngezetenen" name="Verhoog aantal ingezetenen" operaton:historyTimeToLive="0">
+    <decisionTable id="DecisionTable_VerhoogAantal">
+      <input id="InputClause_HuidigAantal" label="Huidig aantal">
+        <inputExpression id="InputExpression_HuidigAantal" typeRef="integer">
+          <text>aantalIngezetenen</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_IsIngezetene" label="Persoon is ingezetene">
+        <inputExpression id="InputExpression_IsIngezetene" typeRef="boolean">
+          <text>persoonIngezetene</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_NieuwAantal" label="Nieuw aantal" name="aantalIngezetenen" typeRef="integer" />
+      <rule id="DecisionRule_VerhoogAantal">
+        <inputEntry id="InputEntry_ElkAantal">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="InputEntry_ElkeUitkomst">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="OutputEntry_NieuwAantal">
+          <text>if persoonIngezetene = true then aantalIngezetenen + 1 else aantalIngezetenen</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_IngezeteneCounter">
+      <dmndi:DMNShape id="DMNShape_InitAantal" dmnElementRef="InitialiseerAantalIngezetenen">
+        <dc:Bounds height="80" width="220" x="120" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_VerhoogAantal" dmnElementRef="VerhoogAantalIngezetenen">
+        <dc:Bounds height="80" width="220" x="420" y="80" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

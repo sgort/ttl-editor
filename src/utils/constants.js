@@ -1,7 +1,10 @@
 // Default state values for form initialization and reset
 // These match the CPSV-AP 3.2.0 structure
 
-export const DEFAULT_SERVICE = {
+// A fresh default service on every call. `requires` is an array, and spreading
+// one shared object would hand every reset the same array: a later in-place
+// push would then change the default for every reset after it (#229).
+export const createDefaultService = () => ({
   identifier: '',
   name: '',
   description: '',
@@ -12,7 +15,11 @@ export const DEFAULT_SERVICE = {
   keywords: '',
   language: 'nl',
   requires: [], // service URIs this service makes use of (dct:requires)
-};
+});
+
+// Read-only reference shape. To initialise or reset state, call
+// createDefaultService() instead of spreading this.
+export const DEFAULT_SERVICE = createDefaultService();
 
 export const DEFAULT_ORGANIZATION = {
   identifier: '',

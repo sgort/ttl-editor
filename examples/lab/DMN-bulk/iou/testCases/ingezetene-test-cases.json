@@ -1,0 +1,420 @@
+[
+  {
+    "name": "TC001_Uitsluiting",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Uitsluiting",
+    "description": "Alleen een uitsluiting: geen ingezetene.",
+    "expected": "persoonIngezetene=false",
+    "expectedOutputs": {
+      "persoonIngezetene": false
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC002_Woont",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Woont",
+    "description": "Alleen de persoon woont in de BES, geen uitsluiting: ingezetene.",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC003_Hoofdverblijf",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Hoofdverblijf",
+    "description": "Alleen de persoon heeft het hoofdverblijf in de BES, geen uitsluiting: ingezetene.",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC004_PIVA",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_PIVA",
+    "description": "Alleen de persoon is ingeschreven in PIVA, geen uitsluiting: ingezetene.",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC005_Rechtmatig",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Rechtmatig",
+    "description": "Alleen het verblijf is rechtmatig, geen uitsluiting: ingezetene.",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC006_DuurzameBand",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_DuurzameBand",
+    "description": "Alleen de persoon heeft een duurzame band met de BES, geen uitsluiting: ingezetene.",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC007_GeenPositieveIndicator",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_GeenPositieveIndicator",
+    "description": "Geen enkele indicator en geen uitsluiting: geen ingezetene.",
+    "expected": "persoonIngezetene=false",
+    "expectedOutputs": {
+      "persoonIngezetene": false
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC008_Woont_en_Uitsluiting",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Uitsluiting",
+    "description": "Een positieve indicator met een uitsluiting: de uitsluiting heeft voorrang.",
+    "expected": "persoonIngezetene=false",
+    "expectedOutputs": {
+      "persoonIngezetene": false
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC009_Alle_vijf_indicatoren",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Woont",
+    "description": "Alle vijf indicatoren, geen uitsluiting: ingezetene (de eerste regel die past is Woont).",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC010_Alle_indicatoren_en_Uitsluiting",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Uitsluiting",
+    "description": "Alle vijf indicatoren met een uitsluiting: de uitsluiting heeft voorrang.",
+    "expected": "persoonIngezetene=false",
+    "expectedOutputs": {
+      "persoonIngezetene": false
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": true,
+          "type": "Boolean"
+        }
+      }
+    }
+  },
+  {
+    "name": "TC011_Rechtmatig_en_DuurzameBand",
+    "decision": "Ingezetene",
+    "rule": "DecisionRule_Rechtmatig",
+    "description": "Twee indicatoren, geen uitsluiting: ingezetene (de eerste regel die past is Rechtmatig).",
+    "expected": "persoonIngezetene=true",
+    "expectedOutputs": {
+      "persoonIngezetene": true
+    },
+    "requestBody": {
+      "variables": {
+        "persoonWoontInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "hoofdverblijfInBES": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "ingeschrevenInPIVA": {
+          "value": false,
+          "type": "Boolean"
+        },
+        "rechtmatigVerblijf": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "duurzameBandMetBES": {
+          "value": true,
+          "type": "Boolean"
+        },
+        "uitsluitingVanToepassing": {
+          "value": false,
+          "type": "Boolean"
+        }
+      }
+    }
+  }
+]

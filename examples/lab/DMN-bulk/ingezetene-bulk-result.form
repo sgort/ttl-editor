@@ -1,0 +1,94 @@
+{
+  "components": [
+    {
+      "text": "# Resultaat\nAlle gevallen zijn sequentieel met dezelfde uitgebreide **Ingezetene**-DMN beoordeeld.",
+      "type": "text",
+      "layout": { "row": "Row_intro", "columns": null },
+      "id": "Field_intro"
+    },
+    {
+      "label": "Aantal gevallen dat aan de ingezetenecriteria voldoet",
+      "type": "number",
+      "layout": { "row": "Row_count", "columns": 8 },
+      "id": "Field_aantalIngezetenen",
+      "key": "aantalIngezetenen",
+      "disabled": true
+    },
+    {
+      "label": "Beoordeelde gevallen",
+      "type": "dynamiclist",
+      "path": "gevallen",
+      "components": [
+        {
+          "label": "Kenmerk",
+          "type": "textfield",
+          "layout": { "row": "Row_result_heading", "columns": 12 },
+          "id": "Field_kenmerk_result",
+          "key": "kenmerk",
+          "readonly": true
+        },
+        {
+          "label": "Woont in de BES",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_1", "columns": 4 },
+          "id": "Field_persoonWoontInBES_result",
+          "key": "persoonWoontInBES",
+          "readonly": true
+        },
+        {
+          "label": "Hoofdverblijf in de BES",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_1", "columns": 4 },
+          "id": "Field_hoofdverblijfInBES_result",
+          "key": "hoofdverblijfInBES",
+          "readonly": true
+        },
+        {
+          "label": "Ingeschreven in PIVA",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_1", "columns": 4 },
+          "id": "Field_ingeschrevenInPIVA_result",
+          "key": "ingeschrevenInPIVA",
+          "readonly": true
+        },
+        {
+          "label": "Rechtmatig verblijf",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_2", "columns": 4 },
+          "id": "Field_rechtmatigVerblijf_result",
+          "key": "rechtmatigVerblijf",
+          "readonly": true
+        },
+        {
+          "label": "Duurzame band met de BES",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_2", "columns": 4 },
+          "id": "Field_duurzameBandMetBES_result",
+          "key": "duurzameBandMetBES",
+          "readonly": true
+        },
+        {
+          "label": "Uitsluiting van toepassing",
+          "type": "checkbox",
+          "layout": { "row": "Row_result_2", "columns": 4 },
+          "id": "Field_uitsluitingVanToepassing_result",
+          "key": "uitsluitingVanToepassing",
+          "readonly": true
+        }
+      ],
+      "showOutline": true,
+      "isRepeating": true,
+      "allowAddRemove": false,
+      "defaultRepetitions": 1,
+      "nonCollapsedItems": 5,
+      "layout": { "row": "Row_cases", "columns": null },
+      "id": "Field_gevallen_result"
+    }
+  ],
+  "type": "default",
+  "id": "ingezetene-bulk-result",
+  "executionPlatform": "Operaton",
+  "executionPlatformVersion": "1.0.0",
+  "exporter": { "name": "Operaton Modeler", "version": "1.0.0" },
+  "schemaVersion": 18
+}
