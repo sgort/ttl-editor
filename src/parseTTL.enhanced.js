@@ -161,6 +161,20 @@ export const parseTTLEnhanced = (ttlContent) => {
       return match && localNames.includes(match[1]) ? match[2] : null;
     };
 
+    // Whether this line ends its statement: with string literals and IRIs
+    // blanked out, and a trailing comment dropped, the last character is the
+    // full stop. Looking at the whole line instead dropped an entity whose
+    // closing literal contains ";" and closed one early on `<https://x.nl/a> ,`
+    // (#258).
+    const endsStatement = (line) =>
+      /\.$/.test(
+        line
+          .replace(/"(?:[^"\\]|\\.)*"/g, '""')
+          .replace(/<[^>\s]*>/g, '<>')
+          .replace(/#.*$/, '')
+          .trimEnd()
+      );
+
     // Helper function to unescape TTL strings
     const unescapeTTLString = (str) => {
       if (!str) return '';
@@ -669,7 +683,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           currentRule.title = extractValue(line.split('dct:title')[1]) || currentRule.title;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.temporalRules.push(currentRule);
           currentRule = null;
           currentSection = null;
@@ -708,7 +722,7 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(paramValidUntil) || currentParameter.validUntil;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.parameters.push(currentParameter);
           currentParameter = null;
           currentSection = null;
@@ -749,7 +763,7 @@ export const parseTTLEnhanced = (ttlContent) => {
         }
 
         // End of concept definition
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.concepts.push(currentConcept);
           currentConcept = null;
           currentSection = null;
@@ -771,7 +785,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.cost.description = extractValue(line.split('dct:description')[1]);
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           currentSection = null;
         }
       }
@@ -791,7 +805,7 @@ export const parseTTLEnhanced = (ttlContent) => {
           parsed.output.type = extractValue(line.split('dct:type')[1]);
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           currentSection = null;
         }
       }
@@ -823,7 +837,7 @@ export const parseTTLEnhanced = (ttlContent) => {
             extractValue(line.split('cprmv:ruleIdPath')[1]) || currentCprmvRule.ruleIdPath;
         }
 
-        if (line.includes('.') && !line.includes(';')) {
+        if (endsStatement(line)) {
           parsed.cprmvRules.push(currentCprmvRule);
           currentCprmvRule = null;
           currentSection = null;
