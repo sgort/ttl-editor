@@ -1,8 +1,9 @@
 import { Eye, LogIn, LogOut, User, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAuth } from '../hooks/useAuth';
 import { signIn, signOut } from '../utils/auth';
+import { fetchTestDeployOffer } from '../utils/deployOptions';
 
 // Per tab: the note comes back in a new tab or session, not on every render.
 const NOTE_DISMISSED = 'ttl.auth.viewOnlyNoteDismissed';
@@ -37,9 +38,25 @@ export default function SignInMenu() {
   const { signedIn, isAuthor, name } = useAuth();
   const [open, setOpen] = useState(false);
   const [noteDismissed, setNoteDismissed] = useState(readDismissed);
+  const viewOnly = signedIn && !isAuthor;
+
+  // Where the backend offers test deploys (localhost, ACC), a view-only user
+  // can still test-deploy a DMN, so the note must not say deploying is
+  // locked outright (#240). Asked only for a view-only user; set only once the
+  // request settles.
+  const [testDeployOffer, setTestDeployOffer] = useState(null);
+  useEffect(() => {
+    if (!viewOnly) return undefined;
+    let current = true;
+    fetchTestDeployOffer().then((offer) => {
+      if (current) setTestDeployOffer(offer);
+    });
+    return () => {
+      current = false;
+    };
+  }, [viewOnly]);
 
   if (signedIn) {
-    const viewOnly = !isAuthor;
     return (
       <div className="relative flex items-center gap-2 text-sm text-gray-700 whitespace-nowrap">
         <User size={16} aria-hidden="true" />
@@ -67,8 +84,12 @@ export default function SignInMenu() {
             className="absolute right-0 top-full mt-2 w-80 z-50 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 shadow-lg whitespace-normal"
           >
             <span>
-              Your account does not have the lde-author role. You can edit, but deploying to
-              Operaton and publishing to TriplyDB are locked. Ask an administrator for the role.
+              Your account does not have the lde-author role.{' '}
+              {testDeployOffer
+                ? `You can edit and test-deploy a DMN to the ${testDeployOffer.tenantId} tenant (removed after ${testDeployOffer.ttlHours} hours), but`
+                : 'You can edit, but'}{' '}
+              deploying to Operaton and publishing to TriplyDB are locked. Ask an administrator for
+              the role.
             </span>
             <button
               type="button"

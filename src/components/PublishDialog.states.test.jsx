@@ -220,36 +220,62 @@ describe('publishing', () => {
 });
 
 describe('publishing progress', () => {
+  // The steps App.jsx actually reports. Since #234 publishing is one backend
+  // call (upload, logos and service sync together), so there is one step for
+  // it, not separate "Uploading" and "Updating service" steps (#249).
   const publishing = (overrides) => ({
     isPublishing: true,
-    currentStep: 'Uploading to TriplyDB',
+    currentStep: 'Publishing to TriplyDB...',
     progress: 60,
     stepStatus: 'loading',
     error: null,
     ...overrides,
   });
 
+  const stepLine = (label) => screen.getByText(new RegExp(`${label}$`));
+
   test('while publishing, progress replaces the configuration form', () => {
     renderDialog({ publishingState: publishing() });
 
-    expect(screen.getByText('Uploading to TriplyDB')).toBeInTheDocument();
+    expect(screen.getByText('Publishing to TriplyDB...')).toBeInTheDocument();
     // The form is hidden so the configuration cannot be edited mid-publish.
     expect(screen.queryByPlaceholderText('stevengort')).not.toBeInTheDocument();
   });
 
-  test('completed steps are ticked and later ones are not', () => {
-    renderDialog({ publishingState: publishing({ progress: 60 }) });
+  test('the running step is current, not ticked; earlier steps are ticked', () => {
+    renderDialog({ publishingState: publishing() });
 
-    expect(screen.getByText(/✓ Validating form/)).toBeInTheDocument();
-    expect(screen.getByText(/✓ Generating TTL/)).toBeInTheDocument();
-    expect(screen.getByText(/✓ Uploading to TriplyDB/)).toBeInTheDocument();
-    expect(screen.getByText(/○ Updating service/)).toBeInTheDocument();
+    expect(stepLine('Validating form')).toHaveTextContent('✓');
+    expect(stepLine('Generating TTL')).toHaveTextContent('✓');
+    const publish = stepLine('Publishing to TriplyDB');
+    expect(publish).not.toHaveTextContent('✓');
+    expect(publish).toHaveAttribute('aria-current', 'step');
+    expect(screen.queryByText(/Updating service/)).not.toBeInTheDocument();
+  });
+
+  test('each reported step is the current one in turn', () => {
+    const { rerender, props } = renderDialog({
+      publishingState: publishing({ currentStep: 'Validating form...', progress: 10 }),
+    });
+    expect(stepLine('Validating form')).toHaveAttribute('aria-current', 'step');
+    expect(stepLine('Generating TTL')).toHaveTextContent('○');
+
+    rerender(
+      <PublishDialog
+        {...props}
+        publishingState={publishing({ currentStep: 'Generating TTL...', progress: 30 })}
+      />
+    );
+    expect(stepLine('Validating form')).toHaveTextContent('✓');
+    expect(stepLine('Generating TTL')).toHaveAttribute('aria-current', 'step');
+    expect(stepLine('Publishing to TriplyDB')).toHaveTextContent('○');
   });
 
   test('nothing is ticked at the start', () => {
-    renderDialog({ publishingState: publishing({ progress: 0 }) });
+    renderDialog({ publishingState: publishing({ currentStep: 'validating', progress: 0 }) });
 
-    expect(screen.getByText(/○ Validating form/)).toBeInTheDocument();
+    expect(stepLine('Validating form')).toHaveTextContent('○');
+    expect(stepLine('Publishing to TriplyDB')).toHaveTextContent('○');
   });
 
   test('an error during publishing is shown', () => {

@@ -159,16 +159,27 @@ that runs them needs its password:
 LDE_E2E_PASSWORD='<password>' npm run test:e2e
 ```
 
-| Variable           | Default                                  | Purpose                                                                                                          |
-| ------------------ | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `LDE_E2E_PASSWORD` | required                                 | password of `lde-e2e`, set when `keycloak-add-lde-clients.sh --with-e2e` (ronl-business-api) created the account |
-| `LDE_E2E_USERNAME` | `lde-e2e`                                | another account holding `lde-author`                                                                             |
-| `E2E_BACKEND_URL`  | `VITE_BACKEND_URL` in `.env.development` | the LDE backend                                                                                                  |
-| `E2E_OPERATON_URL` | `http://localhost:8081`                  | Operaton, for the preflight check                                                                                |
+| Variable           | Default                                   | Purpose                                                                                                          |
+| ------------------ | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `LDE_E2E_PASSWORD` | required                                  | password of `lde-e2e`, set when `keycloak-add-lde-clients.sh --with-e2e` (ronl-business-api) created the account |
+| `LDE_E2E_USERNAME` | `lde-e2e`                                 | another account holding `lde-author`                                                                             |
+| `E2E_BACKEND_URL`  | `VITE_BACKEND_URL` in `.env.development`  | the LDE backend                                                                                                  |
+| `E2E_OPERATON_URL` | `http://localhost:8081`                   | Operaton, for the preflight check                                                                                |
+| `E2E_KEYCLOAK_URL` | `VITE_KEYCLOAK_URL` in `.env.development` | Keycloak; the preflight checks that realm `ronl` answers                                                         |
 
 These are environment variables of the test run, not settings of the LDE
 backend: Playwright loads no `.env` file. linked-data-explorer's
 `scripts/deploy-e2e-fixtures.mjs` uses the same `LDE_E2E_*` names.
+
+**Sign-in works from one exact origin.** The `ttl-editor` Keycloak client
+accepts the single origin it was created with (`TTL_ORIGIN` in
+ronl-business-api's `keycloak-add-lde-clients.sh`, as both redirect URI and web
+origin). `npm start` and the journeys' web server both serve on
+`http://localhost:3000`, so create the client with
+`TTL_ORIGIN=http://localhost:3000` to sign in locally; the script's own example
+uses `:3002` because there the Linked Data Explorer has `:3000`. Pull-request
+preview environments each get their own origin and cannot sign in, so deploying
+as an author and publishing cannot be tried there.
 
 **In a new `git worktree`, run `npm ci` before committing.** Without it the
 pre-commit and pre-push hooks do not run, and nothing says so: husky sets
