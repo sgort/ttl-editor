@@ -120,6 +120,28 @@ describe('publishToTriplyDB (#234: one call to the LDE backend)', () => {
     expect(result.serviceError).toBe('sync failed');
   });
 
+  test('a 200 whose body is not JSON is a publish that worked, not an error (#336 in LDE)', async () => {
+    // A proxy can answer 200 with an empty or HTML body. The graph went up, so
+    // throwing here reported a publish that worked as a failure.
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: 'OK',
+      json: async () => {
+        throw new SyntaxError('Unexpected end of JSON input');
+      },
+    });
+
+    const result = await publishToTriplyDB(PUBLISH);
+
+    expect(result).toEqual({
+      graph: PUBLISH.graph,
+      serviceUpdated: true,
+      logos: [],
+      answerUnreadable: true,
+    });
+  });
+
   test.each([401, 403])('a %i asks the user to sign in as an author', async (status) => {
     global.fetch = vi.fn().mockResolvedValue(answer(status, { detail: 'whatever' }));
 

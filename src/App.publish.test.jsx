@@ -133,6 +133,22 @@ describe('publishing', () => {
     expect(screen.getAllByText(/Published with warning/)).not.toHaveLength(0);
   });
 
+  test('an unreadable answer is published with a warning, not reported as a failure (#336 in LDE)', async () => {
+    publishToTriplyDB.mockResolvedValue({
+      graph: 'https://regels.overheid.nl/graphs/service',
+      serviceUpdated: true,
+      logos: [],
+      answerUnreadable: true,
+    });
+
+    render(<App />);
+    await openPublishAndSubmit();
+
+    expect(await screen.findAllByText(/answer could not be read/)).not.toHaveLength(0);
+    expect(screen.getAllByText(/Published with warning/)).not.toHaveLength(0);
+    expect(saveTriplyDBConfig).toHaveBeenCalledWith({ dataset: 'DMN-discovery' });
+  });
+
   test('a failed service sync and a failed logo are reported together', async () => {
     publishToTriplyDB.mockResolvedValue({
       url: 'https://example.org/dataset',
