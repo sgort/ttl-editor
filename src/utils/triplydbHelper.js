@@ -53,8 +53,9 @@ const readJson = async (response) => {
  * @param {{dataset: string, graph: string, filename: string, ttl: string,
  *   organization?: string, service?: string,
  *   logos?: Array<{fileName: string, dataUrl: string}>}} publish
- * @returns {Promise<{url: string, graph: string, serviceUpdated: boolean,
- *   serviceError?: string, logos: Array<{fileName: string, ok: boolean}>}>}
+ * @returns {Promise<{url?: string, graph: string, serviceUpdated: boolean,
+ *   serviceError?: string, logos: Array<{fileName: string, ok: boolean}>,
+ *   answerUnreadable?: true}>} `answerUnreadable` when a 200 carried no JSON
  */
 export const publishToTriplyDB = async (publish) => {
   let response;
@@ -78,6 +79,13 @@ export const publishToTriplyDB = async (publish) => {
   const body = await readJson(response);
   if (!response.ok) {
     throw new Error(getProblemDetail(body, `Publishing failed: HTTP ${response.status}`));
+  }
+
+  // A 200 whose body is not JSON (a proxy's empty or HTML answer): the graph
+  // went up, but the details are unknown. Reading it threw, and a publish that
+  // worked was reported as an error (#336 in linked-data-explorer).
+  if (!body) {
+    return { graph: publish.graph, serviceUpdated: true, logos: [], answerUnreadable: true };
   }
 
   const { url, graph, serviceUpdated, serviceError, logos } = body;

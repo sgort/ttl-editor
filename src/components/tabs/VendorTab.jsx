@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { readScaledImage } from '../../utils/logoImage';
 import IKnowMappingTab from './IKnowMappingTab';
 
 /**
@@ -93,15 +94,16 @@ const VendorTab = ({
     setShowCertificationModal(true);
   };
 
-  // Handle vendor logo upload
-  const handleVendorLogoUpload = (event) => {
+  // Handle vendor logo upload. Scaled to fit 512 px with its proportions kept,
+  // so a large file can no longer push the publish body past the backend's
+  // limit and fail the whole publish (#336 in linked-data-explorer).
+  const handleVendorLogoUpload = async (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        updateVendorField('contact', 'logo', reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    try {
+      updateVendorField('contact', 'logo', await readScaledImage(file));
+    } catch (error) {
+      alert(`Could not use this logo: ${error.message}`);
     }
   };
 

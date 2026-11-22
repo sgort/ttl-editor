@@ -612,6 +612,11 @@ function App() {
           ? []
           : [`Service update failed: ${publishResult.serviceError}`]),
         ...failedLogos.map((logo) => `Logo not uploaded: ${logo.fileName}`),
+        ...(publishResult.answerUnreadable
+          ? [
+              "The backend's answer could not be read, so the service sync and logos are unconfirmed; check the dataset in TriplyDB",
+            ]
+          : []),
       ];
 
       if (warnings.length === 0) {
