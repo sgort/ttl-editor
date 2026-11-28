@@ -2,6 +2,89 @@
   "versions": [
     {
       "format": "commits",
+      "version": "2026.11.3",
+      "status": "Released",
+      "date": "28 nov 2026",
+      "commits": [
+        {
+          "sha": "205a691",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Lock file maintenance",
+          "details": [
+            "The weekly refresh of the transitive tree: 44 packages updated and 1 removed, none added and none downgraded. The dependency gate found every changed version at least 14 days old. It also brought prettier to 3.10.1, so Renovate closed its own prettier pull request (#279)."
+          ]
+        },
+        {
+          "sha": "03e730a",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "postcss 8.5.33",
+          "details": ["Patch update from 8.5.32, lockfile only."]
+        },
+        {
+          "sha": "3aaed90",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "@babel/parser 8.1.2",
+          "details": [
+            "Patch update; both copies in the tree, 8.0.8 and 8.1.0, now resolve to 8.1.2. Lockfile only."
+          ]
+        },
+        {
+          "sha": "acfb80d",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Playwright 1.65.1",
+          "details": ["@playwright/test and playwright-core from 1.64.1, for the end-to-end suite."]
+        },
+        {
+          "sha": "75032ec",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "vite 8.3.8",
+          "details": ["From 8.3.6. The lockfile gains seven entries, all past the 14-day cooldown."]
+        },
+        {
+          "sha": "8c28bac",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "lucide-react 1.73.0",
+          "details": ["Icon library, from 1.70.0. Lockfile only."]
+        },
+        {
+          "sha": "b91ba3e",
+          "author": "renovate[bot]",
+          "type": "chore",
+          "subject": "Node.js 24.22.3",
+          "details": [
+            "`.nvmrc` and the pinned Node in the audit, review, SBOM and supply-chain workflows move from 24.22.2. The release's npm is still 11.19.1."
+          ]
+        },
+        {
+          "sha": "3d6295f",
+          "author": "Steven Gort",
+          "type": "feat",
+          "subject": "New direct dependencies need a recorded assessment before they merge",
+          "details": [
+            "Ports the dependency register gate from linked-data-explorer (#368). The required lockfile-review check now blocks a new direct dependency until `dependency-register.json` holds an entry that agrees with what the npm registry and GitHub say. Deprecated or archived, last release, maintainers, licence and install scripts are gathered by the gate, not typed by a person, and judgement needs a written reason. Every package version the lockfile adds or changes must also be at least 14 days old (ICTU recommendations 1 and 6).",
+            "Two ways through, both logged: a committed override with an open issue, or a Renovate security pull request whose `security` label renovate[bot] applied. `keycloak-js`, added in #239 without the old checklist, is the register's first entry: kept, with the move to the current major tied to the Keycloak 26 server migration (#275)."
+          ]
+        },
+        {
+          "sha": "8b4647e",
+          "author": "Steven Gort",
+          "type": "fix",
+          "subject": "Large vendor logos publish, and an unreadable publish answer is not an error",
+          "details": [
+            "The Vendor tab scales an uploaded logo to at most 512 px on its longest side, proportions kept, and stores it as PNG. Read as-is, a logo above about 7.5 MB took the publish body past the LDE backend's 10 MB limit, and the whole publish failed with 413. Vendor logos are not cropped to a square as organisation logos are, because they are often wide wordmarks.",
+            "A publish that answers 200 with a body that is not JSON now counts as published, with a warning that the service sync and logos are unconfirmed, instead of an error. Items 8 and 9 of linked-data-explorer#336."
+          ]
+        }
+      ]
+    },
+    {
+      "format": "commits",
       "version": "2026.11.2",
       "status": "Released",
       "date": "21 nov 2026",
