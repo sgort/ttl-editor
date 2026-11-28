@@ -1,0 +1,46 @@
+{
+  "$comment": "The dependency register: one assessment per direct dependency per manifest, against the six criteria in docs/dependency-criteria.md in linked-data-explorer (sgort/linked-data-explorer#250). Read by scripts/dependency-gate.mjs in the lockfile-review job, which fails a pull request that adds a direct dependency without an entry here, or with an entry the registry evidence contradicts; and by scripts/dependency-review.mjs, which lists open overrides and replacements every quarter. The first entry was assessed after the fact on 28 November 2026.",
+  "dependencies": [
+    {
+      "name": "keycloak-js",
+      "manifest": "(root)",
+      "field": "dependencies",
+      "added": {
+        "date": "2026-11-12",
+        "pr": 239
+      },
+      "assessed": {
+        "date": "2026-11-28",
+        "version": "23.0.7"
+      },
+      "criteria": {
+        "maintained": {
+          "holds": false,
+          "why": "The package is maintained (26.2.5 on 27 October 2026, four releases in the last year), but the locked 23.x line is frozen: 23.0.7 of 22 February 2024 is its last release and gets no fixes."
+        },
+        "maintainers": {
+          "holds": true
+        },
+        "licence": {
+          "holds": true
+        },
+        "releasePolicy": {
+          "holds": false,
+          "why": "Neither 23.0.7 nor the latest release carries npm provenance, and we run a major the project no longer supports; a security policy exists only in keycloak/.github."
+        },
+        "footprint": {
+          "holds": true,
+          "why": "Three transitive packages, each used by keycloak-js alone in this tree: jwt-decode, js-sha256 and base64-js, all MIT."
+        },
+        "needed": {
+          "holds": true,
+          "why": "It is the editor's OIDC client (src/utils/auth.js:27, with public/silent-check-sso.html (and the .js it loads) for the silent check-sso frame: init, login, logout, token refresh) and nothing else in the tree does this; it is held at 23 to match the Keycloak 23 server, and moves with the server migration to 26."
+        }
+      },
+      "outcome": "keep",
+      "followUp": 275,
+      "status": "assessed"
+    }
+  ],
+  "cooldownOverrides": []
+}
